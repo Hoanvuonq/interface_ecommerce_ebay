@@ -1,0 +1,27 @@
+"use client";
+import { ReactNode } from "react";
+import { usePathname } from "next/navigation";
+import PrivateRoute from "@/auth/_components/PrivateRoute/PrivateRoute";
+import { PUBLIC_ROUTES, PUBLIC_PREFIXES } from "@/auth/_constants/auth";
+
+const isPublicRoute = (pathname: string): boolean => {
+  if (PUBLIC_ROUTES.has(pathname)) {
+    return true;
+  }
+
+  return PUBLIC_PREFIXES.some((prefix) => pathname.startsWith(prefix));
+};
+
+interface AuthRouteGuardProps {
+  children: ReactNode;
+}
+
+export default function AuthRouteGuard({ children }: AuthRouteGuardProps) {
+  const pathname = usePathname();
+
+  if (pathname && isPublicRoute(pathname)) {
+    return <>{children}</>;
+  }
+
+  return <PrivateRoute>{children}</PrivateRoute>;
+}

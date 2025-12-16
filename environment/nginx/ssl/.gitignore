@@ -1,0 +1,12 @@
+# Ignore all SSL certificates
+*.pem
+*.key
+*.crt
+*.cert
+*.csr
+*.p12
+*.pfx
+
+# But keep this directory
+!.gitignore
+

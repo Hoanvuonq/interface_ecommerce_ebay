@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Passero+One&family=Shrikhand&display=swap');
+@import "tailwindcss";
+
+:root {
+  --color-primary: #2f5aff;
+  --color-secondary: #4f7aff;
+  --color-accent: #ff7a00;
+  --color-bg-soft: #f5f7ff;
+  --color-border-soft: #e6e9ff;
+  --color-gradient-1: #6cd6ff;
+  --color-gradient-2: #c9e8ff;
+  --background: var(--color-bg-soft);
+  --foreground: #111827;
+  --primary-color: var(--color-primary);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+
+.shrikhand-regular {
+  font-family: "Shrikhand", serif;
+}
+
+.passero-one-regular {
+  font-family: "Passero One", sans-serif;
+}
