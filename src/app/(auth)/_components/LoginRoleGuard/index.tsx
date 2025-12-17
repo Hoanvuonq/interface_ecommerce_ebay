@@ -2,31 +2,19 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Home } from "lucide-react"; // Thay thế HomeOutlined
+import { Home } from "lucide-react";
 import Link from "next/link";
-
-// Giả định các hàm này đã có sẵn
 import { isAuthenticated } from "@/utils/local.storage";
 import { hasAnyRole, getRedirectPath } from "@/utils/jwt";
-import { RoleEnum } from "@/auth/_types/auth"; 
-// import { App } from "antd"; // Đã loại bỏ
-
+import { RoleEnum } from "@/auth/_types/auth";
+import { CustomSpinner } from "@/components";
 interface LoginRoleGuardProps {
     children: React.ReactNode;
     allowedRoles: RoleEnum[];
     loginType: "buyer" | "shop" | "employee";
 }
 
-// =================================================================
-// CUSTOM COMPONENTS (Thay thế Ant Design)
-// =================================================================
 
-// 1. Custom Spinner (Thay thế Ant Design Spin)
-const CustomSpinner = () => (
-    <div className="w-10 h-10 border-4 border-t-4 border-pink-600 border-t-transparent rounded-full animate-spin" />
-);
-
-// 2. Custom Button (Thay thế Ant Design Button)
 interface CustomButtonProps {
     children: React.ReactNode;
     href: string;

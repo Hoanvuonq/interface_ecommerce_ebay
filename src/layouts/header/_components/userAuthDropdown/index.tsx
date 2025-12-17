@@ -1,231 +1,179 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback, ReactElement } from "react";
-import {
-  User,
-  ChevronDown,
-  LogIn,
-  UserPlus,
-  Heart,
-  ShoppingBag,
-  Truck,
-} from "lucide-react";
+import { AppPopover } from "@/components/appPopover";
+import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/utils/cn";
+import { getRole, getUserName, getUserInfo, hasRole } from "@/utils/jwt";
+import { logout } from "@/utils/local.storage";
+import { RoleEnum } from "@/auth/_types/auth"; // Đảm bảo đúng path enum của bạn
+import {
+    ChevronDown,
+    Heart,
+    LogIn,
+    LogOut,
+    Package,
+    Store,
+    User,
+    UserPlus
+} from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { ReactElement, useCallback, useEffect, useState } from "react";
 
-// ************************
-// 1. ĐỊNH NGHĨA INTERFACE RÕ RÀNG
-// ************************
-
-interface MenuItemBase {
-  key: string;
+interface MenuItem {
+    key: string;
+    label: string;
+    href?: string;
+    icon?: ReactElement;
+    action?: () => void;
+    badge?: number; 
+    isLogout?: boolean; 
 }
-
-interface MenuItemLink extends MenuItemBase {
-  type?: "link";
-  label: string;
-  href: string;
-  icon: ReactElement;
-  action?: () => void;
-}
-
-interface MenuItemSpecial extends MenuItemBase {
-  type: "divider" | "info";
-  label: ReactElement;
-  href?: string;
-  icon?: ReactElement;
-  action?: () => void;
-}
-
-type MenuItem = MenuItemLink | MenuItemSpecial;
-
-const userName = "ebayexpressvn";
-const handleLogout = () => {
-  console.log("Thực hiện hành động Đăng xuất");
-};
 
 interface UserAuthDropdownProps {
-  isAuthenticated: boolean;
+    isAuthenticated: boolean;
 }
 
-const userMenuItems: MenuItem[] = [
-  {
-    key: "info",
-    type: "info",
-    label: (
-      <div className="px-2 py-1 bg-blue-50/70 rounded-lg">
-        <div className="text-xs text-gray-500">Xin chào</div>
-        <div className="font-semibold text-gray-900">
-          {userName || "Tài khoản"}
-        </div>
-      </div>
-    ),
-  },
-
-  {
-    key: "profile",
-    label: "Thông tin cá nhân",
-    href: "/profile",
-    icon: <User size={16} />,
-    action: () => console.log("Go to profile"),
-  },
-  {
-    key: "orders",
-    label: "Đơn hàng của tôi",
-    href: "/orders",
-    icon: <Truck size={16} />,
-    action: () => console.log("Go to orders"),
-  },
-  {
-    key: "wishlist",
-    label: "Yêu thích",
-    href: "/wishlist",
-    icon: <Heart size={16} />,
-    action: () => console.log("Go to wishlist"),
-  },
-  {
-    key: "shop",
-    label: "Quản lý shop",
-    href: "/shop/dashboard",
-    icon: <ShoppingBag size={16} />,
-    action: () => console.log("Go to shop dashboard"),
-  },
-  {
-    key: "logout",
-    label: "Đăng xuất",
-    href: "#",
-    icon: <LogIn size={16} className="rotate-180" />,
-    action: handleLogout,
-  },
-];
-
-const authMenuItems: MenuItem[] = [
-  {
-    key: "login",
-    label: "Đăng nhập",
-    href: "/login",
-    icon: <LogIn size={16} />,
-  },
-  {
-    key: "register",
-    label: "Đăng ký",
-    href: "/register",
-    icon: <UserPlus size={16} />,
-  },
-];
-
 export const UserAuthDropdown = ({
-  isAuthenticated,
+    isAuthenticated: propsAuth,
 }: UserAuthDropdownProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+    // Sử dụng hook useAuth để đồng bộ trạng thái thực tế từ Token/Storage
+    const isActuallyAuthenticated = useAuth();
+    const [userData, setUserData] = useState({ name: "", email: "", image: "" });
+    const [isShopOwner, setIsShopOwner] = useState(false);
 
-  const menuItems = isAuthenticated ? userMenuItems : authMenuItems;
-  const buttonLabel = isAuthenticated ? userName || "Tài khoản" : "Đăng nhập";
+    // Xử lý thông tin User khi trạng thái đăng nhập thay đổi
+    useEffect(() => {
+        if (isActuallyAuthenticated) {
+            const info = getUserInfo();
+            setUserData({
+                name: info?.username || info?.email || "Người dùng",
+                email: info?.email || "",
+                image: info?.image || ""
+            });
+            // Kiểm tra role để hiển thị menu quản lý shop
+            setIsShopOwner(hasRole(RoleEnum.SHOP));
+        }
+    }, [isActuallyAuthenticated]);
 
-  const handleClickOutside = useCallback((event: MouseEvent) => {
-    if (
-      dropdownRef.current &&
-      !dropdownRef.current.contains(event.target as Node)
-    ) {
-      setIsOpen(false);
-    }
-  }, []);
-
-  const handleItemClick = (itemKey: string) => {
-    setIsOpen(false);
-    const item = menuItems.find((m) => m.key === itemKey);
-    if (item && "action" in item && item.action) {
-      item.action();
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+    const handleLogoutAction = () => {
+        logout();
+        window.location.href = "/login"; // Redirect cứng để clear toàn bộ state
     };
-  }, [handleClickOutside]);
 
-  return (
-    <div className="relative text-base" ref={dropdownRef}>
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className={cn(
-          "flex items-center gap-1.5 px-3 py-2 rounded-full transition-colors focus:outline-none cursor-pointer",
-          "text-white hover:bg-white/10"
-        )}
-        aria-expanded={isOpen}
-        aria-label={buttonLabel}
-      >
-        <User size={20} className="flex-shrink-0" />
+    // Tạo menu items động dựa trên dữ liệu thật
+    const userMenuItems: MenuItem[] = [
+        {
+            key: "profile",
+            label: "Thông tin cá nhân",
+            href: "/profile",
+            icon: <User size={16} />,
+        },
+        {
+            key: "orders",
+            label: "Đơn hàng của tôi",
+            href: "/orders",
+            icon: <Package size={16} />,
+        },
+        {
+            key: "wishlist",
+            label: "Yêu thích",
+            href: "/wishlist",
+            icon: <Heart size={16} />,
+        },
+        ...(isShopOwner ? [{
+            key: "shop",
+            label: "Quản lý shop",
+            href: "/shop",
+            icon: <Store size={16} />,
+        }] : []),
+        {
+            key: "logout",
+            label: "Đăng xuất",
+            icon: <LogOut size={16} />,
+            action: handleLogoutAction,
+            isLogout: true,
+        },
+    ];
 
-        <span className="hidden sm:inline font-medium">{buttonLabel}</span>
+    const authMenuItems: MenuItem[] = [
+        {
+            key: "login",
+            label: "Đăng nhập",
+            href: "/login",
+            icon: <LogIn size={16} />,
+        },
+        {
+            key: "register",
+            label: "Đăng ký",
+            href: "/register",
+            icon: <UserPlus size={16} />,
+        },
+    ];
 
-        <ChevronDown
-          size={14}
-          className={`hidden sm:inline transform transition-transform ${
-            isOpen ? "rotate-180" : "rotate-0"
-          }`}
-        />
-      </button>
+    const menuItems = isActuallyAuthenticated ? userMenuItems : authMenuItems;
+    const buttonLabel = isActuallyAuthenticated ? userData.name : "Đăng nhập";
 
-      {isOpen && (
-        <div
-          className={cn(
-            "absolute right-0 top-full mt-1 w-48 bg-white text-gray-800 rounded-lg shadow-xl overflow-hidden z-20",
-            "before:content-[''] before:absolute before:top-[-8px] before:right-3 before:w-0 before:h-0 before:border-x-8 before:border-x-transparent before:border-b-8 before:border-b-white"
-          )}
-        >
-          {menuItems.map((item) => {
-            // Xử lý Divider
-            if (item.type === "divider") {
-              return (
-                <div key={item.key} className="my-1 border-t border-gray-100" />
-              );
-            }
-            if (item.type === "info" && isAuthenticated) {
-              return (
-                <div key={item.key} className="p-2">
-                  {item.label}
-                </div>
-              );
-            }
-
-            //
-            const ariaLabel =
-              typeof item.label === "string"
-                ? item.label
-                : typeof (item as MenuItemLink).label === "string"
-                ? (item as MenuItemLink).label
-                : undefined;
-
-            return (
-              <Link
-                key={item.key}
-                href={item.href || "#"}
-                onClick={(e) => {
-                  if (item.key === "logout") {
-                    e.preventDefault();
-                  }
-                  handleItemClick(item.key);
-                }}
-                className={cn(
-                  "w-full flex items-center gap-2 text-left px-4 py-2 text-sm font-medium transition-colors",
-                  item.key === "logout"
-                    ? "text-red-500 hover:bg-red-50"
-                    : "hover:bg-gray-100"
-                )}
-                aria-label={ariaLabel}
-              >
-                {item.icon}
-                {item.label}
-              </Link>
-            );
-          })}
+    const Trigger = (
+        <div className="flex items-center gap-1.5 px-3 py-2 rounded-full text-white hover:bg-white/10 transition-colors cursor-pointer">
+            <User size={20} />
+            <span className="hidden sm:inline font-medium max-w-[120px] truncate">
+                {buttonLabel}
+            </span>
+            <ChevronDown size={14} />
         </div>
-      )}
-    </div>
-  );
+    );
+
+    return (
+        <AppPopover trigger={Trigger} className="w-64" align="right">
+            {isActuallyAuthenticated && (
+                <div className="p-4 flex items-center gap-3 border-b border-gray-100 bg-gray-50/50">
+                    <div className="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center overflow-hidden border border-blue-200">
+                        {userData.image ? (
+                            <img src={userData.image} alt="avatar" className="w-full h-full object-cover" />
+                        ) : (
+                            <User size={24} />
+                        )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                        <div className="font-bold text-gray-900 leading-tight truncate">
+                            {userData.name}
+                        </div>
+                        <div className="text-xs text-gray-500 truncate">
+                            {userData.email}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            <div className="py-1">
+                {menuItems.map((item) => {
+                    const content = (
+                        <div className="flex items-center gap-3 w-full">
+                            {item.icon}
+                            <span className="flex-1 text-left">{item.label}</span>
+                        </div>
+                    );
+
+                    const commonClass = cn(
+                        "flex items-center gap-3 px-4 py-2.5 text-sm transition-colors w-full cursor-pointer",
+                        item.isLogout ? "text-red-500 hover:bg-red-50" : "text-gray-700 hover:bg-gray-100"
+                    );
+
+                    if (item.action) {
+                        return (
+                            <button key={item.key} onClick={item.action} className={commonClass}>
+                                {content}
+                            </button>
+                        );
+                    }
+
+                    return (
+                        <Link key={item.key} href={item.href || "#"} className={commonClass}>
+                            {content}
+                        </Link>
+                    );
+                })}
+            </div>
+        </AppPopover>
+    );
 };

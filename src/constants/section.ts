@@ -12,15 +12,16 @@ import {
     Trophy,
     Zap,
     LucideIcon,
-} from "lucide-react"; // Đảm bảo import đúng từ @lucide/react hoặc lucide-react
+    CircleDollarSignIcon as finance,
+} from "lucide-react";
 
-// Định nghĩa lại interface cho QuickLinks để sử dụng LucideIcon
 interface QuickLinkItem {
     key: string;
     label: string;
     href: string;
-    icon: LucideIcon; // Sử dụng LucideIcon
+    icon: LucideIcon;
     color: string;
+    bgColor?: string;
 }
 
 export const QuickLinks: QuickLinkItem[] = [
@@ -28,57 +29,65 @@ export const QuickLinks: QuickLinkItem[] = [
         key: "flash",
         label: "Flash Sale",
         href: "/sale",
-        icon: Zap, // Thay thế ThunderboltOutlined
+        icon: Zap,
         color: "#FF5F17",
+        bgColor: "bg-orange-100/50",
     },
     {
         key: "voucher",
         label: "Mã giảm giá",
         href: "/coupons",
-        icon: Tag, // Thay thế TagOutlined
+        icon: Tag,
         color: "#F44336",
+        bgColor: "bg-red-100/50",
     },
     {
         key: "new",
         label: "Hàng mới",
         href: "/new",
-        icon: Star, // Thay thế StarOutlined
+        icon: Star,
         color: "#1E88E5",
+        bgColor: "bg-blue-100/50",
     },
     {
         key: "best",
         label: "Bán chạy",
         href: "/products?sort=best-seller",
-        icon: Trophy, // Thay thế TrophyOutlined
+        icon: Trophy,
         color: "#FFC107",
+        bgColor: "bg-yellow-100/50",
     },
     {
         key: "freeship",
         label: "Freeship",
         href: "/freeship",
-        icon: Car, // Thay thế CarOutlined
+        icon: Car,
         color: "#00B894",
+        bgColor: "bg-green-100/50",
     },
     {
         key: "topup",
         label: "Nạp thẻ",
         href: "/topup",
-        icon: Smartphone, // Thay thế MobileOutlined
+        icon: Smartphone,
         color: "#673AB7",
+        bgColor: "bg-purple-100/50",
     },
     {
         key: "coin",
         label: "Hoàn xu",
         href: "/coin",
-        icon: Smartphone, 
+        icon: finance,
         color: "#FF9800",
+         bgColor: "bg-amber-100/50",
     },
     {
         key: "global",
         label: "Quốc tế",
         href: "/international",
-        icon: Globe, // Thay thế GlobalOutlined
+        icon: Globe,
         color: "#8E24AA",
+        bgColor: "bg-indigo-100/60",
     },
 ];
 
@@ -138,7 +147,7 @@ export const GRADIENT_PRESETS = [
 // Cập nhật interface IAccountMenuItem để sử dụng LucideIcon
 interface IAccountMenuItem {
     key: string;
-    icon?: LucideIcon; // Sử dụng LucideIcon
+    icon?: LucideIcon;
     iconClassName?: string;
     label: string;
     className?: string;
@@ -150,21 +159,21 @@ interface IAccountMenuItem {
 export const ACCOUNT_MENU_CONFIG: IAccountMenuItem[] = [
     {
         key: "profile",
-        icon: User, // Thay thế UserOutlined
+        icon: User,
         iconClassName: "text-blue-500",
         label: "Hồ sơ cá nhân",
         roles: ["BUYER", "ADMIN"],
     },
     {
         key: "orders",
-        icon: ShoppingBag, // Thay thế ShoppingOutlined
+        icon: ShoppingBag,
         iconClassName: "text-purple-500",
         label: "Đơn hàng đã mua",
         roles: ["BUYER"],
     },
     {
         key: "employee",
-        icon: Home, // Thay thế HomeOutlined
+        icon: Home,
         iconClassName: "text-blue-500",
         label: "Quản lý nhân viên",
         roles: ["ADMIN"],
@@ -172,7 +181,7 @@ export const ACCOUNT_MENU_CONFIG: IAccountMenuItem[] = [
     },
     {
         key: "admin",
-        icon: Users, // Thay thế TeamOutlined
+        icon: Users,
         iconClassName: "text-orange-500",
         label: "Quản lý admin",
         roles: ["ADMIN"],
@@ -180,7 +189,7 @@ export const ACCOUNT_MENU_CONFIG: IAccountMenuItem[] = [
     },
     {
         key: "logout",
-        icon: LogOut, // Thay thế LogoutOutlined
+        icon: LogOut,
         iconClassName: "text-red-500",
         label: "Đăng xuất",
         roles: ["BUYER", "ADMIN"],

@@ -20,7 +20,6 @@ import {
 } from "@/services/search/search.service";
 
 const PRIMARY_COLOR = "var(--color-primary)";
-// const CTA_COLOR = "var(--color-accent)"; // CTA_COLOR không được sử dụng
 
 export const Header = () => {
   const isLoggedIn = !!isAuthenticated();
@@ -63,14 +62,14 @@ export const Header = () => {
         <div className="max-w-300 mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20 py-3">
             <div className="flex items-center gap-4">
-              <Link href="/" className="flex items-center h-10">
+              <Link href="/" className="flex items-center h-16">
                 <Image
                   src="/icon/final.svg"
                   alt="CaLaTha Logo"
-                  width={150}
-                  height={48}
+                  width={160}
+                  height={60}
                   className="h-full w-auto object-contain"
-                  style={{ maxHeight: "40px",  }}
+                  style={{ maxHeight: "60px",  }}
                   priority
                 />
               </Link>

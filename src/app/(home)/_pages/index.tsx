@@ -1,9 +1,10 @@
 // import PublicPageWrapper from "@/app/(home)/_components/PublicPageWrapper";
-import HeroSection from "@/app/(home)/_components/HeroSection";
+import { Promotion } from "@/app/(home)/_components/Promotion";
 import IntroBanner from "@/app/(home)/_components/IntroBanner";
-// import CategoriesSection from "@/components/CategoriesSection";
+import {CategoriesSection} from "../_components/CategoriesSection";
 // import FloatingChatButtons from "@/components/FloatingChatButtons/FloatingChatButtons";
 import { HomepageBannerProvider } from "@/app/(home)/_context/HomepageBannerContext";
+import ScrollReveal from "@/features/ScrollReveal";
 // import ScrollReveal from "@/components/ui/ScrollReveal";
 // import FlashSaleSection from "@/components/FlashSaleSection";
 // import ProductSection from "@/app/(home)/_components/ProductSection";
@@ -28,11 +29,14 @@ import dynamic from "next/dynamic";
 export const HomeScreen = () => {
   return (
     <>
-     <HomepageBannerProvider locale="vi">
-      <IntroBanner/>
-      <HeroSection />
-      <div className=""></div>
-     </HomepageBannerProvider>
+      <HomepageBannerProvider locale="vi">
+        <IntroBanner />
+        <Promotion />
+        <ScrollReveal animation="slideUp" delay={150}>
+          <CategoriesSection />
+        </ScrollReveal>
+        <div className=""></div>
+      </HomepageBannerProvider>
     </>
   );
 };

@@ -41,3 +41,62 @@ body {
 .passero-one-regular {
   font-family: "Passero One", sans-serif;
 }
+
+.hero-carousel .custom-dots {
+  bottom: 20px !important;
+}
+
+.hero-carousel .custom-dots li button {
+  width: 14px !important;
+  height: 14px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.5) !important;
+  border: 2px solid rgba(255, 255, 255, 0.8) !important;
+}
+
+.hero-carousel .custom-dots li.slick-active button {
+  background: #ff6b00 !important;
+  border-color: #ff6b00 !important;
+  width: 36px !important;
+  border-radius: 6px !important;
+}
+
+.hero-carousel .slick-slide {
+  transition: transform 0.3s ease;
+}
+
+.banner-hover-effect {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.banner-hover-effect:hover {
+  transform: scale(1.01);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.intro-banner-image {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  max-width: min(60vw, 600px) !important;
+  max-height: 50vh !important;
+  width: auto !important;
+  height: auto !important;
+  object-fit: contain !important;
+  margin: 0 auto !important;
+}
+
+.p-2.space-y-1.overflow-y-auto::-webkit-scrollbar {
+  width: 8px;
+}
+
+.p-2.space-y-1.overflow-y-auto::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 9999px;
+}
+
+.p-2.space-y-1.overflow-y-auto::-webkit-scrollbar-track {
+  background: transparent;
+}
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
