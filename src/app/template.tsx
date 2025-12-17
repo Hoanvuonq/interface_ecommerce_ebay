@@ -1,28 +1,51 @@
 "use client";
+
 import { ToastProvider } from "@/hooks/useToastProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { JSX, ReactNode } from "react";
 import { Header } from "@/layouts/header/_pages";
-import "./globals.css";
 import { Footer } from "@/layouts/footer";
+import "./globals.css";
+import { usePathname } from "next/navigation";
 
 interface ITemplateProps {
   children: ReactNode;
 }
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
-const Template = ({ children }: ITemplateProps): JSX.Element => {
+const ConditionalLayout: React.FC<ITemplateProps> = ({ children }) => {
+  const pathname = usePathname();
+  const EXCLUDED_PATHS = ["/login", "/register", "/forgot-password"];
+  const isExcluded = EXCLUDED_PATHS.includes(pathname);
+  const renderHeaderFooter = !isExcluded;
+
   return (
-      <QueryClientProvider client={queryClient}>
-          <Header />
-          <div className="relative p-2">
-            {children}
-          </div>
-          <Footer/>
-        <ToastProvider />
-      </QueryClientProvider>
+    <>
+      {renderHeaderFooter && <Header />}
+      <main className="flex-grow">
+        <div className="relative">{children}</div>
+      </main>
+
+      {renderHeaderFooter && <Footer />}
+      <ToastProvider />
+    </>
   );
 };
 
-export default Template;
+const RootLayout = ({ children }: ITemplateProps): JSX.Element => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ConditionalLayout>{children}</ConditionalLayout>
+    </QueryClientProvider>
+  );
+};
+
+export default RootLayout;

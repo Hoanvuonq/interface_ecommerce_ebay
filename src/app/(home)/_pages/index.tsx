@@ -1,5 +1,5 @@
 // import PublicPageWrapper from "@/app/(home)/_components/PublicPageWrapper";
-// import HeroSection from "@/app/(home)/_components/HeroSection";
+import HeroSection from "@/app/(home)/_components/HeroSection";
 import IntroBanner from "@/app/(home)/_components/IntroBanner";
 // import CategoriesSection from "@/components/CategoriesSection";
 // import FloatingChatButtons from "@/components/FloatingChatButtons/FloatingChatButtons";
@@ -30,6 +30,7 @@ export const HomeScreen = () => {
     <>
      <HomepageBannerProvider locale="vi">
       <IntroBanner/>
+      <HeroSection />
       <div className=""></div>
      </HomepageBannerProvider>
     </>

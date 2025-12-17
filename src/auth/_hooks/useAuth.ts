@@ -38,7 +38,6 @@ export function useLogin() {
     try {
       const res = await authService.login(payload);
       console.log("Login response:", res);
-      // ✅ Backend tự set cookies, không cần lưu vào localStorage
       return res;
     } catch (err: any) {
       setError(err?.message || "Đăng nhập thất bại");

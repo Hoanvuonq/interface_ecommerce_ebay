@@ -28,9 +28,6 @@ const API_ENDPOINT_STORAGE = "/v1/storage";
 const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 class AuthService {
-  /**
-   * Đăng nhập (generic - giữ lại để backward compatibility)
-   */
   async login(payload: LoginRequest): Promise<any> {
     const response = await request<ApiResponse<any>>({
       url: `${API_ENDPOINT_AUTH}/login`,
@@ -40,9 +37,6 @@ class AuthService {
     return response as any;
   }
 
-  /**
-   * Đăng nhập cho người mua - yêu cầu phải có role BUYER
-   */
   async loginBuyer(payload: LoginRequest): Promise<any> {
     const response = await request<ApiResponse<any>>({
       url: `${API_ENDPOINT_AUTH}/login/buyer`,

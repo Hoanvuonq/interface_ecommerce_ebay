@@ -4,13 +4,20 @@ import { Toaster } from "sonner";
 export const ToastProvider = () => {
   return (
     <Toaster
-      position="bottom-right"
+      position="top-right"
+      theme="dark"
+      richColors
+      duration={4000}
       toastOptions={{
         classNames: {
           toast:
-            "bg-black/50 backdrop-blur-md border border-[#00D084]/50 text-white font-kode-mono shadow-lg",
-          title: "text-white",
-          description: "text-white/80",
+            "bg-slate-800/20 backdrop-blur-sm border border-gray-700/50 shadow-xl rounded-xl",
+          success: "bg-green-900/20 border-green-500/50 text-green-100",
+          error: "bg-red-900/20 border-red-500/50 text-red-100",
+          warning: "bg-amber-900/20 border-amber-500/50 text-amber-100",
+          title: "font-semibold text-lg",
+          description: "text-gray-300",
+          icon: "text-md",
         },
       }}
     />

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ApiResponse } from "@/api/_types/api.types";
 import authService from "@/auth/services/auth.service";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
@@ -79,7 +78,6 @@ const PUBLIC_ENDPOINTS = [
  */
 const isPublicEndpoint = (url?: string): boolean => {
   if (!url) return false;
-  // Dùng includes() để kiểm tra endpoint, có thể dùng startsWith() nếu cần nghiêm ngặt hơn
   return PUBLIC_ENDPOINTS.some((endpoint) => url.includes(endpoint));
 };
 

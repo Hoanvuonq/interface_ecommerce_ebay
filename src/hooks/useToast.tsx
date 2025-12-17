@@ -1,6 +1,5 @@
 "use client";
 import { toast } from "sonner";
-import React from "react";
 type ToastType = "success" | "error";
 
 const getToastStyles = (type: ToastType) => {
