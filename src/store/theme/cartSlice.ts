@@ -16,7 +16,7 @@ import {
   CheckoutValidationErrorResponse,
 } from "@/types/cart/cart.types";
 // import { message } from 'antd';
-import {toast} from "sonner";
+import { toast } from "sonner";
 import { isAuthError } from "@/utils/cart/cart-auth.utils";
 
 interface CartState {
@@ -39,23 +39,26 @@ const initialState: CartState = {
   checkoutError: null,
 };
 
-// Preserve existing selection flags and default new items to unselected
 const mergeSelectionState = (
-  incomingCart: CartDto,
+  incomingCart: CartDto | any,
   previousCart?: CartDto | null
-): CartDto => {
+): CartDto | null => {
+  if (!incomingCart || !incomingCart.shops) {
+    return incomingCart;
+  }
+
   const selectionMap = new Map<string, boolean>();
 
-  previousCart?.shops.forEach((shop) => {
-    shop.items.forEach((item) => {
+  previousCart?.shops?.forEach((shop) => {
+    shop.items?.forEach((item) => {
       selectionMap.set(item.id, !!item.selectedForCheckout);
     });
   });
 
-  const normalizedShops = incomingCart.shops.map((shop) => {
-    const normalizedItems = shop.items.map((item) => {
+  const normalizedShops = incomingCart.shops.map((shop: any) => {
+    const items = shop.items || [];
+    const normalizedItems = items.map((item: any) => {
       const preservedSelection = selectionMap.get(item.id) ?? false;
-
       return {
         ...item,
         selectedForCheckout: preservedSelection,
@@ -63,11 +66,11 @@ const mergeSelectionState = (
     });
 
     const hasSelectedItems = normalizedItems.some(
-      (item) => item.selectedForCheckout
+      (item: any) => item.selectedForCheckout
     );
     const allSelected =
-      hasSelectedItems &&
-      normalizedItems.every((item) => item.selectedForCheckout);
+      normalizedItems.length > 0 &&
+      normalizedItems.every((item: any) => item.selectedForCheckout);
 
     return {
       ...shop,
@@ -373,7 +376,7 @@ const cartSlice = createSlice({
       .addCase(addToCart.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
-       toast.error(action.payload as string);
+        toast.error(action.payload as string);
       });
 
     // Update cart item
@@ -387,8 +390,11 @@ const cartSlice = createSlice({
       })
       .addCase(updateCartItem.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string;
-       toast.error(action.payload as string);
+        const errorMsg = action.payload as string;
+        if (errorMsg && errorMsg !== "undefined") {
+          state.error = errorMsg;
+          toast.error(errorMsg);
+        }
       });
 
     // Remove cart item
@@ -398,13 +404,14 @@ const cartSlice = createSlice({
       })
       .addCase(removeCartItem.fulfilled, (state, action) => {
         state.loading = false;
-        state.cart = mergeSelectionState(action.payload, state.cart);
+        const updatedCart = mergeSelectionState(action.payload, state.cart);
+        state.cart = updatedCart;
         toast.success("Đã xóa sản phẩm khỏi giỏ hàng");
       })
       .addCase(removeCartItem.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
-       toast.error(action.payload as string);
+        toast.error(action.payload as string);
       });
 
     // Clear cart
@@ -420,7 +427,7 @@ const cartSlice = createSlice({
       .addCase(clearCart.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
-       toast.error(action.payload as string);
+        toast.error(action.payload as string);
       });
 
     // Update cart
@@ -430,7 +437,7 @@ const cartSlice = createSlice({
       })
       .addCase(updateCart.rejected, (state, action) => {
         state.error = action.payload as string;
-       toast.error(action.payload as string);
+        toast.error(action.payload as string);
       });
 
     // Toggle item selection
@@ -440,7 +447,7 @@ const cartSlice = createSlice({
       })
       .addCase(toggleItemSelection.rejected, (state, action) => {
         state.error = action.payload as string;
-       toast.error(action.payload as string);
+        toast.error(action.payload as string);
       });
 
     // Select items
@@ -450,7 +457,7 @@ const cartSlice = createSlice({
       })
       .addCase(selectItems.rejected, (state, action) => {
         state.error = action.payload as string;
-       toast.error(action.payload as string);
+        toast.error(action.payload as string);
       });
 
     // Deselect items
@@ -460,7 +467,7 @@ const cartSlice = createSlice({
       })
       .addCase(deselectItems.rejected, (state, action) => {
         state.error = action.payload as string;
-       toast.error(action.payload as string);
+        toast.error(action.payload as string);
       });
 
     // Select all items
@@ -470,7 +477,7 @@ const cartSlice = createSlice({
       })
       .addCase(selectAllItems.rejected, (state, action) => {
         state.error = action.payload as string;
-       toast.error(action.payload as string);
+        toast.error(action.payload as string);
       });
 
     // Deselect all items
@@ -480,7 +487,7 @@ const cartSlice = createSlice({
       })
       .addCase(deselectAllItems.rejected, (state, action) => {
         state.error = action.payload as string;
-       toast.error(action.payload as string);
+        toast.error(action.payload as string);
       });
 
     // Checkout preview

@@ -4,7 +4,11 @@ import {
   PublicProductOptionDTO,
 } from "@/types/product/public-product.dto";
 import { cn } from "@/utils/cn";
-
+import {
+  resolveMediaUrl as resolveMediaUrlHelper,
+  resolveVariantImageUrl as resolveVariantImageUrlHelper,
+} from "@/utils/products/media.helpers";
+import { CheckCircle } from "lucide-react";
 interface VariantSelectorProps {
   variants: PublicProductVariantDTO[];
   options?: PublicProductOptionDTO[];
@@ -178,72 +182,87 @@ export const VariantSelector: React.FC<VariantSelectorProps> = ({
     });
   };
 
+  const getValueImage = (optionKey: string, valueId: string) => {
+    const variantWithImage = normalizedVariants.find(
+      (v) =>
+        v.attributes?.[optionKey] === valueId && (v.imageUrl || v.imageBasePath)
+    );
+    if (!variantWithImage) return null;
+
+    return resolveVariantImageUrlHelper(variantWithImage as any, "_thumb");
+  };
+
   return (
     <div className={cn("space-y-6", className)}>
-            {normalizedOptions.map((option) => (
-                <div key={option.key} className="flex flex-col gap-3">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                            <span className="text-[13px] font-bold text-gray-500 uppercase tracking-tight">
-                                {option.label}
-                            </span>
-                            {selectedAttributes[option.key] && (
-                                <span className="text-[13px] font-semibold text-rose-600 bg-rose-50 px-2 py-0.5 rounded">
-                                    {option.values.find(v => v.id === selectedAttributes[option.key])?.label}
-                                </span>
-                            )}
-                        </div>
-                    </div>
+      {normalizedOptions.map((option) => (
+        <div key={option.key} className="flex flex-col gap-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="text-[13px] font-bold text-gray-500 uppercase tracking-tight">
+                {option.label}
+              </span>
+              {selectedAttributes[option.key] && (
+                <span className="text-[13px] font-semibold text-rose-600 bg-rose-50 px-2 py-0.5 rounded">
+                  {
+                    option.values.find(
+                      (v) => v.id === selectedAttributes[option.key]
+                    )?.label
+                  }
+                </span>
+              )}
+            </div>
+          </div>
 
-                    {/* Danh sách các nút chọn giá trị */}
-                    <div className="flex flex-wrap gap-2.5">
-                        {(() => {
-                            const otherSelections = { ...selectedAttributes };
-                            delete otherSelections[option.key];
-                            const allowedValueIds = new Set<string>();
-                            normalizedVariants.forEach((variant) => {
-                                if (doesVariantMatchSelection(variant, otherSelections)) {
-                                    const variantValueId = variant.attributes?.[option.key];
-                                    if (variantValueId) allowedValueIds.add(variantValueId);
-                                }
-                            });
-                            
-                            return option.values.map((value) => {
-                                const valueId = value.id;
-                                const isSelected = selectedAttributes[option.key] === valueId;
-                                const isAvailable = allowedValueIds.has(valueId);
+          <div className="flex flex-wrap gap-2.5">
+            {(() => {
+              const otherSelections = { ...selectedAttributes };
+              delete otherSelections[option.key];
+              const allowedValueIds = new Set<string>();
+              normalizedVariants.forEach((variant) => {
+                if (doesVariantMatchSelection(variant, otherSelections)) {
+                  const variantValueId = variant.attributes?.[option.key];
+                  if (variantValueId) allowedValueIds.add(variantValueId);
+                }
+              });
 
-                                return (
-                                    <button
-                                        key={valueId}
-                                        type="button"
-                                        disabled={!isAvailable}
-                                        onClick={() => isAvailable && handleAttributeSelect(option.key, valueId)}
-                                        className={cn(
-                                            "relative min-w-[56px] px-4 py-2 rounded-xl text-sm font-bold transition-all duration-200",
-                                            "border flex items-center justify-center cursor-pointer",
-                                            isSelected
-                                                ? "bg-white border-orange-500 text-orange-600 shadow-[0_0_0_1px_#f97316] ring-4 ring-orange-50"
-                                                : isAvailable
-                                                    ? "bg-white border-gray-200 text-gray-700 hover:border-orange-400 hover:text-orange-500 hover:bg-orange-50/10"
-                                                    : "bg-gray-50 border-gray-100 text-gray-300 cursor-not-allowed opacity-60"
-                                        )}
-                                    >
-                                        {value.label}
-                                        
-                                        {/* Icon tích nhỏ ở góc khi được chọn - Tông Đỏ/Cam */}
-                                        {isSelected && (
-                                            <div className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-gradient-to-tr from-orange-500 to-rose-500 rounded-full flex items-center justify-center border-2 border-white shadow-sm scale-110">
-                                                <div className="w-1.5 h-1.5 bg-white rounded-full" />
-                                            </div>
-                                        )}
-                                    </button>
-                                );
-                            });
-                        })()}
-                    </div>
-                </div>
-            ))}
+              return option.values.map((value) => {
+                const valueId = value.id;
+                const isSelected = selectedAttributes[option.key] === valueId;
+                const isAvailable = allowedValueIds.has(valueId);
+                const imgUrl = getValueImage(option.key, valueId);
+                return (
+                  <button
+                    key={valueId}
+                    onClick={() =>
+                      isAvailable && handleAttributeSelect(option.key, valueId)
+                    }
+                    className={cn(
+                      "relative flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-bold transition-all border cursor-pointer",
+                      isSelected
+                        ? "border-orange-500 text-orange-600 bg-orange-50/50 ring-2 ring-orange-100"
+                        : "border-gray-200 text-gray-700 hover:border-orange-300 bg-white"
+                    )}
+                  >
+                    {imgUrl && (
+                      <img
+                        src={imgUrl}
+                        alt=""
+                        className="w-8 h-8 rounded-lg object-cover border border-gray-100"
+                      />
+                    )}
+                    <span className="px-1 uppercase">{value.label}</span>
+                    {isSelected && (
+                      <div className="absolute -top-1 -right-1 bg-orange-500 rounded-full p-0.5 border-2 border-white shadow-sm">
+                        <CheckCircle className="w-2.5 h-2.5 text-white fill-current" />
+                      </div>
+                    )}
+                  </button>
+                );
+              });
+            })()}
+          </div>
         </div>
+      ))}
+    </div>
   );
 };

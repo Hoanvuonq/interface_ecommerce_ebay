@@ -2,11 +2,12 @@
 
 import { useState, useCallback, useEffect } from "react";
 import { ProductCard } from "../ProductCard";
-import { FiChevronRight } from "react-icons/fi";
+import { FiChevronRight, FiLayers } from "react-icons/fi";
 import { publicProductService } from "@/services/products/product.service";
 import type { PublicProductListItemDTO } from "@/types/product/public-product.dto";
 import { CustomSpinner } from "@/components";
 import { CardComponents } from "@/components/card";
+import { cn } from "@/utils/cn";
 
 interface SimilarProductsProps {
   productId: string;
@@ -17,31 +18,24 @@ export function SimilarProducts({ productId }: SimilarProductsProps) {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
-  const [totalElements, setTotalElements] = useState<number | null>(null);
+  const [totalElements, setTotalElements] = useState<number>(0);
 
   const loadProducts = useCallback(async (page = 0, append = false) => {
     try {
       if (!append) setLoading(true);
-      // Load 20 sản phẩm để hiển thị 4 hàng (5 sản phẩm/hàng)
       const response = await publicProductService.getRelated(productId, page, 20);
       
       const responseData = response?.data;
       const newProducts = responseData?.content || [];
       const total = responseData?.totalElements || 0;
       
-      if (newProducts.length > 0 || page === 0) {
-        setProducts(prev => {
-          const updated = append ? [...prev, ...newProducts] : newProducts;
-          // Check if there's more data based on updated list
-          const currentTotal = updated.length;
-          setHasMore(currentTotal < total && newProducts.length > 0);
-          return updated;
-        });
-        setCurrentPage(page);
-        setTotalElements(total);
-      } else {
-        setHasMore(false);
-      }
+      setProducts(prev => {
+        const updated = append ? [...prev, ...newProducts] : newProducts;
+        setHasMore(updated.length < total && newProducts.length > 0);
+        return updated;
+      });
+      setCurrentPage(page);
+      setTotalElements(total);
     } catch (error) {
       console.error("Failed to load similar products:", error);
       setHasMore(false);
@@ -51,65 +45,86 @@ export function SimilarProducts({ productId }: SimilarProductsProps) {
   }, [productId]);
 
   useEffect(() => {
-    if (productId) {
-      loadProducts(0, false);
-    }
-  }, [productId]);
+    if (productId) loadProducts(0, false);
+  }, [productId, loadProducts]);
 
-  const loadMore = useCallback(() => {
+  const loadMore = () => {
     if (loading || !hasMore) return;
     loadProducts(currentPage + 1, true);
-  }, [loading, hasMore, currentPage, loadProducts]);
+  };
 
-  if (loading && products.length === 0) {
-    return (
-      <CardComponents
-        title="Sản phẩm liên quan"
-        className="shadow-sm hover:shadow-md transition-shadow"
-      >
-        <div className="text-center py-8">
-          <CustomSpinner />
-          <p className="mt-2 text-gray-500">Đang tải sản phẩm...</p>
-        </div>
-      </CardComponents>
-    );
-  }
-
-  if (products.length === 0) {
-    return null;
-  }
-
-  const canLoadMore = hasMore && (products.length >= 20 || (currentPage === 0 && products.length > 0));
+  if (!loading && products.length === 0) return null;
 
   return (
     <CardComponents
-      title="Sản phẩm liên quan"
-      className="shadow-sm hover:shadow-md transition-shadow"
+      className="border-none shadow-sm bg-white overflow-hidden"
+      bodyClassName="p-4 sm:p-6"
     >
+      {/* HEADER SECTION */}
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-orange-50 text-orange-600 rounded-xl">
+            <FiLayers size={22} />
+          </div>
+          <div>
+            <h3 className="text-lg font-bold text-gray-900 uppercase tracking-tight">
+              Sản phẩm tương tự
+            </h3>
+            <p className="text-xs text-gray-400 font-medium">
+              Khám phá thêm <span className="text-orange-500">{totalElements}</span> sản phẩm cùng loại
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* GRID SECTION */}
       <div className="relative">
         <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {products.map((p) => (
-            <ProductCard key={p.id} product={p} />
+            <div key={p.id} className="animate-in fade-in slide-in-from-bottom-2 duration-500">
+              <ProductCard product={p} />
+            </div>
           ))}
+          
+          {/* SKELETON PLACEHOLDERS KHI LOAD MORE */}
+          {loading && products.length > 0 && 
+            Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="aspect-[3/4] bg-gray-50 rounded-2xl animate-pulse border border-gray-100" />
+            ))
+          }
         </div>
 
-        {canLoadMore && (
-          <div className="flex justify-center mt-6">
+        {/* LOADING STATE LẦN ĐẦU */}
+        {loading && products.length === 0 && (
+          <div className="flex flex-col items-center justify-center py-20 gap-4">
+            <CustomSpinner />
+            <p className="text-sm text-gray-400 animate-pulse font-medium">Đang tìm kiếm sản phẩm phù hợp...</p>
+          </div>
+        )}
+
+        {/* ACTION BUTTON */}
+        {hasMore && products.length > 0 && (
+          <div className="flex justify-center mt-10">
             <button
               type="button"
               onClick={loadMore}
               disabled={loading}
-              className="flex items-center gap-2 px-6 py-2 bg-white border border-gray-300 rounded-full shadow-sm hover:shadow-md transition-all duration-200 hover:border-blue-500 hover:text-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+              className={cn(
+                "group flex items-center gap-2 px-10 py-3 bg-white border-2 border-gray-100 rounded-2xl",
+                "text-sm font-bold text-gray-600 transition-all duration-300",
+                "hover:border-orange-500 hover:text-orange-500 hover:shadow-lg hover:shadow-orange-100",
+                "active:scale-95 disabled:opacity-50"
+              )}
             >
               {loading ? (
-                <>
-                  <CustomSpinner />
-                  <span>Đang tải...</span>
-                </>
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
+                  <span>ĐANG TẢI...</span>
+                </div>
               ) : (
                 <>
-                  <span>Xem thêm</span>
-                  <FiChevronRight className="text-lg" />
+                  <span>XEM THÊM KẾT QUẢ</span>
+                  <FiChevronRight className="text-lg group-hover:translate-x-1 transition-transform" />
                 </>
               )}
             </button>
@@ -119,4 +134,3 @@ export function SimilarProducts({ productId }: SimilarProductsProps) {
     </CardComponents>
   );
 }
-

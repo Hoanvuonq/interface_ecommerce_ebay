@@ -75,7 +75,7 @@ export const Header = () => {
               </Link>
             </div>
 
-            <div className="flex-1 max-w-[800px] mx-8">
+            <div className="flex-1 max-w-200 mx-8">
               <Search
                 searchValue={searchValue}
                 searchOptions={searchOptions}
@@ -84,7 +84,6 @@ export const Header = () => {
                 onSubmit={handleSearchSubmit}
               />
             </div>
-
             <div className="flex items-center space-x-4">
               <MobileMenuButton onOpen={() => setIsMenuOpen(true)} />
               {isLoggedIn && <NotificationDropdown />}
@@ -92,7 +91,6 @@ export const Header = () => {
               <UserAuthDropdown isAuthenticated={isLoggedIn} />
             </div>
           </div>
-;
           <HotKeywords
             keywords={hotKeywords}
             onKeywordSelect={handleHotKeywordSelect}

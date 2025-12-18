@@ -118,8 +118,8 @@ export default async function CategoryScreen({
 
   return (
     <>
-      <section className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 py-6">
-        <div className="mx-auto max-w-[1200px] px-3 md:px-4 lg:px-0">
+      <section className="min-h-screen bg-linear-to-br from-gray-50 via-white to-gray-100 py-6">
+        <div className="mx-auto max-w-300 px-3 md:px-4 lg:px-0">
           <CategoryBanner
             categorySlug={rawSlug}
             categoryId={currentCategory?.id}
@@ -130,7 +130,6 @@ export default async function CategoryScreen({
           <div className="grid grid-cols-12 gap-4">
             <aside className="col-span-12 lg:col-span-3 xl:col-span-2 text-[13px] text-slate-700">
               <div className="space-y-4">
-                {/* Category Filter (Shopee-style) */}
                 <div className="rounded-lg bg-white p-4 shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
                   <CategoryFilter
                     currentCategory={currentCategory}
@@ -140,9 +139,8 @@ export default async function CategoryScreen({
                   />
                 </div>
 
-                {/* SEARCH FILTER - Shopee Style */}
                 <div className="rounded-lg bg-white shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                  <div className="bg-gradient-to-r from-orange-50 to-rose-50 border-b border-orange-100 px-4 py-3">
+                  <div className="bg-linear-to-rm-orange-50 to-rose-50 border-b border-orange-100 px-4 py-3">
                     <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2">
                       <svg
                         className="h-4 w-4 text-orange-600"
@@ -162,7 +160,6 @@ export default async function CategoryScreen({
                   </div>
 
                   <div className="divide-y divide-gray-100">
-                    {/* Nơi bán */}
                     <div className="px-3 py-3">
                       <div className="text-xs font-medium text-gray-900 mb-2">
                         Nơi bán
@@ -175,15 +172,14 @@ export default async function CategoryScreen({
                           >
                             <input
                               type="checkbox"
-                              className="mt-0.5 h-4 w-4 flex-shrink-0 rounded border-gray-300"
+                              className="mt-0.5 h-4 w-4  shrink-0 rounded border-gray-300"
                             />
-                            <span className="break-words">{label}</span>
+                            <span className="wrap-break-words">{label}</span>
                           </label>
                         ))}
                       </div>
                     </div>
 
-                    {/* Đơn vị vận chuyển */}
                     <div className="px-3 py-3">
                       <div className="text-xs font-medium text-gray-900 mb-2">
                         Vận chuyển
@@ -196,9 +192,9 @@ export default async function CategoryScreen({
                           >
                             <input
                               type="checkbox"
-                              className="mt-0.5 h-4 w-4 flex-shrink-0 rounded border-gray-300"
+                              className="mt-0.5 h-4 w-4 shrink-0 rounded border-gray-300"
                             />
-                            <span className="break-words">{label}</span>
+                            <span className="wrap-break-words">{label}</span>
                           </label>
                         ))}
                       </div>
@@ -216,7 +212,7 @@ export default async function CategoryScreen({
                           placeholder="₫ TỪ"
                           defaultValue={minPrice}
                         />
-                        <span className="text-gray-400 text-xs flex-shrink-0">
+                        <span className="text-gray-400 text-xs shrink-0">
                           -
                         </span>
                         <input
@@ -231,7 +227,6 @@ export default async function CategoryScreen({
                       </button>
                     </div>
 
-                    {/* Đánh giá */}
                     <div className="px-3 py-3">
                       <div className="text-xs font-medium text-gray-900 mb-2">
                         Đánh giá
@@ -264,7 +259,6 @@ export default async function CategoryScreen({
                       </div>
                     </div>
 
-                    {/* Dịch vụ */}
                     <div className="px-3 py-3">
                       <div className="text-xs font-medium text-gray-900 mb-2">
                         Dịch vụ
@@ -277,15 +271,14 @@ export default async function CategoryScreen({
                           >
                             <input
                               type="checkbox"
-                              className="mt-0.5 h-4 w-4 flex-shrink-0 rounded border-gray-300"
+                              className="mt-0.5 h-4 w-4 shrink-0 rounded border-gray-300"
                             />
-                            <span className="break-words">{label}</span>
+                            <span className="wrap-break-words">{label}</span>
                           </label>
                         ))}
                       </div>
                     </div>
 
-                    {/* Xóa tất cả button */}
                     <div className="px-3 py-2.5">
                       <button className="w-full text-xs text-gray-600 hover:text-[#ee4d2d] transition-colors">
                         XÓA TẤT CẢ
@@ -318,7 +311,7 @@ export default async function CategoryScreen({
                   href={makeQuery({ sort: "", page: 0 })}
                   className={`rounded-lg border px-4 py-2 text-[13px] font-medium transition-all duration-200 ${
                     !sort
-                      ? "border-orange-500 bg-gradient-to-r from-orange-500 to-rose-500 text-white shadow-md"
+                      ? "border-orange-500 bg-linear-to-r from-orange-500 to-rose-500 text-white shadow-md"
                       : "border-gray-200 bg-white text-gray-700 hover:border-orange-400 hover:bg-orange-50 hover:text-orange-600"
                   }`}
                 >
@@ -328,7 +321,7 @@ export default async function CategoryScreen({
                   href={makeQuery({ sort: "createdDate,desc", page: 0 })}
                   className={`rounded-lg border px-4 py-2 text-[13px] font-medium transition-all duration-200 ${
                     sort === "createdDate,desc"
-                      ? "border-orange-500 bg-gradient-to-r from-orange-500 to-rose-500 text-white shadow-md"
+                      ? "border-orange-500 bg-linear-to-r from-orange-500 to-rose-500 text-white shadow-md"
                       : "border-gray-200 bg-white text-gray-700 hover:border-orange-400 hover:bg-orange-50 hover:text-orange-600"
                   }`}
                 >
@@ -338,7 +331,7 @@ export default async function CategoryScreen({
                   href={makeQuery({ sort: "sold,desc", page: 0 })}
                   className={`rounded-lg border px-4 py-2 text-[13px] font-medium transition-all duration-200 ${
                     sort === "sold,desc"
-                      ? "border-orange-500 bg-gradient-to-r from-orange-500 to-rose-500 text-white shadow-md"
+                      ? "border-orange-500 bg-linear-to-r from-orange-500 to-rose-500 text-white shadow-md"
                       : "border-gray-200 bg-white text-gray-700 hover:border-orange-400 hover:bg-orange-50 hover:text-orange-600"
                   }`}
                 >
@@ -349,7 +342,7 @@ export default async function CategoryScreen({
                     href={makeQuery({ sort: "basePrice,asc", page: 0 })}
                     className={`px-4 py-2 text-[13px] font-medium transition-all duration-200 ${
                       sort === "basePrice,asc"
-                        ? "bg-gradient-to-r from-orange-500 to-rose-500 text-white"
+                        ? "bg-linear-to-r from-orange-500 to-rose-500 text-white"
                         : "bg-white text-gray-700 hover:bg-orange-50 hover:text-orange-600"
                     }`}
                   >
@@ -359,7 +352,7 @@ export default async function CategoryScreen({
                     href={makeQuery({ sort: "basePrice,desc", page: 0 })}
                     className={`border-l border-gray-200 px-4 py-2 text-[13px] font-medium transition-all duration-200 ${
                       sort === "basePrice,desc"
-                        ? "bg-gradient-to-r from-orange-500 to-rose-500 text-white"
+                        ? "bg-linear-to-r from-orange-500 to-rose-500 text-white"
                         : "bg-white text-gray-700 hover:bg-orange-50 hover:text-orange-600"
                     }`}
                   >

@@ -23,15 +23,9 @@ export default function ClientProviders({
             reconnectInterval={5000}
             maxReconnectAttempts={5}
           >
-            
             <TopLoadingBar />
-            <WelcomeNotificationFixed
-              enabled={true}
-              showOnce={true}
-              delay={2000}
-            />
+            <WelcomeNotificationFixed enabled={true} showOnce={true} delay={2000} />
             <AuthRouteGuard>{children}</AuthRouteGuard>
-            
           </WebSocketProvider>
         </AppThemeProvider>
       </I18nProvider>

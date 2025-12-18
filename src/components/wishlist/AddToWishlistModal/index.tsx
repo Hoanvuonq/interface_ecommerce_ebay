@@ -440,10 +440,10 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
             title={
                 <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
                     <div className="relative flex-shrink-0">
-                        <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-red-500 rounded-full blur-md opacity-50 animate-pulse" />
+                        <div className="absolute inset-0 bg-linear-to-r from-pink-500 to-red-500 rounded-full blur-md opacity-50 animate-pulse" />
                         <Heart className="relative w-5 h-5 sm:w-6 sm:h-6 text-red-500 fill-red-500" />
                     </div>
-                    <h4 className="!mb-0 text-base sm:!text-lg font-bold bg-gradient-to-r from-pink-600 to-red-600 bg-clip-text text-transparent leading-tight truncate min-w-0 flex-1">
+                    <h4 className="!mb-0 text-base sm:!text-lg font-bold bg-linear-to-r from-pink-600 to-red-600 bg-clip-text text-transparent leading-tight truncate min-w-0 flex-1">
                         Thêm vào yêu thích
                     </h4>
                 </div>
@@ -511,7 +511,7 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
                                         </div>
 
                                         {isSelected && (
-                                            <div className="absolute top-0.5 right-0.5 w-4 h-4 bg-gradient-to-r from-pink-500 to-red-500 rounded-full flex items-center justify-center shadow-sm">
+                                            <div className="absolute top-0.5 right-0.5 w-4 h-4 bg-linear-to-r from-pink-500 to-red-500 rounded-full flex items-center justify-center shadow-sm">
                                                 <CheckCircle2 className="w-2.5 h-2.5 text-white" />
                                             </div>
                                         )}

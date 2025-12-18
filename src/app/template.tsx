@@ -30,7 +30,7 @@ const ConditionalLayout: React.FC<ITemplateProps> = ({ children }) => {
   return (
     <>
       {renderHeaderFooter && <Header />}
-      <main className="flex-grow">
+      <main className="grow">
         <div className="relative">{children}</div>
       </main>
 

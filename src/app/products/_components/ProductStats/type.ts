@@ -1,7 +1,7 @@
 export interface IStartProps {
-  averageRating?: number | null;
-  totalReviews?: number | null;
-  soldCount?: number | null;
-  formatCompactNumber: (value?: number | null) => string | number | null;
+  averageRating?: number | string;
+  totalReviews?: number;
+  soldCount?: number | string; // Cho phép cả string và number
+  formatCompactNumber?: (value: number | string) => string;
   className?: string;
 }

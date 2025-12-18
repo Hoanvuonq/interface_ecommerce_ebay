@@ -27,7 +27,7 @@ export default function TopLoadingBar() {
 
   return (
     <div
-      className={`fixed top-0 left-0 right-0 h-0.5 z-[9999] transition-all duration-150 ease-out ${
+      className={`fixed top-0 left-0 right-0 h-0.5 z-9999 transition-all duration-150 ease-out ${
         isLoading ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
       }`}
       style={{

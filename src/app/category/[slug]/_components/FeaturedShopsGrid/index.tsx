@@ -107,7 +107,7 @@ export default function FeaturedShopsGrid({ categorySlug, maxItems = 8, classNam
                     </div>
                     <div>
                         <h3 className="text-lg font-bold text-slate-800">
-                            <span className="bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+                            <span className="bg-linear-to-rm-orange-600 to-red-600 bg-clip-text text-transparent">
                                 SHOPEE
                             </span>{' '}
                             <span className="text-slate-700">MALL</span>

@@ -7,7 +7,7 @@ import Link from "next/link";
 import { isAuthenticated } from "@/utils/local.storage";
 import { hasAnyRole, getRedirectPath } from "@/utils/jwt";
 import { RoleEnum } from "@/auth/_types/auth";
-import { CustomSpinner } from "@/components";
+import { CustomSpinner, SectionLoading } from "@/components";
 interface LoginRoleGuardProps {
     children: React.ReactNode;
     allowedRoles: RoleEnum[];
@@ -96,23 +96,13 @@ export default function LoginRoleGuard({
         };
 
         checkRole();
-    }, [router, allowedRoles, loginType]); // Đã loại bỏ 'message' khỏi dependencies
+    }, [router, allowedRoles, loginType]); 
 
-    // Đang loading - Sử dụng CustomSpinner
-    if (loading) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-slate-900">
-                <div className="text-center">
-                    <CustomSpinner />
-                    <p className="mt-4 text-gray-600 dark:text-gray-300">
-                        Đang kiểm tra quyền truy cập...
-                    </p>
-                </div>
-            </div>
-        );
-    }
+    
+     if (loading) {
+        return <SectionLoading message="Đang kiểm tra quyền truy cập..." />;
+      }
 
-    // Bị chặn - user đã đăng nhập nhưng không có role phù hợp
     if (isBlocked) {
         const getErrorMessage = () => {
             switch (loginType) {

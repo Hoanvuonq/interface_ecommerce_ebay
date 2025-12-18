@@ -212,7 +212,7 @@ export function LoginForm() {
                 <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
                   <FaShoppingBag className="text-white text-2xl" />
                 </div>
-                <h2 className="mb-0 text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                <h2 className="mb-0 text-3xl font-bold bg-linear-to-rrom-blue-600 to-purple-600 bg-clip-text text-transparent">
                   CaLaTha
                 </h2>
               </div>

@@ -104,7 +104,7 @@ export const AddToCartButton: React.FC<IButtonProps> = ({
           disabled={disabled || loading || quantity < 1}
           className={cn(
             "flex-1 h-12 flex items-center justify-center gap-2 rounded-xl px-6 font-bold text-white shadow-lg shadow-orange-200 transition-all active:scale-[0.98]",
-            "bg-gradient-to-r from-orange-500 to-rose-500 hover:from-orange-600 hover:to-rose-600",
+            "bg-linear-to-r from-orange-500 to-rose-500 hover:from-orange-600 hover:to-rose-600",
             "disabled:from-gray-300 disabled:to-gray-400 disabled:shadow-none disabled:cursor-not-allowed"
           )}
         >
@@ -125,7 +125,7 @@ export const AddToCartButton: React.FC<IButtonProps> = ({
       disabled={disabled || loading || quantity < 1}
       className={cn(
         "flex-1 h-12 flex items-center justify-center gap-2 rounded-xl px-6 font-bold text-white shadow-lg shadow-orange-200 transition-all active:scale-[0.98]",
-        "bg-gradient-to-r from-orange-500 to-rose-500 hover:from-orange-600 hover:to-rose-600",
+        "bg-linear-to-r from-orange-500 to-rose-500 hover:from-orange-600 hover:to-rose-600",
         "disabled:from-gray-300 disabled:to-gray-400 disabled:shadow-none disabled:cursor-not-allowed"
       )}
     >

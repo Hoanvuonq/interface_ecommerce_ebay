@@ -36,7 +36,6 @@ export default function AppThemeProvider({ children }: { children: React.ReactNo
     root.style.colorScheme = theme;
   }, [theme]);
 
-  // Ngăn chặn lỗi mismatch UI (Hydration)
   if (!mounted) return <div className="invisible">{children}</div>;
 
   return <>{children}</>;

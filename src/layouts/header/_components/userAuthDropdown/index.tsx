@@ -116,7 +116,7 @@ export const UserAuthDropdown = ({
     const Trigger = (
         <div className="flex items-center gap-1.5 px-3 py-2 rounded-full text-white hover:bg-white/10 transition-colors cursor-pointer">
             <User size={20} />
-            <span className="hidden sm:inline font-medium max-w-[120px] truncate">
+            <span className="hidden sm:inline font-medium max-w-30 truncate">
                 {buttonLabel}
             </span>
             <ChevronDown size={14} />

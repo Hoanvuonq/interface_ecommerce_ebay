@@ -3,7 +3,6 @@
 import React, { forwardRef, useState } from "react";
 import { cn } from "@/utils/cn";
 import { InputFieldProps } from "./type";
-// Thêm icon từ lucide-react (hoặc thư viện bạn đang dùng)
 import { Eye, EyeOff } from "lucide-react";
 
 export const InputField = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputFieldProps>(
@@ -27,7 +26,7 @@ export const InputField = forwardRef<HTMLInputElement | HTMLTextAreaElement, Inp
         ref
     ) => {
         const [localValue, setLocalValue] = useState("");
-        const [showPassword, setShowPassword] = useState(false); // State ẩn/hiện pass
+        const [showPassword, setShowPassword] = useState(false);
 
         const value = propValue !== undefined ? propValue : localValue;
 

@@ -27,30 +27,42 @@
     --foreground: #ededed;
   }
 }
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  /* Định nghĩa các biến màu sắc dùng chung */
   --color-brand: #db2777;
 }
 
-@layer base {
-  body {
-    /* Thiết lập màu mặc định cho toàn trang */
-    @apply bg-white text-slate-900 transition-colors duration-300;
+@layer utilities {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
   }
-
-  .dark body {
-    /* Thiết lập màu khi bật Dark Mode */
-    @apply bg-slate-950 text-slate-100;
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #e5e7eb; /* màu gray-200 */
+    border-radius: 10px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #d1d5db; /* màu gray-300 */
   }
 }
-
 body {
   background: var(--background);
   color: var(--foreground);
 }
 
+.all-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.z-9999 {
+  z-index: 9999;
+}
 
 .shrikhand-regular {
   font-family: "Shrikhand", serif;
@@ -116,5 +128,38 @@ body {
 .p-2.space-y-1.overflow-y-auto::-webkit-scrollbar-track {
   background: transparent;
 }
-.hide-scrollbar::-webkit-scrollbar { display: none; }
-.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@layer base {
+
+  body {
+    @apply bg-white text-slate-900 transition-colors duration-300;
+  }
+
+  .dark body {
+    @apply bg-slate-950 text-slate-100;
+  }
+
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type='number'] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+}
+
+.shadow-custom {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}

@@ -6,7 +6,7 @@ import { homepageService } from '@/app/(home)/services/homepage.service';
 import { BannerResponseDTO } from '@/app/(home)/_types/banner.dto';
 import { toPublicUrl } from '@/utils/storage/url';
 import { toSizedVariant } from '@/utils/products/media.helpers';
-import { CustomSpinner } from "@/components";
+import { CustomSpinner, SectionLoading } from "@/components";
 
 interface CategoryBannerProps {
     categorySlug: string;
@@ -41,12 +41,8 @@ export default function CategoryBanner({ categorySlug, categoryId, className = '
         fetchBanners();
     }, [categoryId]);
 
-    if (loading) {
-        return (
-            <div className={`mb-4 flex justify-center items-center h-32 bg-gray-100 rounded-2xl ${className}`}>
-                <CustomSpinner />
-            </div>
-        );
+  if (loading) {
+      return <SectionLoading message="Loading ..." />;
     }
 
     if (!banners || banners.length === 0) return null;

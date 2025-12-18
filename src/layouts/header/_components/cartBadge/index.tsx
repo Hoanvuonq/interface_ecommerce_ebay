@@ -1,58 +1,92 @@
 "use client";
 
+import React, { useEffect, useState } from 'react';
 import { AppPopover } from '@/components/appPopover';
-import { Package, ShoppingCart } from 'lucide-react';
+import { ShoppingCart, Package, Loader2 } from 'lucide-react';
 import Link from 'next/link';
-
-const itemCount = 0; 
+import { useAppDispatch, useAppSelector } from '@/store/store';
+import { fetchCart } from '@/store/theme/cartSlice';
+import { isAuthenticated as checkAuth } from '@/utils/local.storage';
+import { CartPopover } from '../cartPopover';
+import { cn } from '@/utils/cn';
 
 export const CartBadge = () => {
+    const dispatch = useAppDispatch();
+    const { cart, loading } = useAppSelector((state) => state.cart);
+    
+    const [mounted, setMounted] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+        const authStatus = checkAuth();
+        setIsLoggedIn(authStatus);
+        
+        if (authStatus) {
+            dispatch(fetchCart());
+        }
+    }, [dispatch]);
+
+    const itemCount = cart?.itemCount || 0;
+
+    const handleOpenChange = (open: boolean) => {
+        if (open && isLoggedIn) {
+            dispatch(fetchCart());
+        }
+    };
+
+    if (!mounted || !isLoggedIn) {
+        return (
+            <div className="p-2 text-white/50 cursor-pointer">
+                <ShoppingCart size={22} />
+            </div>
+        );
+    }
+
     const Trigger = (
-        <div className="p-2 relative rounded-full text-white hover:bg-white/10 transition-colors cursor-pointer">
-            <ShoppingCart size={20} />
+        <div className="p-2 relative rounded-full text-white hover:bg-white/10 transition-colors cursor-pointer group">
+            <ShoppingCart size={22} className="group-hover:scale-110 transition-transform" />
+            
             {itemCount > 0 && (
-                <span className="absolute top-0 right-0 inline-flex items-center justify-center h-4 w-4 rounded-full bg-red-600 text-[10px] text-white font-bold ring-2 ring-[var(--color-primary)]">
-                    {itemCount > 9 ? '9+' : itemCount}
+                <span className="absolute top-0.5 right-0.5 inline-flex items-center justify-center h-4.5 w-4.5 rounded-full bg-[#ee4d2d] text-[10px] text-white font-bold ring-2 ring-(--color-primary)">
+                    {itemCount > 99 ? '99+' : itemCount}
                 </span>
             )}
         </div>
     );
 
     return (
-        <AppPopover trigger={Trigger} className="w-80" align="right">
-            <div className="flex items-center gap-2 p-4 border-b border-gray-100 bg-white">
-                <ShoppingCart size={18} className="text-gray-600" />
-                <span className="font-bold text-base text-gray-800">Giỏ hàng của bạn</span>
+        <AppPopover 
+            trigger={Trigger} 
+            className="w-98" 
+            align="right"
+            onOpenChange={handleOpenChange}
+        >
+            <div className="flex items-center justify-between p-4 border-b border-gray-100 bg-white">
+                <div className="flex items-center gap-2">
+                    <ShoppingCart size={18} className="text-gray-400" />
+                    <span className="font-bold text-base text-gray-800">Sản phẩm mới thêm</span>
+                </div>
+                {loading && <Loader2 size={14} className="animate-spin text-orange-500" />}
             </div>
 
-            {itemCount === 0 ? (
-                <div className="p-8 flex flex-col items-center justify-center text-center bg-white">
-                    <div className="text-gray-200 mb-4">
-                        <Package size={64} strokeWidth={1} />
-                    </div>
-                    <p className="font-bold text-gray-700 mb-1">Giỏ hàng trống</p>
-                    <p className="text-sm text-gray-500 mb-6 px-4">
-                        Bạn chưa có sản phẩm nào. Hãy khám phá ngay để tìm món đồ ưng ý!
-                    </p>
-                    
+            <div className="max-h-96 overflow-y-auto custom-scrollbar">
+                <CartPopover open={true} />
+            </div>
+{/* 
+            {itemCount > 0 && (
+                <div className="p-3 bg-gray-50 flex items-center justify-between border-t border-gray-100 rounded-b-xl">
+                    <span className="text-xs text-gray-500">
+                        {cart?.itemCount || 0} sản phẩm trong giỏ
+                    </span>
                     <Link 
-                        href="/products"
-                        className="w-full bg-[#661b1b] text-white font-medium py-2.5 px-4 rounded-lg hover:bg-opacity-90 transition-all shadow-md active:scale-95"
+                        href="/cart"
+                        className="bg-[#ee4d2d] text-white text-sm font-bold py-2 px-6 rounded-sm hover:bg-opacity-90 transition-all shadow-sm"
                     >
-                        Khám phá sản phẩm
+                        Xem giỏ hàng
                     </Link>
                 </div>
-            ) : (
-                // Trường hợp có sản phẩm (bạn có thể map danh sách sản phẩm ở đây)
-                <div className="p-4 text-center bg-white">
-                    <Link 
-                        href="/cart" 
-                        className="text-sm text-pink-600 font-bold hover:underline"
-                    >
-                        Xem chi tiết giỏ hàng ({itemCount})
-                    </Link>
-                </div>
-            )}
+            )} */}
         </AppPopover>
     );
 };

@@ -287,7 +287,7 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
                                 <CustomButton
                                     type="primary"
                                     icon={<ShoppingCart className="w-4 h-4" />} 
-                                    className="px-6 !h-10 bg-gradient-to-r from-orange-600 to-pink-600 hover:from-orange-700 hover:to-pink-700 border-0 rounded-full shadow-md font-semibold text-sm"
+                                    className="px-6 !h-10 bg-linear-to-r from-orange-600 to-pink-600 hover:from-orange-700 hover:to-pink-700 border-0 rounded-full shadow-md font-semibold text-sm"
                                 >
                                     Xem tất cả sản phẩm
                                 </CustomButton>

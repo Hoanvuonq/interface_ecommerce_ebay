@@ -2,11 +2,12 @@
 
 import { useState, useCallback, useEffect, useRef } from "react";
 import { ProductCard } from "../ProductCard";
-import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
+import { FiChevronRight, FiChevronLeft, FiShoppingBag } from "react-icons/fi";
 import { publicProductService } from "@/services/products/product.service";
 import type { PublicProductListItemDTO } from "@/types/product/public-product.dto";
 import { CardComponents } from "@/components/card";
 import { CustomSpinner } from "@/components";
+import { cn } from "@/utils/cn";
 
 interface RelatedProductsProps {
   shopId: string;
@@ -34,17 +35,12 @@ export function RelatedProducts({ shopId, excludeProductId }: RelatedProductsPro
         ? newProducts.filter((p: PublicProductListItemDTO) => p.id !== excludeProductId)
         : newProducts;
       
-      if (filteredProducts.length > 0 || page === 0) {
-        setProducts(prev => {
-          const updated = append ? [...prev, ...filteredProducts] : filteredProducts;
-          const currentTotal = updated.length;
-          setHasMore(currentTotal < total && filteredProducts.length > 0);
-          return updated;
-        });
-        setCurrentPage(page);
-      } else {
-        setHasMore(false);
-      }
+      setProducts(prev => {
+        const updated = append ? [...prev, ...filteredProducts] : filteredProducts;
+        setHasMore(updated.length < total && newProducts.length > 0);
+        return updated;
+      });
+      setCurrentPage(page);
     } catch (error) {
       console.error("Failed to load shop products:", error);
       setHasMore(false);
@@ -78,13 +74,16 @@ export function RelatedProducts({ shopId, excludeProductId }: RelatedProductsPro
 
   const scroll = (direction: "left" | "right") => {
     if (scrollContainerRef.current) {
-      const scrollAmount = direction === "left" ? -500 : 500;
-      scrollContainerRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+      const container = scrollContainerRef.current;
+      const scrollAmount = container.clientWidth * 0.8;
+      container.scrollBy({ 
+        left: direction === "left" ? -scrollAmount : scrollAmount, 
+        behavior: "smooth" 
+      });
       
-      // Load more logic
+      // Infinite scroll logic
       if (direction === "right" && hasMore && !loading) {
-        const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-        if (scrollLeft + clientWidth >= scrollWidth - 600) {
+        if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 800) {
           loadProducts(currentPage + 1, true);
         }
       }
@@ -93,8 +92,11 @@ export function RelatedProducts({ shopId, excludeProductId }: RelatedProductsPro
 
   if (loading && products.length === 0) {
     return (
-      <CardComponents title="Sản phẩm cùng shop" className="shadow-sm">
-        <div className="text-center py-8"><CustomSpinner /><p className="mt-2 text-gray-500">Đang tải...</p></div>
+      <CardComponents className="border-none shadow-sm bg-white">
+        <div className="flex flex-col items-center justify-center py-12 gap-3">
+          <CustomSpinner />
+          <p className="text-sm text-gray-400 font-medium animate-pulse">Đang tìm thêm sản phẩm từ shop...</p>
+        </div>
       </CardComponents>
     );
   }
@@ -103,48 +105,60 @@ export function RelatedProducts({ shopId, excludeProductId }: RelatedProductsPro
 
   return (
     <CardComponents
-      title="Sản phẩm cùng shop"
-      className="border-none shadow-sm hover:shadow-md transition-all duration-300"
-      bodyClassName="relative px-2 sm:px-4" // Thêm padding ngang để nút không dính sát lề card
+      className="border-none shadow-sm hover:shadow-md transition-all duration-300 bg-white overflow-hidden"
+      bodyClassName="relative p-0" 
     >
-      <div className="relative group/nav">
-        {/* Nút cuộn trái */}
-        {canScrollLeft && (
-          <button
-            onClick={() => scroll("left")}
-            className="absolute -left-4 sm:-left-6 top-1/2 -translate-y-1/2 z-30 h-10 w-10 rounded-full bg-white shadow-[0_2px_10px_rgba(0,0,0,0.15)] border border-gray-100 flex items-center justify-center text-gray-600 opacity-0 group-hover/nav:opacity-100 transition-all duration-300 hover:bg-orange-500 hover:text-white hover:scale-110 active:scale-95"
-            aria-label="Scroll left"
-          >
-            <FiChevronLeft className="text-2xl" />
-          </button>
-        )}
+      {/* HEADER */}
+      <div className="flex items-center gap-3 px-6 pt-6 mb-4">
+        <div className="p-2 bg-blue-50 text-blue-600 rounded-xl">
+          <FiShoppingBag size={20} />
+        </div>
+        <h3 className="text-lg font-bold text-gray-900 uppercase tracking-tight">
+          Sản phẩm cùng Shop
+        </h3>
+      </div>
 
+      <div className="relative group/nav px-4 pb-6">
+        {/* NÚT ĐIỀU HƯỚNG TRÁI */}
+        <button
+          onClick={() => scroll("left")}
+          className={cn(
+            "absolute left-2 top-1/2 -translate-y-1/2 z-30 h-11 w-11 rounded-full bg-white shadow-xl border border-gray-100 flex items-center justify-center text-gray-600 transition-all duration-300 hover:bg-orange-500 hover:text-white hover:scale-110 active:scale-95",
+            canScrollLeft ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
+          )}
+        >
+          <FiChevronLeft className="text-2xl" />
+        </button>
+
+        {/* CONTAINER CHỨA CARD */}
         <div
           ref={scrollContainerRef}
-          className="flex gap-4 overflow-x-auto pb-4 hide-scrollbar scroll-smooth"
+          className="flex gap-4 overflow-x-auto pb-4 hide-scrollbar scroll-smooth snap-x"
         >
           {products.map((p) => (
-            <div key={p.id} className="flex-shrink-0 w-[160px] sm:w-[190px] md:w-[210px]">
+            <div key={p.id} className="shrink-0 w-[180px] sm:w-[200px] md:w-[220px] snap-start transition-transform duration-300 hover:-translate-y-1">
               <ProductCard product={p} />
             </div>
           ))}
           
           {loading && hasMore && (
-            <div className="flex-shrink-0 w-[100px] flex items-center justify-center">
-              <CustomSpinner />
+            <div className="shrink-0 w-32 flex flex-col items-center justify-center gap-2 text-gray-400">
+              <div className="w-8 h-8 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
+              <span className="text-[10px] font-bold uppercase tracking-tighter">Tải thêm</span>
             </div>
           )}
         </div>
 
-        {canScrollRight && (
-          <button
-            onClick={() => scroll("right")}
-            className="absolute -right-4 sm:-right-6 top-1/2 -translate-y-1/2 z-30 h-10 w-10 rounded-full bg-white shadow-[0_2px_10px_rgba(0,0,0,0.15)] border border-gray-100 flex items-center justify-center text-gray-600 opacity-0 group-hover/nav:opacity-100 transition-all duration-300 hover:bg-orange-500 hover:text-white hover:scale-110 active:scale-95"
-            aria-label="Scroll right"
-          >
-            <FiChevronRight className="text-2xl" />
-          </button>
-        )}
+        {/* NÚT ĐIỀU HƯỚNG PHẢI */}
+        <button
+          onClick={() => scroll("right")}
+          className={cn(
+            "absolute right-2 top-1/2 -translate-y-1/2 z-30 h-11 w-11 rounded-full bg-white shadow-xl border border-gray-100 flex items-center justify-center text-gray-600 transition-all duration-300 hover:bg-orange-500 hover:text-white hover:scale-110 active:scale-95",
+            canScrollRight ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
+          )}
+        >
+          <FiChevronRight className="text-2xl" />
+        </button>
       </div>
     </CardComponents>
   );
