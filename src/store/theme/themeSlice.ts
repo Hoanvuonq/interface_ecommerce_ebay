@@ -1,37 +1,47 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ThemeState } from "./types";
 
-// Lấy từ localStorage nếu có, nếu không dùng env, fallback hardcode
-const savedTheme =
-  typeof window !== "undefined"
-    ? localStorage.getItem("theme")
-    : (process.env.NEXT_PUBLIC_THEME_MODE as "light" | "dark") || "light";
-
-const savedPrimaryColor =
-  typeof window !== "undefined"
-    ? localStorage.getItem("primaryColor")
-    : process.env.NEXT_PUBLIC_PRIMARY_COLOR || "#1890ff";
+interface ThemeState {
+  name: "light" | "dark";
+  primaryColor: string;
+}
 
 const initialState: ThemeState = {
-  name: (savedTheme as "light" | "dark") || "light",
-  primaryColor: savedPrimaryColor || "#1890ff",
+  name: "light",
+  primaryColor: "#1890ff",
 };
 
 export const themeSlice = createSlice({
   name: "theme",
   initialState,
   reducers: {
+    initTheme: (state) => {
+      if (typeof window !== "undefined") {
+        const savedTheme = localStorage.getItem("theme") as "light" | "dark";
+        const savedColor = localStorage.getItem("primaryColor");
+        if (savedTheme) state.name = savedTheme;
+        if (savedColor) state.primaryColor = savedColor;
+      }
+    },
     toggleTheme: (state) => {
       state.name = state.name === "light" ? "dark" : "light";
-      if (typeof window !== "undefined") localStorage.setItem("theme", state.name);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("theme", state.name);
+      }
+    },
+    setTheme: (state, action: PayloadAction<"light" | "dark">) => {
+      state.name = action.payload;
+      if (typeof window !== "undefined") {
+        localStorage.setItem("theme", action.payload);
+      }
     },
     setPrimaryColor: (state, action: PayloadAction<string>) => {
       state.primaryColor = action.payload;
-      if (typeof window !== "undefined")
-        localStorage.setItem("primaryColor", state.primaryColor);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("primaryColor", action.payload);
+      }
     },
   },
 });
 
-export const { toggleTheme, setPrimaryColor } = themeSlice.actions;
+export const { toggleTheme, setTheme, setPrimaryColor, initTheme } = themeSlice.actions;
 export default themeSlice.reducer;

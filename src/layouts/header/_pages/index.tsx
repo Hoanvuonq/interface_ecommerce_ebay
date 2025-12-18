@@ -6,7 +6,7 @@ import {
   MobileMenuButton,
   NotificationDropdown,
   TopHeader,
-  HotKeywords, //
+  HotKeywords, 
 } from "../_components";
 import Image from "next/image";
 import { Search } from "@/components";
@@ -92,7 +92,7 @@ export const Header = () => {
               <UserAuthDropdown isAuthenticated={isLoggedIn} />
             </div>
           </div>
-
+;
           <HotKeywords
             keywords={hotKeywords}
             onKeywordSelect={handleHotKeywordSelect}

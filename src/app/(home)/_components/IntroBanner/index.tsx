@@ -34,7 +34,6 @@ const mapBannerToDisplay = (banner: BannerResponseDTO, index: number) => {
     );
   }
 
-  // Desktop
   if (banner.basePathDesktop && banner.extensionDesktop) {
     imageUrlDesktop = resolveBannerImageUrl(
       banner.basePathDesktop,
@@ -200,13 +199,13 @@ export default function IntroBanner() {
               />
             </picture>
           ) : (
-            <div
-              className={cn(
-                "w-[300px] h-[300px] flex items-center justify-center text-white bg-gradient-to-br",
-                `${banner.gradient}`
-              )}
-            >
-              Không thể tải hình ảnh
+            <div className={cn(
+                "w-[320px] h-[320px] rounded-3xl flex flex-col items-center justify-center text-white bg-gradient-to-br shadow-2xl p-8",
+                banner.gradient,
+                "dark:ring-2 dark:ring-white/20"
+              )}>
+               <h3 className="text-2xl font-bold mb-2">{banner.title}</h3>
+               <p className="opacity-90">{banner.description}</p>
             </div>
           )}
         </Link>

@@ -1,5 +1,4 @@
 "use client";
-
 import { useHomepageBannerContext } from "@/app/(home)/_context/HomepageBannerContext";
 import { mapBannerToDisplay } from "@/app/(home)/_utils/bannerMapping";
 import { QuickLinks } from "@/constants/section"; 

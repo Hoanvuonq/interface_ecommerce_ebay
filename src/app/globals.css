@@ -27,6 +27,24 @@
     --foreground: #ededed;
   }
 }
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* Định nghĩa các biến màu sắc dùng chung */
+  --color-brand: #db2777;
+}
+
+@layer base {
+  body {
+    /* Thiết lập màu mặc định cho toàn trang */
+    @apply bg-white text-slate-900 transition-colors duration-300;
+  }
+
+  .dark body {
+    /* Thiết lập màu khi bật Dark Mode */
+    @apply bg-slate-950 text-slate-100;
+  }
+}
 
 body {
   background: var(--background);

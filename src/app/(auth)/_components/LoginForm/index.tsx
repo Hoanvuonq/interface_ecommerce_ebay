@@ -18,7 +18,7 @@ import { LeftSideForm } from "../LeftSideForm";
 import { MobileFeatureList } from "../LeftSideForm/_components/FeatureMobile";
 import { Home } from "lucide-react";
 import { toast } from "sonner";
-import {cn} from "@/utils/cn";
+import { cn } from "@/utils/cn";
 
 const validateForm = (values: LoginRequest): Partial<LoginRequest> | null => {
   let errors: Partial<LoginRequest> = {};
@@ -52,10 +52,12 @@ const SocialButton: React.FC<SocialButtonProps> = ({
       onClick={onClick}
       disabled={loading}
       loading={loading}
-      className="h-12 rounded-xl border-2 border-gray-300 dark:border-slate-700 
-                       hover:border-pink-500 dark:hover:border-pink-500 hover:shadow-md 
-                       transition-all duration-300 font-medium text-base 
-                       dark:bg-slate-700/50 dark:text-gray-200"
+      className={cn(
+        "h-12 rounded-xl border-2 border-gray-300 dark:border-slate-700",
+        "hover:border-pink-500 dark:hover:border-pink-500 hover:shadow-md ",
+        "transition-all duration-300 font-medium text-base",
+        "dark:bg-slate-700/50 dark:text-gray-200"
+      )}
     >
       {displayLabel}
     </ButtonField>
@@ -104,13 +106,13 @@ export function LoginForm() {
     }
   }, []);
 
-  useEffect(() => {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [theme]);
+  // useEffect(() => {
+  //   if (theme === "dark") {
+  //     document.documentElement.classList.add("dark");
+  //   } else {
+  //     document.documentElement.classList.remove("dark");
+  //   }
+  // }, [theme]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -219,10 +221,12 @@ export function LoginForm() {
               </p>
             </div>
             <div
-              className="w-full shadow-2xl transition-all duration-300 relative z-10 
-                                       bg-white/90 dark:bg-slate-800/90 
-                                       border-2 border-pink-500/30 dark:border-pink-500/50 
-                                       p-8 sm:p-10 rounded-3xl backdrop-blur-md"
+              className={cn(
+                "w-full shadow-2xl transition-all duration-300 relative z-10 ",
+                " bg-white/90 dark:bg-slate-800/90 ",
+                "  border-2 border-pink-500/30 dark:border-pink-500/50 ",
+                "p-8 sm:p-10 rounded-3xl backdrop-blur-md"
+              )}
               style={{ backdropFilter: "blur(12px)" }}
             >
               <div className="text-center mb-8 pt-1">
