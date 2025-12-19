@@ -23,18 +23,19 @@ const queryClient = new QueryClient({
 
 const ConditionalLayout: React.FC<ITemplateProps> = ({ children }) => {
   const pathname = usePathname();
+  
   const EXCLUDED_PATHS = ["/login", "/register", "/forgot-password"];
-  const isExcluded = EXCLUDED_PATHS.includes(pathname);
-  const renderHeaderFooter = !isExcluded;
+  
+  const isAuthPage = EXCLUDED_PATHS.includes(pathname);
 
+  
   return (
     <>
-      {renderHeaderFooter && <Header />}
+      {!isAuthPage && <Header />}
       <main className="grow">
         <div className="relative">{children}</div>
       </main>
-
-      {renderHeaderFooter && <Footer />}
+      {!isAuthPage && <Footer />}
       <ToastProvider />
     </>
   );

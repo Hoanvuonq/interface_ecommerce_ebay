@@ -1,755 +1,465 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { toast } from 'sonner';
+import React, { useState, useEffect, useCallback } from "react";
+import { toast } from "sonner";
 import {
-    Heart, Plus, CheckCircle2, Star, DollarSign, FileText, ShoppingCart, Sparkles, Loader2,
-} from 'lucide-react';
+  Heart,
+  Plus,
+  CheckCircle2,
+  DollarSign,
+  FileText,
+  Camera,
+  Loader2,
+  Sparkles,
+  X,
+  ShoppingBag,
+  ChevronDown,
+} from "lucide-react";
 
-import { useWishlist } from '@/hooks/useWishlist';
-import { usePresignedUpload } from '@/hooks/usePresignedUpload';
-import { UploadContext } from '@/types/storage/storage.types';
-import { toPublicUrl } from '@/utils/storage/url';
-import { toSizedVariant } from '@/utils/products/media.helpers';
-import type {
-    WishlistSummaryResponse,
-    CreateWishlistRequest,
-    AddToWishlistRequest,
-} from '@/types/wishlist/wishlist.types';
-import { PRIORITY_TEXT } from '@/types/wishlist/wishlist.types';
-import type {
-    PublicProductDetailDTO,
-    PublicProductVariantDTO,
-} from '@/types/product/public-product.dto';
+import { useWishlist } from "@/hooks/useWishlist";
+import { usePresignedUpload } from "@/hooks/usePresignedUpload";
+import { UploadContext } from "@/types/storage/storage.types";
 import {
-    resolveMediaUrl as resolveMediaUrlHelper,
-    resolveVariantImageUrl as resolveVariantImageUrlHelper,
-} from '@/utils/products/media.helpers';
-import Image from 'next/image';
-import { CustomButton } from '@/components/button';
-import { ModalWrapper } from '@/components/modalWrapper';
-import { cn } from '@/utils/cn';
-import { FormErrors,WishlistFormData,CustomUploadFile,AddToWishlistModalProps } from '../type';
+  resolveMediaUrl,
+  resolveVariantImageUrl,
+} from "@/utils/products/media.helpers";
+import Image from "next/image";
+import { CustomButton } from "@/components/button";
+import { ModalWrapper } from "@/components/modalWrapper";
+import { cn } from "@/utils/cn";
+import { PRIORITY_TEXT } from "@/types/wishlist/wishlist.types";
+import { AddToWishlistModalProps, WishlistFormData, FormErrors } from "../type";
 
-
-const CustomSpin: React.FC<{ spinning: boolean; children: React.ReactNode }> = ({ spinning, children }) => {
-    if (spinning) {
-        return (
-            <div className="flex items-center justify-center h-full min-h-[50px]">
-                <Loader2 className="w-5 h-5 animate-spin text-gray-500" />
-            </div>
-        );
-    }
-    return <>{children}</>;
-};
-
-const CustomInput: React.FC<any> = ({ label, name, value, onChange, placeholder, type = 'text', required, className, ...rest }) => (
-    <div className={cn("mb-1.5", className)}>
-        <label className="text-xs sm:text-sm font-medium block mb-1" htmlFor={name}>
-            {label} {required && <span className="text-red-500">*</span>}
-        </label>
-        <input
-            id={name}
-            name={name}
-            type={type}
-            value={value}
-            onChange={onChange}
-            placeholder={placeholder}
-            className="w-full px-2 py-1.5 text-xs sm:text-sm border border-gray-300 rounded-lg focus:border-pink-500 focus:ring-1 focus:ring-pink-500 outline-none transition duration-150 h-7 sm:h-8 md:h-9"
-            {...rest}
-        />
-    </div>
+// --- Sub-components for better UI ---
+const FieldLabel = ({ label, required, icon: Icon }: any) => (
+  <label className="text-[11px] font-black uppercase tracking-widest text-gray-400 flex items-center gap-2 mb-1.5">
+    {Icon && <Icon size={13} className="text-orange-500" />}
+    {label} {required && <span className="text-red-500">*</span>}
+  </label>
 );
-
-const CustomSelect: React.FC<any> = ({ label, name, value, onChange, children, className, ...rest }) => (
-    <div className={cn("mb-1.5", className)}>
-        <label className="text-xs sm:text-sm font-medium block mb-1" htmlFor={name}>{label}</label>
-        <select
-            id={name}
-            name={name}
-            value={value}
-            onChange={onChange}
-            className="w-full px-2 py-1.5 text-xs sm:text-sm border border-gray-300 rounded-lg focus:border-pink-500 focus:ring-1 focus:ring-pink-500 outline-none transition duration-150 h-7 sm:h-8 md:h-9 bg-white"
-            {...rest}
-        >
-            {children}
-        </select>
-    </div>
-);
-
 
 export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
-    open,
-    onCancel,
-    onSuccess,
-    product,
-    defaultVariantId,
+  open,
+  onCancel,
+  onSuccess,
+  product,
+  defaultVariantId,
 }) => {
-    const [formData, setFormData] = useState<WishlistFormData>({
-        wishlistId: '',
-        variantId: '',
-        quantity: 1,
-        priority: 0,
-        newWishlistName: '',
-        newWishlistDescription: '',
-        desiredPrice: '',
-        notes: '',
-    });
-    const [formErrors, setFormErrors] = useState<FormErrors>({})
-    
-    const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
-        setFormData((prev: WishlistFormData) => ({ ...prev, [name]: value }));
-        
-        if (formErrors[name]) {
-            setFormErrors((prev: FormErrors) => ({ ...prev, [name]: undefined }));
-        }
-    };
-    
-    const setFieldValue = (name: keyof WishlistFormData, value: any) => {
-        setFormData((prev: WishlistFormData) => ({ ...prev, [name]: value }));
-    };
-    
-    const validateFields = (fields: string[]) => {
-        const errors: any = {};
-        let isValid = true;
-        
-        fields.forEach(name => {
-            const value = formData[name];
-            if (name === 'wishlistId' && !value) {
-                errors[name] = 'Vui lòng chọn wishlist';
-                isValid = false;
-            }
-            if (name === 'newWishlistName' && (!value || value.trim() === '')) {
-                errors[name] = 'Vui lòng nhập tên wishlist';
-                isValid = false;
-            }
-        });
-        
-        setFormErrors(errors);
-        return isValid ? formData : null;
-    };
-    
-    const resetFields = () => {
-        setFormData({
-            wishlistId: '',
-            variantId: '',
-            quantity: 1,
-            priority: 0,
-            newWishlistName: '',
-            newWishlistDescription: '',
-            desiredPrice: '',
-            notes: '',
-        });
-        setFormErrors({});
-    };
+  const [formData, setFormData] = useState<WishlistFormData>({
+    wishlistId: "",
+    variantId: "",
+    quantity: 1,
+    priority: 0,
+    newWishlistName: "",
+    newWishlistDescription: "",
+    desiredPrice: "",
+    notes: "",
+  });
+  const [formErrors, setFormErrors] = useState<FormErrors>({});
+  const [creatingWishlist, setCreatingWishlist] = useState(false);
+  const [wishlists, setWishlists] = useState<any[]>([]);
+  const [showCreateForm, setShowCreateForm] = useState(false);
+  const [selectedVariantId, setSelectedVariantId] = useState<string | null>(
+    null
+  );
+  const [submitting, setSubmitting] = useState(false);
+  const [previewImage, setPreviewImage] = useState<string>("");
+  const [assetId, setAssetId] = useState<string>("");
 
   const {
-        getBuyerWishlists,
-        createWishlist,
-        addToWishlist,
-        isProductInWishlist,
-        loading,
-    } = useWishlist();
+    getBuyerWishlists,
+    createWishlist,
+    addToWishlist,
+    loading: wishlistLoading,
+  } = useWishlist();
+  const { uploadFile, uploading: uploadingImage } = usePresignedUpload();
 
-    const { uploadFile: uploadPresigned, uploading: uploadingImage } = usePresignedUpload();    
-    const [wishlists, setWishlists] = useState<WishlistSummaryResponse[]>([]);
-    const [loadingWishlists, setLoadingWishlists] = useState(false);
-    const [creatingWishlist, setCreatingWishlist] = useState(false);
-    const [showCreateForm, setShowCreateForm] = useState(false);
-    const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null);
-    const [variantInWishlist, setVariantInWishlist] = useState<Map<string, boolean>>(new Map());
-    const [submitting, setSubmitting] = useState(false);
-    
-    const [imageFile, setImageFile] = useState<CustomUploadFile | null>(null); 
-    const [previewImage, setPreviewImage] = useState<string>('');
-    const [coverImageAssetId, setCoverImageAssetId] = useState<string>('');
+  // --- Actions ---
+  const loadWishlists = useCallback(async () => {
+    const result = await getBuyerWishlists({ page: 0, size: 100 });
+    if (result.success) {
+      const list = result.data?.content || [];
+      setWishlists(list);
+      const def = list.find((w: any) => w.isDefault) || list[0];
+      if (def) setFormData((p) => ({ ...p, wishlistId: def.id }));
+    }
+  }, [getBuyerWishlists]);
 
-    useEffect(() => {
-        if (open) {
-            const y = window.scrollY;
-            document.body.style.overflow = 'hidden';
-            document.body.style.position = 'fixed';
-            document.body.style.top = `-${y}px`;
-            document.body.style.width = '100%';
-            
-            return () => {
-                document.body.style.overflow = '';
-                document.body.style.position = '';
-                document.body.style.top = '';
-                document.body.style.width = '';
-                window.scrollTo(0, y);
-            };
-        }
-    }, [open]);
+  useEffect(() => {
+    if (open && product) {
+      loadWishlists();
+      setSelectedVariantId(
+        defaultVariantId || product.variants?.[0]?.id || null
+      );
+    }
+  }, [open, product, defaultVariantId, loadWishlists]);
 
-    // 2. Load Wishlists and Set Default Variant
-    useEffect(() => {
-        if (open && product) {
-            loadWishlists();
-            if (product.variants && product.variants.length > 0) {
-                const defaultVariant = defaultVariantId
-                    ? product.variants.find(v => v.id === defaultVariantId)
-                    : product.variants[0];
-                if (defaultVariant) {
-                    setSelectedVariantId(defaultVariant.id);
-                    setFieldValue('variantId', defaultVariant.id);
-                }
-            }
-        } else {
-            resetFields();
-            setShowCreateForm(false);
-            setSelectedVariantId(null);
-            setVariantInWishlist(new Map());
-            setImageFile(null);
-            setPreviewImage('');
-            setCoverImageAssetId('');
-        }
-    }, [open, product, defaultVariantId]);
+  const handleImageUpload = async (file: File) => {
+    setPreviewImage(URL.createObjectURL(file));
+    try {
+      const res = await uploadFile(file, UploadContext.WISHLIST_COVER);
+      if (res.assetId) {
+        setAssetId(res.assetId);
+        toast.success("Đã tải ảnh bìa thành công");
+      }
+    } catch (err) {
+      toast.error("Lỗi tải ảnh");
+    }
+  };
+  const handleCreateWishlist = async () => {
+    if (!formData.newWishlistName) {
+      toast.error("Vui lòng nhập tên wishlist");
+      return;
+    }
+    setCreatingWishlist(true);
+    try {
+      const res = await createWishlist({
+        name: formData.newWishlistName,
+        description: formData.newWishlistDescription,
+        coverImageAssetId: assetId || undefined,
+      });
+      if (res.success) {
+        toast.success("Đã tạo wishlist mới!");
+        setShowCreateForm(false);
+        loadWishlists();
+      }
+    } finally {
+      setCreatingWishlist(false);
+    }
+  };
 
-    // 3. Set Default Wishlist
-    useEffect(() => {
-        if (open && wishlists.length > 0) {
-            const currentWishlistId = formData.wishlistId;
-            if (!currentWishlistId) {
-                const defaultWishlist = wishlists.find(w => w.isDefault) || wishlists[0];
-                if (defaultWishlist) {
-                    setFieldValue('wishlistId', defaultWishlist.id);
-                    setFormErrors(prev => ({ ...prev, wishlistId: undefined }));
-                }
-            }
-        }
-    }, [wishlists, open, formData.wishlistId]);
+  const handleAction = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.wishlistId || !selectedVariantId) {
+      toast.error("Vui lòng chọn đầy đủ thông tin");
+      return;
+    }
 
-    // 4. Check Variants in Wishlist
-    useEffect(() => {
-        if (open && product && product.variants && product.variants.length > 0) {
-            checkVariantsInWishlist();
-        }
-    }, [open, product, wishlists]);
+    setSubmitting(true);
+    try {
+      const res = await addToWishlist(formData.wishlistId, {
+        variantId: selectedVariantId,
+        quantity: formData.quantity,
+        priority: formData.priority,
+        notes: formData.notes,
+        desiredPrice: formData.desiredPrice
+          ? parseFloat(formData.desiredPrice)
+          : undefined,
+      });
 
-    // ... (loadWishlists, checkVariantsInWishlist logic giữ nguyên) ...
-    const loadWishlists = useCallback(async () => {
-        setLoadingWishlists(true);
-        try {
-            const result = await getBuyerWishlists({ page: 0, size: 100 });
-            if (result.success && result.data) {
-                const loadedWishlists = result.data.content || [];
-                setWishlists(loadedWishlists);
-            }
-        } catch (error) {
-            console.error('Error loading wishlists:', error);
-        } finally {
-            setLoadingWishlists(false);
-        }
-    }, [getBuyerWishlists]);
+      if (res.success) {
+        toast.success("Đã thêm vào wishlist!");
+        onSuccess?.();
+        onCancel();
+      }
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
-    const checkVariantsInWishlist = useCallback(async () => {
-        if (!product?.variants || product.variants.length === 0) return;
+  if (!product) return null;
 
-        const variantIds = product.variants.map(v => v.id);
-        const checkMap = new Map<string, boolean>();
-
-        for (const variantId of variantIds) {
-            try {
-                const inWishlist = await isProductInWishlist(variantId);
-                checkMap.set(variantId, inWishlist);
-            } catch (error) {
-                checkMap.set(variantId, false);
-            }
-        }
-
-        setVariantInWishlist(checkMap);
-    }, [product, isProductInWishlist]);
-
-
-
-    const beforeUpload = useCallback((file: File) => {
-        const isImage = file.type.startsWith('image/');
-        if (!isImage) {
-            toast.error('Chỉ chấp nhận file hình ảnh!');
-            return false;
-        }
-        const isLt5M = file.size / 1024 / 1024 < 5;
-        if (!isLt5M) {
-            toast.error('Hình ảnh phải nhỏ hơn 5MB!');
-            return false;
-        }
-
-        const localUrl = URL.createObjectURL(file);
-        setPreviewImage(localUrl);
-
-        const fileUid = `upload-${Date.now()}`;
-        setImageFile({
-            uid: fileUid,
-            name: file.name,
-            status: 'uploading',
-            url: localUrl,
-            originFileObj: file as any,
-        });
-
-        handleImageUpload(file);
-        return false;
-    }, []);
-
-   const handleImageUpload = useCallback(async (file: File) => {
-        try {
-            const res = await uploadPresigned(file, UploadContext.WISHLIST_COVER);
-
-            if (!res.assetId) {
-                throw new Error('Upload thất bại - không có assetId');
-            }
-
-            setCoverImageAssetId(res.assetId);
-
-            let finalImageUrl = res.finalUrl;
-            if (!finalImageUrl && res.path) {
-                const extension = file.name.split('.').pop()?.toLowerCase() || 'jpg';
-                const ext = extension === 'jpeg' ? 'jpg' : extension;
-                const rawPath = `${res.path.replace(/^pending\//, 'public/')}.${ext}`;
-                const sizedPath = toSizedVariant(rawPath, '_orig');
-                finalImageUrl = sizedPath;
-            }
-
-            if (finalImageUrl) {
-                const publicUrl = finalImageUrl.startsWith('http')
-                    ? finalImageUrl
-                    : toPublicUrl(finalImageUrl);
-
-                setPreviewImage(publicUrl);
-
-                setImageFile((prev: CustomUploadFile | null) => prev ? { 
-                    ...prev,
-                    status: 'done',
-                    url: publicUrl,
-                } : null);
-            } else {
-                setImageFile((prev: CustomUploadFile | null) => prev ? {
-                    ...prev,
-                    status: 'done',
-                } : null);
-            }
-
-            toast.success('Upload ảnh thành công!');
-        } catch (err: any) {
-            console.error('Upload error:', err);
-            toast.error(err?.message || 'Upload ảnh thất bại');
-            setImageFile((prev: CustomUploadFile | null) => prev ? { ...prev, status: 'error' } : null);
-        }
-    }, [uploadPresigned]);
-
-    const handleRemoveImage = useCallback(() => {
-        setImageFile(null);
-        setPreviewImage('');
-        setCoverImageAssetId('');
-    }, []);
-
-
-    const handleCreateWishlist = useCallback(async (values: CreateWishlistRequest) => {
-        setCreatingWishlist(true);
-        try {
-            const result = await createWishlist({
-                ...values,
-                coverImageAssetId: coverImageAssetId || undefined,
-            });
-            if (result.success && result.data) {
-                toast.success('Đã tạo wishlist thành công'); // ✅ Thay thế message.success
-                await loadWishlists();
-                setFieldValue('wishlistId', result.data.id);
-                setFormErrors(prev => ({ ...prev, wishlistId: undefined }));
-                setShowCreateForm(false);
-                setImageFile(null);
-                setPreviewImage('');
-                setCoverImageAssetId('');
-            } else {
-                toast.error(result.error || 'Không thể tạo wishlist'); // ✅ Thay thế message.error
-            }
-        } catch (error: any) {
-            toast.error(error?.message || 'Không thể tạo wishlist'); // ✅ Thay thế message.error
-        } finally {
-            setCreatingWishlist(false);
-        }
-    }, [createWishlist, loadWishlists, coverImageAssetId]);
-
-    const handleSubmit = useCallback(async (e: React.FormEvent) => {
-        e.preventDefault(); // Ngăn form submit mặc định
-        
-        if (!product || !selectedVariantId) {
-            toast.warning('Vui lòng chọn variant'); // ✅ Thay thế message.warning
-            return;
-        }
-        
-        const validData = validateFields(['wishlistId', 'quantity', 'priority']);
-        if (!validData) return;
-
-        setSubmitting(true);
-        try {
-            const wishlistId = formData.wishlistId;
-            if (!wishlistId) {
-                toast.warning('Vui lòng chọn wishlist'); // ✅ Thay thế message.warning
-                return;
-            }
-
-            const requestData: AddToWishlistRequest = {
-                variantId: selectedVariantId,
-                quantity: formData.quantity || 1,
-                desiredPrice: formData.desiredPrice ? parseFloat(String(formData.desiredPrice).replace(/\./g, '')) : undefined,
-                notes: formData.notes || undefined,
-                priority: formData.priority || 0,
-            };
-
-            const result = await addToWishlist(wishlistId, requestData);
-            if (result.success) {
-                toast.success('Đã thêm vào wishlist thành công'); // ✅ Thay thế message.success
-                onSuccess?.();
-                onCancel();
-            } else {
-                toast.error(result.error || 'Không thể thêm vào wishlist'); // ✅ Thay thế message.error
-            }
-        } catch (error: any) {
-            toast.error(error?.message || 'Không thể thêm vào wishlist'); // ✅ Thay thế message.error
-        } finally {
-            setSubmitting(false);
-        }
-    }, [product, selectedVariantId, addToWishlist, onSuccess, onCancel, formData]);
-
-    const formatPrice = (price: number) => {
-        const formatted = new Intl.NumberFormat('vi-VN', {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 0,
-        }).format(price);
-        return `${formatted} ₫`;
-    };
-    
-    
-    const getVariantDisplayName = (variant: PublicProductVariantDTO) => {
-        if (variant.optionValues && variant.optionValues.length > 0) {
-            return variant.optionValues.map(ov => ov.name).join(' / ');
-        }
-        return `SKU: ${variant.sku}`;
-    };
-
-    if (!product) return null;
-
-    const hasVariants = product.variants && product.variants.length > 0;
-
-    return (
-        <ModalWrapper
-            open={open}
-            onCancel={onCancel}
-            title={
-                <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
-                    <div className="relative flex-shrink-0">
-                        <div className="absolute inset-0 bg-linear-to-r from-pink-500 to-red-500 rounded-full blur-md opacity-50 animate-pulse" />
-                        <Heart className="relative w-5 h-5 sm:w-6 sm:h-6 text-red-500 fill-red-500" />
-                    </div>
-                    <h4 className="!mb-0 text-base sm:!text-lg font-bold bg-linear-to-r from-pink-600 to-red-600 bg-clip-text text-transparent leading-tight truncate min-w-0 flex-1">
-                        Thêm vào yêu thích
-                    </h4>
-                </div>
-            }
-        >
-            <form onSubmit={handleSubmit}>
-                {/* Variant Selection - Grid Layout */}
-                {hasVariants && (
-                    <div className="mb-4">
-                        <label className="text-xs sm:text-sm font-medium block mb-2">
-                            Chọn phiên bản <span className="text-red-500">*</span>
-                        </label>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-[280px] overflow-y-auto overflow-x-hidden">
-                            {product.variants!.map((variant) => {
-                                const isInWishlist = variantInWishlist.get(variant.id) || false;
-                                const isSelected = selectedVariantId === variant.id;
-
-                                const variantImageUrl = resolveVariantImageUrlHelper(variant, '_thumb');
-                                const fallbackImage = product.media?.find(m => m.isPrimary && m.type === 'IMAGE')
-                                    || product.media?.find(m => m.type === 'IMAGE')
-                                    || product.media?.[0];
-                                const fallbackImageUrl = fallbackImage ? resolveMediaUrlHelper(fallbackImage, '_thumb') : null;
-                                const displayImageUrl = variantImageUrl || fallbackImageUrl;
-
-                                return (
-                                    <div
-                                        key={variant.id}
-                                        onClick={() => {
-                                            setSelectedVariantId(variant.id);
-                                            setFieldValue('variantId', variant.id);
-                                        }}
-                                        className={cn(
-                                            "relative p-2 rounded border-2 transition-all cursor-pointer overflow-hidden",
-                                            isSelected
-                                                ? 'border-pink-500 bg-gradient-to-br from-pink-50 to-red-50 shadow-sm ring-1 ring-pink-200'
-                                                : 'border-gray-200 hover:border-pink-300 hover:shadow-sm bg-white'
-                                        )}
-                                    >
-                                        <div className="w-full aspect-square rounded overflow-hidden bg-gray-100 mb-1">
-                                            {displayImageUrl ? (
-                                                <Image
-                                                    src={displayImageUrl}
-                                                    alt={getVariantDisplayName(variant)}
-                                                    width={100} 
-                                                    height={100}
-                                                    className="w-full h-full object-cover"
-                                                    unoptimized // Vô hiệu hóa tối ưu hóa Next Image cho ảnh bên ngoài (nếu chưa config next.config.js)
-                                                />
-                                            ) : (
-                                                <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
-                                                    No image
-                                                </div>
-                                            )}
-                                        </div>
-                                        <div className="text-xs font-medium text-gray-700 mb-0.5 text-center break-words line-clamp-2 min-h-[2rem] px-0.5 leading-tight">
-                                            {getVariantDisplayName(variant)}
-                                        </div>
-                                        <div className="flex items-center justify-center gap-1 flex-wrap">
-                                            <span className="text-xs font-bold text-orange-600 break-words text-center leading-tight">
-                                                {formatPrice(variant.price)}
-                                            </span>
-                                            {isInWishlist && (
-                                                <CheckCircle2 className="w-3 h-3 text-green-500 flex-shrink-0" />
-                                            )}
-                                        </div>
-
-                                        {isSelected && (
-                                            <div className="absolute top-0.5 right-0.5 w-4 h-4 bg-linear-to-r from-pink-500 to-red-500 rounded-full flex items-center justify-center shadow-sm">
-                                                <CheckCircle2 className="w-2.5 h-2.5 text-white" />
-                                            </div>
-                                        )}
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </div>
-                )}
-
-                {/* Wishlist Selection */}
-               <div className="mb-4">
-                    <CustomSpin spinning={loadingWishlists}>
-                        <CustomSelect
-                            label="Wishlist"
-                            name="wishlistId"
-                            value={formData.wishlistId}
-                            onChange={(e: any) => setFieldValue('wishlistId', e.target.value)}
-                            required
-                            disabled={showCreateForm}
-                        >
-                            <option value="" disabled>Chọn wishlist</option>
-                            {wishlists.map((wishlist) => (
-                                <option key={wishlist.id} value={wishlist.id}>
-                                    {wishlist.name} {wishlist.isDefault && '(Mặc định)'} ({wishlist.itemCount})
-                                </option>
-                            ))}
-                        </CustomSelect>
-                        {formErrors.wishlistId && <p className="text-red-500 text-xs mt-1">{formErrors.wishlistId}</p>}
-                    </CustomSpin>
-                </div>
-                
-                {/* Create New Wishlist Button */}
-                <div className="mb-4">
-                    {!showCreateForm ? (
-                        <CustomButton
-                            type="dashed"
-                            icon={<Plus className="w-3 h-3 sm:w-3.5 sm:h-3.5" />}
-                            onClick={() => setShowCreateForm(true)}
-                            className="w-full !h-8"
-                        >
-                            Tạo wishlist mới
-                        </CustomButton>
+  return (
+    <ModalWrapper
+      open={open}
+      onCancel={onCancel}
+      title={
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-orange-100 rounded-xl text-orange-600 shadow-sm">
+            <Heart size={20} fill="currentColor" />
+          </div>
+          <div>
+            <h4 className="text-sm font-black uppercase tracking-widest text-gray-800 leading-none">
+              Thêm vào wishlist
+            </h4>
+            <p className="text-[10px] text-orange-500 font-bold mt-1 uppercase tracking-tighter italic">
+              Lưu trữ món đồ yêu thích
+            </p>
+          </div>
+        </div>
+      }
+    >
+      <form onSubmit={handleAction} className="space-y-6 pb-2">
+        {/* 1. Phiên bản sản phẩm */}
+        <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
+          <FieldLabel label="Chọn phiên bản" required />
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-h-[300px] overflow-y-auto pr-1 custom-scrollbar">
+            {product.variants?.map((v: any) => {
+              const isSelected = selectedVariantId === v.id;
+              const img =
+                resolveVariantImageUrl(v, "_thumb") ||
+                resolveMediaUrl(product.media?.[0], "_thumb");
+              return (
+                <div
+                  key={v.id}
+                  onClick={() => setSelectedVariantId(v.id)}
+                  className={cn(
+                    "group relative p-2 rounded-2xl border-2 transition-all cursor-pointer bg-white overflow-hidden",
+                    isSelected
+                      ? "border-orange-500 shadow-lg shadow-orange-100 ring-2 ring-orange-500/10"
+                      : "border-gray-100 hover:border-orange-200"
+                  )}
+                >
+                  <div className="aspect-square rounded-xl overflow-hidden bg-gray-50 mb-2 relative">
+                    {img ? (
+                      <Image
+                        src={img}
+                        alt="v"
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform"
+                        unoptimized
+                      />
                     ) : (
-                        <div className="mb-2 p-3 bg-pink-50 border border-pink-200 rounded-lg">
-                            {/* Cover Image Upload (Simplified) */}
-                            <div className="mb-2">
-                                <label className="block mb-1 text-xs font-medium text-gray-700">Ảnh bìa (Tùy chọn)</label>
-                                <div className="relative inline-block">
-                                    {/* Upload Area */}
-                                    {!imageFile && (
-                                        <label 
-                                            htmlFor="wishlist-cover-upload"
-                                            className={cn(
-                                                "w-16 h-16 rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer bg-white hover:bg-gray-50 transition duration-150",
-                                                uploadingImage && "opacity-60 cursor-wait"
-                                            )}
-                                        >
-                                            {uploadingImage ? <Loader2 className="w-4 h-4 animate-spin text-pink-500" /> : <Plus className="w-4 h-4 text-gray-500" />}
-                                            <span className="text-[10px] text-gray-600 mt-0.5">{uploadingImage ? 'Tải...' : 'Tải ảnh'}</span>
-                                            <input
-                                                id="wishlist-cover-upload"
-                                                type="file"
-                                                accept="image/*"
-                                                className="hidden"
-                                                onChange={(e) => { if (e.target.files) beforeUpload(e.target.files[0]) }}
-                                                disabled={uploadingImage}
-                                            />
-                                        </label>
-                                    )}
-                                    
-                                    {previewImage && (
-                                        <div className="relative w-16 h-16 rounded-lg overflow-hidden border border-gray-300">
-                                            <Image src={previewImage} alt="Preview" width={64} height={64} className="w-full h-full object-cover" unoptimized />
-                                            <button 
-                                                type="button"
-                                                onClick={handleRemoveImage}
-                                                className="absolute top-0 right-0 p-1 bg-black/60 text-white rounded-bl-lg"
-                                                aria-label="Remove image"
-                                            >
-                                                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-                                            </button>
-                                            {imageFile?.status === 'uploading' && (
-                                                <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-                                                    <Loader2 className="w-4 h-4 animate-spin text-white" />
-                                                </div>
-                                            )}
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                            
-                            <CustomInput
-                                label="Tên wishlist"
-                                name="newWishlistName"
-                                value={formData.newWishlistName}
-                                onChange={handleFormChange}
-                                required
-                                placeholder="Nhập tên wishlist"
-                                maxLength={100}
-                            />
-                            {formErrors.newWishlistName && <p className="text-red-500 text-xs mt-1">{formErrors.newWishlistName}</p>}
-
-                            <div className="mb-4">
-                                <label className="text-xs sm:text-sm font-medium block mb-1" htmlFor="newWishlistDescription">Mô tả</label>
-                                <textarea
-                                    id="newWishlistDescription"
-                                    name="newWishlistDescription"
-                                    rows={2}
-                                    value={formData.newWishlistDescription}
-                                    onChange={handleFormChange}
-                                    placeholder="Mô tả (tùy chọn)"
-                                    maxLength={500}
-                                    className="w-full px-2 py-1.5 text-xs sm:text-sm border border-gray-300 rounded-lg focus:border-pink-500 focus:ring-1 focus:ring-pink-500 outline-none transition duration-150"
-                                />
-                            </div>
-
-                            <div className="flex items-center gap-2">
-                                <CustomButton
-                                    type="primary"
-                                    loading={creatingWishlist}
-                                    onClick={async () => {
-                                        const values = validateFields(['newWishlistName', 'newWishlistDescription']);
-                                        if (values) {
-                                            await handleCreateWishlist({
-                                                name: values.newWishlistName,
-                                                description: values.newWishlistDescription,
-                                                isPublic: false,
-                                            });
-                                        }
-                                    }}
-                                    className="flex-1 !h-8 !text-sm"
-                                >
-                                    Tạo
-                                </CustomButton>
-                                <CustomButton
-                                    onClick={() => {
-                                        setShowCreateForm(false);
-                                        // Reset new wishlist fields
-                                        setFieldValue('newWishlistName', '');
-                                        setFieldValue('newWishlistDescription', '');
-                                        handleRemoveImage(); 
-                                    }}
-                                    className="flex-1 !h-8 !text-sm"
-                                >
-                                    Hủy
-                                </CustomButton>
-                            </div>
-                        </div>
+                      <div className="w-full h-full flex items-center justify-center text-gray-300">
+                        <ShoppingBag size={20} />
+                      </div>
                     )}
+                    {isSelected && (
+                      <div className="absolute top-1 right-1 bg-orange-500 text-white p-0.5 rounded-full shadow-md animate-in zoom-in">
+                        <CheckCircle2 size={12} />
+                      </div>
+                    )}
+                  </div>
+                  <p className="text-[10px] font-bold text-gray-700 line-clamp-1 mb-0.5">
+                    {v.optionValues?.map((o: any) => o.name).join("/") ||
+                      "Mặc định"}
+                  </p>
+                  <p className="text-[11px] font-black text-orange-600">
+                    {new Intl.NumberFormat("vi-VN").format(v.price)}đ
+                  </p>
                 </div>
+              );
+            })}
+          </div>
+        </div>
 
-                <div className="w-full h-px bg-gray-200 my-4" /> {/* Thay thế Antd Divider */}
+        <div className="h-px bg-gray-100" />
 
-                {/* Additional Options */}
-                <div className="grid grid-cols-2 gap-4 mb-4">
-                    <CustomInput
-                        label="Số lượng"
-                        name="quantity"
-                        type="number"
-                        value={formData.quantity}
-                        onChange={handleFormChange}
-                        min={1}
-                        max={999}
+        {/* 2. Chọn Wishlist */}
+        <div className="space-y-4">
+          {!showCreateForm ? (
+            <div className="flex items-end gap-2">
+              <div className="flex-1">
+                <FieldLabel label="Danh sách mong muốn" required />
+                <div className="relative">
+                  <select
+                    value={formData.wishlistId}
+                    onChange={(e) =>
+                      setFormData({ ...formData, wishlistId: e.target.value })
+                    }
+                    className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:border-orange-500 appearance-none text-sm font-bold text-gray-700 cursor-pointer"
+                  >
+                    <option value="">-- Chọn danh sách --</option>
+                    {wishlists.map((w) => (
+                      <option key={w.id} value={w.id}>
+                        {w.name} {w.isDefault ? "(Mặc định)" : ""}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+                    size={16}
+                  />
+                </div>
+              </div>
+              <CustomButton
+                type="dashed"
+                className="!h-[46px] !w-[46px] !p-0 rounded-xl border-orange-200 text-orange-500"
+                onClick={() => setShowCreateForm(true)}
+                icon={<Plus size={24} />}
+              />
+            </div>
+          ) : (
+            <div className="p-4 bg-orange-50 border border-orange-100 rounded-2xl space-y-4 animate-in slide-in-from-right-4">
+              <div className="flex justify-between items-center">
+                <h5 className="text-[10px] font-black uppercase text-orange-600 tracking-widest">
+                  Tạo danh sách mới
+                </h5>
+                <button
+                  type="button"
+                  onClick={() => setShowCreateForm(false)}
+                  className="text-gray-400 hover:text-orange-600 transition-colors"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+
+              <div className="flex gap-4">
+                <label className="shrink-0 w-16 h-16 rounded-xl border-2 border-dashed border-orange-200 flex flex-col items-center justify-center bg-white cursor-pointer hover:border-orange-400 transition-all group">
+                  {previewImage ? (
+                    <Image
+                      src={previewImage}
+                      alt="preview"
+                      width={64}
+                      height={64}
+                      className="rounded-xl object-cover h-full"
+                      unoptimized
                     />
-
-                    <CustomSelect
-                        label="Độ ưu tiên"
-                        name="priority"
-                        value={formData.priority}
-                        onChange={handleFormChange}
+                  ) : (
+                    <>
+                      <Camera
+                        size={20}
+                        className="text-orange-300 group-hover:scale-110 transition-transform"
+                      />
+                      <span className="text-[8px] font-bold text-orange-400 mt-1">
+                        Ảnh bìa
+                      </span>
+                    </>
+                  )}
+                  <input
+                    type="file"
+                    className="hidden"
+                    accept="image/*"
+                    onChange={(e) =>
+                      e.target.files && handleImageUpload(e.target.files[0])
+                    }
+                  />
+                </label>
+                <div className="flex-1 space-y-2">
+                  <input
+                    placeholder="Nhập tên wishlist..."
+                    className="w-full bg-white border border-orange-100 p-2.5 rounded-xl text-sm font-bold outline-none focus:border-orange-500 shadow-sm"
+                    value={formData.newWishlistName}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        newWishlistName: e.target.value,
+                      })
+                    }
+                  />
+                  <div className="flex gap-2">
+                    <CustomButton
+                      variant="dark"
+                      className="flex-1 !h-8 !text-[10px] !rounded-lg shadow-md"
+                      loading={creatingWishlist}
+                      onClick={async () => {
+                        if (!formData.newWishlistName)
+                          return toast.warning("Nhập tên danh sách");
+                        const res = await createWishlist({
+                          name: formData.newWishlistName,
+                          coverImageAssetId: assetId,
+                        });
+                        if (res.success) {
+                          loadWishlists();
+                          setShowCreateForm(false);
+                        }
+                      }}
                     >
-                        <option value={0}>{PRIORITY_TEXT[0]}</option>
-                        <option value={1}>{PRIORITY_TEXT[1]}</option>
-                        <option value={2}>{PRIORITY_TEXT[2]}</option>
-                    </CustomSelect>
+                      Xác nhận
+                    </CustomButton>
+                    <CustomButton
+                      className="flex-1 !h-8 !text-[10px] !rounded-lg"
+                      onClick={() => setShowCreateForm(false)}
+                    >
+                      Hủy
+                    </CustomButton>
+                  </div>
                 </div>
+              </div>
+            </div>
+          )}
+        </div>
 
-                <details className="group border border-gray-200 rounded-lg mb-4">
-                    <summary className="flex items-center justify-between p-3 cursor-pointer bg-gray-50 rounded-lg hover:bg-gray-100 transition duration-150">
-                        <div className="flex items-center gap-2">
-                            <div className="w-5 h-5 rounded-md bg-gradient-to-br from-pink-100 to-purple-100 flex items-center justify-center">
-                                <Sparkles className="w-3 h-3 text-pink-500" />
-                            </div>
-                            <span className="text-xs font-medium text-gray-700">Tùy chọn bổ sung</span>
-                        </div>
-                        <svg className="w-4 h-4 text-gray-500 transform group-open:rotate-180 transition duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-                    </summary>
-                    <div className="p-3 space-y-3 bg-white">
-                        <CustomInput
-                            label={<div className="flex items-center gap-1.5"><DollarSign className="w-3 h-3 text-orange-500" /> <span className="text-xs">Giá mong muốn</span></div>}
-                            name="desiredPrice"
-                            type="text" 
-                            value={formData.desiredPrice}
-                            onChange={handleFormChange}
-                            placeholder="Nhập giá mong muốn"
-                            className="mb-0"
-                        />
+        {/* 3. Tùy chọn bổ sung */}
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <FieldLabel label="Số lượng" />
+            <input
+              type="number"
+              className="w-full p-2.5 text-black bg-gray-50 border border-gray-200 rounded-xl outline-none focus:border-orange-500 text-sm font-bold"
+              value={formData.quantity}
+              onChange={(e) =>
+                setFormData({ ...formData, quantity: parseInt(e.target.value) })
+              }
+              min={1}
+            />
+          </div>
+          <div>
+            <FieldLabel label="Ưu tiên" />
+            <div className="relative">
+              <select
+                value={formData.priority}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    priority: parseInt(e.target.value),
+                  })
+                }
+                className="w-full p-2.5 bg-gray-50 border text-black border-gray-200 rounded-xl outline-none focus:border-orange-500 appearance-none text-sm font-bold"
+              >
+                {PRIORITY_TEXT.map((text, i) => (
+                  <option key={i} value={i}>
+                    {text}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+                size={14}
+              />
+            </div>
+          </div>
+        </div>
 
-                        <div className="mb-0">
-                            <label className="text-xs sm:text-sm font-medium block mb-1">
-                                <div className="flex items-center gap-1.5"><FileText className="w-3 h-3 text-blue-500" /> <span className="text-xs">Ghi chú</span></div>
-                            </label>
-                            <textarea
-                                name="notes"
-                                rows={2}
-                                value={formData.notes}
-                                onChange={handleFormChange}
-                                placeholder="Ghi chú (tùy chọn)"
-                                maxLength={500}
-                                className="w-full px-2 py-1.5 text-xs sm:text-sm border border-gray-300 rounded-lg focus:border-pink-500 focus:ring-1 focus:ring-pink-500 outline-none transition duration-150"
-                            />
-                        </div>
-                    </div>
-                </details>
+        <details className="group border border-gray-100 rounded-2xl overflow-hidden bg-gray-50/30 shadow-sm">
+          <summary className="p-4 cursor-pointer list-none flex justify-between items-center font-bold text-[10px] text-gray-500 uppercase tracking-widest">
+            <div className="flex items-center gap-2">
+              <Sparkles size={14} className="text-orange-400" /> Ghi chú & Giá
+              kỳ vọng
+            </div>
+            <ChevronDown
+              size={14}
+              className="group-open:rotate-180 transition-transform"
+            />
+          </summary>
+          <div className="p-4 bg-white space-y-4 animate-in fade-in">
+            <div>
+              <FieldLabel label="Giá mong muốn (VND)" icon={DollarSign} />
+              <input
+                placeholder="Ví dụ: 1500000"
+                className="w-full p-2.5 bg-gray-50 border text-black border-gray-200 rounded-xl outline-none focus:border-orange-500 text-sm font-bold"
+                value={formData.desiredPrice}
+                onChange={(e) =>
+                  setFormData({ ...formData, desiredPrice: e.target.value })
+                }
+              />
+            </div>
+            <div>
+              <FieldLabel label="Ghi chú cá nhân" icon={FileText} />
+              <textarea
+                rows={2}
+                className="w-full p-3 bg-gray-50 border text-black border-gray-200 rounded-xl outline-none focus:border-orange-500 text-sm"
+                placeholder="Lưu ý về sản phẩm này..."
+                value={formData.notes}
+                onChange={(e) =>
+                  setFormData({ ...formData, notes: e.target.value })
+                }
+              />
+            </div>
+          </div>
+        </details>
 
-                <div className="sticky bottom-0 bg-white pt-3 pb-1 border-t border-gray-100 -mx-3 sm:-mx-5 px-3 sm:px-5 mt-4 z-10">
-                    <div className="flex items-center justify-end gap-2 w-full">
-                        <CustomButton
-                            onClick={onCancel}
-                            className="flex-1 sm:flex-initial !text-sm !h-9"
-                        >
-                            Hủy
-                        </CustomButton>
-                        <CustomButton
-                            type="primary"
-                            htmlType="submit"
-                            loading={submitting || loading}
-                            className="flex-1 sm:flex-initial !text-sm !h-9 min-w-[150px]"
-                            icon={<Heart className="w-4 h-4 fill-white" />}
-                        >
-                            Thêm vào wishlist
-                        </CustomButton>
-                    </div>
-                </div>
-            </form>
-        </ModalWrapper>
-    );
+        {/* Footer fixed */}
+        <div className="sticky bottom-0 bg-white/90 backdrop-blur-md pt-4 border-t border-gray-50 flex gap-3 z-10">
+          <CustomButton
+            onClick={onCancel}
+            className="flex-1 !rounded-2xl !h-12 font-bold text-gray-500"
+          >
+            Hủy
+          </CustomButton>
+          <CustomButton
+            type="primary"
+            htmlType="submit"
+            loading={submitting || wishlistLoading}
+            className="flex-[2] !rounded-2xl !h-12 bg-gradient-to-r from-orange-500 to-amber-600 shadow-lg shadow-orange-200 border-0 font-black uppercase tracking-widest text-sm"
+            icon={<Heart size={18} fill="white" />}
+          >
+            Thêm vào yêu thích
+          </CustomButton>
+        </div>
+      </form>
+    </ModalWrapper>
+  );
 };
 
 export default AddToWishlistModal;

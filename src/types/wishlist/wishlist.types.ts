@@ -141,12 +141,11 @@ export enum WishlistPriority {
 }
 
 // Priority text mapping
-export const PRIORITY_TEXT: Record<number, string> = {
-    0: 'Bình thường',
-    1: 'Cao',
-    2: 'Khẩn cấp'
-};
-
+export const PRIORITY_TEXT = [
+  "Bình thường", // Tương ứng giá trị 0
+  "Ưu tiên",     // Tương ứng giá trị 1
+  "Rất ưu tiên"  // Tương ứng giá trị 2
+];
 /**
  * WishlistItemsGroup - Nhóm items đạt giá mong muốn theo wishlist
  */

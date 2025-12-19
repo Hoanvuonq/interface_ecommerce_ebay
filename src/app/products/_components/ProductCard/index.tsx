@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 import { publicProductService } from "@/services/products/product.service";
 import { useCart } from "../../_hooks/useCart";
 import { requireAuthentication } from "@/utils/cart/cart-auth.utils";
-import AddToWishlistModal from "@/components/wishlist/AddToWishlistModal";
+import {AddToWishlistModal} from "@/components/wishlist/AddToWishlistModal";
 import { 
     resolveMediaUrl as resolveMediaUrlHelper,
     resolveVariantImageUrl as resolveVariantImageUrlHelper  
@@ -32,7 +32,7 @@ export const ProductCard = ({
     product,
     highlight,
     isWishlisted: initialIsWishlisted,
-    imageSize = "_medium", // Chỉnh từ _thumb lên _medium để hình sắc nét hơn
+    imageSize = "_medium", 
     viewMode = "grid",
 }: {
     product: PublicProductListItemDTO;
@@ -115,21 +115,22 @@ export const ProductCard = ({
     };
 
     const handleAddToWishlist = async (e: React.MouseEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
-        if (!requireAuthentication(window.location.pathname)) return;
+    e.preventDefault(); // CHẶN CHUYỂN TRANG
+    e.stopPropagation(); // CHẶN SỰ KIỆN LAN RA NGOÀI
+    
+    if (!requireAuthentication(window.location.pathname)) return;
 
-        setLoadingProductDetail(true);
-        try {
-            const resp = await publicProductService.getBySlug(product.slug || product.id);
-            setProductDetail(resp.data);
-            setWishlistModalOpen(true);
-        } catch (error) {
-            toast.error("Lỗi tải thông tin");
-        } finally {
-            setLoadingProductDetail(false);
-        }
-    };
+    setLoadingProductDetail(true);
+    try {
+        const resp = await publicProductService.getBySlug(product.slug || product.id);
+        setProductDetail(resp.data);
+        setWishlistModalOpen(true); // MỞ MODAL
+    } catch (error) {
+        toast.error("Lỗi tải thông tin");
+    } finally {
+        setLoadingProductDetail(false);
+    }
+};
 
     const hasDiscount = !!(product.comparePrice && product.comparePrice > product.basePrice);
     const discountPercent = hasDiscount 
