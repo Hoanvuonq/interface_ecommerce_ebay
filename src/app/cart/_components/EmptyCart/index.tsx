@@ -14,8 +14,8 @@ import { CartFeatures } from "../CartFeatures";
 
 export const EmptyCart: React.FC = () => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-125 px-4 bg-white">
-      <div className="max-w-2xl w-full bg-white rounded-3xl shadow-custom border border-gray-100 overflow-hidden animate-in fade-in zoom-in duration-500">
+    <div className="flex flex-col items-center justify-center all-center  min-h-125 px-4 bg-white">
+      <div className="w-full bg-white rounded-3xl shadow-custom border border-gray-100 overflow-hidden animate-in fade-in zoom-in duration-500">
         <div className="text-center pt-10 md:pt-16 pb-6 md:pb-10 px-6">
           <div className="relative inline-block mb-6 md:mb-8">
             <div className="absolute inset-0 bg-blue-100 rounded-full blur-2xl opacity-50 animate-pulse"></div>

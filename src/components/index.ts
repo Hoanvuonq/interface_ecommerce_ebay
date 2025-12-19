@@ -16,3 +16,5 @@ export * from "./categorySidebar";
 export * from "./priceRanges";
 export * from "./imageWithPreview";
 export * from "./customPopover";
+export * from "./design";
+export * from "./tags";

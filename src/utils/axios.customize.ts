@@ -18,8 +18,8 @@ const API_BASE_URL =
   (process.env.NEXT_PUBLIC_BACKEND_URL ||
     "https://raising-latina-candy-ribbon.trycloudflare.com") + "/api";
 
-// 🔍 Debug Utility
-const DEBUG = false; 
+// --- DEBUG UTILS ---
+const DEBUG = false;
 const debugLog = (title: string, data?: any) => {
   if (!DEBUG) return;
   console.log(
@@ -47,13 +47,6 @@ const debugSuccess = (title: string, data?: any) => {
   );
 };
 
-// const IS_BROWSER = typeof window !== "undefined" && typeof localStorage !== "undefined";
-
-const plainAxios = axios.create({
-  baseURL: API_BASE_URL,
-  withCredentials: true,
-});
-
 const instance = axios.create({
   baseURL: API_BASE_URL,
   withCredentials: true,
@@ -73,48 +66,66 @@ const PUBLIC_ENDPOINTS = [
   "/auth/logout",
 ];
 
-/**
- * Kiểm tra xem endpoint có phải là public (không cần token) không
- */
 const isPublicEndpoint = (url?: string): boolean => {
   if (!url) return false;
   return PUBLIC_ENDPOINTS.some((endpoint) => url.includes(endpoint));
 };
 
-// ==================== REFRESH TOKEN LOCK MECHANISM ====================
-let isRefreshing = false; // Flag để track có đang refresh token không
+// ==================== TRẠNG THÁI KHÓA (LOCK) ====================
+let isLoggingOut = false; // Biến quan trọng nhất để chặn spam logout
+let isRefreshing = false;
 let failedQueue: Array<{
   resolve: (token: string) => void;
   reject: (error: any) => void;
-}> = []; // Queue chứa các requests đang chờ token mới
+}> = [];
 
-// Xử lý queue khi refresh thành công
+// Xử lý hàng đợi
 const processQueue = (error: any = null, token: string | null = null) => {
   failedQueue.forEach((promise) => {
     if (error) {
       promise.reject(error);
     } else {
-      // ✅ Refresh thành công - resolve tất cả requests trong queue
-      // Token không cần thiết vì resolve function tự retry request với token mới từ cookies
       promise.resolve(token || "");
     }
   });
   failedQueue = [];
 };
 
+// --- HÀM LOGOUT DUY NHẤT ---
+// Chỉ cho phép chạy 1 lần nhờ biến isLoggingOut
+const forceLogout = (title: string, description: string) => {
+  if (isLoggingOut) return; // Nếu đang logout rồi thì DỪNG NGAY
+  isLoggingOut = true; // Khóa lại
+
+  // Hủy toàn bộ request đang chờ để tránh lỗi dây chuyền
+  processQueue(new Error("Session expired, forcing logout..."));
+
+  // Hiển thị thông báo 1 lần duy nhất
+  toast.error(title, {
+    description: description,
+    duration: 4000,
+  });
+
+  // Đợi user đọc xong mới logout
+  setTimeout(() => {
+    logout();
+    // Sau khi redirect/reload, trang web được tải lại nên isLoggingOut tự reset
+  }, 2000);
+};
+
 // ==================== REQUEST INTERCEPTOR ====================
 instance.interceptors.request.use(
   (config) => {
+    // Nếu đang logout, treo request luôn, không cho gửi đi để tránh lỗi
+    if (isLoggingOut) {
+      return new Promise(() => {});
+    }
+
     const isPublic = isPublicEndpoint(config.url);
 
-    // Debug: Xử lý cảnh báo params và URL có query string
-    if (config.url?.includes('/homepage/banners/active/by-page')) {
-      if (config.url.includes('?') && config.params) {
-        console.warn('[AXIOS INTERCEPTOR] WARNING: URL đã có query string nhưng vẫn có params object!', {
-          url: config.url,
-          params: config.params,
-        });
-        // Xóa params để tránh axios merge
+    // Xử lý warning query string (giữ nguyên code của bạn)
+    if (config.url?.includes("/homepage/banners/active/by-page")) {
+      if (config.url.includes("?") && config.params) {
         config.params = undefined;
       }
     }
@@ -123,19 +134,11 @@ instance.interceptors.request.use(
       url: config.url,
       method: config.method,
       isPublic,
-      params: config.params, // Log params để debug
     });
-
-    if (isPublic) {
-      debugLog("⚪ Public endpoint");
-    } else {
-      debugLog("🔐 Protected endpoint - Backend sẽ đọc token từ cookies");
-    }
 
     return config;
   },
   (error) => {
-    debugError("❌ REQUEST ERROR", error);
     return Promise.reject(error);
   }
 );
@@ -143,18 +146,28 @@ instance.interceptors.request.use(
 // ==================== RESPONSE INTERCEPTOR ====================
 instance.interceptors.response.use(
   (response: AxiosResponse): AxiosResponse => {
+    // Nếu đang logout, chặn luôn response thành công (hiếm khi xảy ra nhưng để chắc chắn)
+    if (isLoggingOut) return response;
+
     debugSuccess("✅ RESPONSE SUCCESS", {
       url: response.config.url,
       status: response.status,
     });
 
-    if (response.config.responseType === 'blob' || response.data instanceof Blob) {
+    if (
+      response.config.responseType === "blob" ||
+      response.data instanceof Blob
+    ) {
       return response.data;
     }
 
-    // Kiểm tra response có error code không (backend trả error nhưng HTTP 200)
     const apiResponse = response.data as ApiResponse<any>;
-    if (apiResponse && typeof apiResponse === 'object' && apiResponse.code && apiResponse.code !== 1000) {
+    if (
+      apiResponse &&
+      typeof apiResponse === "object" &&
+      apiResponse.code &&
+      apiResponse.code !== 1000
+    ) {
       debugLog("⚠️ Response có error code", {
         code: apiResponse.code,
         message: apiResponse.message,
@@ -164,180 +177,106 @@ instance.interceptors.response.use(
     return response.data;
   },
   async (error) => {
-    console.log("🚨 RESPONSE ERROR", error);
-    debugError("📥 RESPONSE ERROR", {
-      url: error.config?.url,
-      status: error.response?.status,
-      message: error.message,
-      errorCode: error.response?.data?.code,
-    });
-
     const originalRequest = error.config;
 
-    // Xử lý lỗi khi response là blob (file download)
-    if (error.config?.responseType === 'blob' && error.response?.data instanceof Blob) {
+    // ⛔ CHỐT CHẶN QUAN TRỌNG: Nếu đang logout, hủy mọi xử lý lỗi tiếp theo
+    if (isLoggingOut) {
+      return new Promise(() => {}); // Trả về promise treo để không báo lỗi ra UI
+    }
+
+    console.log("🚨 RESPONSE ERROR", error?.response?.status);
+
+    // Xử lý lỗi Blob (giữ nguyên logic của bạn)
+    if (
+      error.config?.responseType === "blob" &&
+      error.response?.data instanceof Blob
+    ) {
       try {
         const text = await error.response.data.text();
         const errorData = JSON.parse(text);
-        // Tạo error mới với message từ JSON
-        const customError = new Error(errorData.message || 'Lỗi không xác định');
-        (customError as any).response = {
-          ...error.response,
-          data: errorData,
-        };
+        const customError = new Error(
+          errorData.message || "Lỗi không xác định"
+        );
+        (customError as any).response = { ...error.response, data: errorData };
         return Promise.reject(customError);
       } catch {
-        // Không phải JSON, trả về error gốc
+        // ignore
       }
     }
 
-    // Lấy error code từ response
-    const errorCode = error.response?.data?.code;
-
-    // ==================== XỬ LÝ 401 - ACCESS TOKEN HẾT HẠN ====================
+    // --- XỬ LÝ 401 (TOKEN HẾT HẠN) ---
     const isAccessTokenExpired =
       error.response?.status === 401 &&
       !originalRequest.url.includes("/auth/refresh") &&
-      !originalRequest._retry; // Tránh infinite retry loop
+      !originalRequest._retry;
 
     if (isAccessTokenExpired) {
-      debugLog(
-        "🔄 Phát hiện AccessToken hết hạn (401) - Bắt đầu refresh token...",
-        {
-          status: error.response?.status,
-          errorCode: errorCode,
-        }
-      );
-
-      // Đánh dấu request này đã được retry
-      originalRequest._retry = true;
-
-      // ===== QUEUE MECHANISM: Nếu đang refresh, queue request này =====
       if (isRefreshing) {
-        debugLog("⏳ Đã có process đang refresh token, thêm vào queue...");
+        // Nếu đang có request khác refresh, xếp hàng chờ
         return new Promise((resolve, reject) => {
           failedQueue.push({
-            resolve: () => {
-              debugLog("✅ Nhận token mới từ queue, retry request", {
-                url: originalRequest.url,
-              });
-              // Retry request gốc
-              resolve(instance(originalRequest));
-            },
-            reject: (err: any) => {
-              debugError("❌ Queue rejected", { url: originalRequest.url });
-              reject(err);
-            },
+            resolve: () => resolve(instance(originalRequest)),
+            reject: (err) => reject(err),
           });
         });
       }
 
-      // ===== BẮT ĐẦU REFRESH TOKEN =====
-      debugLog("🔄 Bắt đầu gọi API refresh token...");
+      originalRequest._retry = true;
       isRefreshing = true;
 
       try {
-        // Gọi API refresh token - Backend tự đọc refreshToken từ cookies
+        // Gọi Refresh Token
         await authService.refreshToken({ refreshToken: "" });
-        console.log("✅ Refresh token thành công - Đang retry request gốc...");
+        console.log("✅ Refresh token thành công");
 
-        debugSuccess("✅ Refresh token THÀNH CÔNG! Backend đã set cookies mới");
-
-        // 🔔 Thông báo toàn app (bao gồm WebSocketProvider) rằng accessToken đã được làm mới
         if (typeof window !== "undefined") {
           window.dispatchEvent(new Event("auth-token-refreshed"));
         }
 
-        // ===== NOTIFY TẤT CẢ REQUESTS ĐANG CHỜ =====
-        debugLog("📢 Notify tất cả requests trong queue...");
+        // Xả hàng đợi
         processQueue(null, "success");
 
-        // ✅ Retry request gốc với token mới
-        // Request sẽ được retry với cùng data, user không mất dữ liệu đã nhập
-        debugLog("🔄 Retry request gốc với token mới", {
-          url: originalRequest.url,
-          method: originalRequest.method,
-        });
-
-        // Retry request gốc - data vẫn được giữ nguyên
+        // Retry request gốc
         return instance(originalRequest);
       } catch (refreshError: any) {
-        console.log("refreshError", refreshError);
-        debugError("❌ Refresh token THẤT BẠI", {
-          status: refreshError?.response?.status,
-          message: refreshError?.message,
-          errorCode: refreshError?.response?.data?.code,
-        });
-
-        // Notify tất cả requests trong queue về lỗi
+        // --- REFRESH THẤT BẠI ---
+        console.log("❌ Refresh token thất bại", refreshError);
+        
+        // Hủy các request đang chờ
         processQueue(refreshError, null);
 
-        // Kiểm tra nếu refresh token cũng hết hạn
-        // Backend trả về: HTTP 401 hoặc error code 2011 (REFRESH_TOKEN_EXPIRED)
-        const refreshErrorCode = refreshError?.response?.data?.code;
-        const refreshErrorStatus = refreshError?.response?.status;
+        const refreshCode = refreshError?.response?.data?.code;
+        const refreshStatus = refreshError?.response?.status;
 
-        const isRefreshTokenExpired =
-          refreshErrorStatus === 401 ||
-          refreshErrorCode === 2011; // REFRESH_TOKEN_EXPIRED
+        // Kiểm tra nguyên nhân lỗi để thông báo
+        const isExpired = refreshStatus === 401 || refreshCode === 2011;
 
-        if (isRefreshTokenExpired) {
-          debugError("⚠️ Refresh token đã hết hạn (401 hoặc code 2011) - LOGOUT!");
-          console.log("Refresh token đã hết hạn - LOGOUT!");
-
-         toast.error("Phiên đăng nhập đã hết hạn", {
-            description: "Vui lòng đăng nhập lại để tiếp tục sử dụng.",
-            duration: 5000,
-          });
-
-          setTimeout(() => {
-            logout();
-          }, 2000); // Delay để user kịp đọc notification
-
-          return Promise.reject(refreshError);
+        if (isExpired) {
+          // Gọi hàm forceLogout (nó đã có cơ chế chặn spam)
+          forceLogout(
+            "Phiên đăng nhập hết hạn",
+            "Vui lòng đăng nhập lại để tiếp tục sử dụng."
+          );
+        } else {
+          // Các lỗi khác (500, Network Error...) cũng logout để an toàn
+          forceLogout(
+            "Lỗi xác thực",
+            "Không thể làm mới phiên đăng nhập. Vui lòng đăng nhập lại."
+          );
         }
-
-        debugError("⚠️ Refresh token thất bại với lỗi khác - LOGOUT!");
-        
-        toast.error("Lỗi xác thực", {
-          description: "Không thể làm mới phiên đăng nhập. Vui lòng đăng nhập lại.",
-          duration: 5000,
-        });
-
-        setTimeout(() => {
-          logout();
-        }, 2000);
 
         return Promise.reject(refreshError);
       } finally {
-        // Reset flag
         isRefreshing = false;
       }
     }
 
-    // ✅ Transform error sang ApiError trước khi reject
+    // Transform lỗi thông thường
     const apiError = handleApiError(error);
-
-    // Log chi tiết error với error code
-    if (process.env.NODE_ENV === "development") {
-      // console.error("🚨 API Error Detail:", {
-      //   code: apiError.code,
-      //   message: apiError.message,
-      //   url: error.config?.url,
-      //   method: error.config?.method,
-      //   status: error.response?.status,
-      // });
-    }
-
     return Promise.reject(apiError);
   }
 );
 
-/**
- * Hàm wrapper cho request
- * @param config Cấu hình Axios
- * @returns Promise<T>
- */
 export async function request<T>(config: AxiosRequestConfig): Promise<T> {
   return instance(config) as Promise<T>;
 }

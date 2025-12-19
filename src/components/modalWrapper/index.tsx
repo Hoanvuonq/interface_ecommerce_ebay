@@ -41,7 +41,7 @@ export const ModalWrapper: React.FC<any> = ({
       <div className="relative bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-300">
         
         {/* Header */}
-        <div className="p-4 sm:p-6 border-b border-gray-100 flex items-center justify-between flex-shrink-0 bg-white">
+        <div className="p-4 sm:p-6 border-b border-gray-100 flex items-center justify-between shrink-0 bg-white">
           <div className="flex-1 min-w-0 mr-4">
             {title}
           </div>

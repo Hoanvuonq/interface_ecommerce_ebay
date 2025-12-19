@@ -2,7 +2,7 @@
 import { ReactNode, MouseEvent } from "react";
 
 export interface ButtonFieldProps {
-    type?: "primary" | "secondary" | "danger" | "text";
+    type?: "primary" | "secondary" | "danger" | "text" | "login" | "register";
     htmlType?: "button" | "submit" | "reset";
     size?: "small" | "middle" | "large";
     block?: boolean;
@@ -12,4 +12,5 @@ export interface ButtonFieldProps {
     children: ReactNode;
     onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
     className?: string;
+    form?: string;
 }

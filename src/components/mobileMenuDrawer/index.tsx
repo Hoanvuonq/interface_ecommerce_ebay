@@ -74,7 +74,7 @@ export const MobileMenuDrawer = ({ isOpen, onClose }: DrawerProps) => {
                                         onClick={onClose}
                                         className="flex items-center gap-4 py-3 px-3 text-gray-700 hover:bg-pink-50 hover:text-pink-600 rounded-lg transition-colors font-medium text-base"
                                     >
-                                        <IconComponent size={20} className="flex-shrink-0" />
+                                        <IconComponent size={20} className="shrink-0" />
                                         {item.label}
                                     </Link>
                                 </li>

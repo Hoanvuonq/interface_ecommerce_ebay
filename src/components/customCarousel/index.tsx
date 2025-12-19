@@ -96,7 +96,7 @@ export const CustomCarousel: React.FC<CustomCarouselProps> = ({
                 {banners.map((banner) => (
                     <div 
                         key={banner.id} 
-                        className="w-full flex-shrink-0 h-full"
+                        className="w-full shrink-0 h-full"
                     >
                         <Link href={banner.href} className="block h-full">
                             <img

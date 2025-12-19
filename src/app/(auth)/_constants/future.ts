@@ -94,7 +94,6 @@ export const AUTH_PANEL_DATA: Record<AuthPanelType , PanelContent> = {
             title: "Chào mừng trở lại! 👋",
             description: "Đăng nhập để quản lý cửa hàng của bạn và tiếp tục mua sắm những sản phẩm tuyệt vời nhất",
         },
-        // BỔ SUNG CÁC THUỘC TÍNH BỊ THIẾU
         logoIcon: FaShoppingBag,
         logoGradientFrom: 'from-blue-500',
         logoGradientTo: 'to-purple-600',

@@ -160,7 +160,7 @@ export function VoucherList({ product }: VoucherListProps) {
         >
             <CustomTag
                 colorClass="bg-orange-500 text-white"
-                className={cn("m-0 font-bold flex-shrink-0", isModal ? "text-base" : "text-sm")}
+                className={cn("m-0 font-bold shrink-0", isModal ? "text-base" : "text-sm")}
             >
                 {formatDiscount(voucher)}
             </CustomTag>

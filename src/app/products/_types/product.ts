@@ -66,3 +66,4 @@ export interface PricingProps {
   priceAfterVoucher?: number | null;
   formatPrice: (price: number) => string;
 }
+

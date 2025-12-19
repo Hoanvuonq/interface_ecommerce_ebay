@@ -370,7 +370,7 @@ const cartSlice = createSlice({
       })
       .addCase(addToCart.fulfilled, (state, action) => {
         state.loading = false;
-        state.cart = mergeSelectionState(action.payload, state.cart); // ✅ Update cart với data mới từ API
+        state.cart = mergeSelectionState(action.payload, state.cart); 
         toast.success("Đã thêm vào giỏ hàng");
       })
       .addCase(addToCart.rejected, (state, action) => {

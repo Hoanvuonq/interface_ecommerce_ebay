@@ -4,7 +4,7 @@ export const CustomVideoModal: React.FC<any> = ({ open, videoUrl, onCancel }) =>
   if (!open || !videoUrl) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-80 z-[1050] flex justify-center items-center p-4">
+    <div className="fixed inset-0 bg-black bg-opacity-80 z-1050 flex justify-center items-center p-4">
       <div className="relative w-full max-w-4xl max-h-[90vh]">
         <button
           onClick={onCancel}

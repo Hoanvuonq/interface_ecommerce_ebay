@@ -9,7 +9,7 @@ const ShopBrand = ({ shop }: { shop: any }) => (
     <CustomAvatar
       size={64}
       src={shop?.logoUrl}
-      className="border-2 border-orange-100 shadow-sm flex-shrink-0"
+      className="border-2 border-orange-100 shadow-sm shrink-0"
     >
       {!shop?.logoUrl && shop?.shopName?.[0]}
     </CustomAvatar>
@@ -99,7 +99,7 @@ export const InfomationShop = ({
   return (
     <CardComponents className="!p-6 border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
       <div className="flex flex-col gap-6 md:flex-row md:items-center">
-        <div className="flex flex-col gap-4 flex-shrink-0 w-full md:w-auto">
+        <div className="flex flex-col gap-4 shrink-0 w-full md:w-auto">
           <ShopBrand shop={product.shop} />
           <ShopActions
             shopId={product.shop.shopId}

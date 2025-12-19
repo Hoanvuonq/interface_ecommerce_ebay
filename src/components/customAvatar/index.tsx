@@ -9,7 +9,7 @@ export const CustomAvatar: React.FC<any> = ({ size, src, icon: Icon, className, 
     return (
         <div
             className={cn(
-                "rounded-full flex items-center justify-center overflow-hidden bg-gray-200 flex-shrink-0",
+                "rounded-full flex items-center justify-center overflow-hidden bg-gray-200 shrink-0",
                 currentSize,
                 className
             )}

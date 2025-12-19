@@ -90,9 +90,8 @@ export const ProductPurchaseActions: React.FC<ProductPurchaseActionsProps> = ({
                 )}
             </div>
 
-            {/* 4. Action Card - Sticky Bottom on Mobile */}
             <div className="sticky bottom-4 z-10 sm:static sm:z-auto">
-                <div className="rounded-2xl border border-gray-100 bg-white/80 backdrop-blur-md p-4 shadow-2xl space-y-4 ring-1 ring-black/[0.03]">
+                <div className="rounded-2xl border border-gray-100 bg-white/80 backdrop-blur-md p-4 shadow-2xl space-y-4 ring-1 ring-black/3">
                     {selectedVariant && (
                         <div className="flex items-center justify-between px-1">
                             <div className="text-[12px] text-gray-500 uppercase font-medium">

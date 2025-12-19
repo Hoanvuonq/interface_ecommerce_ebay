@@ -108,7 +108,6 @@ export function RelatedProducts({ shopId, excludeProductId }: RelatedProductsPro
       className="border-none shadow-sm hover:shadow-md transition-all duration-300 bg-white overflow-hidden"
       bodyClassName="relative p-0" 
     >
-      {/* HEADER */}
       <div className="flex items-center gap-3 px-6 pt-6 mb-4">
         <div className="p-2 bg-blue-50 text-blue-600 rounded-xl">
           <FiShoppingBag size={20} />
@@ -119,7 +118,6 @@ export function RelatedProducts({ shopId, excludeProductId }: RelatedProductsPro
       </div>
 
       <div className="relative group/nav px-4 pb-6">
-        {/* NÚT ĐIỀU HƯỚNG TRÁI */}
         <button
           onClick={() => scroll("left")}
           className={cn(
@@ -136,7 +134,7 @@ export function RelatedProducts({ shopId, excludeProductId }: RelatedProductsPro
           className="flex gap-4 overflow-x-auto pb-4 hide-scrollbar scroll-smooth snap-x"
         >
           {products.map((p) => (
-            <div key={p.id} className="shrink-0 w-[180px] sm:w-[200px] md:w-[220px] snap-start transition-transform duration-300 hover:-translate-y-1">
+            <div key={p.id} className="shrink-0 w-45 sm:w-50 md:w-55 snap-start transition-transform duration-300 hover:-translate-y-1">
               <ProductCard product={p} />
             </div>
           ))}

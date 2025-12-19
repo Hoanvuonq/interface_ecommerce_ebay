@@ -4,7 +4,7 @@ import { ToastProvider } from "@/hooks/useToastProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { JSX, ReactNode } from "react";
 import { Header } from "@/layouts/header/_pages";
-import { Footer } from "@/layouts/footer";
+import { Footer } from "@/layouts/footer/";
 import "./globals.css";
 import { usePathname } from "next/navigation";
 
@@ -23,9 +23,7 @@ const queryClient = new QueryClient({
 
 const ConditionalLayout: React.FC<ITemplateProps> = ({ children }) => {
   const pathname = usePathname();
-  
-  const EXCLUDED_PATHS = ["/login", "/register", "/forgot-password"];
-  
+  const EXCLUDED_PATHS = ["/login", "/register", "/forgot-password", "/account/verify"];
   const isAuthPage = EXCLUDED_PATHS.includes(pathname);
 
   

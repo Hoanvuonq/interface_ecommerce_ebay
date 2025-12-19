@@ -66,7 +66,7 @@ export default function CategoryBanner({ categorySlug, categoryId, className = '
                 href={banner.href || '#'}
                 className="group relative block overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:shadow-2xl banner-hover-effect"
             >
-                <div className="relative aspect-[16/5] w-full overflow-hidden bg-gradient-to-br from-orange-400 via-rose-500 to-pink-600">
+                <div className="relative aspect-16/5 w-full overflow-hidden bg-linear-to-br from-orange-400 via-rose-500 to-pink-600">
                     {imageUrl ? (
                         <img
                             src={imageUrl}
@@ -75,7 +75,6 @@ export default function CategoryBanner({ categorySlug, categoryId, className = '
                             loading="lazy"
                         />
                     ) : (
-                        // Fallback gradient banner with text
                         <div className="absolute inset-0 flex items-center justify-center px-8">
                             <div className="text-center text-white">
                                 <h2 className="text-4xl md:text-5xl font-black uppercase leading-tight drop-shadow-lg">

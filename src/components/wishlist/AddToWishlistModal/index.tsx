@@ -183,7 +183,7 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
         {/* 1. Phiên bản sản phẩm */}
         <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
           <FieldLabel label="Chọn phiên bản" required />
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-h-[300px] overflow-y-auto pr-1 custom-scrollbar">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-h-75 overflow-y-auto pr-1 custom-scrollbar">
             {product.variants?.map((v: any) => {
               const isSelected = selectedVariantId === v.id;
               const img =
@@ -234,8 +234,6 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
         </div>
 
         <div className="h-px bg-gray-100" />
-
-        {/* 2. Chọn Wishlist */}
         <div className="space-y-4">
           {!showCreateForm ? (
             <div className="flex items-end gap-2">
@@ -264,7 +262,7 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
               </div>
               <CustomButton
                 type="dashed"
-                className="!h-[46px] !w-[46px] !p-0 rounded-xl border-orange-200 text-orange-500"
+                className="h-11.5! w-11.5! p-0! rounded-xl border-orange-200 text-orange-500"
                 onClick={() => setShowCreateForm(true)}
                 icon={<Plus size={24} />}
               />
@@ -330,7 +328,7 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
                   <div className="flex gap-2">
                     <CustomButton
                       variant="dark"
-                      className="flex-1 !h-8 !text-[10px] !rounded-lg shadow-md"
+                      className="flex-1 h-8! text-[10px]! rounded-lg! shadow-md"
                       loading={creatingWishlist}
                       onClick={async () => {
                         if (!formData.newWishlistName)
@@ -348,7 +346,7 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
                       Xác nhận
                     </CustomButton>
                     <CustomButton
-                      className="flex-1 !h-8 !text-[10px] !rounded-lg"
+                      className="flex-1 h-8! text-[10px]! rounded-lg!"
                       onClick={() => setShowCreateForm(false)}
                     >
                       Hủy
@@ -443,7 +441,7 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
         <div className="sticky bottom-0 bg-white/90 backdrop-blur-md pt-4 border-t border-gray-50 flex gap-3 z-10">
           <CustomButton
             onClick={onCancel}
-            className="flex-1 !rounded-2xl !h-12 font-bold text-gray-500"
+            className="flex-1 rounded-2xl! h-12! font-bold text-gray-500"
           >
             Hủy
           </CustomButton>
@@ -451,7 +449,7 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
             type="primary"
             htmlType="submit"
             loading={submitting || wishlistLoading}
-            className="flex-[2] !rounded-2xl !h-12 bg-gradient-to-r from-orange-500 to-amber-600 shadow-lg shadow-orange-200 border-0 font-black uppercase tracking-widest text-sm"
+            className="flex-2 rounded-2xl! h-12! bg-linear-to-r from-orange-500 to-amber-600 shadow-lg shadow-orange-200 border-0 font-black uppercase tracking-widest text-sm"
             icon={<Heart size={18} fill="white" />}
           >
             Thêm vào yêu thích

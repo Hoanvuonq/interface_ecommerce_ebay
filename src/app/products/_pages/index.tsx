@@ -35,14 +35,12 @@ export const ProductScreen = () => {
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [activeTab, setActiveTab] = useState<TabView>("all");
   
-  // Stats thực tế nên được lấy từ API hoặc ProductList trả về
   const [stats, setStats] = useState({
     total: 0,
     featured: 156,
     newProducts: 234,
   });
 
-  // Đồng bộ search params từ URL vào state filters
   useEffect(() => {
     const keyword = searchParams.get("keyword") || undefined;
     const categoryId = searchParams.get("categoryId") || undefined;
@@ -54,10 +52,8 @@ export const ProductScreen = () => {
     }));
   }, [searchParams]);
 
-  // Handler khi nhấn vào Tag phổ biến
   const handleTagClick = (tag: string) => {
     setFilters((prev) => ({ ...prev, keyword: tag }));
-    // Cuộn lên đầu danh sách sản phẩm nếu cần
   };
 
   const tabItems = [
@@ -87,7 +83,6 @@ export const ProductScreen = () => {
             </div>
           </div>
 
-          {/* Mobile Filter Toggle */}
           <div className="lg:hidden mb-6">
             <CustomButton
               variant="dark"
@@ -100,7 +95,6 @@ export const ProductScreen = () => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-4 xl:grid-cols-5 gap-8">
-            {/* Sidebar Desktop */}
             <div className="lg:col-span-1 xl:col-span-1 hidden lg:block space-y-6">
               <div className="sticky top-24 space-y-6">
                 <CategorySidebar />
@@ -134,7 +128,7 @@ export const ProductScreen = () => {
                   </div>
                 </CardComponents>
 
-                <div className="bg-gradient-to-br from-orange-500 to-red-600 rounded-3xl p-6 text-white shadow-xl shadow-orange-200/50 relative overflow-hidden group">
+                <div className="bg-linear-to-br from-orange-500 to-red-600 rounded-3xl p-6 text-white shadow-xl shadow-orange-200/50 relative overflow-hidden group">
                    <div className="relative z-10">
                       <Heart className="w-10 h-10 mb-4 opacity-80 group-hover:scale-110 transition-transform" />
                       <h3 className="font-bold text-lg mb-1 text-white">Hỗ trợ mua sắm</h3>
@@ -148,9 +142,7 @@ export const ProductScreen = () => {
               </div>
             </div>
 
-            {/* Main Content Area */}
             <div className="lg:col-span-3 xl:col-span-4 space-y-6">
-              {/* Mobile Filter Dropdown */}
               {showMobileFilters && (
                 <div className="lg:hidden animate-in slide-in-from-top-4 duration-300">
                   <CardComponents className="p-4 mb-4 border-orange-100 bg-orange-50/30">
@@ -162,7 +154,6 @@ export const ProductScreen = () => {
                 </div>
               )}
 
-              {/* Tabs navigation */}
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <div className="flex overflow-x-auto no-scrollbar border-b border-gray-100">
                   {tabItems.map((item) => (
@@ -182,7 +173,6 @@ export const ProductScreen = () => {
                   ))}
                 </div>
                 
-                {/* Product Filters Area (Inside Card or Below) */}
                 <div className="p-4 sm:p-6 bg-white">
                   {activeTab === "all" && (
                     <ProductFilters
@@ -196,8 +186,7 @@ export const ProductScreen = () => {
                 </div>
               </div>
 
-              {/* Final Product List */}
-              <div className="min-h-[400px]">
+              <div className="min-h-100">
                  <ProductList 
                     filters={filters} 
                     endpoint={activeTab} 

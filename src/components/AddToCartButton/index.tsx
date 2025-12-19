@@ -58,7 +58,6 @@ export const AddToCartButton: React.FC<IButtonProps> = ({
           try {
               const result = await quickAddToCart(variantId, quantity);
               if (result.success) {
-                  toast.success(`Đã thêm vào giỏ hàng`);
               } else {
                   toast.error(result.error || 'Lỗi thêm vào giỏ');
               }

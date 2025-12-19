@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Passero+One&family=Shrikhand&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -51,7 +53,8 @@
 }
 body {
   background: var(--background);
-  color: var(--foreground);
+  color: #000;
+    font-family: "Josefin Sans", sans-serif;
 }
 
 .all-center {
@@ -63,6 +66,7 @@ body {
 .z-9999 {
   z-index: 9999;
 }
+
 
 .shrikhand-regular {
   font-family: "Shrikhand", serif;
@@ -162,4 +166,7 @@ body {
 
 .shadow-custom {
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+.shadow-futureBox {
+ box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px, rgba(9, 30, 66, 0.13) 0px 0px 1px 1px;
 }

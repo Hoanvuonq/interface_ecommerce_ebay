@@ -17,7 +17,7 @@ const Pricing: React.FC<PricingProps> = ({
     const hasDiscount = comparePrice && comparePrice > primaryPrice;
 
     return (
-        <div className="relative rounded-2xl border border-red-100 bg-gradient-to-br from-red-50 via-orange-50 to-white p-5 shadow-sm z-10">
+        <div className="relative rounded-2xl border border-red-100 bg-linear-to-br from-red-50 via-orange-50 to-white p-5 shadow-sm z-10">
             <div className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none -z-10">
                 <div className="absolute -top-6 -right-6 w-24 h-24 bg-orange-200/20 rounded-full blur-2xl" />
             </div>

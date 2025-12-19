@@ -1,5 +1,4 @@
 "use client";
-
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { CustomButton } from "@/components/button"; 
@@ -9,7 +8,6 @@ import { cn } from "@/utils/cn";
 
 export default function NotFoundPage() {
   const theme = useSelector((state: RootState) => state.theme.name);
-
   return (
     <div
       className={cn(
@@ -37,7 +35,7 @@ export default function NotFoundPage() {
           <Link href="/">
             <CustomButton
               variant="dark"
-              className="!h-12 !px-8 !rounded-2xl shadow-xl shadow-orange-200 uppercase tracking-widest font-black"
+              className="h-12! px-8! rounded-2xl! shadow-xl shadow-orange-200 uppercase tracking-widest font-black"
               icon={<MoveLeft size={18} />}
             >
               Quay về trang chủ

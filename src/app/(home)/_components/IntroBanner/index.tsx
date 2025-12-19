@@ -7,17 +7,12 @@ import { useHomepageBannerContext } from "@/app/(home)/_context/HomepageBannerCo
 import { BannerResponseDTO } from "../../_types/banner.dto";
 import { resolveBannerImageUrl } from "@/utils/products/media.helpers";
 import { cn } from "@/utils/cn";
+import { GRADIENT_PRESETS } from "@/constants/section";
 
 const INTRO_BANNER_STORAGE_KEY = "homepageIntroBannerDismissedAt";
 const INTRO_BANNER_EXPIRATION_MS = 12 * 60 * 60 * 1000; 
 
-const GRADIENT_PRESETS = [
-  { gradient: "from-blue-300 via-cyan-200 to-teal-300" },
-  { gradient: "from-orange-400 via-pink-400 to-red-500" },
-  { gradient: "from-purple-400 via-indigo-400 to-blue-500" },
-  { gradient: "from-green-400 via-emerald-300 to-teal-400" },
-  { gradient: "from-pink-400 via-rose-300 to-red-400" },
-];
+
 
 const mapBannerToDisplay = (banner: BannerResponseDTO, index: number) => {
   const preset = GRADIENT_PRESETS[index % GRADIENT_PRESETS.length];
@@ -139,15 +134,15 @@ export default function IntroBanner() {
 
   return (
     <div
-      className="fixed inset-0 z-[2000] flex items-center justify-center"
+      className="fixed inset-0 z-2000 flex items-center justify-center"
       style={{ width: "100vw", height: "100vh" }}
     >
       <div className="absolute inset-0 bg-black/20" onClick={handleDismiss} />
-      <div className="relative z-[2100] flex items-center justify-center -mt-32 md:-mt-40">
+      <div className="relative z-2100 flex items-center justify-center -mt-32 md:-mt-40">
         <button
           onClick={handleDismiss}
           className={cn(
-            "absolute -top-3 -right-3 z-[2200] bg-white/95 hover:bg-white",
+            "absolute -top-3 -right-3 z-2200 bg-white/95 hover:bg-white",
             "rounded-full w-10 h-10 flex items-center justify-center",
             "shadow-lg border border-gray-200 hover:scale-110 transition-all"
           )}
@@ -200,7 +195,7 @@ export default function IntroBanner() {
             </picture>
           ) : (
             <div className={cn(
-                "w-[320px] h-[320px] rounded-3xl flex flex-col items-center justify-center text-white bg-gradient-to-br shadow-2xl p-8",
+                "w-[320px] h-80 rounded-3xl flex flex-col items-center justify-center text-white bg-linear-to-br shadow-2xl p-8",
                 banner.gradient,
                 "dark:ring-2 dark:ring-white/20"
               )}>

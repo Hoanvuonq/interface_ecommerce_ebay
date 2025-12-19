@@ -30,37 +30,36 @@ export const InputField = forwardRef<HTMLInputElement | HTMLTextAreaElement, Inp
 
         const value = propValue !== undefined ? propValue : localValue;
 
-        const isPassword = type === "password";
+        const isPasswordType = type === "password";
+        const inputType = isPasswordType ? (showPassword ? "text" : "password") : type;
 
         const baseInputClasses = cn(
             "w-full px-4 py-2.5 text-base rounded-lg border transition-all duration-200",
-            "focus:outline-none focus:ring-2 focus:ring-pink-500",
-            disabled ? "bg-gray-100 text-gray-500 cursor-not-allowed" : "bg-white dark:bg-slate-700 text-gray-800 dark:text-gray-200 border-gray-300 dark:border-slate-600",
+            "focus:outline-none focus:ring-2 focus:ring-orange-500",
+            disabled
+                ? "bg-gray-100 text-gray-500 cursor-not-allowed"
+                : "bg-white dark:bg-slate-700 text-gray-800 dark:text-gray-200 border-gray-300 dark:border-slate-600",
             errorMessage && "border-red-500 focus:border-red-500 focus:ring-red-500/50",
-            isPassword && "pr-12",
+            isPasswordType && "pr-12", 
             inputClassName
         );
 
         const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             const newValue = e.target.value;
-
             if (propValue === undefined) {
                 setLocalValue(newValue);
             }
-
             if (onPropChange) {
                 onPropChange(e);
             }
         };
 
-        const togglePasswordVisibility = () => {
-            setShowPassword(!showPassword);
+        const togglePasswordVisibility = (e: React.MouseEvent<HTMLButtonElement>) => {
+            e.preventDefault(); 
+            setShowPassword((prev) => !prev);
         };
 
         const renderInput = () => {
-            // Xác định type thực tế dựa trên state showPassword
-            const inputType = isPassword ? (showPassword ? "text" : "password") : type;
-
             return (
                 <input
                     ref={ref as React.Ref<HTMLInputElement>}
@@ -82,7 +81,7 @@ export const InputField = forwardRef<HTMLInputElement | HTMLTextAreaElement, Inp
                 {label && (
                     <label
                         htmlFor={name}
-                        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                        className="block text-sm font-fold text-black dark:text-gray-300 mb-1"
                     >
                         {label}
                         {rules.some((r: any) => r.required) && (
@@ -94,27 +93,23 @@ export const InputField = forwardRef<HTMLInputElement | HTMLTextAreaElement, Inp
                 <div className="relative">
                     {renderInput()}
 
-                    {/* Nút Ẩn/Hiện mật khẩu */}
-                    {isPassword && !disabled && (
+                    {isPasswordType && !disabled && (
                         <button
                             type="button"
                             onClick={togglePasswordVisibility}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-gray-400 hover:text-pink-500 focus:outline-none transition-colors"
-                            tabIndex={-1} 
+                            className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-gray-400 hover:text-orange-500 focus:outline-none transition-colors z-10 cursor-pointer"
+                            tabIndex={-1}
                         >
                             {showPassword ? (
-                                <Eye size={20} strokeWidth={2} />
-                            ) : (
-                                
                                 <EyeOff size={20} strokeWidth={2} />
+                            ) : (
+                                <Eye size={20} strokeWidth={2} />
                             )}
                         </button>
                     )}
 
-                    {maxLength && !isPassword && (
-                        <span
-                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-400 dark:text-gray-500"
-                        >
+                    {maxLength && !isPasswordType && (
+                        <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-400 dark:text-gray-500">
                             {`${value ? String(value).length : 0}/${maxLength}`}
                         </span>
                     )}

@@ -223,7 +223,7 @@ export const CategoriesSection: React.FC = () => {
                       );
 
                       const imageWrapperClasses = cn(
-                        "w-16 h-16 rounded-full flex items-center justify-center overflow-hidden flex-shrink-0 mb-2",
+                        "w-16 h-16 rounded-full flex items-center justify-center overflow-hidden shrink-0 mb-2",
                         "border border-(--color-border-soft)]",
                         colors.bg,
                         !imageUrl && !category.imageBasePath && colors.text

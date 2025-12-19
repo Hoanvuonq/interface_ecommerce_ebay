@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-// Import các icon Lucide
+import Image from "next/image";
 import {
   Facebook,
   Twitter,
@@ -11,6 +11,7 @@ import {
   Phone,
   Mail,
   MapPin,
+  ArrowRight,
 } from "lucide-react";
 
 import {
@@ -18,149 +19,116 @@ import {
   CUSTOMER_SERVICE_LINKS,
   LEGAL_LINKS,
 } from "@/constants/footer";
-import Image from "next/image";
+import { cn } from "@/utils/cn"; 
+import { SocialLink } from "./_components/socialLink";
+import { FooterHeader } from "./_components/footerHeader";
+import { BaseProps } from "./_types/footer";
+import { FooterLink } from "./_components/footerLink";
+import { ContactItem } from "./_components/contactItem";
+
+
 
 export const Footer: React.FC = () => {
-  const renderLinkList = (links: { href: string; label: string }[]) => (
-    <ul className="space-y-2 text-sm sm:text-base">
-      {links.map((link) => (
-        <li key={link.href}>
-          <Link
-            href={link.href}
-            className="text-gray-300 hover:text-white transition-colors"
-          >
-            {link.label}
-          </Link>
-        </li>
-      ))}
-    </ul>
-  );
-
   return (
-    <footer className="bg-gray-900 text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-          <div>
-            <Link href="/" className="flex items-center h-10">
+    <footer className="bg-slate-950 text-slate-300 border-t border-slate-900 font-sans">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 mb-16">
+          <div className="lg:col-span-4 space-y-6">
+            <Link href="/" className="inline-block">
               <Image
                 src="/icon/final.svg"
                 alt="CaLaTha Logo"
                 width={160}
-                height={48}
-                className="h-full w-auto object-contain"
-                style={{ maxHeight: "60px" }}
+                height={50}
+                className="h-12 w-auto object-contain brightness-0 invert"
                 priority
               />
             </Link>
-            <p className="text-gray-300 text-sm sm:text-base mb-3 sm:mb-4">
-              Nền tảng thương mại điện tử hàng đầu Việt Nam, mang đến trải
-              nghiệm mua sắm tuyệt vời với hàng triệu sản phẩm chất lượng.
+            <p className="text-slate-400 text-sm leading-7 pr-4 text-justify">
+              Nền tảng thương mại điện tử hàng đầu Việt Nam. Chúng tôi cam kết mang đến trải nghiệm mua sắm an toàn, tiện lợi với hàng triệu sản phẩm chất lượng cao.
             </p>
-
-            <div className="flex space-x-3 sm:space-x-4">
-              <a
-                href="#"
-                className="text-gray-400 hover:text-white transition-colors"
-                aria-label="Facebook"
-              >
-                <Facebook size={24} />
-              </a>
-              <a
-                href="#"
-                className="text-gray-400 hover:text-white transition-colors"
-                aria-label="Twitter"
-              >
-                <Twitter size={24} />
-              </a>
-              <a
-                href="#"
-                className="text-gray-400 hover:text-white transition-colors"
-                aria-label="Instagram"
-              >
-                <Instagram size={24} />
-              </a>
-              <a
-                href="#"
-                className="text-gray-400 hover:text-white transition-colors"
-                aria-label="Youtube"
-              >
-                <Youtube size={24} />
-              </a>
+            
+            <div className="flex gap-3 pt-2">
+              <SocialLink href="#" icon={Facebook} label="Facebook" />
+              <SocialLink href="#" icon={Twitter} label="Twitter" />
+              <SocialLink href="#" icon={Instagram} label="Instagram" />
+              <SocialLink href="#" icon={Youtube} label="Youtube" />
             </div>
           </div>
 
-          <div>
-            <h4 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">
-              Liên kết nhanh
-            </h4>
-            {renderLinkList(QUICK_LINKS)}
+          <div className="lg:col-span-2 md:pl-4">
+            <FooterHeader>Khám phá</FooterHeader>
+            <ul className="space-y-3">
+              {QUICK_LINKS.map((link) => (
+                <FooterLink key={link.href} href={link.href}>
+                  {link.label}
+                </FooterLink>
+              ))}
+            </ul>
           </div>
 
-          <div>
-            <h4 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">
-              Hỗ trợ khách hàng
-            </h4>
-            {renderLinkList(CUSTOMER_SERVICE_LINKS)}
+          <div className="lg:col-span-3">
+            <FooterHeader>Hỗ trợ khách hàng</FooterHeader>
+            <ul className="space-y-3">
+              {CUSTOMER_SERVICE_LINKS.map((link) => (
+                <FooterLink key={link.href} href={link.href}>
+                  {link.label}
+                </FooterLink>
+              ))}
+            </ul>
           </div>
 
-          <div>
-            <h4 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">
-              Liên hệ
-            </h4>
-            <div className="space-y-2 sm:space-y-3 text-sm sm:text-base mb-4">
-              <div className="flex items-center">
-                <Phone size={20} className="mr-3 text-blue-400 flex-shrink-0" />
-                <a
-                  href="tel:0932070787"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  0932 070 787
-                </a>
-              </div>
-
-              <div className="flex items-center">
-                <Mail size={20} className="mr-3 text-blue-400 flex-shrink-0" />
-                <a
-                  href="mailto:ebayexpressvn@gmail.com"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  ebayexpressvn@gmail.com
-                </a>
-              </div>
-
-              <div className="flex items-start">
-                <MapPin
-                  size={20}
-                  className="mr-3 text-blue-400 mt-1 flex-shrink-0"
-                />
-                <span className="text-gray-300">
-                  300 Độc Lập, Phường Tân Quý
-                  <br />
-                  Quận Tân Phú, TP. Hồ Chí Minh, Việt Nam
-                </span>
-              </div>
+          <div className="lg:col-span-3">
+            <FooterHeader>Liên hệ</FooterHeader>
+            <div className="mt-6">
+              <ContactItem 
+                icon={Phone} 
+                href="tel:0932070787" 
+                text={<span className="font-semibold text-lg tracking-wide">0932 070 787</span>} 
+              />
+              <ContactItem 
+                icon={Mail} 
+                href="mailto:ebayexpressvn@gmail.com" 
+                text="ebayexpressvn@gmail.com" 
+              />
+              <ContactItem 
+                icon={MapPin} 
+                text={
+                  <>
+                    300 Độc Lập, Phường Tân Quý,<br />
+                    Quận Tân Phú, TP. HCM
+                  </>
+                } 
+              />
+              
+              <Link 
+                href="/contact" 
+                className={cn(
+                  "mt-6 inline-flex items-center text-sm font-semibold transition-colors",
+                  "text-orange-500 hover:text-orange-400"
+                )}
+              >
+                Xem bản đồ chi tiết <ArrowRight size={16} className="ml-1" />
+              </Link>
             </div>
-            <Link
-              href="/contact"
-              className="text-blue-400 hover:text-white transition-colors font-medium inline-block mt-2"
-            >
-              Xem thông tin liên hệ chi tiết →
-            </Link>
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="border-t border-gray-700 mt-6 sm:mt-8 pt-6 sm:pt-8">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div className="text-gray-400 text-xs sm:text-sm text-center sm:text-left">
-              © 2024 CaLaTha. Tất cả quyền được bảo lưu.
-            </div>
-            <div className="flex flex-wrap justify-center gap-3 sm:gap-6 text-xs sm:text-sm">
+        <div className="border-t border-slate-900 pt-8 mt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-slate-500 text-sm text-center md:text-left">
+              © {new Date().getFullYear()} CaLaTha. All rights reserved.
+            </p>
+            
+            <div className="flex flex-wrap justify-center gap-6">
               {LEGAL_LINKS.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className={cn(
+                    "text-sm text-slate-500 transition-colors",
+                    "hover:text-orange-400"
+                  )}
                 >
                   {link.label}
                 </Link>

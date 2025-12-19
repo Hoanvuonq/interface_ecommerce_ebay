@@ -111,8 +111,7 @@ export const CartPopover: React.FC<CartPopoverProps> = ({ open }) => {
 
   return (
     <div className="w-96 flex flex-col bg-white overflow-hidden shadow-2xl rounded-b-xl border border-gray-100">
-
-      <div className="max-h-100 overflow-y-auto custom-scrollbar bg-white">
+      <div className="max-auto overflow-y-auto custom-scrollbar bg-white">
         {totalItems === 0 && !loading ? (
           <div className="flex flex-col items-center justify-center py-16 px-6 text-center">
             <Package size={48} className="text-gray-200 mb-3" strokeWidth={1} />

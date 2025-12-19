@@ -79,7 +79,7 @@ export function FeaturedProductsSidebar({ products, loading = false }: FeaturedP
                                 className="group flex items-start gap-4 p-4 transition-all duration-300 hover:bg-orange-50/30"
                             >
                                 {/* Ảnh sản phẩm với Badge giảm giá */}
-                                <div className="relative flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden bg-gray-50 border border-gray-100 shadow-sm group-hover:shadow-md transition-shadow">
+                                <div className="relative shrink-0 w-20 h-20 rounded-xl overflow-hidden bg-gray-50 border border-gray-100 shadow-sm group-hover:shadow-md transition-shadow">
                                     <img
                                         src={getProductImage(p)}
                                         alt={p.name}

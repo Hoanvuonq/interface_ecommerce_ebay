@@ -2,31 +2,20 @@
 
 import {
   CustomBreadcrumb,
-  CustomButton,
   CustomSpinner,
-  ImageWithPreview,
+  ImageWithPreview
 } from "@/components";
 import { CardComponents } from "@/components/card";
-import { CustomAvatar } from "@/components/customAvatar";
-import { CustomEmpty } from "@/components/CustomEmpty";
-import { CustomProgressBar } from "@/components/CustomProgressBar";
 import { CustomVideoModal } from "@/components/CustomVideoModal";
-import { CustomRate } from "@/components/rating";
-import { TagComponents } from "@/components/tags";
 import PageContentTransition from "@/features/PageContentTransition";
 import { formatCompactNumber } from "@/hooks/format";
+import { formatPriceFull } from "@/hooks/useFormatPrice";
 import type { PublicProductVariantDTO } from "@/types/product/public-product.dto";
 import type { ReviewMediaResponse } from "@/types/reviews/review.types";
 import { cn } from "@/utils/cn";
 import { toPublicUrl } from "@/utils/storage/url";
 import {
-  CheckCircle,
-  Image as ImageIcon,
-  MessageSquareText,
-  PlayCircle,
-  User,
-  Video,
-  X,
+  PlayCircle
 } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useParams } from "next/navigation";
@@ -37,7 +26,7 @@ import { useProductDetail } from "../../_context/products";
 import { ProductPurchaseActions } from "../_components";
 import { InfomationShop } from "../_components/InfomationShop";
 import { ProductReviews } from "../_components/ProductReviews";
-import { formatPriceFull } from "@/hooks/useFormatPrice";
+
 const RelatedProducts = dynamic(
   () =>
     import("../../_components/RelatedProducts").then((mod) => ({
