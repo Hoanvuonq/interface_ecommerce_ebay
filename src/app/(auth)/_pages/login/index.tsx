@@ -1,6 +1,5 @@
 "use client";
-
-import { LoginForm } from "@/app/(auth)/_components/LoginForm";
+import { UniversalLoginForm } from "@/app/(auth)/_components/UniversalLoginForm";
 import LoginRoleGuard from "../../_components/LoginRoleGuard";
 import { RoleEnum } from "@/auth/_types/auth";
 
@@ -10,7 +9,7 @@ export default function LoginScreen() {
       allowedRoles={[RoleEnum.BUYER]} 
       loginType="buyer"
     >
-      <LoginForm />
+      <UniversalLoginForm mode="BUYER" />
     </LoginRoleGuard>
   );
 }

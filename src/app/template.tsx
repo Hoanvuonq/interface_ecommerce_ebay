@@ -23,7 +23,7 @@ const queryClient = new QueryClient({
 
 const ConditionalLayout: React.FC<ITemplateProps> = ({ children }) => {
   const pathname = usePathname();
-  const EXCLUDED_PATHS = ["/login", "/register", "/forgot-password", "/account/verify"];
+  const EXCLUDED_PATHS = ["/login", "/register", "/forgot-password", "/account/verify", "/shop/login"];
   const isAuthPage = EXCLUDED_PATHS.includes(pathname);
 
   

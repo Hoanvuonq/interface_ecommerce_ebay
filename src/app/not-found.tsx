@@ -51,7 +51,6 @@ export default function NotFoundPage() {
         </div>
       </div>
 
-      {/* Decorative background elements */}
       <div className="absolute inset-0 -z-10 overflow-hidden opacity-10 pointer-events-none">
         <div className="absolute -left-10 top-1/4 h-64 w-64 rounded-full bg-orange-400 blur-3xl" />
         <div className="absolute -right-10 bottom-1/4 h-64 w-64 rounded-full bg-pink-400 blur-3xl" />
