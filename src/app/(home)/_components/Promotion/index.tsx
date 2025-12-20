@@ -8,12 +8,6 @@ import { CustomCarousel, SectionLoading } from "@/components";
 import { cn } from "@/utils/cn";
 const DEFAULT_BANNER_IMAGE = "/images/hero/default-banner.jpg";
 
-const CustomLoading = () => (
-  <div className="flex justify-center items-center min-h-[280px]">
-    <div className="w-10 h-10 border-4 border-t-4 border-gray-200 border-t-pink-600 rounded-full animate-spin"></div>
-  </div>
-);
-
 export const Promotion: React.FC = () => {
   const { heroBanners, loading, error } = useHomepageBannerContext();
 
@@ -29,7 +23,7 @@ export const Promotion: React.FC = () => {
 
   const quickLinksRow = useMemo(
     () => (
-      <div className="max-w-[1200px] mx-auto w-full mt-6">
+      <div className="max-w-300 mx-auto w-full mt-6">
         <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-4 lg:gap-8 py-3">
           {QuickLinks.map((item) => {
             const Icon = item.icon;
@@ -93,10 +87,10 @@ export const Promotion: React.FC = () => {
 
   return (
     <section className="bg-white pt-5 pb-6">
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-0">
+      <div className="max-w-300 mx-auto px-4 sm:px-6 lg:px-0">
         <div className="hidden lg:grid lg:grid-cols-3 gap-4">
           <div className="col-span-2 relative rounded-xl overflow-hidden shadow-[0_2px_12px_rgba(0,0,0,0.05)] group banner-hover-effect">
-            <CustomCarousel banners={mainBanners} className="h-[260px]" />
+            <CustomCarousel banners={mainBanners} className="h-65" />
           </div>
           <div className="flex flex-col gap-4">
             <Link
@@ -110,7 +104,7 @@ export const Promotion: React.FC = () => {
                   DEFAULT_BANNER_IMAGE
                 }
                 alt={sideBanner1.title || "Side banner"}
-                className="w-full h-[122px] object-cover"
+                className="w-full h-30.5 object-cover"
                 loading="lazy"
               />
             </Link>
@@ -125,7 +119,7 @@ export const Promotion: React.FC = () => {
                   DEFAULT_BANNER_IMAGE
                 }
                 alt={sideBanner2.title || "Side banner"}
-                className="w-full h-[122px] object-cover"
+                className="w-full h-30.5 object-cover"
                 loading="lazy"
               />
             </Link>

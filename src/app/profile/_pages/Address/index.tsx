@@ -10,22 +10,23 @@ import {
   FaHome,
   FaMapMarkerAlt,
   FaPlus,
-  FaTrash
+  FaTrash,
 } from "react-icons/fa";
 import { toast } from "sonner";
 import { AddressForm } from "../../_components/AddressForm";
+import { Button } from "@/components/button/button";
 
 interface AddressManagementProps {
   buyerId: string;
 }
 
-type ViewMode = 'LIST' | 'FORM';
+type ViewMode = "LIST" | "FORM";
 
 export default function AddressManagement({ buyerId }: AddressManagementProps) {
   const [addresses, setAddresses] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-  
-  const [viewMode, setViewMode] = useState<ViewMode>('LIST');
+
+  const [viewMode, setViewMode] = useState<ViewMode>("LIST");
   const [editingAddress, setEditingAddress] = useState<any | null>(null);
 
   useEffect(() => {
@@ -45,22 +46,22 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
   };
   const handleCreateNew = () => {
     setEditingAddress(null);
-    setViewMode('FORM'); 
+    setViewMode("FORM");
   };
 
   const handleEdit = (address: any) => {
     setEditingAddress(address);
-    setViewMode('FORM');
+    setViewMode("FORM");
   };
 
   const handleBackToList = () => {
     setEditingAddress(null);
-    setViewMode('LIST');
+    setViewMode("LIST");
   };
 
   const handleSaveSuccess = () => {
     handleBackToList();
-    loadAddresses(); 
+    loadAddresses();
   };
 
   const handleDelete = async (addressId: string) => {
@@ -76,20 +77,23 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
 
   const renderIcon = (type: string) => {
     switch (type) {
-      case "HOME": return <FaHome className="text-blue-500" />;
-      case "OFFICE": return <FaBriefcase className="text-purple-500" />;
-      default: return <FaMapMarkerAlt className="text-gray-500" />;
+      case "HOME":
+        return <FaHome className="text-blue-500" />;
+      case "OFFICE":
+        return <FaBriefcase className="text-purple-500" />;
+      default:
+        return <FaMapMarkerAlt className="text-gray-500" />;
     }
   };
 
-  if (viewMode === 'FORM') {
+  if (viewMode === "FORM") {
     return (
-        <AddressForm
-            buyerId={buyerId}
-            initialValues={editingAddress}
-            onCancel={handleBackToList}
-            onSuccess={handleSaveSuccess}
-        />
+      <AddressForm
+        buyerId={buyerId}
+        initialValues={editingAddress}
+        onCancel={handleBackToList}
+        onSuccess={handleSaveSuccess}
+      />
     );
   }
 
@@ -97,15 +101,17 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
     <div className="h-full w-full animate-fade-in">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 pb-6 border-b border-gray-100 gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-gray-800">Địa chỉ giao hàng</h2>
-          <p className="text-sm text-gray-500 mt-1">Quản lý danh sách địa chỉ nhận hàng của bạn</p>
+          <h2 className="text-2xl font-bold text-gray-800">
+            Địa chỉ giao hàng
+          </h2>
+          <p className="text-sm text-gray-500 mt-1">
+            Quản lý danh sách địa chỉ nhận hàng của bạn
+          </p>
         </div>
-        <button
-          onClick={handleCreateNew}
-          className="flex items-center gap-2 px-5 py-2.5 bg-orange-50 hover:bg-orange-100 text-orange-600 rounded-xl text-sm font-semibold transition-colors"
-        >
-          <FaPlus /> Thêm địa chỉ mới
-        </button>
+
+        <Button variant="edit" onClick={handleCreateNew} icon={<FaPlus />}>
+          Thêm địa chỉ mới
+        </Button>
       </div>
 
       {loading && addresses.length === 0 ? (
@@ -115,8 +121,14 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
           <div className="p-4 bg-white rounded-full mb-3 shadow-sm">
             <FaMapMarkerAlt className="text-3xl text-gray-300" />
           </div>
-          <p className="text-gray-500 mb-4 font-medium">Bạn chưa lưu địa chỉ nào</p>
-          <ButtonField type="login" onClick={handleCreateNew} className="h-10 px-6 rounded-full text-sm w-50">
+          <p className="text-gray-500 mb-4 font-medium">
+            Bạn chưa lưu địa chỉ nào
+          </p>
+          <ButtonField
+            type="login"
+            onClick={handleCreateNew}
+            className="h-10 px-6 rounded-full text-sm w-50"
+          >
             Thêm ngay
           </ButtonField>
         </div>
@@ -130,25 +142,39 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
               <div className="flex justify-between items-start">
                 <div className="space-y-2">
                   <div className="flex items-center gap-3">
-                    <span className="font-bold text-gray-900 text-lg">{addr.recipientName}</span>
+                    <span className="font-bold text-gray-900 text-lg">
+                      {addr.recipientName}
+                    </span>
                     <span className="text-gray-900">|</span>
-                    <span className="text-gray-600 font-medium">{addr.phone}</span>
-                    
-                    <span className={cn(
-                      "ml-2 text-[10px] font-bold px-2 py-1 rounded-lg border flex items-center gap-1.5 uppercase tracking-wide",
-                      addr.type === 'HOME' ? "bg-blue-50 text-blue-600 border-blue-100" : 
-                      addr.type === 'OFFICE' ? "bg-purple-50 text-purple-600 border-purple-100" : 
-                      "bg-gray-50 text-gray-600 border-gray-200"
-                    )}>
+                    <span className="text-gray-600 font-medium">
+                      {addr.phone}
+                    </span>
+
+                    <span
+                      className={cn(
+                        "ml-2 text-[10px] font-bold px-2 py-1 rounded-lg border flex items-center gap-1.5 uppercase tracking-wide",
+                        addr.type === "HOME"
+                          ? "bg-blue-50 text-blue-600 border-blue-100"
+                          : addr.type === "OFFICE"
+                          ? "bg-purple-50 text-purple-600 border-purple-100"
+                          : "bg-gray-50 text-gray-600 border-gray-200"
+                      )}
+                    >
                       {renderIcon(addr.type)}
-                      {addr.type === 'HOME' ? 'Nhà riêng' : addr.type === 'OFFICE' ? 'Văn phòng' : 'Khác'}
+                      {addr.type === "HOME"
+                        ? "Nhà riêng"
+                        : addr.type === "OFFICE"
+                        ? "Văn phòng"
+                        : "Khác"}
                     </span>
                   </div>
-                  
+
                   <div className="text-sm text-gray-600 leading-relaxed pl-4 border-l-2 border-gray-100">
                     <p>{addr.detailAddress}</p>
                     <p className="text-gray-500">
-                      {[addr.ward, addr.district, addr.province].filter(Boolean).join(", ")}
+                      {[addr.ward, addr.district, addr.province]
+                        .filter(Boolean)
+                        .join(", ")}
                     </p>
                   </div>
                 </div>

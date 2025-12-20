@@ -7,7 +7,7 @@ export const CustomButton: React.FC<any> = ({ children, onClick, type = 'default
     
     let colorClasses = "";
     if (type === 'primary') {
-        colorClasses = "bg-gradient-to-r from-pink-500 to-red-500 text-white hover:from-pink-600 hover:to-red-600 shadow-md border-0";
+        colorClasses = "bg-linear-to-r from-pink-500 to-red-500 text-white hover:from-pink-600 hover:to-red-600 shadow-md border-0";
     } else if (type === 'dashed') {
         colorClasses = "bg-white text-gray-700 border-dashed border-gray-300 hover:border-pink-400 hover:text-pink-600";
     } else {

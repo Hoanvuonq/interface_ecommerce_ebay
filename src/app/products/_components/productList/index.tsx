@@ -170,7 +170,7 @@ const handleSort = (val: string) => {
         onSortChange={handleSort}
       />
 
-      <div className="min-h-[400px]">
+      <div className="min-h-100">
         {loading ? (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {Array.from({ length: 8 }).map((_, i) => (

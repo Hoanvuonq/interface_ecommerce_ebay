@@ -16,6 +16,11 @@
   --primary-color: var(--color-primary);
 }
 
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

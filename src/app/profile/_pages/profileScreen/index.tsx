@@ -21,19 +21,20 @@ import {
   FaCamera,
   FaChevronRight,
   FaEdit,
-  FaLock,
   FaSave,
   FaSpinner,
   FaUniversity,
   FaUser,
   FaUserCircle,
-  FaWallet,
 } from "react-icons/fa";
 import { toast } from "sonner";
 import AddressManagement from "../Address";
 import InformationEditor from "../Information";
 import ChangePasswordFormCompact from "../ChangePassword";
+import WalletPage from "../Wallet";
 import { menuItems } from "../../_types/menu";
+import { WalletType } from "@/types/wallet/wallet.types";
+import { Button } from "@/components/button/button";
 
 const FeaturePlaceholder = ({ title, icon: Icon }: any) => (
   <div className="flex flex-col items-center justify-center p-12 bg-white border border-gray-100 rounded-xl shadow-sm min-h-100 animate-fade-in">
@@ -47,7 +48,6 @@ const FeaturePlaceholder = ({ title, icon: Icon }: any) => (
 );
 
 export default function ProfilePage() {
-  // ... (Phần logic state, useEffect, handleAvatarChange giữ nguyên không thay đổi)
   const [user, setUser] = useState<any>(getStoredUserDetail());
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -69,7 +69,6 @@ export default function ProfilePage() {
   const { handleUpdateUserClient } = useUpdateUserClient();
   const userId = getUserId();
 
-  // ... (useEffect load data giữ nguyên)
   useEffect(() => {
     (async () => {
       setLoading(true);
@@ -110,7 +109,6 @@ export default function ProfilePage() {
     })();
   }, []);
 
-  // ... (Các hàm handleToggleEdit, handleCancelEdit, handleSaveEdit, handleAvatarChange giữ nguyên)
   const handleToggleEdit = () => {
     if (!user?.buyerId) {
       toast.warning("Bạn cần có tài khoản người mua để chỉnh sửa thông tin");
@@ -196,7 +194,6 @@ export default function ProfilePage() {
     switch (activeTab) {
       case "info":
         return (
-          // ... (Phần info giữ nguyên)
           <div className="space-y-6 animate-fade-in w-full">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-5 border-b border-gray-100 gap-4">
               <div>
@@ -216,7 +213,7 @@ export default function ProfilePage() {
                         type="button"
                         onClick={handleCancelEdit}
                         disabled={saving}
-                        className="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors"
+                        className="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors bg-white border border-gray-200"
                       >
                         Hủy
                       </button>
@@ -234,14 +231,13 @@ export default function ProfilePage() {
                       </ButtonField>
                     </div>
                   ) : (
-                    <button
-                      type="button"
+                    <Button
+                      variant="edit" 
                       onClick={handleToggleEdit}
-                      className="group flex items-center gap-2 px-5 py-2 bg-white border border-gray-200 hover:border-orange-500 hover:text-orange-600 text-gray-700 rounded-lg text-sm font-medium transition-all shadow-sm hover:shadow-md active:scale-95"
+                      icon={<FaEdit />}
                     >
-                      <FaEdit className="text-gray-400 group-hover:text-orange-500 transition-colors" />
                       Chỉnh sửa
-                    </button>
+                    </Button>
                   )}
                 </div>
               )}
@@ -257,7 +253,7 @@ export default function ProfilePage() {
                 />
               </div>
 
-              <div className="lg:col-span-1 border-l border-gray-100 pl-8 flex flex-col items-center justify-center">
+              <div className="lg:col-span-1 border-l border-gray-100 pl-0 lg:pl-8 flex flex-col items-center justify-start pt-4">
                 <div
                   className="relative group cursor-pointer mb-4"
                   onClick={() => isEditing && fileInputRef.current?.click()}
@@ -305,7 +301,7 @@ export default function ProfilePage() {
                   Ảnh đại diện
                 </h3>
                 <p className="text-xs text-gray-400 max-w-45 text-center leading-relaxed">
-                  Dụng lượng file tối đa 1 MB. Định dạng: .JPEG, .PNG
+                  Dụng lượng file tối đa 5 MB. Định dạng: .JPEG, .PNG
                 </p>
               </div>
             </div>
@@ -317,7 +313,7 @@ export default function ProfilePage() {
         ) : null;
 
       case "wallet":
-        return <FeaturePlaceholder title="Ví điện tử" icon={FaWallet} />;
+        return <WalletPage autoCreate={true} type={WalletType.BUYER} />;
       case "bank-account":
         return (
           <FeaturePlaceholder title="Tài khoản ngân hàng" icon={FaUniversity} />
@@ -330,9 +326,9 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="min-h-screen bg-white w-full">
+    <div className="h-full bg-white w-full all-center ">
       <PageContentTransition>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <div className="flex flex-col lg:flex-row gap-6">
             <div className="w-full lg:w-64 shrink-0">
               <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden sticky top-6">
@@ -393,9 +389,9 @@ export default function ProfilePage() {
             </div>
 
             <div className="flex-1">
-              <div className="bg-white rounded-xl shadow-sm border border-gray-100 w-full all-center p-6 min-h-125">
+              <div className="bg-white rounded-xl shadow-sm border border-gray-100 w-full p-6 min-h-125 flex flex-col">
                 {loading ? (
-                  <div className="h-full w-full flex flex-col items-center justify-center text-gray-400 py-16">
+                  <div className="h-full w-full flex-1 flex flex-col items-center justify-center text-gray-400 py-16">
                     <FaSpinner className="animate-spin text-3xl mb-3 text-orange-500" />
                     <span className="text-xs font-medium">
                       Đang tải thông tin...

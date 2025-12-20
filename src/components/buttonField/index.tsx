@@ -32,7 +32,7 @@ export const ButtonField: FC<ButtonFieldProps> = ({
     
     login: cn(
       "text-white border-0 shadow-lg shadow-pink-500/30",
-      "bg-gradient-to-r from-pink-600 via-orange-500 to-pink-600",
+      "bg-linear-to-r from-pink-600 via-orange-500 to-pink-600",
       "bg-[length:200%_auto]",
       "transition-all duration-500 ease-in-out",
       "hover:bg-right"

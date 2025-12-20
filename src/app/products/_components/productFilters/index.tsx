@@ -1,22 +1,24 @@
 'use client';
 
-import React, { useEffect, useMemo, useState } from 'react';
-import {
-    Search, RotateCw, Filter, Star, ChevronDown, ChevronUp, DollarSign, X,
-    ShoppingBag, Tag as TagsIcon 
-} from 'lucide-react'; 
+import { CustomButton } from '@/components';
 import { CategoryService } from '@/services/categories/category.service';
 import type { CategoryResponse } from '@/types/categories/category.detail';
-import { debounce } from '@/utils/debounce';
-import {
-    ProductFilterValues,
-    SORT_OPTIONS,
-    PRICE_PRESETS,
-    BRAND_OPTIONS,
-} from './type';
-import { formatVND } from '@/utils/product.utils';
 import { cn } from '@/utils/cn';
-import { CustomButton } from '@/components';
+import { formatVND } from '@/utils/product.utils';
+import {
+    ChevronDown, ChevronUp, DollarSign,
+    Filter,
+    RotateCw,
+    Search,
+    Tag as TagsIcon,
+    X
+} from 'lucide-react';
+import React, { useEffect, useMemo, useState } from 'react';
+import {
+    PRICE_PRESETS,
+    ProductFilterValues,
+    SORT_OPTIONS
+} from './type';
 
 
 const CustomInput: React.FC<any> = ({ placeholder, value, onChange, className, icon: Icon, ...rest }) => (
@@ -137,9 +139,8 @@ export default function ProductFilters({
 
     return (
         <div className="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100 overflow-hidden transition-all duration-500">
-            {/* Header - Glassmorphism style */}
             <div 
-                className="bg-gradient-to-r from-orange-50 to-amber-50 px-6 py-5 border-b border-orange-100/50 cursor-pointer flex items-center justify-between group"
+                className="bg-linear-to-r from-orange-50 to-amber-50 px-6 py-5 border-b border-orange-100/50 cursor-pointer flex items-center justify-between group"
                 onClick={() => setIsFilterVisible(!isFilterVisible)}
             >
                 <div className="flex items-center gap-3">
@@ -160,10 +161,9 @@ export default function ProductFilters({
                 />
             </div>
 
-            {/* Content Area */}
             <div className={cn(
                 "transition-all duration-500 ease-in-out overflow-hidden",
-                isFilterVisible ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
+                isFilterVisible ? "max-h-500 opacity-100" : "max-h-0 opacity-0"
             )}>
                 <div className="p-6 space-y-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

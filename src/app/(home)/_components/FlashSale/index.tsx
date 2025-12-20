@@ -151,7 +151,7 @@ const FlashSaleSection: React.FC = () => {
 
                       <CustomProgressBar
                         percent={soldPercentage}
-                        color="bg-gradient-to-r from-orange-500 to-red-600"
+                        color="bg-linear-to-r from-orange-500 to-red-600"
                         className="h-2 rounded-full shadow-inner"
                       />
                     </div>

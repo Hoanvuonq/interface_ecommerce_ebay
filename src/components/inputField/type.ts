@@ -1,18 +1,17 @@
-
 export interface InputFieldProps {
   label: string;
   name: string;
   placeholder?: string;
   type?: "text" | "password";
-  rules?: [];
+  rules?: Array<{ required?: boolean; [key: string]: any }>;
   dependencies?: string[];
   maxLength?: number;
   inputMode?: "text" | "numeric" | "decimal" | "tel" | "email" | "url";
   disabled?: boolean;
-  itemClassName?: string;   
+  itemClassName?: string;
   inputClassName?: string;
   helpText?: string;
   errorMessage?: string;
-    value?: string;
-    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }

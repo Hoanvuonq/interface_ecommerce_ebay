@@ -1,332 +1,314 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { RegisterRequest } from "@/auth/_types/auth";
-import { useRegisterBuyer, useRegisterShop } from "@/auth/_hooks/useAuth";
-import { FaStore, FaUserPlus, FaMagic } from "react-icons/fa";
+import {useEffect, useRef, useState} from "react";
+import {RegisterRequest} from "@/auth/_types/auth";
+import {useRegisterBuyer, useRegisterShop} from "@/auth/_hooks/useAuth";
+import {FaStore, FaUserPlus, FaMagic} from "react-icons/fa";
 import Link from "next/link";
-import { InputField } from "@/components/inputField";
-import { ButtonField } from "@/components/buttonField";
-import { toast } from "sonner";
-import { generateSecurePassword } from "@/utils/passwordGenerator";
-import { cn } from "@/utils/cn";
-import { LeftSideForm } from "../LeftSideForm";
-import { AUTH_PANEL_DATA, getAuthPanelData } from "../../_constants/future";
-import { MobileFeatureList } from "../LeftSideForm/_components/FeatureMobile";
-import { Design } from "@/components";
+import {InputField} from "@/components/inputField";
+import {ButtonField} from "@/components/buttonField";
+import {toast} from "sonner";
+import {generateSecurePassword} from "@/utils/passwordGenerator";
+import {cn} from "@/utils/cn";
+import {LeftSideForm} from "../LeftSideForm";
+import {AUTH_PANEL_DATA, getAuthPanelData} from "../../_constants/future";
+import {MobileFeatureList} from "../LeftSideForm/_components/FeatureMobile";
+import {Design} from "@/components";
 
-const Title = ({
-  level,
-  className,
-  children,
-}: {
-  level: number;
-  className?: string;
-  children: React.ReactNode;
+const Title = ({level, className, children} : {
+    level: number;
+    className?: string;
+    children: React.ReactNode;
 }) => {
-  const Tag = `h${level}` as React.ElementType;
-  return <Tag className={className}>{children}</Tag>;
+    const Tag = `h${level}` as React.ElementType;
+    return <Tag className={className}>{children}</Tag>;
 };
 
-const Text = ({
-  className,
-  children,
-}: {
-  className?: string;
-  children: React.ReactNode;
+const Text = ({className, children} : {
+    className?: string;
+    children: React.ReactNode;
 }) => {
-  return <span className={className}>{children}</span>;
+    return <span className={className}>{children}</span>;
 };
 
-const Divider = ({
-  className,
-  children,
-}: {
-  className?: string;
-  children?: React.ReactNode;
+const Divider = ({className, children} : {
+    className?: string;
+    children?: React.ReactNode;
 }) => {
-  return (
-    <div className={cn("flex items-center my-6", className)}>
-      <div className="grow border-t border-gray-200 dark:border-slate-700"></div>
-      {children && (
-        <span className="mx-4 text-gray-400 text-sm font-medium">
-          {children}
-        </span>
-      )}
-      <div className="grow border-t border-gray-200 dark:border-slate-700"></div>
-    </div>
-  );
+    return (
+        <div className={cn("flex items-center my-6", className)}>
+            <div className="grow border-t border-gray-200 dark:border-slate-700"></div>
+            {children && (
+                <span className="mx-4 text-gray-400 text-sm font-medium">
+                    {children}
+                </span>
+            )}
+            <div className="grow border-t border-gray-200 dark:border-slate-700"></div>
+        </div>
+    );
 };
-
 
 type RegisterFormProps = {
-  type: "user" | "shop";
-  initialValues?: RegisterRequest;
-  onSuccess?: (data: RegisterRequest) => void;
+    type: "user" | "shop";
+    initialValues?: RegisterRequest;
+    onSuccess?: (data : RegisterRequest) => void;
 };
 
-export function RegisterForm({
-  type,
-  initialValues,
-  onSuccess,
-}: RegisterFormProps) {
-  // 1. Hooks & State
-  const {
-    handleRegisterBuyer,
-    loading: loadingBuyer,
-    error: errorBuyer,
-  } = useRegisterBuyer();
-  const {
-    handleRegisterShop,
-    loading: loadingShop,
-    error: errorShop,
-  } = useRegisterShop();
+export function RegisterForm({type, initialValues, onSuccess} : RegisterFormProps) {
+    // 1. Hooks & State
+    const {handleRegisterBuyer, loading: loadingBuyer, error: errorBuyer} = useRegisterBuyer();
+    const {handleRegisterShop, loading: loadingShop, error: errorShop} = useRegisterShop();
 
-  const [formData, setFormData] = useState<
-    RegisterRequest & { confirmPassword?: string }
-  >({
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    ...initialValues,
-  });
+    const [formData,
+        setFormData] = useState < RegisterRequest & {
+        confirmPassword?: string
+    } > ({
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        ...initialValues
+    });
 
-  const [formErrors, setFormErrors] = useState<
-    Partial<RegisterRequest & { confirmPassword?: string }>
-  >({});
-  const [submitting, setSubmitting] = useState(false);
-  const usernameRef = useRef<HTMLInputElement>(null);
+    const [formErrors,
+        setFormErrors] = useState < Partial < RegisterRequest & {
+        confirmPassword?: string
+    } > > ({});
+    const [submitting,
+        setSubmitting] = useState(false);
+    const usernameRef = useRef < HTMLInputElement > (null);
 
-  const loading = type === "shop" ? loadingShop : loadingBuyer;
-  const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
+    const loading = type === "shop"
+        ? loadingShop
+        : loadingBuyer;
+    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
 
-  const panelType = type === "shop" ? "shop" : "default";
-  const panelData = getAuthPanelData(panelType);
+    const panelType = type === "shop"
+        ? "shop"
+        : "default";
+    const panelData = getAuthPanelData(panelType);
 
-  useEffect(() => {
-    usernameRef.current?.focus();
-  }, []);
+    useEffect(() => {
+        usernameRef.current
+            ?.focus();
+    }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (formErrors[name as keyof typeof formErrors]) {
-      setFormErrors((prev) => ({ ...prev, [name]: undefined }));
-    }
-  };
+    const handleInputChange = (e : React.ChangeEvent < HTMLInputElement >) => {
+        const {name, value} = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value
+        }));
+        if (formErrors[name as keyof typeof formErrors]) {
+            setFormErrors((prev) => ({
+                ...prev,
+                [name]: undefined
+            }));
+        }
+    };
 
-  const validateForm = () => {
-    const errors: Partial<typeof formData> = {};
-    if (!formData.username || formData.username.trim().length < 3)
-      errors.username = "Tên đăng nhập phải có ít nhất 3 ký tự";
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!formData.email || !emailRegex.test(formData.email))
-      errors.email = "Email không hợp lệ";
-    if (!formData.password || formData.password.length < 6)
-      errors.password = "Mật khẩu phải có ít nhất 6 ký tự";
-    else if (!passwordPattern.test(formData.password))
-      errors.password = "Mật khẩu phải chứa chữ hoa, thường và số";
-    if (formData.password !== formData.confirmPassword)
-      errors.confirmPassword = "Mật khẩu xác nhận không khớp";
-    return errors;
-  };
+    const validateForm = () => {
+        const errors : Partial < typeof formData > = {};
+        if (!formData.username || formData.username.trim().length < 3) 
+            errors.username = "Tên đăng nhập phải có ít nhất 3 ký tự";
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!formData.email || !emailRegex.test(formData.email)) 
+            errors.email = "Email không hợp lệ";
+        if (!formData.password || formData.password.length < 6) 
+            errors.password = "Mật khẩu phải có ít nhất 6 ký tự";
+        else if (!passwordPattern.test(formData.password)) 
+            errors.password = "Mật khẩu phải chứa chữ hoa, thường và số";
+        if (formData.password !== formData.confirmPassword) 
+            errors.confirmPassword = "Mật khẩu xác nhận không khớp";
+        return errors;
+    };
 
-  // --- LOGIC TẠO MẬT KHẨU MỚI ---
-  const handleGeneratePassword = () => {
-    const newPassword = generateSecurePassword({ length: 14 });
-    setFormData((prev) => ({
-      ...prev,
-      password: newPassword,
-      confirmPassword: newPassword,
-    }));
-    setFormErrors((prev) => ({
-      ...prev,
-      password: undefined,
-      confirmPassword: undefined,
-    }));
-    toast.success("Đã điền mật khẩu mạnh tự động!");
-  };
+    const handleGeneratePassword = () => {
+        const newPassword = generateSecurePassword({length: 14});
+        setFormData((prev) => ({
+            ...prev,
+            password: newPassword,
+            confirmPassword: newPassword
+        }));
+        setFormErrors((prev) => ({
+            ...prev,
+            password: undefined,
+            confirmPassword: undefined
+        }));
+        toast.success("Đã điền mật khẩu mạnh tự động!");
+    };
 
-  const onFinish = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const errors = validateForm();
-    if (Object.keys(errors).length > 0) {
-      setFormErrors(errors);
-      toast.error(Object.values(errors)[0]);
-      return;
-    }
+    const onFinish = async(e : React.FormEvent) => {
+        e.preventDefault();
+        const errors = validateForm();
+        if (Object.keys(errors).length > 0) {
+            setFormErrors(errors);
+            toast.error(Object.values(errors)[0]);
+            return;
+        }
 
-    setSubmitting(true);
-    try {
-      const registerData: RegisterRequest = {
-        username: formData.username,
-        email: formData.email,
-        password: formData.password,
-      };
-      const res =
-        type === "shop"
-          ? await handleRegisterShop(registerData)
-          : await handleRegisterBuyer(registerData);
+        setSubmitting(true);
+        try {
+            const registerData : RegisterRequest = {
+                username: formData.username,
+                email: formData.email,
+                password: formData.password
+            };
+            const res = type === "shop"
+                ? await handleRegisterShop(registerData)
+                : await handleRegisterBuyer(registerData);
 
-      if (res) {
-        toast.success("Đăng ký thành công! Vui lòng kiểm tra email.");
-        localStorage.setItem(
-          `registerForm_${type}`,
-          JSON.stringify(registerData)
-        );
-        onSuccess?.(registerData);
-      } else {
-        toast.error(errorBuyer || errorShop || "Đăng ký thất bại");
-      }
-    } catch (err: any) {
-      toast.error(err?.message || "Có lỗi xảy ra.");
-    } finally {
-      setSubmitting(false);
-    }
-  };
+            if (res) {
+                toast.success("Đăng ký thành công! Vui lòng kiểm tra email.");
+                localStorage.setItem(`registerForm_${type}`, JSON.stringify(registerData));
+                onSuccess
+                    ?.(registerData);
+            } else {
+                toast.error(errorBuyer || errorShop || "Đăng ký thất bại");
+            }
+        } catch (err : any) {
+            toast.error(err
+                ?.message || "Có lỗi xảy ra.");
+        } finally {
+            setSubmitting(false);
+        }
+    };
 
-  return (
-    <div className="min-h-screen w-full relative overflow-hidden bg-linear-to-br from-blue-50 via-white to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
-      <Design />
-
-      <div className="relative z-10 flex flex-col lg:flex-row min-h-screen">
-        <div className="hidden lg:flex lg:w-1/2 w-full items-center justify-center px-4 lg:px-12">
-          <LeftSideForm type={panelType} />
-        </div>
-       <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-6 lg:p-8">
-          <div className="w-full max-w-md relative">
-            <div className="lg:hidden text-center mb-8">
-              <div className="flex items-center justify-center gap-3 mb-4">
+    return (
+        <div
+            className="min-h-screen w-full relative overflow-hidden bg-linear-to-br from-blue-50 via-white to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+            <Design/>
+            <div className="relative z-10 flex flex-col lg:flex-row min-h-screen">
                 <div
-                  className={`w-12 h-12 bg-linear-to-br ${panelData.logoGradientFrom} ${panelData.logoGradientTo} rounded-xl flex items-center justify-center shadow-lg`}
-                >
-                  {type === "shop" ? (
-                    <FaStore className="text-white text-2xl" />
-                  ) : (
-                    <FaUserPlus className="text-white text-2xl" />
-                  )}
+                    className="hidden lg:flex lg:w-1/2 w-full items-center justify-center px-4 lg:px-12">
+                    <LeftSideForm type={panelType}/>
                 </div>
-                <Title
-                  level={1}
-                  className={`mb-0! text-3xl! font-bold bg-linear-to-r ${panelData.brandColorFrom} ${panelData.brandColorTo} bg-clip-text text-transparent`}
-                >
-                  CaLaTha
-                </Title>
-              </div>
-              <Text className="text-gray-600 dark:text-gray-300">
-                {panelData.welcome.title}
-              </Text>
-            </div>
+                <div
+                    className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-6 lg:p-8">
+                    <div className="w-full max-w-md relative">
+                        <div className="lg:hidden text-center mb-8">
+                            <div className="flex items-center justify-center gap-3 mb-4">
+                                <div
+                                    className={`w-12 h-12 bg-linear-to-br ${panelData.logoGradientFrom} ${panelData.logoGradientTo} rounded-xl flex items-center justify-center shadow-lg`}>
+                                    {type === "shop"
+                                        ? (<FaStore className="text-white text-2xl"/>)
+                                        : (<FaUserPlus className="text-white text-2xl"/>)}
+                                </div>
+                                <Title
+                                    level={1}
+                                    className={`mb-0! text-3xl! font-bold bg-linear-to-r ${panelData.brandColorFrom} ${panelData.brandColorTo} bg-clip-text text-transparent`}>
+                                    CaLaTha
+                                </Title>
+                            </div>
+                            <Text className="text-gray-600 dark:text-gray-300">
+                                {panelData.welcome.title}
+                            </Text>
+                        </div>
 
-            <div
-              className="w-full shadow-2xl hover:shadow-3xl transition-all duration-300 relative z-10 bg-white/90 dark:bg-slate-800/90 border-2 border-pink-500/30 dark:border-pink-500/50 p-8 sm:p-10 rounded-3xl backdrop-blur-md"
-              style={{ backdropFilter: "blur(12px)" }}
-            >
-              <div className="text-center mb-8 pt-1">
-                <Title
-                  level={2}
-                  className="mb-2 text-3xl font-bold text-gray-800 dark:text-gray-100"
-                >
-                  {type === "shop" ? "Đăng Ký Bán Hàng" : "Đăng Ký Tài Khoản"}
-                </Title>
-                <Text className="text-base text-gray-500 dark:text-gray-400">
-                  Nhập thông tin để tạo tài khoản mới
-                </Text>
-              </div>
+                        <div
+                            className="w-full shadow-2xl hover:shadow-3xl transition-all duration-300 relative z-10 bg-white/90 dark:bg-slate-800/90 border-2 border-pink-500/30 dark:border-pink-500/50 p-8 sm:p-10 rounded-3xl backdrop-blur-md"
+                            style={{
+                            backdropFilter: "blur(12px)"
+                        }}>
+                            <div className="text-center mb-8 pt-1">
+                                <Title
+                                    level={2}
+                                    className="mb-2 text-3xl font-bold text-gray-800 dark:text-gray-100">
+                                    {type === "shop"
+                                        ? "Đăng Ký Bán Hàng"
+                                        : "Đăng Ký Tài Khoản"}
+                                </Title>
+                                <Text className="text-base text-gray-500 dark:text-gray-400">
+                                    Nhập thông tin để tạo tài khoản mới
+                                </Text>
+                            </div>
 
-              <Divider>Đăng ký với email</Divider>
+                            <Divider>Đăng ký với email</Divider>
 
-              <form onSubmit={onFinish} className="mb-6">
-                <InputField
-                  label="Tên đăng nhập"
-                  name="username"
-                  placeholder="Nhập tên đăng nhập"
-                  value={formData.username}
-                  onChange={handleInputChange}
-                  errorMessage={formErrors.username}
-                  ref={usernameRef}
-                />
+                            <form onSubmit={onFinish} className="mb-6">
+                                <InputField
+                                    label="Tên đăng nhập"
+                                    name="username"
+                                    placeholder="Nhập tên đăng nhập"
+                                    value={formData.username}
+                                    onChange={handleInputChange}
+                                    errorMessage={formErrors.username}
+                                    ref={usernameRef}/>
 
-                <InputField
-                  label="Email"
-                  name="email"
-                  placeholder="example@email.com"
-                  type="text"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  errorMessage={formErrors.email}
-                />
+                                <InputField
+                                    label="Email"
+                                    name="email"
+                                    placeholder="example@email.com"
+                                    type="text"
+                                    value={formData.email}
+                                    onChange={handleInputChange}
+                                    errorMessage={formErrors.email}/>
 
-                <div className="flex items-center justify-between mb-1">
-                  <label
-                    htmlFor="password"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                  >
-                    Mật khẩu
-                  </label>
-                  <button
-                    type="button"
-                    onClick={handleGeneratePassword}
-                    className="flex items-center gap-1.5 text-xs font-semibold text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 transition-colors cursor-pointer group"
-                  >
-                    <FaMagic className="group-hover:rotate-12 transition-transform duration-300" />
-                    <span className="group-hover:underline">
-                      Gợi ý mật khẩu?
-                    </span>
-                  </button>
+                                <div className="flex items-center justify-between mb-1">
+                                    <label
+                                        htmlFor="password"
+                                        className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        Mật khẩu
+                                    </label>
+                                    <button
+                                        type="button"
+                                        onClick={handleGeneratePassword}
+                                        className="flex items-center gap-1.5 text-xs font-semibold text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 transition-colors cursor-pointer group">
+                                        <FaMagic className="group-hover:rotate-12 transition-transform duration-300"/>
+                                        <span className="group-hover:underline">
+                                            Gợi ý mật khẩu?
+                                        </span>
+                                    </button>
+                                </div>
+
+                                <InputField
+                                    label=""
+                                    name="password"
+                                    placeholder="Nhập mật khẩu"
+                                    type="password"
+                                    value={formData.password}
+                                    onChange={handleInputChange}
+                                    errorMessage={formErrors.password}/>
+
+                                <InputField
+                                    label="Xác nhận mật khẩu"
+                                    name="confirmPassword"
+                                    placeholder="Nhập lại mật khẩu"
+                                    type="password"
+                                    value={formData.confirmPassword}
+                                    onChange={handleInputChange}
+                                    errorMessage={formErrors.confirmPassword}/>
+
+                                <ButtonField
+                                    htmlType="submit"
+                                    type="login"
+                                    disabled={loading || submitting}
+                                    loading={loading || submitting}
+                                    className="w-full h-12 text-lg font-bold shadow-lg shadow-orange-500/20">
+                                    {type === "shop"
+                                        ? "Đăng Ký Cửa Hàng"
+                                        : "Đăng Ký Ngay"}
+                                </ButtonField>
+                            </form>
+
+                            <div className="text-center mt-6">
+                                <Text className="text-gray-600 dark:text-gray-300">
+                                    Đã có tài khoản?
+                                    <Link
+                                        className="text-orange-600 hover:text-orange-700 font-bold hover:underline ml-1"
+                                        href={type === "shop"
+                                        ? "/shop/login"
+                                        : "/login"}>
+                                        Đăng nhập ngay
+                                    </Link>
+                                </Text>
+                            </div>
+                        </div>
+
+                        <MobileFeatureList features={AUTH_PANEL_DATA.return_customer.features}/>
+                    </div>
                 </div>
-
-                <InputField
-                  label=""
-                  name="password"
-                  placeholder="Nhập mật khẩu"
-                  type="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  errorMessage={formErrors.password}
-                />
-
-                <InputField
-                  label="Xác nhận mật khẩu"
-                  name="confirmPassword"
-                  placeholder="Nhập lại mật khẩu"
-                  type="password"
-                  value={formData.confirmPassword}
-                  onChange={handleInputChange}
-                  errorMessage={formErrors.confirmPassword}
-                />
-
-                <ButtonField
-                  htmlType="submit"
-                  type="login"
-                  disabled={loading || submitting}
-                  loading={loading || submitting}
-                  className="w-full h-12 text-lg font-bold shadow-lg shadow-orange-500/20"
-                >
-                  {type === "shop" ? "Đăng Ký Cửa Hàng" : "Đăng Ký Ngay"}
-                </ButtonField>
-              </form>
-
-              <div className="text-center mt-6">
-                <Text className="text-gray-600 dark:text-gray-300">
-                  Đã có tài khoản?{" "}
-                  <Link
-                    className="text-orange-600 hover:text-orange-700 font-bold hover:underline ml-1"
-                    href={type === "shop" ? "/shop/login" : "/login"}
-                  >
-                    Đăng nhập ngay
-                  </Link>
-                </Text>
-              </div>
             </div>
-
-            <MobileFeatureList
-              features={AUTH_PANEL_DATA.return_customer.features}
-            />
-          </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 }

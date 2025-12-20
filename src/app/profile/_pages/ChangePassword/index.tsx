@@ -147,7 +147,7 @@ export default function ChangePasswordFormCompact() {
         </div>
 
         {/* New Password Area - Highlighted with Orange Theme */}
-        <div className="p-5 bg-gradient-to-br from-orange-50 to-white dark:from-orange-900/10 dark:to-gray-800 rounded-xl border border-orange-100 dark:border-orange-900/30 shadow-sm">
+        <div className="p-5 bg-linear-to-br from-orange-50 to-white dark:from-orange-900/10 dark:to-gray-800 rounded-xl border border-orange-100 dark:border-orange-900/30 shadow-sm">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0 mb-6">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-orange-100 dark:bg-orange-900/50 rounded-lg shadow-inner">

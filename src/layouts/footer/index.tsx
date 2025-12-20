@@ -31,7 +31,7 @@ import { ContactItem } from "./_components/contactItem";
 export const Footer: React.FC = () => {
   return (
     <footer className="bg-slate-950 text-slate-300 border-t border-slate-900 font-sans">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 mb-16">
           <div className="lg:col-span-4 space-y-6">
             <Link href="/" className="inline-block">
@@ -114,7 +114,7 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
-        <div className="border-t border-slate-900 pt-8 mt-8">
+        <div className="border-t border-slate-900 pt-2 mt-2">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-slate-500 text-sm text-center md:text-left">
               © {new Date().getFullYear()} CaLaTha. All rights reserved.

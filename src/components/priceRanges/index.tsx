@@ -39,7 +39,7 @@ export const PriceRange: React.FC<PriceRangeProps> = ({ filters, setFilters }) =
     return (
         <div className="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100 overflow-hidden transition-all duration-300">
             {/* Header đồng bộ với CategorySidebar */}
-            <div className="p-5 border-b border-orange-50 flex items-center gap-3 bg-gradient-to-r from-orange-50 to-amber-50">
+            <div className="p-5 border-b border-orange-50 flex items-center gap-3 bg-linear-to-r from-orange-50 to-amber-50">
                 <div className="bg-orange-500 p-2 rounded-xl text-white shadow-lg shadow-orange-200">
                     <DollarSign className="w-5 h-5" />
                 </div>

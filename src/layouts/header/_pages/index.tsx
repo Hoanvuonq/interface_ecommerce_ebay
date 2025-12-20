@@ -91,10 +91,10 @@ export const Header = () => {
               <UserAuthDropdown isAuthenticated={isLoggedIn} />
             </div>
           </div>
-          <HotKeywords
+          {/* <HotKeywords
             keywords={hotKeywords}
             onKeywordSelect={handleHotKeywordSelect}
-          />
+          /> */}
         </div>
       </div>
 
