@@ -7,6 +7,7 @@
 import { toast } from "sonner";
 import {authService} from "@/auth/services/auth.service";
 import { ApiResponse } from "@/api/_types/api.types";
+import { isLocalhost } from "./env";
 // ==================== COOKIE & CACHE UTILITIES ====================
 
 /**
@@ -101,17 +102,14 @@ export const logout = async (context: 'default' | 'employee' | 'shop' = 'default
   console.log(`🚪 Logout function called, context: ${context}, redirecting to: ${redirectPath}`);
 
   try {
-    // Gọi API logout - Backend đọc refreshToken từ cookies và clear cookies
     await authService.logout({ refreshToken: "" });
     console.log("✅ Backend logout successful - cookies cleared");
   } catch (error) {
     console.error("❌ Backend logout failed, continuing frontend clear:", error);
   }
 
-  // ✅ Redirect trước (ngay lập tức)
   window.location.href = redirectPath;
 
-  // ✅ Clear localStorage sau khi redirect (chạy ngay sau redirect)
   clearTokens();
   console.log("✅ All user data cleared");
 };
@@ -140,29 +138,33 @@ interface VerifyAuthResult<T> {
 export const verifyAuth = async (options?: VerifyAuthOptions): Promise<VerifyAuthResult<any>> => {
   const { redirectOnFailure = false, pathname } = options || {};
 
-  // Step 1: Check cookie flag (NHANH)
+  if (isLocalhost()) {
+    // LOCAL: chỉ check localStorage
+    const user = getCachedUser();
+    if (user) {
+      return { authenticated: true, user };
+    } else {
+      clearTokens();
+      if (redirectOnFailure) redirectToLogin(pathname);
+      return { authenticated: false, user: null };
+    }
+  }
+
+  // PROD: check cookie + gọi API /me như cũ
   if (!isAuthenticated()) {
     clearTokens();
-    if (redirectOnFailure) {
-      redirectToLogin(pathname);
-    }
+    if (redirectOnFailure) redirectToLogin(pathname);
     return { authenticated: false, user: null };
   }
 
   try {
-    // Step 2: Call /me (Axios Interceptor xử lý refresh token và retry)
     const response: ApiResponse<any> = await authService.getCurrentUser();
-    
     if (response?.success && response?.data) {
-      // Step 3: 200 OK - Cập nhật localStorage
       localStorage.setItem("users", JSON.stringify(response.data));
       return { authenticated: true, user: response.data };
     } else {
-      // ❌ Không có data - Xóa localStorage và cookie flag
       clearTokens();
-      if (redirectOnFailure) {
-        redirectToLogin(pathname);
-      }
+      if (redirectOnFailure) redirectToLogin(pathname);
       return { authenticated: false, user: null };
     }
   } catch (error: any) {

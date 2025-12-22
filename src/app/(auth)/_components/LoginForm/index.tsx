@@ -1,27 +1,23 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { useSelector } from "react-redux";
-import { FcGoogle } from "react-icons/fc";
-import { FaShoppingBag } from "react-icons/fa";
 import { Home } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useRef, useState } from "react";
+import { FaShoppingBag } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 import { toast } from "sonner";
-
 import { useLoginBuyer, useLoginSocial } from "@/auth/_hooks/useAuth";
 import { LoginRequest } from "@/auth/_types/auth";
 import authService from "@/auth/services/auth.service";
-import { RootState } from "@/store/store";
-import { getRedirectPath } from "@/utils/jwt";
 import { cn } from "@/utils/cn";
-
-import { InputField } from "@/components/inputField";
+import { getRedirectPath } from "@/utils/jwt";
+import { Design } from "@/components";
 import { ButtonField } from "@/components/buttonField";
+import { InputField } from "@/components/inputField";
+import { AUTH_PANEL_DATA } from "../../_constants/future";
 import { LeftSideForm } from "../LeftSideForm";
 import { MobileFeatureList } from "../LeftSideForm/_components/FeatureMobile";
-import { AUTH_PANEL_DATA } from "../../_constants/future";
-import { Design } from "@/components"; 
 
 // --- VALIDATION ---
 const validateForm = (values: LoginRequest): Partial<LoginRequest> | null => {
@@ -72,25 +68,30 @@ const SocialButton: React.FC<SocialButtonProps> = ({
 // --- MAIN FORM ---
 export function LoginForm() {
   const router = useRouter();
-  
+
   const { handleLoginBuyer, loading, error } = useLoginBuyer();
   const { handleLoginSocial } = useLoginSocial();
-  
-  const [formData, setFormData] = useState<LoginRequest>({ username: "", password: "" });
+
+  const [formData, setFormData] = useState<LoginRequest>({
+    username: "",
+    password: "",
+  });
   const [formErrors, setFormErrors] = useState<Partial<LoginRequest>>({});
   const [submitting, setSubmitting] = useState(false);
-  const [socialLoginLoading, setSocialLoginLoading] = useState({ GOOGLE: false, FACEBOOK: false });
-  
+  const [socialLoginLoading, setSocialLoginLoading] = useState({
+    GOOGLE: false,
+    FACEBOOK: false,
+  });
+
   const usernameRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     usernameRef.current?.focus();
-    
-    // Load saved info logic
+
     const pendingUsername = localStorage.getItem("pendingLoginUsername_user");
     const pendingEmail = localStorage.getItem("pendingLoginEmail_user");
     const pendingPassword = localStorage.getItem("pendingLoginPassword_user");
-    
+
     const formValues: Partial<LoginRequest> = {};
     if (pendingUsername) {
       formValues.username = pendingUsername;
@@ -103,7 +104,7 @@ export function LoginForm() {
       formValues.password = pendingPassword;
       localStorage.removeItem("pendingLoginPassword_user");
     }
-    
+
     if (Object.keys(formValues).length > 0) {
       setFormData((prev) => ({ ...prev, ...formValues }));
     }
@@ -145,16 +146,18 @@ export function LoginForm() {
     setSubmitting(true);
     try {
       const res = await handleLoginBuyer(formData);
-      
+
       if (res && res?.data?.emailVerified === false) {
         toast.warning("Tài khoản chưa kích hoạt. Vui lòng xác thực email.");
-        router.push(`/account/verify?email=${encodeURIComponent(res?.data?.email)}`);
+        router.push(
+          `/account/verify?email=${encodeURIComponent(res?.data?.email)}`
+        );
         return;
       }
 
       if (res && res?.success) {
         if (res?.data?.user) {
-          authService.storeUserInfoFromResponse(res.data.user);
+          authService.storeUserInfoFromResponse(res.data.user || res.data);
         }
         await authService.fetchAndStoreUserDetail();
         toast.success("Đăng nhập thành công!");
@@ -175,8 +178,7 @@ export function LoginForm() {
 
   return (
     <div className="min-h-screen w-full relative overflow-hidden bg-linear-to-br from-blue-50 via-white to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
-      
-      <Design /> 
+      <Design />
 
       <div className="relative z-10 flex flex-col lg:flex-row min-h-screen w-full">
         <div className="hidden lg:flex lg:w-1/2 w-full items-center justify-center px-4 lg:px-12">
@@ -228,7 +230,12 @@ export function LoginForm() {
                 <SocialButton
                   provider="FACEBOOK"
                   icon={
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="#1877F2">
+                    <svg
+                      width="22"
+                      height="22"
+                      viewBox="0 0 24 24"
+                      fill="#1877F2"
+                    >
                       <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
                     </svg>
                   }

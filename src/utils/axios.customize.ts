@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ApiResponse } from "@/api/_types/api.types";
 import authService from "@/auth/services/auth.service";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import { isLocalhost } from "./env";
 import { toast } from "sonner";
 import { handleApiError } from "./api.error.handler";
 import { logout } from "./local.storage";
@@ -51,6 +53,15 @@ const instance = axios.create({
   baseURL: API_BASE_URL,
   withCredentials: true,
 });
+
+// Log môi trường local/prod khi khởi tạo axios
+if (typeof window !== "undefined") {
+  if (isLocalhost()) {
+    console.log("[AXIOS] Đang chạy ở LOCALHOST");
+  } else {
+    console.log("[AXIOS] Đang chạy ở PRODUCTION hoặc domain thật");
+  }
+}
 
 const PUBLIC_ENDPOINTS = [
   "/auth/login",
@@ -119,6 +130,12 @@ instance.interceptors.request.use(
     // Nếu đang logout, treo request luôn, không cho gửi đi để tránh lỗi
     if (isLoggingOut) {
       return new Promise(() => {});
+    }
+
+    // Thêm log kiểm tra môi trường local/prod cho từng request
+    if (typeof window !== "undefined" && isLocalhost()) {
+      // Bạn có thể thêm logic đặc biệt cho local ở đây nếu muốn
+      // console.log("[AXIOS][LOCAL] Request:", config.url);
     }
 
     const isPublic = isPublicEndpoint(config.url);
@@ -225,8 +242,9 @@ instance.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        // Gọi Refresh Token
-        await authService.refreshToken({ refreshToken: "" });
+       // Lấy refreshToken từ localStorage/cookie
+const refreshToken = localStorage.getItem("refreshToken") || ""; // hoặc lấy từ cookie nếu backend lưu ở đó
+await authService.refreshToken({ refreshToken });
         console.log("✅ Refresh token thành công");
 
         if (typeof window !== "undefined") {

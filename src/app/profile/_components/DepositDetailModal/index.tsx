@@ -93,14 +93,14 @@ export const DepositDetailModal: React.FC<DepositDetailModalProps> = ({
   if (!visible || !mounted) return null;
 
   const modalContent = (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 animate-fade-in font-sans">
+    <div className="fixed inset-0 z-9999 flex items-center justify-center p-4 sm:p-6 animate-fade-in font-sans">
       <div
         className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
         onClick={onClose}
       ></div>
 
       <div className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl transform transition-all flex flex-col overflow-hidden border border-gray-100 z-10 max-h-[90vh]">
-        <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-orange-400 to-red-500"></div>
+        <div className="absolute top-0 left-0 w-full h-1.5 bg-linear-to-r from-orange-400 to-red-500"></div>
 
         <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 bg-white">
           <h3 className="text-xl font-bold text-gray-800">
@@ -135,7 +135,7 @@ export const DepositDetailModal: React.FC<DepositDetailModalProps> = ({
                       <p className="text-xs text-gray-500 mb-1">Mã giao dịch</p>
                       <div className="flex items-center gap-2">
                         <span
-                          className="text-sm font-mono font-medium text-gray-900 bg-white px-2 py-1 rounded border border-gray-200 truncate max-w-[180px]"
+                          className="text-sm font-mono font-medium text-gray-900 bg-white px-2 py-1 rounded border border-gray-200 truncate max-w-45"
                           title={transaction.id}
                         >
                           {transaction.id}

@@ -15,7 +15,7 @@ export const FooterLink = ({ href, children, className }: FooterLinkProps) => (
     <Link
       href={href}
       className={cn(
-        "group flex items-center text-slate-400 transition-colors duration-200",
+        "group flex items-center text-white transition-colors duration-200",
         "hover:text-orange-400",
         className
       )}

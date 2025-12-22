@@ -1,4 +1,3 @@
-
 import {
   ForgotPasswordRequest,
   LoginRequest,
@@ -19,6 +18,10 @@ import {
 import { request } from "@/utils/axios.customize";
 import { ApiResponse } from "@/api/_types/api.types";
 import { CreateImageRequest } from "@/types/employee/dto";
+import axios from "axios";
+import { isLocalhost } from "@/utils/env";
+
+axios.defaults.withCredentials = true;
 
 const API_ENDPOINT_AUTH = "/v1/auth";
 const API_ENDPOINT_USERS = "/v1/users";
@@ -29,20 +32,56 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 class AuthService {
   async login(payload: LoginRequest): Promise<any> {
+    const url = isLocalhost()
+      ? `${API_ENDPOINT_AUTH}/login`
+      : `${API_ENDPOINT_AUTH}/login/buyer`;
     const response = await request<ApiResponse<any>>({
-      url: `${API_ENDPOINT_AUTH}/login`,
+      url,
       method: "POST",
       data: payload,
     });
+    // Lưu token và user info vào localStorage nếu có
+    if (response && response.success && response.data) {
+      if (response.data.accessToken) {
+        localStorage.setItem("accessToken", response.data.accessToken);
+      }
+      if (response.data.refreshToken) {
+        localStorage.setItem("refreshToken", response.data.refreshToken);
+      }
+      // Nếu có trường user, lưu user info, nếu không thì lưu toàn bộ data
+      if (response.data.user) {
+        localStorage.setItem("users", JSON.stringify(response.data.user));
+      } else {
+        localStorage.setItem("users", JSON.stringify(response.data));
+      }
+    }
     return response as any;
   }
 
   async loginBuyer(payload: LoginRequest): Promise<any> {
+    const url = isLocalhost()
+      ? `${API_ENDPOINT_AUTH}/login`
+      : `${API_ENDPOINT_AUTH}/login/buyer`;
+    console.log("[LOGIN] Call URL:", url);
     const response = await request<ApiResponse<any>>({
-      url: `${API_ENDPOINT_AUTH}/login/buyer`,
+      url,
       method: "POST",
       data: payload,
     });
+    // Lưu token và user info vào localStorage nếu có
+    if (response && response.success && response.data) {
+      if (response.data.accessToken) {
+        localStorage.setItem("accessToken", response.data.accessToken);
+      }
+      if (response.data.refreshToken) {
+        localStorage.setItem("refreshToken", response.data.refreshToken);
+      }
+      if (response.data.user) {
+        localStorage.setItem("users", JSON.stringify(response.data.user));
+      } else {
+        localStorage.setItem("users", JSON.stringify(response.data));
+      }
+    }
     return response as any;
   }
 
@@ -373,20 +412,20 @@ class AuthService {
    */
   async fetchAndStoreUserDetail(): Promise<any> {
     try {
-      // ✅ Luôn dùng getCurrentUser() để lấy từ context
       const response = await this.getCurrentUser();
 
       if (response?.success && response?.data) {
-        // Lưu user detail vào localStorage
         localStorage.setItem("users", JSON.stringify(response.data));
+        localStorage.setItem("users", JSON.stringify(response.data));
+        console.log("User saved to localStorage:", response.data);
         return response.data;
       } else {
         return null;
       }
     } catch (error: any) {
-      // Log error message để debug
       const errorMessage = error?.message || "Unknown error";
       console.error("Error fetching user detail:", errorMessage, error);
+
       return null;
     }
   }

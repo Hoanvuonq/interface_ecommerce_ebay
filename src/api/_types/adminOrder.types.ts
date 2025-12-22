@@ -22,7 +22,7 @@ export interface ShopResponse {
     // Add other fields if necessary
 }
 
-export interface OrderResponse {
+export interface OrderResponseAdmin {
     orderId: string;
     orderNumber: string;
     shopId: string;
@@ -31,6 +31,8 @@ export interface OrderResponse {
     status: string;
     currency: string;
     subtotal: number;
+    orderDiscount: number;
+    totalDiscount: number;
     shippingDiscount: number;
     taxAmount: number;
     shippingFee: number;

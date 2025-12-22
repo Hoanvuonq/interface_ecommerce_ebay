@@ -9,11 +9,13 @@ import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { ProductCard } from "@/app/products/_components";
 import CountdownTimer from "@/features/CountdownTimer";
-import { CustomButton, CustomSpinner } from "@/components";
+import { ButtonField, CustomButton, CustomSpinner } from "@/components";
 import { CustomProgressBar } from "@/components/CustomProgressBar";
 import { toast } from "sonner";
 import ScrollReveal from "@/features/ScrollReveal";
 import { SectionLoading } from "@/components";
+import { CountdownFlashSale } from "../CountdownFlashSale";
+import { FaSave } from "react-icons/fa";
 const FlashSaleSection: React.FC = () => {
   const [products, setProducts] = useState<PublicProductListItemDTO[]>([]);
   const [loading, setLoading] = useState(true);
@@ -84,37 +86,8 @@ const FlashSaleSection: React.FC = () => {
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-white/30 rounded-full blur-3xl" />
       <ScrollReveal animation="fadeIn" delay={200}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-6 sm:mb-8">
-            <div className="flex justify-center mb-3">
-              <div className="relative">
-                <Flame className="w-12 h-12 text-yellow-500 animate-bounce" />
-                <div className="absolute inset-0 blur-xl bg-yellow-400/50 animate-pulse" />
-              </div>
-            </div>
-
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-(--color-primary) mb-3 drop-shadow-lg tracking-tight">
-              ⚡ FLASH SALE ⚡
-            </h2>
-            <p className="text-gray-700 text-base sm:text-lg mb-6 font-semibold italic">
-              Giảm giá cực sốc - Số lượng có hạn
-            </p>
-
-            <div className="flex justify-center">
-              <div className="backdrop-blur-md rounded-2xl px-8 py-5 border border-white shadow-xl">
-                <p className="text-gray-500 text-xs uppercase tracking-widest font-bold mb-3">
-                  Kết thúc sau
-                </p>
-                <CountdownTimer
-                  endTime={flashSaleEnd}
-                  size="large"
-                  theme="light"
-                //   showLabels={true}
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+          <CountdownFlashSale />
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 pt-6">
             {products.map((product: any) => {
               const firstVariantId = product.variants?.[0]?.id || null;
               const isWishlisted = firstVariantId
@@ -161,14 +134,18 @@ const FlashSaleSection: React.FC = () => {
             })}
           </div>
 
-          <div className="text-center mt-10">
+          <div className="text-center w-full all-center mt-10">
             <Link href="/products?filter=sale">
-              <CustomButton
-                type="primary"
-                className="h-12! cursor-pointer m-auto w-60! rounded-full!"
+              <ButtonField
+                form="profile-form"
+                htmlType="submit"
+                type="login"
+                className="flex w-60 items-center gap-2 px-5 py-2 rounded-full text-sm font-semibold shadow-md shadow-orange-500/20 transition-all active:scale-95 border-0 h-auto"
               >
-                Xem tất cả ưu đãi <span className="text-xl">→</span>
-              </CustomButton>
+                <span className="flex items-center gap-2">
+                    Xem tất cả ưu đãi <span className="text-xl">→</span>
+                </span>
+              </ButtonField>
             </Link>
           </div>
         </div>

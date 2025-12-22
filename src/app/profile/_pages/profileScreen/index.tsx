@@ -3,11 +3,14 @@
 import { useUpdateUserClient } from "@/auth/_hooks/useAuth";
 import authService from "@/auth/services/auth.service";
 import { ButtonField } from "@/components";
+import { Button } from "@/components/button/button";
 import PageContentTransition from "@/features/PageContentTransition";
 import { usePresignedUpload } from "@/hooks/usePresignedUpload";
 import { buyerService } from "@/services/buyer/buyer.service";
+import { BankAccountType } from "@/types/bank/bank-account.types";
 import { BuyerUpdateRequest } from "@/types/buyer/buyer.types";
 import { UploadContext } from "@/types/storage/storage.types";
+import { WalletType } from "@/types/wallet/wallet.types";
 import { cn } from "@/utils/cn";
 import {
   getStoredUserDetail,
@@ -23,29 +26,16 @@ import {
   FaEdit,
   FaSave,
   FaSpinner,
-  FaUniversity,
   FaUser,
-  FaUserCircle,
+  FaUserCircle
 } from "react-icons/fa";
 import { toast } from "sonner";
-import AddressManagement from "../Address";
-import InformationEditor from "../Information";
-import ChangePasswordFormCompact from "../ChangePassword";
-import WalletPage from "../Wallet";
 import { menuItems } from "../../_types/menu";
-import { WalletType } from "@/types/wallet/wallet.types";
-import { Button } from "@/components/button/button";
-
-const FeaturePlaceholder = ({ title, icon: Icon }: any) => (
-  <div className="flex flex-col items-center justify-center p-12 bg-white border border-gray-100 rounded-xl shadow-sm min-h-100 animate-fade-in">
-    <div className="p-4 bg-orange-50 rounded-full mb-4">
-      <Icon className="text-3xl text-orange-200" />
-    </div>
-    <p className="font-medium text-base text-gray-500">
-      Tính năng <span className="text-orange-500">{title}</span> đang phát triển
-    </p>
-  </div>
-);
+import AddressManagement from "../Address";
+import BankAccountManagement from "../BankAccount";
+import ChangePasswordFormCompact from "../ChangePassword";
+import InformationEditor from "../Information";
+import WalletPage from "../Wallet";
 
 export default function ProfilePage() {
   const [user, setUser] = useState<any>(getStoredUserDetail());
@@ -315,9 +305,7 @@ export default function ProfilePage() {
       case "wallet":
         return <WalletPage autoCreate={true} type={WalletType.BUYER} />;
       case "bank-account":
-        return (
-          <FeaturePlaceholder title="Tài khoản ngân hàng" icon={FaUniversity} />
-        );
+         return <BankAccountManagement accountType={BankAccountType.BUYER} />;
       case "password":
         return <ChangePasswordFormCompact />;
       default:

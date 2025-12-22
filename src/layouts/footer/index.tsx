@@ -22,15 +22,14 @@ import {
 import { cn } from "@/utils/cn"; 
 import { SocialLink } from "./_components/socialLink";
 import { FooterHeader } from "./_components/footerHeader";
-import { BaseProps } from "./_types/footer";
 import { FooterLink } from "./_components/footerLink";
 import { ContactItem } from "./_components/contactItem";
 
-
+const PRIMARY_COLOR = "var(--color-primary)";
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="bg-slate-950 text-slate-300 border-t border-slate-900 font-sans">
+    <footer style={{ backgroundColor: PRIMARY_COLOR }} className="text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 mb-16">
           <div className="lg:col-span-4 space-y-6">
@@ -44,7 +43,7 @@ export const Footer: React.FC = () => {
                 priority
               />
             </Link>
-            <p className="text-slate-400 text-sm leading-7 pr-4 text-justify">
+            <p className="text-white text-sm leading-7 pr-4 text-justify">
               Nền tảng thương mại điện tử hàng đầu Việt Nam. Chúng tôi cam kết mang đến trải nghiệm mua sắm an toàn, tiện lợi với hàng triệu sản phẩm chất lượng cao.
             </p>
             
@@ -80,7 +79,7 @@ export const Footer: React.FC = () => {
 
           <div className="lg:col-span-3">
             <FooterHeader>Liên hệ</FooterHeader>
-            <div className="mt-6">
+            <div className="mt-6 text-white!">
               <ContactItem 
                 icon={Phone} 
                 href="tel:0932070787" 
@@ -114,9 +113,9 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
-        <div className="border-t border-slate-900 pt-2 mt-2">
+        <div className="border-t border-white/20 pt-2 mt-2">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-slate-500 text-sm text-center md:text-left">
+            <p className="text-white text-sm text-center md:text-left">
               © {new Date().getFullYear()} CaLaTha. All rights reserved.
             </p>
             
@@ -126,7 +125,7 @@ export const Footer: React.FC = () => {
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    "text-sm text-slate-500 transition-colors",
+                    "text-sm text-white transition-colors",
                     "hover:text-orange-400"
                   )}
                 >

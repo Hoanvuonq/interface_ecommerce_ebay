@@ -8,8 +8,8 @@ import type {
     BuyerUpdateRequest,
     BuyerResponse,
     BuyerDetailResponse,
-} from '../types/buyer.types';
-import type { ApiResponse } from '@/types/api.types';
+} from '@/types/buyer/buyer.types';
+import type { ApiResponse } from '@/api/_types/api.types';
 
 const BUYER_API_BASE = '/v1/buyers';
 

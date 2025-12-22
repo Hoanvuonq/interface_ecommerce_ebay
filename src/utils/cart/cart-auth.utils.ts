@@ -2,10 +2,7 @@
 import { isAuthenticated as checkAuth } from "@/utils/local.storage";
 import { toast } from "sonner";
 
-/**
- * Check if user is authenticated
- * ✅ Dựa vào user info trong localStorage (backend set cookies tự động)
- */
+
 export const isAuthenticated = (): boolean => {
   return checkAuth();
 };

@@ -1,21 +1,19 @@
 'use client';
 
-import React, { useState } from 'react';
-import { 
-    Tag as TagIcon, 
-    CheckCircle2, 
-    XCircle, 
-    ChevronDown, 
-    Ticket, 
-    Loader2,
-    X
-} from 'lucide-react';
-import { cn } from '@/utils/cn';
-import { VoucherModal } from '../VoucherModal';
+import { formatPrice } from '@/hooks/useFormatPrice';
 import { voucherService } from '@/services/voucher/voucher.service';
+import { cn } from '@/utils/cn';
+import {
+    CheckCircle2,
+    ChevronDown,
+    Ticket,
+    X,
+    XCircle
+} from 'lucide-react';
+import React, { useState } from 'react';
 import { toast } from 'sonner';
 import { VoucherInputProps } from '../../_types/voucher';
-import { formatPrice } from '@/hooks/useFormatPrice';
+import { VoucherModal } from '../VoucherModal';
 
 
 export const VoucherInput: React.FC<VoucherInputProps> = ({
@@ -270,7 +268,6 @@ export const VoucherInput: React.FC<VoucherInputProps> = ({
                                     preferences: context.preferences,
                                 });
                             } else {
-                                // Fallback to legacy API
                                 return await voucherService.getPlatformVouchers();
                             }
                         }

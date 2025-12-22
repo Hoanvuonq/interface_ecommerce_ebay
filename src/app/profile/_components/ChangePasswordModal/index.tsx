@@ -1,15 +1,15 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { createPortal } from "react-dom";
+import { HeaderModal } from "@/components";
 import walletService from "@/services/wallet/wallet.service";
 import type {
   ChangeWalletPasswordRequest,
   WalletResponse,
 } from "@/types/wallet/wallet.types";
 import { WalletType } from "@/types/wallet/wallet.types";
-import { FiX, FiLock, FiShield, FiAlertCircle, FiCheck } from "react-icons/fi";
-import { HeaderModal } from "@/components";
+import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import { FiAlertCircle, FiCheck } from "react-icons/fi";
 
 interface ChangePasswordModalProps {
   visible: boolean;
@@ -55,7 +55,6 @@ export const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
         confirmPassword: "",
       });
       setErrors({});
-      // Prevent body scroll when modal is open
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
@@ -153,9 +152,7 @@ export const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
             onClose={handleClose} 
         />
 
-        {/* Body */}
         <div className="p-6 overflow-y-auto max-h-[80vh]">
-          {/* Notification Box */}
           <div className={`mb-6 p-4 rounded-xl border flex gap-3 ${
               isFirstTimeChange 
               ? 'bg-orange-50 border-orange-100 text-orange-800' 

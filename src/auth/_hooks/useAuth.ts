@@ -25,6 +25,7 @@ import { VerifyRequest } from "../_types/auth";
 import { ResendOtpRequest } from "../_types/auth";
 import { CreateImageRequest } from "@/types/employee/dto";
 import { ApiResponse } from "@/api/_types/api.types";
+import { isLocalhost } from "@/utils/env";
 
 export function useLogin() {
   const [loading, setLoading] = useState(false);
@@ -38,6 +39,10 @@ export function useLogin() {
     try {
       const res = await authService.login(payload);
       console.log("Login response:", res);
+      // Nếu ở local, lưu user vào localStorage
+      if (typeof window !== "undefined" && isLocalhost() && res && res.success && res.data) {
+        localStorage.setItem("users", JSON.stringify(res.data));
+      }
       return res;
     } catch (err: any) {
       setError(err?.message || "Đăng nhập thất bại");
@@ -595,7 +600,7 @@ export function useAuthVerification(options?: {
     if (autoVerify) {
       verify();
     }
-  }, [autoVerify, verify]); // Re-verify khi pathname thay đổi (thông qua verify dependency)
+  }, [autoVerify, verify]); 
 
   return {
     authenticated,

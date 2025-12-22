@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ApiErrorResponse } from "@/api/_types/api.types";
 import { ERROR_CODES, getErrorMessageByCode } from "@/constants/error.codes";
 import { toast } from "sonner"; 

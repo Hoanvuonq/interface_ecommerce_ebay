@@ -28,3 +28,15 @@ export const resolveCartItemImageUrl = (
     return '';
 };
 
+export const resolvePreviewItemImageUrl = (
+  basePath: string | null | undefined,
+  extension: string | null | undefined,
+  size: '_thumb' | '_medium' | '_large' | '_orig' = '_thumb'
+): string => {
+  if (basePath && extension) {
+    const raw = `${basePath}${size}${extension}`;
+    return toPublicUrl(raw);
+  }
+  return '';
+};
+

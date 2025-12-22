@@ -1,27 +1,26 @@
 "use client";
 
-import { CustomBreadcrumb } from "@/components";
+import { CustomBreadcrumb, PriceRange } from "@/components";
+import { CustomButton } from "@/components/button";
+import { CardComponents } from "@/components/card";
+import { CustomTag } from "@/components/customTag";
 import PageContentTransition from "@/features/PageContentTransition";
-import ProductFilters from "../_components/productFilters";
-import { ProductFilterValues } from "../_components/productFilters/type";
-import ProductList from "../_components/productList";
+import { cn } from "@/utils/cn";
 import {
   Clock,
-  Heart,
   Filter,
   Gift,
+  Heart,
+  LayoutGrid,
   Star,
   Trophy,
-  LayoutGrid,
 } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
-import React, { useEffect, useState, useCallback } from "react";
-import { CustomButton } from "@/components/button";
-import { cn } from "@/utils/cn";
-import { PriceRange } from "@/components";
-import { CardComponents } from "@/components/card";
-import { CustomTag } from "@/components/customTag";
+import { useEffect, useState } from "react";
+import ProductFilters from "../_components/productFilters";
+import { ProductFilterValues } from "../_components/productFilters/type";
+import ProductList from "../_components/productList";
 
 const CategorySidebar = dynamic(() => import("@/components/categorySidebar"), {
   ssr: false,

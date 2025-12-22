@@ -1,11 +1,11 @@
 "use client";
 
+import { RoleEnum } from "@/auth/_types/auth";
 import { AppPopover } from "@/components/appPopover";
 import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/utils/cn";
-import { getRole, getUserName, getUserInfo, hasRole } from "@/utils/jwt";
+import { getUserInfo, hasRole } from "@/utils/jwt";
 import { logout } from "@/utils/local.storage";
-import { RoleEnum } from "@/auth/_types/auth"; // Đảm bảo đúng path enum của bạn
 import {
     ChevronDown,
     Heart,
@@ -17,31 +17,17 @@ import {
     UserPlus
 } from "lucide-react";
 import Link from "next/link";
-import { ReactElement, useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { MenuItem, UserAuthDropdownProps } from "../../_types/header";
 
-interface MenuItem {
-    key: string;
-    label: string;
-    href?: string;
-    icon?: ReactElement;
-    action?: () => void;
-    badge?: number; 
-    isLogout?: boolean; 
-}
-
-interface UserAuthDropdownProps {
-    isAuthenticated: boolean;
-}
 
 export const UserAuthDropdown = ({
     isAuthenticated: propsAuth,
 }: UserAuthDropdownProps) => {
-    // Sử dụng hook useAuth để đồng bộ trạng thái thực tế từ Token/Storage
     const isActuallyAuthenticated = useAuth();
     const [userData, setUserData] = useState({ name: "", email: "", image: "" });
     const [isShopOwner, setIsShopOwner] = useState(false);
 
-    // Xử lý thông tin User khi trạng thái đăng nhập thay đổi
     useEffect(() => {
         if (isActuallyAuthenticated) {
             const info = getUserInfo();
@@ -50,17 +36,15 @@ export const UserAuthDropdown = ({
                 email: info?.email || "",
                 image: info?.image || ""
             });
-            // Kiểm tra role để hiển thị menu quản lý shop
             setIsShopOwner(hasRole(RoleEnum.SHOP));
         }
     }, [isActuallyAuthenticated]);
 
     const handleLogoutAction = () => {
         logout();
-        window.location.href = "/login"; // Redirect cứng để clear toàn bộ state
+        window.location.href = "/login"; 
     };
 
-    // Tạo menu items động dựa trên dữ liệu thật
     const userMenuItems: MenuItem[] = [
         {
             key: "profile",

@@ -6,7 +6,8 @@ import { ShoppingCart, Package, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { fetchCart } from '@/store/theme/cartSlice';
-import { isAuthenticated as checkAuth } from '@/utils/local.storage';
+import { isAuthenticated as checkAuth, getCachedUser } from '@/utils/local.storage';
+import { isLocalhost } from '@/utils/env';
 import { CartPopover } from '../cartPopover';
 import { cn } from '@/utils/cn';
 
@@ -17,15 +18,20 @@ export const CartBadge = () => {
     const [mounted, setMounted] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    useEffect(() => {
-        setMounted(true);
-        const authStatus = checkAuth();
-        setIsLoggedIn(authStatus);
-        
-        if (authStatus) {
-            dispatch(fetchCart());
-        }
-    }, [dispatch]);
+   useEffect(() => {
+    setMounted(true);
+    let authStatus = false;
+    if (isLocalhost()) {
+        authStatus = !!getCachedUser();
+    } else {
+        authStatus = checkAuth();
+    }
+    setIsLoggedIn(authStatus);
+
+    if (authStatus) {
+        dispatch(fetchCart());
+    }
+}, [dispatch]);
 
     const itemCount = cart?.itemCount || 0;
 

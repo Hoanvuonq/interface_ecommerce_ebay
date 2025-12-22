@@ -27,7 +27,7 @@ export const CustomBreadcrumb: React.FC<BreadcrumbProps> = ({ items }) => {
               <div className={`flex items-center ${index !== 0 && 'ml-2'}`}>
                 {isLast || !item.href ? (
                   <span
-                    className="text-base font-medium text-indigo-600 cursor-default"
+                    className="text-base font-bold text-orange-600 cursor-default"
                     aria-current="page"
                   >
                     {item.title}

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { PermissionEnum,RoleEnum } from "@/auth/_types/auth";
 /**
  * User Info Type từ localStorage

@@ -1,11 +1,17 @@
 import { useState, useEffect, useCallback } from "react";
-import { isAuthenticated as checkAuth } from "@/utils/local.storage";
+import { isAuthenticated as checkAuth, getCachedUser } from "@/utils/local.storage";
+import { isLocalhost } from "@/utils/env";
 
 export function useAuth() {
   const [authenticated, setAuthenticated] = useState(false);
 
-  const checkAuthStatus = useCallback(() => {
-    const isAuth = checkAuth();
+ const checkAuthStatus = useCallback(() => {
+    let isAuth = false;
+    if (isLocalhost()) {
+      isAuth = !!getCachedUser();
+    } else {
+      isAuth = checkAuth();
+    }
     setAuthenticated(isAuth);
     return isAuth;
   }, []);
@@ -14,10 +20,8 @@ export function useAuth() {
     // Check lần đầu
     checkAuthStatus();
 
-    // Polling để check cookie changes (mỗi 3 giây - tối ưu hơn)
     const interval = setInterval(checkAuthStatus, 3000);
 
-    // Listen for visibility change để check ngay khi tab được focus
     const handleVisibilityChange = () => {
       if (!document.hidden) {
         checkAuthStatus();
@@ -25,16 +29,22 @@ export function useAuth() {
     };
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
-    // Listen for focus event (khi user quay lại tab)
     const handleFocus = () => {
       checkAuthStatus();
     };
     window.addEventListener("focus", handleFocus);
 
+    const handleStorage = () => {
+      if (isLocalhost()) checkAuthStatus();
+    };
+    window.addEventListener("storage", handleStorage);
+
+
     return () => {
       clearInterval(interval);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       window.removeEventListener("focus", handleFocus);
+      window.removeEventListener("storage", handleStorage);
     };
   }, [checkAuthStatus]);
 

@@ -4,6 +4,7 @@ import { formatPriceFull } from '@/hooks/useFormatPrice';
 import { VoucherOption } from '@/services/voucher/voucher.service';
 import { cn } from '@/utils/cn';
 import { toPublicUrl } from '@/utils/storage/url';
+import { createPortal } from "react-dom";
 import {
     AlertCircle,
     Gift,
@@ -30,7 +31,6 @@ export const VoucherModal: React.FC<VoucherModalProps> = ({
     shopName,
     isShopVoucher = false,
 }) => {
-    // --- GIỮ NGUYÊN TOÀN BỘ LOGIC STATES ---
     const [voucherCode, setVoucherCode] = useState('');
     const [applyingCode, setApplyingCode] = useState(false);
     const [vouchers, setVouchers] = useState<VoucherOption[]>([]);
@@ -265,7 +265,7 @@ export const VoucherModal: React.FC<VoucherModalProps> = ({
 
     if (!open) return null;
 
-    return (
+    const modalContent = (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-in fade-in duration-300" onClick={onClose} />
             
@@ -364,4 +364,5 @@ export const VoucherModal: React.FC<VoucherModalProps> = ({
             </div>
         </div>
     );
+     return createPortal(modalContent, document.body);
 };

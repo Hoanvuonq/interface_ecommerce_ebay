@@ -11,7 +11,7 @@ export default function NotFoundPage() {
   return (
     <div
       className={cn(
-        "flex min-h-screen flex-col items-center justify-center px-4 transition-colors duration-300",
+        "flex min-h-screen flex-col items-center justify-center px-4 transition-colors duration-300 cherry-bomb-one-regular",
         theme === "dark" ? "bg-[#1f1f1f] text-white" : "bg-gray-50 text-gray-900"
       )}
     >
@@ -23,7 +23,7 @@ export default function NotFoundPage() {
           </div>
         </div>
 
-        <h1 className="mb-4 text-4xl font-black uppercase tracking-tight md:text-6xl">
+        <h1 className="mb-4 text-4xl font-black tracking-tight md:text-6xl">
           Lạc đường rồi!
         </h1>
         
@@ -35,7 +35,7 @@ export default function NotFoundPage() {
           <Link href="/">
             <CustomButton
               variant="dark"
-              className="h-12! px-8! rounded-2xl! shadow-xl shadow-orange-200 uppercase tracking-widest font-black"
+              className="h-12! px-8! hover:text-orange-600! rounded-2xl! shadow-xl shadow-orange-200 uppercase tracking-widest font-black"
               icon={<MoveLeft size={18} />}
             >
               Quay về trang chủ
@@ -44,7 +44,7 @@ export default function NotFoundPage() {
           
           <button 
             onClick={() => window.location.reload()}
-            className="text-sm font-bold text-gray-400 hover:text-orange-600 transition-colors uppercase tracking-tighter"
+            className="text-sm  font-bold text-black cursor-pointer hover:text-orange-600 transition-colors uppercase tracking-tighter"
           >
             Tải lại trang
           </button>

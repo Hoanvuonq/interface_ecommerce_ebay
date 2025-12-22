@@ -57,7 +57,6 @@ export const Header = () => {
       style={{ boxShadow: "0 1px 6px rgba(0,0,0,0.08)" }}
     >
       <TopHeader />
-
       <div className="backdrop-blur" style={{ backgroundColor: PRIMARY_COLOR }}>
         <div className="max-w-300 mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20 py-3">

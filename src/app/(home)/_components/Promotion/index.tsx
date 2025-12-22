@@ -47,7 +47,7 @@ export const Promotion: React.FC = () => {
                     className="transition-transform duration-300 group-hover:scale-110"
                   />
                 </div>
-                <span className="text-sm font-medium text-gray-700 group-hover:text-pink-600 transition-colors text-center leading-tight">
+                <span className="text-sm font-medium text-gray-700 group-hover:text-orange-600 transition-colors text-center leading-tight">
                   {item.label}
                 </span>
               </Link>

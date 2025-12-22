@@ -13,8 +13,8 @@ export const ContactItem = ({ icon: Icon, text, href, className }: BaseProps) =>
   );
 
   const textClass = cn(
-    "text-slate-400 text-sm leading-relaxed transition-colors",
-    "group-hover:text-slate-200"
+    "text-white text-sm leading-relaxed transition-colors",
+    "group-hover:text-white"
   );
 
   const InnerContent = () => (
