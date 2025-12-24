@@ -1,0 +1,432 @@
+name: Frontend CI/CD
+
+# ============================================
+# Workflow này chạy trên GitHub's servers (runners)
+# GitHub tự động cung cấp máy ảo Ubuntu để build Docker
+# ============================================
+
+on:
+  push:
+    branches:
+      - main
+      - staging
+  pull_request:
+    branches:
+      - main
+      - staging
+
+env:
+  DOCKER_HUB_USER: quy123zz
+  DOCKER_HUB_REPO: ebay_ecom
+
+jobs:
+  build-and-push:
+    name: Build and Push Docker Image
+    # GitHub cung cấp máy ảo Ubuntu miễn phí để chạy workflow
+    runs-on: ubuntu-latest
+    # Sử dụng Environment Secrets/Variables từ environment "staging"
+    environment: staging
+    
+    steps:
+      # Bước 1: Lấy code từ repository về máy ảo của GitHub
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Bước 2: Tạo file .env.production từ GitHub Variables
+      # File này sẽ được Dockerfile sử dụng để build Next.js với đúng config
+      # Chỉ NEXT_PUBLIC_* dùng vars (Variables), các trường khác dùng secrets
+      - name: Create .env.production from Variables
+        env:
+          VAR_BACKEND_URL: ${{ vars.NEXT_PUBLIC_BACKEND_URL }}
+          VAR_PRIMARY_COLOR: ${{ vars.NEXT_PUBLIC_PRIMARY_COLOR }}
+          VAR_THEME_MODE: ${{ vars.NEXT_PUBLIC_THEME_MODE }}
+        run: |
+          mkdir -p environment/env/prod
+          
+          # Debug: Kiểm tra environment và variables
+          echo "🔍 Debugging environment variables..."
+          echo "Environment: staging"
+          echo "Checking variables..."
+          echo "VAR_BACKEND_URL length: ${#VAR_BACKEND_URL}"
+          echo "VAR_PRIMARY_COLOR length: ${#VAR_PRIMARY_COLOR}"
+          echo "VAR_THEME_MODE length: ${#VAR_THEME_MODE}"
+          
+          # Validate required variables
+          if [ -z "$VAR_BACKEND_URL" ] || [ "$VAR_BACKEND_URL" = "null" ]; then
+            echo "❌ Error: NEXT_PUBLIC_BACKEND_URL is not set!"
+            echo ""
+            echo "📝 Cách sửa:"
+            echo "1. Vào GitHub → Settings → Environments → staging"
+            echo "2. Click vào tab 'Variables' (không phải Secrets)"
+            echo "3. Thêm variable: NEXT_PUBLIC_BACKEND_URL = http://localhost:8888"
+            exit 1
+          fi
+          if [ -z "$VAR_PRIMARY_COLOR" ] || [ "$VAR_PRIMARY_COLOR" = "null" ]; then
+            echo "❌ Error: NEXT_PUBLIC_PRIMARY_COLOR is not set!"
+            echo "Please add it in GitHub Settings → Environments → staging → Variables"
+            exit 1
+          fi
+          if [ -z "$VAR_THEME_MODE" ] || [ "$VAR_THEME_MODE" = "null" ]; then
+            echo "❌ Error: NEXT_PUBLIC_THEME_MODE is not set!"
+            echo "Please add it in GitHub Settings → Environments → staging → Variables"
+            exit 1
+          fi
+          
+          # Tạo file .env.production
+          cat > environment/env/prod/.fe.env << EOF
+          NEXT_PUBLIC_BACKEND_URL=${VAR_BACKEND_URL}
+          NEXT_PUBLIC_PRIMARY_COLOR=${VAR_PRIMARY_COLOR}
+          NEXT_PUBLIC_THEME_MODE=${VAR_THEME_MODE}
+          EOF
+          
+          # Xác nhận đã tạo file (không hiển thị giá trị)
+          echo "✅ Created .env.production file from GitHub Variables"
+          echo "✅ Environment variables loaded:"
+          echo "  - NEXT_PUBLIC_BACKEND_URL: [HIDDEN]"
+          echo "  - NEXT_PUBLIC_PRIMARY_COLOR: [HIDDEN]"
+          echo "  - NEXT_PUBLIC_THEME_MODE: [HIDDEN]"
+
+      # Bước 3: Kiểm tra Docker Hub Secrets
+      - name: Validate Docker Hub Secrets
+        run: |
+          if [ -z "${{ secrets.DOCKER_HUB_USERNAME }}" ]; then
+            echo "❌ Error: DOCKER_HUB_USERNAME secret is not set!"
+            echo "Please add DOCKER_HUB_USERNAME secret in GitHub Settings → Secrets → Actions"
+            exit 1
+          fi
+          if [ -z "${{ secrets.DOCKER_HUB_TOKEN }}" ]; then
+            echo "❌ Error: DOCKER_HUB_TOKEN secret is not set!"
+            echo "Please add DOCKER_HUB_TOKEN secret in GitHub Settings → Secrets → Actions"
+            echo "Create token at: https://hub.docker.com/settings/security"
+            exit 1
+          fi
+          echo "✅ Docker Hub secrets validated"
+          echo "Username: ${{ secrets.DOCKER_HUB_USERNAME }}"
+          echo "Token: [HIDDEN]"
+
+      # Bước 4: Setup Docker Buildx trên máy ảo GitHub
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # Bước 5: Đăng nhập Docker Hub (để push image)
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+          logout: false
+
+      # Bước 6: Build Docker image trên máy ảo GitHub và push lên Docker Hub
+      # - Build image từ Dockerfile với ENV_FILE=prod
+      # - Tag image với tên repository
+      # - Push image lên Docker Hub (chỉ khi push vào staging branch để deploy)
+      # - Cache layers để build nhanh hơn lần sau
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .                                    # Build context: root của fe_ecommerce_ebay repo
+          file: ./environment/Dockerfile                 # Dockerfile path
+          # Chỉ push image khi push vào branch staging (deploy branch)
+          push: ${{ github.event_name == 'push' && github.ref == 'refs/heads/staging' }}
+          tags: |
+            ${{ env.DOCKER_HUB_USER }}/${{ env.DOCKER_HUB_REPO }}:frontend-latest
+            ${{ env.DOCKER_HUB_USER }}/${{ env.DOCKER_HUB_REPO }}:frontend-${{ github.sha }}
+          build-args: |
+            ENV_FILE=prod
+          cache-from: type=gha                          # Dùng cache từ GitHub Actions
+          cache-to: type=gha,mode=max                    # Lưu cache để lần sau build nhanh hơn
+          platforms: linux/amd64                        # Build cho platform Linux AMD64
+
+      - name: Success message (Image pushed)
+        if: github.event_name == 'push'
+        run: |
+          echo "✅ Image built successfully!"
+          # Branch dùng để deploy (được push image + SSH deploy)
+          DEPLOY_BRANCHES="staging"
+          CURRENT_BRANCH="${{ github.ref_name }}"
+
+          # Check if current branch is in DEPLOY_BRANCHES (comma-separated)
+          if echo "$DEPLOY_BRANCHES" | tr ',' '\n' | grep -qx "$CURRENT_BRANCH"; then
+            echo "✅ Image pushed to Docker Hub!"
+            echo "Branch: $CURRENT_BRANCH"
+            echo "Tags:"
+            echo "  - ${{ env.DOCKER_HUB_USER }}/${{ env.DOCKER_HUB_REPO }}:frontend-latest"
+            echo "  - ${{ env.DOCKER_HUB_USER }}/${{ env.DOCKER_HUB_REPO }}:frontend-${{ github.sha }}"
+          else
+            echo "ℹ️  Image built but not pushed ($CURRENT_BRANCH branch - build only)"
+          fi
+
+      # Bước 7: Copy docker-compose.prod.yml và nginx config lên server
+      # Tự động copy các file cần thiết để đảm bảo luôn có file mới nhất trên server
+      - name: Copy docker-compose to server
+        # Chỉ deploy khi push vào staging (main chỉ build)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/staging'
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: '22'
+          source: "environment/compose/docker-compose.prod.yml"
+          target: "/tmp"
+          strip_components: 0
+
+      # Copy nginx config files (cần thiết cho nginx reverse proxy)
+      - name: Copy nginx config to server
+        if: github.event_name == 'push' && github.ref == 'refs/heads/staging'
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: '22'
+          source: "environment/nginx"
+          target: "/tmp"
+          strip_components: 0
+
+      # Tạo .htpasswd file trên server (HTTP Basic Authentication)
+      # ⚠️ LƯU Ý: File .htpasswd sẽ được tạo trên server từ GitHub Secrets
+      # Format: username:hashed_password (có thể tạo từ htpasswd hoặc online tool)
+      - name: Create .htpasswd on server
+        if: github.event_name == 'push' && github.ref == 'refs/heads/staging'
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: '22'
+          script: |
+            # Tạo thư mục nginx nếu chưa có
+            DEPLOY_PATH="${{ secrets.SSH_DEPLOY_PATH }}"
+            if [ -z "$DEPLOY_PATH" ]; then
+              DEPLOY_PATH="$HOME/ebay_ecommerce/fe_ecommerce_ebay/environment"
+            fi
+            DEPLOY_PATH="${DEPLOY_PATH/#\~/$HOME}"
+            mkdir -p "${DEPLOY_PATH}/nginx" || true
+            
+            # Tạo file .htpasswd từ secret hoặc dùng giá trị mặc định
+            # Format: username:$apr1$salt$hashedpassword
+            # ⚠️ LƯU Ý: Dùng base64 encode trong secret để tránh bash expand $variables
+            # Secret phải là base64 encoded của htpasswd content
+            HTPASSWD_B64="${{ secrets.HTPASSWD_CONTENT }}"
+            if [ -z "$HTPASSWD_B64" ] || [ "$HTPASSWD_B64" = "" ]; then
+              # Dùng giá trị mặc định (admin:admin123) - base64 encoded
+              echo "⚠️ Warning: HTPASSWD_CONTENT secret not set, using default"
+              echo 'YWRtaW46JGFwcjEkNGtKdHBTZTUkZTVGUW5DQ2daS0g3TDhaQTdCSU1HMAo=' | base64 -d > "${DEPLOY_PATH}/nginx/.htpasswd"
+            else
+              # Decode base64 từ secret
+              echo "$HTPASSWD_B64" | base64 -d > "${DEPLOY_PATH}/nginx/.htpasswd"
+              echo "✅ Decoded .htpasswd from base64 secret"
+            fi
+            
+            # Set permissions
+            chmod 644 "${DEPLOY_PATH}/nginx/.htpasswd" || true
+            echo "✅ Created .htpasswd file at ${DEPLOY_PATH}/nginx/.htpasswd"
+
+      # Bước 8: Deploy lên server qua SSH
+      # - SSH vào server bằng password
+      # - Pull image mới từ Docker Hub
+      # - Restart containers với docker-compose
+      - name: Deploy to Server via SSH
+        if: github.event_name == 'push' && github.ref == 'refs/heads/staging'
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: '22'
+          script: |
+            echo "🚀 Starting deployment..."
+            
+            # Xác định deploy path từ secret hoặc default
+            DEPLOY_PATH="${{ secrets.SSH_DEPLOY_PATH }}"
+            if [ -z "$DEPLOY_PATH" ]; then
+              DEPLOY_PATH="$HOME/ebay_ecommerce/fe_ecommerce_ebay/environment"
+            fi
+            # Expand ~ to $HOME if present
+            DEPLOY_PATH="${DEPLOY_PATH/#\~/$HOME}"
+            echo "📁 Deploy path: ${DEPLOY_PATH}"
+            
+            # Tự động tạo thư mục nếu chưa tồn tại
+            echo "📂 Creating directory structure if not exists..."
+            mkdir -p "${DEPLOY_PATH}/compose" || {
+              echo "❌ Error: Failed to create directory: ${DEPLOY_PATH}/compose"
+              echo "Current user: $(whoami)"
+              echo "Home directory: $HOME"
+              exit 1
+            }
+            mkdir -p "${DEPLOY_PATH}/nginx/conf.d" || {
+              echo "❌ Error: Failed to create nginx directory"
+              exit 1
+            }
+            
+            # Tạo thư mục certbot (cần cho SSL Let's Encrypt)
+            # Nếu đã tồn tại thì không báo lỗi, chỉ tạo nếu chưa có
+            echo "📁 Setting up certbot directories..."
+            if [ -d "/root/certbot/conf" ]; then
+              echo "ℹ️  /root/certbot/conf already exists"
+            else
+              mkdir -p /root/certbot/conf && echo "✅ Created /root/certbot/conf" || echo "⚠️ Warning: Failed to create /root/certbot/conf"
+            fi
+            
+            if [ -d "/root/certbot/www" ]; then
+              echo "ℹ️  /root/certbot/www already exists"
+            else
+              mkdir -p /root/certbot/www && echo "✅ Created /root/certbot/www" || echo "⚠️ Warning: Failed to create /root/certbot/www"
+            fi
+            
+            # Set permissions (không báo lỗi nếu đã đúng)
+            chmod 755 /root/certbot/conf 2>/dev/null || true
+            chmod 755 /root/certbot/www 2>/dev/null || true
+            echo "✅ Certbot directories ready"
+            echo "✅ Directory structure created/verified"
+            
+            # Copy docker-compose.prod.yml từ /tmp vào đúng vị trí
+            echo "📋 Copying docker-compose.prod.yml to deployment directory..."
+            # scp-action với strip_components: 0 sẽ giữ nguyên cấu trúc thư mục
+            # File sẽ ở: /tmp/environment/compose/docker-compose.prod.yml
+            if [ -f "/tmp/environment/compose/docker-compose.prod.yml" ]; then
+              cp /tmp/environment/compose/docker-compose.prod.yml "${DEPLOY_PATH}/compose/docker-compose.prod.yml" || {
+                echo "❌ Error: Failed to copy docker-compose.prod.yml"
+                exit 1
+              }
+              echo "✅ docker-compose.prod.yml copied successfully"
+            elif [ -f "/tmp/docker-compose.prod.yml" ]; then
+              # Fallback: nếu file ở /tmp trực tiếp
+              cp /tmp/docker-compose.prod.yml "${DEPLOY_PATH}/compose/docker-compose.prod.yml" || {
+                echo "❌ Error: Failed to copy docker-compose.prod.yml"
+                exit 1
+              }
+              echo "✅ docker-compose.prod.yml copied successfully"
+            else
+              echo "⚠️ Warning: docker-compose.prod.yml not found in /tmp, checking if it exists in deployment path..."
+            fi
+            
+            # Copy nginx config files từ /tmp vào đúng vị trí
+            echo "📋 Copying nginx config files to deployment directory..."
+            if [ -d "/tmp/environment/nginx" ]; then
+              # Chỉ copy config files, không copy .htpasswd (đã được tạo ở bước trước)
+              cp -r /tmp/environment/nginx/conf.d "${DEPLOY_PATH}/nginx/" 2>/dev/null || true
+              cp /tmp/environment/nginx/nginx.conf "${DEPLOY_PATH}/nginx/nginx.conf" 2>/dev/null || true
+              echo "✅ nginx config files copied successfully"
+            elif [ -d "/tmp/nginx" ]; then
+              # Fallback: nếu nginx ở /tmp trực tiếp
+              cp -r /tmp/nginx/conf.d "${DEPLOY_PATH}/nginx/" 2>/dev/null || true
+              cp /tmp/nginx/nginx.conf "${DEPLOY_PATH}/nginx/nginx.conf" 2>/dev/null || true
+              echo "✅ nginx config files copied successfully"
+            else
+              echo "⚠️ Warning: nginx config files not found in /tmp"
+            fi
+            
+            # Kiểm tra file .htpasswd đã được tạo chưa
+            if [ -f "${DEPLOY_PATH}/nginx/.htpasswd" ]; then
+              echo "✅ .htpasswd file exists at ${DEPLOY_PATH}/nginx/.htpasswd"
+            else
+              echo "⚠️ Warning: .htpasswd file not found"
+              echo "💡 Tip: File should have been created in previous step from HTPASSWD_CONTENT secret"
+            fi
+            
+            # Cleanup temp files
+            rm -rf /tmp/environment /tmp/nginx || true
+            
+            # Điều hướng đến thư mục project
+            cd "${DEPLOY_PATH}" || {
+              echo "❌ Error: Deploy path not found: ${DEPLOY_PATH}"
+              echo "Please check SSH_DEPLOY_PATH secret/variable or ensure path exists on server"
+              echo "Current user: $(whoami)"
+              echo "Home directory: $HOME"
+              exit 1
+            }
+            
+            # Kiểm tra docker-compose file có tồn tại không
+            if [ ! -f "compose/docker-compose.prod.yml" ]; then
+              echo "❌ Error: docker-compose.prod.yml not found!"
+              echo "Expected path: ${DEPLOY_PATH}/compose/docker-compose.prod.yml"
+              echo "Current directory: $(pwd)"
+              echo "Files in current directory:"
+              ls -la || true
+              echo "Files in compose directory:"
+              ls -la compose/ || true
+              exit 1
+            fi
+            echo "✅ Found docker-compose.prod.yml"
+            
+            # Login Docker Hub (nếu cần)
+            echo "🔐 Logging into Docker Hub..."
+            echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin || {
+              echo "⚠️ Warning: Docker login failed, trying without login..."
+            }
+            
+            # Pull image mới từ Docker Hub
+            echo "📥 Pulling latest image..."
+            docker pull ${{ env.DOCKER_HUB_USER }}/${{ env.DOCKER_HUB_REPO }}:frontend-latest || {
+              echo "❌ Error: Failed to pull image!"
+              exit 1
+            }
+            
+            # Tạo Docker network nếu chưa có (cần cho containers)
+            echo "🌐 Setting up Docker network..."
+            if docker network inspect ebay-network >/dev/null 2>&1; then
+              echo "ℹ️  Network ebay-network already exists"
+            else
+              docker network create ebay-network && echo "✅ Created network ebay-network" || {
+                echo "⚠️ Warning: Failed to create network ebay-network"
+                echo "💡 Tip: Network might already exist or Docker daemon issue"
+              }
+            fi
+
+            # Pull tất cả images từ docker-compose (nginx + frontend)
+            echo "📥 Pulling all images from docker-compose..."
+            docker compose -f compose/docker-compose.prod.yml pull || {
+              echo "⚠️ Warning: Some images failed to pull, continuing..."
+            }
+            
+            # Restart containers với docker-compose
+            echo "🔄 Starting/restarting containers..."
+            # Start các services: nextjs-frontend, nginx
+            docker compose -f compose/docker-compose.prod.yml up -d --force-recreate nextjs-frontend nginx || {
+              echo "❌ Error: Failed to start containers!"
+              echo "💡 Checking docker-compose file..."
+              docker compose -f compose/docker-compose.prod.yml config || true
+              exit 1
+            }
+            
+            # Kiểm tra health
+            echo "🏥 Checking container health..."
+            sleep 10
+            docker compose -f compose/docker-compose.prod.yml ps
+            
+            # Cleanup old images (tùy chọn)
+            echo "🧹 Cleaning up old images..."
+            docker image prune -f || true
+            
+            echo "✅ Deployment completed successfully!"
+            echo ""
+            echo "📝 Next Steps:"
+            echo "   - Nginx và Frontend đã được deploy"
+            echo "   - Để setup SSL Let's Encrypt, chạy trên server:"
+            echo "     docker run --rm -it -v /root/certbot/conf:/etc/letsencrypt -v /root/certbot/www:/var/www/certbot certbot/certbot certonly --webroot --webroot-path=/var/www/certbot -d calatha.com -d www.calatha.com -d api.calatha.com -m your-email@example.com --agree-tos --no-eff-email"
+            echo "   - Sau đó reload nginx: docker exec ebay_ecommerce-nginx-prod nginx -s reload"
+            echo "   - Certbot auto-renewal đã được enable (runs every 12 hours)"
+
+      - name: Build completed summary
+        if: always()
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "📊 BUILD SUMMARY"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "Event: ${{ github.event_name }}"
+          echo "Branch: ${{ github.ref }} (name: ${{ github.ref_name }})"
+          echo "Commit: ${{ github.sha }}"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            echo "✅ Build completed successfully (PR - no push)"
+          elif [ "${{ github.ref_name }}" = "staging" ]; then
+            echo "✅ Build and deployment completed successfully! (deploy branch: staging)"
+          elif [ "${{ github.ref_name }}" = "main" ]; then
+            echo "✅ Build completed successfully (main branch - build only, no deploy)"
+          else
+            echo "✅ Build completed successfully (${{ github.ref_name }} branch)"
+          fi
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+

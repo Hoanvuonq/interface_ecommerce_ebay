@@ -1,0 +1,17 @@
+    docker stop ebay_ecommerce-nginx-prod
+
+    EMAIL="quythanhhuynh2003@gmail.com"   # giờ bạn dùng đúng email này luôn
+
+    docker run --rm -it \
+      -p 80:80 \
+      -v /root/certbot/conf:/etc/letsencrypt \
+      certbot/certbot certonly \
+      --standalone \
+      -d calatha.com \
+      -d www.calatha.com \
+      -d api.calatha.com \
+      -m ${EMAIL} \
+      --agree-tos \
+      --no-eff-email
+
+    docker start ebay_ecommerce-nginx-prod
