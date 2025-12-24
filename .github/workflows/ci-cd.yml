@@ -258,10 +258,15 @@ jobs:
             fi
             # Expand ~ to $HOME if present
             DEPLOY_PATH="${DEPLOY_PATH/#\~/$HOME}"
-            echo "📁 Deploy path: ${DEPLOY_PATH}"
+            echo "📁 Deploy path (Production): ${DEPLOY_PATH}"
+            
+            # Tạo deploy path riêng cho test environment (tránh trùng với production)
+            DEPLOY_PATH_TEST="${DEPLOY_PATH}-test"
+            echo "📁 Deploy path (Test): ${DEPLOY_PATH_TEST}"
             
             # Tự động tạo thư mục nếu chưa tồn tại
             echo "📂 Creating directory structure if not exists..."
+            # Production directories
             mkdir -p "${DEPLOY_PATH}/compose" || {
               echo "❌ Error: Failed to create directory: ${DEPLOY_PATH}/compose"
               echo "Current user: $(whoami)"
@@ -272,6 +277,14 @@ jobs:
               echo "❌ Error: Failed to create nginx directory"
               exit 1
             }
+            
+            # Test environment directories (riêng biệt)
+            echo "📂 Creating test environment directory structure..."
+            mkdir -p "${DEPLOY_PATH_TEST}/compose" || {
+              echo "❌ Error: Failed to create test directory: ${DEPLOY_PATH_TEST}/compose"
+              exit 1
+            }
+            echo "✅ Test environment directory created: ${DEPLOY_PATH_TEST}"
             
             # Tạo thư mục certbot (cần cho SSL Let's Encrypt)
             # Nếu đã tồn tại thì không báo lỗi, chỉ tạo nếu chưa có
@@ -315,19 +328,19 @@ jobs:
               echo "⚠️ Warning: docker-compose.prod.yml not found in /tmp, checking if it exists in deployment path..."
             fi
             
-            # Copy docker-compose.test.yml từ /tmp vào đúng vị trí
-            echo "📋 Copying docker-compose.test.yml to deployment directory..."
+            # Copy docker-compose.test.yml từ /tmp vào thư mục riêng cho test environment
+            echo "📋 Copying docker-compose.test.yml to test environment directory..."
             if [ -f "/tmp/environment/compose/docker-compose.test.yml" ]; then
-              cp /tmp/environment/compose/docker-compose.test.yml "${DEPLOY_PATH}/compose/docker-compose.test.yml" || {
+              cp /tmp/environment/compose/docker-compose.test.yml "${DEPLOY_PATH_TEST}/compose/docker-compose.test.yml" || {
                 echo "⚠️ Warning: Failed to copy docker-compose.test.yml (test environment will not be deployed)"
               }
-              echo "✅ docker-compose.test.yml copied successfully"
+              echo "✅ docker-compose.test.yml copied to ${DEPLOY_PATH_TEST}/compose/"
             elif [ -f "/tmp/docker-compose.test.yml" ]; then
               # Fallback: nếu file ở /tmp trực tiếp
-              cp /tmp/docker-compose.test.yml "${DEPLOY_PATH}/compose/docker-compose.test.yml" || {
+              cp /tmp/docker-compose.test.yml "${DEPLOY_PATH_TEST}/compose/docker-compose.test.yml" || {
                 echo "⚠️ Warning: Failed to copy docker-compose.test.yml (test environment will not be deployed)"
               }
-              echo "✅ docker-compose.test.yml copied successfully"
+              echo "✅ docker-compose.test.yml copied to ${DEPLOY_PATH_TEST}/compose/"
             else
               echo "⚠️ Warning: docker-compose.test.yml not found in /tmp (test environment will not be deployed)"
             fi
@@ -430,12 +443,20 @@ jobs:
             # Deploy Test Environment (test.calatha.com)
             # ============================================
             # Test environment chạy độc lập, không ảnh hưởng production
+            # Sử dụng thư mục riêng để tránh trùng với production
             echo ""
             echo "🧪 Deploying Test Environment (test.calatha.com)..."
+            echo "📁 Test environment path: ${DEPLOY_PATH_TEST}"
             
-            # Kiểm tra docker-compose.test.yml có tồn tại không
-            if [ -f "compose/docker-compose.test.yml" ]; then
-              echo "✅ Found docker-compose.test.yml"
+            # Kiểm tra docker-compose.test.yml có tồn tại không trong thư mục test
+            if [ -f "${DEPLOY_PATH_TEST}/compose/docker-compose.test.yml" ]; then
+              echo "✅ Found docker-compose.test.yml in test environment directory"
+              
+              # Chuyển đến thư mục test để chạy docker-compose
+              cd "${DEPLOY_PATH_TEST}" || {
+                echo "❌ Error: Test environment path not found: ${DEPLOY_PATH_TEST}"
+                exit 1
+              }
               
               # Pull image cho test (dùng cùng image với production)
               echo "📥 Pulling image for test environment..."
@@ -445,7 +466,7 @@ jobs:
               
               # Start test container (không ảnh hưởng production)
               # --force-recreate: Đảm bảo container luôn được recreate với image mới nhất
-              echo "🚀 Starting test container..."
+              echo "🚀 Starting test container from ${DEPLOY_PATH_TEST}..."
               docker compose -f compose/docker-compose.test.yml up -d --force-recreate || {
                 echo "⚠️ Warning: Failed to start test container, continuing..."
                 docker compose -f compose/docker-compose.test.yml logs || true
@@ -460,6 +481,9 @@ jobs:
               else
                 echo "⚠️ Warning: Test container failed to start"
               fi
+              
+              # Quay lại thư mục production để tiếp tục
+              cd "${DEPLOY_PATH}" || true
               
               # Reload nginx để load config test.calatha.com (nếu config đã được copy)
               echo "🔄 Reloading nginx to load test.calatha.com config..."
@@ -477,9 +501,11 @@ jobs:
               fi
               
               echo "✅ Test environment deployment completed!"
+              echo "📁 Test environment files location: ${DEPLOY_PATH_TEST}"
             else
-              echo "ℹ️  docker-compose.test.yml not found, skipping test environment deployment"
+              echo "ℹ️  docker-compose.test.yml not found in ${DEPLOY_PATH_TEST}/compose/, skipping test environment deployment"
               echo "💡 Test environment can be deployed manually later"
+              echo "💡 Expected path: ${DEPLOY_PATH_TEST}/compose/docker-compose.test.yml"
             fi
             
             # Cleanup old images (tùy chọn)
