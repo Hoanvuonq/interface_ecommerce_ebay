@@ -11,8 +11,8 @@ shift || true
 DOCKER_COMPOSE_ARGS="${@:-up --build}"
 
 # Validate environment
-if [[ ! "$ENVIRONMENT" =~ ^(dev|staging|prod)$ ]]; then
-    echo "Error: Environment must be one of: dev, staging, prod"
+if [[ ! "$ENVIRONMENT" =~ ^(dev|staging|prod|test)$ ]]; then
+    echo "Error: Environment must be one of: dev, staging, prod, test"
     exit 1
 fi
 

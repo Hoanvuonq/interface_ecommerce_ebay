@@ -3,7 +3,7 @@
 # Example: .\docker-build.ps1 dev up --build
 
 param(
-    [ValidateSet('dev','staging','prod')]
+    [ValidateSet('dev','staging','prod','test')]
     [string]$Environment = 'dev',
     
     [Parameter(ValueFromRemainingArguments=$true)]

@@ -9,7 +9,9 @@ fe_ecommerce_ebay/environment/
 ├── compose/
 │   ├── docker-compose.dev.yml      # Development
 │   ├── docker-compose.staging.yml  # Staging
-│   └── docker-compose.prod.yml     # Production
+│   ├── docker-compose.prod.yml     # Production
+│   ├── docker-compose.test.yml     # Test Environment
+│   └── DEPLOY_TEST.md              # Hướng dẫn deploy test
 ├── env/
 │   ├── dev/
 │   │   └── .fe.env                 # Frontend env vars (dev)
@@ -20,7 +22,9 @@ fe_ecommerce_ebay/environment/
 ├── nginx/
 │   ├── nginx.conf                  # Gateway Nginx config
 │   └── conf.d/
-│       └── calatha.com.conf        # Proxy cho FE + API
+│       ├── calatha.com.conf        # Proxy cho FE + API (production)
+│       ├── api.calatha.com.conf    # Proxy cho Backend API
+│       └── test.calatha.com.conf   # Proxy cho Test Environment
 ├── Scripts/
 │   ├── docker-build.ps1            # Build & run script (PowerShell)
 │   └── docker-push.ps1             # Build & push script (PowerShell)
@@ -48,6 +52,17 @@ cd fe_ecommerce_ebay/environment
 docker network create ebay-network
 
 .\Scripts\docker-build.ps1 prod up
+```
+
+### Test Environment (test.calatha.com)
+```powershell
+# Xem hướng dẫn chi tiết trong compose/DEPLOY_TEST.md
+# Test environment dùng chung nginx với production
+# Chỉ cần start test container:
+.\Scripts\docker-build.ps1 test up
+
+# Sau đó reload nginx production để load config mới:
+docker exec ebay_ecommerce-nginx-prod nginx -s reload
 ```
 
 ## 🔧 Các lệnh thường dùng

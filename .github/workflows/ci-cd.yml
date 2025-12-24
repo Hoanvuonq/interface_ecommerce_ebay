@@ -171,6 +171,19 @@ jobs:
           target: "/tmp"
           strip_components: 0
 
+      # Copy docker-compose.test.yml lên server (cho test environment)
+      - name: Copy docker-compose.test.yml to server
+        if: github.event_name == 'push' && github.ref == 'refs/heads/staging'
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: '22'
+          source: "environment/compose/docker-compose.test.yml"
+          target: "/tmp"
+          strip_components: 0
+
       # Copy nginx config files (cần thiết cho nginx reverse proxy)
       - name: Copy nginx config to server
         if: github.event_name == 'push' && github.ref == 'refs/heads/staging'
@@ -302,6 +315,23 @@ jobs:
               echo "⚠️ Warning: docker-compose.prod.yml not found in /tmp, checking if it exists in deployment path..."
             fi
             
+            # Copy docker-compose.test.yml từ /tmp vào đúng vị trí
+            echo "📋 Copying docker-compose.test.yml to deployment directory..."
+            if [ -f "/tmp/environment/compose/docker-compose.test.yml" ]; then
+              cp /tmp/environment/compose/docker-compose.test.yml "${DEPLOY_PATH}/compose/docker-compose.test.yml" || {
+                echo "⚠️ Warning: Failed to copy docker-compose.test.yml (test environment will not be deployed)"
+              }
+              echo "✅ docker-compose.test.yml copied successfully"
+            elif [ -f "/tmp/docker-compose.test.yml" ]; then
+              # Fallback: nếu file ở /tmp trực tiếp
+              cp /tmp/docker-compose.test.yml "${DEPLOY_PATH}/compose/docker-compose.test.yml" || {
+                echo "⚠️ Warning: Failed to copy docker-compose.test.yml (test environment will not be deployed)"
+              }
+              echo "✅ docker-compose.test.yml copied successfully"
+            else
+              echo "⚠️ Warning: docker-compose.test.yml not found in /tmp (test environment will not be deployed)"
+            fi
+            
             # Copy nginx config files từ /tmp vào đúng vị trí
             echo "📋 Copying nginx config files to deployment directory..."
             if [ -d "/tmp/environment/nginx" ]; then
@@ -396,16 +426,76 @@ jobs:
             sleep 10
             docker compose -f compose/docker-compose.prod.yml ps
             
+            # ============================================
+            # Deploy Test Environment (test.calatha.com)
+            # ============================================
+            # Test environment chạy độc lập, không ảnh hưởng production
+            echo ""
+            echo "🧪 Deploying Test Environment (test.calatha.com)..."
+            
+            # Kiểm tra docker-compose.test.yml có tồn tại không
+            if [ -f "compose/docker-compose.test.yml" ]; then
+              echo "✅ Found docker-compose.test.yml"
+              
+              # Pull image cho test (dùng cùng image với production)
+              echo "📥 Pulling image for test environment..."
+              docker pull ${{ env.DOCKER_HUB_USER }}/${{ env.DOCKER_HUB_REPO }}:frontend-latest || {
+                echo "⚠️ Warning: Failed to pull image for test, using existing image"
+              }
+              
+              # Start test container (không ảnh hưởng production)
+              echo "🚀 Starting test container..."
+              docker compose -f compose/docker-compose.test.yml up -d || {
+                echo "⚠️ Warning: Failed to start test container, continuing..."
+                docker compose -f compose/docker-compose.test.yml logs || true
+              }
+              
+              # Kiểm tra test container health
+              echo "🏥 Checking test container health..."
+              sleep 5
+              if docker ps | grep -q "ebay_ecommerce-nextjs-test"; then
+                echo "✅ Test container is running"
+                docker compose -f compose/docker-compose.test.yml ps
+              else
+                echo "⚠️ Warning: Test container failed to start"
+              fi
+              
+              # Reload nginx để load config test.calatha.com (nếu config đã được copy)
+              echo "🔄 Reloading nginx to load test.calatha.com config..."
+              if docker ps | grep -q "ebay_ecommerce-nginx-prod"; then
+                # Test nginx config trước khi reload
+                if docker exec ebay_ecommerce-nginx-prod nginx -t 2>/dev/null; then
+                  docker exec ebay_ecommerce-nginx-prod nginx -s reload
+                  echo "✅ Nginx reloaded with test.calatha.com config"
+                else
+                  echo "⚠️ Warning: Nginx config test failed, skipping reload"
+                  echo "💡 Check nginx config manually: docker exec ebay_ecommerce-nginx-prod nginx -t"
+                fi
+              else
+                echo "⚠️ Warning: Nginx container not running, cannot reload"
+              fi
+              
+              echo "✅ Test environment deployment completed!"
+            else
+              echo "ℹ️  docker-compose.test.yml not found, skipping test environment deployment"
+              echo "💡 Test environment can be deployed manually later"
+            fi
+            
             # Cleanup old images (tùy chọn)
+            echo ""
             echo "🧹 Cleaning up old images..."
             docker image prune -f || true
             
-            echo "✅ Deployment completed successfully!"
+            echo ""
+            echo "✅ Production deployment completed successfully!"
             echo ""
             echo "📝 Next Steps:"
-            echo "   - Nginx và Frontend đã được deploy"
-            echo "   - Để setup SSL Let's Encrypt, chạy trên server:"
-            echo "     docker run --rm -it -v /root/certbot/conf:/etc/letsencrypt -v /root/certbot/www:/var/www/certbot certbot/certbot certonly --webroot --webroot-path=/var/www/certbot -d calatha.com -d www.calatha.com -d api.calatha.com -m your-email@example.com --agree-tos --no-eff-email"
+            echo "   - Production: Nginx và Frontend đã được deploy"
+            echo "   - Test: Test environment đã được deploy (nếu có docker-compose.test.yml)"
+            echo "   - Để setup SSL Let's Encrypt cho test.calatha.com:"
+            echo "     docker run --rm -it -v /root/certbot/conf:/etc/letsencrypt -v /root/certbot/www:/var/www/certbot certbot/certbot certonly --webroot --webroot-path=/var/www/certbot -d test.calatha.com -m your-email@example.com --agree-tos --no-eff-email"
+            echo "   - Hoặc thêm test.calatha.com vào cert hiện tại (SAN cert):"
+            echo "     docker run --rm -it -v /root/certbot/conf:/etc/letsencrypt -v /root/certbot/www:/var/www/certbot certbot/certbot certonly --webroot --webroot-path=/var/www/certbot -d calatha.com -d www.calatha.com -d api.calatha.com -d test.calatha.com -m your-email@example.com --agree-tos --no-eff-email"
             echo "   - Sau đó reload nginx: docker exec ebay_ecommerce-nginx-prod nginx -s reload"
             echo "   - Certbot auto-renewal đã được enable (runs every 12 hours)"
 
