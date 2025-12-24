@@ -361,6 +361,21 @@ jobs:
               echo "⚠️ Warning: nginx config files not found in /tmp"
             fi
             
+            # Reload nginx ngay sau khi copy config để load config mới (bao gồm test.calatha.com.conf)
+            echo "🔄 Reloading nginx to load new config files..."
+            if docker ps | grep -q "ebay_ecommerce-nginx-prod"; then
+              # Test nginx config trước khi reload
+              if docker exec ebay_ecommerce-nginx-prod nginx -t 2>/dev/null; then
+                docker exec ebay_ecommerce-nginx-prod nginx -s reload
+                echo "✅ Nginx reloaded with new config files"
+              else
+                echo "⚠️ Warning: Nginx config test failed, skipping reload"
+                echo "💡 Check nginx config manually: docker exec ebay_ecommerce-nginx-prod nginx -t"
+              fi
+            else
+              echo "⚠️ Warning: Nginx container not running, cannot reload"
+            fi
+            
             # Kiểm tra file .htpasswd đã được tạo chưa
             if [ -f "${DEPLOY_PATH}/nginx/.htpasswd" ]; then
               echo "✅ .htpasswd file exists at ${DEPLOY_PATH}/nginx/.htpasswd"
