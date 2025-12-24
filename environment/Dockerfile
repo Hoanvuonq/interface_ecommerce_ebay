@@ -6,6 +6,9 @@
 
 FROM node:20-alpine AS base
 
+# Install pnpm globally
+RUN npm install -g pnpm
+
 # Install dependencies only when needed
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
@@ -13,10 +16,10 @@ WORKDIR /app
 
 # Copy package files
 COPY package.json ./package.json
-COPY package-lock.json* ./package-lock.json
+COPY pnpm-lock.yaml ./pnpm-lock.yaml
 
 # Install dependencies
-RUN npm ci
+RUN pnpm install --frozen-lockfile
 
 # Rebuild the source code only when needed
 FROM base AS builder
@@ -30,7 +33,7 @@ ARG ENV_FILE=dev
 COPY environment/env/${ENV_FILE}/.fe.env ./.env.production
 
 # Build Next.js (will read .env.production automatically)
-RUN npm run build
+RUN pnpm run build
 
 # ============================================
 # Production image - minimal runtime
