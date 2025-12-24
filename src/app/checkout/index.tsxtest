@@ -1,71 +1,72 @@
 // "use client";
-// import PageContentTransition from "@/features/PageContentTransition";
-// import { buyerService } from "@/services/buyer/buyer.service";
-// import { BuyerAddressResponse } from "@/types/buyer/buyer.types";
 // import { VoucherInput } from "@/app/cart/_components/VoucherInput";
-// import { orderService } from "@/services/orders/order.service";
-// import { checkoutPreview as checkoutPreviewAction } from "@/store/theme/cartSlice";
-// import { OrderCreationResponse } from "@/types/orders/order-creation.types";
-// import { toast } from "sonner";
-// import {
-//   OrderCreateRequest,
-//   ShippingAddressInfo,
-// } from "@/types/orders/order.types";
 // import { PayOSQRPayment } from "@/app/orders/_components/PayOSQRPayment";
-// import { paymentService } from "@/services/payment/payment.service";
-// import { PayOSPaymentResponse } from "@/types/payment/payment.types";
+// import { CustomBreadcrumb } from "@/components";
+// import PageContentTransition from "@/features/PageContentTransition";
 // import {
-//   getConkinShipmentPrice,
-//   getCostsShipments,
-//   getGHNCosts,
+//     getConkinShipmentPrice,
+//     getCostsShipments,
+//     getGHNCosts,
 // } from "@/features/Shipment";
+// import type {
+//     CostsShipmentResponse,
+//     GHNCostsResponse,
+//     PackageConkinResponse,
+// } from "@/features/Shipment/types/shipment.types";
+// import { buyerService } from "@/services/buyer/buyer.service";
+// import { orderService } from "@/services/orders/order.service";
+// import { paymentService } from "@/services/payment/payment.service";
 // import { getAllShopAddresses } from "@/services/shop/shop.service";
 // import { useAppDispatch, useAppSelector } from "@/store/store";
-// import type {
-//   CostsShipmentResponse,
-//   GHNCostsResponse,
-//   PackageConkinResponse,
-// } from "@/features/Shipment/types/shipment.types";
+// import { checkoutPreview as checkoutPreviewAction } from "@/store/theme/cartSlice";
+// import { BuyerAddressResponse } from "@/types/buyer/buyer.types";
+// import { OrderCreationResponse } from "@/types/orders/order-creation.types";
+// import {
+//     OrderCreateRequest,
+//     ShippingAddressInfo,
+// } from "@/types/orders/order.types";
+// import { PayOSPaymentResponse } from "@/types/payment/payment.types";
 // import { mapAddressToOldFormat } from "@/utils/address/ward-mapping.util";
 // import { resolvePreviewItemImageUrl } from "@/utils/cart/image.utils";
 // import { getStoredUserDetail } from "@/utils/jwt";
 // import { extractItemDimensions } from "@/utils/packaging-optimizer";
 // import {
-//   CheckCircle2,
-//   CreditCard,
-//   MapPin,
-//   Home,
-//   Store,
-//   ShoppingCart,
-//   Tag,
-// } from "lucide-react";
-// import {
-//   Alert,
-//   App,
-//   Button,
-//   Card,
-//   Divider,
-//   Form,
-//   Input,
-//   Layout,
-//   Modal,
-//   Radio,
-//   Space,
-//   Spin,
-//   Steps,
-//   Tabs,
+//     Alert,
+//     App,
+//     Button,
+//     Card,
+//     Divider,
+//     Form,
+//     Input,
+//     Layout,
+//     Modal,
+//     Radio,
+//     Space,
+//     Spin,
+//     Tabs
 // } from "antd";
-// import { CustomBreadcrumb } from "@/components";
+// import {
+//     CheckCircle2,
+//     CreditCard,
+//     MapPin,
+//     ShoppingCart,
+//     Store,
+//     Tag
+// } from "lucide-react";
 // import { useRouter, useSearchParams } from "next/navigation";
-// import React, {
-//   useCallback,
-//   useEffect,
-//   useMemo,
-//   useRef,
-//   useState,
+// import {
+//     useCallback,
+//     useEffect,
+//     useMemo,
+//     useRef,
+//     useState,
 // } from "react";
+// import { toast } from "sonner";
 // import addressData, { Province, Ward } from "vietnam-address-database";
-
+// import CheckoutStepper from "./_components/CheckoutStepper";
+// import { formatPrice } from "@/hooks/useFormatPrice";
+// import {ShippingAddressCard} from "./_components/ShippingAddressCard";
+// import AddressModal from "./_components/AddressModal";
 // const { Content } = Layout;
 
 // const getShipmentMethodName = (serviceCompanyType?: string): string => {
@@ -88,24 +89,17 @@
 //   const router = useRouter();
 //   const searchParams = useSearchParams();
 //   const dispatch = useAppDispatch();
-//   const { cart, checkoutPreview: reduxPreview } = useAppSelector(
-//     (state) => state.cart
-//   );
+//   const { cart, checkoutPreview: reduxPreview } = useAppSelector( (state) => state.cart);
 //   const { message } = App.useApp();
 
 //   const [form] = Form.useForm();
 //   const [loading, setLoading] = useState(false);
-//   const [currentStep, setCurrentStep] = useState(0); // Start at step 0 (shipping info)
-//   const [savedAddresses, setSavedAddresses] = useState<BuyerAddressResponse[]>(
-//     []
-//   );
+//   const [currentStep, setCurrentStep] = useState(0);
+//   const [savedAddresses, setSavedAddresses] = useState<BuyerAddressResponse[]>([]);
 //   const [useNewAddress, setUseNewAddress] = useState(false);
 //   const [addressModalVisible, setAddressModalVisible] = useState(false);
-//   const [selectedAddressIdState, setSelectedAddressIdState] = useState<
-//     string | undefined
-//   >(undefined);
-//   const [shippingMethodModalVisible, setShippingMethodModalVisible] =
-//     useState(false);
+//   const [selectedAddressIdState, setSelectedAddressIdState] = useState<string | undefined>(undefined);
+//   const [shippingMethodModalVisible, setShippingMethodModalVisible] = useState(false);
 //   const [checkoutPreview, setCheckoutPreview] = useState<any>(null);
 //   const [checkoutRequest, setCheckoutRequest] = useState<any>(null);
 //   const [buyerInfo, setBuyerInfo] = useState<any>(null);
@@ -128,7 +122,7 @@
 //   const [loadingGHNShipmentPrice, setLoadingGHNShipmentPrice] = useState(false);
 //   const [availableShipmentMethods, setAvailableShipmentMethods] = useState<
 //     CostsShipmentResponse[]
-//   >([]); // Danh sách các phương thức vận chuyển từ API (legacy)
+//   >([]); 
 //   const [shopShipmentMethods, setShopShipmentMethods] = useState<
 //     Record<string, CostsShipmentResponse[]>
 //   >({}); // Map shopId -> available shipment methods
@@ -179,58 +173,31 @@
 //     useState(false); // Flag to prevent showing errors multiple times
 //   const [isUpdatingCheckoutPreview, setIsUpdatingCheckoutPreview] =
 //     useState(false); // Flag to prevent multiple simultaneous API calls
-//   const [voucherErrors, setVoucherErrors] = useState<
-//     Array<{ code: string; reason: string }>
-//   >([]); // Store voucher errors to display on UI
+//   const [voucherErrors, setVoucherErrors] = useState<Array<{ code: string; reason: string }>>([]);
 //   const lastCheckoutRequestRef = useRef<string | null>(null); // Track last request to avoid duplicate calls
 //   const checkoutRequestRef = useRef<any>(null); // Store latest checkoutRequest to avoid stale closure
 //   const previousShopsRef = useRef<string | null>(null); // Track previous shops data to avoid unnecessary shop address loads
 //   const hasLoadedBuyerInfoRef = useRef(false); // Track if buyer info has been loaded to prevent duplicate calls
 //   const isInitialMountRef = useRef(true); // Track if this is the initial mount
 
-//   // ✅ Define loadBuyerInfo with useCallback BEFORE useEffect to ensure it's available
-//   // Note: form and useNewAddress are accessed but not included in deps to avoid infinite loop
-//   // They are stable references and don't need to trigger re-creation of this function
 //   const loadBuyerInfo = useCallback(async () => {
-//     // Prevent duplicate calls
 //     if (hasLoadedBuyerInfoRef.current) {
-//       console.log("⏭️ Skipping loadBuyerInfo - already loaded");
 //       return;
 //     }
 
-//     console.log("🚀 loadBuyerInfo function called");
 //     hasLoadedBuyerInfoRef.current = true; // Set flag immediately to prevent duplicate calls
 //     setLoadingBuyerInfo(true);
 //     try {
-//       // Get buyerId from localStorage
 //       const storedUser = getStoredUserDetail();
-//       console.log("📋 Stored user:", storedUser);
 //       const buyerId = storedUser?.buyerId;
-//       console.log("📋 BuyerId:", buyerId);
 
 //       if (!buyerId) {
-//         console.log("⚠️ No buyerId found in localStorage");
-//         console.log("⚠️ Stored user detail:", storedUser);
 //         hasLoadedBuyerInfoRef.current = false; // Reset flag on error
 //         setLoadingBuyerInfo(false);
 //         return;
 //       }
-
-//       console.log(
-//         "🔍 Loading buyer info (includes addresses) for buyerId:",
-//         buyerId
-//       );
 //       const buyerDetail = await buyerService.getBuyerDetail(buyerId);
-//       console.log("✅ Loaded buyer info:", buyerDetail);
-//       console.log(
-//         "✅ Buyer addresses from API:",
-//         buyerDetail?.addresses?.length || 0
-//       );
-//       console.log(
-//         "📦 Addresses data:",
-//         JSON.stringify(buyerDetail?.addresses, null, 2)
-//       );
-
+      
 //       if (!buyerDetail) {
 //         console.error("❌ buyerDetail is null or undefined");
 //         setLoadingBuyerInfo(false);
@@ -239,54 +206,20 @@
 
 //       setBuyerInfo(buyerDetail);
 
-//       // ✅ Use addresses from buyerDetail instead of calling separate API
 //       if (buyerDetail.addresses && buyerDetail.addresses.length > 0) {
-//         // Sort by createdDate descending (newest first)
 //         const sortedAddresses = [...buyerDetail.addresses].sort((a, b) => {
 //           const dateA = new Date(a.createdDate || 0).getTime();
 //           const dateB = new Date(b.createdDate || 0).getTime();
 //           return dateB - dateA; // Descending order (newest first)
 //         });
 
-//         console.log(
-//           "📦 Sorted addresses:",
-//           sortedAddresses.map((addr) => ({
-//             addressId: addr.addressId,
-//             recipientName: addr.recipientName,
-//             phone: addr.phone,
-//             detailAddress: addr.detailAddress,
-//             province: addr.province,
-//             district: addr.district,
-//             ward: addr.ward,
-//             hasRecipientName: !!addr.recipientName,
-//             hasPhone: !!addr.phone,
-//           }))
-//         );
-
 //         setSavedAddresses(sortedAddresses);
-
-//         // Auto-select newest address (first in sorted array)
 //         const newestAddress = sortedAddresses[0];
-//         console.log(
-//           "✅ Auto-selected newest address:",
-//           newestAddress.addressId
-//         );
-//         console.log(
-//           "   Recipient Name:",
-//           newestAddress.recipientName || "NULL"
-//         );
-//         console.log("   Phone:", newestAddress.phone || "NULL");
-//         console.log(
-//           "   Detail Address:",
-//           newestAddress.detailAddress || "NULL"
-//         );
 
-//         // ✅ Use form.setFieldsValue to set addressId
 //         form.setFieldsValue({
 //           addressId: newestAddress.addressId,
 //         });
 //         setSelectedAddressIdState(newestAddress.addressId);
-//         console.log("✅ Set form addressId to:", newestAddress.addressId);
 
 //         // Nếu shop addresses đã load xong, fetch shipping methods ngay với địa chỉ mới nhất
 //         if (
@@ -294,9 +227,7 @@
 //           checkoutPreview?.shops &&
 //           checkoutPreview.shops.length > 0
 //         ) {
-//           console.log(
-//             "🚀 Address auto-selected, shop addresses already loaded, fetching shipment methods..."
-//           );
+         
 //           checkoutPreview.shops.forEach((shop: any) => {
 //             const shopId = shop.shopId;
 //             const shopAddressId = shopAddressIdMap[shopId];
@@ -306,9 +237,7 @@
 //               shop.items &&
 //               shop.items.length > 0
 //             ) {
-//               console.log(
-//                 `✅ Auto-fetching costs-shipments for shop ${shopId} (address auto-selected: ${newestAddress.addressId})`
-//               );
+              
 //               fetchCostsShipmentsForShop(
 //                 newestAddress.addressId,
 //                 shopId,
@@ -317,31 +246,19 @@
 //             }
 //           });
 //         } else {
-//           console.log(
-//             "⏳ Address auto-selected, waiting for shop addresses to load..."
-//           );
+         
 //         }
-
-//         // Note: useEffect will automatically fetch shipment methods when both addressId and shopAddressIdMap are ready
-//         // Steps will automatically update when addressId is set (via isShippingInfoComplete)
 //       } else {
-//         console.log(
-//           "⚠️ No addresses found in buyerDetail, user will need to enter new address"
-//         );
+       
 //         setSavedAddresses([]);
 //       }
 
-//       // Fill form with buyer info if no addresses (user will enter new address)
-//       // Note: useNewAddress state will be checked in a separate useEffect
 //       if (!buyerDetail.addresses || buyerDetail.addresses.length === 0) {
 //         form.setFieldsValue({
 //           recipientName: buyerDetail.fullName,
 //           phoneNumber: buyerDetail.phone,
 //         });
-//         console.log("✅ Pre-filled form with buyer info (no addresses):", {
-//           recipientName: buyerDetail.fullName,
-//           phoneNumber: buyerDetail.phone,
-//         });
+        
 //       }
 //     } catch (error: any) {
 //       console.error("❌ Failed to load buyer info:", error);
@@ -350,11 +267,8 @@
 //       console.error("❌ Error stack:", error?.stack);
 //       console.error("❌ Full error object:", error);
 
-//       // Reset flag on error to allow retry
 //       hasLoadedBuyerInfoRef.current = false;
 
-//       // Don't block checkout if buyer info loading fails
-//       // User can still enter new address
 //     } finally {
 //       setLoadingBuyerInfo(false);
 //     }
@@ -374,21 +288,16 @@
 
 //     // Skip if preview hasn't actually changed (React 18 StrictMode double render)
 //     if (currentPreviewKey && currentPreviewKey === lastPreviewKeyRef.current) {
-//       console.log("⏭️ Skipping useEffect - preview unchanged");
 //       return;
 //     }
 
 //     if (currentPreviewKey) {
 //       lastPreviewKeyRef.current = currentPreviewKey;
 //     }
-
 //     // Mark initial mount as done
 //     if (isInitialMountRef.current) {
 //       isInitialMountRef.current = false;
 //     }
-
-//     console.log("🔍 Checkout Page - useEffect triggered");
-//     console.log("🔍 reduxPreview:", reduxPreview ? "Found" : "Not found");
 
 //     // Try to get preview from Redux or sessionStorage
 //     let preview = reduxPreview;
@@ -399,16 +308,10 @@
 //       const savedPreview = sessionStorage.getItem("checkoutPreview");
 //       const savedRequest = sessionStorage.getItem("checkoutRequest");
 
-//       console.log(
-//         "🔍 SessionStorage preview:",
-//         savedPreview ? "Found" : "Not found"
-//       );
-
 //       if (savedPreview && savedRequest) {
 //         try {
 //           preview = JSON.parse(savedPreview);
 //           request = JSON.parse(savedRequest);
-//           console.log("✅ Loaded checkout preview from sessionStorage");
 //         } catch (parseError) {
 //           console.error("❌ Failed to parse sessionStorage data:", parseError);
 //         }
@@ -422,12 +325,11 @@
 //       return;
 //     }
 
-//     console.log("✅ Preview found, setting state");
+    
 //     setCheckoutPreview(preview);
 //     setCheckoutRequest(request);
 //     checkoutRequestRef.current = request; // Update ref
 
-//     // Check for voucher errors and warnings when loading preview (only once)
 //     if (!hasShownInitialVoucherErrors && preview.voucherApplication) {
 //       const voucherApp = preview.voucherApplication;
 //       let hasShownAnyMessage = false;
@@ -436,10 +338,6 @@
 //       if (voucherApp.globalVouchers) {
 //         const invalidVouchers = voucherApp.globalVouchers.invalidVouchers || [];
 //         const discountDetails = voucherApp.globalVouchers.discountDetails || [];
-
-//         console.log("🔍 Checking voucher errors on preview load...");
-//         console.log("🔍 Invalid vouchers:", invalidVouchers);
-//         console.log("🔍 Discount details:", discountDetails);
 
 //         // Show error for each invalid voucher - collect for UI display
 //         const initialErrors: Array<{ code: string; reason: string }> = [];
@@ -452,10 +350,7 @@
 //             } else {
 //               errorMsg = `Voucher ${detail.voucherCode} không áp dụng được`;
 //             }
-//             console.log("❌ Showing error on preview load:", errorMsg);
 //             toast.error(errorMsg);
-
-//             // Store error for UI display
 //             initialErrors.push({
 //               code: detail.voucherCode,
 //               reason: detail.reason || "Không áp dụng được",
@@ -479,7 +374,6 @@
 //               );
 //               toast.error(errorMsg);
 
-//               // Store error for UI display
 //               initialErrors.push({
 //                 code: code,
 //                 reason: "Không áp dụng được",
@@ -499,7 +393,6 @@
 //       // ALWAYS show warnings if they exist
 //       if (voucherApp.warnings && voucherApp.warnings.length > 0) {
 //         voucherApp.warnings.forEach((warning: string) => {
-//           console.log("⚠️ Showing warning on preview load:", warning);
 //           toast.warning(warning);
 //           hasShownAnyMessage = true;
 //         });
@@ -512,7 +405,6 @@
 //             typeof error === "string"
 //               ? error
 //               : error.message || "Lỗi áp dụng voucher";
-//           console.log("❌ Showing general error on preview load:", errorMsg);
 //           toast.error(errorMsg);
 //           hasShownAnyMessage = true;
 //         });
@@ -526,10 +418,8 @@
 //     // Load buyer info (which includes addresses) - more efficient than calling 2 separate APIs
 //     // Only call if not already loaded
 //     if (!hasLoadedBuyerInfoRef.current) {
-//       console.log("🔍 Calling loadBuyerInfo...");
 //       loadBuyerInfo();
 //     } else {
-//       console.log("⏭️ Skipping loadBuyerInfo - already loaded");
 //     }
 //     // Shop address will be loaded in separate useEffect when checkoutPreview is set
 //   }, [reduxPreview, router, loadBuyerInfo]);
@@ -537,7 +427,6 @@
 //   // Auto-fill form when switching to new address or when buyer info is loaded
 //   useEffect(() => {
 //     if (buyerInfo && useNewAddress) {
-//       console.log("🔍 Auto-filling form with buyer info");
 //       form.setFieldsValue({
 //         recipientName: buyerInfo.fullName,
 //         phoneNumber: buyerInfo.phone,
@@ -551,16 +440,12 @@
 //       !checkoutPreview.shops ||
 //       checkoutPreview.shops.length === 0
 //     ) {
-//       console.log("⚠️ No shops found in checkout preview");
 //       return;
 //     }
 
 //     setLoadingShopAddress(true);
 //     try {
 //       const shops = checkoutPreview.shops;
-//       console.log("🏪 ===== BẮT ĐẦU LẤY ĐỊA CHỈ CỦA TẤT CẢ CÁC SHOP =====");
-//       console.log("   Tổng số shop:", shops.length);
-
 //       // Lấy địa chỉ của tất cả các shop
 //       const addressesMap: Record<string, string> = {};
 //       const fullAddressesMap: Record<
@@ -574,9 +459,7 @@
 //         const itemCount = shop.items?.length || 0;
 
 //         try {
-//           console.log(
-//             `   📍 Đang lấy địa chỉ shop: ${shopName} (${itemCount} items)`
-//           );
+         
 //           const response = await getAllShopAddresses(shopId);
 
 //           // Response có structure: ApiResponse<ShopAddressResponse[]>
@@ -594,9 +477,6 @@
 //             // Lưu shop addressId
 //             if (defaultAddress.addressId) {
 //               shopAddressIdMap[shopId] = defaultAddress.addressId;
-//               console.log(
-//                 `   ✅ Shop ${shopName}: addressId = ${defaultAddress.addressId}`
-//               );
 //             }
 
 //             // Lấy province, district từ địa chỉ shop (giống như buyer address)
@@ -627,15 +507,11 @@
 //                 provinceCode = foundProvince.province_code;
 //                 district = wardName || null;
 
-//                 // Nếu có district, tìm ward từ vietnam-address-database (giống như buyer address)
 //                 if (wardName && allWardsData.length > 0) {
-//                   // Tìm ward có cùng province_code
-//                   // Có thể tìm ward có tên chứa district name hoặc lấy ward đầu tiên
 //                   const wardsInProvince = allWardsData.filter(
 //                     (w) => w.province_code === provinceCode
 //                   );
 
-//                   // Tìm ward có tên liên quan đến district hoặc lấy ward đầu tiên
 //                   const foundWard =
 //                     wardsInProvince.find(
 //                       (w) =>
@@ -646,9 +522,7 @@
 
 //                   if (foundWard) {
 //                     ward = foundWard.name;
-//                     console.log(
-//                       `   ✅ Shop ${shopName}: Tìm thấy ward từ vietnam-address-database: ${ward}`
-//                     );
+                    
 //                   } else {
 //                     console.warn(
 //                       `   ⚠️ Shop ${shopName}: Không tìm thấy ward cho ${provinceName}, ${wardName}`
@@ -661,9 +535,7 @@
 //                   );
 //                   if (firstWard) {
 //                     ward = firstWard.name;
-//                     console.log(
-//                       `   ✅ Shop ${shopName}: Lấy ward đầu tiên của province: ${ward}`
-//                     );
+                    
 //                   }
 //                 }
 //               } else {
@@ -700,20 +572,12 @@
 //                   district,
 //                   ward: ward || "",
 //                 };
-//                 console.log(
-//                   `   ✅ Shop ${shopName}: ${province}, ${district} (ward: ${
-//                     ward || "không có"
-//                   })`
-//                 );
+                
 //               } else {
-//                 console.log(
-//                   `   ✅ Shop ${shopName}: ${province} (thiếu district/ward)`
-//                 );
+                
 //               }
 //             } else {
-//               console.warn(
-//                 `   ⚠️ Shop ${shopName}: Không tìm thấy province, dùng fallback`
-//               );
+              
 //               addressesMap[shopId] = "Hồ Chí Minh";
 //             }
 //           } else {
@@ -733,42 +597,38 @@
 
 //       // Đợi tất cả các shop load xong
 //       await Promise.all(shopPromises);
-
-//       console.log("✅ ===== ĐÃ LẤY ĐƯỢC ĐỊA CHỈ CỦA TẤT CẢ CÁC SHOP =====");
-//       console.log("   Shop addresses map:", addressesMap);
-
-//       // Lưu map địa chỉ của tất cả shop
 //       setShopAddressesMap(addressesMap);
 //       setShopFullAddressMap(fullAddressesMap);
 //       setShopAddressIdMap(shopAddressIdMap);
 
 //       // Sau khi load xong shop addresses, nếu đã có addressId (auto-selected) thì fetch shipping methods ngay
-//       const currentAddressId =
-//         form.getFieldValue("addressId") || selectedAddressIdState;
+//       const currentAddressId = addressId || selectedAddressIdState || form.getFieldValue("addressId");
 //       if (
 //         currentAddressId &&
 //         checkoutPreview?.shops &&
 //         checkoutPreview.shops.length > 0
 //       ) {
-//         console.log(
-//           "🚀 Shop addresses loaded, auto-fetching shipment methods for all shops with address:",
-//           currentAddressId
-//         );
+        
 //         checkoutPreview.shops.forEach((shop: any) => {
 //           const shopId = shop.shopId;
 //           const shopAddressId = shopAddressIdMap[shopId];
 //           if (shopId && shopAddressId && shop.items && shop.items.length > 0) {
-//             console.log(
-//               `✅ Auto-fetching costs-shipments for shop ${shopId} (address: ${currentAddressId}, shopAddressId: ${shopAddressId})`
-//             );
+           
 //             fetchCostsShipmentsForShop(currentAddressId, shopId, shop.items);
 //           }
 //         });
 //       }
+//       const displayAddress = useNewAddress
+//     ? {
+//         recipientName: form.getFieldValue("recipientName"),
+//         phone: form.getFieldValue("phoneNumber"),
+//         detailAddress: form.getFieldValue("addressLine1"),
+//         ward: form.getFieldValue("ward"),
+//         district: form.getFieldValue("district"),
+//         province: form.getFieldValue("province"),
+//       }
+//     : savedAddresses.find((addr) => addr.addressId === currentAddressId) || null;
 
-//       // Chọn shop chính để làm điểm gửi:
-//       // 1. Shop có nhiều items nhất
-//       // 2. Hoặc shop đầu tiên nếu bằng nhau
 //       let mainShop = shops[0];
 //       let maxItems = mainShop.items?.length || 0;
 
@@ -784,18 +644,12 @@
 //       const mainShopProvince = addressesMap[mainShopId] || "Hồ Chí Minh";
 //       const mainShopFullAddress = fullAddressesMap[mainShopId];
 
-//       console.log("🎯 ===== CHỌN SHOP CHÍNH LÀM ĐIỂM GỬI =====");
-//       console.log("   Shop ID:", mainShopId);
-//       console.log("   Shop Name:", mainShop.shopName || mainShopId);
-//       console.log("   Số items:", maxItems);
-//       console.log("   🏙️  Province:", mainShopProvince);
 //       if (mainShopFullAddress) {
-//         console.log("   📍 Full Address:", mainShopFullAddress);
+        
 //         setShopProvince(mainShopFullAddress.province);
 //         setShopDistrict(mainShopFullAddress.district);
 //         setShopWard(mainShopFullAddress.ward);
 //       } else {
-//         console.log("   📍 Sẽ sử dụng làm name_city_from trong API Conkin");
 //         setShopProvince(mainShopProvince);
 //         setShopDistrict(null);
 //         setShopWard(null);
@@ -815,20 +669,10 @@
 //       setShopFullAddressMap({});
 //     } finally {
 //       setLoadingShopAddress(false);
-//       console.log("🏪 ===== HOÀN THÀNH LẤY ĐỊA CHỈ SHOP =====");
 //     }
 //   };
 
-//   const formatPrice = (price: number) => {
-//     return new Intl.NumberFormat("vi-VN", {
-//       style: "currency",
-//       currency: "VND",
-//       minimumFractionDigits: 0,
-//       maximumFractionDigits: 0,
-//     }).format(price);
-//   };
 
-//   // Function to calculate total weight from cart items (actual weight from products)
 //   const calculateTotalWeight = useCallback((): number => {
 //     if (!checkoutPreview) return 1; // Default 1kg
 //     const items = checkoutPreview.shops.flatMap((shop: any) => shop.items);
@@ -848,10 +692,7 @@
 //     return Math.max(totalWeight, 0.1); // Tối thiểu 0.1kg
 //   }, [checkoutPreview]);
 
-//   // Function to calculate shipping price from Conkin response data
-//   // Formula: (priceNet + priceOther + overSize?.price + pricePeakSeason) * (1 + constVAT/100) * (1 + constPPXD/100)
 //   const calculateConkinShippingPrice = useCallback((data: any): number => {
-//     // Lấy các giá trị từ response, mặc định là 0 nếu null/undefined
 //     const priceNet = data.priceNet || 0;
 //     const priceOther = data.priceOther || 0;
 //     const pricePeakSeason = data.pricePeakSeason || 0;
@@ -859,62 +700,26 @@
 //     const overSizePrice = data.overSize?.price || 0;
 //     const constVAT = data.constVAT || 0;
 //     const constPPXD = data.constPPXD || 0;
-
-//     console.log("💰 ===== TÍNH TOÁN CƯỚC VẬN CHUYỂN CONKIN =====");
-//     console.log("   priceNet:", priceNet);
-//     console.log("   priceOther:", priceOther || 0);
-//     console.log("   pricePeakSeason:", pricePeakSeason || 0);
-//     console.log("   overSize?.price:", overSizePrice || 0);
-//     console.log("   constVAT:", constVAT, "%");
-//     console.log("   constPPXD:", constPPXD, "%");
-
-//     // Tính tổng cước theo công thức:
-//     // (priceNet + priceOther + overSize?.price + pricePeakSeason) * (1 + constVAT/100) * (1 + constPPXD/100)
 //     const basePrice = priceNet + priceOther + overSizePrice + pricePeakSeason;
 //     const priceWithVAT = basePrice * (1 + constVAT / 100);
 //     const finalPrice = priceWithVAT * (1 + constPPXD / 100);
 
-//     console.log("   ─────────────────────────");
-//     console.log(
-//       "   Base price (priceNet + priceOther + overSize?.price + pricePeakSeason):",
-//       basePrice
-//     );
-//     console.log(
-//       "   Price with VAT (basePrice * (1 + constVAT/100)):",
-//       priceWithVAT
-//     );
-//     console.log(
-//       "   Final price (priceWithVAT * (1 + constPPXD/100)):",
-//       finalPrice
-//     );
-//     console.log("   ✅ priceTotal (rounded):", Math.round(finalPrice));
-
 //     return Math.round(finalPrice); // Làm tròn về số nguyên
 //   }, []);
 
-//   // Function to get shipment price from Conkin API
 //   const fetchConkinShipmentPrice = useCallback(
 //     async (province: string) => {
 //       if (!province || !checkoutPreview) {
 //         setConkinShipmentPrice(null);
 //         return;
 //       }
-
-//       // Sử dụng địa chỉ shop nếu đã load được, nếu không thì dùng fallback
-//       // ✅ ĐÂY LÀ NƠI LẤY ĐỊA CHỈ SHOP ĐỂ GẮN VÀO name_city_from
 //       const originCity = shopProvince || "Hồ Chí Minh";
-
 //       setLoadingShipmentPrice(true);
 //       try {
-//         // ✅ LẤY TẤT CẢ ITEMS TỪ CHECKOUT PREVIEW
 //         const allItems = checkoutPreview.shops.flatMap(
 //           (shop: any) => shop.items || []
 //         );
 
-//         console.log("📦 Total items for packaging:", allItems.length);
-
-//         // ✅ MỖI SẢN PHẨM LÀ 1 PACKAGE RIÊNG
-//         // Nếu quantity > 1, tạo quantity packages riêng biệt (mỗi package = 1 sản phẩm)
 //         const packages: Array<{
 //           weight: number;
 //           width: number;
@@ -926,8 +731,6 @@
 //         allItems.forEach((item: any, itemIndex: number) => {
 //           const dimensions = extractItemDimensions(item);
 //           const quantity = item.quantity || 1;
-
-//           // ✅ KHÔNG DÙNG GIÁ TRỊ MẶC ĐỊNH - PHẢI CÓ DIMENSIONS TỪ SẢN PHẨM
 //           if (!dimensions) {
 //             const productName = item.productName || item.name || "Sản phẩm";
 //             const errorMsg = `Sản phẩm "${productName}" không có đầy đủ thông tin kích thước (dài x rộng x cao) và trọng lượng. Vui lòng cập nhật thông tin sản phẩm trước khi đặt hàng.`;
@@ -936,7 +739,6 @@
 //             throw new Error(errorMsg);
 //           }
 
-//           // Kiểm tra dimensions hợp lệ
 //           if (
 //             !dimensions.weight ||
 //             dimensions.weight <= 0 ||
@@ -954,27 +756,15 @@
 //             throw new Error(errorMsg);
 //           }
 
-//           // ✅ Có dimensions từ sản phẩm - Tạo quantity packages riêng biệt (mỗi package = 1 sản phẩm)
 //           for (let i = 0; i < quantity; i++) {
 //             packages.push({
-//               weight: dimensions.weight, // Weight của 1 sản phẩm (không nhân quantity)
+//               weight: dimensions.weight, 
 //               width: dimensions.width,
 //               length: dimensions.length,
 //               height: dimensions.height,
 //               weightChargeMin: 0,
 //             });
 //           }
-//           console.log(
-//             `📦 Created ${quantity} packages for item ${itemIndex + 1} (${
-//               item.productName || "Item"
-//             }):`,
-//             {
-//               weightPerPackage: dimensions.weight,
-//               dimensions: `${dimensions.length}x${dimensions.width}x${dimensions.height} cm`,
-//               totalQuantity: quantity,
-//               totalPackages: quantity,
-//             }
-//           );
 //         });
 
 //         // ✅ Kiểm tra packages không được rỗng
@@ -993,14 +783,10 @@
 //           packages: packages,
 //         };
 
-//         console.log("📦 Final request data for Conkin:", {
-//           ...requestData,
-//           totalPackages: packages.length,
-//         });
-
+       
 //         const response = await getConkinShipmentPrice(requestData);
 
-//         console.log("✅ Conkin shipment price received:", response);
+       
 
 //         // Xử lý response: có thể là PackageConkinResponse (có data) hoặc PackageConkinData trực tiếp
 //         let responseData: any;
@@ -1012,7 +798,6 @@
 //           responseData = response;
 //         }
 
-//         console.log("📦 Response data:", responseData);
 
 //         // Tính toán priceTotal nếu chưa có hoặc null
 //         const finalData = { ...responseData };
@@ -1024,9 +809,7 @@
 //         ) {
 //           const calculatedPrice = calculateConkinShippingPrice(finalData);
 //           finalData.priceTotal = calculatedPrice;
-//           console.log("✅ Đã tính lại priceTotal:", calculatedPrice);
 //         } else {
-//           console.log("✅ Sử dụng priceTotal từ API:", finalData.priceTotal);
 //         }
 
 //         // Wrap lại thành PackageConkinResponse format để giữ consistency
@@ -1069,14 +852,7 @@
 //           return;
 //         }
 
-//         console.log(`📦 Fetching costs-shipments for shop ${shopId}:`, {
-//           buyerAddressId,
-//           shopId,
-//           shopAddressId,
-//           itemsCount: shopItems.length,
-//         });
-
-//         // Tạo items array cho CostsRequest (chỉ items của shop này)
+       
 //         const costsItems = shopItems.map((item: any) => {
 //           const dimensions = extractItemDimensions(item);
 //           const quantity = item.quantity || 1;
@@ -1087,8 +863,6 @@
 //             console.error(`❌ ${errorMsg}`);
 //             throw new Error(errorMsg);
 //           }
-
-//           // Lấy category từ sản phẩm (có thể từ item.category hoặc item.productCategory)
 //           const category = item.category || item.productCategory || "Áo";
 
 //           return {
@@ -1109,7 +883,6 @@
 //           };
 //         });
 
-//         // Tính COD value (tổng giá trị đơn hàng của shop này)
 //         const shopSubtotal = shopItems.reduce(
 //           (sum, item) =>
 //             sum + (item.lineTotal || item.price * (item.quantity || 1)),
@@ -1126,27 +899,12 @@
 //           insurance_value: 0,
 //         };
 
-//         console.log(
-//           `📤 Costs-shipments request data for shop ${shopId}:`,
-//           requestData
-//         );
-
+       
 //         const responses = await getCostsShipments(requestData);
 
-//         console.log(
-//           `✅ Costs-shipments response received for shop ${shopId}:`,
-//           responses
-//         );
-
-//         // Lưu shipping methods cho shop này
+       
 //         if (responses && responses.length > 0) {
 //           setShopShipmentMethods((prev) => ({ ...prev, [shopId]: responses }));
-//           console.log(
-//             `✅ Available shipment methods for shop ${shopId}:`,
-//             responses
-//           );
-
-//           // Tự động chọn phương thức vận chuyển đầu tiên cho shop này
 //           const firstMethod = responses[0];
 //           const firstMethodType =
 //             firstMethod.serviceCompanyType?.toUpperCase() || "METHOD_0";
@@ -1155,10 +913,7 @@
 //             ...prev,
 //             [shopId]: firstMethodValue,
 //           }));
-//           console.log(
-//             `✅ Auto-selected first shipment method for shop ${shopId}:`,
-//             firstMethodValue
-//           );
+         
 //         } else {
 //           console.warn(
 //             `⚠️ Empty response from costs-shipments for shop ${shopId}`
@@ -1213,13 +968,6 @@
 //         const originProvince = shopProvince || "Hồ Chí Minh";
 //         const originDistrict = shopDistrict || "";
 //         const originWard = shopWard || "";
-
-//         console.log("🏪 Shop address for GHN:", {
-//           originProvince,
-//           originDistrict,
-//           originWard,
-//         });
-
 //         // Map địa chỉ từ format mới sang format cũ cho GHN API
 //         const toOldAddress = mapAddressToOldFormat(wardName, provinceName);
 
@@ -1295,21 +1043,10 @@
 //           cod_value: codValue,
 //         };
 
-//         console.log("📦 GHN request data:", requestData);
 
 //         const response = await getGHNCosts(requestData);
 
-//         console.log("✅ GHN costs received:", response);
-//         console.log("📊 GHN response structure:", {
-//           code: response.code,
-//           message: response.message,
-//           hasData: !!response.data,
-//           dataKeys: response.data ? Object.keys(response.data) : [],
-//           total: response.data?.total,
-//         });
-
-//         // Kiểm tra response có hợp lệ không
-//         // Backend có thể trả về code 200 hoặc 1000 (success) hoặc format khác
+      
 //         if (
 //           response &&
 //           response.data &&
@@ -1318,7 +1055,6 @@
 //             response.data.total !== undefined)
 //         ) {
 //           setGhnShipmentPrice(response);
-//           console.log("✅ GHN price set successfully:", response);
 //         } else {
 //           console.error("❌ GHN response invalid or error:", response);
 //           setGhnShipmentPrice(null);
@@ -1337,7 +1073,6 @@
 //       } catch (error: any) {
 //         console.error("❌ Failed to get GHN costs:", error);
 //         setGhnShipmentPrice(null);
-//         // Không hiển thị error message để tránh làm phiền user
 //       } finally {
 //         setLoadingGHNShipmentPrice(false);
 //       }
@@ -1345,7 +1080,6 @@
 //     [checkoutPreview, shopProvince, message]
 //   );
 
-//   // Watch for address changes and fetch shipment price
 //   const addressId = Form.useWatch("addressId", form);
 //   const province = Form.useWatch("province", form);
 //   const recipientName = Form.useWatch("recipientName", form);
@@ -1357,7 +1091,6 @@
 //   const shippingMethod = Form.useWatch("shippingMethod", form);
 //   const country = Form.useWatch("country", form);
 
-//   // Kiểm tra country của địa chỉ đã chọn
 //   const selectedAddressCountry = useMemo(() => {
 //     if (addressId && !useNewAddress && savedAddresses.length > 0) {
 //       const selectedAddress = savedAddresses.find(
@@ -1368,10 +1101,7 @@
 //     return null;
 //   }, [addressId, useNewAddress, savedAddresses]);
 
-//   // Xác định country hiện tại (từ địa chỉ đã chọn hoặc form)
 //   const currentCountry = selectedAddressCountry || country || "Vietnam";
-
-//   // Kiểm tra có phải nước ngoài không (không phải Việt Nam)
 //   const isForeignCountry = useMemo(() => {
 //     const countryLower = currentCountry?.toLowerCase() || "";
 //     return (
@@ -1381,10 +1111,8 @@
 //     );
 //   }, [currentCountry]);
 
-//   // Calculate step status based on form data
 //   const isShippingInfoComplete = useMemo(() => {
 //     if (useNewAddress) {
-//       // New address: check if all required fields are filled
 //       return !!(
 //         recipientName &&
 //         phoneNumber &&
@@ -1394,7 +1122,6 @@
 //         addressLine1
 //       );
 //     } else {
-//       // Saved address: check if addressId is selected
 //       return !!addressId;
 //     }
 //   }, [
@@ -1412,31 +1139,14 @@
 //     return !!paymentMethod;
 //   }, [paymentMethod]);
 
-//   // Update currentStep based on form completion
 //   useEffect(() => {
-//     console.log("🔄 Updating currentStep:", {
-//       isShippingInfoComplete,
-//       isPaymentInfoComplete,
-//       orderSuccess: !!orderSuccess,
-//       successModalVisible,
-//       payosModalVisible,
-//     });
-
 //     if (orderSuccess || successModalVisible || payosModalVisible) {
-//       // Step 3: Order completed
-//       console.log("✅ Setting step to 3 (completed)");
 //       setCurrentStep(3);
 //     } else if (isPaymentInfoComplete && isShippingInfoComplete) {
-//       // Step 2: Payment (ready to submit)
-//       console.log("✅ Setting step to 2 (payment)");
 //       setCurrentStep(2);
 //     } else if (isShippingInfoComplete) {
-//       // Step 1: Shipping info completed, move to payment
-//       console.log("✅ Setting step to 1 (shipping complete, payment next)");
 //       setCurrentStep(1);
 //     } else {
-//       // Step 0: Still filling shipping info
-//       console.log("⏳ Setting step to 0 (filling shipping info)");
 //       setCurrentStep(0);
 //     }
 //   }, [
@@ -1451,12 +1161,8 @@
 //   const lastFetchedProvinceRef = useRef<string | null>(null);
 
 //   useEffect(() => {
-//     // Chỉ fetch khi đã có shopProvince (hoặc đang dùng fallback)
-//     // Đợi shop address load xong trước khi gọi API Conkin
 //     if (loadingShopAddress) {
-//       console.log(
-//         "⏳ Đang đợi shop address load xong trước khi fetch Conkin price..."
-//       );
+     
 //       return;
 //     }
 
@@ -1477,18 +1183,11 @@
 //       targetProvince = province;
 //     }
 
-//     // Only fetch if province changed and is not null
 //     if (targetProvince && targetProvince !== lastFetchedProvinceRef.current) {
-//       console.log("📍 Fetching shipment price for province:", targetProvince);
 //       lastFetchedProvinceRef.current = targetProvince;
-
-//       // Reset Conkin price nếu country là Việt Nam
 //       if (!isForeignCountry) {
 //         setConkinShipmentPrice(null);
 //       }
-//       // Không fetch Conkin tự động, chỉ fetch khi người dùng chọn CONKIN làm shipping method
-
-//       // Tự động fetch GHN price khi có địa chỉ (không cần chờ chọn shipping method)
 //       let targetWard: string | null = null;
 //       let targetDistrict: string | null = null;
 
@@ -1518,16 +1217,10 @@
 //           const shopId = shop.shopId;
 //           const shopAddressId = shopAddressIdMap[shopId];
 //           if (shopId && shopAddressId && shop.items && shop.items.length > 0) {
-//             console.log(`✅ Fetching costs-shipments for shop ${shopId}:`, {
-//               buyerAddressId: addressId,
-//               shopId,
-//               shopAddressId,
-//             });
+           
 //             fetchCostsShipmentsForShop(addressId, shopId, shop.items);
 //           } else if (shopId && !shopAddressId) {
-//             console.log(
-//               `⏳ Waiting for shop addressId to be loaded for shop ${shopId}...`
-//             );
+            
 //           }
 //         });
 //       } else if (targetWard && targetProvince) {
@@ -1546,10 +1239,7 @@
 //         lastFetchedProvinceRef.current = null;
 //       }
 //     } else {
-//       console.log(
-//         "⏭️ Skipping shipment price fetch - province unchanged:",
-//         targetProvince
-//       );
+      
 //     }
 //   }, [
 //     addressId,
@@ -1590,10 +1280,7 @@
 //       }
 
 //       if (targetProvince && !conkinShipmentPrice) {
-//         console.log(
-//           "✅ Fetching CONKIN price for foreign country:",
-//           targetProvince
-//         );
+       
 //         fetchConkinShipmentPrice(targetProvince);
 //       }
 //     } else if (shippingMethod !== "CONKIN") {
@@ -1614,9 +1301,7 @@
 //     fetchConkinShipmentPrice,
 //   ]);
 
-//   // Fetch GHN price when shipping method changes to GHN or when address changes (if GHN is selected)
 //   useEffect(() => {
-//     // Chỉ fetch GHN khi đã chọn GHN và có đủ thông tin địa chỉ
 //     if (shippingMethod === "GHN" && !loadingShopAddress) {
 //       let targetProvince: string | null = null;
 //       let targetWard: string | null = null;
@@ -1637,15 +1322,7 @@
 //         targetDistrict = district || null;
 //       }
 
-//       console.log("🔍 GHN fetch check:", {
-//         shippingMethod,
-//         targetProvince,
-//         targetWard,
-//         targetDistrict,
-//         hasAddress: !!(targetProvince && targetWard),
-//       });
-
-//       // Sử dụng API mới costs-shipments nếu có buyer addressId và shop addressId đã load
+     
 //       if (
 //         addressId &&
 //         !useNewAddress &&
@@ -1656,33 +1333,20 @@
 //         const firstShopId = checkoutPreview.shops[0].shopId;
 //         const shopAddressId = shopAddressIdMap[firstShopId];
 //         if (firstShopId && shopAddressId) {
-//           console.log("✅ Fetching costs-shipments with:", {
-//             buyerAddressId: addressId,
-//             shopId: firstShopId,
-//             shopAddressId,
-//           });
+         
 //           fetchCostsShipments(addressId, firstShopId);
 //         } else if (firstShopId && !shopAddressId) {
-//           console.log("⏳ Waiting for shop addressId to be loaded...");
 //         }
 //       } else if (targetProvince && targetWard) {
 //         // Fallback to old method if using new address
-//         console.log("✅ Fetching GHN price with:", {
-//           targetProvince,
-//           targetWard,
-//           targetDistrict,
-//         });
+       
 //         fetchGHNShipmentPrice(
 //           targetProvince,
 //           targetWard,
 //           targetDistrict || undefined
 //         );
 //       } else {
-//         console.log("⚠️ Cannot fetch shipment costs - missing address info:", {
-//           hasAddressId: !!addressId,
-//           hasProvince: !!targetProvince,
-//           hasWard: !!targetWard,
-//         });
+       
 //       }
 //     }
 //   }, [
@@ -1700,7 +1364,6 @@
 //     shopAddressIdMap,
 //   ]);
 
-//   // Tự động mở modal chọn phương thức vận chuyển khi đã có địa chỉ và giá vận chuyển
 //   useEffect(() => {
 //     if (
 //       !shippingMethodModalVisible &&
@@ -2078,7 +1741,7 @@
 //       // Check if there are any valid vouchers applied successfully
 //       const hasValidVouchers =
 //         result.voucherApplication?.success === true ||
-//         result.voucherApplication?.globalVouchers?.validVouchers?.length > 0 ||
+//         (Array.isArray(result.voucherApplication?.globalVouchers?.validVouchers) && result.voucherApplication.globalVouchers.validVouchers.length > 0) ||
 //         result.voucherApplication?.globalVouchers?.discountDetails?.some(
 //           (d: any) => d.valid === true && d.discountAmount > 0
 //         );
@@ -2158,12 +1821,7 @@
 //         return;
 //       }
 
-//       console.log(
-//         "✅ Buyer Address ID:",
-//         buyerAddressId,
-//         "(addressId của địa chỉ người dùng đã chọn hoặc mới nhất)"
-//       );
-
+      
 //       if (buyerAddressId && !useNewAddress) {
 //         const selectedAddress = savedAddresses.find(
 //           (addr) => addr.addressId === buyerAddressId
@@ -2175,13 +1833,7 @@
 //             selectedAddress.province
 //           );
 
-//           console.log("🔍 Saved Address Mapping:", {
-//             ward: selectedAddress.ward,
-//             province: selectedAddress.province,
-//             oldAddress,
-//             found: !!oldAddress.old_ward_name,
-//           });
-
+         
 //           shippingAddress = {
 //             addressId: buyerAddressId,
 //             ...(oldAddress.old_ward_name && {
@@ -2198,12 +1850,7 @@
 //       } else {
 //         const oldAddress = mapAddressToOldFormat(values.ward, values.province);
 
-//         console.log("🔍 New Address Mapping:", {
-//           ward: values.ward,
-//           province: values.province,
-//           oldAddress,
-//           found: !!oldAddress.old_ward_name,
-//         });
+       
 
 //         shippingAddress = {
 //           country: values.country || "VN",
@@ -2299,7 +1946,6 @@
 
 //   const stopPolling = useCallback(() => {
 //     if (pollingIntervalRef.current) {
-//       console.log("🛑 Stopping payment status polling");
 //       clearInterval(pollingIntervalRef.current);
 //       pollingIntervalRef.current = null;
 //     }
@@ -2343,37 +1989,23 @@
 //       return;
 //     }
 
-//     console.log(
-//       "🔄 Starting payment status polling for orderId:",
-//       selectedOrder.orderId
-//     );
-
-//     // Poll payment status every 2 seconds
 //     const interval = setInterval(async () => {
 //       try {
-//         console.log("🔍 Polling payment status...");
-
 //         // Use paymentId if available, otherwise use orderId
 //         let paymentStatus;
 //         if (paymentId) {
-//           console.log("📞 Using paymentId:", paymentId);
 //           paymentStatus = await paymentService.getPaymentStatus(paymentId);
 //         } else {
-//           console.log("📞 Using orderId:", selectedOrder.orderId);
 //           paymentStatus = await paymentService.getPaymentStatusByOrder(
 //             selectedOrder.orderId
 //           );
 //           // Update paymentId if we got it from the response
 //           if (paymentStatus.paymentId && !paymentId) {
-//             console.log(
-//               "✅ Got paymentId from response:",
-//               paymentStatus.paymentId
-//             );
+            
 //             setPaymentId(paymentStatus.paymentId);
 //           }
 //         }
 
-//         console.log("📨 Payment status received:", paymentStatus);
 
 //         // Check payment status
 //         const status = paymentStatus.status?.toUpperCase();
@@ -2383,12 +2015,10 @@
 //           status === "SUCCESS" ||
 //           status === "PAID"
 //         ) {
-//           console.log("✅ Payment successful!");
 //           clearInterval(interval);
 //           pollingIntervalRef.current = null;
 //           handlePaymentSuccess();
 //         } else if (status === "FAILED" || status === "CANCELLED") {
-//           console.log("❌ Payment failed or cancelled");
 //           clearInterval(interval);
 //           pollingIntervalRef.current = null;
 //           toast.error("Thanh toán thất bại hoặc đã bị hủy");
@@ -2396,10 +2026,7 @@
 //         // If status is PENDING or other, continue polling
 //       } catch (error: any) {
 //         console.error("❌ Error polling payment status:", error);
-//         // Don't stop polling on error, continue trying
-//         // Only stop if it's a permanent error (e.g., order not found)
 //         if (error?.response?.status === 404) {
-//           console.log("❌ Payment/Order not found, stopping polling");
 //           clearInterval(interval);
 //           pollingIntervalRef.current = null;
 //         }
@@ -2410,7 +2037,6 @@
 
 //     // Cleanup on unmount or when dependencies change
 //     return () => {
-//       console.log("🛑 Cleaning up payment status polling");
 //       clearInterval(interval);
 //       pollingIntervalRef.current = null;
 //     };
@@ -2487,7 +2113,7 @@
 //   );
 
 //   return (
-//     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50">
+//     <div className="min-h-screen bg-linear-to-br from-gray-50 via-blue-50 to-gray-50">
 //       <PageContentTransition>
 //         <Content className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 //           <CustomBreadcrumb
@@ -2496,58 +2122,7 @@
 //               { title: "Giỏ hàng", href: "" },
 //             ]}
 //           />
-
-//           <div className="mb-6 rounded-[12px] border-0 shadow-[0_2px_8px_rgba(0,0,0,0.08)] bg-white">
-//             <Steps
-//               current={currentStep}
-//               size="default"
-//               responsive={false}
-//               className="py-2"
-//               items={[
-//                 {
-//                   title: <span className="hidden sm:inline">Giỏ hàng</span>,
-//                   icon: <ShoppingCart />,
-//                   status: "finish" as const,
-//                 },
-//                 {
-//                   title: (
-//                     <span className="hidden sm:inline">
-//                       Thông tin giao hàng
-//                     </span>
-//                   ),
-//                   icon: <MapPin />,
-//                   status: isShippingInfoComplete
-//                     ? ("finish" as const)
-//                     : currentStep === 0
-//                     ? ("process" as const)
-//                     : ("wait" as const),
-//                 },
-//                 {
-//                   title: <span className="hidden sm:inline">Thanh toán</span>,
-//                   icon: <CreditCard />,
-//                   status:
-//                     isPaymentInfoComplete && isShippingInfoComplete
-//                       ? currentStep === 2
-//                         ? ("process" as const)
-//                         : ("finish" as const)
-//                       : isShippingInfoComplete
-//                       ? ("process" as const)
-//                       : ("wait" as const),
-//                 },
-//                 {
-//                   title: <span className="hidden sm:inline">Hoàn tất</span>,
-//                   icon: <CheckCircle2 />,
-//                   status:
-//                     orderSuccess || successModalVisible || payosModalVisible
-//                       ? ("finish" as const)
-//                       : currentStep === 3
-//                       ? ("process" as const)
-//                       : ("wait" as const),
-//                 },
-//               ]}
-//             />
-//           </div>
-
+//          <CheckoutStepper currentStep={currentStep} />
 //           <Form
 //             form={form}
 //             layout="vertical"
@@ -2559,104 +2134,13 @@
 //             }}
 //           >
 //             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
-//               {/* Left Column - Form */}
 //               <div className="lg:col-span-2 space-y-4 sm:space-y-6">
-//                 {/* Shipping Address Display - Compact */}
-//                 <div className="rounded-[12px] border-0 shadow-[0_2px_8px_rgba(0,0,0,0.08)] bg-white">
-//                   <div className="flex items-start justify-between gap-4">
-//                     <div className="flex-1 min-w-0">
-//                       <div className="flex items-center gap-2 mb-2">
-//                         <MapPin className="text-blue-600 text-base" />
-//                         <p className="text-gray-900 text-sm">
-//                           Địa chỉ giao hàng
-//                         </p>
-//                       </div>
-//                       {(() => {
-//                         // Lấy addressId từ form (có thể từ watch, state hoặc getFieldValue)
-//                         const currentAddressId =
-//                           addressId ||
-//                           selectedAddressIdState ||
-//                           form.getFieldValue("addressId");
-//                         const selectedAddress = currentAddressId
-//                           ? savedAddresses.find(
-//                               (addr) => addr.addressId === currentAddressId
-//                             )
-//                           : null;
+//                 <ShippingAddressCard
+//   selectedAddress={displayAddress}
+//   hasAddress={!!displayAddress}
+//   onOpenModal={() => setAddressModalVisible(true)}
+// />
 
-//                         if (selectedAddress) {
-//                           return (
-//                             <div className="space-y-1">
-//                               <p className="text-gray-900 text-sm block">
-//                                 {selectedAddress.recipientName || "Chưa có tên"}{" "}
-//                                 |{" "}
-//                                 {selectedAddress.phone ||
-//                                   "Chưa có số điện thoại"}
-//                               </p>
-//                               <p className="text-gray-600 text-xs block line-clamp-2">
-//                                 {selectedAddress.detailAddress ||
-//                                   "Chưa có địa chỉ chi tiết"}
-//                                 ,{" "}
-//                                 {[
-//                                   selectedAddress.ward,
-//                                   selectedAddress.district,
-//                                   selectedAddress.province,
-//                                 ]
-//                                   .filter(Boolean)
-//                                   .join(", ") || "Chưa có địa chỉ"}
-//                               </p>
-//                             </div>
-//                           );
-//                         } else if (
-//                           useNewAddress &&
-//                           form.getFieldValue("recipientName")
-//                         ) {
-//                           const recipientName =
-//                             form.getFieldValue("recipientName");
-//                           const phone = form.getFieldValue("phoneNumber");
-//                           const addressLine1 =
-//                             form.getFieldValue("addressLine1");
-//                           const ward = form.getFieldValue("ward");
-//                           const district = form.getFieldValue("district");
-//                           const province = form.getFieldValue("province");
-//                           return (
-//                             <div className="space-y-1">
-//                               <p className="text-gray-900 text-sm block">
-//                                 {recipientName || "Chưa có tên"} |{" "}
-//                                 {phone || "Chưa có số điện thoại"}
-//                               </p>
-//                               <p className="text-gray-600 text-xs block line-clamp-2">
-//                                 {addressLine1 || "Chưa có địa chỉ chi tiết"},{" "}
-//                                 {[ward, district, province]
-//                                   .filter(Boolean)
-//                                   .join(", ") || "Chưa có địa chỉ"}
-//                               </p>
-//                             </div>
-//                           );
-//                         } else {
-//                           return (
-//                             <p className="text-gray-500 text-sm">
-//                               Chưa chọn địa chỉ giao hàng
-//                             </p>
-//                           );
-//                         }
-//                       })()}
-//                     </div>
-//                     <Button
-//                       type="link"
-//                       onClick={() => setAddressModalVisible(true)}
-//                       className="flex-shrink-0"
-//                     >
-//                       {addressId ||
-//                       selectedAddressIdState ||
-//                       form.getFieldValue("addressId") ||
-//                       useNewAddress
-//                         ? "Thay đổi"
-//                         : "Chọn địa chỉ"}
-//                     </Button>
-//                   </div>
-//                 </div>
-
-//                 {/* Order Summary - Moved to left column, below shipping address */}
 //                 {checkoutPreview && (
 //                   <Card
 //                     title={
@@ -3078,8 +2562,11 @@
 
 //                   {/* Note */}
 //                   <div
-//                     title={
-//                       <Space>
+                   
+                     
+//                     className="rounded-[12px] border-0 shadow-[0_2px_8px_rgba(0,0,0,0.08)] bg-white"
+//                   >
+//                      <Space>
 //                         <div className="bg-gray-50 rounded-lg p-2">
 //                           <svg
 //                             className="w-5 h-5 text-gray-600"
@@ -3099,9 +2586,6 @@
 //                           Ghi chú đơn hàng (Tùy chọn)
 //                         </p>
 //                       </Space>
-//                     }
-//                     className="rounded-[12px] border-0 shadow-[0_2px_8px_rgba(0,0,0,0.08)] bg-white"
-//                   >
 //                     <Form.Item name="customerNote">
 //                       <p
 //                         aria-describedby="note-description"
@@ -3110,25 +2594,23 @@
 //                       >
 //                         Bạn có thể để lại ghi chú cho người bán về đơn hàng này.
 //                       </p>
-//                       <Input.TextArea
+//                       <textarea
+//                         className="w-full border border-gray-300 rounded-lg p-2.5 text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
 //                         rows={4}
 //                         placeholder="Ghi chú cho người bán..."
 //                         maxLength={1000}
-//                         showCount
 //                       />
 //                     </Form.Item>
 //                   </div>
 
-//                   {/* Platform Voucher Section */}
+
 //                   {checkoutPreview && (
 //                     <div
-//                       title={
+//                       className="rounded-[12px] border-0 shadow-[0_4px_12px_rgba(0,0,0,0.12)] bg-white"
+//                     >
 //                         <p className="text-gray-900 text-xl">
 //                           Voucher toàn sàn
 //                         </p>
-//                       }
-//                       className="rounded-[12px] border-0 shadow-[0_4px_12px_rgba(0,0,0,0.12)] bg-white"
-//                     >
 //                       <Space
 //                         direction="vertical"
 //                         size="large"
@@ -3486,13 +2968,11 @@
 //                         <div className="bg-gradient-to-r from-orange-50 to-red-50 -mx-6 px-6 py-4 rounded-[10px] border border-orange-100">
 //                           <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2">
 //                             <p
-//                               strong
 //                               className="text-lg sm:text-xl text-gray-900 font-semibold"
 //                             >
 //                               Tổng thanh toán
 //                             </p>
 //                             <h1
-//                               level={2}
 //                               className="mb-0 text-red-600 text-2xl sm:text-3xl font-bold"
 //                             >
 //                               {formatPrice(calculateFinalGrandTotal())}
@@ -3609,7 +3089,6 @@
 //                           </div>
 //                           <div className="flex-1 min-w-0">
 //                             <p
-//                               strong
 //                               className="text-sm text-gray-900 block truncate"
 //                             >
 //                               {item.productName}

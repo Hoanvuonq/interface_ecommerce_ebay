@@ -7,12 +7,10 @@ import { MoveLeft, Search } from "lucide-react";
 import { cn } from "@/utils/cn";
 
 export default function NotFoundPage() {
-  const theme = useSelector((state: RootState) => state.theme.name);
   return (
     <div
       className={cn(
-        "flex min-h-screen flex-col items-center justify-center px-4 transition-colors duration-300 cherry-bomb-one-regular",
-        theme === "dark" ? "bg-[#1f1f1f] text-white" : "bg-gray-50 text-gray-900"
+        "flex min-h-screen flex-col items-center justify-center px-4 transition-colors duration-300 cherry-bomb-one-regular bg-gray-50 text-gray-900",
       )}
     >
       <div className="text-center">
@@ -24,7 +22,7 @@ export default function NotFoundPage() {
         </div>
 
         <h1 className="mb-4 text-4xl font-black tracking-tight md:text-6xl">
-          Lạc đường rồi!
+          Trang không tìm thấy
         </h1>
         
         <p className="mx-auto mb-8 max-w-md text-base font-medium text-gray-500 md:text-lg">

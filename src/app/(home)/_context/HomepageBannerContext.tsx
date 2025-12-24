@@ -23,10 +23,6 @@ interface HomepageBannerProviderProps {
   device?: string;
 }
 
-/**
- * Provider để share homepage banners data giữa các components
- * Chỉ gọi API 1 lần ở page level, các components con có thể dùng chung data
- */
 export const HomepageBannerProvider: React.FC<HomepageBannerProviderProps> = ({
   children,
   locale = 'vi',
@@ -45,10 +41,6 @@ export const HomepageBannerProvider: React.FC<HomepageBannerProviderProps> = ({
   );
 };
 
-/**
- * Hook để sử dụng homepage banners context
- * Các components có thể dùng hook này để lấy data mà không cần gọi API lại
- */
 export const useHomepageBannerContext = (): HomepageBannerContextValue => {
   const context = useContext(HomepageBannerContext);
   if (context === undefined) {

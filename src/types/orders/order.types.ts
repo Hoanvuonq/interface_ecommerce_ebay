@@ -3,10 +3,7 @@
  */
 
 export interface ShippingAddressInfo {
-    // Option 1: Use saved address
     addressId?: string;
-
-    // Option 2: Provide full address (matching backend OrderPreviewRequest.ShippingAddressInfo)
     country?: string;
     state?: string; // Province/State
     city?: string; // District/City
@@ -36,6 +33,8 @@ export interface OrderCreateRequest {
     paymentMethod: 'COD' | 'VNPAY' | 'MOMO' | 'BANK_TRANSFER' | 'CREDIT_CARD' | 'PAYOS';
     customerNote?: string;
     idempotencyKey?: string;
+    shippingAddress?: ShippingAddressInfo;
+    globalVouchers?: string[];
     previewId?: string;
     previewAt?: string;
     previewChecksum?: string;

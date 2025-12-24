@@ -8,8 +8,8 @@ import type {
     WalletTransactionResponse,
     WalletWithdrawalResponse,
     PageDto,
-} from '../types/wallet.types';
-import type { ApiResponse } from '@/types/api.types';
+} from '@/types/wallet/wallet.types';
+import type { ApiResponse } from '@/api/_types/api.types';
 
 const ADMIN_WALLET_API_BASE = '/v1/admin/wallets';
 

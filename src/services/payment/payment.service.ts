@@ -3,7 +3,7 @@
  */
 
 import { request } from '@/utils/axios.customize';
-import type { ApiResponse } from '@/types/api.types';
+import type { ApiResponse } from '@/api/_types/api.types';
 import type {
     PayOSPaymentResponse,
     PayOSPaymentStatusResponse,

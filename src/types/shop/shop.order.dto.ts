@@ -1,12 +1,12 @@
 // ==================== RE-EXPORT từ Manager ====================
 // Sử dụng lại DTOs từ manager/order
-export { OrderStatus } from "@/features/manager/order/dto/order.dto";
 export type {
   OrderResponse,
   OrderItemResponse,
   OrderListResponse,
-} from "@/features/manager/order/dto/order.dto";
-import type { OrderResponse } from "@/features/manager/order/dto/order.dto";
+} from "../orders/order.dto";
+import type { OrderResponse } from "../orders/order.types";
+import { OrderStatus } from "../orders/order.dto";
 
 // ==================== SHOP-SPECIFIC REQUEST DTOs ====================
 
