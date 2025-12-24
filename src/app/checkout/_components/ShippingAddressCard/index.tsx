@@ -1,6 +1,8 @@
 import React from "react";
 import { MapPin } from "lucide-react";
 import { ShippingAddressCardProps } from "../../_types/address";
+import { Button } from "@/components/button/button";
+import { MapPinPen } from "lucide-react";
 
 export const ShippingAddressCard: React.FC<ShippingAddressCardProps> = ({
   selectedAddress,
@@ -12,8 +14,10 @@ export const ShippingAddressCard: React.FC<ShippingAddressCardProps> = ({
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-3">
-            <MapPin className="text-orange-500 w-5 h-5" />
-            <h3 className="text-gray-900 font-medium text-base">
+            <span className=" bg-amber-50 rounded-full p-2">
+              <MapPin className="text-orange-500 w-5 h-5" />
+            </span>
+            <h3 className="text-gray-900 font-medium text-base uppercase">
               Địa chỉ giao hàng
             </h3>
           </div>
@@ -43,12 +47,9 @@ export const ShippingAddressCard: React.FC<ShippingAddressCardProps> = ({
           )}
         </div>
 
-        <button
-          onClick={onOpenModal}
-          className="shrink-0 text-sm font-semibold text-orange-500 hover:text-orange-600 transition-colors px-2 py-1 rounded hover:bg-orange-50"
-        >
+        <Button variant="edit" onClick={onOpenModal} icon={<MapPinPen />}>
           {hasAddress ? "Thay đổi" : "Chọn địa chỉ"}
-        </button>
+        </Button>
       </div>
     </div>
   );

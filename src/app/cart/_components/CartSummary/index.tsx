@@ -12,7 +12,7 @@ import {
     ArrowRight
 } from 'lucide-react';
 import type { CartDto } from '@/types/cart/cart.types';
-import { VoucherInput } from '../VoucherInput';
+import { VoucherComponents } from '@/components/voucherComponents';
 import Link from 'next/link';
 import { cn } from '@/utils/cn';
 import { formatPrice } from '@/hooks/useFormatPrice';
@@ -146,7 +146,7 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
                         </div>
                         <span className="text-sm font-extrabold text-gray-800">Mã giảm giá</span>
                     </div>
-                    <VoucherInput compact />
+                    <VoucherComponents compact />
                 </div>
 
                 {/* Total Section */}

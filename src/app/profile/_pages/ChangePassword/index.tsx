@@ -214,12 +214,12 @@ export default function ChangePasswordFormCompact() {
             type="login"
             loading={loading}
             disabled={loading}
-            className="w-46 h-12 rounded-xl text-md font-bold shadow-lg shadow-orange-500/20 hover:shadow-orange-500/30 active:scale-[0.99] transition-all bg-orange-600 hover:bg-orange-700 border-none text-white"
+            className="w-45  rounded-xl text-sm font-bold shadow-lg shadow-orange-500/20 hover:shadow-orange-500/30 active:scale-[0.99] transition-all bg-orange-600 hover:bg-orange-700 border-none text-white"
           >
-            <div className="flex items-center justify-center gap-2">
-              <FaCheckCircle />
+            <span className="flex items-center gap-2">
+               <FaCheckCircle />
               <span>đổi mật khẩu</span>
-            </div>
+            </span>
           </ButtonField>
         </div>
       </form>

@@ -156,9 +156,9 @@ export const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
           <div className={`mb-6 p-4 rounded-xl border flex gap-3 ${
               isFirstTimeChange 
               ? 'bg-orange-50 border-orange-100 text-orange-800' 
-              : 'bg-blue-50 border-blue-100 text-blue-800'
+              : 'bg-orange-50 border-blue-100 text-orange-800'
           }`}>
-            <FiAlertCircle className={`w-5 h-5 shrink-0 mt-0.5 ${isFirstTimeChange ? 'text-orange-600' : 'text-blue-600'}`} />
+            <FiAlertCircle className={`w-5 h-5 shrink-0 mt-0.5 ${isFirstTimeChange ? 'text-orange-600' : 'text-orange-600'}`} />
             <div className="text-sm leading-relaxed">
                 {isFirstTimeChange ? (
                     <>

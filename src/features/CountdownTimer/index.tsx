@@ -70,7 +70,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
   );
 
   return (
-    <div className={`flex items-center justify-center bg-[#ff7a00] rounded-2xl px-4 py-3 sm:px-7 sm:py-5 shadow-inner ${config.gap}`}>
+    <div className={`flex items-center justify-center bg-[#ff7a00] rounded-xl px-4 sm:px-2 py-1 shadow-inner ${config.gap}`}>
       <TimeUnit value={timeLeft.hours} label="Hours" />
       <span className={`${config.colon} text-white/40 font-bold -mt-3`}>:</span>
       <TimeUnit value={timeLeft.minutes} label="Mins" />

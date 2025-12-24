@@ -5,7 +5,7 @@ import { ProductStats, VoucherList } from "@/app/products/_components";
 import Pricing from "@/app/products/_components/Pricing";
 import { ShippingInfo } from "@/app/products/_components/ShippingInfo";
 import { VariantSelector } from "@/app/products/_components/VariantSelector";
-import { AddToCartButton } from "@/components/AddToCartButton";
+import { AddToCartButton } from "@/components/addToCartButton";
 import { TagComponents } from "@/components/tags";
 import { cn } from "@/utils/cn";
 import { ProductPurchaseActionsProps } from "../../_types/products";

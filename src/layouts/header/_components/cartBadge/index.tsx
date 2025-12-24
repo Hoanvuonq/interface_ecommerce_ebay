@@ -2,14 +2,13 @@
 
 import React, { useEffect, useState } from 'react';
 import { AppPopover } from '@/components/appPopover';
-import { ShoppingCart, Package, Loader2 } from 'lucide-react';
+import { ShoppingCart, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { fetchCart } from '@/store/theme/cartSlice';
 import { isAuthenticated as checkAuth, getCachedUser } from '@/utils/local.storage';
 import { isLocalhost } from '@/utils/env';
 import { CartPopover } from '../cartPopover';
-import { cn } from '@/utils/cn';
 
 export const CartBadge = () => {
     const dispatch = useAppDispatch();
@@ -64,9 +63,10 @@ export const CartBadge = () => {
     return (
         <AppPopover 
             trigger={Trigger} 
-            className="w-98" 
             align="right"
             onOpenChange={handleOpenChange}
+            isMobileFixed={true} 
+            mobileTop="top-[50px]" 
         >
             <div className="flex items-center justify-between p-4 border-b border-gray-100 bg-white">
                 <div className="flex items-center gap-2">
@@ -79,8 +79,7 @@ export const CartBadge = () => {
             <div className="max-h-96 overflow-y-auto custom-scrollbar">
                 <CartPopover open={true} />
             </div>
-{/* 
-            {itemCount > 0 && (
+            {/* {itemCount > 0 && (
                 <div className="p-3 bg-gray-50 flex items-center justify-between border-t border-gray-100 rounded-b-xl">
                     <span className="text-xs text-gray-500">
                         {cart?.itemCount || 0} sản phẩm trong giỏ

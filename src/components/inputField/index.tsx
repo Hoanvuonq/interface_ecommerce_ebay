@@ -25,20 +25,14 @@ export const InputField = forwardRef<
       onChange: onPropChange,
       value: propValue,
       rules = [],
+      autoComplete
     },
     ref
   ) => {
-    const [localValue, setLocalValue] = useState("");
     const [showPassword, setShowPassword] = useState(false);
 
-    const value = propValue !== undefined ? propValue : localValue;
-
     const isPasswordType = type === "password";
-    const inputType = isPasswordType
-      ? showPassword
-        ? "text"
-        : "password"
-      : type;
+    const inputType = isPasswordType && showPassword ? "text" : type;
 
     const baseInputClasses = cn(
       "w-full px-4 py-2.5 text-base rounded-lg border transition-all duration-200",
@@ -52,20 +46,11 @@ export const InputField = forwardRef<
       inputClassName
     );
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const newValue = e.target.value;
-      if (propValue === undefined) {
-        setLocalValue(newValue);
-      }
-      if (onPropChange) {
-        onPropChange(e);
-      }
-    };
-
-    const togglePasswordVisibility = (
+   const togglePasswordVisibility = (
       e: React.MouseEvent<HTMLButtonElement>
     ) => {
       e.preventDefault();
+      e.stopPropagation(); 
       setShowPassword((prev) => !prev);
     };
 
@@ -80,8 +65,8 @@ export const InputField = forwardRef<
           maxLength={maxLength}
           inputMode={inputMode}
           disabled={disabled}
-          value={value}
-          onChange={handleInputChange}
+          value={propValue}
+          onChange={onPropChange}
           className={baseInputClasses}
         />
       );
@@ -124,7 +109,7 @@ export const InputField = forwardRef<
 
           {maxLength && !isPasswordType && (
             <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-400 dark:text-gray-500">
-              {`${value ? String(value).length : 0}/${maxLength}`}
+              {`${propValue ? String(propValue).length : 0}/${maxLength}`}
             </span>
           )}
         </div>

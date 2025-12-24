@@ -12,11 +12,11 @@ import {
 } from 'lucide-react';
 import React, { useState } from 'react';
 import { toast } from 'sonner';
-import { VoucherInputProps } from '../../_types/voucher';
-import { VoucherModal } from '../VoucherModal';
+import { VoucherInputProps } from './type';
+import { VoucherModal } from '../voucherModal';
 
 
-export const VoucherInput: React.FC<VoucherInputProps> = ({
+export const VoucherComponents: React.FC<VoucherInputProps> = ({
     shopId,
     shopName,
     onApplyVoucher,
@@ -185,7 +185,7 @@ export const VoucherInput: React.FC<VoucherInputProps> = ({
                     ) : (
                         <button
                             onClick={() => setModalOpen(true)}
-                            className="w-full flex items-center justify-between px-4 py-3 bg-blue-50/50 border border-dashed border-blue-300 rounded-xl text-blue-600 hover:bg-blue-100/50 hover:border-blue-400 transition-all group active:scale-[0.98]"
+                            className="w-full cursor-pointer flex items-center justify-between px-4 py-3 bg-blue-50/50 border border-dashed border-blue-300 rounded-xl text-blue-600 hover:bg-blue-100/50 hover:border-blue-400 transition-all group active:scale-[0.98]"
                         >
                             <div className="flex items-center gap-2 font-bold text-sm">
                                 <Ticket className="w-4 h-4 group-hover:rotate-12 transition-transform" />
@@ -274,15 +274,13 @@ export const VoucherInput: React.FC<VoucherInputProps> = ({
                     }}
                     appliedVouchers={appliedVouchersOption}
                     appliedVoucher={appliedVoucherOption}
-                    title={shopName ? `${shopName} Voucher` : 'Chọn voucher platform'}
+                    title={shopName ? `${shopName} Voucher` : 'Chọn Voucher'}
                     shopName={shopName}
                     isShopVoucher={!!shopId}
                 />
             </>
         );
     }
-
-    // --- FULL MODE FOR MAIN CONTENT ---
     return (
         <div className={cn("space-y-3", className)}>
             {appliedVoucher ? (

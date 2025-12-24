@@ -18,7 +18,7 @@ export const CreateWalletPrompt: React.FC<CreateWalletPromptProps> = ({
   loading = false,
 }) => {
   const isShop = type === "SHOP";
-  
+
   const [isCreating, setIsCreating] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -51,7 +51,7 @@ export const CreateWalletPrompt: React.FC<CreateWalletPromptProps> = ({
     <div className="flex items-center justify-center p-4 w-full h-full animate-fade-in">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-gray-100 p-8 relative overflow-hidden transition-all duration-300">
         <div className="absolute top-0 left-0 w-full h-1.5 bg-linear-to-r from-orange-400 to-red-500"></div>
-        
+
         {!isCreating ? (
           <div className="text-center animate-fade-in">
             <div className="absolute -top-8 -right-8 w-24 h-24 bg-orange-100 rounded-full blur-2xl opacity-40 pointer-events-none"></div>
@@ -102,20 +102,24 @@ export const CreateWalletPrompt: React.FC<CreateWalletPromptProps> = ({
         ) : (
           <div className="animate-fade-in-up text-left">
             <div className="flex items-center gap-2 mb-6">
-                <button 
-                    onClick={handleBack}
-                    className="p-2 hover:bg-gray-100 rounded-full transition-colors -ml-2 text-gray-500 hover:text-gray-800"
-                    title="Quay lại"
-                >
-                    <ArrowLeft className="w-5 h-5" />
-                </button>
-                <h3 className="text-xl font-bold text-gray-800">Thiết lập mật khẩu</h3>
+              <button
+                onClick={handleBack}
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors -ml-2 text-gray-500 hover:text-gray-800"
+                title="Quay lại"
+              >
+                <ArrowLeft className="w-5 h-5" />
+              </button>
+              <h3 className="text-xl font-bold text-gray-800">
+                Thiết lập mật khẩu
+              </h3>
             </div>
 
             <div className="bg-orange-50/50 border border-orange-100 rounded-xl p-4 mb-6 flex gap-3 items-start">
               <ShieldCheck className="w-5 h-5 text-orange-600 shrink-0 mt-0.5" />
               <p className="text-xs text-orange-800 font-medium leading-relaxed">
-                Mật khẩu này dùng để xác thực khi <strong>rút tiền</strong> và <strong>giao dịch</strong>. Vui lòng ghi nhớ và không chia sẻ cho người khác!
+                Mật khẩu này dùng để xác thực khi <strong>rút tiền</strong> và{" "}
+                <strong>giao dịch</strong>. Vui lòng ghi nhớ và không chia sẻ
+                cho người khác!
               </p>
             </div>
 

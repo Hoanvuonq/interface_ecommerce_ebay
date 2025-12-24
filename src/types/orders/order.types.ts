@@ -27,7 +27,7 @@ export interface ShopSelectionRequest {
 
 export interface OrderCreateRequest {
     shops: ShopSelectionRequest[];
-    shippingMethod?: 'STANDARD' | 'EXPRESS' | 'ECONOMY' | 'CONKIN';
+    shippingMethod?: 'STANDARD' | 'EXPRESS' | 'ECONOMY' | 'CONKIN' | 'GHN' | 'GHTK' | 'VNPOST' | 'NINJA_VAN' | 'J&T' | 'BEST_EXPRESS' | 'FPT' | 'OTHER';
     coupons?: string[];
     loyaltyPoints?: number;
     paymentMethod: 'COD' | 'VNPAY' | 'MOMO' | 'BANK_TRANSFER' | 'CREDIT_CARD' | 'PAYOS';

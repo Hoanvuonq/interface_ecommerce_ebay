@@ -222,10 +222,10 @@ const WalletPage: React.FC<WalletPageProps> = ({
           />
         )}
 
-        <div className="mt-6 bg-blue-50/50 border border-blue-100 rounded-xl p-4 flex gap-3 items-start text-sm text-blue-800">
-          <FiAlertCircle className="w-5 h-5 shrink-0 mt-0.5 text-blue-600" />
+        <div className="mt-6 bg-orange-50/50 border border-orange-100 rounded-xl p-4 flex gap-3 items-start text-sm text-orange-800">
+          <FiAlertCircle className="w-5 h-5 shrink-0 mt-0.5 text-orange-600" />
           <div className="space-y-1">
-            <p className="font-semibold text-blue-700">Thông tin quan trọng:</p>
+            <p className="font-semibold text-orange-700">Thông tin quan trọng:</p>
             <ul className="list-disc list-inside opacity-90 space-y-0.5">
               <li>
                 <strong>Số dư khả dụng:</strong> Số tiền bạn có thể sử dụng ngay

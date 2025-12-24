@@ -1,5 +1,6 @@
 export interface CreateBankAccountModalProps {
   isOpen: boolean;
+  visible?: boolean;
   onClose: () => void;
   editingId: string | null;
   formData: any;

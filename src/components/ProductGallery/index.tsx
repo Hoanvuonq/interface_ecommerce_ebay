@@ -38,7 +38,7 @@ export const ProductGallery = ({ product, galleryImages }: any) => {
                   "h-20 w-full rounded-lg overflow-hidden border-2 transition-all cursor-pointer",
                   isSelected ? "border-orange-500 scale-95" : "border-gray-200 hover:border-orange-300"
                 )}
-                onClick={() => setActiveImg(img.url)} // Bấm ảnh nhỏ -> Đổi ảnh lớn
+                onClick={() => setActiveImg(img.url)}
               >
                 <img
                   src={img.thumb || img.url}

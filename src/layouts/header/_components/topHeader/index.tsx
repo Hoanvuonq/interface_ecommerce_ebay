@@ -8,7 +8,7 @@ import { ThemeSwitcher } from "@/components/themeSwitcher";
 export const TopHeader = () => {
   return (
     <div className="bg-linear-to-r from-pink-500 via-red-500 to-yellow-500 text-white">
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-8 sm:h-9 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-10 sm:h-9 flex items-center justify-between">
         <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0 ">
           <div className="flex items-center gap-1 sm:gap-2 min-w-0">
             <span className="inline-flex h-2 w-2 rounded-full bg-white/90 animate-pulse" />
@@ -16,7 +16,6 @@ export const TopHeader = () => {
               Freeship 199k • Flash Sale 12h
             </span>
           </div>
-
           <span className="hidden sm:inline text-white/80 text-sm">|</span>
           
           <Link

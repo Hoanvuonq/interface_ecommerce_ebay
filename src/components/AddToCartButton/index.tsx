@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
 import { useCart } from "@/app/products/_hooks/useCart";
-import { CustomButton } from "@/components/button";
 import { requireAuthentication } from "@/utils/cart/cart-auth.utils";
 import { cn } from "@/utils/cn";
 import { Minus, Plus, ShoppingCart } from "lucide-react"; // ✅ Lucide Icons
+import React, { useState } from "react";
 import { toast } from "sonner";
 import { IButtonProps, IInputProps } from "./type";
 

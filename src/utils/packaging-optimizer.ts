@@ -56,7 +56,6 @@ export function optimizePackageDimensions(
 
     products.forEach((product) => {
         for (let i = 0; i < product.quantity; i++) {
-            // Sắp xếp dimensions theo thứ tự tăng dần để dễ tính toán
             const dims = [product.length, product.width, product.height].sort(
                 (a, b) => a - b
             );

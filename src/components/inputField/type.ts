@@ -6,6 +6,7 @@ export interface InputFieldProps {
   rules?: Array<{ required?: boolean; [key: string]: any }>;
   dependencies?: string[];
   maxLength?: number;
+  autoComplete?: string;
   inputMode?: "text" | "numeric" | "decimal" | "tel" | "email" | "url";
   disabled?: boolean;
   itemClassName?: string;

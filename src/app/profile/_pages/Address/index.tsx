@@ -1,9 +1,7 @@
 "use client";
 
-import { ButtonField } from "@/components";
-import { buyerAddressService } from "@/services/buyer/buyer-address.service";
-import { cn } from "@/utils/cn";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import {
   FaBriefcase,
   FaEdit,
@@ -12,9 +10,14 @@ import {
   FaPlus,
   FaTrash,
 } from "react-icons/fa";
-import { toast } from "sonner";
-import { AddressForm } from "../../_components/AddressForm";
+
+import { buyerAddressService } from "@/services/buyer/buyer-address.service";
+import { cn } from "@/utils/cn";
 import { Button } from "@/components/button/button";
+import { ButtonField, SectionLoading } from "@/components";
+
+import { AddressFormModal } from "../../_components/AddressModal";
+import { BuyerAddressResponse } from "@/types/buyer/buyer.types";
 
 interface AddressManagementProps {
   buyerId: string;
@@ -23,11 +26,14 @@ interface AddressManagementProps {
 type ViewMode = "LIST" | "FORM";
 
 export default function AddressManagement({ buyerId }: AddressManagementProps) {
-  const [addresses, setAddresses] = useState<any[]>([]);
+  const [addresses, setAddresses] = useState<BuyerAddressResponse[]>([]);
   const [loading, setLoading] = useState(false);
 
+  // State điều khiển hiển thị
   const [viewMode, setViewMode] = useState<ViewMode>("LIST");
-  const [editingAddress, setEditingAddress] = useState<any | null>(null);
+  const [editingAddress, setEditingAddress] = useState<
+    BuyerAddressResponse | undefined
+  >(undefined);
 
   useEffect(() => {
     if (buyerId) loadAddresses();
@@ -44,24 +50,25 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
       setLoading(false);
     }
   };
+
   const handleCreateNew = () => {
-    setEditingAddress(null);
-    setViewMode("FORM");
+    setEditingAddress(undefined); // Reset data để tạo mới
+    setViewMode("FORM"); // Mở modal
   };
 
-  const handleEdit = (address: any) => {
-    setEditingAddress(address);
-    setViewMode("FORM");
+  const handleEdit = (address: BuyerAddressResponse) => {
+    setEditingAddress(address); // Set data cần sửa
+    setViewMode("FORM"); // Mở modal
   };
 
   const handleBackToList = () => {
-    setEditingAddress(null);
-    setViewMode("LIST");
+    setEditingAddress(undefined);
+    setViewMode("LIST"); // Đóng modal
   };
 
   const handleSaveSuccess = () => {
-    handleBackToList();
-    loadAddresses();
+    handleBackToList(); // Đóng modal
+    loadAddresses(); // Load lại danh sách
   };
 
   const handleDelete = async (addressId: string) => {
@@ -86,19 +93,8 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
     }
   };
 
-  if (viewMode === "FORM") {
-    return (
-      <AddressForm
-        buyerId={buyerId}
-        initialValues={editingAddress}
-        onCancel={handleBackToList}
-        onSuccess={handleSaveSuccess}
-      />
-    );
-  }
-
   return (
-    <div className="h-full w-full animate-fade-in">
+    <div className="h-full w-full animate-fade-in relative">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 pb-6 border-b border-gray-100 gap-4">
         <div>
           <h2 className="text-2xl font-bold text-gray-800">
@@ -115,7 +111,9 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
       </div>
 
       {loading && addresses.length === 0 ? (
-        <div className="py-12 text-center text-gray-400">Đang tải...</div>
+        <div className="py-12 flex justify-center">
+          <SectionLoading />
+        </div>
       ) : addresses.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-16 bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl">
           <div className="p-4 bg-white rounded-full mb-3 shadow-sm">
@@ -125,11 +123,15 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
             Bạn chưa lưu địa chỉ nào
           </p>
           <ButtonField
+            htmlType="submit"
             type="login"
             onClick={handleCreateNew}
-            className="h-10 px-6 rounded-full text-sm w-50"
+            className="h-10 px-6 rounded-full text-sm w-auto "
           >
-            Thêm ngay
+            <span className="flex items-center gap-2">
+              <FaPlus size={16} />
+              Thêm ngay
+            </span>
           </ButtonField>
         </div>
       ) : (
@@ -137,7 +139,7 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
           {addresses.map((addr) => (
             <div
               key={addr.addressId}
-              className="group bg-white border border-gray-200 rounded-2xl py-2 px-6 hover:shadow-md hover:border-orange-200 transition-all duration-300 relative"
+              className="group bg-white border border-gray-200 rounded-2xl py-4 px-6 hover:shadow-md hover:border-orange-200 transition-all duration-300 relative"
             >
               <div className="flex justify-between items-start">
                 <div className="space-y-2">
@@ -145,7 +147,7 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
                     <span className="font-bold text-gray-900 text-lg">
                       {addr.recipientName}
                     </span>
-                    <span className="text-gray-900">|</span>
+                    <span className="text-gray-300">|</span>
                     <span className="text-gray-600 font-medium">
                       {addr.phone}
                     </span>
@@ -160,7 +162,7 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
                           : "bg-gray-50 text-gray-600 border-gray-200"
                       )}
                     >
-                      {renderIcon(addr.type)}
+                      {renderIcon(addr.type || "OTHER")}
                       {addr.type === "HOME"
                         ? "Nhà riêng"
                         : addr.type === "OFFICE"
@@ -180,26 +182,34 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
                 </div>
 
                 <div className="flex items-center gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
-                  <button
+                  <Button
+                    variant="edit"
                     onClick={() => handleEdit(addr)}
-                    className="p-2 cursor-pointer text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                    title="Chỉnh sửa"
+                    icon={<FaEdit size={16} />}
                   >
-                    <FaEdit />
-                  </button>
-                  <button
+                    Chỉnh Sửa
+                  </Button>
+                  <Button
+                    variant="edit"
                     onClick={() => handleDelete(addr.addressId)}
-                    className="p-2 cursor-pointer text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                    title="Xóa"
+                    icon={<FaTrash size={16} />}
                   >
-                    <FaTrash />
-                  </button>
+                    Xóa
+                  </Button>
                 </div>
               </div>
             </div>
           ))}
         </div>
       )}
+
+      <AddressFormModal
+        isOpen={viewMode === "FORM"}
+        onClose={handleBackToList}
+        buyerId={buyerId}
+        initialValues={editingAddress}
+        onSuccess={handleSaveSuccess}
+      />
     </div>
   );
 }

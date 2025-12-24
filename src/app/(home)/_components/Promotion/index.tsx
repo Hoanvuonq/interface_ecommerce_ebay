@@ -23,8 +23,8 @@ export const Promotion: React.FC = () => {
 
   const quickLinksRow = useMemo(
     () => (
-      <div className="max-w-300 mx-auto w-full mt-6">
-        <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-4 lg:gap-8 py-3">
+      <div className="max-w-300 mx-auto w-full mt-2">
+        <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-4 lg:gap-8 py-1">
           {QuickLinks.map((item) => {
             const Icon = item.icon;
             const bgColorClass = item.bgColor;
@@ -65,7 +65,7 @@ export const Promotion: React.FC = () => {
 
   if (error || banners.length === 0) {
     return (
-      <section className="bg-white pt-5 pb-6">
+      <section className="bg-white py-2">
         <div className="max-w-[300 mx-auto px-4 sm:px-6 lg:px-0">
           <div className="w-full rounded-xl overflow-hidden shadow-[0_2px_12px_rgba(0,0,0,0.05)]">
             <img
@@ -86,7 +86,7 @@ export const Promotion: React.FC = () => {
   const sideBanner2 = banners[4] || banners[1] || banners[0];
 
   return (
-    <section className="bg-white pt-5 pb-6">
+    <section className="bg-white py-2">
       <div className="max-w-300 mx-auto px-4 sm:px-6 lg:px-0">
         <div className="hidden lg:grid lg:grid-cols-3 gap-4">
           <div className="col-span-2 relative rounded-xl overflow-hidden shadow-[0_2px_12px_rgba(0,0,0,0.05)] group banner-hover-effect">

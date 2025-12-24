@@ -1,18 +1,17 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   CartBadge,
   MobileMenuButton,
   NotificationDropdown,
   TopHeader,
-  HotKeywords, 
+  HotKeywords, // Đã import nhưng chưa dùng ở code cũ
+  UserAuthDropdown,
 } from "../_components";
-import Image from "next/image";
-import { Search } from "@/components";
+import { Search, MobileMenuDrawer } from "@/components";
 import { useProductSearch } from "@/hooks/useProductSearch";
-import { UserAuthDropdown } from "../_components";
-import { MobileMenuDrawer } from "@/components";
 import { isAuthenticated } from "@/utils/local.storage";
 import {
   searchService,
@@ -34,6 +33,7 @@ export const Header = () => {
     handleSearchSubmit,
   } = useProductSearch();
 
+  // Hàm xử lý khi click vào hot keyword
   const handleHotKeywordSelect = (keyword: string) => {
     handleSearchChange(keyword);
     handleSearchSubmit(keyword);
@@ -42,61 +42,82 @@ export const Header = () => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await searchService.getHot({ limit: 7 });
+        const res = await searchService.getHot({ limit: 5 }); // Limit 5 để vừa đẹp UI
         setHotKeywords(res.suggestions || []);
       } catch (error) {
         console.error("Failed to load hot keywords:", error);
         setHotKeywords([]);
       }
     })();
-  }, [handleSearchSubmit, handleSearchChange]);
+  }, []);
 
   return (
     <header
-      className="sticky top-0 z-50"
+      className="sticky top-0 z-50 transition-all duration-300"
       style={{ boxShadow: "0 1px 6px rgba(0,0,0,0.08)" }}
     >
-      <TopHeader />
-      <div className="backdrop-blur" style={{ backgroundColor: PRIMARY_COLOR }}>
-        <div className="max-w-300 mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20 py-3">
-            <div className="flex items-center gap-4">
-              <Link href="/" className="flex items-center h-16">
-                <Image
-                  src="/icon/final.svg"
-                  alt="CaLaTha Logo"
-                  width={160}
-                  height={60}
-                  className="h-full w-auto object-contain"
-                  style={{ maxHeight: "60px",  }}
-                  priority
-                />
-              </Link>
+      <div className="hidden md:block">
+        <TopHeader />
+      </div>
+
+      <div className="backdrop-blur-md bg-opacity-95" style={{ backgroundColor: PRIMARY_COLOR }}>
+        <div className="container mx-auto px-3 sm:px-4 lg:px-8">
+          <div className="flex flex-col md:flex-row items-center justify-between py-3 md:h-18 h-auto gap-3">
+            <div className="flex items-center justify-between w-full md:w-auto gap-4">
+              <div className="flex items-center gap-3">
+                {/* Mobile Menu Button - Chỉ hiện trên Mobile */}
+                <div className="md:hidden block">
+                  <MobileMenuButton onOpen={() => setIsMenuOpen(true)} />
+                </div>
+
+                {/* Logo */}
+                <Link href="/" className="flex items-center shrink-0">
+                  <Image
+                    src="/icon/final.svg"
+                    alt="CaLaTha Logo"
+                    width={160}
+                    height={60}
+                    className="object-contain w-28 h-auto md:w-40 md:h-12" // Resize logo mobile/desktop
+                    priority
+                  />
+                </Link>
+              </div>
+
+              <div className="flex md:hidden items-center gap-3">
+                <CartBadge />
+                 <UserAuthDropdown isAuthenticated={isLoggedIn} />
+              </div>
             </div>
 
-            <div className="flex-1 max-w-200 mx-8">
-              <Search
-                searchValue={searchValue}
-                searchOptions={searchOptions}
-                onChange={handleSearchChange}
-                onSelect={(_, option: any) => handleSuggestionSelect(option)}
-                onSubmit={handleSearchSubmit}
-              />
+            <div className="flex-1 w-full md:max-w-2xl md:mx-6">
+              <div className="relative z-10">
+                <Search
+                  searchValue={searchValue}
+                  searchOptions={searchOptions}
+                  onChange={handleSearchChange}
+                  onSelect={(_, option: any) => handleSuggestionSelect(option)}
+                  onSubmit={handleSearchSubmit}
+                />
+              </div>
+              
+              {/* <div className="hidden md:block mt-1">
+                 <HotKeywords 
+                    keywords={hotKeywords} 
+                    onKeywordSelect={handleHotKeywordSelect} 
+                 /> 
+              </div> */}
             </div>
-            <div className="flex items-center space-x-4">
-              <MobileMenuButton onOpen={() => setIsMenuOpen(true)} />
+
+            <div className="hidden md:flex items-center space-x-3 lg:space-x-5 shrink-0">
               {isLoggedIn && <NotificationDropdown />}
               <CartBadge />
               <UserAuthDropdown isAuthenticated={isLoggedIn} />
             </div>
           </div>
-          {/* <HotKeywords
-            keywords={hotKeywords}
-            onKeywordSelect={handleHotKeywordSelect}
-          /> */}
         </div>
       </div>
 
+      {/* 3. Mobile Menu Drawer */}
       <MobileMenuDrawer
         isOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}

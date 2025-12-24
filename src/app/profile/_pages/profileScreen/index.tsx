@@ -27,7 +27,7 @@ import {
   FaSave,
   FaSpinner,
   FaUser,
-  FaUserCircle
+  FaUserCircle,
 } from "react-icons/fa";
 import { toast } from "sonner";
 import { menuItems } from "../../_types/menu";
@@ -36,6 +36,7 @@ import BankAccountManagement from "../BankAccount";
 import ChangePasswordFormCompact from "../ChangePassword";
 import InformationEditor from "../Information";
 import WalletPage from "../Wallet";
+import Image from "next/image";
 
 export default function ProfilePage() {
   const [user, setUser] = useState<any>(getStoredUserDetail());
@@ -199,14 +200,13 @@ export default function ProfilePage() {
                 <div className="shrink-0">
                   {isEditing ? (
                     <div className="flex items-center gap-3">
-                      <button
-                        type="button"
+                      <Button
+                        variant="edit"
                         onClick={handleCancelEdit}
                         disabled={saving}
-                        className="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors bg-white border border-gray-200"
                       >
                         Hủy
-                      </button>
+                      </Button>
                       <ButtonField
                         form="profile-form"
                         htmlType="submit"
@@ -222,7 +222,7 @@ export default function ProfilePage() {
                     </div>
                   ) : (
                     <Button
-                      variant="edit" 
+                      variant="edit"
                       onClick={handleToggleEdit}
                       icon={<FaEdit />}
                     >
@@ -305,7 +305,7 @@ export default function ProfilePage() {
       case "wallet":
         return <WalletPage autoCreate={true} type={WalletType.BUYER} />;
       case "bank-account":
-         return <BankAccountManagement accountType={BankAccountType.BUYER} />;
+        return <BankAccountManagement accountType={BankAccountType.BUYER} />;
       case "password":
         return <ChangePasswordFormCompact />;
       default:
@@ -323,9 +323,11 @@ export default function ProfilePage() {
                 <div className="p-5 border-b border-gray-100 flex items-center gap-3 bg-linear-to-b from-orange-50/20 to-white">
                   <div className="w-10 h-10 rounded-full overflow-hidden border border-white ring-1 ring-orange-100 shadow-sm bg-white flex items-center justify-center shrink-0">
                     {user?.image ? (
-                      <img
+                      <Image
                         src={user.image}
                         alt="User"
+                        height={40}
+                        width={40}
                         className="w-full h-full object-cover"
                       />
                     ) : (
@@ -333,10 +335,10 @@ export default function ProfilePage() {
                     )}
                   </div>
                   <div className="overflow-hidden">
-                    <h3 className="font-semibold text-gray-900 truncate text-sm">
+                    <h3 className="font-semibold text-gray-900 truncate text-md">
                       {editorData.fullName || user?.username}
                     </h3>
-                    <p className="text-[10px] text-gray-500 truncate flex items-center gap-1 mt-0.5">
+                    <p className="text-xs text-gray-500 truncate flex items-center gap-1 mt-0.5">
                       <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>{" "}
                       Thành viên
                     </p>

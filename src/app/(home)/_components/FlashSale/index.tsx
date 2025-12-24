@@ -81,7 +81,7 @@ const FlashSaleSection: React.FC = () => {
   if (products.length === 0) return null;
 
   return (
-    <section className="py-8 sm:py-12 bg-linear-to-br from-(--color-gradient-1) via-white to-(--color-gradient-2) relative overflow-hidden">
+    <section className="py-6 bg-linear-to-br from-(--color-gradient-1) via-white to-(--color-gradient-2) relative overflow-hidden">
       <div className="absolute top-0 left-0 w-96 h-96 bg-white/40 rounded-full blur-3xl" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-white/30 rounded-full blur-3xl" />
       <ScrollReveal animation="fadeIn" delay={200}>

@@ -2,7 +2,7 @@
 
 import { cn } from "@/utils/cn";
 import { FC } from "react";
-import { ButtonFieldProps } from "./type"; // Bạn nhớ cập nhật file type này nữa nhé (xem bên dưới)
+import { ButtonFieldProps } from "./type";
 
 export type ButtonType = 'primary' | 'secondary' | 'danger' | 'text' | 'login';
 
