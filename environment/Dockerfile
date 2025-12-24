@@ -57,9 +57,12 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 # Switch to non-root user
 USER nextjs
 
+# Expose port (metadata only, actual port is set by environment variable)
 EXPOSE 3000
 
-ENV PORT=3000
+# PORT will be set by docker-compose environment variable
+# Production: PORT=3000 (default, can omit)
+# Test: PORT=3001 (must specify in docker-compose)
 ENV HOSTNAME="0.0.0.0"
 
 # Use standalone server.js (smaller and faster)

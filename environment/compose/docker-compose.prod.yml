@@ -8,6 +8,10 @@ services:
     restart: unless-stopped
     environment:
       NODE_ENV: production
+      PORT: 3000
+    # Expose port 3000 ra ngoài để truy cập trực tiếp: http://localhost:3000
+    ports:
+      - "3000:3000"
     networks:
       - ebay-network
     healthcheck:
