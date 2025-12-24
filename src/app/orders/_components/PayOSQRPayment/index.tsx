@@ -1,36 +1,20 @@
-/**
- * PayOS QR Payment Component - Display QR code and account info for payment
- * Replaced Ant Design with Tailwind CSS + Lucide Icons
- */
-
 "use client";
-
-import React, { useState, useEffect, useCallback } from "react";
-import {
-  QrCode,
-  Copy,
-  X,
-  RotateCw,
-  CheckCircle2,
-  AlertCircle,
-  ExternalLink,
-} from "lucide-react";
-import { paymentService } from "@/services/payment/payment.service";
-import {
-  PayOSPaymentResponse,
-  PayOSPaymentStatusResponse,
-} from "@/types/payment/payment.types";
-import { isAuthenticated } from "@/utils/local.storage";
-import { SectionLoading, SimpleModal } from "@/components/";
+import React, { useCallback, useEffect, useState } from "react";
+import { SectionLoading, SimpleModal } from "@/components";
 import { formatPrice } from "@/hooks/useFormatPrice";
-
-interface PayOSQRPaymentProps {
-  orderId: string;
-  orderNumber: string;
-  amount: number;
-  onCancelPayment?: () => void;
-  onRefresh?: () => void;
-}
+import { paymentService } from "@/services/payment/payment.service";
+import { PayOSPaymentResponse, PayOSPaymentStatusResponse} from "@/types/payment/payment.types";
+import { isAuthenticated } from "@/utils/local.storage";
+import { PayOSQRPaymentProps } from "./type";
+import {
+  AlertCircle,
+  CheckCircle2,
+  Copy,
+  ExternalLink,
+  QrCode,
+  RotateCw,
+  X,
+} from "lucide-react";
 
 export const PayOSQRPayment: React.FC<PayOSQRPaymentProps> = ({
   orderId,
@@ -43,9 +27,7 @@ export const PayOSQRPayment: React.FC<PayOSQRPaymentProps> = ({
   const [payOSData, setPayOSData] = useState<PayOSPaymentResponse | null>(null);
   const [cancelling, setCancelling] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
-  const [paymentStatus, setPaymentStatus] = useState<
-    "pending" | "paid" | "failed" | "checking"
-  >("pending");
+  const [paymentStatus, setPaymentStatus] = useState<"pending" | "paid" | "failed" | "checking">("pending");
   const [verifying, setVerifying] = useState(false);
 
   const loadPayOSData = async () => {
@@ -54,8 +36,7 @@ export const PayOSQRPayment: React.FC<PayOSQRPaymentProps> = ({
       const data = await paymentService.getPayOSPaymentInfo(orderId);
       setPayOSData(data);
     } catch (error: any) {
-      console.error("Failed to load PayOS payment info:", error);
-      alert("Không thể tải thông tin thanh toán"); // Simple alert replacement
+      alert("Không thể tải thông tin thanh toán");
     } finally {
       setLoading(false);
     }
@@ -85,17 +66,13 @@ export const PayOSQRPayment: React.FC<PayOSQRPaymentProps> = ({
         setPaymentStatus("pending");
       }
     } catch (error: any) {
-      console.error("Failed to verify payment:", error);
       if (error?.response?.status === 401) {
         alert("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
         setTimeout(() => {
           window.location.href = "/login";
         }, 2000);
       } else {
-        alert(
-          error?.response?.data?.message ||
-            "Không thể xác nhận thanh toán. Vui lòng thử lại sau."
-        );
+        alert(error?.response?.data?.message || "Không thể xác nhận thanh toán. Vui lòng thử lại sau.");
       }
       setPaymentStatus("pending");
     } finally {
@@ -145,18 +122,15 @@ export const PayOSQRPayment: React.FC<PayOSQRPaymentProps> = ({
     }
   };
 
-  if (loading) {
-    return <SectionLoading message="Đang tải thông tin thanh toán..." />;
-  }
+  if (loading) { return <SectionLoading message="Đang tải thông tin thanh toán..." />}
 
   if (paymentStatus === "paid") {
     return (
-      <div className="rounded-2xl border-0 shadow-sm bg-gradient-to-r from-green-50 to-emerald-50 p-8">
+      <div className="rounded-2xl border-0 shadow-sm bg-linear-to-r from-green-50 to-emerald-50 p-8">
         <div className="flex flex-col items-center text-center space-y-6">
           <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm">
             <CheckCircle2 size={40} className="text-green-500" />
           </div>
-
           <div className="space-y-2">
             <h3 className="text-xl font-bold text-green-700">
               Thanh toán thành công!
@@ -180,7 +154,7 @@ export const PayOSQRPayment: React.FC<PayOSQRPaymentProps> = ({
           <div className="w-full space-y-3">
             <button
               onClick={onRefresh}
-              className="w-full py-3 px-4 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold rounded-xl shadow-sm transition-all active:scale-[0.98]"
+              className="w-full py-3 px-4 bg-linear-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold rounded-xl shadow-sm transition-all active:scale-[0.98]"
             >
               Xem chi tiết đơn hàng
             </button>
@@ -196,10 +170,9 @@ export const PayOSQRPayment: React.FC<PayOSQRPaymentProps> = ({
     );
   }
 
-  // --- Checking State ---
   if (paymentStatus === "checking" || verifying) {
     return (
-      <div className="rounded-2xl border-0 shadow-sm bg-gradient-to-r from-yellow-50 to-orange-50 p-8">
+      <div className="rounded-2xl border-0 shadow-sm bg-linear-to-r from-yellow-50 to-orange-50 p-8">
         <div className="flex flex-col items-center justify-center text-center py-8">
           <RotateCw size={40} className="text-orange-500 mb-6 animate-spin" />
           <h4 className="text-lg font-semibold text-gray-800 mb-2">
@@ -213,10 +186,9 @@ export const PayOSQRPayment: React.FC<PayOSQRPaymentProps> = ({
     );
   }
 
-  // --- Failed State ---
   if (paymentStatus === "failed") {
     return (
-      <div className="rounded-2xl border-0 shadow-sm bg-gradient-to-r from-red-50 to-orange-50 p-8">
+      <div className="rounded-2xl border-0 shadow-sm bg-linear-to-r from-red-50 to-orange-50 p-8">
         <div className="flex flex-col items-center text-center space-y-6">
           <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm">
             <X size={40} className="text-red-500" />
@@ -250,10 +222,9 @@ export const PayOSQRPayment: React.FC<PayOSQRPaymentProps> = ({
     );
   }
 
-  // --- Error Loading Data State ---
   if (!payOSData) {
     return (
-      <div className="rounded-2xl border-0 shadow-sm bg-gradient-to-r from-red-50 to-orange-50 p-8">
+      <div className="rounded-2xl border-0 shadow-sm bg-linear-to-r from-red-50 to-orange-50 p-8">
         <div className="flex flex-col items-center justify-center text-center py-8">
           <AlertCircle size={40} className="text-red-600 mb-4" />
           <span className="text-gray-700 font-medium mb-6">
@@ -270,12 +241,10 @@ export const PayOSQRPayment: React.FC<PayOSQRPaymentProps> = ({
     );
   }
 
-  // --- Main Payment View ---
   return (
     <>
-      <div className="rounded-2xl border border-blue-100 shadow-sm bg-gradient-to-br from-blue-50 to-indigo-50 p-6 sm:p-8">
+      <div className="rounded-2xl border border-blue-100 shadow-sm bg-linear-to-br from-blue-50 to-indigo-50 p-6 sm:p-8">
         <div className="space-y-8 w-full">
-          {/* Header */}
           <div className="flex items-center gap-3 border-b border-blue-200/50 pb-4">
             <div className="p-2 bg-blue-100 rounded-lg text-blue-600">
               <QrCode size={24} />
@@ -285,7 +254,6 @@ export const PayOSQRPayment: React.FC<PayOSQRPaymentProps> = ({
             </h3>
           </div>
 
-          {/* Amount */}
           <div className="bg-white rounded-xl p-6 text-center border border-blue-100 shadow-sm">
             <span className="text-gray-500 text-sm uppercase tracking-wide font-medium block mb-2">
               Số tiền cần thanh toán
@@ -295,7 +263,6 @@ export const PayOSQRPayment: React.FC<PayOSQRPaymentProps> = ({
             </div>
           </div>
 
-          {/* QR Code */}
           {payOSData.qrCode && (
             <div className="bg-white rounded-xl p-6 text-center border border-blue-100 shadow-sm flex flex-col items-center">
               <span className="text-gray-700 font-medium block mb-4">
@@ -320,7 +287,6 @@ export const PayOSQRPayment: React.FC<PayOSQRPaymentProps> = ({
             </div>
           )}
 
-          {/* Account Info */}
           <div className="bg-white rounded-xl overflow-hidden border border-blue-100 shadow-sm">
             <div className="bg-gray-50/50 px-4 py-3 border-b border-gray-100">
               <span className="text-sm font-bold text-gray-800">
@@ -373,19 +339,17 @@ export const PayOSQRPayment: React.FC<PayOSQRPaymentProps> = ({
             </div>
           </div>
 
-          {/* Payment Link Button */}
           {payOSData.paymentLink && (
             <a
               href={payOSData.paymentLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 w-full py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl shadow-lg shadow-blue-200 transition-all active:scale-[0.98]"
+              className="flex items-center justify-center gap-2 w-full py-3.5 bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl shadow-lg shadow-blue-200 transition-all active:scale-[0.98]"
             >
               Mở trang thanh toán PayOS <ExternalLink size={18} />
             </a>
           )}
 
-          {/* Actions */}
           <div className="space-y-3">
             <button
               onClick={checkPaymentStatus}

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { request } from "@/utils/axios.customize";
-import type { ApiResponse } from "@/types/api.types";
+import type { ApiResponse } from "@/api/_types/api.types";
 
 // ==================== API ENDPOINTS ====================
 

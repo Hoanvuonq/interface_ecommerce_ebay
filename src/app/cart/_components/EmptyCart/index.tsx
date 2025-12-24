@@ -43,7 +43,7 @@ export const EmptyCart: React.FC = () => {
         <div className="flex flex-col sm:flex-row justify-center gap-4 mb-10 md:mb-14 px-6 md:px-10">
           <Link href="/products" className="w-full sm:w-auto group">
             <Button
-              type="dark"
+              variant="dark"
               className="w-full sm:px-10"
               icon={<ShoppingBag />}
               rightIcon={<ArrowRight className="group-hover:translate-x-1" />}
@@ -54,7 +54,7 @@ export const EmptyCart: React.FC = () => {
 
           <Link href="/" className="w-full sm:w-auto">
             <Button
-              type="outline"
+              variant="outline"
               className="w-full sm:px-10"
               icon={<Home />}
             >

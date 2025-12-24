@@ -1,14 +1,11 @@
 /**
  * Wallet Config Service - API calls cho admin quản lý cấu hình rút tiền
  */
-
 import { request } from '@/utils/axios.customize';
-import type {
-    WalletWithdrawalConfigRequest,
-    WalletWithdrawalConfigResponse,
-} from '../types/walletConfig.types';
-import type { ApiResponse } from '@/types/api.types';
-import type { PageDto } from '../types/wallet.types';
+
+import { WalletWithdrawalConfigResponse,WalletWithdrawalConfigRequest } from '@/types/wallet/walletConfig.types';
+import type { ApiResponse } from '@/api/_types/api.types';
+import type { PageDto } from '@/types/wallet/wallet.types';
 
 const WALLET_CONFIG_API_BASE = '/v1/admin/wallets/withdrawal-configs';
 
