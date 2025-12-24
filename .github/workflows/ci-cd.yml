@@ -444,8 +444,9 @@ jobs:
               }
               
               # Start test container (không ảnh hưởng production)
+              # --force-recreate: Đảm bảo container luôn được recreate với image mới nhất
               echo "🚀 Starting test container..."
-              docker compose -f compose/docker-compose.test.yml up -d || {
+              docker compose -f compose/docker-compose.test.yml up -d --force-recreate || {
                 echo "⚠️ Warning: Failed to start test container, continuing..."
                 docker compose -f compose/docker-compose.test.yml logs || true
               }
