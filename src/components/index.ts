@@ -22,5 +22,5 @@ export * from "./headerModal";
 export * from "./DataTable";
 export * from "./simpleModal";
 export * from "./checkout";
-export * from "./addToCartButton";
+export * from "./AddToCartButton";
 export * from "./collapseItem";
