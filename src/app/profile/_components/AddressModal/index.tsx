@@ -45,6 +45,7 @@ export const AddressFormModal = ({
     wardName: "",
     type: "HOME",
     country: "Vietnam",
+    isDefault: false,
   });
 
   useEffect(() => {
@@ -96,6 +97,7 @@ export const AddressFormModal = ({
         wardName: initialValues.ward || "",
         type: initialValues.type || "HOME",
         country: "Vietnam",
+        isDefault: initialValues.isDefault || false,
       });
     } else {
       setFormData({
@@ -108,6 +110,7 @@ export const AddressFormModal = ({
         wardName: "",
         type: "HOME",
         country: "Vietnam",
+        isDefault: false,
       });
       setWards([]);
     }
@@ -147,6 +150,7 @@ export const AddressFormModal = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (
       !formData.recipientName ||
       !formData.phone ||
@@ -174,6 +178,7 @@ export const AddressFormModal = ({
         country: "Vietnam",
         type: formData.type,
         district: "",
+        isDefault: formData.isDefault,
         ...(oldAddress.old_ward_name && {
           districtNameOld: oldAddress.old_district_name,
           provinceNameOld: oldAddress.old_province_name,
@@ -368,6 +373,18 @@ export const AddressFormModal = ({
               </label>
             ))}
           </div>
+        </div>
+        <div className="flex items-center gap-3 py-2">
+          <label className="text-sm font-semibold text-gray-700" htmlFor="isDefault-toggle">
+            Đặt làm địa chỉ mặc định
+          </label>
+          <input
+            id="isDefault-toggle"
+            type="checkbox"
+            checked={formData.isDefault}
+            onChange={e => setFormData(prev => ({ ...prev, isDefault: e.target.checked }))}
+            className="w-5 h-5 accent-orange-500 border-gray-300 rounded focus:ring-orange-200"
+          />
         </div>
       </form>
     </PortalModal>

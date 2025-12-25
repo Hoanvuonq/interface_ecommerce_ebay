@@ -65,19 +65,17 @@ export const Header = () => {
           <div className="flex flex-col md:flex-row items-center justify-between py-3 md:h-18 h-auto gap-3">
             <div className="flex items-center justify-between w-full md:w-auto gap-4">
               <div className="flex items-center gap-3">
-                {/* Mobile Menu Button - Chỉ hiện trên Mobile */}
                 <div className="md:hidden block">
                   <MobileMenuButton onOpen={() => setIsMenuOpen(true)} />
                 </div>
 
-                {/* Logo */}
                 <Link href="/" className="flex items-center shrink-0">
                   <Image
                     src="/icon/final.svg"
                     alt="CaLaTha Logo"
                     width={160}
                     height={60}
-                    className="object-contain w-28 h-auto md:w-40 md:h-12" // Resize logo mobile/desktop
+                    className="object-contain w-28 h-auto md:w-40 md:h-12" 
                     priority
                   />
                 </Link>
@@ -117,7 +115,6 @@ export const Header = () => {
         </div>
       </div>
 
-      {/* 3. Mobile Menu Drawer */}
       <MobileMenuDrawer
         isOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}

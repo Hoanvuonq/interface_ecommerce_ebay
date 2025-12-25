@@ -15,8 +15,18 @@ export const useOrders = () => {
         try {
             setLoading(true);
             setError(null);
-            const data = await orderService.getBuyerOrders();
-            setOrders(data);
+            const response: any = await orderService.getBuyerOrders();
+            let ordersArray: OrderResponse[] = [];
+            if (Array.isArray(response)) {
+                ordersArray = response;
+            } else if (response?.data?.content) {
+                ordersArray = response.data.content;
+            } else if (response?.content) {
+                ordersArray = response.content;
+            } else if (response) {
+                ordersArray = response;
+            }
+            setOrders(ordersArray);
         } catch (err: any) {
             const errorMessage = err?.response?.data?.message || 'Không thể tải danh sách đơn hàng';
             setError(errorMessage);

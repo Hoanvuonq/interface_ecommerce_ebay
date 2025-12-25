@@ -8,13 +8,13 @@ import {
     ChevronDown,
     Ticket,
     X,
-    XCircle
+    XCircle,
+    Loader2
 } from 'lucide-react';
 import React, { useState } from 'react';
 import { toast } from 'sonner';
 import { VoucherInputProps } from './type';
 import { VoucherModal } from '../voucherModal';
-
 
 export const VoucherComponents: React.FC<VoucherInputProps> = ({
     shopId,
@@ -28,170 +28,131 @@ export const VoucherComponents: React.FC<VoucherInputProps> = ({
     context,
     forcePlatform = false,
 }) => {
-    // --- GIỮ NGUYÊN LOGIC STATES ---
     const [voucherCode, setVoucherCode] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
-    const [pendingVoucher, setPendingVoucher] = useState<{
-        order?: { code: string; discount: number; description?: string };
-        shipping?: { code: string; discount: number; description?: string };
-    } | null>(null);
 
-    
-    const handleApply = async () => {
-        if (!voucherCode.trim()) {
-            setError('Vui lòng nhập mã voucher');
-            return;
-        }
+    // ✅ Lấy voucher Order và Shipping từ appliedVouchers (được sync từ preview API)
+    const activeOrderVoucher = appliedVouchers?.order || (appliedVoucher ? { code: appliedVoucher.code, discount: appliedVoucher.discount } : null);
+    const activeShippingVoucher = appliedVouchers?.shipping;
+    const hasAnyVoucher = !!activeOrderVoucher || !!activeShippingVoucher;
+
+    const handleApplyInput = async () => {
+        if (!voucherCode.trim()) { setError('Vui lòng nhập mã voucher'); return; }
         setError('');
         setLoading(true);
         try {
             if (onApplyVoucher && shopId) {
                 const success = await onApplyVoucher(shopId, voucherCode);
-                if (success) {
-                    toast.success('Áp dụng voucher thành công!');
-                    setVoucherCode('');
-                } else {
-                    setError('Mã voucher không hợp lệ hoặc đã hết hạn');
-                }
-            } else {
-                toast.warning('Tính năng đang phát triển');
-            }
-        } catch (err) {
-            setError('Không thể áp dụng voucher');
-        } finally {
-            setLoading(false);
-        }
+                if (success) { toast.success('Áp dụng voucher thành công!'); setVoucherCode(''); }
+                else { setError('Mã voucher không hợp lệ'); }
+            } else { toast.warning('Vui lòng dùng nút Chọn Voucher'); }
+        } catch (err) { setError('Không thể áp dụng voucher'); } finally { setLoading(false); }
     };
 
-    const handleRemove = async () => {
-        setVoucherCode('');
-        setError('');
-        setPendingVoucher(null);
+    const handleRemove = async (e?: React.MouseEvent) => {
+        if (e) { e.stopPropagation(); e.preventDefault(); }
         if (onSelectVoucher) {
-            try {
-                await onSelectVoucher({});
-            } catch (err) {
-                console.error('Failed to clear voucher', err);
-            }
-        } else {
-            toast.info('Đã xóa voucher');
+            await onSelectVoucher({});
+            toast.info('Đã gỡ bỏ voucher');
         }
     };
 
-    // --- COMPACT MODE LOGIC (GIỮ NGUYÊN LOGIC MAPPING) ---
+    const mapForModal = (v: any) => v ? {
+        id: v.code,
+        code: v.code,
+        description: v.description || '',
+        discountAmount: v.discount || v.discountAmount || 0,
+        discountType: 'FIXED' as const,
+    } : undefined;
+
     if (compact) {
-        const effectiveAppliedVoucher = pendingVoucher?.order
-            ? { code: pendingVoucher.order.code, discount: pendingVoucher.order.discount, description: pendingVoucher.order.description }
-            : appliedVoucher;
-
-        const effectiveAppliedVouchers = pendingVoucher
-            ? { order: pendingVoucher.order, shipping: pendingVoucher.shipping }
-            : appliedVouchers;
-
-        const appliedVouchersOption = effectiveAppliedVouchers ? {
-            order: effectiveAppliedVouchers.order ? {
-                id: effectiveAppliedVouchers.order.code,
-                code: effectiveAppliedVouchers.order.code,
-                description: effectiveAppliedVouchers.order.description,
-                discountAmount: effectiveAppliedVouchers.order.discount,
-                discountType: 'FIXED' as const,
-            } : undefined,
-            shipping: effectiveAppliedVouchers.shipping ? {
-                id: effectiveAppliedVouchers.shipping.code,
-                code: effectiveAppliedVouchers.shipping.code,
-                description: effectiveAppliedVouchers.shipping.description,
-                discountAmount: effectiveAppliedVouchers.shipping.discount,
-                discountType: 'FIXED' as const,
-            } : undefined,
-        } : undefined;
-
-        const appliedVoucherOption = effectiveAppliedVoucher ? {
-            id: effectiveAppliedVoucher.code,
-            code: effectiveAppliedVoucher.code,
-            description: effectiveAppliedVoucher.description,
-            discountAmount: effectiveAppliedVoucher.discount,
-            discountType: 'FIXED' as const,
-        } : undefined;
-
-        const hasAppliedVouchers = effectiveAppliedVouchers && (effectiveAppliedVouchers.order || effectiveAppliedVouchers.shipping);
-        const hasAppliedVoucher = !!effectiveAppliedVoucher;
-
         return (
             <>
-                <div className={className}>
-                    {(hasAppliedVouchers || hasAppliedVoucher) ? (
+                <div className={cn("w-full", className)}>
+                    {hasAnyVoucher ? (
                         <div
-                            className="bg-green-50 rounded-xl p-3 border border-green-200 cursor-pointer hover:bg-green-100 transition-all shadow-sm"
+                            className="bg-emerald-50 rounded-2xl p-4 border border-emerald-200 cursor-pointer hover:bg-emerald-100 transition-all shadow-sm group relative overflow-hidden"
                             onClick={() => setModalOpen(true)}
                         >
-                            <div className="space-y-2">
-                                {effectiveAppliedVouchers?.order && (
-                                    <div className="flex items-center justify-between gap-2">
-                                        <div className="flex items-center gap-1.5 min-w-0">
-                                            <CheckCircle2 className="text-green-600 w-3.5 h-3.5 shrink-0" />
-                                            <span className="text-gray-900 font-bold text-[11px] sm:text-xs truncate uppercase">
-                                                {effectiveAppliedVouchers.order.code}
-                                            </span>
-                                        </div>
-                                        <span className="text-red-600 font-black text-[11px] sm:text-xs whitespace-nowrap">
-                                            -{formatPrice(effectiveAppliedVouchers.order.discount)}
-                                        </span>
-                                    </div>
-                                )}
-                                {effectiveAppliedVouchers?.shipping && (
-                                    <div className="flex items-center justify-between gap-2">
-                                        <div className="flex items-center gap-1.5 min-w-0">
-                                            <CheckCircle2 className="text-green-600 w-3.5 h-3.5 shrink-0" />
-                                            <span className="text-gray-900 font-bold text-[11px] sm:text-xs truncate uppercase">
-                                                {effectiveAppliedVouchers.shipping.code}
-                                            </span>
-                                        </div>
-                                        <span className="text-red-600 font-black text-[11px] sm:text-xs whitespace-nowrap">
-                                            -{formatPrice(effectiveAppliedVouchers.shipping.discount)}
-                                        </span>
-                                    </div>
-                                )}
-                                {effectiveAppliedVoucher && !effectiveAppliedVouchers && (
-                                    <div className="flex items-center justify-between gap-2">
-                                        <div className="flex items-center gap-1.5 min-w-0">
-                                            <CheckCircle2 className="text-green-600 w-3.5 h-3.5 shrink-0" />
-                                            <span className="text-gray-900 font-bold text-[11px] sm:text-xs truncate uppercase">
-                                                {effectiveAppliedVoucher.code}
-                                            </span>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <span className="text-red-600 font-black text-[11px] sm:text-xs whitespace-nowrap">
-                                                -{formatPrice(effectiveAppliedVoucher.discount)}
-                                            </span>
-                                            <button
-                                                onClick={async (e) => {
-                                                    e.stopPropagation();
-                                                    await handleRemove();
-                                                }}
-                                                className="p-1 hover:bg-red-100 rounded-full text-red-500 transition-colors"
-                                            >
-                                                <XCircle size={14} />
-                                            </button>
-                                        </div>
-                                    </div>
-                                )}
+                            {/* Icon vé mờ làm nền cho đẹp */}
+                            <div className="absolute -right-2 -top-2 opacity-10 group-hover:rotate-12 transition-transform">
+                                <Ticket size={48} className="text-emerald-600" />
                             </div>
-                            <div className="flex items-center justify-center mt-2 pt-2 border-t border-green-200/50">
-                                <ChevronDown className="text-green-400 w-4 h-4 animate-bounce" />
+
+                            <div className="relative z-10 space-y-2.5">
+                                <div className="flex items-center justify-between border-b border-emerald-200/50 pb-1.5">
+                                    <p className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">
+                                        Voucher đang áp dụng
+                                    </p>
+                                    <div className="bg-emerald-500 text-white text-[9px] px-2 py-0.5 rounded-full font-black uppercase">
+                                        Tốt nhất
+                                    </div>
+                                </div>
+                                
+                                {/* Hiển thị chi tiết Voucher Giảm giá đơn hàng */}
+                                {activeOrderVoucher && (
+                                    <div className="flex items-center justify-between bg-white/80 p-2.5 rounded-xl border border-emerald-100 shadow-xs">
+                                        <div className="flex items-center gap-2 min-w-0">
+                                            <div className="bg-orange-100 p-1.5 rounded-lg">
+                                                <Ticket className="text-orange-500 w-3.5 h-3.5" />
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <span className="text-slate-400 text-[9px] font-bold uppercase leading-none mb-1">Giảm giá</span>
+                                                <span className="text-slate-900 font-black text-xs truncate uppercase tracking-tighter">
+                                                    {activeOrderVoucher.code}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="text-right">
+                                            <span className="text-red-600 font-black text-sm italic">
+                                                -{formatPrice(activeOrderVoucher.discount || 0)}
+                                            </span>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Hiển thị chi tiết Voucher Miễn phí vận chuyển */}
+                                {activeShippingVoucher && (
+                                    <div className="flex items-center justify-between bg-white/80 p-2.5 rounded-xl border border-emerald-100 shadow-xs">
+                                        <div className="flex items-center gap-2 min-w-0">
+                                            <div className="bg-blue-100 p-1.5 rounded-lg">
+                                                <Ticket className="text-blue-500 w-3.5 h-3.5" />
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <span className="text-slate-400 text-[9px] font-bold uppercase leading-none mb-1">Vận chuyển</span>
+                                                <span className="text-slate-900 font-black text-xs truncate uppercase tracking-tighter">
+                                                    {activeShippingVoucher.code}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="text-right">
+                                            <span className="text-red-600 font-black text-sm italic">
+                                                -{formatPrice(activeShippingVoucher.discount || 0)}
+                                            </span>
+                                        </div>
+                                    </div>
+                                )}
+                                
+                                <div className="flex items-center justify-center pt-1">
+                                    <span className="text-[9px] font-bold text-emerald-500 uppercase tracking-widest group-hover:underline flex items-center gap-1">
+                                        <ChevronDown size={10} /> Chạm để thay đổi
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     ) : (
-                        <button
-                            onClick={() => setModalOpen(true)}
-                            className="w-full cursor-pointer flex items-center justify-between px-4 py-3 bg-blue-50/50 border border-dashed border-blue-300 rounded-xl text-blue-600 hover:bg-blue-100/50 hover:border-blue-400 transition-all group active:scale-[0.98]"
+                        <button 
+                            type="button" 
+                            onClick={() => setModalOpen(true)} 
+                            className="w-full flex items-center justify-between px-5 py-4 bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl text-slate-500 hover:border-orange-400 hover:text-orange-600 transition-all group active:scale-[0.98]"
                         >
-                            <div className="flex items-center gap-2 font-bold text-sm">
-                                <Ticket className="w-4 h-4 group-hover:rotate-12 transition-transform" />
-                                <span>Chọn voucher</span>
+                            <div className="flex items-center gap-3 font-black text-xs uppercase tracking-widest">
+                                <Ticket className="w-5 h-5 text-orange-500 group-hover:rotate-12 transition-transform" />
+                                <span>{shopName ? `Voucher ${shopName}` : 'Chọn mã giảm giá'}</span>
                             </div>
-                            <ChevronDown className="w-4 h-4 text-blue-400 group-hover:translate-y-0.5 transition-transform" />
+                            <ChevronDown size={16} className="group-hover:translate-y-0.5 transition-transform" />
                         </button>
                     )}
                 </div>
@@ -199,207 +160,54 @@ export const VoucherComponents: React.FC<VoucherInputProps> = ({
                 <VoucherModal
                     open={modalOpen}
                     onClose={() => setModalOpen(false)}
-                    onConfirm={async (selectedVouchers) => {
-                        if (!selectedVouchers) {
-                            setPendingVoucher(null);
-                            setModalOpen(false);
-                            if (onSelectVoucher) await onSelectVoucher({});
-                            return;
-                        }
-                        const pendingData: any = {};
-                        if (selectedVouchers.order) {
-                            pendingData.order = {
-                                code: selectedVouchers.order.code,
-                                discount: selectedVouchers.order.discountAmount || 0,
-                                description: selectedVouchers.order.description,
-                            };
-                        }
-                        if (selectedVouchers.shipping) {
-                            pendingData.shipping = {
-                                code: selectedVouchers.shipping.code,
-                                discount: selectedVouchers.shipping.discountAmount || 0,
-                                description: selectedVouchers.shipping.description,
-                            };
-                        }
-                        setPendingVoucher(pendingData);
+                    onConfirm={async (selected) => {
                         setModalOpen(false);
-
-                        if (onSelectVoucher) {
-                            const success = await onSelectVoucher(selectedVouchers);
-                            if (success) { toast.success('Áp dụng voucher thành công!'); setPendingVoucher(null); }
-                            else { setPendingVoucher(null); toast.error('Không thể áp dụng voucher'); }
-                        } else if (selectedVouchers.order && onApplyVoucher && shopId) {
-                            const success = await onApplyVoucher(shopId, selectedVouchers.order.code);
-                            if (success) { toast.success('Áp dụng voucher thành công!'); setPendingVoucher(null); }
-                            else { setPendingVoucher(null); toast.error('Không thể áp dụng voucher'); }
-                        }
+                        if (onSelectVoucher) await onSelectVoucher(selected || {});
                     }}
-                     onFetchVouchers={async () => {
+                    onFetchVouchers={async () => {
+                        const fetchParams: any = {
+                            ...context,
+                            totalAmount: context?.totalAmount || 0,
+                            shippingFee: context?.shippingFee || 0,
+                        };
                         if (!forcePlatform && shopId) {
-                            if (context && context.totalAmount !== undefined) {
-                                return await voucherService.getShopVouchersWithContext({
-                                    shopId,
-                                    totalAmount: context.totalAmount,
-                                    shopIds: context.shopIds,
-                                    productIds: context.productIds,
-                                    shippingFee: context.shippingFee,
-                                    shippingMethod: context.shippingMethod,
-                                    shippingProvince: context.shippingProvince,
-                                    shippingDistrict: context.shippingDistrict,
-                                    shippingWard: context.shippingWard,
-                                    failedVoucherCodes: context.failedVoucherCodes,
-                                    preferences: context.preferences,
-                                });
-                            } else {
-                                return await voucherService.getShopVouchersForBuyer(shopId);
-                            }
-                        } else {
-                            if (context && context.totalAmount !== undefined) {
-                                return await voucherService.getPlatformVouchersWithContext({
-                                    totalAmount: context.totalAmount,
-                                    shopIds: context.shopIds,
-                                    productIds: context.productIds,
-                                    shippingFee: context.shippingFee,
-                                    shippingMethod: context.shippingMethod,
-                                    shippingProvince: context.shippingProvince,
-                                    shippingDistrict: context.shippingDistrict,
-                                    shippingWard: context.shippingWard,
-                                    failedVoucherCodes: context.failedVoucherCodes,
-                                    preferences: context.preferences,
-                                });
-                            } else {
-                                return await voucherService.getPlatformVouchers();
-                            }
+                            fetchParams.shopId = shopId;
+                            return await voucherService.getShopVouchersWithContext(fetchParams);
                         }
+                        return await voucherService.getPlatformVouchersWithContext(fetchParams);
                     }}
-                    appliedVouchers={appliedVouchersOption}
-                    appliedVoucher={appliedVoucherOption}
-                    title={shopName ? `${shopName} Voucher` : 'Chọn Voucher'}
+                    appliedVouchers={{ 
+                        order: mapForModal(activeOrderVoucher), 
+                        shipping: mapForModal(activeShippingVoucher) 
+                    }}
+                    title={shopName ? `${shopName} Voucher` : "Voucher của bạn"}
                     shopName={shopName}
                     isShopVoucher={!!shopId}
                 />
             </>
         );
     }
-    return (
-        <div className={cn("space-y-3", className)}>
-            {appliedVoucher ? (
-                <div className="bg-green-50 rounded-xl p-3 border border-green-200 shadow-sm animate-in fade-in slide-in-from-top-1">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3 min-w-0">
-                            <div className="bg-green-100 p-2 rounded-lg text-green-600 shrink-0">
-                                <CheckCircle2 size={18} />
-                            </div>
-                            <div className="min-w-0">
-                                <span className="text-gray-900 font-black text-sm block truncate uppercase tracking-tight">
-                                    {appliedVoucher.code}
-                                </span>
-                                <span className="text-gray-500 text-[11px] font-medium">
-                                    Đã tiết kiệm {formatPrice(appliedVoucher.discount)}
-                                </span>
-                            </div>
-                        </div>
-                        <button
-                            onClick={handleRemove}
-                            className="p-2 hover:bg-red-50 text-red-400 hover:text-red-600 transition-all rounded-lg"
-                        >
-                            <X size={18} />
-                        </button>
-                    </div>
-                </div>
-            ) : (
-                <button
-                    onClick={() => setModalOpen(true)}
-                    className="flex items-center gap-2 text-sm text-blue-600 font-bold hover:text-blue-700 transition-colors active:opacity-70"
-                >
-                    <Ticket className="w-4 h-4" />
-                    <span>{shopName ? 'Chọn Voucher Shop' : 'Chọn hoặc nhập mã giảm giá'}</span>
-                </button>
-            )}
 
-            <VoucherModal
-                open={modalOpen}
-                onClose={() => setModalOpen(false)}
-                onConfirm={async (selectedVouchers) => {
-                    if (!selectedVouchers) {
-                        if (onSelectVoucher) await onSelectVoucher({});
-                        setModalOpen(false);
-                        return;
-                    }
-                    if (onSelectVoucher) {
-                        const success = await onSelectVoucher(selectedVouchers);
-                        if (success) toast.success('Áp dụng voucher thành công!');
-                    } else if (selectedVouchers.order && onApplyVoucher && shopId) {
-                        const success = await onApplyVoucher(shopId, selectedVouchers.order.code);
-                        if (success) toast.success('Áp dụng voucher thành công!');
-                    }
-                    setModalOpen(false);
-                }}
-               onFetchVouchers={async () => {
-                    if (shopId) {
-                        if (context && context.totalAmount !== undefined) {
-                            return await voucherService.getShopVouchersWithContext({
-                                shopId,
-                                totalAmount: context.totalAmount,
-                                shopIds: context.shopIds,
-                                productIds: context.productIds,
-                                shippingFee: context.shippingFee,
-                                shippingMethod: context.shippingMethod,
-                                shippingProvince: context.shippingProvince,
-                                shippingDistrict: context.shippingDistrict,
-                                shippingWard: context.shippingWard,
-                                failedVoucherCodes: context.failedVoucherCodes,
-                                preferences: context.preferences,
-                            });
-                        } else {
-                            return await voucherService.getShopVouchersForBuyer(shopId);
-                        }
-                    } else {
-                        if (context && context.totalAmount !== undefined) {
-                            return await voucherService.getPlatformVouchersWithContext({
-                                totalAmount: context.totalAmount,
-                                shopIds: context.shopIds,
-                                productIds: context.productIds,
-                                shippingFee: context.shippingFee,
-                                shippingMethod: context.shippingMethod,
-                                shippingProvince: context.shippingProvince,
-                                shippingDistrict: context.shippingDistrict,
-                                shippingWard: context.shippingWard,
-                                failedVoucherCodes: context.failedVoucherCodes,
-                                preferences: context.preferences,
-                            });
-                        } else {
-                            return await voucherService.getPlatformVouchers();
-                        }
-                    }
-                }}
-                appliedVouchers={appliedVouchers ? {
-                    order: appliedVouchers.order ? {
-                        id: appliedVouchers.order.code,
-                        code: appliedVouchers.order.code,
-                        description: appliedVouchers.order.description,
-                        discountAmount: appliedVouchers.order.discount,
-                        discountType: 'FIXED' as const,
-                    } : undefined,
-                    shipping: appliedVouchers.shipping ? {
-                        id: appliedVouchers.shipping.code,
-                        code: appliedVouchers.shipping.code,
-                        description: appliedVouchers.shipping.description,
-                        discountAmount: appliedVouchers.shipping.discount,
-                        discountType: 'FIXED' as const,
-                    } : undefined,
-                } : undefined}
-                appliedVoucher={appliedVoucher ? {
-                    id: appliedVoucher.code,
-                    code: appliedVoucher.code,
-                    description: appliedVoucher.description,
-                    discountAmount: appliedVoucher.discount,
-                    discountType: 'FIXED' as const,
-                } : undefined}
-                title={shopName ? `${shopName} Voucher` : 'Chọn voucher platform'}
-                shopName={shopName}
-                isShopVoucher={!!shopId}
-            />
+    return (
+        <div className={cn("space-y-4", className)}>
+            <div className="flex gap-2">
+                <input
+                    type="text"
+                    placeholder="Nhập mã voucher..."
+                    className="flex-1 px-4 py-3 border border-slate-200 rounded-xl font-bold text-sm uppercase focus:border-orange-500 outline-none transition-all"
+                    value={voucherCode}
+                    onChange={(e) => setVoucherCode(e.target.value.toUpperCase())}
+                />
+                <button 
+                    type="button" 
+                    onClick={handleApplyInput} 
+                    disabled={loading || !voucherCode} 
+                    className="px-6 bg-slate-900 text-white font-black text-xs uppercase rounded-xl hover:bg-orange-500 disabled:bg-slate-200 transition-all active:scale-95"
+                >
+                    {loading ? <Loader2 className="animate-spin w-4 h-4" /> : 'Áp dụng'}
+                </button>
+            </div>
+            {/* Hiển thị card voucher cho mode full (nếu cần) tương tự như trên */}
         </div>
     );
 };

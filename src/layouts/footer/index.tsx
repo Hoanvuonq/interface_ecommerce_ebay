@@ -30,8 +30,8 @@ const PRIMARY_COLOR = "var(--color-primary)";
 export const Footer: React.FC = () => {
   return (
     <footer style={{ backgroundColor: PRIMARY_COLOR }} className="text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 mb-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 mb-6">
           <div className="lg:col-span-4 space-y-6">
             <Link href="/" className="inline-block">
               <Image
@@ -99,16 +99,6 @@ export const Footer: React.FC = () => {
                   </>
                 } 
               />
-              
-              <Link 
-                href="/contact" 
-                className={cn(
-                  "mt-6 inline-flex items-center text-sm font-semibold transition-colors",
-                  "text-orange-500 hover:text-orange-400"
-                )}
-              >
-                Xem bản đồ chi tiết <ArrowRight size={16} className="ml-1" />
-              </Link>
             </div>
           </div>
         </div>

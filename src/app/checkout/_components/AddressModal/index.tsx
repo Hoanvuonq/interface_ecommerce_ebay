@@ -1,9 +1,10 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
-import { X, CheckCircle2, Plus } from "lucide-react";
+import { X, CheckCircle2, Plus, Info } from "lucide-react";
 import { AddressModalProps, NewAddressForm } from "../../_types/address";
 import { createPortal } from "react-dom";
 import { Button } from "@/components/button/button";
-import { ButtonField } from "@/components";
 
 const AddressModal: React.FC<AddressModalProps> = ({
   isOpen,
@@ -14,9 +15,7 @@ const AddressModal: React.FC<AddressModalProps> = ({
   onConfirmNew,
 }) => {
   const [activeTab, setActiveTab] = useState<"saved" | "new">("saved");
-  const [selectedId, setSelectedId] = useState<string | undefined>(
-    currentAddressId
-  );
+  const [selectedId, setSelectedId] = useState<string | undefined>(currentAddressId);
 
   const [newAddress, setNewAddress] = useState<NewAddressForm>({
     recipientName: "",
@@ -28,6 +27,7 @@ const AddressModal: React.FC<AddressModalProps> = ({
     email: "",
   });
 
+  // Đồng bộ tab và địa chỉ đã chọn khi mở modal
   useEffect(() => {
     if (isOpen) {
       setSelectedId(currentAddressId);
@@ -38,7 +38,11 @@ const AddressModal: React.FC<AddressModalProps> = ({
 
   if (!isOpen) return null;
 
-  const handleConfirm = () => {
+  const handleConfirm = (e: React.MouseEvent) => {
+    // Ngăn chặn trigger submit form cha
+    e.preventDefault();
+    e.stopPropagation();
+
     if (activeTab === "saved") {
       if (selectedId) onConfirmSaved(selectedId);
     } else {
@@ -56,44 +60,65 @@ const AddressModal: React.FC<AddressModalProps> = ({
   };
 
   const modalContent = (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm transition-opacity">
-      <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-white">
-          <h2 className="text-lg font-bold text-gray-800">Địa chỉ giao hàng</h2>
+    <div className="fixed inset-0 z-[999] flex items-center justify-center p-4">
+      {/* Backdrop */}
+      <div 
+        className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" 
+        onClick={onClose} 
+      />
+      
+      {/* Modal Container */}
+      <div className="relative bg-white rounded-[2rem] w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
+        
+        {/* Header */}
+        <div className="px-8 py-6 border-b border-slate-100 flex justify-between items-center bg-white">
+          <div>
+            <h2 className="text-xl font-black text-slate-900 uppercase italic tracking-tight">
+              Địa chỉ <span className="text-orange-500">giao hàng</span>
+            </h2>
+            <p className="text-xs text-slate-400 font-bold uppercase tracking-widest mt-1">
+              {activeTab === 'saved' ? 'Chọn từ danh sách đã lưu' : 'Nhập thông tin nhận hàng mới'}
+            </p>
+          </div>
           <button
+            type="button"
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full text-gray-500"
+            className="p-2 hover:bg-slate-100 rounded-full text-slate-400 transition-colors"
           >
-            <X size={20} />
+            <X size={24} strokeWidth={3} />
           </button>
         </div>
 
-        <div className="flex border-b border-gray-100">
+        {/* Tabs Navigation */}
+        <div className="flex bg-slate-50 p-2 gap-2 mx-6 mt-4 rounded-2xl border border-slate-100">
           <button
-            className={`flex-1 py-3 text-sm font-medium transition-colors border-b-2 ${
+            type="button"
+            className={`flex-1 py-3 text-[10px] font-black uppercase tracking-widest transition-all rounded-xl ${
               activeTab === "saved"
-                ? "border-orange-500 text-orange-600 bg-orange-50/50"
-                : "border-transparent text-gray-500 hover:text-gray-700"
+                ? "bg-white text-orange-600 shadow-sm ring-1 ring-slate-200"
+                : "text-slate-400 hover:text-slate-600"
             }`}
             onClick={() => setActiveTab("saved")}
           >
-            Địa chỉ đã lưu ({savedAddresses.length})
+            Đã lưu ({savedAddresses.length})
           </button>
           <button
-            className={`flex-1 py-3 text-sm font-medium transition-colors border-b-2 ${
+            type="button"
+            className={`flex-1 py-3 text-[10px] font-black uppercase tracking-widest transition-all rounded-xl ${
               activeTab === "new"
-                ? "border-orange-500 text-orange-600 bg-orange-50/50"
-                : "border-transparent text-gray-500 hover:text-gray-700"
+                ? "bg-white text-orange-600 shadow-sm ring-1 ring-slate-200"
+                : "text-slate-400 hover:text-slate-600"
             }`}
             onClick={() => setActiveTab("new")}
           >
-            Thêm địa chỉ mới
+            Thêm mới
           </button>
         </div>
 
-        <div className="p-6 overflow-y-auto flex-1 custom-scrollbar">
+        {/* Scrollable Content */}
+        <div className="px-8 py-6 overflow-y-auto flex-1 custom-scrollbar">
           {activeTab === "saved" ? (
-            <div className="space-y-3">
+            <div className="grid grid-cols-1 gap-3">
               {savedAddresses.length > 0 ? (
                 savedAddresses.map((addr, index) => {
                   const isSelected = selectedId === addr.addressId;
@@ -101,39 +126,34 @@ const AddressModal: React.FC<AddressModalProps> = ({
                     <div
                       key={addr.addressId}
                       onClick={() => setSelectedId(addr.addressId)}
-                      className={`relative p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 ${
+                      className={`relative p-5 rounded-2xl border-2 cursor-pointer transition-all duration-300 group ${
                         isSelected
-                          ? "border-orange-500 bg-orange-50"
-                          : "border-gray-100 hover:border-orange-200 bg-white"
+                          ? "border-orange-500 bg-orange-50/30 ring-4 ring-orange-50"
+                          : "border-slate-100 hover:border-orange-200 bg-white"
                       }`}
                     >
                       <div className="flex gap-4">
-                        <div
-                          className={`w-5 h-5 rounded-full border-2 mt-0.5 flex items-center justify-center shrink-0 ${
-                            isSelected ? "border-orange-500" : "border-gray-300"
-                          }`}
-                        >
-                          {isSelected && (
-                            <div className="w-2.5 h-2.5 rounded-full bg-orange-500" />
-                          )}
+                        <div className={`w-6 h-6 rounded-full border-2 mt-0.5 flex items-center justify-center shrink-0 transition-colors ${
+                            isSelected ? "border-orange-500 bg-orange-500" : "border-slate-300 bg-white"
+                        }`}>
+                          {isSelected && <div className="w-2 h-2 rounded-full bg-white" />}
                         </div>
 
-                        <div className="flex-1">
+                        <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
-                            <span className="font-bold text-gray-900">
+                            <span className="font-black text-slate-900 uppercase text-sm italic">
                               {addr.recipientName}
                             </span>
-                            <span className="text-gray-300">|</span>
-                            <span className="text-gray-600">{addr.phone}</span>
+                            <span className="text-slate-300">|</span>
+                            <span className="text-slate-500 font-bold text-sm">{addr.phone}</span>
                             {index === 0 && (
-                              <span className="ml-auto text-[10px] font-bold bg-green-100 text-green-700 px-2 py-0.5 rounded-full uppercase tracking-wider">
-                                Mới nhất
+                              <span className="ml-auto text-[9px] font-black bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-md uppercase tracking-tighter">
+                                Gần đây
                               </span>
                             )}
                           </div>
-                          <p className="text-sm text-gray-600 leading-snug">
-                            {addr.detailAddress}, {addr.ward}, {addr.district},{" "}
-                            {addr.province}
+                          <p className="text-xs text-slate-400 font-bold leading-relaxed line-clamp-2">
+                            {addr.detailAddress}, {addr.ward}, {addr.district}, {addr.province}
                           </p>
                         </div>
                       </div>
@@ -141,155 +161,114 @@ const AddressModal: React.FC<AddressModalProps> = ({
                   );
                 })
               ) : (
-                <div className="text-center py-12 text-gray-400">
-                  Chưa có địa chỉ nào được lưu.
+                <div className="text-center py-16">
+                   <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Info className="text-slate-300" size={32} />
+                   </div>
+                   <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Danh sách trống</p>
                 </div>
               )}
             </div>
           ) : (
-            <div className="space-y-4">
-              <div className="bg-blue-50 border border-blue-100 rounded-lg p-3 text-sm text-blue-700 flex items-start gap-2 mb-4">
-                <div className="mt-0.5">ℹ️</div>
-                Thông tin sẽ được dùng để giao hàng cho đơn này.
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <InputGroup label="Người nhận" required>
                   <input
                     type="text"
-                    placeholder="Nguyễn Văn A"
-                    className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none transition-all"
+                    placeholder="NGUYỄN VĂN A"
+                    className="w-full px-5 py-3 rounded-2xl border-2 border-slate-100 focus:border-orange-500 outline-none transition-all font-bold text-sm uppercase italic tracking-tight"
                     value={newAddress.recipientName}
-                    onChange={(e) =>
-                      setNewAddress({
-                        ...newAddress,
-                        recipientName: e.target.value,
-                      })
-                    }
+                    onChange={(e) => setNewAddress({...newAddress, recipientName: e.target.value.toUpperCase()})}
                   />
                 </InputGroup>
                 <InputGroup label="Số điện thoại" required>
                   <input
                     type="tel"
-                    placeholder="0912345678"
-                    className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none transition-all"
+                    placeholder="09xx xxx xxx"
+                    className="w-full px-5 py-3 rounded-2xl border-2 border-slate-100 focus:border-orange-500 outline-none transition-all font-bold text-sm"
                     value={newAddress.phoneNumber}
-                    onChange={(e) =>
-                      setNewAddress({
-                        ...newAddress,
-                        phoneNumber: e.target.value,
-                      })
-                    }
+                    onChange={(e) => setNewAddress({...newAddress, phoneNumber: e.target.value})}
                   />
                 </InputGroup>
               </div>
 
-              <InputGroup label="Địa chỉ chi tiết (Số nhà, đường)" required>
+              <InputGroup label="Địa chỉ chi tiết" required>
                 <input
                   type="text"
-                  placeholder="VD: 123 Đường ABC"
-                  className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none transition-all"
+                  placeholder="SỐ NHÀ, TÊN ĐƯỜNG..."
+                  className="w-full px-5 py-3 rounded-2xl border-2 border-slate-100 focus:border-orange-500 outline-none transition-all font-bold text-sm"
                   value={newAddress.detailAddress}
-                  onChange={(e) =>
-                    setNewAddress({
-                      ...newAddress,
-                      detailAddress: e.target.value,
-                    })
-                  }
+                  onChange={(e) => setNewAddress({...newAddress, detailAddress: e.target.value})}
                 />
               </InputGroup>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <InputGroup label="Tỉnh/Thành phố" required>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                <InputGroup label="Tỉnh/Thành" required>
                   <input
                     type="text"
                     placeholder="TP. HCM"
-                    className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none transition-all"
+                    className="w-full px-5 py-3 rounded-2xl border-2 border-slate-100 focus:border-orange-500 outline-none transition-all font-bold text-sm"
                     value={newAddress.province}
-                    onChange={(e) =>
-                      setNewAddress({ ...newAddress, province: e.target.value })
-                    }
+                    onChange={(e) => setNewAddress({...newAddress, province: e.target.value})}
                   />
                 </InputGroup>
                 <InputGroup label="Quận/Huyện" required>
                   <input
                     type="text"
-                    placeholder="Quận 1"
-                    className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none transition-all"
+                    placeholder="QUẬN 1"
+                    className="w-full px-5 py-3 rounded-2xl border-2 border-slate-100 focus:border-orange-500 outline-none transition-all font-bold text-sm"
                     value={newAddress.district}
-                    onChange={(e) =>
-                      setNewAddress({ ...newAddress, district: e.target.value })
-                    }
+                    onChange={(e) => setNewAddress({...newAddress, district: e.target.value})}
                   />
                 </InputGroup>
                 <InputGroup label="Phường/Xã" required>
                   <input
                     type="text"
-                    placeholder="Phường Bến Nghé"
-                    className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none transition-all"
+                    placeholder="PHƯỜNG..."
+                    className="w-full px-5 py-3 rounded-2xl border-2 border-slate-100 focus:border-orange-500 outline-none transition-all font-bold text-sm"
                     value={newAddress.ward}
-                    onChange={(e) =>
-                      setNewAddress({ ...newAddress, ward: e.target.value })
-                    }
+                    onChange={(e) => setNewAddress({...newAddress, ward: e.target.value})}
                   />
                 </InputGroup>
               </div>
-
-              <InputGroup label="Email (Tùy chọn)">
-                <input
-                  type="email"
-                  placeholder="email@example.com"
-                  className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 outline-none transition-all"
-                  value={newAddress.email}
-                  onChange={(e) =>
-                    setNewAddress({ ...newAddress, email: e.target.value })
-                  }
-                />
-              </InputGroup>
             </div>
           )}
         </div>
 
-        <div className="p-4 border-t border-gray-100 flex justify-end gap-3 bg-gray-50">
-          <Button variant="edit" onClick={onClose}>
+        {/* Footer Actions */}
+        <div className="px-8 py-6 border-t border-slate-100 flex flex-col sm:flex-row justify-end gap-3 bg-slate-50/50">
+          <Button 
+            type="button" 
+            variant="edit" 
+            onClick={onClose} 
+            className="border-0 bg-transparent "
+          >
             Hủy bỏ
           </Button>
-          <ButtonField
-            form="profile-form"
-            htmlType="submit"
+          
+          <Button
+            type="button"
+            variant="edit"
             onClick={handleConfirm}
-            
-            type="login"
-            className="flex w-32 items-center gap-2 px-5 py-2 rounded-lg text-sm font-semibold shadow-md shadow-orange-500/20 transition-all active:scale-95 border-0 "
+            className="min-w-[160px] shadow-orange-200"
           >
-            <span className="flex items-center gap-2">
-              {activeTab === "new" ? (
-                <Plus size={18} />
-              ) : (
-                <CheckCircle2 size={18} />
-              )}
-              Xác nhận
-            </span>
-          </ButtonField>
+            <div className="flex items-center gap-2 uppercase tracking-widest text-[11px] font-black">
+              {activeTab === "new" ? <Plus size={16} strokeWidth={3} /> : <CheckCircle2 size={16} strokeWidth={3} />}
+              Xác nhận địa chỉ
+            </div>
+          </Button>
         </div>
       </div>
     </div>
   );
+
   return createPortal(modalContent, document.body);
 };
 
-const InputGroup = ({
-  label,
-  required,
-  children,
-}: {
-  label: string;
-  required?: boolean;
-  children: React.ReactNode;
-}) => (
-  <div className="flex flex-col gap-1.5">
-    <label className="text-sm font-medium text-gray-700">
-      {label} {required && <span className="text-red-500">*</span>}
+const InputGroup = ({ label, required, children }: { label: string; required?: boolean; children: React.ReactNode }) => (
+  <div className="flex flex-col gap-2">
+    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">
+      {label} {required && <span className="text-orange-500">*</span>}
     </label>
     {children}
   </div>

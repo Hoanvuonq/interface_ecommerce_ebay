@@ -47,7 +47,16 @@ export const ShippingAddressCard: React.FC<ShippingAddressCardProps> = ({
           )}
         </div>
 
-        <Button variant="edit" onClick={onOpenModal} icon={<MapPinPen />}>
+        <Button
+          type="button"
+          variant="edit"
+          onClick={(e) => {
+            e.preventDefault(); 
+            e.stopPropagation(); 
+            onOpenModal();
+          }}
+          icon={<MapPinPen />}
+        >
           {hasAddress ? "Thay đổi" : "Chọn địa chỉ"}
         </Button>
       </div>

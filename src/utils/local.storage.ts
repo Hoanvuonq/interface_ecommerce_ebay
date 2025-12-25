@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// Giữ lại dòng này vì có thể có tương tác với các thư viện khác trả về 'any'
 
 // ==================== IMPORTS ====================
 
-// ✅ Dùng toast từ Sonner thay thế Antd notification
 import { toast } from "sonner";
 import {authService} from "@/auth/services/auth.service";
 import { ApiResponse } from "@/api/_types/api.types";
@@ -139,11 +137,12 @@ export const verifyAuth = async (options?: VerifyAuthOptions): Promise<VerifyAut
   const { redirectOnFailure = false, pathname } = options || {};
 
   if (isLocalhost()) {
-    // LOCAL: chỉ check localStorage
     const user = getCachedUser();
-    if (user) {
+    if (user && (user.userId || user.buyerId)) {
+      console.log("✅ Local Auth Success:", user.username);
       return { authenticated: true, user };
     } else {
+      console.warn("⚠️ Local Auth Failed: No user found in localStorage");
       clearTokens();
       if (redirectOnFailure) redirectToLogin(pathname);
       return { authenticated: false, user: null };
@@ -168,7 +167,6 @@ export const verifyAuth = async (options?: VerifyAuthOptions): Promise<VerifyAut
       return { authenticated: false, user: null };
     }
   } catch (error: any) {
-    // Step 4: Error từ /me (Lỗi sau khi Interceptor đã retry: Refresh token hết hạn)
     const is401 = error?.response?.status === 401 || error?.code === 401;
     const isRefreshTokenExpired = error?.response?.data?.code === 2011; 
     
@@ -177,9 +175,7 @@ export const verifyAuth = async (options?: VerifyAuthOptions): Promise<VerifyAut
       code: error?.response?.data?.code,
     });
     
-    // Xử lý thông báo và redirect nếu refresh token hết hạn
     if ((is401 || isRefreshTokenExpired) && redirectOnFailure) {
-      // ✅ SỬ DỤNG SONNER TOAST STATIC METHOD (Thay thế Antd notification)
       toast.error(
         "Phiên đăng nhập đã hết hạn",
         {
@@ -188,11 +184,9 @@ export const verifyAuth = async (options?: VerifyAuthOptions): Promise<VerifyAut
         }
       );
       
-      // Xóa tokens và chuyển hướng
       clearTokens();
       redirectToLogin(pathname);
     } else {
-        // Chỉ xóa tokens nếu lỗi khác (ví dụ: Network/Server Error, không phải 401)
         clearTokens();
     }
     

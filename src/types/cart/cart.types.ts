@@ -128,8 +128,8 @@ export interface ShippingAddressInfo {
     addressChanged?: boolean;
     country?: string;
     taxFee?: string;
-    // Optional detailed address fields (if creating new address)
-    state?: string;
+recipientName?: string; // ✅ Thêm trường này
+    phoneNumber?: string;   // ✅ Thêm trường này    state?: string;
     city?: string;
     postalCode?: string;
     addressLine1?: string;

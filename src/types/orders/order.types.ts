@@ -1,7 +1,7 @@
 /**
  * Order Types - DTOs cho order management
  */
-
+import { BuyerAddressData } from "../cart/cart.types";
 export interface ShippingAddressInfo {
     addressId?: string;
     country?: string;
@@ -11,7 +11,6 @@ export interface ShippingAddressInfo {
     addressLine1?: string;
     addressLine2?: string;
 
-    // Old format address names (for backend compatibility)
     districtNameOld?: string;
     provinceNameOld?: string;
     wardNameOld?: string;
@@ -27,6 +26,16 @@ export interface ShopSelectionRequest {
 
 export interface OrderCreateRequest {
     shops: ShopSelectionRequest[];
+    addressId?: string;
+    recipientName?: string;
+    phoneNumber?: string;
+    detailAddress?: string;
+    ward?: string;
+    district?: string;
+    buyerAddressData?: BuyerAddressData;
+    province?: string;
+    country?: string;
+    email?: string;
     shippingMethod?: 'STANDARD' | 'EXPRESS' | 'ECONOMY' | 'CONKIN' | 'GHN' | 'GHTK' | 'VNPOST' | 'NINJA_VAN' | 'J&T' | 'BEST_EXPRESS' | 'FPT' | 'OTHER';
     coupons?: string[];
     loyaltyPoints?: number;

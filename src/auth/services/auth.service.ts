@@ -430,14 +430,11 @@ class AuthService {
     }
   }
 
-  /**
-   * Lưu user info từ login response vào localStorage
-   * ✅ Được gọi ngay sau khi login thành công
-   */
   storeUserInfoFromResponse(userData: any): void {
     if (userData) {
       try {
         localStorage.setItem("users", JSON.stringify(userData));
+        document.cookie = "isLoggedIn=true; path=/; max-age=86400"
         console.log("✅ User info stored from login response");
       } catch (error) {
         console.error("Error storing user info:", error);

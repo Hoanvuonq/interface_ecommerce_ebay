@@ -31,3 +31,19 @@ export const PAYMENT_METHODS = [
     subLabel: "Cổng thanh toán VNPAY",
   },
 ];
+
+export interface ICheckoutFormData {
+  addressId?: string;
+  paymentMethod?: 'COD' | 'VNPAY' | 'MOMO' | 'BANK_TRANSFER' | 'CREDIT_CARD' | 'PAYOS';
+  shippingMethod?: 'CONKIN' | 'STANDARD' | 'EXPRESS' | 'ECONOMY' | 'GHN' | 'GHTK' | 'VNPOST' | 'NINJA_VAN' | 'J&T' | 'BEST_EXPRESS' | 'FPT' | 'OTHER';
+  customerNote: string;
+  recipientName: string;
+  phoneNumber: string;
+  addressLine1: string;
+  ward: string;
+  district: string;
+  province: string;
+  email: string;
+  country: string;
+  globalVouchers?: string[];
+}

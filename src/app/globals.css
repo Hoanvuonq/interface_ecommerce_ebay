@@ -22,7 +22,18 @@ input::-ms-reveal,
 input::-ms-clear {
   display: none;
 }
-
+@layer base {
+  button, 
+  [type='button'], 
+  [type='reset'], 
+  [type='submit'] {
+    cursor: pointer !important;
+  }
+  
+  button:disabled {
+    cursor: not-allowed !important;
+  }
+}
 body {
   background: var(--background);
   color: #000;

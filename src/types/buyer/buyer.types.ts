@@ -60,6 +60,7 @@ export interface BuyerAddressResponse {
   lastModifiedDate: string; // ISO datetime string
   deleted: boolean;
   version: number;
+  isDefault?: boolean;
 }
 
 /**

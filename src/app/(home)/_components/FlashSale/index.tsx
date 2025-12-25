@@ -30,6 +30,10 @@ const FlashSaleSection: React.FC = () => {
     date.setHours(date.getHours() + 24);
     return date;
   });
+  const calculateDiscount = (price: number, salePrice: number) => {
+    if (!price || !salePrice || price <= salePrice) return 0;
+    return Math.round(((price - salePrice) / price) * 100);
+  };
 
   useEffect(() => {
     if (hasInitialFetchedRef.current) return;
@@ -89,16 +93,20 @@ const FlashSaleSection: React.FC = () => {
           <CountdownFlashSale />
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 pt-6">
             {products.map((product: any) => {
-              const firstVariantId = product.variants?.[0]?.id || null;
-              const isWishlisted = firstVariantId
-                ? wishlistMap.get(firstVariantId) || false
-                : false;
+             const firstVariant = product.variants?.[0] || {};
+              const discount = calculateDiscount(firstVariant.price, firstVariant.salePrice);
+              const isWishlisted = firstVariant.id ? wishlistMap.get(firstVariant.id) || false : false;
               const soldPercentage = getSoldPercentage(product.id);
 
               return (
                 <div key={product.id} className="flex flex-col group">
                   <div className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 transform group-hover:-translate-y-1 border border-gray-100">
                     <div className="relative">
+                      {discount > 0 && (
+                        <div className="absolute top-0 right-0 z-30 bg-red-600 text-white text-[11px] font-black px-3 py-1 rounded-bl-2xl shadow-md animate-pulse">
+                          -{discount}%
+                        </div>
+                      )}
                       <ProductCard
                         product={product}
                         isWishlisted={isWishlisted}

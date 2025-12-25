@@ -86,14 +86,12 @@ const mergeSelectionState = (
   };
 };
 
-// Async thunks
 export const fetchCart = createAsyncThunk(
   "cart/fetchCart",
   async (_, { rejectWithValue }) => {
     try {
       return await cartService.getCart();
     } catch (error: any) {
-      // Don't show error message for auth errors (will be handled by interceptor)
       if (isAuthError(error)) {
         return rejectWithValue("Authentication required");
       }
