@@ -1,23 +1,43 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { CountdownTimerProps, TimeLeft } from "./type";
+import { SlotNumber } from "../SlotNumber";
 
-interface CountdownTimerProps {
-  endTime: Date | string;
-  onExpire?: () => void;
-  size?: "small" | "medium" | "large";
-}
+const Separator = () => (
+  <div className="flex flex-col justify-center items-center h-8 sm:h-10 pb-1 mx-0.5 sm:mx-1">
+    <div className="text-orange-500 font-black text-lg sm:text-xl animate-pulse">:</div>
+  </div>
+);
 
-interface TimeLeft {
-  hours: number;
-  minutes: number;
-  seconds: number;
-}
+const TimeUnit = ({ value, label }: { value: number; label: string }) => {
+  const digits = String(value).padStart(2, "0").split("");
+
+  return (
+    <div className="flex flex-col items-center md:gap-1 gap-2">
+      <div className="flex gap-1">
+        {digits.map((digit, index) => (
+          <div 
+            key={index} 
+            className="w-12 h-14 sm:w-9 sm:h-10 flex items-center justify-center bg-linear-to-b from-orange-500 to-red-600 rounded-md shadow-sm border-b-2 border-red-800"
+          >
+            <div className="text-white font-bold text-lg sm:text-xl leading-none shadow-black/20 drop-shadow-md">
+                <SlotNumber value={digit} />
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      <span className="text-base sm:text-md font-light text-black  tracking-wider passero-one-regular">
+        {label}
+      </span>
+    </div>
+  );
+};
 
 const CountdownTimer: React.FC<CountdownTimerProps> = ({
   endTime,
   onExpire,
-  size = "medium", // Mặc định dùng medium để nhỏ gọn hơn
 }) => {
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({ hours: 0, minutes: 0, seconds: 0 });
   const [isExpired, setIsExpired] = useState(false);
@@ -47,35 +67,15 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
     return () => clearInterval(timer);
   }, [endTime, onExpire]);
 
-  // Cấu hình kích thước đã được thu nhỏ lại
-  const sizeConfig = {
-    small: { digit: "text-base", label: "text-[7px]", gap: "gap-1", colon: "text-xs" },
-    medium: { digit: "text-xl sm:text-2xl", label: "text-[8px] sm:text-[9px]", gap: "gap-2 sm:gap-4", colon: "text-base" },
-    large: { digit: "text-3xl sm:text-4xl", label: "text-[9px] sm:text-[10px]", gap: "gap-3 sm:gap-6", colon: "text-xl" },
-  };
-
-  const config = sizeConfig[size];
-
-  if (isExpired) return <span className="text-white text-xs font-bold px-4">ĐÃ KẾT THÚC</span>;
-
-  const TimeUnit = ({ value, label, isLast = false }: { value: number; label: string; isLast?: boolean }) => (
-    <div className="flex flex-col items-center justify-center min-w-[40px] sm:min-w-[55px]">
-      <span className={`${config.digit} font-black leading-none tracking-tighter ${isLast ? "text-[#FFD700]" : "text-white"}`}>
-        {String(value).padStart(2, "0")}
-      </span>
-      <span className={`${config.label} text-white/70 font-bold uppercase tracking-widest mt-1.5`}>
-        {label}
-      </span>
-    </div>
-  );
+  if (isExpired) return <span className="text-slate-500 text-xs font-bold">ĐÃ KẾT THÚC</span>;
 
   return (
-    <div className={`flex items-center justify-center bg-[#ff7a00] rounded-xl px-4 sm:px-2 py-1 shadow-inner ${config.gap}`}>
+    <div className="flex items-start justify-center">
       <TimeUnit value={timeLeft.hours} label="Hours" />
-      <span className={`${config.colon} text-white/40 font-bold -mt-3`}>:</span>
-      <TimeUnit value={timeLeft.minutes} label="Mins" />
-      <span className={`${config.colon} text-white/40 font-bold -mt-3`}>:</span>
-      <TimeUnit value={timeLeft.seconds} label="Secs" isLast />
+      <Separator />
+      <TimeUnit value={timeLeft.minutes} label="Minute" />
+      <Separator />
+      <TimeUnit value={timeLeft.seconds} label="Second" />
     </div>
   );
 };

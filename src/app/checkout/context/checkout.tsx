@@ -20,7 +20,7 @@ import { BuyerAddressResponse } from "@/types/buyer/buyer.types";
 import { OrderCreateRequest } from "@/types/orders/order.types";
 import { extractItemDimensions } from "@/utils/packaging-optimizer";
 import { mapAddressToOldFormat } from "@/utils/address/ward-mapping.util";
-
+import { useToast } from "@/hooks/useToast";
 interface CheckoutContextType {
   preview: any;
   request: any;
@@ -52,16 +52,11 @@ export const CheckoutProvider = ({
   const [request, setRequest] = useState(initialRequest);
   const [loading, setLoading] = useState(false);
   const [buyerInfo, setBuyerInfo] = useState<any>(null);
-  const [savedAddresses, setSavedAddresses] = useState<BuyerAddressResponse[]>(
-    []
-  );
-  const [shopAddressIdMap, setShopAddressIdMap] = useState<
-    Record<string, string>
-  >({});
+  const [savedAddresses, setSavedAddresses] = useState<BuyerAddressResponse[]>([]);
+  const [shopAddressIdMap, setShopAddressIdMap] = useState<Record<string, string>>({});
   const [provincesData, setProvincesData] = useState<Province[]>([]);
   const [allWardsData, setAllWardsData] = useState<Ward[]>([]);
-
-  // --- 1. INIT Master Data & Vietnam Address Database ---
+const { success, error } = useToast();
   useEffect(() => {
     let pList: Province[] = [];
     let wList: Ward[] = [];
@@ -74,16 +69,9 @@ export const CheckoutProvider = ({
     setProvincesData(pList);
     setAllWardsData(wList);
 
-    // Log discount info from initial preview
-    if (initialPreview) {
-      const discount = initialPreview?.totalDiscount || 0;
-      const voucherDetails = initialPreview?.voucherApplication?.shopResults || [];
-      console.log("[CHECKOUT] Initial preview discount:", discount);
-      console.log("[CHECKOUT] Initial voucher details:", voucherDetails);
-    }
+    if (initialPreview) {}
   }, []);
 
-  // --- 2. Load Buyer Detail & Shop Pickup Addresses ---
   useEffect(() => {
     const loadInitialInfo = async () => {
       const user = getStoredUserDetail();
@@ -118,7 +106,6 @@ export const CheckoutProvider = ({
     loadInitialInfo();
   }, [preview?.shops]);
 
-  // --- 3. Core Sync Logic ---
   const syncPreview = async (updatedRequest: any) => {
     setLoading(true);
     try {
@@ -146,7 +133,7 @@ export const CheckoutProvider = ({
       sessionStorage.setItem("checkoutRequest", JSON.stringify(updatedRequest));
       return result;
     } catch (err: any) {
-      toast.error(err.message || "Lỗi cập nhật thông tin đơn hàng");
+      error(err.message || "Lỗi cập nhật thông tin đơn hàng");
       throw err;
     } finally {
       setLoading(false);
@@ -157,11 +144,10 @@ const updateShippingMethod = async (shopId: string, methodCode: string) => {
     if (loading) return;
 
     const updatedRequest = {
-        ...request, // Giữ các thông tin cũ (vouchers, addressId)
+        ...request, 
         shops: preview.shops.map((s: any) => ({
             shopId: s.shopId,
             itemIds: s.items.map((i: any) => i.itemId),
-            // ✅ QUAN TRỌNG: Cập nhật code mới cho shop đang chọn, giữ nguyên cho shop khác
             selectedShippingMethod: s.shopId === shopId ? methodCode : s.selectedShippingMethod,
             vouchers: s.appliedVouchers?.map((v: any) => v.code) || []
         }))
@@ -191,12 +177,12 @@ const updateShippingMethod = async (shopId: string, methodCode: string) => {
   try {
     const updatedRequest = {
       ...request,
-      globalVouchers: codes, // chỉ truyền PLATFORM voucher vào đây
+      globalVouchers: codes, 
       shops: preview.shops.map((s: any) => ({
         shopId: s.shopId,
         itemIds: s.items.map((i: any) => i.itemId),
         selectedShippingMethod: s.selectedShippingMethod,
-        vouchers: shopVoucherMap?.[s.shopId] || [] // chỉ truyền SHOP voucher vào đây nếu có
+        vouchers: shopVoucherMap?.[s.shopId] || [] 
       }))
     };
 
@@ -205,11 +191,11 @@ const updateShippingMethod = async (shopId: string, methodCode: string) => {
     console.log("Kết quả trả về từ API:", result);
 
     if (result?.voucherApplication?.success) {
-      toast.success("Đã áp dụng voucher thành công!");
+      success("Đã áp dụng voucher thành công!");
       return true;
     } else {
       const errorMsg = result?.voucherApplication?.errors?.[0] || "Voucher không khả dụng";
-      toast.error(errorMsg);
+      error(errorMsg);
       return false;
     }
   } catch (err) {
@@ -225,7 +211,7 @@ const confirmOrder = async (customerNote: string, paymentMethod: string) => {
             savedAddresses.find((a) => a.addressId === request.addressId);
 
         if (!fullAddressData) {
-            toast.error("Vui lòng chọn địa chỉ giao hàng");
+            error("Vui lòng chọn địa chỉ giao hàng");
             setLoading(false);
             return;
         }
@@ -283,7 +269,7 @@ const confirmOrder = async (customerNote: string, paymentMethod: string) => {
         return response;
     } catch (err: any) {
         // Hiện lỗi 3001 từ backend nếu có
-        toast.error(err.response?.data?.message || err.message || "Đặt hàng thất bại");
+        error(err.response?.data?.message || err.message || "Đặt hàng thất bại");
         throw err;
     } finally {
         setLoading(false);

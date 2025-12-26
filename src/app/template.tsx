@@ -1,6 +1,6 @@
 "use client";
 
-import { ToastProvider } from "@/hooks/useToastProvider";
+import { ToastProvider } from "@/hooks/ToastProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { JSX, ReactNode } from "react";
 import { Header } from "@/layouts/header/_pages";

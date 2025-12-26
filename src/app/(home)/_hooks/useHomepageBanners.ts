@@ -44,82 +44,63 @@ export const useHomepageBanners = (
   const [footerBanners, setFooterBanners] = useState<BannerResponseDTO[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
-  // Use ref to prevent duplicate API calls
-  const isFetchingRef = useRef(false);
-  const lastFetchParamsRef = useRef<{ locale: string; device: string } | null>(null);
 
-  // Memoize fetchBanners to prevent recreation on every render
+  // Chỉ fetch 1 lần duy nhất cho mỗi cặp locale/device
+  const fetchedParamsRef = useRef<{ locale: string; device: string }[]>([]);
+  const isFetchingRef = useRef(false);
+
   const fetchBanners = useCallback(async () => {
-    // Detect device type if not provided
     const deviceType = device || (typeof window !== 'undefined'
       ? window.innerWidth >= 768 ? 'DESKTOP' : 'MOBILE'
       : 'ALL');
-
-    // Check if we're already fetching with the same params
     const currentParams = { locale, device: deviceType };
-    if (isFetchingRef.current) {
-      console.log('[useHomepageBanners] Already fetching, skipping duplicate call');
+
+    // Kiểm tra đã fetch chưa
+    if (fetchedParamsRef.current.some(
+      (p) => p.locale === currentParams.locale && p.device === currentParams.device
+    )) {
+      // Đã fetch rồi, không gọi lại nữa
       return;
     }
+    if (isFetchingRef.current) return;
 
-    // Check if we already fetched with the same params
-    if (lastFetchParamsRef.current && 
-        lastFetchParamsRef.current.locale === currentParams.locale &&
-        lastFetchParamsRef.current.device === currentParams.device) {
-      console.log('[useHomepageBanners] Already fetched with same params, skipping');
-      return;
-    }
-
+    isFetchingRef.current = true;
+    setLoading(true);
+    setError(null);
     try {
-      isFetchingRef.current = true;
-      lastFetchParamsRef.current = currentParams;
-      setLoading(true);
-      setError(null);
-
-      console.log('[useHomepageBanners] Fetching banners - locale:', locale, 'device:', deviceType);
-
-      // Fetch ALL HOMEPAGE banners at once using /active/by-page API
       const response = await homepageService.getBannersByPage({
         page: 'HOMEPAGE',
         locale,
         device: deviceType,
       });
-
       if (response.success && response.data && response.data.banners) {
         const groupedBanners = response.data.banners;
-
-        // Extract banners by display location
         setIntroBanners(groupedBanners['HOMEPAGE_INTRO'] || []);
         setHeroBanners(groupedBanners['HOMEPAGE_HERO'] || []);
         setSidebarBanners(groupedBanners['HOMEPAGE_SIDEBAR'] || []);
         setFooterBanners(groupedBanners['HOMEPAGE_FOOTER'] || []);
-        
-        console.log('[useHomepageBanners] Banners fetched successfully');
+        // Đánh dấu đã fetch
+        fetchedParamsRef.current.push(currentParams);
       } else {
         setError('Không thể tải banners');
-        // Reset all banners on error
         setIntroBanners([]);
         setHeroBanners([]);
         setSidebarBanners([]);
         setFooterBanners([]);
       }
     } catch (err: any) {
-      console.error('[useHomepageBanners] Error fetching homepage banners:', err);
       setError(err?.response?.data?.message || err?.message || 'Đã có lỗi xảy ra');
-      // Reset last fetch params on error so we can retry
-      lastFetchParamsRef.current = null;
     } finally {
       setLoading(false);
       isFetchingRef.current = false;
     }
-  }, [locale, device]); // Depend on locale and device
+  }, [locale, device]);
 
   useEffect(() => {
     if (autoFetch) {
       fetchBanners();
     }
-  }, [autoFetch, fetchBanners]); // Depend on autoFetch and memoized fetchBanners
+  }, [autoFetch, locale, device]);
 
   return {
     heroBanners,

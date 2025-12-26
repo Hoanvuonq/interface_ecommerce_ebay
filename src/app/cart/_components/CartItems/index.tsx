@@ -36,7 +36,6 @@ export const CartItem: React.FC<CartItemProps> = ({
   const [quantity, setQuantity] = useState(item.quantity);
   const [updating, setUpdating] = useState(false);
   const [imgError, setImgError] = useState(false);
-
   useEffect(() => {
     setQuantity(item.quantity);
   }, [item.quantity]);

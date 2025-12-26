@@ -4,27 +4,7 @@ import React, { useState, useEffect } from "react";
 import { FiChevronLeft, FiChevronRight, FiInbox, FiLoader } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/utils/cn"; 
-
-export interface Column<T> {
-  header: string;
-  accessor?: keyof T;
-  render?: (item: T, index: number) => React.ReactNode;
-  className?: string;
-  headerClassName?: string;
-  align?: "left" | "center" | "right";
-}
-
-interface DataTableProps<T> {
-  data: T[];
-  columns: Column<T>[];
-  loading: boolean;
-  emptyMessage?: string;
-  page: number;
-  size: number;
-  totalElements: number;
-  onPageChange: (newPage: number) => void;
-  headerContent?: React.ReactNode;
-}
+import { DataTableProps } from "./type";
 
 export const DataTable = <T extends { id: string | number }>({
   data,
@@ -59,7 +39,6 @@ export const DataTable = <T extends { id: string | number }>({
     }
   };
 
-  // Animation variants
   const variants = {
     enter: (direction: number) => ({
       x: direction > 0 ? 20 : -20,
@@ -138,7 +117,6 @@ export const DataTable = <T extends { id: string | number }>({
                 </div>
               </motion.div>
             ) : (
-              /* Data Content with Slide Animation */
               <motion.div
                 key={page}
                 custom={direction}

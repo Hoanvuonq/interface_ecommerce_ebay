@@ -1,18 +1,16 @@
 "use client";
 
-import React, { useEffect, useState, useMemo } from "react";
-import Link from "next/link";
-import { X } from "lucide-react";
 import { useHomepageBannerContext } from "@/app/(home)/_context/HomepageBannerContext";
-import { BannerResponseDTO } from "../../_types/banner.dto";
-import { resolveBannerImageUrl } from "@/utils/products/media.helpers";
-import { cn } from "@/utils/cn";
 import { GRADIENT_PRESETS } from "@/constants/section";
+import { cn } from "@/utils/cn";
+import { resolveBannerImageUrl } from "@/utils/products/media.helpers";
+import { X } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
+import { BannerResponseDTO } from "../../_types/banner.dto";
 
 const INTRO_BANNER_STORAGE_KEY = "homepageIntroBannerDismissedAt";
 const INTRO_BANNER_EXPIRATION_MS = 12 * 60 * 60 * 1000; 
-
-
 
 const mapBannerToDisplay = (banner: BannerResponseDTO, index: number) => {
   const preset = GRADIENT_PRESETS[index % GRADIENT_PRESETS.length];
@@ -59,8 +57,8 @@ const mapBannerToDisplay = (banner: BannerResponseDTO, index: number) => {
   };
 };
 
-export default function IntroBanner() {
-  const [isDismissed, setIsDismissed] = useState(false);
+export const IntroBanner = () => {
+  const [isDismissed, setIsDismissed] = useState(true);
   const [imageError, setImageError] = useState(false);
   const [showBanner, setShowBanner] = useState(false);
 

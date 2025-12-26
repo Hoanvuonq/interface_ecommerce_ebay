@@ -1,13 +1,12 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
 import { AppPopover } from '@/components/appPopover';
-import { ShoppingCart, Loader2 } from 'lucide-react';
-import Link from 'next/link';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { fetchCart } from '@/store/theme/cartSlice';
-import { isAuthenticated as checkAuth, getCachedUser } from '@/utils/local.storage';
 import { isLocalhost } from '@/utils/env';
+import { isAuthenticated as checkAuth, getCachedUser } from '@/utils/local.storage';
+import { Loader2, ShoppingCart } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { CartPopover } from '../cartPopover';
 
 export const CartBadge = () => {
@@ -17,36 +16,34 @@ export const CartBadge = () => {
     const [mounted, setMounted] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-   useEffect(() => {
-    setMounted(true);
-    let authStatus = false;
-    if (isLocalhost()) {
-        authStatus = !!getCachedUser();
-    } else {
-        authStatus = checkAuth();
-    }
-    setIsLoggedIn(authStatus);
+    useEffect(() => {
+        setMounted(true);
+        let authStatus = false;
+        
+        if (isLocalhost()) {
+            authStatus = !!getCachedUser();
+        } else {
+            authStatus = checkAuth();
+        }
+        
+        setIsLoggedIn(authStatus);
 
-    if (authStatus) {
-        dispatch(fetchCart());
-    }
-}, [dispatch]);
+        if (authStatus) {
+            dispatch(fetchCart());
+        }
+    }, [dispatch]);
+
+    if (!mounted) return null;
+
+    if (!isLoggedIn) return null;
 
     const itemCount = cart?.itemCount || 0;
 
     const handleOpenChange = (open: boolean) => {
-        if (open && isLoggedIn) {
+        if (open) {
             dispatch(fetchCart());
         }
     };
-
-    if (!mounted || !isLoggedIn) {
-        return (
-            <div className="p-2 text-white/50 cursor-pointer">
-                <ShoppingCart size={22} />
-            </div>
-        );
-    }
 
     const Trigger = (
         <div className="p-2 relative rounded-full text-white hover:bg-white/10 transition-colors cursor-pointer group">
@@ -79,19 +76,6 @@ export const CartBadge = () => {
             <div className="max-h-96 overflow-y-auto custom-scrollbar">
                 <CartPopover open={true} />
             </div>
-            {/* {itemCount > 0 && (
-                <div className="p-3 bg-gray-50 flex items-center justify-between border-t border-gray-100 rounded-b-xl">
-                    <span className="text-xs text-gray-500">
-                        {cart?.itemCount || 0} sản phẩm trong giỏ
-                    </span>
-                    <Link 
-                        href="/cart"
-                        className="bg-[#ee4d2d] text-white text-sm font-bold py-2 px-6 rounded-sm hover:bg-opacity-90 transition-all shadow-sm"
-                    >
-                        Xem giỏ hàng
-                    </Link>
-                </div>
-            )} */}
         </AppPopover>
     );
 };

@@ -19,6 +19,7 @@ import { GroupedVouchers, VoucherModalProps } from "../voucherComponents/type";
 import { Button } from "../button/button";
 import { ButtonField } from "../buttonField";
 import { FaSave } from "react-icons/fa";
+import { useToast } from "@/hooks/useToast";
 
 export const VoucherModal: React.FC<VoucherModalProps> = ({
   open,
@@ -47,8 +48,7 @@ export const VoucherModal: React.FC<VoucherModalProps> = ({
   const [selectedShippingVoucherId, setSelectedShippingVoucherId] = useState<
     string | undefined
   >(appliedVouchers?.shipping?.id);
-
-  // --- EFFECTS ---
+const { error, success } = useToast();
   useEffect(() => {
     if (open) {
       if (appliedVouchers) {
@@ -80,7 +80,7 @@ export const VoucherModal: React.FC<VoucherModalProps> = ({
         })
         .catch((error) => {
           console.error("Error fetching vouchers:", error);
-          toast.error("Không thể tải danh sách voucher");
+          error("Không thể tải danh sách voucher");
         })
         .finally(() => setLoading(false));
     }
@@ -162,7 +162,6 @@ export const VoucherModal: React.FC<VoucherModalProps> = ({
     return null;
   };
 
-  // --- RENDER VOUCHER CARD ---
   const renderVoucherCard = (
     voucher: VoucherOption,
     type?: "order" | "shipping"
@@ -218,7 +217,6 @@ export const VoucherModal: React.FC<VoucherModalProps> = ({
             "opacity-60 grayscale bg-gray-50 cursor-not-allowed"
         )}
       >
-        {/* Left: Icon Section */}
         <div
           className={cn(
             "w-24 shrink-0 flex flex-col items-center justify-center p-3 text-white relative",
@@ -246,7 +244,6 @@ export const VoucherModal: React.FC<VoucherModalProps> = ({
           </div>
         </div>
 
-        {/* Right: Content Section */}
         <div className="flex-1 p-4 min-w-0 flex flex-col justify-between relative">
           <div className="flex justify-between items-start gap-2">
             <div className="min-w-0">

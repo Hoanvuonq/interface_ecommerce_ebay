@@ -12,10 +12,12 @@ import {
     Trophy,
     Zap,
     LucideIcon,
+    CircleDollarSign,
     CircleDollarSignIcon as finance,
 } from "lucide-react";
 
-interface QuickLinkItem {
+
+interface QuickLinkItemData {
     key: string;
     label: string;
     href: string;
@@ -24,70 +26,71 @@ interface QuickLinkItem {
     bgColor?: string;
 }
 
-export const QuickLinks: QuickLinkItem[] = [
+export const QuickLinks: QuickLinkItemData[] = [
     {
         key: "flash",
         label: "Flash Sale",
         href: "/sale",
         icon: Zap,
-        color: "#FF5F17",
-        bgColor: "bg-orange-100/50",
+        color: "#FF5F17", // Cam rực rỡ
+        bgColor: "bg-orange-50",
     },
     {
         key: "voucher",
         label: "Mã giảm giá",
         href: "/coupons",
         icon: Tag,
-        color: "#F44336",
-        bgColor: "bg-red-100/50",
+        color: "#F44336", // Đỏ 
+        bgColor: "bg-red-50",
     },
-    {
-        key: "new",
-        label: "Hàng mới",
-        href: "/new",
-        icon: Star,
-        color: "#1E88E5",
-        bgColor: "bg-blue-100/50",
+  
+     {
+        key: "freeship",
+        label: "Freeship",
+        href: "/freeship",
+        icon: Car,
+        color: "#00B894",
+        bgColor: "bg-emerald-50",
     },
     {
         key: "best",
         label: "Bán chạy",
         href: "/products?sort=best-seller",
         icon: Trophy,
-        color: "#FFC107",
-        bgColor: "bg-yellow-100/50",
+        color: "#FBC02D", // Vàng đậm 3D
+        bgColor: "bg-yellow-50",
     },
-    {
-        key: "freeship",
-        label: "Freeship",
-        href: "/freeship",
-        icon: Car,
-        color: "#00B894",
-        bgColor: "bg-green-100/50",
+      {
+        key: "new",
+        label: "Hàng mới",
+        href: "/new",
+        icon: Star,
+        color: "#1E88E5", // Xanh dương
+        bgColor: "bg-blue-50",
     },
     {
         key: "topup",
         label: "Nạp thẻ",
         href: "/topup",
         icon: Smartphone,
-        color: "#673AB7",
-        bgColor: "bg-purple-100/50",
+        color: "#673AB7", // Tím
+        bgColor: "bg-purple-50",
     },
     {
         key: "coin",
         label: "Hoàn xu",
         href: "/coin",
-        icon: finance,
-        color: "#FF9800",
-         bgColor: "bg-amber-100/50",
+        icon: CircleDollarSign,
+        color: "#FF9800", // Cam vàng
+        bgColor: "bg-amber-50",
     },
     {
         key: "global",
         label: "Quốc tế",
         href: "/international",
         icon: Globe,
-        color: "#8E24AA",
-        bgColor: "bg-indigo-100/60",
+        color: "#8E24AA", // Tím hồng
+        bgColor: "bg-indigo-50",
     },
 ];
 

@@ -9,7 +9,7 @@ export type NotificationPriority = "LOW" | "NORMAL" | "HIGH" | "URGENT";
 
 export interface NotificationResponseDTO {
   id: string;
-  recipientRole: RecipientRole; // Required field after migration stabilizes
+  recipientRole: RecipientRole; 
   title?: string;
   content?: string;
   type?: string;

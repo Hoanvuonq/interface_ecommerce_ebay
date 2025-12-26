@@ -1,55 +1,61 @@
 "use client";
 
-import CountdownTimer from "@/features/CountdownTimer";
-import { Flame } from "lucide-react";
-import React, { useState } from "react";
+import CountdownTimer from "@/features/CountdownTimer"; 
+import { Zap } from "lucide-react"; 
+import { useState } from "react";
+import { cn } from "@/utils/cn";
 
 export const CountdownFlashSale = () => {
   const [flashSaleEnd] = useState(() => {
     const date = new Date();
-    date.setHours(date.getHours() + 24);
+    date.setHours(date.getHours() + 2);
     return date;
   });
 
   return (
-    <div className="max-w-7xl mx-auto w-full bg-[#fffaf5] border border-gray-100 rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.03)] px-3 py-1 flex flex-col md:flex-row items-center justify-between gap-4 overflow-hidden relative">
-      <div className="flex items-center gap-4 flex-1">
-        <div className="relative">
-          <div className="absolute inset-0 bg-orange-500 rounded-xl blur-lg opacity-20 animate-pulse" />
-          <div className="relative bg-orange-500 p-2.5 rounded-xl shadow-md">
-            <Flame className="w-5 h-5 text-white" />
+    <div className="w-full px-4 flex justify-center">
+      <div
+        className={cn(
+          "relative w-full max-w-2xl group overflow-hidden rounded-xl",
+          "bg-white border border-orange-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]",
+          "hover:shadow-[0_8px_30px_rgb(251,146,60,0.15)] transition-all duration-300"
+        )}
+      >
+        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-orange-50 rounded-full blur-3xl opacity-60 pointer-events-none" />
+        <div className="relative flex flex-col sm:flex-row items-center justify-between p-4 sm:p-5 gap-4 sm:gap-6">
+          
+          <div className="flex items-center gap-3 w-full sm:w-auto justify-center sm:justify-start">
+           <div className="relative shrink-0">
+                <div className="absolute inset-0 bg-orange-500 rounded-xl blur opacity-20 animate-pulse" />
+                <div className="relative w-12 h-12 flex items-center justify-center bg-linear-to-br from-orange-500 to-red-600 rounded-xl shadow-lg shadow-orange-500/30">
+                    <Zap className="w-6 h-6 text-white fill-current" />
+                </div>
+            </div>
+
+            <div className="flex flex-col">
+              <div className="flex items-center gap-2">
+                <h2 className="text-xl sm:text-2xl font-black italic text-slate-800 uppercase leading-none">
+                  Flash <span className="text-orange-600">Sale</span>
+                </h2>
+                <span className="bg-red-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-sm animate-bounce">
+                  HOT
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5 mt-1">
+                <p className="text-xs font-medium text-slate-500">Kết thúc trong</p>
+                <div className="h-1.5 w-16 bg-slate-100 rounded-full overflow-hidden">
+                    <div className="h-full w-[70%] bg-orange-500 rounded-full" />
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1.5">
-            <span className="text-orange-500 text-sm">⚡</span>
-            <h2 className="text-lg sm:text-xl font-black italic tracking-tight text-gray-900 leading-none uppercase">
-              Flash Sale
-            </h2>
+
+          <div className="shrink-0">
+            <CountdownTimer endTime={flashSaleEnd} size="medium" />
           </div>
-          <p className="text-[12px] sm:text-xs text-gray-400 font-medium mt-1">
-           <span className="text-[#ff7a00]">Ưu đãi đến 50%</span>
-          </p>
+
         </div>
       </div>
-
-      <div className="flex flex-row md:flex-col items-center gap-4 md:gap-2 px-4 sm:px-5 rounded-2xl border border-orange-50/50">
-        {/* <div className="flex flex-col items-center md:items-center">
-          <p className="text-[9px] font-black text-[#ff7a00] uppercase tracking-widest mb-1">
-            Kết thúc sau
-          </p>
-          <div className="w-8 h-0.5 bg-gray-200 rounded-full overflow-hidden">
-            <div className="w-2/3 h-full bg-[#ff7a00]" />
-          </div>
-        </div> */}
-
-        <CountdownTimer 
-            endTime={flashSaleEnd} 
-            size="medium" 
-        />
-      </div>
-
     </div>
   );
 };

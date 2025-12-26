@@ -1,12 +1,3 @@
-/**
- * Product Media Helper Functions
- * 
- * Centralized utilities for resolving media URLs with proper variants
- * - Handles images: _thumb, _medium, _large, _orig
- * - Handles videos: original only
- * - Handles webp: _orig only
- */
-
 import { toPublicUrl } from "../storage/url";
 /**
  * Convert a path to sized variant
@@ -29,24 +20,18 @@ export const toSizedVariant = (
     path.endsWith(".webm");
   if (isVideo) return path;
 
-  // WebP only has _orig variant - check WebP first
   const lowerPath = path.toLowerCase();
   const isWebp = lowerPath.endsWith(".webp");
   const hasSizeSuffix = /_(orig|thumb|medium|large)(\.[a-zA-Z0-9]+)$/i.test(path);
 
-  // WebP: Always use _orig, ignore size parameter
   if (isWebp) {
     if (hasSizeSuffix) {
-      // Already has size suffix - ensure it's _orig
       if (path.includes("_orig")) return path;
-      // Replace any other suffix with _orig
       return path.replace(/_(orig|thumb|medium|large)(\.webp)$/i, `_orig$2`);
     }
-    // No size suffix - add _orig
     return path.replace(/(\.webp)$/i, `_orig$1`);
   }
 
-  // Non-WebP: Use provided size
   if (hasSizeSuffix) {
     return path.replace(/_(orig|thumb|medium|large)(\.[a-zA-Z0-9]+)$/i, `${size}$2`);
   }
@@ -117,19 +102,16 @@ export const resolveVariantImageUrl = (
 ): string => {
   if (!variant) return "";
 
-  // Get extension and normalize it (ensure it starts with a dot)
   let extension = variant.imageExtension;
   if (!extension && variant.imageUrl) {
     const match = variant.imageUrl.match(/\.([a-zA-Z0-9]+)$/i);
     extension = match ? `.${match[1]}` : null;
   }
   
-  // Normalize extension: ensure it starts with a dot
   if (extension && !extension.startsWith('.')) {
     extension = `.${extension}`;
   }
 
-  // Check if WebP (extension should be normalized to .webp at this point)
   const isWebp = extension && extension.toLowerCase() === ".webp";
 
   let raw = "";
@@ -138,7 +120,6 @@ export const resolveVariantImageUrl = (
       ? toSizedVariant(variant.imageUrl, "_orig")
       : toSizedVariant(variant.imageUrl, size);
   } else if (variant.imageBasePath && variant.imageExtension) {
-    // Ensure extension is normalized
     const normalizedExtension = variant.imageExtension.startsWith('.') 
       ? variant.imageExtension 
       : `.${variant.imageExtension}`;
@@ -166,13 +147,8 @@ export const resolveBannerImageUrl = (
 ): string => {
   if (!basePath || !extension) return "";
 
-  // Normalize extension (ensure it starts with dot)
   const normalizedExtension = extension.startsWith('.') ? extension : `.${extension}`;
-  
-  // Build raw path
   const rawPath = `${basePath}${normalizedExtension}`;
-  
-  // Use toSizedVariant to handle WebP and other formats correctly
   const sizedPath = toSizedVariant(rawPath, size);
   
   return toPublicUrl(sizedPath);
@@ -192,7 +168,6 @@ export const getOriginalMediaUrl = (media: any): string => {
   }
   
   if (media.basePath && media.extension) {
-    // For API, we use _orig variant
     return `${media.basePath}_orig${media.extension}`;
   }
   

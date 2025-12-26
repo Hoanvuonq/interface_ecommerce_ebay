@@ -5,7 +5,7 @@ export interface UploadFile {
   name: string;
   status?: "uploading" | "done" | "error";
   url?: string;
-  thumbUrl?: string; // Blob URL for preview
+  thumbUrl?: string;
   originFileObj?: File;
   type?: string;
 }

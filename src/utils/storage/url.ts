@@ -11,7 +11,6 @@ export const toPublicUrl = (path?: string | null): string => {
   if (!path) return "";
   const normalized = String(path).trim();
 
-  // Keep absolute http(s), protocol-relative (//), data URIs, and blob URLs untouched
   if (
     ABSOLUTE_PROTOCOL_REGEX.test(normalized) ||
     normalized.startsWith("data:") ||

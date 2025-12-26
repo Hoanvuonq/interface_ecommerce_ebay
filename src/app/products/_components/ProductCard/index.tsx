@@ -168,7 +168,7 @@ export const ProductCard = ({
       <Link
         href={`/products/${product.slug || product.id}`}
         className={cn(
-          "group relative flex bg-white rounded-2xl border border-gray-100 hover:border-orange-200 hover:shadow-xl hover:shadow-orange-500/10 transition-all duration-500 overflow-hidden",
+          "group relative flex bg-white rounded-2xl border border-gray-100 hover:border-orange-200 hover:shadow-xl  hover:shadow-orange-500/10 transition-all duration-500 overflow-hidden",
           isList ? "flex-row h-40 md:h-44" : "flex-col h-full"
         )}
       >
@@ -176,7 +176,7 @@ export const ProductCard = ({
           className={cn(
             "relative overflow-hidden bg-gray-50 shrink-0 transition-all duration-300",
             isList
-              ? "w-32 md:w-44 h-full border-r border-gray-50"
+              ? "w-32 md:w-46 h-full border-r border-gray-50"
               : "aspect-square w-full"
           )}
         >
@@ -249,7 +249,6 @@ export const ProductCard = ({
           )}
         </div>
 
-        {/* --- CONTENT SECTION --- */}
         <div
           className={cn(
             "p-3 md:p-4 flex-1 flex flex-col min-w-0",

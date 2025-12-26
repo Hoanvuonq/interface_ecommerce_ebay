@@ -1,5 +1,10 @@
-export type WelcomeTextType = 'shop' | 'default' | 'admin' | 'return_customer' | 'return_seller';
+import { AuthPanelType } from "./future";
 
+export type WelcomeTextType = 'shop' | 'default' | 'admin' | 'return_customer' | 'return_seller';
+export type LoginMode = "BUYER" | "SHOP";
+export interface UniversalLoginFormProps {
+  mode: LoginMode;
+}
 interface ContentItem {
     title: string;
     description: string;
@@ -39,4 +44,33 @@ export const WELCOME_TEXT_CONTENT: Record<WelcomeTextType | 'fallback', ContentI
 
 export const getWelcomeTextContent = (type: WelcomeTextType | string): ContentItem => {
     return WELCOME_TEXT_CONTENT[type as WelcomeTextType] || WELCOME_TEXT_CONTENT.fallback;
+};
+
+export const MODE_CONFIG = {
+  BUYER: {
+    panelType: "return_customer" as AuthPanelType,
+    storageKeyUser: "pendingLoginUsername_user",
+    storageKeyEmail: "pendingLoginEmail_user",
+    storageKeyPass: "pendingLoginPassword_user",
+    registerLink: "/register",
+    forgotPassLink: "/forgot-password",
+    role: "BUYER",
+    welcomeTitle: "Đăng Nhập",
+    welcomeDesc: "Nhập thông tin tài khoản để tiếp tục",
+    homeText: "Về trang chủ",
+    homeLink: "/"
+  },
+  SHOP: {
+    panelType: "return_seller" as AuthPanelType,
+    storageKeyUser: "pendingLoginUsername_shop",
+    storageKeyEmail: "pendingLoginEmail_shop",
+    storageKeyPass: "pendingLoginPassword_shop",
+    registerLink: "/shop/register",
+    forgotPassLink: "/shop/forgot-password", 
+    role: "SHOP",
+    welcomeTitle: "Đăng Nhập Shop",
+    welcomeDesc: "Nhập thông tin tài khoản quản lý shop",
+    homeText: "Về trang chủ",
+    homeLink: "/"
+  }
 };

@@ -1,10 +1,4 @@
-/**
- * Format utilities
- */
 
-/**
- * Format currency (VND)
- */
 export function formatCurrency(amount: number): string {
   return new Intl.NumberFormat("vi-VN", {
     style: "currency",
@@ -12,9 +6,7 @@ export function formatCurrency(amount: number): string {
   }).format(amount);
 }
 
-/**
- * Format date to Vietnamese locale
- */
+
 export function formatDate(date: string | Date): string {
   const d = typeof date === "string" ? new Date(date) : date;
   return new Intl.DateTimeFormat("vi-VN", {
@@ -24,9 +16,6 @@ export function formatDate(date: string | Date): string {
   }).format(d);
 }
 
-/**
- * Format date time to Vietnamese locale
- */
 export function formatDateTime(date: string | Date): string {
   const d = typeof date === "string" ? new Date(date) : date;
   return new Intl.DateTimeFormat("vi-VN", {
@@ -39,9 +28,7 @@ export function formatDateTime(date: string | Date): string {
   }).format(d);
 }
 
-/**
- * Format number with thousand separator
- */
+
 export function formatNumber(num: number): string {
   return new Intl.NumberFormat("vi-VN").format(num);
 }

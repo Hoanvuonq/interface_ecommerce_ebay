@@ -1,118 +1,114 @@
 "use client";
 
-import React from "react";
-import { toast } from "sonner";
-import { 
-  CheckCircle2, 
-  XCircle, 
-  AlertTriangle, 
-  Info, 
-  X 
-} from "lucide-react";
+import { toastConfig, ToastOptions, ToastType } from "@/types/toast";
 import { cn } from "@/utils/cn";
+import {
+  X
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
-type ToastType = "success" | "error" | "warning" | "info";
 
-interface ToastOptions {
-  duration?: number;
-  description?: string;
-}
+const ToastComponent = ({ t, message, options, config }: any) => {
+  const Icon = config.icon;
+  const duration = options?.duration || 4000;
+  const [progress, setProgress] = useState(100);
 
-// Cấu hình giao diện cho từng loại Toast
-const toastConfig = {
-  success: {
-    icon: CheckCircle2,
-    bg: "bg-white",
-    border: "border-green-200",
-    text: "text-gray-800",
-    iconColor: "text-green-500",
-    accent: "bg-green-500",
-  },
-  error: {
-    icon: XCircle,
-    bg: "bg-white",
-    border: "border-red-200",
-    text: "text-gray-800",
-    iconColor: "text-red-500",
-    accent: "bg-red-500",
-  },
-  warning: {
-    icon: AlertTriangle,
-    bg: "bg-white",
-    border: "border-orange-200",
-    text: "text-gray-800",
-    iconColor: "text-orange-500",
-    accent: "bg-orange-500",
-  },
-  info: {
-    icon: Info,
-    bg: "bg-white",
-    border: "border-blue-200",
-    text: "text-gray-800",
-    iconColor: "text-blue-500",
-    accent: "bg-blue-500",
-  },
+  useEffect(() => {
+    const startTime = Date.now();
+    const timer = setInterval(() => {
+      const elapsedTime = Date.now() - startTime;
+      const remaining = Math.max(0, 100 - (elapsedTime / duration) * 100);
+      setProgress(remaining);
+      if (remaining === 0) clearInterval(timer);
+    }, 30);
+    return () => clearInterval(timer);
+  }, [duration]);
+
+  return (
+    <div
+      className={cn(
+        "relative flex w-[calc(100vw-32px)] sm:w-85 flex-col overflow-hidden rounded-2xl border shadow-2xl transition-all duration-500",
+        config.bg,
+        config.border,
+        "animate-in zoom-in-95 slide-in-from-top-2 sm:slide-in-from-right-5"
+      )}
+    >
+      <div className="flex items-center gap-2.5 p-3 sm:p-3.5">
+        <div
+          className={cn(
+            "flex h-8 w-8 shrink-0 items-center justify-center rounded-xl",
+            config.lightBg
+          )}
+        >
+          <Icon size={18} className={config.iconColor} strokeWidth={2.5} />
+        </div>
+
+        <div className="flex-1 overflow-hidden">
+          <h3
+            className={cn(
+              "text-[13px] sm:text-[14px] font-bold tracking-tight leading-tight truncate",
+              config.text
+            )}>
+            {message}
+          </h3>
+        </div>
+
+        <div className="flex items-center self-center shrink-0">
+          <button
+            onClick={() => toast.dismiss(t)}
+            className="p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 rounded-full transition-all active:scale-90"
+          >
+            <X size={15} />
+          </button>
+        </div>
+      </div>
+
+      {options?.description && (
+        <div className="bg-slate-50/50 px-3.5 py-2 border-t border-slate-100/50">
+          <p className="text-[11px] sm:text-[12px] text-slate-500 font-medium leading-relaxed">
+            {options.description}
+          </p>
+        </div>
+      )}
+
+      <div className="h-0.5 w-full bg-slate-100/30">
+        <div
+          className={cn("h-full transition-none", config.accent)}
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+    </div>
+  );
 };
 
 export const useToast = () => {
-  const showToast = (message: string, type: ToastType, options?: ToastOptions) => {
-    // Dismiss các toast cũ nếu muốn (tùy chọn, bỏ dòng này nếu muốn hiện nhiều toast)
-    // toast.dismiss(); 
-
-    const Config = toastConfig[type];
-    const Icon = Config.icon;
-
+  const showToast = (
+    message: string,
+    type: ToastType,
+    options?: ToastOptions
+  ) => {
+    const config = toastConfig[type];
+    toast.dismiss();
     toast.custom(
       (t) => (
-        <div
-          className={cn(
-            "relative flex w-full max-w-[350px] items-start gap-4 rounded-2xl border p-4 shadow-xl shadow-gray-200/50 transition-all duration-300",
-            Config.bg,
-            Config.border,
-            // Hiệu ứng khi xuất hiện/biến mất do Sonner quản lý, nhưng ta thêm class này để chắc chắn
-            "animate-in slide-in-from-top-2 fade-in duration-300" 
-          )}
-        >
-          {/* Thanh màu bên trái tạo điểm nhấn */}
-          <div className={cn("absolute left-0 top-4 h-8 w-1 rounded-r-full", Config.accent)} />
-
-          {/* Icon */}
-          <div className={cn("mt-0.5 shrink-0", Config.iconColor)}>
-            <Icon size={20} strokeWidth={2.5} />
-          </div>
-
-          {/* Nội dung */}
-          <div className="flex-1 pt-0.5">
-            <h3 className={cn("text-sm font-bold leading-none", Config.text)}>
-              {message}
-            </h3>
-            {options?.description && (
-              <p className="mt-1 text-xs text-gray-500 font-medium">
-                {options.description}
-              </p>
-            )}
-          </div>
-
-          {/* Nút đóng */}
-          <button
-            onClick={() => toast.dismiss(t)}
-            className="group -mr-2 -mt-2 p-2 text-gray-400 hover:text-gray-600 transition-colors"
-          >
-            <X size={14} className="group-hover:scale-110 transition-transform" />
-          </button>
-        </div>
+        <ToastComponent 
+          t={t} 
+          message={message} 
+          options={options} 
+          config={config} 
+        />
       ),
-      { 
-        duration: options?.duration || 3000,
-        position: 'top-right' // Hoặc 'top-center' tùy bạn
-      }
+      { duration: options?.duration || 3000 }
     );
   };
 
   return {
-    success: (msg: string, opts?: ToastOptions) => showToast(msg, "success", opts),
+    success: (msg: string, opts?: ToastOptions) =>
+      showToast(msg, "success", opts),
     error: (msg: string, opts?: ToastOptions) => showToast(msg, "error", opts),
-    warning: (msg: string, opts?: ToastOptions) => showToast(msg, "warning", opts),
+    warning: (msg: string, opts?: ToastOptions) =>
+      showToast(msg, "warning", opts),
     info: (msg: string, opts?: ToastOptions) => showToast(msg, "info", opts),
   };
 };

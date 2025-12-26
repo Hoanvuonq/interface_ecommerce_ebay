@@ -2,6 +2,7 @@
 
 import { SimpleModal } from "@/components";
 import { formatPrice } from "@/hooks/useFormatPrice";
+import { useToast } from "@/hooks/useToast";
 import { orderService } from "@/services/orders/order.service";
 import { OrderItemResponse } from "@/types/orders/order.types";
 import {
@@ -13,19 +14,17 @@ import {
   Loader2,
   Mail,
   MapPin,
+  MapPinIcon,
   Package,
   Phone,
   Receipt,
-  Truck,
-  XCircle,
   Star,
   StoreIcon,
-  Map,
-  MapPinIcon,
+  Truck,
+  XCircle
 } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { toast } from "sonner";
 import { ORDER_STATUS_UI } from "../../_constants/order";
 import {
   PAYMENT_METHOD_LABELS,
@@ -33,13 +32,13 @@ import {
 } from "../../_types/order";
 import { OrderExpirationTimer } from "../OrderExpirationTimer";
 import { OrderPaymentCard } from "../OrderPaymentCard";
+import { OrderStatusTimeline } from "../OrderStatusTimeline";
 import { OrderTrackingTimeline } from "../OrderTrackingTimeline";
 import { PayOSQRPayment } from "../PayOSQRPayment";
 import { ReviewModal } from "../ReviewModal";
 import { OrderDetailViewProps } from "./type";
-import { OrderStatusTimeline } from "../OrderStatusTimeline";
-
 export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
+  const { info,success, warning, error } = useToast();
   const [refreshKey, setRefreshKey] = useState(0);
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<OrderItemResponse | null>(
@@ -65,7 +64,7 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
 
   const handleCopyOrderNumber = () => {
     navigator.clipboard.writeText(order.orderNumber);
-    toast.success("Đã sao chép mã đơn hàng");
+    success("Đã sao chép mã đơn hàng");
   };
 
   const handleRefresh = () => {
@@ -75,7 +74,7 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
 
   const handleReviewClick = (item: OrderItemResponse) => {
     if (item.productId && reviewedProductIds.has(item.productId)) {
-      toast.info("Bạn đã đánh giá sản phẩm này rồi.");
+      info("Bạn đã đánh giá sản phẩm này rồi.");
       return;
     }
     setSelectedItem(item);
@@ -96,20 +95,20 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
 
   const handleCancelOrder = async () => {
     if (!cancelReason.trim()) {
-      toast.warning("Vui lòng nhập lý do hủy đơn hàng");
+      warning("Vui lòng nhập lý do hủy đơn hàng");
       return;
     }
 
     setCancelling(true);
     try {
       await orderService.cancelOrder(order.orderId, cancelReason.trim());
-      toast.success("Hủy đơn hàng thành công");
+      success("Hủy đơn hàng thành công");
       setCancelModalVisible(false);
       setCancelReason("");
       setTimeout(() => window.location.reload(), 1000);
     } catch (error: any) {
       console.error("Error cancelling order:", error);
-      toast.error(
+      error(
         error?.response?.data?.message ||
           "Không thể hủy đơn hàng. Vui lòng thử lại."
       );
@@ -220,7 +219,6 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* --- LEFT COLUMN (Main Content) --- */}
         <div className="lg:col-span-8 space-y-6">
           {/* Expiration Alert */}
           {(order.status === "CREATED" ||
@@ -229,7 +227,7 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
               <OrderExpirationTimer
                 expiresAt={order.expiresAt}
                 onExpire={() => {
-                  toast.error("Đơn hàng đã hết hạn thanh toán");
+                  error("Đơn hàng đã hết hạn thanh toán");
                   setTimeout(() => window.location.reload(), 2000);
                 }}
               />
@@ -352,7 +350,6 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
                             </span>
                           </div>
 
-                          {/* Review Button Mobile/Desktop */}
                           {canReview && (
                             <button
                               onClick={() => handleReviewClick(item)}
@@ -439,7 +436,6 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
             </div>
           </div>
 
-          {/* 2. SHIPPING ADDRESS */}
           <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
             <div className="px-5 py-4 bg-gray-50/50 border-b border-gray-100">
               <h3 className="font-bold text-gray-900 flex items-center gap-2">
@@ -485,7 +481,6 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
             </div>
           </div>
 
-          {/* 3. SHIPPING & PAYMENT INFO */}
           <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
             <div className="px-5 py-4 bg-gray-50/50 border-b border-gray-100">
               <h3 className="font-bold text-gray-900 flex items-center gap-2">
@@ -521,7 +516,7 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
 
           {showPayment && (
             <div className="bg-white rounded-2xl shadow-md border border-orange-100 p-5 relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-orange-400 to-red-500" />
+              <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-orange-400 to-red-500" />
               <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <CreditCard className="text-orange-500" size={20} /> Thanh toán
               </h3>
@@ -536,7 +531,6 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
                   onRefresh={handleRefresh}
                 />
               ) : (
-                /* Regular Payment Card */
                 <OrderPaymentCard
                   orderId={order.orderId}
                   paymentUrl={order.paymentUrl}

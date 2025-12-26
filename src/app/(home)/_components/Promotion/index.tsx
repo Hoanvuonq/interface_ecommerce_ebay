@@ -1,136 +1,85 @@
 "use client";
-import { useHomepageBannerContext } from "@/app/(home)/_context/HomepageBannerContext";
-import { mapBannerToDisplay } from "@/app/(home)/_utils/bannerMapping";
+import React, { useMemo, useState } from "react";
 import { QuickLinks } from "@/constants/section";
-import Link from "next/link";
-import React, { useMemo } from "react";
-import { CustomCarousel, SectionLoading } from "@/components";
+import { QuickLinkItem } from "../QuickLinkItem"; 
+import { MoreHorizontal, ChevronUp } from "lucide-react";
+import { HeroBanners } from "../HeroBanners";
 import { cn } from "@/utils/cn";
-const DEFAULT_BANNER_IMAGE = "/images/hero/default-banner.jpg";
+import { useHomepageBannerContext } from "../../_context/HomepageBannerContext";
+import { mapBannerToDisplay } from "../../_utils/bannerMapping";
+import { SectionLoading } from "@/components";
 
 export const Promotion: React.FC = () => {
+  const [isExpanded, setIsExpanded] = useState(false);
   const { heroBanners, loading, error } = useHomepageBannerContext();
 
-  const selectedBanners = useMemo(() => {
-    return heroBanners;
-  }, [heroBanners]);
+  const alwaysVisible = useMemo(() => QuickLinks.slice(0, 3), []);
+  const expandableLinks = useMemo(() => QuickLinks.slice(3), []);
 
   const banners = useMemo(() => {
-    return selectedBanners.map((banner, index) =>
-      mapBannerToDisplay(banner, index)
-    );
-  }, [selectedBanners]);
+    return heroBanners.map((banner, index) => mapBannerToDisplay(banner, index));
+  }, [heroBanners]);
 
-  const quickLinksRow = useMemo(
-    () => (
-      <div className="max-w-300 mx-auto w-full mt-2">
-        <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-4 lg:gap-8 py-1">
-          {QuickLinks.map((item) => {
-            const Icon = item.icon;
-            const bgColorClass = item.bgColor;
-
-            return (
-              <Link
-                key={item.key}
-                href={item.href}
-                className="flex flex-col items-center gap-2 group transition-colors duration-200"
-              >
-                <div
-                  className={cn(
-                    "w-14 h-14 rounded-2xl flex items-center justify-center",
-                    "transition-all duration-300",
-                    bgColorClass
-                  )}
-                >
-                  <Icon
-                    style={{ color: item.color, fontSize: 28 }}
-                    className="transition-transform duration-300 group-hover:scale-110"
-                  />
-                </div>
-                <span className="text-sm font-medium text-gray-700 group-hover:text-orange-600 transition-colors text-center leading-tight">
-                  {item.label}
-                </span>
-              </Link>
-            );
-          })}
-        </div>
-      </div>
-    ),
-    [QuickLinks]
-  );
-
-  if (loading) {
-    return <SectionLoading message="Loading ..." />;
-  }
-
-  if (error || banners.length === 0) {
-    return (
-      <section className="bg-white py-2">
-        <div className="max-w-[300 mx-auto px-4 sm:px-6 lg:px-0">
-          <div className="w-full rounded-xl overflow-hidden shadow-[0_2px_12px_rgba(0,0,0,0.05)]">
-            <img
-              src={DEFAULT_BANNER_IMAGE}
-              alt="Hero banner"
-              className="w-full h-auto object-cover"
-              loading="lazy"
-            />
-          </div>
-        </div>
-        {quickLinksRow}
-      </section>
-    );
-  }
-
-  const mainBanners = banners.slice(0, 3);
-  const sideBanner1 = banners[3] || banners[0];
-  const sideBanner2 = banners[4] || banners[1] || banners[0];
+  if (loading) return <SectionLoading message="Đang tải dữ liệu..." />;
 
   return (
-    <section className="bg-white py-2">
-      <div className="max-w-300 mx-auto px-4 sm:px-6 lg:px-0">
-        <div className="hidden lg:grid lg:grid-cols-3 gap-4">
-          <div className="col-span-2 relative rounded-xl overflow-hidden shadow-[0_2px_12px_rgba(0,0,0,0.05)] group banner-hover-effect">
-            <CustomCarousel banners={mainBanners} className="h-65" />
-          </div>
-          <div className="flex flex-col gap-4">
-            <Link
-              href={sideBanner1.href}
-              className="block rounded-xl overflow-hidden shadow-[0_2px_12px_rgba(0,0,0,0.05)] banner-hover-effect"
-            >
-              <img
-                src={
-                  sideBanner1.imageUrlDesktop ||
-                  sideBanner1.imageUrl ||
-                  DEFAULT_BANNER_IMAGE
-                }
-                alt={sideBanner1.title || "Side banner"}
-                className="w-full h-30.5 object-cover"
-                loading="lazy"
-              />
-            </Link>
-            <Link
-              href={sideBanner2.href}
-              className="block rounded-xl overflow-hidden shadow-[0_2px_12px_rgba(0,0,0,0.05)] banner-hover-effect"
-            >
-              <img
-                src={
-                  sideBanner2.imageUrlDesktop ||
-                  sideBanner2.imageUrl ||
-                  DEFAULT_BANNER_IMAGE
-                }
-                alt={sideBanner2.title || "Side banner"}
-                className="w-full h-30.5 object-cover"
-                loading="lazy"
-              />
-            </Link>
-          </div>
-        </div>
+    <section className="bg-white py-4 overflow-hidden">
+      <div className="max-w-300 mx-auto w-full px-4 lg:px-0">
+        <HeroBanners banners={error ? [] : banners} />
+        <div className="mx-auto w-full mt-6">
+          <div className="grid grid-cols-4 lg:grid-cols-8 gap-y-2 gap-x-4 items-start">
+            <div className="hidden lg:contents">
+              {QuickLinks.map((item) => (
+                <QuickLinkItem key={item.key} item={item} isLoading={loading} />
+              ))}
+            </div>
 
-        <div className="lg:hidden relative rounded-xl overflow-hidden shadow-[0_2px_12px_rgba(0,0,0,0.05)] group">
-          <CustomCarousel banners={banners} isMobile />
+            <div className="contents lg:hidden">
+              {alwaysVisible.map((item) => (
+                <QuickLinkItem key={item.key} item={item} isLoading={loading} />
+              ))}
+
+              <button
+                onClick={() => setIsExpanded(!isExpanded)}
+                className="flex flex-col items-center gap-2.5 group outline-none"
+              >
+                <div className={cn(
+                  "w-14 h-14 rounded-2xl border-2 border-dashed flex items-center justify-center transition-all duration-500",
+                  isExpanded 
+                    ? "bg-red-50 border-red-400 rotate-180 shadow-[0_0_15px_rgba(239,68,68,0.2)]" 
+                    : "bg-white border-red-300 hover:border-orange-400 shadow-sm"
+                )}>
+                  {isExpanded ? (
+                    <ChevronUp className="text-red-500 w-6 h-6 stroke-[3px]" />
+                  ) : (
+                    <MoreHorizontal className="text-red-400 group-hover:text-orange-500 w-6 h-6 stroke-[3px]" />
+                  )}
+                </div>
+                <span className={cn(
+                  "text-[10px] font-bold transition-colors uppercase tracking-widest coiny-regular",
+                  isExpanded ? "text-red-500" : "text-red-400 group-hover:text-orange-500"
+                )}>
+                  {isExpanded ? "Đóng" : "Thêm"}
+                </span>
+              </button>
+
+              <div 
+                className={cn(
+                  "col-span-4 overflow-hidden transition-all duration-500 ease-in-out",
+                  isExpanded ? "max-h-200 opacity-100 translate-y-0" : "max-h-0 opacity-0 -translate-y-4 pointer-events-none"
+                )}
+              >
+                <div className="grid grid-cols-4 gap-y-8 gap-x-4 pt-8 border-t border-gray-200/50">
+                   {expandableLinks.map((item) => (
+                    <QuickLinkItem key={item.key} item={item} isLoading={loading} />
+                  ))}
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
-      {quickLinksRow}
     </section>
   );
 };

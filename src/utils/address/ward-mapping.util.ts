@@ -1,9 +1,3 @@
-/**
- * Ward Mapping Utility
- * Map từ ward mới (từ vietnam-address-database) sang ward cũ (old_ward_name, old_district_name, old_province_name)
- * để gửi về backend GHN API
- */
-
 import addressData, { Ward, WardMapping, Province } from 'vietnam-address-database';
 
 interface OldAddress {
@@ -14,9 +8,7 @@ interface OldAddress {
 
 let wardMappingsCache: WardMapping[] | null = null;
 
-/**
- * Lấy danh sách ward mappings từ addressData
- */
+
 function getWardMappings(): WardMapping[] {
     if (wardMappingsCache) {
         return wardMappingsCache;
@@ -59,9 +51,7 @@ export function findOldAddressByNewWardCode(
         };
     }
 
-    // Nếu không tìm thấy theo code, thử tìm theo name và province
     if (newWardName && newProvinceCode) {
-        // Lấy province name từ addressData
         let provinceName = '';
         addressData.forEach((item) => {
             if (item.type === 'table' && item.name === 'provinces' && item.data) {
@@ -73,7 +63,6 @@ export function findOldAddressByNewWardCode(
             }
         });
 
-        // Tìm mapping theo new_ward_name và new_province_name
         const mappingByName = mappings.find(
             (m) =>
                 m.new_ward_name === newWardName &&
@@ -108,8 +97,6 @@ export function findOldAddressByName(
         return null;
     }
 
-    // Tìm mapping theo new_ward_name và new_province_name trong ward_mappings
-    // So sánh chính xác và cả so sánh linh hoạt (trim, normalize)
     const normalizedWardName = wardName.trim();
     const normalizedProvinceName = provinceName.trim();
 
@@ -119,7 +106,6 @@ export function findOldAddressByName(
             m.new_province_name === normalizedProvinceName
     );
 
-    // Nếu không tìm thấy chính xác, thử tìm linh hoạt hơn
     if (!mapping) {
         mapping = mappings.find(
             (m) =>
@@ -133,7 +119,6 @@ export function findOldAddressByName(
     }
 
     if (mapping) {
-        // Tìm thấy mapping trong ward_mappings - trả về old values
         return {
             old_ward_name: mapping.old_ward_name,
             old_district_name: mapping.old_district_name,
@@ -141,7 +126,6 @@ export function findOldAddressByName(
         };
     }
 
-    // Không tìm thấy trong ward_mappings - trả về null
     return null;
 }
 
@@ -171,7 +155,6 @@ export function getWardFromProvinceAndDistrict(
     let provinces: Province[] = [];
     let wards: Ward[] = [];
 
-    // Parse provinces và wards từ addressData
     addressData.forEach((item) => {
         if (item.type === 'table') {
             if (item.name === 'provinces' && item.data) {
@@ -182,7 +165,6 @@ export function getWardFromProvinceAndDistrict(
         }
     });
 
-    // Tìm province code từ province name
     const province = provinces.find(
         (p) => p.name === provinceName || p.name.includes(provinceName) || provinceName.includes(p.name)
     );
@@ -191,7 +173,6 @@ export function getWardFromProvinceAndDistrict(
         return null;
     }
 
-    // Tìm ward có cùng province_code và district name trong ward_mappings
     const mappings = getWardMappings();
     const mapping = mappings.find(
         (m) =>
@@ -200,7 +181,6 @@ export function getWardFromProvinceAndDistrict(
     );
 
     if (mapping) {
-        // Tìm ward tương ứng trong wards list
         const ward = wards.find(
             (w) => w.province_code === province.province_code && w.name === mapping.new_ward_name
         );
@@ -208,8 +188,6 @@ export function getWardFromProvinceAndDistrict(
             return ward.name;
         }
     }
-
-    // Nếu không tìm thấy trong mapping, tìm ward đầu tiên có cùng province_code
     const firstWard = wards.find((w) => w.province_code === province.province_code);
     return firstWard ? firstWard.name : null;
 }
@@ -226,16 +204,12 @@ export function mapAddressToOldFormat(
     provinceName: string,
     provinceCode?: string
 ): OldAddress {
-    // Tìm trong ward_mappings theo new_ward_name và new_province_name
     const mapping = findOldAddressByName(wardName, provinceName);
 
     if (mapping) {
-        // Tìm thấy mapping trong ward_mappings - trả về old values từ mapping
         return mapping;
     }
 
-    // Không tìm thấy trong ward_mappings - trả về empty values
-    // Frontend sẽ chỉ gửi các trường này khi có giá trị từ mapping
     return {
         old_ward_name: '',
         old_district_name: '',

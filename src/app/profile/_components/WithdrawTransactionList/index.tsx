@@ -7,7 +7,8 @@ import {
   WalletType,
 } from "@/types/wallet/wallet.types";
 import TransactionDetailModal from "../TransactionDetailModal";
-import { DataTable, Column } from "@/components";
+import { DataTable} from "@/components";
+import { Column } from "@/components/DataTable/type";
 import { getStatusStyle, getTransactionLabel } from "@/constants/status";
 import { Button } from "@/components/button/button";
 import { RefreshCcw } from "lucide-react";

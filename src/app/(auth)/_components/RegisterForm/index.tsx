@@ -1,21 +1,23 @@
 "use client";
 
-import {useEffect, useRef, useState} from "react";
-import {RegisterRequest} from "@/auth/_types/auth";
-import {useRegisterBuyer, useRegisterShop} from "@/auth/_hooks/useAuth";
-import {FaStore, FaUserPlus, FaMagic} from "react-icons/fa";
+import { useEffect, useRef, useState } from "react";
+import { RegisterRequest } from "@/auth/_types/auth";
+import { useRegisterBuyer, useRegisterShop } from "@/auth/_hooks/useAuth";
+import { FaStore, FaUserPlus, FaMagic } from "react-icons/fa";
 import Link from "next/link";
-import {InputField} from "@/components/inputField";
-import {ButtonField} from "@/components/buttonField";
-import {toast} from "sonner";
-import {generateSecurePassword} from "@/utils/passwordGenerator";
-import {cn} from "@/utils/cn";
-import {LeftSideForm} from "../LeftSideForm";
-import {AUTH_PANEL_DATA, getAuthPanelData} from "../../_constants/future";
-import {MobileFeatureList} from "../LeftSideForm/_components/FeatureMobile";
-import {Design} from "@/components";
+import { InputField } from "@/components/inputField";
+import { ButtonField } from "@/components/buttonField";
+import { generateSecurePassword } from "@/utils/passwordGenerator";
+import { cn } from "@/utils/cn";
+import { LeftSideForm } from "../LeftSideForm";
+import { AUTH_PANEL_DATA, getAuthPanelData } from "../../_constants/future";
+import { MobileFeatureList } from "../LeftSideForm/_components/FeatureMobile";
+import { Design } from "@/components";
+import { useToast } from "@/hooks/useToast";
 
-const Title = ({level, className, children} : {
+import { useAuthForm, authValidation } from "../../_hooks/useAuthForm";
+
+const Title = ({ level, className, children }: {
     level: number;
     className?: string;
     children: React.ReactNode;
@@ -24,14 +26,14 @@ const Title = ({level, className, children} : {
     return <Tag className={className}>{children}</Tag>;
 };
 
-const Text = ({className, children} : {
+const Text = ({ className, children }: {
     className?: string;
     children: React.ReactNode;
 }) => {
     return <span className={className}>{children}</span>;
 };
 
-const Divider = ({className, children} : {
+const Divider = ({ className, children }: {
     className?: string;
     children?: React.ReactNode;
 }) => {
@@ -51,148 +53,108 @@ const Divider = ({className, children} : {
 type RegisterFormProps = {
     type: "user" | "shop";
     initialValues?: RegisterRequest;
-    onSuccess?: (data : RegisterRequest) => void;
+    onSuccess?: (data: RegisterRequest) => void;
 };
 
-export function RegisterForm({type, initialValues, onSuccess} : RegisterFormProps) {
-    // 1. Hooks & State
-    const {handleRegisterBuyer, loading: loadingBuyer, error: errorBuyer} = useRegisterBuyer();
-    const {handleRegisterShop, loading: loadingShop, error: errorShop} = useRegisterShop();
+export function RegisterForm({ type, initialValues, onSuccess }: RegisterFormProps) {
+    const { success } = useToast();
+    const { handleRegisterBuyer, loading: loadingBuyer, error: errorBuyer } = useRegisterBuyer();
+    const { handleRegisterShop, loading: loadingShop, error: errorShop } = useRegisterShop();
+    
+    const { error: toastError } = useToast();
+    const [submitting, setSubmitting] = useState(false);
+    const usernameRef = useRef<HTMLInputElement>(null);
 
-    const [formData,
-        setFormData] = useState < RegisterRequest & {
-        confirmPassword?: string
-    } > ({
-        username: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-        ...initialValues
-    });
+    // Form Logic Hook
+    const { 
+        formData, 
+        errors: formErrors, 
+        setFormData, 
+        setErrors, 
+        handleChange, 
+        handleSubmit 
+    } = useAuthForm(
+        { 
+            username: "", 
+            email: "", 
+            password: "", 
+            confirmPassword: "", 
+            ...initialValues 
+        },
+        authValidation.register // Sử dụng logic validate đăng ký
+    );
 
-    const [formErrors,
-        setFormErrors] = useState < Partial < RegisterRequest & {
-        confirmPassword?: string
-    } > > ({});
-    const [submitting,
-        setSubmitting] = useState(false);
-    const usernameRef = useRef < HTMLInputElement > (null);
-
-    const loading = type === "shop"
-        ? loadingShop
-        : loadingBuyer;
-    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
-
-    const panelType = type === "shop"
-        ? "shop"
-        : "default";
+    const loading = type === "shop" ? loadingShop : loadingBuyer;
+    const panelType = type === "shop" ? "shop" : "default";
     const panelData = getAuthPanelData(panelType);
 
     useEffect(() => {
-        usernameRef.current
-            ?.focus();
+        usernameRef.current?.focus();
     }, []);
 
-    const handleInputChange = (e : React.ChangeEvent < HTMLInputElement >) => {
-        const {name, value} = e.target;
-        setFormData((prev) => ({
-            ...prev,
-            [name]: value
-        }));
-        if (formErrors[name as keyof typeof formErrors]) {
-            setFormErrors((prev) => ({
-                ...prev,
-                [name]: undefined
-            }));
-        }
-    };
-
-    const validateForm = () => {
-        const errors : Partial < typeof formData > = {};
-        if (!formData.username || formData.username.trim().length < 3) 
-            errors.username = "Tên đăng nhập phải có ít nhất 3 ký tự";
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!formData.email || !emailRegex.test(formData.email)) 
-            errors.email = "Email không hợp lệ";
-        if (!formData.password || formData.password.length < 6) 
-            errors.password = "Mật khẩu phải có ít nhất 6 ký tự";
-        else if (!passwordPattern.test(formData.password)) 
-            errors.password = "Mật khẩu phải chứa chữ hoa, thường và số";
-        if (formData.password !== formData.confirmPassword) 
-            errors.confirmPassword = "Mật khẩu xác nhận không khớp";
-        return errors;
-    };
-
     const handleGeneratePassword = () => {
-        const newPassword = generateSecurePassword({length: 14});
+        const newPassword = generateSecurePassword({ length: 14 });
         setFormData((prev) => ({
             ...prev,
             password: newPassword,
             confirmPassword: newPassword
         }));
-        setFormErrors((prev) => ({
+        
+        setErrors((prev) => ({
             ...prev,
             password: undefined,
             confirmPassword: undefined
         }));
-        toast.success("Đã điền mật khẩu mạnh tự động!");
+        
+        success("Đã điền mật khẩu mạnh tự động!");
     };
 
-    const onFinish = async(e : React.FormEvent) => {
-        e.preventDefault();
-        const errors = validateForm();
-        if (Object.keys(errors).length > 0) {
-            setFormErrors(errors);
-            toast.error(Object.values(errors)[0]);
-            return;
-        }
-
+    const onFinish = async (values: typeof formData) => {
         setSubmitting(true);
         try {
-            const registerData : RegisterRequest = {
-                username: formData.username,
-                email: formData.email,
-                password: formData.password
+            const registerData: RegisterRequest = {
+                username: values.username!,
+                email: values.email!,
+                password: values.password!
             };
+            
             const res = type === "shop"
                 ? await handleRegisterShop(registerData)
                 : await handleRegisterBuyer(registerData);
 
             if (res) {
-                toast.success("Đăng ký thành công! Vui lòng kiểm tra email.");
+                success("Đăng ký thành công! Vui lòng kiểm tra email.");
                 localStorage.setItem(`registerForm_${type}`, JSON.stringify(registerData));
-                onSuccess
-                    ?.(registerData);
+                onSuccess?.(registerData);
             } else {
-                toast.error(errorBuyer || errorShop || "Đăng ký thất bại");
+                toastError("Đăng ký thất bại", { 
+                    description: errorBuyer || errorShop || "Vui lòng kiểm tra lại thông tin." 
+                });
             }
-        } catch (err : any) {
-            toast.error(err
-                ?.message || "Có lỗi xảy ra.");
+        } catch (err: any) {
+            toastError("Có lỗi xảy ra", { 
+                description: err?.message || "Lỗi hệ thống, vui lòng thử lại sau." 
+            });
         } finally {
             setSubmitting(false);
         }
     };
 
     return (
-        <div
-            className="min-h-screen w-full relative overflow-hidden bg-linear-to-br from-blue-50 via-white to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
-            <Design/>
+        <div className="min-h-screen w-full relative overflow-hidden bg-linear-to-br from-blue-50 via-white to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+            <Design />
             <div className="relative z-10 flex flex-col lg:flex-row min-h-screen">
-                <div
-                    className="hidden lg:flex lg:w-1/2 w-full items-center justify-center px-4 lg:px-12">
-                    <LeftSideForm type={panelType}/>
+                <div className="hidden lg:flex lg:w-1/2 w-full items-center justify-center px-4 lg:px-12">
+                    <LeftSideForm type={panelType} />
                 </div>
-                <div
-                    className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-6 lg:p-8">
+                <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-6 lg:p-8">
                     <div className="w-full max-w-md relative">
                         <div className="lg:hidden text-center mb-8">
                             <div className="flex items-center justify-center gap-3 mb-4">
-                                <div
-                                    className={`w-12 h-12 bg-linear-to-br ${panelData.logoGradientFrom} ${panelData.logoGradientTo} rounded-xl flex items-center justify-center shadow-lg`}>
+                                <div className={`w-12 h-12 bg-linear-to-br ${panelData.logoGradientFrom} ${panelData.logoGradientTo} rounded-xl flex items-center justify-center shadow-lg`}>
                                     {type === "shop"
-                                        ? (<FaStore className="text-white text-2xl"/>)
-                                        : (<FaUserPlus className="text-white text-2xl"/>)}
+                                        ? (<FaStore className="text-white text-2xl" />)
+                                        : (<FaUserPlus className="text-white text-2xl" />)}
                                 </div>
                                 <Title
                                     level={1}
@@ -207,16 +169,13 @@ export function RegisterForm({type, initialValues, onSuccess} : RegisterFormProp
 
                         <div
                             className="w-full shadow-2xl hover:shadow-3xl transition-all duration-300 relative z-10 bg-white/90 dark:bg-slate-800/90 border-2 border-pink-500/30 dark:border-pink-500/50 p-8 sm:p-10 rounded-3xl backdrop-blur-md"
-                            style={{
-                            backdropFilter: "blur(12px)"
-                        }}>
+                            style={{ backdropFilter: "blur(12px)" }}>
+                            
                             <div className="text-center mb-8 pt-1">
                                 <Title
                                     level={2}
                                     className="mb-2 text-3xl font-bold text-gray-800 dark:text-gray-100">
-                                    {type === "shop"
-                                        ? "Đăng Ký Bán Hàng"
-                                        : "Đăng Ký Tài Khoản"}
+                                    {type === "shop" ? "Đăng Ký Bán Hàng" : "Đăng Ký Tài Khoản"}
                                 </Title>
                                 <Text className="text-base text-gray-500 dark:text-gray-400">
                                     Nhập thông tin để tạo tài khoản mới
@@ -225,15 +184,15 @@ export function RegisterForm({type, initialValues, onSuccess} : RegisterFormProp
 
                             <Divider>Đăng ký với email</Divider>
 
-                            <form onSubmit={onFinish} className="mb-6">
+                            <form onSubmit={handleSubmit(onFinish)} className="mb-6">
                                 <InputField
                                     label="Tên đăng nhập"
                                     name="username"
                                     placeholder="Nhập tên đăng nhập"
                                     value={formData.username}
-                                    onChange={handleInputChange}
+                                    onChange={handleChange}
                                     errorMessage={formErrors.username}
-                                    ref={usernameRef}/>
+                                    ref={usernameRef} />
 
                                 <InputField
                                     label="Email"
@@ -241,8 +200,8 @@ export function RegisterForm({type, initialValues, onSuccess} : RegisterFormProp
                                     placeholder="example@email.com"
                                     type="text"
                                     value={formData.email}
-                                    onChange={handleInputChange}
-                                    errorMessage={formErrors.email}/>
+                                    onChange={handleChange}
+                                    errorMessage={formErrors.email} />
 
                                 <div className="flex items-center justify-between mb-1">
                                     <label
@@ -254,7 +213,7 @@ export function RegisterForm({type, initialValues, onSuccess} : RegisterFormProp
                                         type="button"
                                         onClick={handleGeneratePassword}
                                         className="flex items-center gap-1.5 text-xs font-semibold text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 transition-colors cursor-pointer group">
-                                        <FaMagic className="group-hover:rotate-12 transition-transform duration-300"/>
+                                        <FaMagic className="group-hover:rotate-12 transition-transform duration-300" />
                                         <span className="group-hover:underline">
                                             Gợi ý mật khẩu?
                                         </span>
@@ -267,8 +226,8 @@ export function RegisterForm({type, initialValues, onSuccess} : RegisterFormProp
                                     placeholder="Nhập mật khẩu"
                                     type="password"
                                     value={formData.password}
-                                    onChange={handleInputChange}
-                                    errorMessage={formErrors.password}/>
+                                    onChange={handleChange}
+                                    errorMessage={formErrors.password} />
 
                                 <InputField
                                     label="Xác nhận mật khẩu"
@@ -276,8 +235,8 @@ export function RegisterForm({type, initialValues, onSuccess} : RegisterFormProp
                                     placeholder="Nhập lại mật khẩu"
                                     type="password"
                                     value={formData.confirmPassword}
-                                    onChange={handleInputChange}
-                                    errorMessage={formErrors.confirmPassword}/>
+                                    onChange={handleChange}
+                                    errorMessage={formErrors.confirmPassword} />
 
                                 <ButtonField
                                     htmlType="submit"
@@ -285,9 +244,7 @@ export function RegisterForm({type, initialValues, onSuccess} : RegisterFormProp
                                     disabled={loading || submitting}
                                     loading={loading || submitting}
                                     className="w-full h-12 text-lg font-bold shadow-lg shadow-orange-500/20">
-                                    {type === "shop"
-                                        ? "Đăng Ký Cửa Hàng"
-                                        : "Đăng Ký Ngay"}
+                                    {type === "shop" ? "Đăng Ký Cửa Hàng" : "Đăng Ký Ngay"}
                                 </ButtonField>
                             </form>
 
@@ -296,16 +253,14 @@ export function RegisterForm({type, initialValues, onSuccess} : RegisterFormProp
                                     Đã có tài khoản?
                                     <Link
                                         className="text-orange-600 hover:text-orange-700 font-bold hover:underline ml-1"
-                                        href={type === "shop"
-                                        ? "/shop/login"
-                                        : "/login"}>
+                                        href={type === "shop" ? "/shop/login" : "/login"}>
                                         Đăng nhập ngay
                                     </Link>
                                 </Text>
                             </div>
                         </div>
 
-                        <MobileFeatureList features={AUTH_PANEL_DATA.return_customer.features}/>
+                        <MobileFeatureList features={AUTH_PANEL_DATA.return_customer.features} />
                     </div>
                 </div>
             </div>

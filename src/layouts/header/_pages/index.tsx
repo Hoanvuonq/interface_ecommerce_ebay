@@ -7,7 +7,7 @@ import {
   MobileMenuButton,
   NotificationDropdown,
   TopHeader,
-  HotKeywords, // Đã import nhưng chưa dùng ở code cũ
+  HotKeywords, 
   UserAuthDropdown,
 } from "../_components";
 import { Search, MobileMenuDrawer } from "@/components";
@@ -33,7 +33,6 @@ export const Header = () => {
     handleSearchSubmit,
   } = useProductSearch();
 
-  // Hàm xử lý khi click vào hot keyword
   const handleHotKeywordSelect = (keyword: string) => {
     handleSearchChange(keyword);
     handleSearchSubmit(keyword);
@@ -42,7 +41,7 @@ export const Header = () => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await searchService.getHot({ limit: 5 }); // Limit 5 để vừa đẹp UI
+        const res = await searchService.getHot({ limit: 5 }); 
         setHotKeywords(res.suggestions || []);
       } catch (error) {
         console.error("Failed to load hot keywords:", error);
@@ -61,7 +60,7 @@ export const Header = () => {
       </div>
 
       <div className="backdrop-blur-md bg-opacity-95" style={{ backgroundColor: PRIMARY_COLOR }}>
-        <div className="container mx-auto px-3 sm:px-4 lg:px-8">
+        <div className="container mx-auto px-3 sm:px-4 lg:px-30">
           <div className="flex flex-col md:flex-row items-center justify-between py-3 md:h-18 h-auto gap-3">
             <div className="flex items-center justify-between w-full md:w-auto gap-4">
               <div className="flex items-center gap-3">

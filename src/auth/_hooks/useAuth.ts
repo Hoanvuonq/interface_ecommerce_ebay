@@ -1,6 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect, useCallback } from "react";
 import authService from "../services/auth.service";
 import { verifyAuth } from "@/utils/local.storage";
@@ -91,7 +91,6 @@ export function useLoginShop() {
     try {
       const res = await authService.loginShop(payload);
       console.log("Shop login response:", res);
-      // ✅ Backend tự set cookies, không cần lưu vào localStorage
       return res;
     } catch (err: any) {
       setError(err?.message || "Đăng nhập thất bại");
@@ -116,7 +115,6 @@ export function useLoginStaff() {
     try {
       const res = await authService.loginStaff(payload);
       console.log("Staff login response:", res);
-      // ✅ Backend tự set cookies, không cần lưu vào localStorage
       return res;
     } catch (err: any) {
       setError(err?.message || "Đăng nhập thất bại");

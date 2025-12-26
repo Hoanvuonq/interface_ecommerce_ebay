@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { ProductStats, VoucherList } from "@/app/products/_components";
 import Pricing from "@/app/products/_components/Pricing";
 import { ShippingInfo } from "@/app/products/_components/ShippingInfo";
@@ -8,6 +7,7 @@ import { VariantSelector } from "@/app/products/_components/VariantSelector";
 import { AddToCartButton } from "@/components";
 import { TagComponents } from "@/components/tags";
 import { cn } from "@/utils/cn";
+import React from "react";
 import { ProductPurchaseActionsProps } from "../../_types/products";
 
 

@@ -1,8 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
 import { getUserId } from "@/utils/jwt";
-
+import { useToast } from "@/hooks/useToast";
 interface WelcomeNotificationProps {
   enabled?: boolean;
   delay?: number;
@@ -15,7 +14,7 @@ export function WelcomeNotificationFixed({
   showOnce = true,
 }: WelcomeNotificationProps) {
   const [mounted, setMounted] = useState(false);
-
+  const { success} = useToast();
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -34,7 +33,7 @@ export function WelcomeNotificationFixed({
     }
 
     const timer = setTimeout(() => {
-      toast.success("Chào mừng bạn!", {
+      success("Chào mừng bạn!", {
         description: `Xin chào! Chúc bạn có trải nghiệm mua sắm vui vẻ.`,
         duration: 5000,
       });

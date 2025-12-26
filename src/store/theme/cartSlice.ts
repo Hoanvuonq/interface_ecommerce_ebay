@@ -1,7 +1,3 @@
-/**
- * Cart Redux Slice - Quản lý state giỏ hàng
- */
-
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { cartService } from "@/services/cart/cart.service";
 
@@ -15,8 +11,7 @@ import {
   OrderPreviewResponse,
   CheckoutValidationErrorResponse,
 } from "@/types/cart/cart.types";
-// import { message } from 'antd';
-import { toast } from "sonner";
+import { useToast } from "@/hooks/useToast";
 import { isAuthError } from "@/utils/cart/cart-auth.utils";
 
 interface CartState {
@@ -38,6 +33,8 @@ const initialState: CartState = {
   checkoutLoading: false,
   checkoutError: null,
 };
+
+const { success, error, warning } = useToast();
 
 const mergeSelectionState = (
   incomingCart: CartDto | any,
@@ -109,7 +106,6 @@ export const addToCart = createAsyncThunk(
       const response = await cartService.addToCart(request);
       return response;
     } catch (error: any) {
-      // Return only serializable error message (not Error object)
       const errorMessage =
         error.message ||
         error.response?.data?.message ||
@@ -251,7 +247,7 @@ export const checkoutPreview = createAsyncThunk(
   async (request: OrderPreviewRequest, { rejectWithValue }) => {
     try {
       const result = await cartService.checkout(request);
-      // Check if it's an error response
+
       if ("errors" in result) {
         return rejectWithValue(result as CheckoutValidationErrorResponse);
       }
@@ -276,19 +272,17 @@ const cartSlice = createSlice({
     clearCartError: (state) => {
       state.error = null;
     },
-    // Local selection toggle (no API call)
+
     toggleItemSelectionLocal: (state, action: PayloadAction<string>) => {
       if (!state.cart) return;
 
       const itemId = action.payload;
 
-      // Find and toggle item
       for (const shop of state.cart.shops) {
         const item = shop.items.find((i) => i.id === itemId);
         if (item) {
           item.selectedForCheckout = !item.selectedForCheckout;
 
-          // Update shop selection status
           const selectedItems = shop.items.filter((i) => i.selectedForCheckout);
           shop.hasSelectedItems = selectedItems.length > 0;
           shop.allSelected = selectedItems.length === shop.items.length;
@@ -296,7 +290,7 @@ const cartSlice = createSlice({
         }
       }
     },
-    // Select all items locally
+
     selectAllItemsLocal: (state) => {
       if (!state.cart) return;
 
@@ -308,7 +302,7 @@ const cartSlice = createSlice({
         shop.allSelected = true;
       });
     },
-    // Deselect all items locally
+
     deselectAllItemsLocal: (state) => {
       if (!state.cart) return;
 
@@ -320,7 +314,7 @@ const cartSlice = createSlice({
         shop.allSelected = false;
       });
     },
-    // Toggle shop selection locally
+
     toggleShopSelectionLocal: (state, action: PayloadAction<string>) => {
       if (!state.cart) return;
 
@@ -338,7 +332,6 @@ const cartSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // Fetch cart
     builder
       .addCase(fetchCart.pending, (state) => {
         state.loading = true;
@@ -354,13 +347,11 @@ const cartSlice = createSlice({
           (action.payload as string) ||
           action.error.message ||
           "Failed to fetch cart";
-        // Don't show error message for auth errors
+
         if (!isAuthError({ message: state.error })) {
-          // message.error(state.error); // Commented out to avoid duplicate messages
         }
       });
 
-    // Add to cart
     builder
       .addCase(addToCart.pending, (state) => {
         state.loading = true;
@@ -368,16 +359,15 @@ const cartSlice = createSlice({
       })
       .addCase(addToCart.fulfilled, (state, action) => {
         state.loading = false;
-        state.cart = mergeSelectionState(action.payload, state.cart); 
-        toast.success("Đã thêm vào giỏ hàng");
+        state.cart = mergeSelectionState(action.payload, state.cart);
+        success("Đã thêm vào giỏ hàng");
       })
       .addCase(addToCart.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
-        toast.error(action.payload as string);
+        error(action.payload as string);
       });
 
-    // Update cart item
     builder
       .addCase(updateCartItem.pending, (state) => {
         state.loading = true;
@@ -391,11 +381,10 @@ const cartSlice = createSlice({
         const errorMsg = action.payload as string;
         if (errorMsg && errorMsg !== "undefined") {
           state.error = errorMsg;
-          toast.error(errorMsg);
+          error(errorMsg);
         }
       });
 
-    // Remove cart item
     builder
       .addCase(removeCartItem.pending, (state) => {
         state.loading = true;
@@ -404,15 +393,14 @@ const cartSlice = createSlice({
         state.loading = false;
         const updatedCart = mergeSelectionState(action.payload, state.cart);
         state.cart = updatedCart;
-        toast.success("Đã xóa sản phẩm khỏi giỏ hàng");
+        success("Đã xóa sản phẩm khỏi giỏ hàng");
       })
       .addCase(removeCartItem.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
-        toast.error(action.payload as string);
+        error(action.payload as string);
       });
 
-    // Clear cart
     builder
       .addCase(clearCart.pending, (state) => {
         state.loading = true;
@@ -420,75 +408,68 @@ const cartSlice = createSlice({
       .addCase(clearCart.fulfilled, (state, action) => {
         state.loading = false;
         state.cart = mergeSelectionState(action.payload, state.cart);
-        toast.success("Đã xóa tất cả sản phẩm");
+        success("Đã xóa tất cả sản phẩm");
       })
       .addCase(clearCart.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
-        toast.error(action.payload as string);
+        error(action.payload as string);
       });
 
-    // Update cart
     builder
       .addCase(updateCart.fulfilled, (state, action) => {
         state.cart = mergeSelectionState(action.payload, state.cart);
       })
       .addCase(updateCart.rejected, (state, action) => {
         state.error = action.payload as string;
-        toast.error(action.payload as string);
+        error(action.payload as string);
       });
 
-    // Toggle item selection
     builder
       .addCase(toggleItemSelection.fulfilled, (state, action) => {
         state.cart = action.payload;
       })
       .addCase(toggleItemSelection.rejected, (state, action) => {
         state.error = action.payload as string;
-        toast.error(action.payload as string);
+        error(action.payload as string);
       });
 
-    // Select items
     builder
       .addCase(selectItems.fulfilled, (state, action) => {
         state.cart = action.payload;
       })
       .addCase(selectItems.rejected, (state, action) => {
         state.error = action.payload as string;
-        toast.error(action.payload as string);
+        error(action.payload as string);
       });
 
-    // Deselect items
     builder
       .addCase(deselectItems.fulfilled, (state, action) => {
         state.cart = action.payload;
       })
       .addCase(deselectItems.rejected, (state, action) => {
         state.error = action.payload as string;
-        toast.error(action.payload as string);
+        error(action.payload as string);
       });
 
-    // Select all items
     builder
       .addCase(selectAllItems.fulfilled, (state, action) => {
         state.cart = action.payload;
       })
       .addCase(selectAllItems.rejected, (state, action) => {
         state.error = action.payload as string;
-        toast.error(action.payload as string);
+        error(action.payload as string);
       });
 
-    // Deselect all items
     builder
       .addCase(deselectAllItems.fulfilled, (state, action) => {
         state.cart = action.payload;
       })
       .addCase(deselectAllItems.rejected, (state, action) => {
         state.error = action.payload as string;
-        toast.error(action.payload as string);
+        error(action.payload as string);
       });
 
-    // Checkout preview
     builder
       .addCase(checkoutPreview.pending, (state) => {
         state.checkoutLoading = true;
@@ -502,7 +483,7 @@ const cartSlice = createSlice({
         state.checkoutLoading = false;
         state.checkoutError =
           (action.payload as any)?.message || "Checkout validation failed";
-        toast.error(state.checkoutError);
+        error(state.checkoutError ?? "Checkout validation failed");
       });
   },
 });

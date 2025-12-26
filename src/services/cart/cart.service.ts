@@ -240,3 +240,7 @@ class CartService {
 }
 
 export const cartService = new CartService();
+
+export function getCart(): any {
+    throw new Error("Function not implemented.");
+}

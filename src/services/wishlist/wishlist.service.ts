@@ -21,11 +21,7 @@ import type { PageableResponse } from '@/api/_types/api.types';
 const WISHLIST_API_BASE = '/v1/wishlists';
 
 class WishlistService {
-    // ========== Wishlist Management ==========
-
-    /**
-     * Tạo wishlist mới
-     */
+ 
     async createWishlist(requestData: CreateWishlistRequest): Promise<WishlistResponse> {
         const response: ApiResponse<WishlistResponse> = await request({
             url: WISHLIST_API_BASE,

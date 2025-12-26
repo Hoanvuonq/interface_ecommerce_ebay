@@ -1,51 +1,7 @@
- // const quickFilters = [
-    //     {
-    //         key: 'all',
-    //         label: 'Tất cả',
-    //         icon: <ShoppingOutlined />,
-    //         color: 'blue',
-    //         description: 'Xem tất cả sản phẩm',
-    //         action: () => {
-    //             setActiveTab('all');
-    //             setFilters({});
-    //         }
-    //     },
-    //     {
-    //         key: 'featured',
-    //         label: 'Nổi bật',
-    //         icon: <TrophyOutlined />,
-    //         color: 'orange',
-    //         description: 'Sản phẩm được yêu thích',
-    //         action: () => {
-    //             setActiveTab('featured');
-    //             setFilters({});
-    //         }
-    //     },
-    //     {
-    //         key: 'new',
-    //         label: 'Hàng mới',
-    //         icon: <GiftOutlined />,
-    //         color: 'green',
-    //         description: 'Sản phẩm mới nhất',
-    //         action: () => {
-    //             setActiveTab('new');
-    //             setFilters({ sort: 'createdDate,desc' });
-    //         }
-    //     },
-    //     {
-    //         key: 'price-low',
-    //         label: 'Giá tốt',
-    //         icon: <RocketOutlined />,
-    //         color: 'red',
-    //         description: 'Giá cả hợp lý',
-    //         action: () => {
-    //             setActiveTab('all');
-    //             setFilters({ sort: 'basePrice,asc' });
-    //         }
-    //     },
-    // ];
-
-
+import type {
+  PublicProductDetailDTO,
+  PublicProductVariantDTO,
+} from "@/types/product/public-product.dto";
 
 export type BreadcrumbItem = {
   title: string;
@@ -55,7 +11,6 @@ export type BreadcrumbItem = {
 export interface BreadcrumbProps {
   items: BreadcrumbItem[];
 }
-
 
 export interface PricingProps {
   discountInfo?: any;
@@ -67,3 +22,13 @@ export interface PricingProps {
   formatPrice: (price: number) => string;
 }
 
+export interface ProductInfoProps {
+  product: PublicProductDetailDTO;
+  selectedVariant: PublicProductVariantDTO | null;
+}
+
+export interface SpecEntry {
+  key: string;
+  label: string;
+  value: string | number | undefined;
+}

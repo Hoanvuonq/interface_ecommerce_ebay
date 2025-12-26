@@ -1,16 +1,17 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useVerify, useResendOtp, useSendOtp } from "@/auth/_hooks/useAuth";
 import { Design } from "@/components"; 
 import { ButtonField } from "@/components/buttonField";
 import { FaEnvelopeOpenText, FaShieldAlt } from "react-icons/fa";
 import { MdEmail, MdTimer, MdRefresh } from "react-icons/md"; 
-import { toast } from "sonner";
+import { toast } from "sonner"; // Keep for success messages
 import { cn } from "@/utils/cn";
+import { useToast } from "@/hooks/useToast"; // Use for errors
+import { useVerifyForm } from "../../_hooks/useVerifyForm";
 
-// --- SUB-COMPONENTS ---
 const Title = ({ level, className, children }: { level: number; className?: string; children: React.ReactNode }) => {
   const Tag = `h${level}` as React.ElementType;
   return <Tag className={className}>{children}</Tag>;
@@ -29,72 +30,34 @@ type VerifyFormProps = {
 
 export function VerifyForm({ email, type, mode = "REGISTRATION", onSuccess }: VerifyFormProps) {
   const router = useRouter();
-  
-  // Hooks
-  const { handleVerify, loading: verifyLoading, error } = useVerify();
+  const { handleVerify, loading: verifyLoading, error: verifyError } = useVerify();
   const { handleResendOtp, loading: resendLoading } = useResendOtp();
   const { handleSendOtp } = useSendOtp();
-  
-  // State
-  const [otp, setOtp] = useState<string[]>(new Array(6).fill(""));
+  const { error: toastError } = useToast();
   const [submitting, setSubmitting] = useState(false);
-  const [countdown, setCountdown] = useState(60); 
-  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
-  
-  const hasSentInitialOtp = useRef(false);
 
-  useEffect(() => {
-    if (mode === "ACTIVATION" && !hasSentInitialOtp.current && email) {
-      hasSentInitialOtp.current = true;
-      const sendInitialOtp = async () => {
+  const { 
+    otp, 
+    countdown, 
+    inputRefs, 
+    handleChange, 
+    handleKeyDown, 
+    handlePaste,
+    resetOtp,
+    resetCountdown
+  } = useVerifyForm({
+    email,
+    mode,
+    onSendInitialOtp: async () => {
         try {
-          await handleSendOtp({ email });
-          toast.success("Mã xác thực mới đã được gửi tới email.");
-          setCountdown(60);
+            await handleSendOtp({ email });
+            toast.success("Mã xác thực mới đã được gửi tới email.");
         } catch (err: any) {
-          toast.error(err?.message || "Không thể gửi mã xác thực.");
+             toastError("Lỗi gửi mã", { description: err?.message });
         }
-      };
-      sendInitialOtp();
     }
-  }, [mode, email, handleSendOtp]);
+  });
 
-  useEffect(() => {
-    if (countdown <= 0) return;
-    const timer = setInterval(() => setCountdown((c) => c - 1), 1000);
-    return () => clearInterval(timer);
-  }, [countdown]);
-
-  useEffect(() => {
-    inputRefs.current[0]?.focus();
-  }, []);
-
-  const handleChange = (element: HTMLInputElement, index: number) => {
-    if (isNaN(Number(element.value))) return false;
-    const newOtp = [...otp];
-    newOtp[index] = element.value.substring(element.value.length - 1);
-    setOtp(newOtp);
-    if (element.value !== "" && index < 5) inputRefs.current[index + 1]?.focus();
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
-    if (e.key === "Backspace" && !otp[index] && index > 0) {
-      inputRefs.current[index - 1]?.focus();
-    }
-  };
-
-  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    const pastedData = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
-    if (!pastedData) return;
-    const newOtp = [...otp];
-    for (let i = 0; i < pastedData.length; i++) newOtp[i] = pastedData[i];
-    setOtp(newOtp);
-    const nextIndex = Math.min(pastedData.length, 5);
-    inputRefs.current[nextIndex]?.focus();
-  };
-
-  // --- HANDLER SUBMIT ---
   const onFinish = async (e: React.FormEvent) => {
     e.preventDefault();
     const otpCode = otp.join("");
@@ -109,7 +72,6 @@ export function VerifyForm({ email, type, mode = "REGISTRATION", onSuccess }: Ve
       if (res) {
         toast.success("Xác thực thành công!");
         
-        // Lưu credential để auto-fill login (chỉ khi đăng ký mới)
         if (mode === "REGISTRATION") {
             const savedForm = localStorage.getItem(`registerForm_${type}`);
             if (savedForm) {
@@ -121,44 +83,37 @@ export function VerifyForm({ email, type, mode = "REGISTRATION", onSuccess }: Ve
             }
         }
 
-        // ✅ ƯU TIÊN GỌI PROP onSuccess TỪ PARENT (để RegisterScreen xóa localStorage)
         if (onSuccess) {
             onSuccess();
         } else {
-            // Fallback: Tự redirect nếu không có prop onSuccess (dùng cho mode ACTIVATION đứng độc lập)
             setTimeout(() => router.push(type === 'shop' ? '/shop/login' : '/login'), 1500);
         }
 
       } else {
-        toast.error(error || "Mã xác thực không đúng.");
-        setOtp(new Array(6).fill(""));
-        inputRefs.current[0]?.focus();
+        toastError("Xác thực thất bại", { description: verifyError || "Mã xác thực không đúng." });
+        resetOtp();
       }
     } catch (err: any) {
-      toast.error(err?.message || "Có lỗi xảy ra.");
+      toastError("Lỗi hệ thống", { description: err?.message });
     } finally {
       setSubmitting(false);
     }
   };
 
-  // --- HANDLER RESEND ---
   const handleResend = async () => {
     if (countdown > 0) return;
     try {
       await handleResendOtp({ email, otpType: "ACCOUNT_ACTIVATION" });
       toast.success("Mã mới đã được gửi!");
-      setCountdown(60);
-      setOtp(new Array(6).fill(""));
-      inputRefs.current[0]?.focus();
+      resetCountdown();
+      resetOtp();
     } catch (err: any) {
-      toast.error(err?.message || "Lỗi gửi lại mã.");
+      toastError("Lỗi gửi lại mã", { description: err?.message });
     }
   };
 
-  // --- HANDLER CANCEL ---
   const handleCancel = () => {
     if (mode === "REGISTRATION") {
-        // Quay lại RegisterScreen để nó xử lý state
         localStorage.removeItem(`registerStep_${type}`);
         localStorage.removeItem(`registerForm_${type}`);
         localStorage.removeItem(`registerChecked_${type}`);
@@ -187,11 +142,11 @@ export function VerifyForm({ email, type, mode = "REGISTRATION", onSuccess }: Ve
                   <FaEnvelopeOpenText className="text-white text-3xl drop-shadow-md" />
                 </div>
                 <div className="absolute -bottom-2 -right-2 bg-white dark:bg-slate-800 p-1 rounded-full shadow-sm">
-                   <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                    <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
                       <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="4">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                       </svg>
-                   </div>
+                    </div>
                 </div>
               </div>
             </div>
@@ -215,7 +170,6 @@ export function VerifyForm({ email, type, mode = "REGISTRATION", onSuccess }: Ve
             </div>
           </div>
 
-          {/* FORM */}
           <form onSubmit={onFinish} className="space-y-8">
             <div className="flex justify-center gap-2 sm:gap-3">
                 {otp.map((data, index) => (

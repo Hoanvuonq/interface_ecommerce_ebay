@@ -3,7 +3,7 @@
 import {
   CustomBreadcrumb,
   CustomSpinner,
-  ImageWithPreview
+  ImageWithPreview,
 } from "@/components";
 import { CardComponents } from "@/components/card";
 import { CustomVideoModal } from "@/components/CustomVideoModal";
@@ -14,9 +14,7 @@ import type { PublicProductVariantDTO } from "@/types/product/public-product.dto
 import type { ReviewMediaResponse } from "@/types/reviews/review.types";
 import { cn } from "@/utils/cn";
 import { toPublicUrl } from "@/utils/storage/url";
-import {
-  PlayCircle
-} from "lucide-react";
+import { PlayCircle } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -106,15 +104,12 @@ export const ProductDetailPage = () => {
     followerCount,
   } = useProductDetail();
   const params = useParams() as { id: string };
-
   const [shopChatOpen, setShopChatOpen] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const [reviewPage, setReviewPage] = useState(0);
   const [videoPreview, setVideoPreview] = useState<string | null>(null);
   const REVIEWS_PAGE_SIZE = 3;
-
-  
 
   const hasVariantImage = (variant?: PublicProductVariantDTO | null) => {
     if (!variant) return false;
@@ -138,10 +133,9 @@ export const ProductDetailPage = () => {
       const vPrice =
         selectedVariant?.price !== undefined && selectedVariant?.price !== null
           ? selectedVariant.price
-          : product?.priceMin ?? product?.basePrice ?? 0; 
+          : product?.priceMin ?? product?.basePrice ?? 0;
 
       const calculatePriceAfterVoucher = () => {
-       
         if (!selectedVariant) {
           return (
             product?.priceAfterBestVoucher ??
@@ -252,7 +246,9 @@ export const ProductDetailPage = () => {
     product.priceMin !== product.priceMax;
 
   const priceRangeLabel = hasPriceRange
-    ? `${formatPriceFull(product!.priceMin!)} - ${formatPriceFull(product!.priceMax!)}`
+    ? `${formatPriceFull(product!.priceMin!)} - ${formatPriceFull(
+        product!.priceMax!
+      )}`
     : null;
 
   const bestPlatformVoucher = product?.bestPlatformVoucher;
@@ -340,12 +336,14 @@ export const ProductDetailPage = () => {
                   <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1.8fr)]">
                     <section className="space-y-4">
                       <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-md">
-                        <ImageWithPreview
-                          src={primaryImage}
-                          alt={product.name}
-                          className="w-full rounded-xl object-cover cursor-zoom-in"
-                          onClick={() => setImagePreview(primaryImage)}
-                        />
+                        <div className="relative w-full aspect-square overflow-hidden rounded-xl bg-gray-50">
+                          <ImageWithPreview
+                            src={primaryImage}
+                            alt={product.name}
+                            className="absolute inset-0 w-full h-full object-cover cursor-zoom-in transition-transform duration-500 hover:scale-105"
+                            onClick={() => setImagePreview(primaryImage)}
+                          />
+                        </div>
                       </div>
                       {galleryImages.length > 1 && (
                         <div className="grid grid-cols-5 gap-2">
@@ -353,10 +351,10 @@ export const ProductDetailPage = () => {
                             <div
                               key={img.key}
                               className={cn(
-                                "h-20 w-full rounded-lg overflow-hidden border-2 transition-all cursor-pointer",
+                                "relative aspect-square w-full rounded-lg overflow-hidden border-2 transition-all cursor-pointer bg-gray-50",
                                 primaryImage === img.preview
-                                  ? "border-orange-500 scale-105 shadow-md"
-                                  : "border-gray-200"
+                                  ? "border-orange-500 scale-105 shadow-md z-10"
+                                  : "border-gray-200 hover:border-orange-300"
                               )}
                               onClick={() => {
                                 setActiveThumbnail(img.preview);
@@ -371,7 +369,7 @@ export const ProductDetailPage = () => {
                             >
                               <img
                                 src={img.thumb}
-                                className="h-full w-full object-cover"
+                                className="absolute inset-0 h-full w-full object-cover"
                                 alt=""
                               />
                             </div>

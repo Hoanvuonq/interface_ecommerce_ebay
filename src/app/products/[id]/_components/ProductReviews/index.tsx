@@ -1,18 +1,21 @@
 "use client";
 
-import React from "react";
-import { 
-    MessageSquareText, Video, Image as ImageIcon, 
-    User, CheckCircle, Star 
-} from "lucide-react";
+import { useProductDetail } from "@/app/products/_context/products";
+import { CustomButton, CustomSpinner } from "@/components";
 import { CardComponents } from "@/components/card";
 import { CustomAvatar } from "@/components/customAvatar";
 import { CustomEmpty } from "@/components/CustomEmpty";
 import { CustomProgressBar } from "@/components/CustomProgressBar";
 import { CustomRate } from "@/components/rating";
 import { TagComponents } from "@/components/tags";
-import { CustomButton, CustomSpinner } from "@/components";
-import { useProductDetail } from "@/app/products/_context/products";
+import {
+    CheckCircle,
+    Image as ImageIcon,
+    MessageSquareText,
+    Star,
+    User,
+    Video
+} from "lucide-react";
 
 export const ProductReviews = () => {
     const { 

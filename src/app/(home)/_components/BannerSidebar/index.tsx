@@ -13,8 +13,6 @@ interface BannerSidebarProps {
 
 const BannerSidebar: React.FC<BannerSidebarProps> = ({ className = '' }) => {
     const { sidebarBanners, loading } = useHomepageBannerContext();
-
-    // Get the first active sidebar banner
     const banner = sidebarBanners.find((b) => b.active);
 
     if (loading) {
@@ -23,16 +21,13 @@ const BannerSidebar: React.FC<BannerSidebarProps> = ({ className = '' }) => {
         );
     }
 
-    if (!banner) {
-        return null; // No banner to display
-    }
+    if (!banner) {return null}
 
     let imageUrl: string | undefined;
 
     if (banner.basePathDesktop && banner.extensionDesktop) {
         imageUrl = resolveBannerImageUrl(banner.basePathDesktop, banner.extensionDesktop, '_orig');
     }
-    // 2. Fallback to Original Media
     else if (banner.basePath && banner.extension) {
         imageUrl = resolveBannerImageUrl(banner.basePath, banner.extension, '_orig');
     }
@@ -44,8 +39,7 @@ const BannerSidebar: React.FC<BannerSidebarProps> = ({ className = '' }) => {
 
     const content = (
         <div className={`relative w-full overflow-hidden rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 group ${className}`}>
-            {/* Banner Image - Aspect ratio dọc phù hợp cho sidebar (3:4 hoặc 2:3) */}
-            <div className="relative w-full aspect-[2/3] min-h-[400px] lg:min-h-[600px]">
+            <div className="relative w-full aspect-2/3 min-h-100 lg:min-h-150">
                 <Image
                     src={imageUrl}
                     alt={banner.title || 'Featured Products Banner'}
@@ -56,8 +50,7 @@ const BannerSidebar: React.FC<BannerSidebarProps> = ({ className = '' }) => {
                 />
             </div>
 
-            {/* Hover overlay effect */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+            <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
         </div>
     );
 
