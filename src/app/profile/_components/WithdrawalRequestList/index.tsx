@@ -1,6 +1,7 @@
 "use client";
 
-import { Column, DataTable } from "@/components";
+import { DataTable } from "@/components";
+import { Column } from "@/components/DataTable/type";
 import { Button } from "@/components/button/button";
 import { getStatusStyle, getWithdrawalLabel } from "@/constants/status";
 import walletService from "@/services/wallet/wallet.service";
