@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -24,7 +24,7 @@ export const Header = () => {
   const isLoggedIn = !!isAuthenticated();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [hotKeywords, setHotKeywords] = useState<SuggestionItemDTO[]>([]);
-
+const hasFetchedHotKeywords = useRef(false);
   const {
     searchValue,
     searchOptions,
@@ -39,9 +39,12 @@ export const Header = () => {
   };
 
   useEffect(() => {
-    (async () => {
+    if (hasFetchedHotKeywords.current) return;
+   (async () => {
       try {
-        const res = await searchService.getHot({ limit: 5 }); 
+        hasFetchedHotKeywords.current = true;
+        
+        const res = await searchService.getHot({ limit: 5 });
         setHotKeywords(res.suggestions || []);
       } catch (error) {
         console.error("Failed to load hot keywords:", error);

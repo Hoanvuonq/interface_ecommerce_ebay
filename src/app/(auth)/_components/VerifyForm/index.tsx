@@ -9,7 +9,7 @@ import { FaEnvelopeOpenText, FaShieldAlt } from "react-icons/fa";
 import { MdEmail, MdTimer, MdRefresh } from "react-icons/md"; 
 import { toast } from "sonner"; // Keep for success messages
 import { cn } from "@/utils/cn";
-import { useToast } from "@/hooks/useToast"; // Use for errors
+import { useToast } from "@/hooks/useToast"; 
 import { useVerifyForm } from "../../_hooks/useVerifyForm";
 
 const Title = ({ level, className, children }: { level: number; className?: string; children: React.ReactNode }) => {

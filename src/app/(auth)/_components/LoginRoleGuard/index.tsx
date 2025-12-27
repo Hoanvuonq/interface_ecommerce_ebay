@@ -13,7 +13,7 @@ import { CustomResult } from "../CustomResult";
 interface LoginRoleGuardProps {
   children: React.ReactNode;
   allowedRoles: RoleEnum[];
-  loginType: "buyer" | "shop" | "employee";
+  loginType: "buyer" | "shop" | "employee" | "admin";
 }
 
 export default function LoginRoleGuard({
@@ -69,6 +69,8 @@ export default function LoginRoleGuard({
         shop: "Bạn đang cố gắng truy cập hệ thống Shop bằng tài khoản không có quyền. Vui lòng kiểm tra lại.",
         employee:
           "Khu vực này chỉ dành cho Nhân viên hệ thống. Vui lòng đăng nhập bằng tài khoản nội bộ.",
+        admin:
+          "Khu vực này chỉ dành cho Quản trị viên hệ thống. Vui lòng đăng nhập bằng tài khoản quản trị.",
       };
       return (
         messages[loginType] || "Bạn không có quyền truy cập vào trang này."

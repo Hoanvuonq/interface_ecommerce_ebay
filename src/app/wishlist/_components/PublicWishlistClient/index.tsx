@@ -115,7 +115,7 @@ export default function PublicWishlistClient({ shareToken }: Props) {
                         />
                       </div>
                     ) : (
-                      <div className="w-32 h-32 md:w-40 md:h-40 bg-gradient-to-br from-orange-500 to-rose-500 rounded-[2rem] flex items-center justify-center shadow-xl shadow-orange-100 rotate-3">
+                      <div className="w-32 h-32 md:w-40 md:h-40 bg-linear-to-br from-orange-500 to-rose-500 rounded-[2rem] flex items-center justify-center shadow-xl shadow-orange-100 rotate-3">
                         <Heart className="text-white w-16 h-16" strokeWidth={1.5} />
                       </div>
                     )}

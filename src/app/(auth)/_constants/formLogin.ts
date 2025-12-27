@@ -1,7 +1,7 @@
 import { AuthPanelType } from "./future";
 
-export type WelcomeTextType = 'shop' | 'default' | 'admin' | 'return_customer' | 'return_seller';
-export type LoginMode = "BUYER" | "SHOP";
+export type WelcomeTextType = 'shop' | 'default' | 'admin' | 'return_customer' | 'return_seller' |  'employee' | 'fallback';
+export type LoginMode = "BUYER" | "SHOP" | "ADMIN" | "EMPLOYEE";
 export interface UniversalLoginFormProps {
   mode: LoginMode;
 }
@@ -34,6 +34,11 @@ export const WELCOME_TEXT_CONTENT: Record<WelcomeTextType | 'fallback', ContentI
     return_seller: {
         title: "Chào mừng trở lại! 👋",
         description: "Đăng nhập để quản lý cửa hàng của bạn, theo dõi đơn hàng và phát triển kinh doanh trực tuyến",
+    },
+
+    employee: {
+        title: "Chào mừng nhân viên! 👔",
+        description: "Đăng nhập để truy cập hệ thống quản lý và vận hành.",
     },
 
     fallback: {
@@ -71,6 +76,32 @@ export const MODE_CONFIG = {
     welcomeTitle: "Đăng Nhập Shop",
     welcomeDesc: "Nhập thông tin tài khoản quản lý shop",
     homeText: "Về trang chủ",
+    homeLink: "/"
+  },
+ ADMIN: {
+    panelType: "admin" as AuthPanelType, 
+    storageKeyUser: "employee_user",
+    storageKeyEmail: "employee_email",
+    storageKeyPass: "employee_pass",
+    registerLink: "#", 
+    forgotPassLink: "/forgot-password",
+    role: "EMPLOYEE",
+    welcomeTitle: "Hệ thống Nhân viên",
+    welcomeDesc: "Đăng nhập để quản lý vận hành eBayExpress",
+    homeText: "Quay lại trang chủ",
+    homeLink: "/"
+  },
+  EMPLOYEE: {
+    panelType: "admin" as AuthPanelType, 
+    storageKeyUser: "employee_user",
+    storageKeyEmail: "employee_email",
+    storageKeyPass: "employee_pass",
+    registerLink: "#", 
+    forgotPassLink: "/forgot-password",
+    role: "EMPLOYEE",
+    welcomeTitle: "Hệ thống Nhân viên",
+    welcomeDesc: "Đăng nhập để quản lý vận hành eBayExpress",
+    homeText: "Quay lại trang chủ",
     homeLink: "/"
   }
 };

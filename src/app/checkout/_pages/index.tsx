@@ -1,52 +1,58 @@
 "use client";
 
+import React, { useState, useEffect, useMemo } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Store, CreditCard, Home, ChevronRight, Ticket } from "lucide-react";
+import { toast } from "sonner";
+
+// Components
 import { CustomBreadcrumb, SectionLoading } from "@/components";
 import { VoucherComponents } from "@/components/voucherComponents";
 import PageContentTransition from "@/features/PageContentTransition";
 import { formatPrice } from "@/hooks/useFormatPrice";
-import { PayOSPaymentResponse } from "@/types/payment/payment.types";
-import { Store, CreditCard, Home, ChevronRight, Ticket } from "lucide-react";
-import { useRouter } from "next/navigation";
-import React, { useState, useEffect, useMemo } from "react";
-import { toast } from "sonner";
+import { ItemImage } from "@/components/ItemImage";
 import AddressModal from "../_components/AddressModal";
 import CheckoutStepper from "../_components/CheckoutStepper";
 import { ShippingAddressCard } from "../_components/ShippingAddressCard";
-import { ItemImage } from "@/components/ItemImage";
 import { NoteSection } from "../_components/NoteSection";
 import { OrderSuccessModal } from "../_components/OrderSuccessModal";
 import { OrderSummary } from "../_components/OrderSummary";
 import { PaymentSection } from "../_components/PaymentSection";
 import { PayOSCheckoutModal } from "../_components/PayOSCheckoutModal";
 import { ShopShippingSelector } from "../_components/ShopShippingSelector";
-import { useCheckout } from "../context/checkout";
-import Link from "next/link";
+
+// Store & Hooks mới
+import { useCheckoutStore } from "../_store/useCheckoutStore";
+import { useCheckoutActions } from "../_hooks/useCheckoutActions";
+import { PayOSPaymentResponse } from "@/types/payment/payment.types";
 
 export const CheckoutScreen = () => {
   const router = useRouter();
 
-  const {
-    preview,
-    request,
-    loading,
-    savedAddresses,
-    updateShippingMethod,
-    updateGlobalVouchers,
-    updateAddress,
-    confirmOrder,
-  } = useCheckout();
+  // 1. Lấy Actions từ Hook mới
+  const { syncPreview, updateShippingMethod, confirmOrder } =
+    useCheckoutActions();
 
+  // 2. Lấy Data từ Zustand Store (Dùng Selector để tối ưu performance)
+  const preview = useCheckoutStore((s) => s.preview);
+  const request = useCheckoutStore((state) => state.request);
+  const loading = useCheckoutStore((state) => state.loading);
+  const savedAddresses = useCheckoutStore((state) => state.savedAddresses);
+  const setRequest = useCheckoutStore((state) => state.setRequest);
+
+  // --- Local UI State ---
   const [formData, setFormData] = useState({
     paymentMethod: "COD",
     customerNote: "",
   });
-
   const [addressModalVisible, setAddressModalVisible] = useState(false);
   const [successModalVisible, setSuccessModalVisible] = useState(false);
   const [payosModalVisible, setPayosModalVisible] = useState(false);
   const [payosInfo, setPayosInfo] = useState<PayOSPaymentResponse | null>(null);
   const [selectedOrder, setSelectedOrder] = useState<any>(null);
 
+  // Đồng bộ phương thức thanh toán từ preview vào form local
   useEffect(() => {
     if (preview?.paymentMethod) {
       setFormData((prev) => ({
@@ -55,27 +61,47 @@ export const CheckoutScreen = () => {
       }));
     }
   }, [preview?.paymentMethod]);
+  const totalDiscountAmount = useMemo(() => {
+    if (!preview?.voucherApplication) return 0;
 
+    const total = preview.voucherApplication.totalDiscount || 0;
+    const globalDiscount =
+      preview.voucherApplication.globalVouchers?.totalDiscount || 0;
+    const shippingDiscount =
+      preview.voucherApplication.shippingDiscountTotal || 0;
+    const productDiscount =
+      preview.voucherApplication.productDiscountTotal || 0;
+
+    // Trả về giá trị lớn nhất tìm được hoặc tổng tùy theo logic Backend
+    return total > 0
+      ? total
+      : globalDiscount + shippingDiscount + productDiscount;
+  }, [preview]);
+  // Tính toán địa chỉ hiển thị dựa trên store
   const currentDisplayAddress = useMemo(() => {
     if (request?.shippingAddress) return request.shippingAddress;
-    if (request?.addressId)
+    if (request?.addressId) {
       return (
         savedAddresses.find((a) => a.addressId === request.addressId) || null
       );
+    }
     return null;
   }, [request, savedAddresses]);
 
-  const handleShippingMethodChange = async (
-    shopId: string,
-    methodCode: string
+  // Handler cập nhật địa chỉ
+  const handleUpdateAddress = async (
+    addressId?: string,
+    newAddressData?: any
   ) => {
-    if (loading) return;
-    try {
-      await updateShippingMethod(shopId, methodCode);
-      toast.success("Đã cập nhật phí vận chuyển");
-    } catch (error) {
-      console.error("Lỗi cập nhật ship:", error);
-    }
+    const updatedRequest = {
+      ...request,
+      addressId,
+      shippingAddress: newAddressData
+        ? { ...newAddressData, country: "Vietnam" }
+        : undefined,
+    };
+    await syncPreview(updatedRequest);
+    setAddressModalVisible(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -90,17 +116,19 @@ export const CheckoutScreen = () => {
         formData.customerNote,
         formData.paymentMethod
       );
-      if (res.paymentInfo) {
+      if (res?.paymentInfo) {
         setPayosInfo(res.paymentInfo);
         setSelectedOrder(res.orders[0]);
         setPayosModalVisible(true);
-      } else {
+      } else if (res) {
         setSuccessModalVisible(true);
       }
-    } catch (err) {}
+    } catch (err) {
+      // Lỗi đã được xử lý bằng toast trong confirmOrder action
+    }
   };
 
-  // ✅ Thoát loading nếu ko có data sau 5s
+  // ✅ Kiểm tra giỏ hàng trống
   useEffect(() => {
     const timer = setTimeout(() => {
       if (!preview && !loading) {
@@ -117,7 +145,7 @@ export const CheckoutScreen = () => {
     <div className="min-h-screen bg-[#fafafa] pb-20 font-sans">
       <PageContentTransition>
         <div className="max-w-7xl mx-auto px-4 py-8">
-          {/* Breadcrumb */}
+          {/* Breadcrumb & Title */}
           <nav className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-8 px-2">
             <Link
               href="/"
@@ -137,7 +165,11 @@ export const CheckoutScreen = () => {
             currentStep={successModalVisible || payosModalVisible ? 3 : 1}
           />
 
-          <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-10">
+          <form
+            onSubmit={handleSubmit}
+            className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-10"
+          >
+            {/* CỘT TRÁI: THÔNG TIN CHI TIẾT */}
             <div className="lg:col-span-8 space-y-6">
               <ShippingAddressCard
                 selectedAddress={currentDisplayAddress}
@@ -145,37 +177,55 @@ export const CheckoutScreen = () => {
                 onOpenModal={() => setAddressModalVisible(true)}
               />
 
-            <div className="space-y-6">
+              <div className="space-y-6">
                 {preview.shops.map((shop: any) => {
-                  // ✅ Lấy thông tin voucher của shop này từ kết quả voucherApplication
-                  const shopVoucherResult = preview.voucherApplication?.shopResults?.find(
-                    (res: any) => res.shopId === shop.shopId
-                  );
+                  const shopVoucherResult =
+                    preview.voucherApplication?.shopResults?.find(
+                      (res: any) => res.shopId === shop.shopId
+                    );
 
                   return (
-                    <div key={shop.shopId} className="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 overflow-hidden">
+                    <div
+                      key={shop.shopId}
+                      className="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 overflow-hidden"
+                    >
                       <div className="p-6 border-b border-slate-50 flex items-center gap-3 bg-slate-50/30">
                         <Store className="text-orange-500" size={24} />
-                        <h3 className="font-black text-slate-900 uppercase italic tracking-tight">{shop.shopName}</h3>
+                        <h3 className="font-black text-slate-900 uppercase italic tracking-tight">
+                          {shop.shopName}
+                        </h3>
                       </div>
 
                       <div className="p-6 space-y-6">
                         {shop.items.map((item: any) => (
-                          <div key={item.itemId} className="flex gap-4 items-center group">
-                            <ItemImage item={item} className="w-20 h-20 rounded-2xl border border-slate-100 shadow-sm" />
+                          <div
+                            key={item.itemId}
+                            className="flex gap-4 items-center group"
+                          >
+                            <ItemImage
+                              item={item}
+                              className="w-20 h-20 rounded-2xl border border-slate-100 shadow-sm"
+                            />
                             <div className="flex-1 min-w-0">
-                              <h4 className="text-sm font-bold text-slate-800 uppercase truncate">{item.productName}</h4>
-                              <p className="text-[11px] text-slate-400 font-bold tracking-tight">{item.variantAttributes}</p>
+                              <h4 className="text-sm font-bold text-slate-800 uppercase truncate">
+                                {item.productName}
+                              </h4>
+                              <p className="text-[11px] text-slate-400 font-bold tracking-tight">
+                                {item.variantAttributes}
+                              </p>
                               <div className="flex justify-between items-center mt-2 font-black">
-                                <span className="text-xs text-slate-400 italic">x{item.quantity}</span>
-                                <span className="text-sm text-slate-900">{formatPrice(item.lineTotal || 0)}</span>
+                                <span className="text-xs text-slate-400 italic">
+                                  x{item.quantity}
+                                </span>
+                                <span className="text-sm text-slate-900">
+                                  {formatPrice(item.lineTotal || 0)}
+                                </span>
                               </div>
                             </div>
                           </div>
                         ))}
 
                         <ShopShippingSelector
-                          key={shop.shopId + shop.selectedShippingMethod}
                           shopId={shop.shopId}
                           shopName={shop.shopName}
                           availableOptions={shop.availableShippingOptions || []}
@@ -184,27 +234,31 @@ export const CheckoutScreen = () => {
                           onMethodChange={updateShippingMethod}
                         />
 
-                        {shopVoucherResult && shopVoucherResult.totalDiscount > 0 && (
-                          <div className="flex items-center justify-between py-3 px-4 bg-orange-50 border border-orange-100 rounded-2xl animate-in fade-in duration-500">
-                            <div className="flex items-center gap-2">
-                              <div className="bg-orange-500 p-1 rounded-md">
-                                <Ticket size={14} className="text-white" />
+                        {shopVoucherResult &&
+                          shopVoucherResult.totalDiscount > 0 && (
+                            <div className="flex items-center justify-between py-3 px-4 bg-orange-50 border border-orange-100 rounded-2xl">
+                              <div className="flex items-center gap-2">
+                                <Ticket size={14} className="text-orange-500" />
+                                <span className="text-[10px] font-black text-orange-600 uppercase">
+                                  Voucher Shop:{" "}
+                                  {
+                                    shopVoucherResult.discountDetails[0]
+                                      ?.voucherCode
+                                  }
+                                </span>
                               </div>
-                              <span className="text-[10px] font-black text-orange-600 uppercase tracking-widest">
-                                Đã áp dụng: {shopVoucherResult.discountDetails[0]?.voucherCode}
+                              <span className="text-sm font-black text-red-600 italic">
+                                -{formatPrice(shopVoucherResult.totalDiscount)}
                               </span>
                             </div>
-                            <span className="text-sm font-black text-red-600 italic">
-                              -{formatPrice(shopVoucherResult.totalDiscount)}
-                            </span>
-                          </div>
-                        )}
+                          )}
                       </div>
 
-                      {/* ✅ TỔNG SHOP (Đã trừ voucher shop) */}
                       <div className="px-8 py-5 bg-slate-50/50 border-t border-slate-100 flex justify-end items-center gap-4">
-                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Tổng Shop:</span>
-                        <span className="text-2xl font-black text-orange-600 tracking-tighter italic leading-none">
+                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
+                          Tổng Shop:
+                        </span>
+                        <span className="text-2xl font-black text-orange-600 tracking-tighter italic">
                           {formatPrice(shop.shopTotal || 0)}
                         </span>
                       </div>
@@ -214,6 +268,7 @@ export const CheckoutScreen = () => {
               </div>
             </div>
 
+            {/* CỘT PHẢI: TỔNG KẾT & THANH TOÁN */}
             <div className="lg:col-span-4 space-y-6">
               <div className="bg-white rounded-4xl shadow-xl border border-slate-100 p-6">
                 <div className="flex items-center gap-2 mb-6">
@@ -224,7 +279,7 @@ export const CheckoutScreen = () => {
                 </div>
                 <PaymentSection
                   selectedMethod={formData.paymentMethod}
-                  onChange={(val: string) =>
+                  onChange={(val) =>
                     setFormData((p) => ({ ...p, paymentMethod: val }))
                   }
                 />
@@ -236,7 +291,16 @@ export const CheckoutScreen = () => {
                   const codes: string[] = [];
                   if (v.order?.code) codes.push(v.order.code);
                   if (v.shipping?.code) codes.push(v.shipping.code);
-                  return await updateGlobalVouchers(codes);
+
+                  const currentRequest = useCheckoutStore.getState().request;
+
+                  const updatedRequest = {
+                    ...currentRequest,
+                    globalVouchers: codes,
+                  };
+
+                  const result = await syncPreview(updatedRequest);
+                  return !!result;
                 }}
                 appliedVouchers={{
                   order:
@@ -255,42 +319,28 @@ export const CheckoutScreen = () => {
                   shippingFee: preview.totalShippingFee,
                 }}
               />
+
               <NoteSection
                 value={formData.customerNote}
-                onChange={(val: string) =>
+                onChange={(val: any) =>
                   setFormData((p) => ({ ...p, customerNote: val }))
                 }
               />
 
-              <OrderSummary
-  subtotal={preview.subtotal || 0}
-  shippingFee={preview.totalShippingFee || 0}
-  discount={preview.totalDiscount || 0}
-  tax={preview.totalTaxAmount || 0}
-  total={preview.grandTotal || 0}
-  loading={loading}
-  onSubmit={handleSubmit}
-  // ✅ FIX: Sử dụng trường isValid từ API để mở khóa nút bấm
-  canSubmit={!!preview?.isValid && !loading} 
-/>
+              <OrderSummary onSubmit={handleSubmit} />
             </div>
           </form>
         </div>
       </PageContentTransition>
 
+      {/* Modals */}
       <AddressModal
         isOpen={addressModalVisible}
         onClose={() => setAddressModalVisible(false)}
         savedAddresses={savedAddresses}
         currentAddressId={request?.addressId}
-        onConfirmSaved={(id) => {
-          updateAddress(id);
-          setAddressModalVisible(false);
-        }}
-        onConfirmNew={(data) => {
-          updateAddress(undefined, data);
-          setAddressModalVisible(false);
-        }}
+        onConfirmSaved={(id) => handleUpdateAddress(id)}
+        onConfirmNew={(data) => handleUpdateAddress(undefined, data)}
       />
 
       <OrderSuccessModal

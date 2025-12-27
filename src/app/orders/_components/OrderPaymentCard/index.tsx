@@ -46,7 +46,7 @@ export const OrderPaymentCard: React.FC<OrderPaymentCardProps> = ({
 
     return (
         <>
-            <div className="rounded-2xl border border-blue-100 shadow-sm bg-gradient-to-br from-blue-50 to-indigo-50 p-6">
+            <div className="rounded-2xl border border-blue-100 shadow-sm bg-linear-to-br from-blue-50 to-indigo-50 p-6">
                 <div className="space-y-4 w-full">
                     {/* Header */}
                     <div className="flex items-center gap-3">
@@ -68,7 +68,7 @@ export const OrderPaymentCard: React.FC<OrderPaymentCardProps> = ({
                             href={paymentUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center justify-center gap-2 w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl shadow-lg shadow-blue-200 transition-all active:scale-[0.98]"
+                            className="flex items-center justify-center gap-2 w-full py-3 bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl shadow-lg shadow-blue-200 transition-all active:scale-[0.98]"
                         >
                             Thanh toán ngay <ExternalLink size={18} />
                         </a>

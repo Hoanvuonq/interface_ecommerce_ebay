@@ -35,6 +35,7 @@ export enum PermissionEnum {}
 
 export enum RoleEnum {
   ADMIN = "ADMIN",
+  EMPLOYEE = "EMPLOYEE",
   SHOP = "SHOP",
   BUYER = "BUYER",
   LOGISTICS = "LOGISTICS",
@@ -54,11 +55,8 @@ export type ShopStatus =
   | "CLOSED";
 
 export interface AuthResponseData {
-  // ✅ DEPRECATED: Tokens được lưu trong HttpOnly cookies, không trả về trong response
-  // ✅ Giữ lại để backward compatibility
   accessToken?: string;
   refreshToken?: string;
-  // ✅ User information từ backend (BaseUserResponse)
   user?: {
     userId?: string;
     id?: string;

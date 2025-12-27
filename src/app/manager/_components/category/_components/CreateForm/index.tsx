@@ -397,7 +397,7 @@
 //     return (
 //         <div className="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden max-w-6xl mx-auto">
 //             {/* Header với gradient */}
-//             <div className="bg-gradient-to-r from-indigo-600 to-indigo-700 px-8 py-6">
+//             <div className="bg-linear-to-r from-indigo-600 to-indigo-700 px-8 py-6">
 //                 <div className="flex items-center space-x-3">
 //                     <div className="bg-white/20 rounded-lg p-2">
 //                         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -735,7 +735,7 @@
 //                     </div>
 
 //                     {/* Section: Giới hạn giao hàng */}
-//                     <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-6 border border-blue-200">
+//                     <div className="bg-linear-to-br from-blue-50 to-indigo-50 rounded-lg p-6 border border-blue-200">
 //                         <div className="flex items-center space-x-2 mb-4">
 //                             <svg className="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 //                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -963,7 +963,7 @@
 //                         <button
 //                             type="submit"
 //                             disabled={loading}
-//                             className="px-8 py-3 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white rounded-lg font-semibold hover:from-indigo-700 hover:to-indigo-800 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg flex items-center"
+//                             className="px-8 py-3 bg-linear-to-r from-indigo-600 to-indigo-700 text-white rounded-lg font-semibold hover:from-indigo-700 hover:to-indigo-800 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg flex items-center"
 //                         >
 //                             {loading ? (
 //                                 <>

@@ -1,4 +1,3 @@
-// src/auth/_hooks/useVerifyForm.ts
 import { useEffect, useRef, useState } from "react";
 
 interface UseVerifyFormProps {

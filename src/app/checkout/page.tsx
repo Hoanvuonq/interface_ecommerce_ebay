@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { CheckoutScreen } from "./_pages";
-import { CheckoutProvider } from "./context/checkout";
+import { CheckoutProvider } from "./_context/checkout.context";
 
 const Checkout: React.FC = () => {
   const [initialData, setInitialData] = useState<{ preview: any; request: any } | null>(null);

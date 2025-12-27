@@ -113,7 +113,6 @@ export const VoucherComponents: React.FC<VoucherInputProps> = ({
                                     </div>
                                 )}
 
-                                {/* Hiển thị chi tiết Voucher Miễn phí vận chuyển */}
                                 {activeShippingVoucher && (
                                     <div className="flex items-center justify-between bg-white/80 p-2.5 rounded-xl border border-emerald-100 shadow-xs">
                                         <div className="flex items-center gap-2 min-w-0">

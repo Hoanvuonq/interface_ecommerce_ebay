@@ -19,15 +19,15 @@ export const PUBLIC_PREFIXES = [
   "/shop/check",
   "/shop/register",
   "/shop/onboarding",
-  "/shop/", 
+  "/shop/",
   "/employee/login",
-  "/auth/", // OAuth callbacks
-  "/products/", // Public product detail pages
-  "/category/", // Public category pages
-  "/wishlist/shared/", // Shared wishlist (có token)
-  "/test-", // Test pages
-  "/seller/", // Public seller pages
-  "/_next", // Next.js internal routes
-  "/static", // Static files
-  "/favicon.ico", // Favicon
+  "/auth/",
+  "/products/",
+  "/category/",
+  "/wishlist/shared/",
+  "/test-",
+  "/seller/",
+  "/_next",
+  "/static",
+  "/favicon.ico",
 ];

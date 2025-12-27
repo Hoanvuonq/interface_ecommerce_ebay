@@ -21,7 +21,7 @@ export const LeftSideForm: React.FC<ILeftSideFormProps> = ({ type }) => {
           gradientClass={`bg-linear-to-br ${content.logoGradientFrom} ${content.logoGradientTo}`}
           titleClassName={`!mb-0 !text-5xl !text-gray-800 dark:!text-gray-100 font-bold bg-linear-to-r ${content.brandColorFrom} ${content.brandColorTo} bg-clip-text text-transparent`}
         />
-        <WelcomeText type={type} />
+        <WelcomeText type={type }  />
         <div className="space-y-5">
           {content.features.map((featureData, index) => (
             <FeatureCard 

@@ -46,4 +46,5 @@ export interface ICheckoutFormData {
   email: string;
   country: string;
   globalVouchers?: string[];
+  shippingVouchers?: string[];
 }

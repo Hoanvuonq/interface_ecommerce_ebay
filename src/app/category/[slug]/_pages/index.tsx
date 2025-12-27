@@ -1,14 +1,12 @@
-import React from "react";
-import Link from "next/link";
-import { ChevronLeft, ChevronRight } from "lucide-react"; // Import icon
 import { ProductCard } from "@/app/products/_components/ProductCard";
-import { publicProductService } from "@/services/products/product.service";
 import { CategoryService } from "@/services/categories/category.service";
-
+import { publicProductService } from "@/services/products/product.service";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import Link from "next/link";
 import CategoryBanner from "../_components/CategoryBanner";
+import CategoryFilter from "../_components/CategoryFilter";
 import FeaturedShopsGrid from "../_components/FeaturedShopsGrid";
 import QuickAccessCards from "../_components/QuickAccessCards";
-import CategoryFilter from "../_components/CategoryFilter";
 
 export const dynamic = "force-dynamic";
 
@@ -44,7 +42,6 @@ export default async function CategoryScreen({
   let totalPages = 1;
   let errorMessage: string | null = null;
 
-  // 1. Fetch Categories Tree trước để lấy thông tin Category hiện tại
   try {
     const catsRes = await CategoryService.getAllParents();
     const list =
@@ -53,7 +50,6 @@ export default async function CategoryScreen({
         : catsRes;
     categories = Array.isArray(list) ? list : [];
 
-    // Tìm recursive category hiện tại dựa vào slug
     const targetSlug = decodeURIComponent(rawSlug).toLowerCase();
     const findBySlug = (nodes: any[]): any | null => {
       for (const n of nodes) {
@@ -73,7 +69,6 @@ export default async function CategoryScreen({
     console.error("Error fetching categories:", err);
   }
 
-  // 2. Fetch Products (Dùng slug để fetch sản phẩm)
   try {
     const res = await publicProductService.getByCategorySlug(
       rawSlug,
