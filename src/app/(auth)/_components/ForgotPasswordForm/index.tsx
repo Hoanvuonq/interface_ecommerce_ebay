@@ -208,10 +208,10 @@ export default function ForgotPasswordForm() {
             ))}
           </div>
 
-          <div className="bg-white/95 dark:bg-slate-800/95 backdrop-blur-md rounded-[32px] shadow-2xl border border-white/20 p-8 sm:p-10 transition-all">
+          <div className="bg-white/95 dark:bg-slate-800/95 backdrop-blur-md rounded-4xl shadow-2xl border border-white/20 p-8 sm:p-10 transition-all">
             <div className="text-center mb-8">
               <div className="flex justify-center mb-6">
-                <div className={cn("w-20 h-20 bg-gradient-to-br rounded-3xl rotate-12 flex items-center justify-center shadow-xl shadow-orange-500/20", config.gradient)}>
+                <div className={cn("w-20 h-20 bg-linear-to-br rounded-3xl rotate-12 flex items-center justify-center shadow-xl shadow-orange-500/20", config.gradient)}>
                   <IconComponent className="text-white text-3xl -rotate-12" />
                 </div>
               </div>

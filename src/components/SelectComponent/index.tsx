@@ -29,9 +29,7 @@ export const SelectComponent = ({
 
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  // Find selected label
   const selectedLabel = options.find((opt) => opt.value === value)?.label || "";
-  
   // Filter options based on search
   const filteredOptions = options.filter((opt) =>
     opt.label.toLowerCase().includes(search.toLowerCase())

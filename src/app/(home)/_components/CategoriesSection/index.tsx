@@ -102,8 +102,8 @@ export const CategoriesSection: React.FC = () => {
         </div>
 
         <p className={cn(
-            "text-[10px] sm:text-[11px] font-extrabold uppercase text-center leading-tight line-clamp-2 h-7 px-1 transition-colors duration-300",
-            "text-gray-600 group-hover/item:text-orange-600 tracking-tighter sm:tracking-normal"
+            "text-[10px] sm:text-[11px] font-bold uppercase text-center leading-tight line-clamp-2 h-7 px-1 duration-300 ",
+            "text-gray-700 group-hover/item:text-orange-600 tracking-tighter sm:tracking-normal"
         )}>
           {category.name}
         </p>
@@ -115,12 +115,6 @@ export const CategoriesSection: React.FC = () => {
     <section className="bg-gray-50 py-8">
       <ScrollReveal animation="slideUp" delay={150}>
         <div className="max-w-7xl  mx-auto px-4">
-          {/* <div className="flex items-center justify-between w-20">
-            <h2 className="text-lg sm:text-xl font-black uppercase tracking-tight line-clamp-4 text-gray-800 border-l-4 border-orange-500 pl-3">
-               Danh mục nổi bật
-            </h2>
-          </div> */}
-
           <div className="relative">
             <div className="flex sm:hidden overflow-x-auto gap-2 pb-6 snap-x scroll-smooth scrollbar-pretty">
               {displayCategories.map((cat, idx) => renderCategoryItem(cat, idx, true))}

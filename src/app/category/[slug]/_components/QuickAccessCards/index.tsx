@@ -1,119 +1,70 @@
 'use client';
 
-import React from 'react';
-import Link from 'next/link';
-import { CheckCircle, ChevronRight, Store } from 'lucide-react';
+import { QUICK_ACCESS_ITEMS } from '@/app/category/_constants/card';
 import { cn } from '@/utils/cn';
-import { Shop, FeaturedShopsGridProps, getShopsForCategory, brandColors } from '@/app/category/_types/category';
+import Link from 'next/link';
 
+interface QuickAccessCardsProps {
+    categorySlug?: string;
+}
 
-const ShopCard: React.FC<{ shop: Shop; color: string; isMobile?: boolean }> = ({ shop, color, isMobile }) => {
-    const sizeClasses = isMobile ? 'h-14 w-14 text-2xl rounded-lg' : 'h-16 w-16 text-3xl rounded-xl';
-    const paddingClasses = isMobile ? 'p-3' : 'p-4';
-    const nameClasses = isMobile ? 'text-[10px] font-bold' : 'text-xs font-bold';
-
-    return (
-        <div
-            className={cn(
-                "group relative overflow-hidden border border-gray-100 bg-white shadow-md transition-all duration-300",
-                "hover:-translate-y-1 hover:shadow-xl",
-                "rounded-xl"
-            )}
-        >
-            {shop.verified && (
-                <div className="absolute right-1 top-1 z-10 p-0.5 rounded-full bg-white shadow-lg">
-                    <CheckCircle className={cn(isMobile ? 'w-3.5 h-3.5' : 'w-4 h-4', 'text-blue-500 fill-blue-500')} />
-                </div>
-            )}
-            <div className={paddingClasses}>
-                <div className="flex flex-col items-center gap-2">
-                    <div className={cn(
-                        `flex items-center justify-center font-black text-white shadow-lg transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110`,
-                        `bg-linear-to-br ${color}`,
-                        sizeClasses
-                    )}>
-                        {shop.name.charAt(0)}
-                    </div>
-                    <span className={cn(
-                        "line-clamp-2 text-center text-gray-700 transition-colors group-hover:text-orange-600",
-                        nameClasses
-                    )}>
-                        {shop.name}
-                    </span>
-                </div>
-            </div>
-        </div>
-    );
-};
-
-
-export default function FeaturedShopsGrid({ categorySlug, maxItems = 8, className = '' }: FeaturedShopsGridProps) {
-    const shops = getShopsForCategory(categorySlug, maxItems);
-
-    if (!shops || shops.length === 0) return null;
+export default function QuickAccessCards({ categorySlug }: QuickAccessCardsProps) {
+    const items = QUICK_ACCESS_ITEMS(categorySlug);
 
     return (
-        <div 
-            className={cn(
-                "mb-4 overflow-hidden rounded-2xl bg-linear-to-br from-white to-orange-50/30 p-6 shadow-lg transition-opacity duration-500", // Thêm transition CSS
-                className
-            )}
-        >
-            <div className="mb-6 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-br from-orange-500 to-red-600 shadow-lg">
-                        <Store className="w-5 h-5 text-white" />
-                    </div>
-                    <div>
-                        <h3 className="text-lg font-bold text-slate-800">
-                            <span className="bg-linear-to-rrom-orange-600 to-red-600 bg-clip-text text-transparent">
-                                SHOPEE
-                            </span>{' '}
-                            <span className="text-slate-700">MALL</span>
-                        </h3>
-                        <p className="text-xs text-gray-500">Siêu thương hiệu · Uy tín · 100% Chính hãng</p>
-                    </div>
-                </div>
-                
-                <Link
-                    href={`/shops?category=${categorySlug}`}
-                    className="group flex items-center gap-1 text-sm font-semibold text-orange-600 transition-all duration-300 hover:gap-2 hover:text-orange-700"
-                >
-                    <span>Xem tất cả</span>
-                    <ChevronRight className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-0.5" />
-                </Link>
-            </div>
-
-            <div className="hidden grid-cols-4 gap-4 md:grid lg:grid-cols-8">
-                {shops.map((shop, index) => (
-                    <div key={shop.id}>
-                        <Link href={`/shop/${shop.slug}`}>
-                            <ShopCard shop={shop} color={brandColors[index % brandColors.length]} />
-                        </Link>
-                    </div>
-                ))}
-            </div>
-
-            <div
-                className="flex gap-3 overflow-x-auto pb-2 md:hidden" 
-                style={{ scrollbarWidth: 'none' }}
-            >
-                <style jsx>{`
-                    .overflow-x-auto::-webkit-scrollbar {
-                        display: none;
-                    }
-                `}</style>
-                {shops.map((shop, index) => (
-                    <div 
-                        key={shop.id}
-                        className="min-w-22.5"
+        <div className="mb-8 w-full">
+            <div className="flex gap-4 overflow-x-auto px-1 pb-4 md:grid md:grid-cols-5 md:overflow-visible md:pb-0 custom-scrollbar-none snap-x snap-mandatory">
+                {items.map((item) => (
+                    <Link
+                        key={item.id}
+                        href={item.link}
+                        className={cn(
+                            "group relative flex min-w-[130px] flex-1 flex-col items-center gap-3 rounded-[24px] p-5 transition-all duration-500 snap-center",
+                            "bg-white ring-1 ring-slate-100 md:min-w-0",
+                            "hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.08)]",
+                            item.bgClass 
+                        )}
                     >
-                        <Link href={`/shop/${shop.slug}`}>
-                            <ShopCard shop={shop} color={brandColors[index % brandColors.length]} isMobile />
-                        </Link>
-                    </div>
+                        {/* Container Icon: Sử dụng Flex shrink để tránh bóp méo icon */}
+                        <div className={cn(
+                            "flex h-14 w-14 shrink-0 items-center justify-center rounded-[18px] bg-white shadow-sm ring-1 transition-all duration-500",
+                            "group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-md",
+                            "ring-white/50 group-hover:ring-current"
+                        )}>
+                            <div className="text-current transition-transform duration-500 group-hover:scale-110">
+                                {item.icon}
+                            </div>
+                        </div>
+
+                        {/* Text Content */}
+                        <div className="flex flex-col items-center gap-1.5 z-10">
+                            <span className="text-center text-[12px] font-extrabold uppercase tracking-tight text-slate-800 transition-colors group-hover:text-current">
+                                {item.label}
+                            </span>
+                            
+                            {item.badge && (
+                                <span className="rounded-full bg-white/60 backdrop-blur-sm px-2.5 py-0.5 text-[9px] font-black uppercase tracking-tighter text-current ring-1 ring-current/20">
+                                    {item.badge}
+                                </span>
+                            )}
+                        </div>
+
+                        <div className="absolute -bottom-4 -right-4 h-20 w-20 rotate-12 opacity-[0.02] transition-all duration-700 group-hover:rotate-[30deg] group-hover:scale-125 group-hover:opacity-[0.05]">
+                            {item.icon}
+                        </div>
+                    </Link>
                 ))}
             </div>
+
+            <style jsx global>{`
+                .custom-scrollbar-none::-webkit-scrollbar {
+                    display: none;
+                }
+                .custom-scrollbar-none {
+                    -ms-overflow-style: none;
+                    scrollbar-width: none;
+                }
+            `}</style>
         </div>
     );
 }

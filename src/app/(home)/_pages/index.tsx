@@ -17,13 +17,13 @@ export const HomeScreen = () => {
         <Promotion />
         <CategoriesSection />
         <FlashSaleSection />
-        <ProductSection
+        {/* <ProductSection
           type="featured"
           showBadge={true}
           columns={{ mobile: 2, tablet: 3, desktop: 5 }}
           rows={2}
           sidebar={<BannerSidebar />}
-        />
+        /> */}
       </HomepageBannerProvider>
       <ProductShowcase
         title="GỢI Ý HÔM NAY"

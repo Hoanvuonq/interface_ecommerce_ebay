@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { homepageService } from '@/app/(home)/services/homepage.service';
 import { BannerResponseDTO } from '@/app/(home)/_types/banner.dto';
-import { toPublicUrl } from '@/utils/storage/url';
+import { homepageService } from '@/app/(home)/services/homepage.service';
+import { SectionLoading } from "@/components";
 import { toSizedVariant } from '@/utils/products/media.helpers';
-import { CustomSpinner, SectionLoading } from "@/components";
+import { toPublicUrl } from '@/utils/storage/url';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 interface CategoryBannerProps {
     categorySlug: string;

@@ -176,7 +176,7 @@ const handleSort = (val: string) => {
             {Array.from({ length: 8 }).map((_, i) => (
               <div
                 key={i}
-                className="bg-gray-100 animate-pulse aspect-[3/4] rounded-2xl"
+                className="bg-gray-100 animate-pulse aspect-3/4 rounded-2xl"
               />
             ))}
           </div>

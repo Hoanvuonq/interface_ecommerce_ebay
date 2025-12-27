@@ -7,7 +7,7 @@ import {
   MobileMenuButton,
   NotificationDropdown,
   TopHeader,
-  HotKeywords, 
+  HotKeywords,
   UserAuthDropdown,
 } from "../_components";
 import { Search, MobileMenuDrawer } from "@/components";
@@ -24,7 +24,7 @@ export const Header = () => {
   const isLoggedIn = !!isAuthenticated();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [hotKeywords, setHotKeywords] = useState<SuggestionItemDTO[]>([]);
-const hasFetchedHotKeywords = useRef(false);
+  const hasFetchedHotKeywords = useRef(false);
   const {
     searchValue,
     searchOptions,
@@ -40,10 +40,10 @@ const hasFetchedHotKeywords = useRef(false);
 
   useEffect(() => {
     if (hasFetchedHotKeywords.current) return;
-   (async () => {
+    (async () => {
       try {
         hasFetchedHotKeywords.current = true;
-        
+
         const res = await searchService.getHot({ limit: 5 });
         setHotKeywords(res.suggestions || []);
       } catch (error) {
@@ -62,7 +62,10 @@ const hasFetchedHotKeywords = useRef(false);
         <TopHeader />
       </div>
 
-      <div className="backdrop-blur-md bg-opacity-95" style={{ backgroundColor: PRIMARY_COLOR }}>
+      <div
+        className="backdrop-blur-md bg-opacity-95"
+        style={{ backgroundColor: PRIMARY_COLOR }}
+      >
         <div className="container mx-auto px-3 sm:px-4 lg:px-30">
           <div className="flex flex-col md:flex-row items-center justify-between py-3 md:h-18 h-auto gap-3">
             <div className="flex items-center justify-between w-full md:w-auto gap-4">
@@ -77,15 +80,15 @@ const hasFetchedHotKeywords = useRef(false);
                     alt="CaLaTha Logo"
                     width={160}
                     height={60}
-                    className="object-contain w-28 h-auto md:w-40 md:h-12" 
+                    className="object-contain w-28 h-auto md:w-40 md:h-12"
                     priority
                   />
                 </Link>
               </div>
 
               <div className="flex md:hidden items-center gap-3">
-                <CartBadge />
-                 <UserAuthDropdown isAuthenticated={isLoggedIn} />
+                  <CartBadge />
+                <UserAuthDropdown isAuthenticated={isLoggedIn} />
               </div>
             </div>
 
@@ -99,7 +102,7 @@ const hasFetchedHotKeywords = useRef(false);
                   onSubmit={handleSearchSubmit}
                 />
               </div>
-              
+
               {/* <div className="hidden md:block mt-1">
                  <HotKeywords 
                     keywords={hotKeywords} 
