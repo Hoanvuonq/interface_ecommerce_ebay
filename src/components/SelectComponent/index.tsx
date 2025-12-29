@@ -4,186 +4,177 @@ import { cn } from "@/utils/cn";
 import { useIsomorphicLayoutEffect } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { FaChevronDown, FaSearch } from "react-icons/fa";
-import { SearchableSelectProps } from "./type";
+import { FaChevronDown, FaSearch, FaCheck } from "react-icons/fa";
+
+interface Option {
+  label: string;
+  value: string;
+}
+
+interface SelectProps {
+  options: Option[];
+  value?: string | string[]; // Có thể là 1 string hoặc mảng string
+  onChange: (value: any) => void;
+  placeholder?: string;
+  disabled?: boolean;
+  className?: string;
+  isMulti?: boolean; // Thêm prop để phân biệt chọn 1 hay nhiều
+}
 
 export const SelectComponent = ({
   options,
   value,
   onChange,
-  placeholder = "Select...",
+  placeholder = "Chọn ...",
   disabled = false,
   className,
-}: SearchableSelectProps) => {
+  isMulti = false,
+}: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
-  
   const [dropdownStyle, setDropdownStyle] = useState<React.CSSProperties | null>(null);
   const [placement, setPlacement] = useState<"top" | "bottom">("bottom");
-
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const selectedLabel = options.find((opt) => opt.value === value)?.label || "";
   const filteredOptions = options.filter((opt) =>
     opt.label.toLowerCase().includes(search.toLowerCase())
   );
+
+  // Xử lý nhãn hiển thị
+  const getDisplayLabel = () => {
+    if (isMulti) {
+      const vals = Array.isArray(value) ? value : [];
+      return vals.length > 0 ? `Đã chọn ${vals.length}` : placeholder;
+    } else {
+      const selectedOpt = options.find((opt) => opt.value === value);
+      return selectedOpt ? selectedOpt.label : placeholder;
+    }
+  };
 
   const updatePosition = useCallback(() => {
     if (isOpen && wrapperRef.current) {
       const rect = wrapperRef.current.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
       const spaceBelow = viewportHeight - rect.bottom;
-      const dropdownMaxHeight = 250; 
+      const dropdownMaxHeight = 250;
       const gap = 6;
-      
+
       let newPlacement: "top" | "bottom" = "bottom";
       if (spaceBelow < dropdownMaxHeight && rect.top > dropdownMaxHeight) {
         newPlacement = "top";
       }
 
       setPlacement(newPlacement);
-
-      if (newPlacement === "bottom") {
-         setDropdownStyle({
-            top: rect.bottom + gap,
-            left: rect.left,
-            width: rect.width,
-            maxHeight: `${dropdownMaxHeight}px`,
-         });
-      } else {
-         setDropdownStyle({
-            bottom: viewportHeight - rect.top + gap,
-            left: rect.left,
-            width: rect.width,
-            maxHeight: `${dropdownMaxHeight}px`,
-         });
-      }
+      setDropdownStyle({
+        top: newPlacement === "bottom" ? rect.bottom + window.scrollY + gap : undefined,
+        bottom: newPlacement === "top" ? viewportHeight - rect.top - window.scrollY + gap : undefined,
+        left: rect.left + window.scrollX,
+        width: rect.width,
+        maxHeight: `${dropdownMaxHeight}px`,
+      });
     }
   }, [isOpen]);
 
   useIsomorphicLayoutEffect(() => {
-    if (isOpen) {
-      updatePosition();
-    } else {
-      setDropdownStyle(null);
-    }
+    if (isOpen) updatePosition();
   }, [isOpen, updatePosition]);
 
   useEffect(() => {
     if (!isOpen) return;
-
-    const handleEvent = (e: Event) => {
+    const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as Node;
-      const dropdown = document.getElementById("searchable-select-dropdown");
-      const wrapper = wrapperRef.current;
-
-      if (e.type === "mousedown") {
-        if (wrapper?.contains(target) || dropdown?.contains(target)) {
-          return;
-        }
+      const dropdown = document.getElementById("select-dropdown-portal");
+      if (!wrapperRef.current?.contains(target) && !dropdown?.contains(target)) {
         setIsOpen(false);
       }
-      
-      if (e.type === "scroll" || e.type === "resize") {
-         updatePosition();
-      }
     };
-
-    document.addEventListener("mousedown", handleEvent);
-    window.addEventListener("scroll", handleEvent, { capture: true }); 
-    window.addEventListener("resize", handleEvent);
-
-    return () => {
-      document.removeEventListener("mousedown", handleEvent);
-      window.removeEventListener("scroll", handleEvent, { capture: true });
-      window.removeEventListener("resize", handleEvent);
-    };
-  }, [isOpen, updatePosition]);
-
-  useEffect(() => {
-    if (!isOpen) setSearch("");
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
+
+  const handleSelect = (val: string) => {
+    if (isMulti) {
+      const currentValues = Array.isArray(value) ? value : [];
+      const newValue = currentValues.includes(val)
+        ? currentValues.filter((v) => v !== val)
+        : [...currentValues, val];
+      onChange(newValue);
+    } else {
+      onChange(val);
+      setIsOpen(false); // Chọn xong đóng luôn nếu là Single Select
+    }
+  };
 
   return (
     <>
       <div ref={wrapperRef} className={cn("relative w-full", className)}>
         <div
           className={cn(
-            "w-full h-11 px-4 border border-gray-300 rounded-xl bg-white text-gray-900 flex items-center justify-between cursor-pointer transition-all select-none",
-            disabled
-              ? "bg-gray-50 text-gray-400 cursor-not-allowed"
-              : "hover:border-orange-500 focus:border-orange-500",
-            isOpen && !disabled ? "border-orange-500 ring-2 ring-orange-100" : ""
+            "w-full h-11 px-4 border border-slate-200 rounded-xl bg-white text-slate-700 flex items-center justify-between cursor-pointer transition-all select-none shadow-sm",
+            disabled ? "opacity-50 cursor-not-allowed bg-slate-50" : "hover:border-orange-400",
+            isOpen && "border-orange-500 ring-2 ring-orange-100"
           )}
-          onClick={(e) => {
-            if (disabled) return;
-            e.preventDefault();
-            setIsOpen(!isOpen);
-          }}
+          onClick={() => !disabled && setIsOpen(!isOpen)}
         >
-          <span className={cn("text-sm font-medium truncate", !selectedLabel && "text-gray-400")}>
-            {selectedLabel || placeholder}
+          <span className={cn(
+            "text-sm truncate font-medium",
+            !value || (Array.isArray(value) && value.length === 0) ? "text-slate-400" : "text-slate-700"
+          )}>
+            {getDisplayLabel()}
           </span>
-          <FaChevronDown
-            className={cn(
-              "text-xs text-gray-400 transition-transform duration-200",
-              isOpen && "rotate-180"
-            )}
-          />
+          <FaChevronDown className={cn("text-[10px] text-slate-400 transition-transform duration-200", isOpen && "rotate-180")} />
         </div>
       </div>
 
-      {isOpen && !disabled && dropdownStyle && createPortal(
+      {isOpen && createPortal(
         <div
-          id="searchable-select-dropdown"
+          id="select-dropdown-portal"
           className={cn(
-            "fixed z-[99999] bg-white border border-gray-200 rounded-xl shadow-xl flex flex-col overflow-hidden",
-            // Animation class tùy theo hướng xuất hiện
-            placement === "bottom" 
-              ? "animate-in fade-in zoom-in-95 slide-in-from-top-2 origin-top" 
-              : "animate-in fade-in zoom-in-95 slide-in-from-bottom-2 origin-bottom"
+            "fixed z-[9999] bg-white border border-slate-100 rounded-xl shadow-xl flex flex-col overflow-hidden",
+            "animate-in fade-in zoom-in-95 duration-150"
           )}
-          style={dropdownStyle}
+          style={dropdownStyle!}
         >
-          <div className="p-2 border-b border-gray-50 bg-white sticky top-0 z-10">
-            <div className="relative">
-              <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs" />
-              <input
-                autoFocus
-                type="text"
-                className="w-full pl-8 pr-3 py-2 text-sm border border-gray-100 rounded-lg focus:outline-none focus:border-orange-500 bg-gray-50 focus:bg-white transition-colors"
-                placeholder="Tìm kiếm..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                onClick={(e) => e.stopPropagation()} 
-              />
-            </div>
-          </div>
-
-          <div className="overflow-y-auto flex-1 custom-scrollbar p-1">
-            {filteredOptions.length > 0 ? (
-              filteredOptions.map((opt) => (
-                <div
-                  key={opt.value}
-                  className={cn(
-                    "px-3 py-2.5 text-sm cursor-pointer rounded-lg transition-colors font-medium flex items-center justify-between",
-                    opt.value === value
-                      ? "bg-orange-50 text-orange-700"
-                      : "text-gray-700 hover:bg-gray-50"
-                  )}
-                  onClick={() => {
-                    onChange(opt.value);
-                    setIsOpen(false);
-                  }}
-                >
-                  {opt.label}
-                  {opt.value === value && <span className="text-orange-500 text-xs font-bold">✓</span>}
-                </div>
-              ))
-            ) : (
-              <div className="p-4 text-center text-sm text-gray-400">
-                Không tìm thấy kết quả
+          {options.length > 5 && (
+            <div className="p-2 border-b border-slate-50 bg-slate-50/50">
+              <div className="relative">
+                <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-300 text-xs" />
+                <input
+                  autoFocus
+                  className="w-full pl-9 pr-3 py-1.5 text-sm bg-white border border-slate-200 rounded-lg outline-none focus:border-orange-300 transition-all"
+                  placeholder="Tìm kiếm..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
               </div>
+            </div>
+          )}
+          
+          <div className="overflow-y-auto flex-1 p-1">
+            {filteredOptions.length > 0 ? (
+              filteredOptions.map((opt) => {
+                const isSelected = isMulti 
+                  ? (Array.isArray(value) && value.includes(opt.value))
+                  : value === opt.value;
+                  
+                return (
+                  <div
+                    key={opt.value}
+                    className={cn(
+                      "px-3 py-2 text-sm cursor-pointer rounded-lg transition-all flex items-center justify-between mb-0.5",
+                      isSelected 
+                        ? "bg-orange-50 text-orange-600 font-bold" 
+                        : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                    )}
+                    onClick={() => handleSelect(opt.value)}
+                  >
+                    <span className="truncate">{opt.label}</span>
+                    {isSelected && <FaCheck className="text-orange-500" size={12} />}
+                  </div>
+                );
+              })
+            ) : (
+              <div className="p-4 text-center text-xs text-slate-400">Không tìm thấy kết quả</div>
             )}
           </div>
         </div>,

@@ -90,7 +90,7 @@ const AnimatedBadge: React.FC<AnimatedBadgeProps> = ({
             )}
         >
             <Icon size={sizeStyle.iconSize} strokeWidth={3} className="shrink-0" />
-            <span className="leading-none mt-[1px]">{text || config.defaultText}</span>
+            <span className="leading-none mt-px">{text || config.defaultText}</span>
         </div>
     );
 };

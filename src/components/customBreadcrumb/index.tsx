@@ -1,4 +1,4 @@
-import { BreadcrumbProps } from '@/app/products/_types/product';
+import { BreadcrumbProps } from '@/app/(main)/products/_types/product';
 import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 

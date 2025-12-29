@@ -23,3 +23,4 @@ export * from "./simpleModal";
 export * from "./checkout";
 export * from "./AddToCartButton";
 export * from "./collapseItem";
+export * from "./textAreaField";

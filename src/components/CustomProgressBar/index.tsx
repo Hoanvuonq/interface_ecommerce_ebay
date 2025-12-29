@@ -2,12 +2,15 @@ import { cn } from "@/utils/cn";
 
 export const CustomProgressBar: React.FC<{
   percent: number;
-  color?: string;
-  className?: string;
-}> = ({ percent, color = "bg-yellow-500", className }) => (
-  <div className="w-full h-2 bg-gray-200 rounded-full">
+  color?: string; 
+  className?: string; 
+}> = ({ percent, color = "bg-orange-500", className }) => (
+  <div className={cn("w-full h-1.5 bg-slate-100 rounded-full overflow-hidden", className)}>
     <div
-      className={cn("h-full rounded-full transition-all duration-500", color, className)}
+      className={cn(
+        "h-full rounded-full transition-all duration-700 ease-out", 
+        color 
+      )}
       style={{ width: `${percent}%` }}
     />
   </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { categoryIcons, getStandardizedKey, ICON_BG_COLORS } from "@/app/(home)/_types/categories";
+import { categoryIcons, getStandardizedKey, ICON_BG_COLORS } from "@/app/(main)/(home)/_types/categories";
 import { formatPriceFull } from "@/hooks/useFormatPrice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { checkoutPreview, selectAllItemsLocal } from "@/store/theme/cartSlice";

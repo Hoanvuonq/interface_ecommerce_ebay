@@ -23,7 +23,6 @@ export const useAuthMutation = (mode: "BUYER" | "SHOP" | "EMPLOYEE" | "ADMIN") =
     },
 
     onSuccess: async (res) => {
-      // 1. Kiểm tra xác thực email
       if (res && res?.data?.emailVerified === false) {
         warning("Yêu cầu xác thực", {
           description: "Tài khoản chưa kích hoạt. Vui lòng kiểm tra email của bạn.",
@@ -32,14 +31,11 @@ export const useAuthMutation = (mode: "BUYER" | "SHOP" | "EMPLOYEE" | "ADMIN") =
         return;
       }
 
-      // 2. Xử lý đăng nhập thành công
       if (res && res.success) {
-        // Lưu thông tin User
         if (res.data?.user) {
           authService.storeUserInfoFromResponse(res.data.user);
         }
 
-        // Lấy và lưu chi tiết User (Role, ShopId...)
         await authService.fetchAndStoreUserDetail();
 
         const welcomeMsg = {

@@ -1,10 +1,8 @@
 "use client";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
-import { CustomButton } from "@/components/button"; 
-import Link from "next/link";
-import { MoveLeft, Search } from "lucide-react";
+import { CustomButton } from "@/components/button";
 import { cn } from "@/utils/cn";
+import { MoveLeft, Search } from "lucide-react";
+import Link from "next/link";
 
 export default function NotFoundPage() {
   return (

@@ -134,7 +134,7 @@ export interface OrderResponse {
     email: string;
 }
 
-export interface ApiResponse<T> {
+export interface ApiResponseOrder<T> {
     success: boolean;
     code: number;
     message: string;

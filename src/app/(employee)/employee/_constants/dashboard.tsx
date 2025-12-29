@@ -114,3 +114,28 @@ export const supportTickets: SupportTicket[] = [
     createdAt: "1 giờ trước",
   },
 ];
+
+
+export const DATA_METRICS = [
+    {
+      label: "Hoàn thành NV",
+      val: "23/30",
+      pct: 76,
+      color: "from-orange-500 to-amber-500",
+      bg: "bg-orange-50",
+    },
+    {
+      label: "Giải quyết Ticket",
+      val: "45/50",
+      pct: 90,
+      color: "from-blue-500 to-indigo-500",
+      bg: "bg-blue-50",
+    },
+    {
+      label: "Hài lòng KH",
+      val: "96%",
+      pct: 96,
+      color: "from-emerald-500 to-teal-500",
+      bg: "bg-emerald-50",
+    },
+  ];

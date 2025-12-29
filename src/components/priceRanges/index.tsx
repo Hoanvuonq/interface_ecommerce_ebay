@@ -3,7 +3,7 @@
 import React from 'react';
 import { Flame, DollarSign } from 'lucide-react';
 import { CustomButton } from '@/components/button'; 
-import { ProductFilterValues } from '@/app/products/_components/productFilters/type';
+import { ProductFilterValues } from '@/app/(main)/products/_components/productFilters/type';
 import { cn } from '@/utils/cn';
 
 interface IPriceRange {

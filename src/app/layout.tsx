@@ -1,33 +1,21 @@
-import { PropsWithChildren } from "react";
-import type { Metadata } from "next";
 import { SmoothScroll } from "@/features";
 import NavigationProgress from "@/features/NavigationProgress";
+import { ToastProvider } from "@/hooks/ToastProvider";
 import ClientProviders from "@/providers/ClientProviders";
+import "./employee-layout.css";
+import "./globals.css";
 
-export const metadata: Metadata = {
-  title: {
-    default: "Calatha - Hệ thống thương mại điện tử",
-    template: "Calatha - %s",
-  },
-  description: "Hệ thống thương mại điện tử Calatha ...",
-};
-
-const RootLayout: React.FC<PropsWithChildren> = ({ children }) => {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      style={{ scrollBehavior: "smooth" }}
-    >
-      <body className={` antialiased`} suppressHydrationWarning>
-        <NavigationProgress/>
+    <html lang="vi" suppressHydrationWarning>
+      <body className="antialiased">
+        <NavigationProgress />
         <SmoothScroll />
         <ClientProviders>
-          {children}
+            {children}
+            <ToastProvider /> 
         </ClientProviders>
       </body>
     </html>
   );
-};
-
-export default RootLayout;
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCart } from "@/app/products/_hooks/useCart";
+import { useCart } from "@/app/(main)/products/_hooks/useCart";
 import { requireAuthentication } from "@/utils/cart/cart-auth.utils";
 import { cn } from "@/utils/cn";
 import { Minus, Plus, ShoppingCart } from "lucide-react"; 

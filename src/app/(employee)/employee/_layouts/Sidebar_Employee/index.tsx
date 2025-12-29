@@ -1,14 +1,13 @@
-// src/layouts/employee/sidebar/index.tsx
 "use client";
 
-import React, { useMemo, useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
-import Image from "next/image";
-import Link from "next/link";
 import { cn } from "@/utils/cn";
-import { SIDEBAR_ITEMS ,ROUTE_MAPPINGS} from "../../_constants/sidebar";
-import { SidebarItem } from "../_components/SidebarItem";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { ROUTE_MAPPINGS, SIDEBAR_ITEMS } from "../../_constants/sidebar";
 import { EmployeeSidebarProps } from "../../_types/sidebar";
+import { SidebarItem } from "../_components/SidebarItem";
+import { SystemOnline } from "../_components/SystemOnline";
 
 export default function EmployeeSidebar({
   collapsed,
@@ -19,9 +18,10 @@ export default function EmployeeSidebar({
   const [openKeys, setOpenKeys] = useState<string[]>([]);
 
   const { selectedKey, parentKey } = useMemo(() => {
-    const sorted = [...ROUTE_MAPPINGS].sort((a, b) => b.prefix.length - a.prefix.length);
+    const sorted = [...ROUTE_MAPPINGS].sort(
+      (a, b) => b.prefix.length - a.prefix.length
+    );
     const match = sorted.find((r) => pathname.startsWith(r.prefix));
-    
     return {
       selectedKey: match?.key || "home",
       parentKey: match?.parent,
@@ -43,28 +43,31 @@ export default function EmployeeSidebar({
   return (
     <aside
       className={cn(
-        "flex flex-col bg-white border-r border-slate-100 h-screen sticky top-0 transition-all duration-300 z-50",
+        "flex flex-col bg-white h-screen sticky top-0 transition-all duration-500 ease-in-out z-50",
+        "border-r border-orange-50 shadow-[4px_0_24px_rgba(0,0,0,0.02)]",
         collapsed ? "w-20" : "w-64",
         className
       )}
     >
-      <div className="h-20 flex items-center justify-center border-b border-slate-50 mb-4">
-        <Link href="/" className="relative flex items-center justify-center w-full h-full">
-           <div className={cn("transition-all duration-300 flex items-center gap-2", collapsed ? "scale-0 w-0" : "scale-100")}>
-              <span className="text-xl font-black text-slate-800 tracking-tighter">
-                <span className="text-orange-500">Employee</span>Hub
+      <div className="h-20 flex items-center px-4 mb-4 relative overflow-hidden">
+        <Link href="/" className="flex items-center gap-3 w-full group">
+          <div className="w-10 h-10 shrink-0 bg-linear-to-br from-orange-500 to-amber-500 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-orange-200 group-hover:rotate-6 transition-transform duration-300">
+            <span className="text-xl font-black italic">C</span>
+          </div>
+          {!collapsed && (
+            <div className="flex flex-col animate-in fade-in slide-in-from-left-2 duration-500">
+              <span className="text-lg font-black tracking-tighter text-slate-800 leading-none">
+                CALATHA
               </span>
-           </div>
-           <div className={cn("absolute transition-all duration-300", collapsed ? "scale-100 opacity-100" : "scale-0 opacity-0")}>
-              <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-amber-500 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-orange-200">
-                E
-              </div>
-           </div>
+              <span className="text-[10px] font-black text-orange-500 uppercase tracking-[0.2em] mt-1">
+                Employee Hub
+              </span>
+            </div>
+          )}
         </Link>
       </div>
 
-      {/* Menu Area */}
-      <div className="flex-1 overflow-y-auto px-3 pb-6 custom-scrollbar">
+      <div className="flex-1 overflow-y-auto custom-scrollbar pt-2">
         <nav className="space-y-1">
           {SIDEBAR_ITEMS.map((item) => (
             <SidebarItem
@@ -79,14 +82,7 @@ export default function EmployeeSidebar({
         </nav>
       </div>
 
-      {!collapsed && (
-        <div className="p-4 border-t border-slate-50">
-          <div className="bg-slate-50 rounded-xl p-3 flex items-center gap-3">
-             <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"/>
-             <span className="text-xs font-medium text-slate-500">System Online</span>
-          </div>
-        </div>
-      )}
+      <SystemOnline collapsed={collapsed} />
     </aside>
   );
 }
