@@ -1,12 +1,11 @@
 "use client";
 
 import { cn } from "@/utils/cn";
-import { useEffect, useLayoutEffect, useRef, useState, useCallback } from "react";
+import { useIsomorphicLayoutEffect } from "framer-motion";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { FaChevronDown, FaSearch } from "react-icons/fa";
 import { SearchableSelectProps } from "./type";
-import { useIsomorphicLayoutEffect } from "framer-motion";
-
 
 export const SelectComponent = ({
   options,
@@ -19,18 +18,12 @@ export const SelectComponent = ({
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
   
-  // State for positioning
-  const [dropdownStyle, setDropdownStyle] = useState<{
-    top: number;
-    left: number;
-    width: number;
-    placement: "top" | "bottom";
-  } | null>(null);
+  const [dropdownStyle, setDropdownStyle] = useState<React.CSSProperties | null>(null);
+  const [placement, setPlacement] = useState<"top" | "bottom">("bottom");
 
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const selectedLabel = options.find((opt) => opt.value === value)?.label || "";
-  // Filter options based on search
   const filteredOptions = options.filter((opt) =>
     opt.label.toLowerCase().includes(search.toLowerCase())
   );
@@ -38,23 +31,33 @@ export const SelectComponent = ({
   const updatePosition = useCallback(() => {
     if (isOpen && wrapperRef.current) {
       const rect = wrapperRef.current.getBoundingClientRect();
-      const spaceBelow = window.innerHeight - rect.bottom;
-      const dropdownHeight = 250; 
+      const viewportHeight = window.innerHeight;
+      const spaceBelow = viewportHeight - rect.bottom;
+      const dropdownMaxHeight = 250; 
+      const gap = 6;
       
-      let top = rect.bottom + 6; 
-      let placement: "top" | "bottom" = "bottom";
-
-      if (spaceBelow < dropdownHeight) {
-        top = rect.top - dropdownHeight - 6;
-        placement = "top";
+      let newPlacement: "top" | "bottom" = "bottom";
+      if (spaceBelow < dropdownMaxHeight && rect.top > dropdownMaxHeight) {
+        newPlacement = "top";
       }
 
-      setDropdownStyle({
-        top: top, 
-        left: rect.left,
-        width: rect.width,
-        placement,
-      });
+      setPlacement(newPlacement);
+
+      if (newPlacement === "bottom") {
+         setDropdownStyle({
+            top: rect.bottom + gap,
+            left: rect.left,
+            width: rect.width,
+            maxHeight: `${dropdownMaxHeight}px`,
+         });
+      } else {
+         setDropdownStyle({
+            bottom: viewportHeight - rect.top + gap,
+            left: rect.left,
+            width: rect.width,
+            maxHeight: `${dropdownMaxHeight}px`,
+         });
+      }
     }
   }, [isOpen]);
 
@@ -74,7 +77,6 @@ export const SelectComponent = ({
       const dropdown = document.getElementById("searchable-select-dropdown");
       const wrapper = wrapperRef.current;
 
-      // Click Outside -> Close
       if (e.type === "mousedown") {
         if (wrapper?.contains(target) || dropdown?.contains(target)) {
           return;
@@ -136,15 +138,12 @@ export const SelectComponent = ({
           id="searchable-select-dropdown"
           className={cn(
             "fixed z-[99999] bg-white border border-gray-200 rounded-xl shadow-xl flex flex-col overflow-hidden",
-            "animate-in fade-in zoom-in-95 duration-150 ease-out",
-            dropdownStyle.placement === "bottom" ? "origin-top slide-in-from-top-2" : "origin-bottom slide-in-from-bottom-2"
+            // Animation class tùy theo hướng xuất hiện
+            placement === "bottom" 
+              ? "animate-in fade-in zoom-in-95 slide-in-from-top-2 origin-top" 
+              : "animate-in fade-in zoom-in-95 slide-in-from-bottom-2 origin-bottom"
           )}
-          style={{
-            top: dropdownStyle.top,
-            left: dropdownStyle.left,
-            width: dropdownStyle.width,
-            maxHeight: "250px",
-          }}
+          style={dropdownStyle}
         >
           <div className="p-2 border-b border-gray-50 bg-white sticky top-0 z-10">
             <div className="relative">
@@ -161,7 +160,7 @@ export const SelectComponent = ({
             </div>
           </div>
 
-          <div className="overflow-y-auto flex-1 custom-scrollbar p-1 max-h-[200px]">
+          <div className="overflow-y-auto flex-1 custom-scrollbar p-1">
             {filteredOptions.length > 0 ? (
               filteredOptions.map((opt) => (
                 <div

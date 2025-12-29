@@ -5,7 +5,7 @@ import { ButtonField, SectionLoading } from "@/components";
 import { CustomProgressBar } from "@/components/CustomProgressBar";
 import ScrollReveal from "@/features/ScrollReveal";
 import { useToast } from "@/hooks/useToast";
-import { useWishlist } from "@/hooks/useWishlist";
+import { useWishlist } from "@/app/wishlist/_hooks/useWishlist";
 import { publicProductService } from "@/services/products/product.service";
 import { PublicProductListItemDTO } from "@/types/product/public-product.dto";
 import { isAuthenticated } from "@/utils/local.storage";

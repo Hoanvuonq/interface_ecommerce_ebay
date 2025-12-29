@@ -9,6 +9,7 @@ import {
   TopHeader,
   HotKeywords,
   UserAuthDropdown,
+  
 } from "../_components";
 import { Search, MobileMenuDrawer } from "@/components";
 import { useProductSearch } from "@/hooks/useProductSearch";
@@ -17,6 +18,7 @@ import {
   searchService,
   SuggestionItemDTO,
 } from "@/services/search/search.service";
+import { AccountDropdown } from "../_components/AccountDropdown";
 
 const PRIMARY_COLOR = "var(--color-primary)";
 
@@ -88,7 +90,7 @@ export const Header = () => {
 
               <div className="flex md:hidden items-center gap-3">
                   <CartBadge />
-                <UserAuthDropdown isAuthenticated={isLoggedIn} />
+                <AccountDropdown/>
               </div>
             </div>
 
@@ -114,7 +116,7 @@ export const Header = () => {
             <div className="hidden md:flex items-center space-x-3 lg:space-x-5 shrink-0">
               {isLoggedIn && <NotificationDropdown />}
               <CartBadge />
-              <UserAuthDropdown isAuthenticated={isLoggedIn} />
+              <AccountDropdown/>
             </div>
           </div>
         </div>

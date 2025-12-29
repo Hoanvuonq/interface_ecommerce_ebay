@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { publicProductService } from "@/services/products/product.service";
 import { useCart } from "../../_hooks/useCart";
 import { requireAuthentication } from "@/utils/cart/cart-auth.utils";
-import { AddToWishlistModal } from "@/components/wishlist/AddToWishlistModal";
+import { AddToWishlistModal } from "@/app/wishlist/_components/AddToWishlistModal";
 import {
   resolveMediaUrl as resolveMediaUrlHelper,
   resolveVariantImageUrl as resolveVariantImageUrlHelper,

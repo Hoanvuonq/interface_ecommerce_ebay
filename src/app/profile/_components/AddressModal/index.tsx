@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { FaSave } from "react-icons/fa";
-import { toast } from "sonner";
 import { Loader2, MapPin } from "lucide-react";
 import addressData, { Province, Ward } from "vietnam-address-database";
 import { buyerAddressService } from "@/services/buyer/buyer-address.service";
@@ -13,6 +12,7 @@ import { PortalModal } from "@/features/PortalModal";
 import { SelectComponent } from "@/components/SelectComponent";
 import { Button } from "@/components/button/button";
 import { ButtonField } from "@/components";
+import { useToast } from "@/hooks/useToast";
 
 interface AddressFormModalProps {
   isOpen: boolean;
@@ -34,7 +34,7 @@ export const AddressFormModal = ({
   const [provinces, setProvinces] = useState<Province[]>([]);
   const [allWards, setAllWards] = useState<Ward[]>([]);
   const [wards, setWards] = useState<Ward[]>([]);
-
+  const { success, error } = useToast();
   const [formData, setFormData] = useState({
     recipientName: "",
     phone: "",
@@ -158,7 +158,7 @@ export const AddressFormModal = ({
       !formData.wardName ||
       !formData.detailAddress
     ) {
-      toast.error("Vui lòng điền đầy đủ thông tin");
+      error("Vui lòng điền đầy đủ thông tin");
       return;
     }
 
@@ -192,15 +192,15 @@ export const AddressFormModal = ({
           initialValues.addressId,
           payload
         );
-        toast.success("Cập nhật địa chỉ thành công");
+        success("Cập nhật địa chỉ thành công");
       } else {
         await buyerAddressService.createAddress(buyerId, payload);
-        toast.success("Thêm địa chỉ mới thành công");
+        success("Thêm địa chỉ mới thành công");
       }
       onSuccess();
       onClose();
     } catch (error: any) {
-      toast.error(error?.message || "Có lỗi xảy ra");
+      error(error?.message || "Có lỗi xảy ra");
     } finally {
       setLoading(false);
     }
@@ -375,14 +375,19 @@ export const AddressFormModal = ({
           </div>
         </div>
         <div className="flex items-center gap-3 py-2">
-          <label className="text-sm font-semibold text-gray-700" htmlFor="isDefault-toggle">
+          <label
+            className="text-sm font-semibold text-gray-700"
+            htmlFor="isDefault-toggle"
+          >
             Đặt làm địa chỉ mặc định
           </label>
           <input
             id="isDefault-toggle"
             type="checkbox"
             checked={formData.isDefault}
-            onChange={e => setFormData(prev => ({ ...prev, isDefault: e.target.checked }))}
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, isDefault: e.target.checked }))
+            }
             className="w-5 h-5 accent-orange-500 border-gray-300 rounded focus:ring-orange-200"
           />
         </div>

@@ -1,26 +1,24 @@
 "use client";
 
-import React, { useEffect, useState, useMemo } from 'react';
-import { 
-    X, 
-    Save, 
-    Image as ImageIcon, 
-    Plus, 
-    Loader2, 
-    Unlock, 
-    Lock, 
-    Trash2, 
-    Edit3
-} from 'lucide-react';
-import { motion } from 'framer-motion';
-import { WishlistResponse, UpdateWishlistRequest } from '@/types/wishlist/wishlist.types';
+import { PortalModal } from '@/features/PortalModal';
 import { usePresignedUpload } from '@/hooks/usePresignedUpload';
 import { UploadContext } from '@/types/storage/storage.types';
-import { toPublicUrl } from '@/utils/storage/url';
-import { toSizedVariant } from '@/utils/products/media.helpers';
-import { toast } from "sonner";
+import { UpdateWishlistRequest, WishlistResponse } from '@/types/wishlist/wishlist.types';
 import { cn } from "@/utils/cn";
-import { PortalModal } from '@/features/PortalModal';
+import { toSizedVariant } from '@/utils/products/media.helpers';
+import { toPublicUrl } from '@/utils/storage/url';
+import { motion } from 'framer-motion';
+import {
+    Edit3,
+    Loader2,
+    Lock,
+    Plus,
+    Save,
+    Trash2,
+    Unlock
+} from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { toast } from "sonner";
 
 interface EditWishlistModalProps {
     visible: boolean;
@@ -47,7 +45,6 @@ export default function EditWishlistModal({
     const [previewImage, setPreviewImage] = useState<string>("");
     const [uploadProgress, setUploadProgress] = useState(0);
 
-    // Sync data khi mở modal hoặc thay đổi wishlist
     useEffect(() => {
         if (visible && wishlist) {
             setName(wishlist.name);
@@ -95,7 +92,7 @@ export default function EditWishlistModal({
 
     const handleRemoveImage = () => {
         setPreviewImage("");
-        setCoverAssetId(""); // Chuỗi rỗng báo hiệu cho backend biết là muốn xóa ảnh
+        setCoverAssetId(""); 
     };
 
     const handleSubmit = async () => {
@@ -110,7 +107,6 @@ export default function EditWishlistModal({
                 name,
                 description,
                 isPublic,
-                // Nếu coverAssetId là null thì không gửi (không đổi), nếu là "" thì xóa, nếu có id thì cập nhật mới
                 coverImageAssetId: coverAssetId === null ? undefined : coverAssetId 
             };
 
@@ -124,7 +120,6 @@ export default function EditWishlistModal({
         }
     };
 
-    // --- RENDER MODAL PARTS ---
 
     const modalTitle = (
         <div className="flex items-center gap-3">
@@ -167,7 +162,6 @@ export default function EditWishlistModal({
             className="rounded-[2.5rem]"
         >
             <div className="space-y-6">
-                {/* Image Upload Area */}
                 <div className="space-y-3">
                     <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Ảnh bìa danh mục</label>
                     <div className="relative group aspect-[21/9] rounded-3xl border-2 border-dashed border-slate-200 bg-slate-50 overflow-hidden flex items-center justify-center transition-all hover:border-orange-300 shadow-inner">

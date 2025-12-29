@@ -7,7 +7,6 @@ export * from "./loading";
 export * from "./customCarousel";
 export * from "./buttonField";
 export * from "./inputField";
-export * from "./modalWrapper";
 export * from "./button";
 export * from "./customSpinner";
 export * from "./customTabs";

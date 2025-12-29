@@ -1,20 +1,19 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import { 
-    X, 
-    Save, 
-    Loader2, 
-    Edit3, 
-    Plus, 
-    Minus, 
-    HelpCircle
-} from 'lucide-react';
-import { WishlistItemResponse, UpdateWishlistItemRequest } from '@/types/wishlist/wishlist.types';
-import { useWishlist } from '@/hooks/useWishlist';
-import { toast } from "sonner";
-import { cn } from "@/utils/cn";
 import { PortalModal } from '@/features/PortalModal';
+import { UpdateWishlistItemRequest, WishlistItemResponse } from '@/types/wishlist/wishlist.types';
+import { cn } from "@/utils/cn";
+import {
+    Edit3,
+    HelpCircle,
+    Loader2,
+    Minus,
+    Plus,
+    Save
+} from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { toast } from "sonner";
+import { useWishlist } from '../../_hooks/useWishlist';
 
 interface EditWishlistItemModalProps {
     visible: boolean;

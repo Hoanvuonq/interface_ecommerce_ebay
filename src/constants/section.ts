@@ -147,7 +147,6 @@ export const GRADIENT_PRESETS = [
     },
 ];
 
-// Cập nhật interface IAccountMenuItem để sử dụng LucideIcon
 interface IAccountMenuItem {
     key: string;
     icon?: LucideIcon;

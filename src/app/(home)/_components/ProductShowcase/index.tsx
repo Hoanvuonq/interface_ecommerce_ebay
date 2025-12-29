@@ -14,7 +14,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { publicProductService } from "@/services/products/product.service";
 import { PublicProductListItemDTO } from "@/types/product/public-product.dto";
-import { useWishlist } from "@/hooks/useWishlist";
+import { useWishlist } from "@/app/wishlist/_hooks/useWishlist";
 import { ProductCard } from "@/app/products/_components";
 import { isAuthenticated } from "@/utils/local.storage";
 import { cn } from "@/utils/cn";

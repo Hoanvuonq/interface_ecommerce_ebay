@@ -8,41 +8,31 @@ interface Props {
     }>;
 }
 
-/**
- * Generate dynamic metadata for SEO and Open Graph tags
- */
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { shareToken } = await params;
     
-    // Default fallback image (can be a static asset or CDN URL)
     const defaultImageUrl = process.env.NEXT_PUBLIC_APP_URL 
         ? `${process.env.NEXT_PUBLIC_APP_URL}/og-wishlist-default.jpg`
         : 'https://via.placeholder.com/1200x630/4F46E5/FFFFFF?text=Wishlist';
 
     try {
-        // Fetch OG metadata from backend
         const ogData = await wishlistService.getOgMetadata(shareToken);
         
-        // Ensure imageUrl is absolute URL (required for OG tags)
         let imageUrl = ogData.imageUrl;
         if (imageUrl) {
-            // If not absolute, try to make it absolute
             if (!imageUrl.startsWith('http://') && !imageUrl.startsWith('https://')) {
                 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_API_URL?.replace('/api/v1', '') || '';
                 if (baseUrl) {
                     imageUrl = imageUrl.startsWith('/') ? `${baseUrl}${imageUrl}` : `${baseUrl}/${imageUrl}`;
                 } else {
-                    // If no base URL configured, log warning and use fallback
                     console.warn('OG image URL is not absolute and no base URL configured:', imageUrl);
                     imageUrl = "";
                 }
             }
         }
         
-        // Use cover image or fallback to default
         const finalImageUrl = imageUrl || defaultImageUrl;
         
-        // Log for debugging (only in development)
         if (process.env.NODE_ENV === 'development') {
             console.log('OG Metadata:', {
                 title: ogData.title,
@@ -53,7 +43,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         }
 
         return {
-            title: ogData.title, // Already includes emoji and formatting
+            title: ogData.title, 
             description: ogData.description,
             openGraph: {
                 title: ogData.title,
@@ -77,7 +67,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
                 description: ogData.description,
                 images: [finalImageUrl],
             },
-            // Additional SEO metadata
             keywords: ['wishlist', 'sản phẩm yêu thích', 'shopping', 'ecommerce'],
             robots: {
                 index: true,
@@ -114,10 +103,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
 }
 
-/**
- * Public Wishlist Page - Server Component
- * Accessible without authentication
- */
 export default async function PublicWishlistPage({ params }: Props) {
     const { shareToken } = await params;
 

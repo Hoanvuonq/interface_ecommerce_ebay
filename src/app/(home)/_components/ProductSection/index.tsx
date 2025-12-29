@@ -2,7 +2,7 @@
 
 import { ProductCard } from "@/app/products/_components";
 import AnimatedBadge from "@/features/AnimatedBadge";
-import { useWishlist } from "@/hooks/useWishlist";
+import { useWishlist } from "@/app/wishlist/_hooks/useWishlist";
 import { publicProductService } from "@/services/products/product.service";
 import { PublicProductListItemDTO } from "@/types/product/public-product.dto";
 import { cn } from "@/utils/cn";

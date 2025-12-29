@@ -165,7 +165,6 @@ export function VoucherList({ product }: VoucherListProps) {
                 {formatDiscount(voucher)}
             </CustomTag>
 
-            {/* Voucher Info */}
             <div className="flex-1 min-w-0">
                 <p className={cn("font-medium text-gray-800 line-clamp-1", isModal ? "text-sm" : "text-xs")}>
                     {voucher.description || voucher.name || "Voucher Shop"}

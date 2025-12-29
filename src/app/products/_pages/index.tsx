@@ -33,7 +33,7 @@ export const ProductScreen = () => {
   const [filters, setFilters] = useState<ProductFilterValues>({});
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [activeTab, setActiveTab] = useState<TabView>("all");
-  
+
   const [stats, setStats] = useState({
     total: 0,
     featured: 156,
@@ -76,7 +76,11 @@ export const ProductScreen = () => {
               <CustomTag icon={<Clock className="w-3.5 h-3.5" />} color="blue">
                 Mới cập nhật
               </CustomTag>
-              <CustomTag icon={<Heart className="w-3.5 h-3.5" />} color="red">
+
+              <CustomTag
+                icon={<Heart className="w-3.5 h-3.5 fill-current" />}
+                color="red"
+              >
                 {stats.featured} Yêu thích
               </CustomTag>
             </div>
@@ -109,14 +113,20 @@ export const ProductScreen = () => {
                   }
                 >
                   <div className="flex flex-wrap gap-2 pt-4">
-                    {["Điện thoại", "Laptop", "Tablet", "Tai nghe", "Sạc dự phòng"].map((tag) => (
+                    {[
+                      "Điện thoại",
+                      "Laptop",
+                      "Tablet",
+                      "Tai nghe",
+                      "Sạc dự phòng",
+                    ].map((tag) => (
                       <button
                         key={tag}
                         type="button"
                         className={cn(
                           "text-xs px-3 py-1.5 cursor-pointer rounded-full transition-all border",
-                          filters.keyword === tag 
-                            ? "bg-orange-500 text-white border-orange-500" 
+                          filters.keyword === tag
+                            ? "bg-orange-500 text-white border-orange-500"
                             : "bg-white text-gray-600 border-gray-200 hover:border-orange-300 hover:text-orange-600"
                         )}
                         onClick={() => handleTagClick(tag)}
@@ -128,15 +138,19 @@ export const ProductScreen = () => {
                 </CardComponents>
 
                 <div className="bg-linear-to-br from-orange-500 to-red-600 rounded-3xl p-6 text-white shadow-xl shadow-orange-200/50 relative overflow-hidden group">
-                   <div className="relative z-10">
-                      <Heart className="w-10 h-10 mb-4 opacity-80 group-hover:scale-110 transition-transform" />
-                      <h3 className="font-bold text-lg mb-1 text-white">Hỗ trợ mua sắm</h3>
-                      <p className="text-orange-50 text-sm mb-4">Gặp khó khăn? Chúng tôi luôn sẵn sàng hỗ trợ 24/7.</p>
-                      <CustomButton className="w-full bg-white text-orange-600 hover:bg-orange-50 border-0 font-bold h-10">
-                        Liên hệ ngay
-                      </CustomButton>
-                   </div>
-                   <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-white/10 rounded-full blur-2xl" />
+                  <div className="relative z-10">
+                    <Heart className="w-10 h-10 mb-4 opacity-80 group-hover:scale-110 transition-transform" />
+                    <h3 className="font-bold text-lg mb-1 text-white">
+                      Hỗ trợ mua sắm
+                    </h3>
+                    <p className="text-orange-50 text-sm mb-4">
+                      Gặp khó khăn? Chúng tôi luôn sẵn sàng hỗ trợ 24/7.
+                    </p>
+                    <CustomButton className="w-full bg-white text-orange-600 hover:bg-orange-50 border-0 font-bold h-10">
+                      Liên hệ ngay
+                    </CustomButton>
+                  </div>
+                  <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-white/10 rounded-full blur-2xl" />
                 </div>
               </div>
             </div>
@@ -147,7 +161,7 @@ export const ProductScreen = () => {
                   <CardComponents className="p-4 mb-4 border-orange-100 bg-orange-50/30">
                     <CategorySidebar />
                     <div className="mt-6 pt-6 border-t border-gray-200">
-                        <PriceRange filters={filters} setFilters={setFilters} />
+                      <PriceRange filters={filters} setFilters={setFilters} />
                     </div>
                   </CardComponents>
                 </div>
@@ -171,7 +185,7 @@ export const ProductScreen = () => {
                     </button>
                   ))}
                 </div>
-                
+
                 <div className="p-4 sm:p-6 bg-white">
                   {activeTab === "all" && (
                     <ProductFilters
@@ -186,10 +200,7 @@ export const ProductScreen = () => {
               </div>
 
               <div className="min-h-100">
-                 <ProductList 
-                    filters={filters} 
-                    endpoint={activeTab} 
-                 />
+                <ProductList filters={filters} endpoint={activeTab} />
               </div>
             </div>
           </div>
