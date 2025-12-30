@@ -4,11 +4,8 @@ import React from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import {
-  Home,
   ShoppingCart,
-  Loader2,
   AlertCircle,
-  ChevronRight,
   ArrowLeft,
 } from "lucide-react";
 import { useOrderDetail } from "@/hooks/useOrders";
@@ -18,41 +15,47 @@ import { CustomBreadcrumb, SectionLoading } from "@/components";
 
 export default function OrderDetailPage() {
   const params = useParams() as { orderId: string };
-  const { order, loading, error } = useOrderDetail(params.orderId);
-
-  React.useEffect(() => {}, [params.orderId, loading, order, error]);
+  
+  const { 
+    data: order, 
+    isLoading: loading, 
+    error 
+  } = useOrderDetail(params.orderId);
 
   if (loading) {
-    return <SectionLoading message="Đang tải đơn hàng..." />;
+    return (
+      <div className="min-h-screen bg-[#f8f9fa] flex items-center justify-center">
+        <SectionLoading message="Đang truy xuất thông tin đơn hàng..." />
+      </div>
+    );
   }
 
   if (error || !order) {
     return (
       <div className="min-h-screen bg-[#f8f9fa]">
         <PageContentTransition>
-          <div className="max-w-4xl mx-auto px-4 py-12 flex flex-col items-center justify-center text-center">
-            <div className="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center mb-6">
-              <AlertCircle className="w-10 h-10 text-red-500" />
+          <div className="max-w-4xl mx-auto px-4 py-20 flex flex-col items-center justify-center text-center">
+            <div className="w-24 h-24 bg-red-50 rounded-4xl flex items-center justify-center mb-8 shadow-sm">
+              <AlertCircle className="w-12 h-12 text-red-500" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            <h1 className="text-3xl font-black text-slate-900 uppercase tracking-tight mb-4">
               Không tìm thấy đơn hàng
             </h1>
-            <p className="text-gray-500 max-w-md mx-auto mb-8">
-              {error ||
-                "Đơn hàng không tồn tại hoặc bạn không có quyền xem. Vui lòng kiểm tra lại mã đơn hàng."}
+            <p className="text-slate-500 max-w-md mx-auto mb-10 font-medium">
+              {error instanceof Error ? error.message : "Đơn hàng không tồn tại hoặc bạn không có quyền truy cập. Vui lòng kiểm tra lại mã đơn hàng."}
             </p>
 
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/orders">
-                <button className="px-6 py-3 bg-white border border-gray-200 text-gray-700 font-medium rounded-xl hover:bg-gray-50 transition-colors shadow-sm flex items-center gap-2">
+                <button className="w-full sm:w-auto px-8 py-4 bg-white border border-slate-200 text-slate-700 font-bold rounded-2xl hover:bg-slate-50 transition-all shadow-sm flex items-center justify-center gap-2 uppercase text-xs tracking-widest">
                   <ArrowLeft size={18} />
-                  Về danh sách đơn hàng
+                  Danh sách đơn hàng
                 </button>
               </Link>
-              <Link href="/cart">
-                <button className="px-6 py-3 bg-orange-600 text-white font-medium rounded-xl hover:bg-orange-700 transition-colors shadow-sm flex items-center gap-2">
+              <Link href="/products">
+                <button className="w-full sm:w-auto px-8 py-4 bg-slate-900 text-white font-black rounded-2xl hover:bg-orange-600 transition-all shadow-xl shadow-slate-200 flex items-center justify-center gap-2 uppercase text-xs tracking-widest">
                   <ShoppingCart size={18} />
-                  Về giỏ hàng
+                  Tiếp tục mua sắm
                 </button>
               </Link>
             </div>
@@ -63,18 +66,22 @@ export default function OrderDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa]">
+    <div className="min-h-screen bg-[#f8f9fa] pb-20">
       <PageContentTransition>
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <CustomBreadcrumb
-            items={[
-              { title: "Trang chủ", href: "/" },
-              { title: "Sản phẩm", href: "" },
-              { title: `#${order.orderNumber}`, href: "" },
-            ]}
-          />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="mb-8">
+            <CustomBreadcrumb
+              items={[
+                { title: "Trang chủ", href: "/" },
+                { title: "Đơn hàng của tôi", href: "/orders" },
+                { title: `Chi tiết #${order.orderNumber || params.orderId}`, href: "" },
+              ]}
+            />
+          </div>
 
-          <OrderDetailView order={order} />
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <OrderDetailView order={order} />
+          </div>
         </div>
       </PageContentTransition>
     </div>

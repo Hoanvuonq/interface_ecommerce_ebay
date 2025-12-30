@@ -1,97 +1,28 @@
-/**
- * Custom hook for managing orders
- */
+import { useQuery } from "@tanstack/react-query";
+import { orderService } from "@/services/orders/order.service";
+import type { OrderResponse } from "@/types/orders/order.types";
+import _ from "lodash";
 
-import { useState, useEffect, useCallback } from 'react';
-import { orderService } from '@/services/orders/order.service';
-import type { OrderResponse } from '@/types/orders/order.types';
-import { toast } from 'sonner';
 export const useOrders = () => {
-    const [orders, setOrders] = useState<OrderResponse[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-
-    const fetchOrders = useCallback(async () => {
-        try {
-            setLoading(true);
-            setError(null);
-            const response: any = await orderService.getBuyerOrders();
-            let ordersArray: OrderResponse[] = [];
-            if (Array.isArray(response)) {
-                ordersArray = response;
-            } else if (response?.data?.content) {
-                ordersArray = response.data.content;
-            } else if (response?.content) {
-                ordersArray = response.content;
-            } else if (response) {
-                ordersArray = response;
-            }
-            setOrders(ordersArray);
-        } catch (err: any) {
-            const errorMessage = err?.response?.data?.message || 'Không thể tải danh sách đơn hàng';
-            setError(errorMessage);
-            toast.error(errorMessage);
-            console.error('Failed to load orders:', err);
-        } finally {
-            setLoading(false);
-        }
-    }, []);
-
-    useEffect(() => {
-        fetchOrders();
-    }, [fetchOrders]);
-
-    return {
-        orders,
-        loading,
-        error,
-        refetch: fetchOrders,
-    };
+  return useQuery({
+    queryKey: ["orders", "buyer"],
+    queryFn: async () => {
+      const response = await orderService.getBuyerOrders();
+      // Sử dụng lodash để extract dữ liệu an toàn từ nhiều cấu trúc response khác nhau
+      const orders = _.get(response, "data.content") || 
+                     _.get(response, "content") || 
+                     (Array.isArray(response) ? response : []);
+      return orders as OrderResponse[];
+    },
+    staleTime: 1000 * 60 * 5, // Cache dữ liệu trong 5 phút
+  });
 };
 
 export const useOrderDetail = (orderId: string) => {
-    const [order, setOrder] = useState<OrderResponse | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-
-    const fetchOrder = useCallback(async () => {
-        if (!orderId) {
-            console.log('❌ No orderId provided');
-            setLoading(false);
-            return;
-        }
-
-        try {
-            setLoading(true);
-            setError(null);
-            console.log('🔍 Fetching order with ID:', orderId);
-            const data = await orderService.getOrderById(orderId);
-            console.log('✅ Order data received:', data);
-            setOrder(data);
-        } catch (err: any) {
-            const errorMessage = err?.response?.data?.message || 'Không thể tải thông tin đơn hàng';
-            setError(errorMessage);
-            console.error('❌ Failed to load order:', {
-                orderId,
-                error: err,
-                response: err?.response,
-                message: errorMessage
-            });
-        } finally {
-            setLoading(false);
-        }
-    }, [orderId]);
-
-    useEffect(() => {
-        fetchOrder();
-    }, [fetchOrder]);
-
-    return {
-        order,
-        loading,
-        error,
-        refetch: fetchOrder,
-    };
+  return useQuery({
+    queryKey: ["orders", orderId],
+    queryFn: () => orderService.getOrderById(orderId),
+    enabled: !!orderId, // Chỉ chạy khi có orderId
+    retry: 1,
+  });
 };
-
-

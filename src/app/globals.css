@@ -226,10 +226,15 @@ body {
 }
 
 @theme {
-  --animate-infinite-scroll: infinite-scroll 40s linear infinite;
-
   @keyframes infinite-scroll {
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }
+  }
+
+  --animate-infinite-scroll: infinite-scroll 40s linear infinite;
+}
+@layer utilities {
+  .animate-infinite-scroll {
+    animation: infinite-scroll 40s linear infinite;
   }
 }

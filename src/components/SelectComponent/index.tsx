@@ -137,7 +137,7 @@ export const SelectComponent = ({
           <div
             id="select-dropdown-portal"
             className={cn(
-              "fixed z-[9999] bg-white border border-slate-100 rounded-xl shadow-xl flex flex-col overflow-hidden",
+              "fixed z-9999 bg-white border border-slate-100 rounded-xl shadow-xl flex flex-col overflow-hidden",
               "animate-in fade-in zoom-in-95 duration-150"
             )}
             style={dropdownStyle!}

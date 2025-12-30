@@ -13,38 +13,33 @@ export const SectionLoading: React.FC<SectionLoadingProps> = ({
   className = "",
 }) => {
   return (
-    <section 
-      className={`min-h-[400px] flex items-center justify-center relative overflow-hidden bg-white ${className}`}
+    <section
+      className={`min-h-100 flex items-center justify-center relative overflow-hidden bg-white ${className}`}
     >
-      {/* Background Decor - Các đốm màu loang phong cách Web3 */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-orange-500/10 rounded-full blur-[80px] pointer-events-none" />
       <div className="absolute top-1/4 right-1/4 w-32 h-32 bg-blue-500/10 rounded-full blur-[60px] pointer-events-none" />
 
       <div className="relative z-10 flex flex-col items-center">
-        {/* Custom Web3 Spinner */}
         <div className="relative w-20 h-20 mb-8">
-          {/* Vòng quay ngoài */}
           <motion.div
             animate={{ rotate: 360 }}
             transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
             className="absolute inset-0 border-t-4 border-r-4 border-orange-500 border-l-transparent border-b-transparent rounded-full"
           />
-          {/* Vòng quay trong - quay ngược lại */}
           <motion.div
             animate={{ rotate: -360 }}
             transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
             className="absolute inset-2 border-b-2 border-l-2 border-slate-200 border-t-transparent border-r-transparent rounded-full"
           />
-          {/* Dot cam ở giữa */}
-          <motion.div 
+          <motion.div
             animate={{ scale: [1, 1.2, 1] }}
             transition={{ repeat: Infinity, duration: 1 }}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-orange-500 rounded-full shadow-[0_0_15px_rgba(249,115,22,0.6)]" 
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-orange-500 rounded-full shadow-[0_0_15px_rgba(249,115,22,0.6)]"
           />
         </div>
 
         <div className="flex flex-col items-center space-y-2">
-          <motion.h3 
+          <motion.h3
             initial={{ opacity: 0.5 }}
             animate={{ opacity: [0.5, 1, 0.5] }}
             transition={{ repeat: Infinity, duration: 2 }}
@@ -53,23 +48,25 @@ export const SectionLoading: React.FC<SectionLoadingProps> = ({
             {message.split("...")[0]}
             <span className="text-orange-500">...</span>
           </motion.h3>
-          
+
           <div className="flex gap-1">
             {[0, 1, 2].map((i) => (
               <motion.div
                 key={i}
-                animate={{ 
+                animate={{
                   scale: [1, 1.5, 1],
-                  backgroundColor: ["#cbd5e1", "#f97316", "#cbd5e1"] 
+                  backgroundColor: ["#cbd5e1", "#f97316", "#cbd5e1"],
                 }}
-                transition={{ repeat: Infinity, duration: 0.6, delay: i * 0.15 }}
+                transition={{
+                  repeat: Infinity,
+                  duration: 0.6,
+                  delay: i * 0.15,
+                }}
                 className="w-1.5 h-1.5 rounded-full"
               />
             ))}
           </div>
         </div>
-
-       
       </div>
     </section>
   );

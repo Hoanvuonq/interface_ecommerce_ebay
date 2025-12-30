@@ -144,7 +144,7 @@ export const OrderTrackingTimeline: React.FC<OrderTrackingTimelineProps> = ({ tr
                                 
                                 return (
                                     <div key={index} className="relative">
-                                        <div className={`absolute -left-[25px] top-0 w-5 h-5 rounded-full border-2 border-white shadow-sm flex items-center justify-center ${
+                                        <div className={`absolute -left-6.25 top-0 w-5 h-5 rounded-full border-2 border-white shadow-sm flex items-center justify-center ${
                                             isFirst ? 'bg-orange-500 text-white ring-4 ring-orange-100' : 'bg-gray-200 text-gray-500'
                                         }`}>
                                             {isFirst && <div className="w-2 h-2 bg-white rounded-full" />}

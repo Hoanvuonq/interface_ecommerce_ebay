@@ -9,7 +9,7 @@ dayjs.extend(duration);
 interface OrderExpirationTimerProps {
     expiresAt?: string;
     onExpire?: () => void;
-    compact?: boolean; // If true, show minimal version (for list view)
+    compact?: boolean;
 }
 
 export const OrderExpirationTimer: React.FC<OrderExpirationTimerProps> = ({
