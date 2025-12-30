@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { request } from "@/utils/axios.customize";
-import type { ApiResponse } from "@/types/api.types";
+import type { ApiResponse } from "@/api/_types/api.types";
 import {
   ReviewListResponse,
   ModerateReviewRequest,
   GetReviewsAdminRequest,
-} from "../dto/review.dto";
+}  from "../_types/review.type";
 
 const API_ENDPOINT_ADMIN_REVIEWS = "v1/admin/reviews";
 

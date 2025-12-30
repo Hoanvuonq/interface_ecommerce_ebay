@@ -229,7 +229,7 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
         className="space-y-8 py-2"
       >
         <section>
-          <SectionHeader icon={ShoppingBag} title="Chọn Phiên Bản" />
+          <SectionHeader icon={<ShoppingBag size={14} />} title="Chọn Phiên Bản" />
           <div className="grid grid-cols-3 gap-3">
             {product.variants?.map((v: any) => {
               const isSelected = selectedVariantId === v.id;
@@ -291,7 +291,7 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
         <section className="bg-gray-50/50 p-4 rounded-3xl border border-gray-100">
           {!showCreateForm ? (
             <div className="space-y-3">
-              <SectionHeader icon={Heart} title="Lưu vào danh sách" />
+              <SectionHeader icon={<Heart  size={14}/>} title="Lưu vào danh sách" />
               <div className="flex gap-3">
                 <div className="relative flex-1 group">
                   <SelectComponent
@@ -393,7 +393,7 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <SectionHeader icon={Plus} title="Số lượng" />
+            <SectionHeader icon={<Plus size={14} />} title="Số lượng" />
             <input
               type="number"
               min={1}
@@ -408,7 +408,7 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
             />
           </div>
           <div>
-            <SectionHeader icon={CheckCircle2} title="Mức độ ưu tiên" />
+            <SectionHeader icon={<CheckCircle2 size={14} />} title="Mức độ ưu tiên" />
             <SelectComponent
               options={priorityOptions}
               value={formData.priority.toString()}
