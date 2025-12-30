@@ -1,6 +1,6 @@
 "use client";
 
-import { useHomepageBannerContext } from "@/app/(main)/(home)/_context/HomepageBannerContext";
+import { useHomepageContext } from "@/app/(main)/(home)/_context/HomepageContext";
 import { GRADIENT_PRESETS } from "@/constants/section";
 import { cn } from "@/utils/cn";
 import { resolveBannerImageUrl } from "@/utils/products/media.helpers";
@@ -10,70 +10,39 @@ import { useEffect, useMemo, useState } from "react";
 import { BannerResponseDTO } from "../../_types/banner.dto";
 
 const INTRO_BANNER_STORAGE_KEY = "homepageIntroBannerDismissedAt";
-const INTRO_BANNER_EXPIRATION_MS = 12 * 60 * 60 * 1000; 
+const INTRO_BANNER_EXPIRATION_MS = 12 * 60 * 60 * 1000;
 
 const mapBannerToDisplay = (banner: BannerResponseDTO, index: number) => {
   const preset = GRADIENT_PRESETS[index % GRADIENT_PRESETS.length];
-
-  let imageUrl: string | undefined;
-  let imageUrlDesktop: string | undefined;
-  let imageUrlMobile: string | undefined;
-
-  if (banner.basePath && banner.extension) {
-    imageUrl = resolveBannerImageUrl(
-      banner.basePath,
-      banner.extension,
-      "_orig"
-    );
-  }
-
-  if (banner.basePathDesktop && banner.extensionDesktop) {
-    imageUrlDesktop = resolveBannerImageUrl(
-      banner.basePathDesktop,
-      banner.extensionDesktop,
-      "_orig"
-    );
-  }
-
-  if (banner.basePathMobile && banner.extensionMobile) {
-    imageUrlMobile = resolveBannerImageUrl(
-      banner.basePathMobile,
-      banner.extensionMobile,
-      "_orig"
-    );
-  }
-
   const parts = banner.subtitle?.split("\n") || [];
+
   return {
     id: banner.id,
     title: banner.title || "Khuyến mãi",
     description: parts[0] || "",
     description2: parts[1] || "",
     href: banner.href || "/products",
-    imageUrl,
-    imageUrlDesktop,
-    imageUrlMobile,
+    imageUrl: banner.basePath ? resolveBannerImageUrl(banner.basePath, banner.extension!, "_orig") : undefined,
+    imageUrlDesktop: banner.basePathDesktop ? resolveBannerImageUrl(banner.basePathDesktop, banner.extensionDesktop!, "_orig") : undefined,
+    imageUrlMobile: banner.basePathMobile ? resolveBannerImageUrl(banner.basePathMobile, banner.extensionMobile!, "_orig") : undefined,
     ...preset,
   };
 };
 
 export const IntroBanner = () => {
   const [isDismissed, setIsDismissed] = useState(true);
-  const [imageError, setImageError] = useState(false);
   const [showBanner, setShowBanner] = useState(false);
+  
+  // Updated to use the unified HomepageContext
+  const { banners, isLoading } = useHomepageContext();
+  const introBanners = banners?.intro || [];
 
-  const { introBanners, loading } = useHomepageBannerContext();
+  // Check localStorage on mount
   useEffect(() => {
-    if (typeof window === "undefined") return;
-
     const dismissedAt = Number(localStorage.getItem(INTRO_BANNER_STORAGE_KEY));
-    if (!dismissedAt || Number.isNaN(dismissedAt)) {
-      setIsDismissed(false);
-      setShowBanner(true);
-      return;
-    }
+    const isExpired = !dismissedAt || (Date.now() - dismissedAt > INTRO_BANNER_EXPIRATION_MS);
 
-    if (Date.now() - dismissedAt > INTRO_BANNER_EXPIRATION_MS) {
+    if (isExpired) {
       localStorage.removeItem(INTRO_BANNER_STORAGE_KEY);
       setIsDismissed(false);
       setShowBanner(true);
@@ -83,41 +52,23 @@ export const IntroBanner = () => {
     }
   }, []);
 
+  // Handle body scroll lock when banner is active
   useEffect(() => {
     if (!showBanner || isDismissed) return;
 
-    const y = window.scrollY;
+    const originalOverflow = document.body.style.overflow;
+    const originalPaddingRight = document.body.style.paddingRight;
+    
+    // Simple scroll lock
     document.body.style.overflow = "hidden";
-    document.body.style.position = "fixed";
-    document.body.style.top = `-${y}px`;
-    document.body.style.width = "100%";
-
+    
     return () => {
-      document.body.style.overflow = "";
-      document.body.style.position = "";
-      document.body.style.top = "";
-      document.body.style.width = "";
-      window.scrollTo(0, y);
+      document.body.style.overflow = originalOverflow;
+      document.body.style.paddingRight = originalPaddingRight;
     };
   }, [showBanner, isDismissed]);
 
-  useEffect(() => {
-    const styleId = "intro-banner-image-force-display";
-    if (document.getElementById(styleId)) return;
-
-    const style = document.createElement("style");
-    style.id = styleId;
-    document.head.appendChild(style);
-
-    return () => {
-      const existingStyle = document.getElementById(styleId);
-      if (existingStyle) {
-        existingStyle.remove();
-      }
-    };
-  }, []);
-
-  const banner = useMemo(() => {
+  const bannerData = useMemo(() => {
     if (introBanners.length === 0) return null;
     return mapBannerToDisplay(introBanners[0], 0);
   }, [introBanners]);
@@ -128,81 +79,75 @@ export const IntroBanner = () => {
     localStorage.setItem(INTRO_BANNER_STORAGE_KEY, Date.now().toString());
   };
 
-  if (!banner || loading || isDismissed || !showBanner) return null;
+  if (isLoading || isDismissed || !showBanner || !bannerData) return null;
+
+  const hasImage = !!(bannerData.imageUrl || bannerData.imageUrlDesktop || bannerData.imageUrlMobile);
 
   return (
-    <div
-      className="fixed inset-0 z-2000 flex items-center justify-center"
-      style={{ width: "100vw", height: "100vh" }}
-    >
-      <div className="absolute inset-0 bg-black/20" onClick={handleDismiss} />
-      <div className="relative z-2100 flex items-center justify-center -mt-32 md:-mt-40">
+    <div className="fixed inset-0 z-2000 flex items-center justify-center p-4">
+      <div 
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" 
+        onClick={handleDismiss} 
+      />
+
+      <div className="relative z-2100 w-full max-w-fit flex items-center justify-center animate-in zoom-in-95 duration-300">
         <button
           onClick={handleDismiss}
           className={cn(
-            "absolute -top-3 -right-3 z-2200 bg-white/95 hover:bg-white",
+            "absolute -top-4 -right-4 z-2200 bg-white text-slate-900",
             "rounded-full w-10 h-10 flex items-center justify-center",
-            "shadow-lg border border-gray-200 hover:scale-110 transition-all"
+            "shadow-xl border border-slate-200 hover:scale-110 active:scale-95 transition-all"
           )}
           aria-label="Đóng banner"
         >
-          <X className="text-lg text-gray-700" />
+          <X size={20} strokeWidth={2.5} />
         </button>
 
         <Link
-          href={banner.href}
+          href={bannerData.href}
           onClick={handleDismiss}
-          className="block relative"
+          className="block outline-none"
         >
-          {banner.imageUrl ||
-          banner.imageUrlDesktop ||
-          banner.imageUrlMobile ? (
-            <picture>
-              {banner.imageUrlMobile && (
-                <source
-                  media="(max-width: 768px)"
-                  srcSet={banner.imageUrlMobile}
-                />
+          {hasImage ? (
+            <picture className="block">
+              {bannerData.imageUrlMobile && (
+                <source media="(max-width: 768px)" srcSet={bannerData.imageUrlMobile} />
               )}
-              {banner.imageUrlDesktop && (
-                <source
-                  media="(min-width: 769px)"
-                  srcSet={banner.imageUrlDesktop}
-                />
+              {bannerData.imageUrlDesktop && (
+                <source media="(min-width: 769px)" srcSet={bannerData.imageUrlDesktop} />
               )}
               <img
-                src={
-                  banner.imageUrl ||
-                  banner.imageUrlDesktop ||
-                  banner.imageUrlMobile ||
-                  ""
-                }
-                alt={banner.title}
-                onError={() => setImageError(true)}
-                className="intro-banner-image"
+                src={bannerData.imageUrl || bannerData.imageUrlDesktop || bannerData.imageUrlMobile}
+                alt={bannerData.title}
+                className="rounded-2xl shadow-2xl object-contain ring-4 ring-white/10"
                 style={{
-                  maxWidth: "min(60vw, 600px)",
-                  maxHeight: "50vh",
+                  maxWidth: "min(90vw, 540px)",
+                  maxHeight: "70vh",
                   width: "auto",
                   height: "auto",
-                  objectFit: "contain",
-                  display: "block",
-                  margin: "0 auto",
                 }}
               />
             </picture>
           ) : (
             <div className={cn(
-                "w-[320px] h-80 rounded-3xl flex flex-col items-center justify-center text-white bg-linear-to-br shadow-2xl p-8",
-                banner.gradient,
-                "dark:ring-2 dark:ring-white/20"
+                "w-[320px] h-80 rounded-3xl flex flex-col items-center justify-center text-white bg-linear-to-br shadow-2xl p-8 text-center",
+                bannerData.gradient
               )}>
-               <h3 className="text-2xl font-bold mb-2">{banner.title}</h3>
-               <p className="opacity-90">{banner.description}</p>
+                <h3 className="text-2xl font-black uppercase tracking-tighter mb-2 italic">
+                    {bannerData.title}
+                </h3>
+                <p className="font-bold opacity-90 leading-tight">
+                    {bannerData.description}
+                </p>
+                {bannerData.description2 && (
+                    <p className="text-sm mt-2 opacity-80 italic">
+                        {bannerData.description2}
+                    </p>
+                )}
             </div>
           )}
         </Link>
       </div>
     </div>
   );
-}
+};

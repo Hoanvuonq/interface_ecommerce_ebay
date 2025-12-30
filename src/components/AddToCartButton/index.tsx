@@ -3,71 +3,76 @@
 import { useCart } from "@/app/(main)/products/_hooks/useCart";
 import { requireAuthentication } from "@/utils/cart/cart-auth.utils";
 import { cn } from "@/utils/cn";
-import { Minus, Plus, ShoppingCart } from "lucide-react"; 
+import { Minus, Plus, ShoppingCart } from "lucide-react";
 import React, { useState } from "react";
 import { toast } from "sonner";
 import { IButtonProps, IInputProps } from "./type";
 
-const CustomInputNumber: React.FC<IInputProps> = ({ 
-    min, 
-    max, 
-    value, 
-    onChange, 
-    disabled = false 
+const CustomInputNumber: React.FC<IInputProps> = ({
+  min,
+  max,
+  value,
+  onChange,
+  disabled = false,
 }) => {
-    return (
-        <div className="relative group">
-            <input
-                type="number"
-                min={min}
-                max={max}
-                value={value ?? ''}
-                onChange={(e) => {
-                    const numValue = parseInt(e.target.value);
-                    if (!isNaN(numValue)) onChange(numValue);
-                    else if (e.target.value === '') onChange(null);
-                }}
-                disabled={disabled}
-                className={cn(
-                    "w-14 h-10 text-center font-bold text-gray-900 border-x-0 border-y border-gray-200 focus:outline-none transition duration-200",
-                    disabled && 'bg-gray-50 text-gray-400'
-                )}
-            />
-        </div>
-    );
+  return (
+    <div className="relative group">
+      <input
+        type="number"
+        min={min}
+        max={max}
+        value={value ?? ""}
+        onChange={(e) => {
+          const numValue = parseInt(e.target.value);
+          if (!isNaN(numValue)) onChange(numValue);
+          else if (e.target.value === "") onChange(null);
+        }}
+        disabled={disabled}
+        className={cn(
+          "w-14 h-10 text-center font-bold text-gray-900 border-x-0 border-y border-gray-200 focus:outline-none transition duration-200",
+          disabled && "bg-gray-50 text-gray-400"
+        )}
+      />
+    </div>
+  );
 };
 
 export const AddToCartButton: React.FC<IButtonProps> = ({
- variantId,
-    productName,
-    maxQuantity = 999,
-    size = 'large',
-    block = false,
-    showQuantityInput = false,
-    defaultQuantity = 1,
-    disabled = false,
+  variantId,
+  productName,
+  maxQuantity = 999,
+  size = "large",
+  block = false,
+  showQuantityInput = false,
+  defaultQuantity = 1,
+  disabled = false,
 }) => {
   const { quickAddToCart } = useCart();
-      const [quantity, setQuantity] = useState(defaultQuantity);
-      const [loading, setLoading] = useState(false);
-  
-      const handleAddToCart = async () => {
-          if (!requireAuthentication(window.location.pathname)) return;
-          setLoading(true);
-          try {
-              const result = await quickAddToCart(variantId, quantity);
-              if (result.success) {
-              } else {
-                  toast.error(result.error || 'Lỗi thêm vào giỏ');
-              }
-          } finally {
-              setLoading(false);
-          }
-      };
+  const [quantity, setQuantity] = useState(defaultQuantity);
+  const [loading, setLoading] = useState(false);
+
+  const handleAddToCart = async () => {
+    if (!requireAuthentication(window.location.pathname)) return;
+    setLoading(true);
+    try {
+      const result = await quickAddToCart(variantId, quantity);
+      if (result.success) {
+      } else {
+        toast.error(result.error || "Lỗi thêm vào giỏ");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (showQuantityInput) {
     return (
-        <div className={cn('flex flex-col sm:flex-row items-stretch gap-3', block && 'w-full')}>
+      <div
+        className={cn(
+          "flex flex-col sm:flex-row items-stretch gap-3",
+          block && "w-full"
+        )}
+      >
         <div className="flex items-center justify-center bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm h-12">
           <button
             onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}

@@ -2,7 +2,7 @@ export interface InputFieldProps {
   label: string;
   name: string;
   placeholder?: string;
-  type?: "text" | "password";
+  type?: "text" | "password" | "textarea" | "email" | "number" | "tel" | "url" | "date";
   rules?: Array<{ required?: boolean; [key: string]: any }>;
   dependencies?: string[];
   maxLength?: number;

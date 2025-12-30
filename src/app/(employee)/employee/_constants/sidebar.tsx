@@ -1,4 +1,3 @@
-// src/layouts/employee/sidebar/_constants/sidebar.tsx
 import {
   Home,
   Users,
@@ -36,13 +35,13 @@ export const SIDEBAR_ITEMS: MenuItemSidebar[] = [
     href: "/employee/dashboard",
   },
   { type: "divider", key: "div-1", label: "" },
-  {
-    key: "home-main",
-    icon: <Globe size={20} className="text-blue-500" />,
-    label: "Về trang chủ",
-    href: "/",
-    className: "bg-blue-50/50 text-blue-600 hover:bg-blue-100 font-semibold",
-  },
+  // {
+  //   key: "home-main",
+  //   icon: <Globe size={20} className="text-blue-500" />,
+  //   label: "Về trang chủ",
+  //   href: "/",
+  //   className: "bg-blue-50/50 text-blue-600 hover:bg-blue-100 font-semibold",
+  // },
   {
     key: "users",
     icon: <Users size={20} />,
@@ -57,8 +56,8 @@ export const SIDEBAR_ITEMS: MenuItemSidebar[] = [
     icon: <IdCard size={20} />,
     label: "Quản lý nhân viên",
     children: [
-      { key: "employees-data", label: "Thống kê dữ liệu", href: "/employee/employees/data", icon: <BarChart3 size={16}/> },
-      { key: "employees-all", label: "Tất cả nhân viên", href: "/employee/employees", icon: <IdCard size={16}/> },
+      { key: "employees-data", label: "Thống kê dữ liệu", href: "/employee/personnel/data", icon: <BarChart3 size={16}/> },
+      { key: "employees-all", label: "Tất cả nhân viên", href: "/employee/personnel", icon: <IdCard size={16}/> },
     ],
   },
   {
@@ -146,13 +145,51 @@ export const SIDEBAR_ITEMS: MenuItemSidebar[] = [
 ];
 
 export const ROUTE_MAPPINGS = [
+  // Dashboard
   { prefix: "/employee/dashboard", key: "home" },
+
+  // Quản lý tài khoản
   { prefix: "/employee/users/data", key: "users-data", parent: "users" },
   { prefix: "/employee/users", key: "users-all", parent: "users" },
-  { prefix: "/employee/employees/data", key: "employees-data", parent: "employees" },
-  { prefix: "/employee/employees", key: "employees-all", parent: "employees" },
-  // ... Thêm các mapping còn lại tương tự
+
+  // Quản lý nhân viên (Lưu ý: dùng parent: "employees" để khớp với SIDEBAR_ITEMS)
+  { prefix: "/employee/personnel/data", key: "employees-data", parent: "employees" },
+  { prefix: "/employee/personnel", key: "employees-all", parent: "employees" },
+
+  // Phòng ban
+  { prefix: "/employee/departments/data", key: "departments-data", parent: "departments" },
+  { prefix: "/employee/departments", key: "departments-all", parent: "departments" },
+
+  // Phân quyền
+  { prefix: "/employee/permissions/permissions", key: "permissions-permissions", parent: "permissions" },
+  { prefix: "/employee/permissions/roles", key: "permissions-roles", parent: "permissions" },
+  { prefix: "/employee/permissions/users", key: "permissions-users", parent: "permissions" },
+
+  // Các trang đơn (Không có parent)
+  { prefix: "/employee/shops", key: "shops" },
+  { prefix: "/employee/categories", key: "categories" },
+  { prefix: "/employee/reviews", key: "reviews" },
+
+  // Sản phẩm
+  { prefix: "/employee/products/stats", key: "products-data", parent: "products" },
   { prefix: "/employee/products", key: "products-all", parent: "products" },
+
+  // Đơn hàng
+  { prefix: "/employee/orders/data", key: "orders-data", parent: "orders" },
+  { prefix: "/employee/orders", key: "orders-all", parent: "orders" },
+
+  // Voucher
+  { prefix: "/employee/vouchers/data", key: "vouchers-data", parent: "vouchers" },
+  { prefix: "/employee/vouchers", key: "vouchers-all", parent: "vouchers" },
+  { prefix: "/employee/voucher-v2", key: "vouchers-v2", parent: "vouchers" },
+
+  // CSKH
+  { prefix: "/employee/cskh", key: "cskh-chat", parent: "cskh" },
+
+  // Tài khoản cá nhân
+  { prefix: "/employee/account/info", key: "account-info", parent: "my-account" },
+  { prefix: "/employee/account/password", key: "account-password", parent: "my-account" },
+
   // Fallback
   { prefix: "/employee", key: "home" },
 ];

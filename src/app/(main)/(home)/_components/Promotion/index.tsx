@@ -1,42 +1,46 @@
 "use client";
-import React, { useMemo, useState } from "react";
-import { QuickLinks } from "@/constants/section";
-import { QuickLinkItem } from "../QuickLinkItem"; 
-import { MoreHorizontal, ChevronUp } from "lucide-react";
-import { HeroBanners } from "../HeroBanners";
-import { cn } from "@/utils/cn";
-import { useHomepageBannerContext } from "../../_context/HomepageBannerContext";
-import { mapBannerToDisplay } from "../../_utils/bannerMapping";
+
 import { SectionLoading } from "@/components";
+import { QuickLinks } from "@/constants/section";
+import { cn } from "@/utils/cn";
+import { ChevronUp, MoreHorizontal } from "lucide-react";
+import React, { useMemo, useState } from "react";
+import { useHomepageContext } from "../../_context/HomepageContext";
+import { mapBannerToDisplay } from "../../_utils/bannerMapping";
+import { HeroBanners } from "../HeroBanners";
+import { QuickLinkItem } from "../QuickLinkItem";
 
 export const Promotion: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const { heroBanners, loading, error } = useHomepageBannerContext();
+  const { banners: groupedBanners, isLoading, isError } = useHomepageContext();
 
   const alwaysVisible = useMemo(() => QuickLinks.slice(0, 3), []);
   const expandableLinks = useMemo(() => QuickLinks.slice(3), []);
 
-  const banners = useMemo(() => {
-    return heroBanners.map((banner, index) => mapBannerToDisplay(banner, index));
-  }, [heroBanners]);
+  const mappedHeroBanners = useMemo(() => {
+    const heroList = groupedBanners?.hero || [];
+    return heroList.map((banner: any, index: number) => mapBannerToDisplay(banner, index));
+  }, [groupedBanners?.hero]);
 
-  if (loading) return <SectionLoading message="Đang tải dữ liệu..." />;
+  if (isLoading && mappedHeroBanners.length === 0) {
+    return <SectionLoading message="Đang tải dữ liệu ưu đãi..." />;
+  }
 
   return (
     <section className="bg-white py-4 overflow-hidden">
       <div className="max-w-300 mx-auto w-full px-4 lg:px-0">
-        <HeroBanners banners={error ? [] : banners} />
+        <HeroBanners banners={isError ? [] : mappedHeroBanners} />
+        
         <div className="mx-auto w-full mt-6">
           <div className="grid grid-cols-4 lg:grid-cols-8 gap-y-2 gap-x-4 items-start">
             <div className="hidden lg:contents">
               {QuickLinks.map((item) => (
-                <QuickLinkItem key={item.key} item={item} isLoading={loading} />
+                <QuickLinkItem key={item.key} item={item} isLoading={isLoading} />
               ))}
             </div>
-
             <div className="contents lg:hidden">
               {alwaysVisible.map((item) => (
-                <QuickLinkItem key={item.key} item={item} isLoading={loading} />
+                <QuickLinkItem key={item.key} item={item} isLoading={isLoading} />
               ))}
 
               <button
@@ -71,7 +75,7 @@ export const Promotion: React.FC = () => {
               >
                 <div className="grid grid-cols-4 gap-y-8 gap-x-4 pt-8 border-t border-gray-200/50">
                    {expandableLinks.map((item) => (
-                    <QuickLinkItem key={item.key} item={item} isLoading={loading} />
+                    <QuickLinkItem key={item.key} item={item} isLoading={isLoading} />
                   ))}
                 </div>
               </div>

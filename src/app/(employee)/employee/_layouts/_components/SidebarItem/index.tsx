@@ -1,7 +1,6 @@
-// src/layouts/employee/sidebar/_components/SidebarItem.tsx
 "use client";
 
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/utils/cn";
 import { MenuItemSidebar } from "../../../_types/sidebar";
@@ -12,12 +11,22 @@ interface SidebarItemProps {
   activeKey: string;
   openKeys: string[];
   onToggle: (key: string) => void;
+  isParentOfActive?: boolean; 
 }
 
-export const SidebarItem = ({ item, collapsed, activeKey, openKeys, onToggle }: SidebarItemProps) => {
+export const SidebarItem = ({ 
+  item, 
+  collapsed, 
+  activeKey, 
+  openKeys, 
+  onToggle,
+  isParentOfActive 
+}: SidebarItemProps) => {
   const isActive = activeKey === item.key;
   const isOpen = openKeys.includes(item.key);
   const hasChildren = item.children && item.children.length > 0;
+  
+  const highlightParent = isParentOfActive && !collapsed;
 
   if (item.type === "divider") {
     return <div className="h-px bg-slate-100 my-3 mx-4" />;
@@ -29,19 +38,16 @@ export const SidebarItem = ({ item, collapsed, activeKey, openKeys, onToggle }: 
         "flex items-center gap-3 px-3.5 py-2.5 rounded-2xl transition-all duration-300 cursor-pointer group select-none relative overflow-hidden",
         isActive 
           ? "bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-200 scale-[1.02]" 
+          : highlightParent
+          ? "bg-orange-50/50 text-orange-600"
           : "text-slate-500 hover:bg-orange-50 hover:text-orange-600",
         item.className
       )}
       onClick={() => hasChildren && onToggle(item.key)}
     >
-      {/* Background Glow Effect for Hover */}
-      {!isActive && (
-        <div className="absolute inset-0 bg-gradient-to-r from-orange-400/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-      )}
-
       <span className={cn(
         "shrink-0 transition-transform duration-300 group-hover:scale-110 relative z-10",
-        isActive ? "text-white" : "text-slate-400 group-hover:text-orange-500"
+        isActive ? "text-white" : highlightParent ? "text-orange-500" : "text-slate-400 group-hover:text-orange-500"
       )}>
         {item.icon}
       </span>
@@ -68,6 +74,7 @@ export const SidebarItem = ({ item, collapsed, activeKey, openKeys, onToggle }: 
         content
       )}
 
+      {/* Hiển thị con nếu đang mở */}
       {!collapsed && hasChildren && isOpen && (
         <div className="mt-1 ml-6 pl-4 border-l-2 border-orange-100 space-y-1 animate-in slide-in-from-top-2 duration-300">
           {item.children?.map((child) => {
@@ -79,7 +86,7 @@ export const SidebarItem = ({ item, collapsed, activeKey, openKeys, onToggle }: 
                 className={cn(
                   "flex items-center gap-3 px-4 py-2 rounded-xl text-[12px] font-bold transition-all duration-200",
                   isChildActive
-                    ? "text-orange-600 bg-orange-50/80"
+                    ? "text-orange-600 bg-orange-100/50" // Làm đậm màu hơn khi active con
                     : "text-slate-500 hover:text-orange-600 hover:bg-orange-50/50"
                 )}
               >

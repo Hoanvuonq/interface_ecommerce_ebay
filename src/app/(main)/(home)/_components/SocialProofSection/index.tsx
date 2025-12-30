@@ -1,140 +1,113 @@
 "use client";
 
 import { cn } from "@/utils/cn";
-import { Quote, Star, CheckCircle2 } from "lucide-react";
-import React from "react";
-import { reviews, stats, trustBadges } from "./type";
-import ScrollReveal from "@/features/ScrollReveal";
+import { motion } from "framer-motion";
+import { ArrowRight, Globe, ShieldCheck, Star, Zap } from "lucide-react";
+import { reviews, stats } from "./type";
 
-export const SocialProofSection: React.FC = () => {
+const RollingBanner = () => (
+  <div className="relative flex overflow-hidden border-y-2 border-slate-900 bg-white py-4 select-none">
+    <div className="flex whitespace-nowrap animate-infinite-scroll gap-20">
+      {[...Array(10)].map((_, i) => (
+        <div key={i} className="flex items-center gap-4 text-sm font-black uppercase tracking-widest text-slate-900">
+          <Star size={16} className="fill-orange-500 text-orange-500" />
+          <span>Trusted by 10,000+ Digital Pioneers</span>
+          <div className="h-1 w-1 rounded-full bg-slate-300" />
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
+const StatCard = ({ label, value, index }: { label: string; value: string; index: number }) => (
+  <motion.div 
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    transition={{ delay: index * 0.1 }}
+    viewport={{ once: true }}
+    className="group relative overflow-hidden bg-slate-50 p-8 hover:bg-slate-900 transition-all duration-500"
+  >
+    <span className="text-6xl font-black text-slate-200 group-hover:text-white/10 transition-colors absolute -right-2 -bottom-2 leading-none">
+      0{index + 1}
+    </span>
+    <div className="relative z-10">
+      <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 group-hover:text-orange-500 mb-2">
+        {label}
+      </p>
+      <p className="text-4xl font-black text-slate-900 group-hover:text-white transition-colors tracking-tighter">
+        {value}
+      </p>
+    </div>
+  </motion.div>
+);
+
+export const SocialProofSection = () => {
   return (
-    <section className="py-10 sm:py-16 bg-white overflow-hidden border-t border-slate-50">
-      <ScrollReveal animation="fadeIn" delay={100}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="bg-white">
+      <RollingBanner />
+
+      <div className="max-w-350 mx-auto px-6 py-24">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
           
-          {/* HEADER SECTION */}
-          <div className="flex flex-col items-center mb-10 sm:mb-14 space-y-3 text-center">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight uppercase italic text-slate-950">
-              Cộng đồng <span className="text-orange-500">Tin Tưởng</span>
+          <div className="lg:col-span-4 sticky top-24">
+            <h2 className="text-6xl md:text-8xl font-black uppercase leading-[0.85] tracking-tighter text-slate-950 mb-8">
+              The New <br />
+              <span className="text-orange-500">Standard.</span>
             </h2>
-            <div className="h-1.5 w-16 sm:w-24 bg-orange-500 rounded-full opacity-20" />
-            <p className="text-sm sm:text-base text-slate-500 font-medium max-w-lg mx-auto">
-              Hàng ngàn khách hàng đã trải nghiệm và hài lòng với chất lượng dịch vụ của chúng tôi.
+            <p className="text-lg text-slate-500 font-medium max-w-sm mb-8 leading-relaxed">
+              Chúng tôi định nghĩa lại sự tin cậy thông qua dữ liệu thực và trải nghiệm minh bạch tuyệt đối.
             </p>
+            <button className="group flex items-center gap-4 bg-slate-900 text-white px-8 py-4 rounded-full font-black uppercase text-xs tracking-widest hover:bg-orange-500 transition-all">
+              View Case Studies
+              <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform" />
+            </button>
           </div>
 
-          {/* STATS GRID */}
-          {/* Mobile: 2 cột, Tablet/Desktop: 4 cột */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 mb-12 sm:mb-16">
-            {stats.map((item, idx) => (
-              <div
-                key={idx}
-                className="bg-slate-50 rounded-2xl p-3 sm:p-5 border border-slate-100 flex flex-col sm:flex-row items-center sm:items-start gap-3 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-orange-100 group text-center sm:text-left"
-              >
-                <div
-                  className={cn(
-                    "w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110 shadow-sm bg-white",
-                    item.color
-                  )}
+          <div className="lg:col-span-8 space-y-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {stats.map((stat, i) => (
+                <StatCard key={i} index={i} label={stat.label} value={stat.value} />
+              ))}
+            </div>
+
+            <div className="columns-1 md:columns-2 gap-6 space-y-6 pt-12 border-t border-slate-100">
+              {reviews.map((review) => (
+                <motion.div
+                  key={review.id}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  className="break-inside-avoid bg-white border border-slate-200 p-8 rounded-sm hover:border-slate-900 transition-colors"
                 >
-                  <item.icon size={20} strokeWidth={2.5} />
-                </div>
-                <div>
-                  <div className="text-xl sm:text-2xl font-black tracking-tighter text-slate-900 leading-none mb-1">
-                    {item.value}
-                  </div>
-                  <div className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-slate-500">
-                    {item.label}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* REVIEWS GRID */}
-          {/* Mobile: 1 cột, Tablet: 2 cột, Desktop: 3 cột */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-12 sm:mb-16">
-            {reviews.map((review) => (
-              <div
-                key={review.id}
-                className="flex flex-col bg-white p-5 sm:p-6 rounded-2xl border border-slate-100 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] relative group transition-all duration-300 hover:border-orange-200 hover:shadow-orange-500/10 h-full"
-              >
-                {/* Quote Icon Background */}
-                <Quote
-                  className="absolute top-4 right-4 text-slate-100 group-hover:text-orange-50 transition-colors duration-300"
-                  size={40}
-                />
-
-                {/* User Info */}
-                <div className="flex items-center gap-3 mb-4 relative z-10">
-                  <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-slate-100 flex items-center justify-center font-black text-xs text-slate-500 border-2 border-white shadow-md shrink-0">
-                    {review.name.charAt(0)}
-                  </div>
-                  <div className="min-w-0">
-                    <div className="font-black text-sm uppercase text-slate-900 truncate">
-                      {review.name}
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex gap-0.5">
+                      {[...Array(5)].map((_, i) => (
+                        <div key={i} className={cn("w-1.5 h-6", i < review.rating ? "bg-orange-500" : "bg-slate-100")} />
+                      ))}
                     </div>
-                    <div className="flex items-center gap-1.5 mt-0.5">
-                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tight">
-                        {review.date}
-                        </span>
-                        <span className="w-1 h-1 rounded-full bg-slate-300"/>
-                        <div className="flex items-center text-green-600 text-[10px] font-bold uppercase gap-0.5">
-                            <CheckCircle2 size={10} />
-                            <span>Đã mua</span>
-                        </div>
-                    </div>
+                    <span className="text-[10px] font-black uppercase text-slate-400">{review.date}</span>
                   </div>
-                </div>
-
-                {/* Stars */}
-                <div className="flex gap-0.5 mb-3 relative z-10">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      size={14}
-                      className={cn(
-                        "transition-all duration-300",
-                        i < review.rating ? "fill-orange-500 text-orange-500" : "fill-slate-100 text-slate-200"
-                      )}
-                    />
-                  ))}
-                </div>
-
-                {/* Comment */}
-                <p className="text-slate-600 text-sm leading-relaxed font-medium relative z-10 grow">
-                  "{review.comment}"
-                </p>
-              </div>
-            ))}
-          </div>
-
-          {/* TRUST BADGES */}
-          <div className="border-t border-slate-100 pt-8 sm:pt-10">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 lg:gap-12">
-              {trustBadges.map((badge, idx) => (
-                <div 
-                    key={idx} 
-                    className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-3 sm:gap-4 p-2 sm:p-0"
-                >
-                  <div className={cn("shrink-0 p-3 rounded-full bg-opacity-10", badge.color.replace('text-', 'bg-'))}>
-                    <badge.icon size={24} strokeWidth={2} className={badge.color} />
+                  <p className="text-slate-900 font-bold leading-tight mb-8 text-xl">
+                    "{review.comment}"
+                  </p>
+                  <div className="flex items-center gap-4">
+                    <div className="h-px w-8 bg-slate-900" />
+                    <span className="text-xs font-black uppercase tracking-widest text-slate-900">{review.name}</span>
                   </div>
-                  <div>
-                    <h3 className="font-black text-sm uppercase tracking-wide text-slate-900 mb-1">
-                      {badge.title}
-                    </h3>
-                    <p className="text-xs font-medium text-slate-500 leading-snug">
-                      {badge.desc}
-                    </p>
-                  </div>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
-
         </div>
-      </ScrollReveal>
+      </div>
+
+      <div className="bg-slate-50 py-12 px-6">
+        <div className="max-w-7xl mx-auto flex flex-wrap justify-center md:justify-between gap-12 grayscale opacity-50">
+          <div className="flex items-center gap-3 font-black text-[10px] uppercase tracking-widest"><ShieldCheck /> Secure Node</div>
+          <div className="flex items-center gap-3 font-black text-[10px] uppercase tracking-widest"><Zap /> Instant Sync</div>
+          <div className="flex items-center gap-3 font-black text-[10px] uppercase tracking-widest"><Globe /> Distributed</div>
+        </div>
+      </div>
     </section>
   );
 };

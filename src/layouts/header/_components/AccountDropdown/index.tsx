@@ -4,7 +4,7 @@ import { RoleEnum } from "@/auth/_types/auth";
 import { AppPopover } from "@/components/appPopover";
 import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/utils/cn";
-import { getStoredUserDetail, getUserInfo, hasRole } from "@/utils/jwt";
+import { getUserInfo, hasRole } from "@/utils/jwt";
 import { logout } from "@/utils/local.storage";
 import {
   ChevronDown,
@@ -21,7 +21,7 @@ import {
   UserPlus,
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { MenuItem } from "../../_types/header";
 
@@ -55,7 +55,6 @@ export const AccountDropdown = () => {
     logout(context as any); 
   };
 
-  // --- MENU CONFIGURATION ---
   const guestMenuItems: MenuItem[] = [
     { key: "login", label: "Đăng nhập", href: "/login", icon: <LogIn size={18} /> },
     { key: "register", label: "Đăng ký", href: "/register", icon: <UserPlus size={18} /> },
@@ -104,7 +103,6 @@ export const AccountDropdown = () => {
 
   const buttonLabel = isActuallyAuthenticated ? userData.name : "Tài khoản";
 
-  // --- STYLING HELPERS ---
   const getRoleBadge = () => {
     const baseClass = "px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest border shadow-sm backdrop-blur-md";
     switch (currentRole) {
@@ -128,7 +126,7 @@ export const AccountDropdown = () => {
       <div className={cn(
         "w-8 h-8 rounded-full flex items-center justify-center overflow-hidden shrink-0 border transition-all duration-300",
         isActuallyAuthenticated 
-          ? "bg-gradient-to-br from-orange-100 to-amber-50 border-white shadow-sm group-hover:scale-105" 
+          ? "bg-linear-to-br from-orange-100 to-amber-50 border-white shadow-sm group-hover:scale-105" 
           : "bg-slate-50 border-slate-100 text-slate-400 group-hover:bg-white group-hover:text-orange-500"
       )}>
         {isActuallyAuthenticated && userData.image ? (
@@ -138,7 +136,7 @@ export const AccountDropdown = () => {
         )}
       </div>
       <div className="flex flex-col items-start gap-0.5">
-        <span className="hidden sm:inline font-bold text-slate-700 group-hover:text-orange-900 transition-colors text-xs truncate max-w-[100px] leading-tight">
+        <span className="hidden sm:inline font-bold text-slate-700 group-hover:text-orange-900 transition-colors text-xs truncate max-w-25 leading-tight">
           {buttonLabel}
         </span>
         {isActuallyAuthenticated && (
@@ -154,9 +152,9 @@ export const AccountDropdown = () => {
   return (
     <AppPopover trigger={Trigger} className="w-72 p-2" align="right">
       {isActuallyAuthenticated && (
-        <div className="p-4 mb-2 bg-gradient-to-br from-white to-orange-50/30 border border-orange-100/50 rounded-2xl flex items-center gap-4 shadow-sm relative overflow-hidden group">
+        <div className="p-4 mb-2 bg-linear-to-br from-white to-orange-50/30 border border-orange-100/50 rounded-2xl flex items-center gap-4 shadow-sm relative overflow-hidden group">
           {/* Decorative background blob */}
-          <div className="absolute -top-6 -right-6 w-20 h-20 bg-gradient-to-br from-orange-200/40 to-amber-200/0 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <div className="absolute -top-6 -right-6 w-20 h-20 bg-linear-to-br from-orange-200/40 to-amber-200/0 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           
           <div className="w-14 h-14 bg-white rounded-full p-1 border border-orange-100 shadow-md shrink-0 relative z-10 group-hover:scale-105 transition-transform duration-300">
             <div className="w-full h-full rounded-full overflow-hidden bg-slate-50 flex items-center justify-center relative">

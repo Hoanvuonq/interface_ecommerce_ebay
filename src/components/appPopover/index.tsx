@@ -1,18 +1,9 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback, ReactNode } from "react";
 import { cn } from "@/utils/cn";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { AppPopoverProps } from "./type";
 
-interface AppPopoverProps {
-  trigger: ReactNode;
-  children: ReactNode;
-  className?: string;
-  arrowClassName?: string;
-  align?: "left" | "right" | "center";
-  onOpenChange?: (open: boolean) => void;
-  isMobileFixed?: boolean;
-  mobileTop?: string;
-}
 
 export const AppPopover = ({
   trigger,
@@ -98,7 +89,7 @@ export const AppPopover = ({
       >
         <div
           className={cn(
-            "absolute top-[5px] w-4 h-4 bg-white rotate-45 border-l border-t border-gray-100 z-20",
+            "absolute top-1.25 w-4 h-4 bg-white rotate-45 border-l border-t border-gray-100 z-20",
             isMobileFixed ? "hidden md:block" : "block",
             align === "right"
               ? "right-6"

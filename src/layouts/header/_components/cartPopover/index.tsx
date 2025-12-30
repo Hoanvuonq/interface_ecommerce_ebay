@@ -79,7 +79,6 @@ export const CartPopover: React.FC<CartPopoverProps> = () => {
     );
   };
 
-  // Trường hợp giỏ hàng trống
   if (totalItems === 0 && !loading) {
     return (
       <div className="w-[360px] flex flex-col items-center justify-center py-12 px-6 text-center bg-white">

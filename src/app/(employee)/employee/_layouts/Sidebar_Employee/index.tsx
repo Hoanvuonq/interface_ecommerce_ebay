@@ -8,7 +8,6 @@ import { ROUTE_MAPPINGS, SIDEBAR_ITEMS } from "../../_constants/sidebar";
 import { EmployeeSidebarProps } from "../../_types/sidebar";
 import { SidebarItem } from "../_components/SidebarItem";
 import { SystemOnline } from "../_components/SystemOnline";
-
 export default function EmployeeSidebar({
   collapsed,
   onMobileMenuClick,
@@ -18,21 +17,21 @@ export default function EmployeeSidebar({
   const [openKeys, setOpenKeys] = useState<string[]>([]);
 
   const { selectedKey, parentKey } = useMemo(() => {
-    const sorted = [...ROUTE_MAPPINGS].sort(
+    const sortedMappings = [...ROUTE_MAPPINGS].sort(
       (a, b) => b.prefix.length - a.prefix.length
     );
-    const match = sorted.find((r) => pathname.startsWith(r.prefix));
+    const match = sortedMappings.find((r) => pathname.startsWith(r.prefix));
     return {
-      selectedKey: match?.key || "home",
-      parentKey: match?.parent,
+      selectedKey: match?.key || "dashboard",
+      parentKey: match?.parent || null,
     };
   }, [pathname]);
 
-  useEffect(() => {
-    if (parentKey && !collapsed) {
-      setOpenKeys((prev) => Array.from(new Set([...prev, parentKey])));
-    }
-  }, [parentKey, collapsed]);
+useEffect(() => {
+  if (parentKey && !collapsed) {
+    setOpenKeys((prev) => Array.from(new Set([...prev, parentKey])));
+  }
+}, [parentKey, collapsed]);
 
   const handleToggle = (key: string) => {
     setOpenKeys((prev) =>
@@ -51,7 +50,7 @@ export default function EmployeeSidebar({
     >
       <div className="h-20 flex items-center px-4 mb-4 relative overflow-hidden">
         <Link href="/" className="flex items-center gap-3 w-full group">
-          <div className="w-10 h-10 shrink-0 bg-linear-to-br from-orange-500 to-amber-500 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-orange-200 group-hover:rotate-6 transition-transform duration-300">
+          <div className="w-10 h-10 shrink-0 bg-gradient-to-br from-orange-500 to-amber-500 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-orange-200 group-hover:rotate-6 transition-transform duration-300">
             <span className="text-xl font-black italic">C</span>
           </div>
           {!collapsed && (
@@ -74,9 +73,10 @@ export default function EmployeeSidebar({
               key={item.key}
               item={item}
               collapsed={collapsed}
-              activeKey={selectedKey}
+              activeKey={selectedKey} // Key đang active từ URL
               openKeys={openKeys}
               onToggle={handleToggle}
+              isParentOfActive={parentKey === item.key}
             />
           ))}
         </nav>

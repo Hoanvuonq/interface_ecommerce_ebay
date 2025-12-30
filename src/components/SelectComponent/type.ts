@@ -1,17 +1,18 @@
 import { useEffect, useLayoutEffect } from "react";
 
-export interface SelectOption {
-  value: string;
+export interface Option {
   label: string;
+  value: string;
 }
 
-export interface SearchableSelectProps {
-  options: SelectOption[];
-  value: string;
-  onChange: (val: string) => void;
+export interface SelectProps {
+  options: Option[];
+  value?: string | string[]; // Có thể là 1 string hoặc mảng string
+  onChange: (value: any) => void;
   placeholder?: string;
   disabled?: boolean;
-  className?: string; // Allow custom styling from parent
+  className?: string;
+  isMulti?: boolean; // Thêm prop để phân biệt chọn 1 hay nhiều
 }
 
 export const useIsomorphicLayoutEffect =

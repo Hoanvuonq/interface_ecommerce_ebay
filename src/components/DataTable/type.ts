@@ -11,8 +11,9 @@ export interface DataTableProps<T> {
   data: T[];
   columns: Column<T>[];
   loading: boolean;
+  rowKey?: keyof T | ((item: T) => string | number); 
   emptyMessage?: string;
-  page: number;
+  page: number; 
   size: number;
   totalElements: number;
   onPageChange: (newPage: number) => void;

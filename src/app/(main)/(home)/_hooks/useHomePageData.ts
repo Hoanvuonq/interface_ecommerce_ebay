@@ -1,93 +1,112 @@
-// import { useEffect, useState, useRef } from "react";
-// import { homepageService } from "../services/homepage.service";
-// import { CategoryService } from "@/services/categories/category.service";
-// import { publicProductService } from "@/services/products/product.service";
-// import { CartDto } from "@/types/cart/cart.types";
-// import { BannerResponseDTO } from "../_types/banner.dto";
-// import { PublicCategoryDTO, PublicProductListItemDTO } from "@/types/product/public-product.dto";
-// import { CategoryResponse } from "@/types/categories/category.detail";
+"use client";
 
-// interface HomePageData {
-//     banners: BannerResponseDTO[];
-//     categories: PublicCategoryDTO[];
-//     products: PublicProductListItemDTO[];
-//     cart: CartDto | null;
-//     loading: boolean;
-//     error: string | null;
-// }
+import { useInfiniteQuery, useQueries } from "@tanstack/react-query";
+import { homepageService } from "../services/homepage.service";
+import { CategoryService } from "@/services/categories/category.service";
+import { publicProductService } from "@/services/products/product.service";
+import { useMemo } from "react";
 
-// export function useHomePageData(locale: string = "vi", device: string = "DESKTOP") {
-//     const [data, setData] = useState<HomePageData>({
-//         banners: [],
-//         categories: [],
-//         products: [],
-//         cart: null,
-//         loading: true,
-//         error: null,
-//     });
+export const useHomepageData = (locale: string = "vi") => {
+  const deviceType = useMemo(() => {
+    if (typeof window === "undefined") return "ALL";
+    return window.innerWidth >= 768 ? "DESKTOP" : "MOBILE";
+  }, []);
 
-//     // Chỉ fetch 1 lần cho mỗi cặp locale/device
-//     const fetchedParamsRef = useRef<{ locale: string; device: string }[]>([]);
-//     const isFetchingRef = useRef(false);
+  const results = useQueries({
+    queries: [
+      {
+        queryKey: ["banners", locale, deviceType],
+        queryFn: () =>
+          homepageService.getBannersByPage({
+            page: "HOMEPAGE",
+            locale,
+            device: deviceType,
+          }),
+        staleTime: 1000 * 60 * 10,
+      },
+      {
+        queryKey: ["categories", locale],
+        queryFn: () => CategoryService.getAllParents(),
+        staleTime: 1000 * 60 * 30,
+      },
+      {
+        queryKey: ["flashsale", locale],
+        queryFn: () => publicProductService.getSale(0, 6),
+        staleTime: 1000 * 60 * 5,
+      },
+      {
+        queryKey: ["featured-products", locale],
+        queryFn: () => publicProductService.getFeatured(0, 12),
+        staleTime: 1000 * 60 * 5,
+      },
+      {
+        queryKey: ["homepage", "sale", locale],
+        queryFn: () => publicProductService.getSale(0, 12),
+        staleTime: 1000 * 60 * 5,
+      },
+      {
+        queryKey: ["homepage", "new", locale],
+        queryFn: () => publicProductService.getNew(0, 12),
+        staleTime: 1000 * 60 * 5,
+      },
+    ],
+  });
 
-//     useEffect(() => {
-//         const currentParams = { locale, device };
-//         // Nếu đã fetch rồi thì không gọi lại nữa
-//         if (fetchedParamsRef.current.some(
-//             (p) => p.locale === currentParams.locale && p.device === currentParams.device
-//         )) {
-//             setData((prev) => ({ ...prev, loading: false }));
-//             return;
-//         }
-//         if (isFetchingRef.current) return;
+  const [bannersQ, categoriesQ, flashSaleQ, featuredQ, saleQ, newQ] = results;
 
-//         let isMounted = true;
-//         setData((prev) => ({ ...prev, loading: true, error: null }));
-//         isFetchingRef.current = true;
+  const banners = useMemo(() => {
+    const raw =
+      bannersQ.data?.data?.banners || (bannersQ.data as any)?.banners || {};
+    return {
+      hero: raw["HOMEPAGE_HERO"] || [],
+      intro: raw["HOMEPAGE_INTRO"] || [],
+      sidebar: raw["HOMEPAGE_SIDEBAR"] || [],
+      footer: raw["HOMEPAGE_FOOTER"] || [],
+    };
+  }, [bannersQ.data]);
 
-//         Promise.all([
-//             homepageService.getBannersByPage({ page: "HOMEPAGE", locale, device }),
-//             CategoryService.getAllParents(),
-//             publicProductService.getFeatured(0, 12),
-//             import("@/services/cart/cart.service").then(mod => mod.getCart()),
-//         ])
-//             .then(([bannersRes, categoriesRes, productsRes, cartRes]) => {
-//                 if (!isMounted) return;
-//                 setData({
-//                     banners: bannersRes?.data?.banners?.HOMEPAGE_HERO || [],
-//                     categories: categoriesRes?.data || [],
-//                     products: productsRes?.data?.content || [],
-//                     cart: cartRes?.data || null,
-//                     loading: false,
-//                     error: null,
-//                 });
-//                 // Đánh dấu đã fetch
-//                 fetchedParamsRef.current.push(currentParams);
-//             })
-//             .catch((err) => {
-//                 if (!isMounted) return;
-//                 setData((prev) => ({ ...prev, loading: false, error: err?.message || "Lỗi tải dữ liệu" }));
-//             })
-//             .finally(() => {
-//                 isFetchingRef.current = false;
-//             });
+  const extractContent = (query: any) => {
+    return (
+      query.data?.data?.content ||
+      query.data?.content ||
+      query.data?.data ||
+      (Array.isArray(query.data) ? query.data : []) ||
+      []
+    );
+  };
 
-//         return () => {
-//             isMounted = false;
-//         };
-//     }, [locale, device]);
+  return {
+    banners,
+    categories: categoriesQ.data?.data || (categoriesQ.data as any) || [],
+    flashSale: extractContent(flashSaleQ),
+    featured: extractContent(featuredQ),
+    saleProducts: extractContent(saleQ),
+    newProducts: extractContent(newQ),
 
-//     return data;
-// }
-// export async function getCart(): Promise<{ data: CartDto | null }> {
-//     try {
-//         const cartJson = localStorage.getItem('cart');
-//         if (cartJson) {
-//             const cart: CartDto = JSON.parse(cartJson);
-//             return { data: cart };
-//         }
-//         return { data: null };
-//     } catch (error) {
-//         return { data: null };
-//     }
-// }
+    isLoading: bannersQ.isLoading || categoriesQ.isLoading,
+    isInitialLoading: results.some((q) => q.isInitialLoading),
+    isError: results.some((query) => query.isError),
+    refetchAll: () => results.forEach((query) => query.refetch()),
+  };
+};
+
+export const useInfiniteProducts = (type: "sale" | "new") => {
+  return useInfiniteQuery({
+    queryKey: ["products", type],
+    queryFn: ({ pageParam = 0 }) =>
+      type === "sale"
+        ? publicProductService.getSale(pageParam, 12)
+        : publicProductService.getNew(pageParam, 12),
+    getNextPageParam: (lastPage: any) => {
+      const pageData = lastPage?.data?.data || lastPage?.data;
+      if (pageData && typeof pageData.number === "number") {
+        return pageData.number + 1 < pageData.totalPages
+          ? pageData.number + 1
+          : undefined;
+      }
+      return undefined;
+    },
+    initialPageParam: 0,
+    staleTime: 1000 * 60 * 5,
+  });
+};

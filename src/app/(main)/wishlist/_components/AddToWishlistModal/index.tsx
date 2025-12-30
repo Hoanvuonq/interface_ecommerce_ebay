@@ -31,7 +31,7 @@ import {
   AddToWishlistModalProps,
   WishlistFormData,
 } from "../../_types/modalAddWishList";
-import { SectionHeader } from "../SectionHeader";
+import { SectionHeader } from "@/components";
 import { ButtonField } from "@/components";
 import { Button } from "@/components/button/button";
 
@@ -420,7 +420,6 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
           </div>
         </div>
 
-        {/* 4. Ghi chú mở rộng (Accordion style) */}
         <details className="group border border-gray-100 rounded-2xl overflow-hidden bg-white shadow-sm transition-all open:ring-2 open:ring-orange-50 open:border-orange-200">
           <summary className="p-4 cursor-pointer list-none flex justify-between items-center bg-gray-50/50 hover:bg-gray-50 transition-colors">
             <div className="flex items-center gap-2">

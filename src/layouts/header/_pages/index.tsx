@@ -8,7 +8,6 @@ import {
   NotificationDropdown,
   TopHeader,
   HotKeywords,
-  UserAuthDropdown,
   
 } from "../_components";
 import { Search, MobileMenuDrawer } from "@/components";

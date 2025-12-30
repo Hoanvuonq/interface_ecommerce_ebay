@@ -1,13 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import {
-  statusLabelMap,
-  User,
-  UserStatus,
-} from "@/types/user/user.type";
+import { statusLabelMap, User, UserStatus } from "@/types/user/user.type";
 import dayjs from "dayjs";
-import { InputField } from "@/components";
+import { ButtonField, InputField } from "@/components";
 import { useEffect, useState } from "react";
 import { useGetAllRoles, useUpdateUser } from "../../_hooks/useUser";
 import {
@@ -21,6 +17,7 @@ import { cn } from "@/utils/cn";
 import _ from "lodash";
 import { PortalModal } from "@/features/PortalModal";
 import { SelectComponent } from "@/components/SelectComponent";
+import { Button } from "@/components/button/button";
 
 interface UserUpdateFormProps {
   open: boolean;
@@ -117,27 +114,27 @@ export default function UserUpdateForm({
       width="max-w-2xl"
       footer={
         <div className="flex justify-end gap-3 w-full border-t border-slate-100 pt-4 mt-2">
-          <button
-            onClick={onClose}
-            className="px-6 py-2.5 text-slate-400 font-black text-[11px] uppercase tracking-widest hover:text-slate-600 hover:bg-slate-50 rounded-xl transition-all"
-          >
+          <Button variant="edit" onClick={onClose}>
             Hủy bỏ
-          </button>
-          <button
-            type="submit"
-            form="update-user-form"
+          </Button>
+          <ButtonField
+            form="address-form"
+            htmlType="submit"
+            type="login"
             disabled={loading || !user}
-            className="px-8 py-2.5 bg-orange-500 hover:bg-orange-600 disabled:bg-orange-200 text-white font-black text-[11px] uppercase tracking-[0.2em] rounded-xl shadow-lg shadow-orange-200 transition-all flex items-center group active:scale-95"
+            className="flex w-40 items-center gap-2 px-5 py-2 rounded-lg text-sm font-semibold shadow-md shadow-orange-500/20 transition-all active:scale-95 border-0 h-auto"
           >
-            {loading ? (
-              <Loader2 className="animate-spin mr-2" size={16} />
-            ) : null}
-            Xác nhận thay đổi
-          </button>
+            <span className="flex items-center gap-2">
+              {loading ? (
+                <Loader2 className="animate-spin mr-2" size={16} />
+              ) : null}
+              Xác nhận thay đổi
+            </span>
+          </ButtonField>
         </div>
       }
     >
-      <div className="min-h-[200px]">
+      <div className="min-h-50">
         {!user ? (
           <div className="flex flex-col items-center justify-center py-20">
             <Loader2 className="animate-spin text-orange-500 mb-4" size={48} />
@@ -193,8 +190,8 @@ export default function UserUpdateForm({
                     ID Tài khoản
                   </label>
                   <div className="px-4 py-2.5 bg-slate-50/50 border border-slate-100 rounded-xl text-slate-500 font-mono text-xs font-bold flex items-center gap-2">
-                    <Hash size={12} className="text-slate-300" />
-                    #{user.userId.slice(-12).toUpperCase()}
+                    <Hash size={12} className="text-slate-300" />#
+                    {user.userId.slice(-12).toUpperCase()}
                   </div>
                 </div>
               </div>
@@ -213,11 +210,12 @@ export default function UserUpdateForm({
             </div>
 
             {/* --- Section 2: Interactive Update Fields --- */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 rounded-[2rem] bg-orange-50/30 border border-orange-100/50">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 rounded-4xl bg-orange-50/30 border border-orange-100/50">
               {/* Select Trạng thái mới */}
               <div className="space-y-2">
                 <label className="block text-[11px] font-black uppercase tracking-widest text-slate-700 ml-1">
-                  Trạng thái tài khoản <span className="text-orange-500">*</span>
+                  Trạng thái tài khoản{" "}
+                  <span className="text-orange-500">*</span>
                 </label>
                 <SelectComponent
                   options={Object.entries(statusLabelMap).map(
@@ -234,7 +232,10 @@ export default function UserUpdateForm({
                     })
                   }
                   placeholder="Chọn trạng thái..."
-                  className={cn(errors.status && "border-red-500 shadow-[0_0_0_2px_rgba(239,68,68,0.1)]")}
+                  className={cn(
+                    errors.status &&
+                      "border-red-500 shadow-[0_0_0_2px_rgba(239,68,68,0.1)]"
+                  )}
                 />
                 {errors.status && (
                   <p className="mt-1.5 px-2 text-[10px] font-black text-red-500 uppercase tracking-tight">
@@ -254,9 +255,14 @@ export default function UserUpdateForm({
                     value: r.roleName,
                   }))}
                   value={formData.role ? [formData.role] : []}
-                  onChange={(val) => setFormData({ ...formData, role: val[0] || "" })}
+                  onChange={(val) =>
+                    setFormData({ ...formData, role: val[0] || "" })
+                  }
                   placeholder="Chọn vai trò..."
-                  className={cn(errors.role && "border-red-500 shadow-[0_0_0_2px_rgba(239,68,68,0.1)]")}
+                  className={cn(
+                    errors.role &&
+                      "border-red-500 shadow-[0_0_0_2px_rgba(239,68,68,0.1)]"
+                  )}
                 />
                 {errors.role && (
                   <p className="mt-1.5 px-2 text-[10px] font-black text-red-500 uppercase tracking-tight">
@@ -270,8 +276,9 @@ export default function UserUpdateForm({
             <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-start gap-3 shadow-sm shadow-slate-100/50">
               <div className="w-1.5 h-1.5 bg-orange-500 rounded-full mt-1.5 shadow-[0_0_8px_rgba(249,115,22,0.8)]" />
               <p className="text-[10px] font-bold text-slate-400 leading-relaxed uppercase tracking-wider">
-                Lưu ý quan trọng: Thay đổi quyền hạn hoặc trạng thái sẽ có hiệu lực ngay lập tức. 
-                Người dùng có thể cần đăng nhập lại hoặc làm mới trang để đồng bộ phiên làm việc mới nhất.
+                Lưu ý quan trọng: Thay đổi quyền hạn hoặc trạng thái sẽ có hiệu
+                lực ngay lập tức. Người dùng có thể cần đăng nhập lại hoặc làm
+                mới trang để đồng bộ phiên làm việc mới nhất.
               </p>
             </div>
           </form>

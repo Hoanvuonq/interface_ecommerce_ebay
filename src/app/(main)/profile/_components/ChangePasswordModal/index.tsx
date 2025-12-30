@@ -1,6 +1,7 @@
 "use client";
 
-import { HeaderModal } from "@/components";
+import { ButtonField, HeaderModal } from "@/components";
+import { Button } from "@/components/button/button";
 import walletService from "@/services/wallet/wallet.service";
 import type {
   ChangeWalletPasswordRequest,
@@ -55,11 +56,13 @@ export const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
         confirmPassword: "",
       });
       setErrors({});
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     }
-    return () => { document.body.style.overflow = 'unset'; };
+    return () => {
+      document.body.style.overflow = "unset";
+    };
   }, [visible, wallet]);
 
   const handleClose = () => {
@@ -125,7 +128,7 @@ export const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
       }
 
       await walletService.changePassword(requestData);
-      
+
       alert("Đổi mật khẩu ví thành công!");
 
       onSuccess?.();
@@ -141,36 +144,48 @@ export const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
 
   const modalContent = (
     <div className="fixed inset-0 z-9999 flex items-center justify-center p-4 sm:p-6 animate-fade-in font-sans">
-      <div 
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" 
+      <div
+        className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
         onClick={handleClose}
       ></div>
       <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl transform transition-all flex flex-col overflow-hidden border border-gray-100 z-10">
         <div className="absolute top-0 left-0 w-full h-1.5 bg-linear-to-r from-orange-400 to-orange-600"></div>
-       <HeaderModal 
-            isFirstTimeChange={isFirstTimeChange} 
-            onClose={handleClose} 
+        <HeaderModal
+          isFirstTimeChange={isFirstTimeChange}
+          onClose={handleClose}
         />
 
         <div className="p-6 overflow-y-auto max-h-[80vh]">
-          <div className={`mb-6 p-4 rounded-xl border flex gap-3 ${
-              isFirstTimeChange 
-              ? 'bg-orange-50 border-orange-100 text-orange-800' 
-              : 'bg-orange-50 border-blue-100 text-orange-800'
-          }`}>
-            <FiAlertCircle className={`w-5 h-5 shrink-0 mt-0.5 ${isFirstTimeChange ? 'text-orange-600' : 'text-orange-600'}`} />
+          <div
+            className={`mb-6 p-4 rounded-xl border flex gap-3 ${
+              isFirstTimeChange
+                ? "bg-orange-50 border-orange-100 text-orange-800"
+                : "bg-orange-50 border-blue-100 text-orange-800"
+            }`}
+          >
+            <FiAlertCircle
+              className={`w-5 h-5 shrink-0 mt-0.5 ${
+                isFirstTimeChange ? "text-orange-600" : "text-orange-600"
+              }`}
+            />
             <div className="text-sm leading-relaxed">
-                {isFirstTimeChange ? (
-                    <>
-                        <span className="font-semibold block mb-1">Thiết lập lần đầu</span>
-                        Ví của bạn đã được tạo tự động. Vui lòng thiết lập mật khẩu để bảo vệ tài sản và thực hiện giao dịch.
-                    </>
-                ) : (
-                    <>
-                        <span className="font-semibold block mb-1">Lưu ý bảo mật</span>
-                        Mật khẩu ví dùng để xác thực khi <strong>rút tiền</strong> và <strong>thanh toán</strong>. Không chia sẻ cho người khác.
-                    </>
-                )}
+              {isFirstTimeChange ? (
+                <>
+                  <span className="font-semibold block mb-1">
+                    Thiết lập lần đầu
+                  </span>
+                  Ví của bạn đã được tạo tự động. Vui lòng thiết lập mật khẩu để
+                  bảo vệ tài sản và thực hiện giao dịch.
+                </>
+              ) : (
+                <>
+                  <span className="font-semibold block mb-1">
+                    Lưu ý bảo mật
+                  </span>
+                  Mật khẩu ví dùng để xác thực khi <strong>rút tiền</strong> và{" "}
+                  <strong>thanh toán</strong>. Không chia sẻ cho người khác.
+                </>
+              )}
             </div>
           </div>
 
@@ -181,18 +196,18 @@ export const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
                   Mật khẩu hiện tại <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
-                    <input
+                  <input
                     type="password"
                     name="currentPassword"
                     value={formData.currentPassword}
                     onChange={handleInputChange}
                     placeholder="••••••"
                     className={`w-full pl-4 pr-10 py-3 bg-gray-50 border rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:bg-white transition-all ${
-                        errors.currentPassword 
-                        ? "border-red-300 focus:border-red-500 focus:ring-red-100" 
+                      errors.currentPassword
+                        ? "border-red-300 focus:border-red-500 focus:ring-red-100"
                         : "border-gray-200 focus:border-orange-500 focus:ring-orange-100"
                     }`}
-                    />
+                  />
                 </div>
                 {errors.currentPassword && (
                   <p className="text-sm text-red-500 mt-1 flex items-center gap-1">
@@ -220,7 +235,7 @@ export const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
               />
               {errors.newPassword && (
                 <p className="text-sm text-red-500 mt-1 flex items-center gap-1">
-                    <FiAlertCircle size={14} /> {errors.newPassword}
+                  <FiAlertCircle size={14} /> {errors.newPassword}
                 </p>
               )}
             </div>
@@ -244,39 +259,52 @@ export const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
               />
               {errors.confirmPassword && (
                 <p className="text-sm text-red-500 mt-1 flex items-center gap-1">
-                    <FiAlertCircle size={14} /> {errors.confirmPassword}
+                  <FiAlertCircle size={14} /> {errors.confirmPassword}
                 </p>
               )}
             </div>
 
-            {/* Submit Button */}
             <div className="pt-4">
-              <button
-                type="submit"
+              <ButtonField
+                form="address-form"
+                htmlType="submit"
+                type="login"
                 disabled={loading}
-                className="w-full py-3.5 px-4 bg-linear-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold rounded-xl shadow-lg shadow-orange-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:opacity-70 disabled:cursor-not-allowed transition-all transform active:scale-[0.98] flex justify-center items-center gap-2"
+                className="flex w-40 items-center gap-2 px-5 py-2 rounded-lg text-sm font-semibold shadow-md shadow-orange-500/20 transition-all active:scale-95 border-0 h-auto"
               >
-                {loading ? (
-                  <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                ) : (
+                <span className="flex items-center gap-2">
+                  {loading ? (
+                    <svg
+                      className="animate-spin h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                  ) : (
                     <>
-                        <FiCheck className="w-5 h-5" />
-                        {isFirstTimeChange ? "Hoàn tất tạo ví" : "Lưu thay đổi"}
+                      <FiCheck className="w-5 h-5" />
+                      {isFirstTimeChange ? "Hoàn tất tạo ví" : "Lưu thay đổi"}
                     </>
-                )}
-              </button>
-              
-              <button
-                type="button"
-                onClick={handleClose}
-                disabled={loading}
-                className="w-full mt-3 py-3 text-sm font-semibold text-gray-500 hover:text-gray-700 transition-colors focus:outline-none"
-              >
+                  )}
+                </span>
+              </ButtonField>
+              <Button variant="edit" onClick={handleClose} disabled={loading}>
                 Hủy bỏ
-              </button>
+              </Button>
             </div>
           </form>
         </div>

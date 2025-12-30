@@ -117,7 +117,7 @@ const ContentTable: React.FC<ContentTableProps> = ({
 
   if (loading || isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center h-96 bg-white rounded-[32px] border border-gray-100 shadow-sm">
+      <div className="flex flex-col items-center justify-center h-96 bg-white rounded-4xl border border-gray-100 shadow-sm">
         <Loader2 className="w-10 h-10 text-orange-500 animate-spin mb-4" />
         <p className="text-gray-400 font-black uppercase tracking-widest text-[10px]">
           Đang đồng bộ dữ liệu...
