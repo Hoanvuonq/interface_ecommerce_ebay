@@ -212,7 +212,7 @@ export default function ShopApprovalForm() {
                 alt="logo"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-[10px] text-slate-400 font-black italic">
+              <div className="w-full h-full flex items-center justify-center text-[10px] text-slate-400 font-semibold italic">
                 SHOP
               </div>
             )}
@@ -228,7 +228,7 @@ export default function ShopApprovalForm() {
       header: "Trạng thái",
       render: (record) => (
         <span
-          className="px-3 py-1 rounded-full text-[10px] font-black uppercase text-white shadow-sm"
+          className="px-3 py-1 rounded-full text-[10px] font-semibold uppercase text-white shadow-sm"
           style={{ backgroundColor: colorMap[record.status as ShopStatus] }}
         >
           {labelMap[record.status as ShopStatus]}

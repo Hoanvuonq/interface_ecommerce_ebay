@@ -146,7 +146,7 @@ export const CheckoutScreen = () => {
       <PageContentTransition>
         <div className="max-w-7xl mx-auto px-4 py-8">
           {/* Breadcrumb & Title */}
-          <nav className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-8 px-2">
+          <nav className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 mb-8 px-2">
             <Link
               href="/"
               className="hover:text-orange-500 flex items-center gap-1"
@@ -157,7 +157,7 @@ export const CheckoutScreen = () => {
             <span className="text-slate-900 tracking-widest">THANH TOÁN</span>
           </nav>
 
-          <div className="mb-10 px-2 text-4xl md:text-6xl font-black tracking-tighter text-slate-950 uppercase italic leading-none flex items-center gap-4">
+          <div className="mb-10 px-2 text-4xl md:text-6xl font-semibold tracking-tighter text-slate-950 uppercase italic leading-none flex items-center gap-4">
             Thanh <span className="text-orange-500 text-outline">Toán</span>
           </div>
 
@@ -191,7 +191,7 @@ export const CheckoutScreen = () => {
                     >
                       <div className="p-6 border-b border-slate-50 flex items-center gap-3 bg-slate-50/30">
                         <Store className="text-orange-500" size={24} />
-                        <h3 className="font-black text-slate-900 uppercase italic tracking-tight">
+                        <h3 className="font-semibold text-slate-900 uppercase italic tracking-tight">
                           {shop.shopName}
                         </h3>
                       </div>
@@ -213,7 +213,7 @@ export const CheckoutScreen = () => {
                               <p className="text-[11px] text-slate-400 font-bold tracking-tight">
                                 {item.variantAttributes}
                               </p>
-                              <div className="flex justify-between items-center mt-2 font-black">
+                              <div className="flex justify-between items-center mt-2 font-semibold">
                                 <span className="text-xs text-slate-400 italic">
                                   x{item.quantity}
                                 </span>
@@ -239,7 +239,7 @@ export const CheckoutScreen = () => {
                             <div className="flex items-center justify-between py-3 px-4 bg-orange-50 border border-orange-100 rounded-2xl">
                               <div className="flex items-center gap-2">
                                 <Ticket size={14} className="text-orange-500" />
-                                <span className="text-[10px] font-black text-orange-600 uppercase">
+                                <span className="text-[10px] font-semibold text-orange-600 uppercase">
                                   Voucher Shop:{" "}
                                   {
                                     shopVoucherResult.discountDetails[0]
@@ -247,7 +247,7 @@ export const CheckoutScreen = () => {
                                   }
                                 </span>
                               </div>
-                              <span className="text-sm font-black text-red-600 italic">
+                              <span className="text-sm font-semibold text-red-600 italic">
                                 -{formatPrice(shopVoucherResult.totalDiscount)}
                               </span>
                             </div>
@@ -255,10 +255,10 @@ export const CheckoutScreen = () => {
                       </div>
 
                       <div className="px-8 py-5 bg-slate-50/50 border-t border-slate-100 flex justify-end items-center gap-4">
-                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
+                        <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-[0.2em]">
                           Tổng Shop:
                         </span>
-                        <span className="text-2xl font-black text-orange-600 tracking-tighter italic">
+                        <span className="text-2xl font-semibold text-orange-600 tracking-tighter italic">
                           {formatPrice(shop.shopTotal || 0)}
                         </span>
                       </div>
@@ -273,7 +273,7 @@ export const CheckoutScreen = () => {
               <div className="bg-white rounded-4xl shadow-xl border border-slate-100 p-6">
                 <div className="flex items-center gap-2 mb-6">
                   <CreditCard className="text-orange-500" size={20} />
-                  <h2 className="text-sm font-black uppercase tracking-widest text-slate-900">
+                  <h2 className="text-sm font-semibold uppercase tracking-widest text-slate-900">
                     Thanh toán
                   </h2>
                 </div>

@@ -104,7 +104,7 @@ export const AccountDropdown = () => {
   const buttonLabel = isActuallyAuthenticated ? userData.name : "Tài khoản";
 
   const getRoleBadge = () => {
-    const baseClass = "px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-widest border shadow-sm backdrop-blur-md";
+    const baseClass = "px-2.5 py-0.5 rounded-lg text-[10px] font-semibold uppercase tracking-widest border shadow-sm backdrop-blur-md";
     switch (currentRole) {
       case RoleEnum.ADMIN:
         return <span className={cn(baseClass, "bg-rose-50 text-rose-600 border-rose-100")}>Admin</span>;
@@ -167,7 +167,7 @@ export const AccountDropdown = () => {
           </div>
           
           <div className="flex-1 min-w-0 relative z-10">
-            <div className="font-black text-slate-800 text-sm truncate leading-tight mb-1 group-hover:text-orange-950 transition-colors">
+            <div className="font-semibold text-slate-800 text-sm truncate leading-tight mb-1 group-hover:text-orange-950 transition-colors">
               {userData.name}
             </div>
             <div className="text-[10px] text-slate-500 truncate mb-2.5 font-medium">

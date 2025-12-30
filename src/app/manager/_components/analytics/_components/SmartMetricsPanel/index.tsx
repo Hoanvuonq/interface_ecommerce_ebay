@@ -37,7 +37,7 @@ export function SmartMetricsPanel({
             <div className="p-6 pb-4 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                     <div className="w-1.5 h-6 bg-linear-to-b from-orange-500 to-red-600 rounded-full" />
-                    <h3 className="text-sm font-black text-gray-800 uppercase tracking-[0.15em]">
+                    <h3 className="text-sm font-semibold text-gray-800 uppercase tracking-[0.15em]">
                         Chỉ số <span className="text-orange-500">Tổng quan</span>
                     </h3>
                 </div>

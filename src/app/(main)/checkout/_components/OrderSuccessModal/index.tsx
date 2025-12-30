@@ -54,7 +54,7 @@ export const OrderSuccessModal: React.FC<OrderSuccessModalProps> = ({
           <CheckCircle2 className="w-12 h-12 text-green-500" strokeWidth={2.5} />
         </div>
 
-        <h2 className="text-3xl font-black text-slate-900 mb-3 uppercase italic tracking-tighter">
+        <h2 className="text-3xl font-semibold text-slate-900 mb-3 uppercase italic tracking-tighter">
           Đặt hàng <span className="text-green-500">thành công!</span>
         </h2>
         <p className="text-slate-500 mb-4 font-medium leading-relaxed px-4">
@@ -62,7 +62,7 @@ export const OrderSuccessModal: React.FC<OrderSuccessModalProps> = ({
           Đơn hàng của bạn đang được xử lý.
         </p>
         
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-slate-50 rounded-full text-[10px] font-black uppercase tracking-widest text-slate-400 border border-slate-100">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-slate-50 rounded-full text-[10px] font-semibold uppercase tracking-widest text-slate-400 border border-slate-100">
            🎉 Welcome to the community
         </div>
       </div>

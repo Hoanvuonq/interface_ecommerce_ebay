@@ -234,7 +234,7 @@ const { error, success } = useToast();
           ) : (
             <TagIcon size={32} />
           )}
-          <span className="text-[10px] font-black mt-2 uppercase text-center leading-tight">
+          <span className="text-[10px] font-semibold mt-2 uppercase text-center leading-tight">
             {isShipping ? "Vận chuyển" : "Giảm giá"}
           </span>
           <div className="absolute top-0 bottom-0 -right-1 w-2 flex flex-col justify-around">
@@ -250,7 +250,7 @@ const { error, success } = useToast();
               <h4 className="font-bold text-gray-900 text-sm truncate uppercase tracking-tighter">
                 {voucher.code}
               </h4>
-              <p className="text-orange-600 font-black text-sm mt-1">
+              <p className="text-orange-600 font-semibold text-sm mt-1">
                 {formatDiscount(voucher)}
               </p>
             </div>
@@ -314,7 +314,7 @@ const { error, success } = useToast();
   };
 
   const headerContent = (
-    <h3 className="text-lg font-black text-gray-800 uppercase tracking-tight">
+    <h3 className="text-lg font-semibold text-gray-800 uppercase tracking-tight">
       {title ||
         (isShopVoucher ? `${shopName || "Shop"} Voucher` : "Chọn voucher")}
     </h3>
@@ -397,7 +397,7 @@ const { error, success } = useToast();
               <div>
                 <div className="flex justify-between items-end mb-4 px-1">
                   <div>
-                    <h4 className="font-black text-gray-800 text-sm uppercase tracking-tighter">
+                    <h4 className="font-semibold text-gray-800 text-sm uppercase tracking-tighter">
                       Mã Giảm Giá của Shop
                     </h4>
                     <p className="text-[10px] text-gray-400 font-bold uppercase italic">
@@ -414,7 +414,7 @@ const { error, success } = useToast();
               <div>
                 <div className="flex justify-between items-end mb-4 px-1">
                   <div>
-                    <h4 className="font-black text-gray-800 text-sm uppercase tracking-tighter">
+                    <h4 className="font-semibold text-gray-800 text-sm uppercase tracking-tighter">
                       Mã Miễn Phí Vận Chuyển
                     </h4>
                     <p className="text-[10px] text-gray-400 font-bold uppercase italic">
@@ -430,7 +430,7 @@ const { error, success } = useToast();
           </div>
         ) : vouchers.length > 0 ? (
           <div className="space-y-4">
-            <h4 className="font-black text-gray-800 text-sm uppercase tracking-widest mb-4 px-1">
+            <h4 className="font-semibold text-gray-800 text-sm uppercase tracking-widest mb-4 px-1">
               Ưu đãi từ cửa hàng
             </h4>
             {vouchers.map((v) => renderVoucherCard(v))}

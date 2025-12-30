@@ -33,7 +33,7 @@ export function TopShopsList({ shops, loading = false }: TopShopsListProps) {
                         <TrendingUp size={20} strokeWidth={2.5} />
                     </div>
                     <div>
-                        <h3 className="text-sm font-black text-gray-800 uppercase tracking-[0.15em] leading-none mb-1">
+                        <h3 className="text-sm font-semibold text-gray-800 uppercase tracking-[0.15em] leading-none mb-1">
                             Top 10 <span className="text-emerald-600">Cửa hàng</span>
                         </h3>
                         <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-0.5">Xếp hạng doanh thu</p>
@@ -47,9 +47,9 @@ export function TopShopsList({ shops, loading = false }: TopShopsListProps) {
                 <table className="w-full text-left border-collapse">
                     <thead>
                         <tr className="bg-gray-50/30">
-                            <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Hạng</th>
-                            <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Thông tin Shop</th>
-                            <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest text-right">Doanh thu</th>
+                            <th className="px-6 py-4 text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Hạng</th>
+                            <th className="px-6 py-4 text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Thông tin Shop</th>
+                            <th className="px-6 py-4 text-[10px] font-semibold text-gray-400 uppercase tracking-widest text-right">Doanh thu</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-50">
@@ -58,7 +58,7 @@ export function TopShopsList({ shops, loading = false }: TopShopsListProps) {
                                 <tr key={shop.shopId} className="hover:bg-gray-50/50 transition-colors group">
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className={cn(
-                                            "flex items-center justify-center w-10 h-10 rounded-xl border-2 font-black text-sm transition-transform group-hover:scale-110",
+                                            "flex items-center justify-center w-10 h-10 rounded-xl border-2 font-semibold text-sm transition-transform group-hover:scale-110",
                                             getRankStyles(shop.rank)
                                         )}>
                                             {shop.rank <= 3 ? (
@@ -74,7 +74,7 @@ export function TopShopsList({ shops, loading = false }: TopShopsListProps) {
                                                 <Store size={18} />
                                             </div>
                                             <div className="min-w-0">
-                                                <div className="font-black text-sm text-gray-800 tracking-tight truncate group-hover:text-orange-600 transition-colors">
+                                                <div className="font-semibold text-sm text-gray-800 tracking-tight truncate group-hover:text-orange-600 transition-colors">
                                                     {shop.shopName}
                                                 </div>
                                                 <div className="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">
@@ -84,7 +84,7 @@ export function TopShopsList({ shops, loading = false }: TopShopsListProps) {
                                         </div>
                                     </td>
                                     <td className="px-6 py-4 text-right">
-                                        <div className="text-sm font-black text-emerald-600 tabular-nums">
+                                        <div className="text-sm font-semibold text-emerald-600 tabular-nums">
                                             {formatCurrency(shop.revenue)}
                                         </div>
                                     </td>

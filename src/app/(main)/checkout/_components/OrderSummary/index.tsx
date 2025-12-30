@@ -27,7 +27,7 @@ export const OrderSummary = ({ onSubmit }: OrderSummaryProps) => {
 
   return (
     <div className="bg-white rounded-[2.5rem] shadow-2xl border border-slate-100 p-8 sticky top-6 overflow-hidden">
-      <h3 className="text-sm font-black uppercase tracking-[0.2em] text-slate-900 mb-8 flex items-center gap-2">
+      <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-900 mb-8 flex items-center gap-2">
         <Info size={18} className="text-orange-500" />
         Chi tiết thanh toán
       </h3>
@@ -35,14 +35,14 @@ export const OrderSummary = ({ onSubmit }: OrderSummaryProps) => {
       <div className="space-y-5">
         <div className="flex justify-between items-center">
           <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Tổng tiền hàng</span>
-          <span className="text-sm font-black text-slate-900">
+          <span className="text-sm font-semibold text-slate-900">
             {formatPrice(preview.subtotal || 0)}
           </span>
         </div>
 
         <div className="flex justify-between items-center">
           <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Phí vận chuyển</span>
-          <span className="text-sm font-black text-slate-900">
+          <span className="text-sm font-semibold text-slate-900">
             {formatPrice(preview.totalShippingFee || 0)}
           </span>
         </div>
@@ -52,9 +52,9 @@ export const OrderSummary = ({ onSubmit }: OrderSummaryProps) => {
           <div className="flex justify-between items-center py-1 group animate-in fade-in slide-in-from-right-2">
             <div className="flex items-center gap-1.5">
               <Ticket size={14} className="text-emerald-500" />
-              <span className="text-[11px] font-black text-emerald-600 uppercase italic">Voucher giảm giá</span>
+              <span className="text-[11px] font-semibold text-emerald-600 uppercase italic">Voucher giảm giá</span>
             </div>
-            <span className="text-sm font-black text-red-600 italic">
+            <span className="text-sm font-semibold text-red-600 italic">
               -{formatPrice(totalDiscountAmount)}
             </span>
           </div>
@@ -64,7 +64,7 @@ export const OrderSummary = ({ onSubmit }: OrderSummaryProps) => {
         {preview.totalTaxAmount > 0 && (
           <div className="flex justify-between items-center">
             <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Thuế (VAT)</span>
-            <span className="text-sm font-black text-slate-900">
+            <span className="text-sm font-semibold text-slate-900">
               {formatPrice(preview.totalTaxAmount)}
             </span>
           </div>
@@ -76,12 +76,12 @@ export const OrderSummary = ({ onSubmit }: OrderSummaryProps) => {
 
         <div className="flex justify-between items-end pb-2">
           <div className="flex flex-col">
-            <span className="text-[11px] font-black text-slate-900 uppercase tracking-tighter">Tổng thanh toán</span>
+            <span className="text-[11px] font-semibold text-slate-900 uppercase tracking-tighter">Tổng thanh toán</span>
             <span className="text-[10px] text-slate-400 font-bold italic opacity-70">
               Đã bao gồm phí & voucher
             </span>
           </div>
-          <span className="text-4xl font-black text-orange-600 tracking-tighter italic leading-none animate-in fade-in zoom-in duration-500">
+          <span className="text-4xl font-semibold text-orange-600 tracking-tighter italic leading-none animate-in fade-in zoom-in duration-500">
             {formatPrice(preview.grandTotal || 0)}
           </span>
         </div>
@@ -91,7 +91,7 @@ export const OrderSummary = ({ onSubmit }: OrderSummaryProps) => {
         type="submit"
         onClick={onSubmit}
         disabled={loading || !preview.isValid}
-        className="w-full mt-10 group relative overflow-hidden bg-slate-950 disabled:bg-slate-200 text-white font-black py-6 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.2)] transition-all hover:scale-[1.02] active:scale-[0.98] disabled:scale-100 disabled:cursor-not-allowed"
+        className="w-full mt-10 group relative overflow-hidden bg-slate-950 disabled:bg-slate-200 text-white font-semibold py-6 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.2)] transition-all hover:scale-[1.02] active:scale-[0.98] disabled:scale-100 disabled:cursor-not-allowed"
       >
         <div className="relative z-10 flex justify-center items-center gap-3 uppercase tracking-[0.2em] text-xs">
           {loading ? (

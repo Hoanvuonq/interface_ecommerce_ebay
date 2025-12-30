@@ -22,7 +22,7 @@ export const OrderFilters: React.FC<OrderFiltersProps> = ({
   return (
     <div className="flex flex-col md:flex-row gap-4 w-full items-end">
       <div className="relative flex-1 w-full group">
-        <label className="text-[10px] font-black uppercase text-slate-400 ml-1 mb-1.5 block tracking-[0.15em]">
+        <label className="text-[10px] font-semibold uppercase text-slate-400 ml-1 mb-1.5 block tracking-[0.15em]">
           Tìm kiếm đơn hàng
         </label>
         <div className="relative">
@@ -50,7 +50,7 @@ export const OrderFilters: React.FC<OrderFiltersProps> = ({
       </div>
 
       <div className="w-full md:w-72 group">
-        <label className="text-[10px] font-black uppercase text-slate-400 ml-1 mb-1.5 tracking-[0.15em] flex items-center gap-1.5">
+        <label className="text-[10px] font-semibold uppercase text-slate-400 ml-1 mb-1.5 tracking-[0.15em] flex items-center gap-1.5">
           <Filter size={10} strokeWidth={3} /> Trạng thái
         </label>
         <SelectComponent

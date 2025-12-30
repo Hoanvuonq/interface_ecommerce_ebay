@@ -27,7 +27,7 @@ export const TabsChangeLayout: React.FC<TabsChangeLayoutProps> = ({
           <ShoppingCart size={20} strokeWidth={2.5} />
         </div>
         <div>
-          <h2 className="text-lg font-black text-gray-800 leading-none tracking-tight">
+          <h2 className="text-lg font-semibold text-gray-800 leading-none tracking-tight">
             Cửa hàng
           </h2>
           <p className="text-xs text-gray-500 font-medium mt-1">

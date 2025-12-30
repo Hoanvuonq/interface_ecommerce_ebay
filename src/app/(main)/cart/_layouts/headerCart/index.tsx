@@ -22,7 +22,7 @@ export const HeaderCart: React.FC<HeaderCartProps> = ({
           <ShoppingCart size={28} />
         </div>
         <div>
-          <h1 className="text-2xl font-black text-gray-900 tracking-tight">
+          <h1 className="text-2xl font-semibold text-gray-900 tracking-tight">
             Giỏ hàng của bạn
           </h1>
           <div className="flex items-center gap-2 mt-1">

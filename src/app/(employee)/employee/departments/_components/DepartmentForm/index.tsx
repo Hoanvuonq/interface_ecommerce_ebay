@@ -117,7 +117,7 @@ export default function DepartmentForm({
           <Button
             variant="edit"
             onClick={onClose}
-            className="px-8 py-3 rounded-2xl font-black uppercase text-[10px] tracking-widest text-slate-400 hover:bg-slate-100 transition-all active:scale-95"
+            className="px-8 py-3 rounded-2xl font-semibold uppercase text-[10px] tracking-widest text-slate-400 hover:bg-slate-100 transition-all active:scale-95"
           >
             Hủy bỏ
           </Button>

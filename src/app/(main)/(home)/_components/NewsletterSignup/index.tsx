@@ -29,7 +29,7 @@ const NewsletterSignup: React.FC = () => {
               <div className="space-y-6 text-center lg:text-left">
                 <Badge label="Quà tặng đặc biệt" icon={<Gift size={16} />} />
                 
-                <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-slate-900 uppercase italic leading-none">
+                <h2 className="text-4xl md:text-6xl font-semibold tracking-tighter text-slate-900 uppercase italic leading-none">
                   Đừng bỏ lỡ <br />
                   <span className="bg-linear-to-r from-orange-500 to-red-600 bg-clip-text text-transparent">
                     Ưu đãi mới <br />
@@ -74,13 +74,13 @@ const NewsletterSignup: React.FC = () => {
 const Badge = ({ label, icon }: { label: string; icon: React.ReactNode }) => (
   <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-100/50 border border-orange-200 rounded-full">
     <span className="text-orange-600">{icon}</span>
-    <span className="text-[10px] font-black uppercase tracking-widest text-orange-600">{label}</span>
+    <span className="text-[10px] font-semibold uppercase tracking-widest text-orange-600">{label}</span>
   </div>
 );
 
 const StatItem = ({ label, value }: { label: string; value: string }) => (
   <div className="text-center lg:text-left">
-    <div className="text-xl font-black text-slate-900 leading-none tracking-tight">{value}</div>
+    <div className="text-xl font-semibold text-slate-900 leading-none tracking-tight">{value}</div>
     <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1.5">{label}</div>
   </div>
 );
@@ -92,7 +92,7 @@ const SuccessState = () => (
     className="bg-orange-500 rounded-4xl p-10 text-center space-y-4 shadow-xl shadow-orange-500/20"
   >
     <CheckCircle2 size={64} className="mx-auto text-white" strokeWidth={1.5} />
-    <h3 className="text-2xl font-black text-white uppercase">Tuyệt vời!</h3>
+    <h3 className="text-2xl font-semibold text-white uppercase">Tuyệt vời!</h3>
     <p className="text-white/90 text-sm font-medium">Chào mừng bạn gia nhập CaLaTha! Voucher đã được gửi.</p>
   </motion.div>
 );
@@ -122,7 +122,7 @@ const SubscribeForm = ({ email, loading, onChange, onSubmit }: any) => (
     <button
       type="submit"
       disabled={loading}
-      className="w-full py-5 bg-linear-to-r from-orange-500 to-orange-600 hover:to-orange-700 disabled:grayscale text-white rounded-2xl font-black uppercase tracking-[0.2em] text-xs md:text-sm transition-all active:scale-95 flex items-center justify-center gap-3 shadow-lg shadow-orange-500/20"
+      className="w-full py-5 bg-linear-to-r from-orange-500 to-orange-600 hover:to-orange-700 disabled:grayscale text-white rounded-2xl font-semibold uppercase tracking-[0.2em] text-xs md:text-sm transition-all active:scale-95 flex items-center justify-center gap-3 shadow-lg shadow-orange-500/20"
     >
       {loading ? <Loader2 size={20} className="animate-spin" /> : <>Đăng ký nhận quà <ArrowRight size={18} strokeWidth={3} /></>}
     </button>

@@ -78,7 +78,7 @@ export const StatCardComponents: React.FC<StatCardProps> = ({
 
       <div className="relative z-10 space-y-1">
         <p className={cn(
-          "font-black uppercase tracking-[0.25em] text-slate-600 transition-colors duration-300 group-hover:text-orange-500",
+          "font-semibold uppercase tracking-[0.25em] text-slate-600 transition-colors duration-300 group-hover:text-orange-500",
           config.label
         )}>
           {label}
@@ -91,7 +91,7 @@ export const StatCardComponents: React.FC<StatCardProps> = ({
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               className={cn(
-                "font-black tracking-tighter italic leading-none block", 
+                "font-semibold tracking-tighter italic leading-none block", 
                 color,
                 config.value
               )}
@@ -100,7 +100,7 @@ export const StatCardComponents: React.FC<StatCardProps> = ({
             </motion.span>
           </AnimatePresence>
           
-          <span className="text-[10px] font-black text-slate-500 uppercase tracking-tighter">
+          <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-tighter">
             Items
           </span>
         </div>

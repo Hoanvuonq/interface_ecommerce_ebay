@@ -38,7 +38,7 @@ export default function OrderDetailPage() {
             <div className="w-24 h-24 bg-red-50 rounded-4xl flex items-center justify-center mb-8 shadow-sm">
               <AlertCircle className="w-12 h-12 text-red-500" />
             </div>
-            <h1 className="text-3xl font-black text-slate-900 uppercase tracking-tight mb-4">
+            <h1 className="text-3xl font-semibold text-slate-900 uppercase tracking-tight mb-4">
               Không tìm thấy đơn hàng
             </h1>
             <p className="text-slate-500 max-w-md mx-auto mb-10 font-medium">
@@ -53,7 +53,7 @@ export default function OrderDetailPage() {
                 </button>
               </Link>
               <Link href="/products">
-                <button className="w-full sm:w-auto px-8 py-4 bg-slate-900 text-white font-black rounded-2xl hover:bg-orange-600 transition-all shadow-xl shadow-slate-200 flex items-center justify-center gap-2 uppercase text-xs tracking-widest">
+                <button className="w-full sm:w-auto px-8 py-4 bg-slate-900 text-white font-semibold rounded-2xl hover:bg-orange-600 transition-all shadow-xl shadow-slate-200 flex items-center justify-center gap-2 uppercase text-xs tracking-widest">
                   <ShoppingCart size={18} />
                   Tiếp tục mua sắm
                 </button>

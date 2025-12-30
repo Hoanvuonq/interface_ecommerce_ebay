@@ -39,7 +39,7 @@ export const ProductReviews = () => {
                 <div className="bg-gray-50/50 rounded-2xl p-8 border border-gray-100">
                     <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
                         <div className="md:col-span-4 flex flex-col items-center justify-center border-r-0 md:border-r border-gray-200">
-                            <div className="text-6xl font-black text-orange-500 mb-2">
+                            <div className="text-6xl font-semibold text-orange-500 mb-2">
                                 {Number(reviewSummary?.averageRating ?? 0).toFixed(1)}
                             </div>
                             <CustomRate value={Number(reviewSummary?.averageRating ?? 0)} size={28} disabled />

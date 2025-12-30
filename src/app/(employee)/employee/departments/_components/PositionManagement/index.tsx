@@ -110,7 +110,7 @@ export default function PositionManagement({
           <div className="p-2 bg-blue-50 rounded-lg text-blue-500">
             <Briefcase size={16} />
           </div>
-          <span className="font-black text-slate-800 tracking-tight">
+          <span className="font-semibold text-slate-800 tracking-tight">
             {record.positionName}
           </span>
         </div>
@@ -132,7 +132,7 @@ export default function PositionManagement({
           employeeCountMap[record.positionName] ?? record.totalEmployees ?? 0;
         return (
           <div className="px-3 py-1 bg-slate-100 rounded-full inline-block">
-            <span className="font-black text-blue-600 text-[10px] uppercase">
+            <span className="font-semibold text-blue-600 text-[10px] uppercase">
               {count} Thành viên
             </span>
           </div>
@@ -169,7 +169,7 @@ export default function PositionManagement({
         <SectionHeader icon={<Briefcase />} title="Danh sách chức vụ" />
         <button
           onClick={() => setAddModalOpen(true)}
-          className="flex items-center gap-2 px-6 py-2.5 bg-slate-900 hover:bg-orange-500 text-white rounded-2xl font-black uppercase text-[10px] tracking-widest transition-all duration-300 shadow-lg shadow-slate-200 active:scale-95"
+          className="flex items-center gap-2 px-6 py-2.5 bg-slate-900 hover:bg-orange-500 text-white rounded-2xl font-semibold uppercase text-[10px] tracking-widest transition-all duration-300 shadow-lg shadow-slate-200 active:scale-95"
         >
           <Plus size={14} strokeWidth={3} /> Thêm chức vụ
         </button>
@@ -216,7 +216,7 @@ export default function PositionManagement({
             />
 
             <div className="space-y-1.5">
-              <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">
+              <label className="text-[10px] font-semibold uppercase text-slate-400 ml-1 tracking-widest">
                 Mô tả chức vụ
               </label>
               <textarea

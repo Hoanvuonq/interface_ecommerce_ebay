@@ -37,7 +37,7 @@ export function ErrorState({ error, onRetry, className }: ErrorStateProps) {
                 </div>
 
                 <div className="space-y-2">
-                    <h3 className="text-xl font-black text-gray-900 uppercase tracking-tighter italic">
+                    <h3 className="text-xl font-semibold text-gray-900 uppercase tracking-tighter italic">
                         Ops! <span className="text-rose-500">Đã có lỗi xảy ra</span>
                     </h3>
                     <p className="text-sm font-bold text-gray-400 uppercase tracking-widest leading-relaxed px-4">
@@ -52,7 +52,7 @@ export function ErrorState({ error, onRetry, className }: ErrorStateProps) {
                     <div className="pt-2">
                         <button
                             onClick={onRetry}
-                            className="group relative inline-flex items-center gap-3 px-10 py-4 bg-linear-to-r from-rose-500 to-orange-500 hover:from-rose-600 hover:to-orange-600 text-white rounded-3xl font-black uppercase tracking-[0.2em] text-xs transition-all shadow-xl shadow-rose-200 active:scale-95"
+                            className="group relative inline-flex items-center gap-3 px-10 py-4 bg-linear-to-r from-rose-500 to-orange-500 hover:from-rose-600 hover:to-orange-600 text-white rounded-3xl font-semibold uppercase tracking-[0.2em] text-xs transition-all shadow-xl shadow-rose-200 active:scale-95"
                         >
                             <RefreshCw 
                                 size={18} 
@@ -66,7 +66,7 @@ export function ErrorState({ error, onRetry, className }: ErrorStateProps) {
 
                 {/* Footer Decor */}
                 <div className="pt-4 opacity-30 select-none pointer-events-none">
-                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em]">
+                    <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-[0.3em]">
                         CaLaTha Security System
                     </p>
                 </div>

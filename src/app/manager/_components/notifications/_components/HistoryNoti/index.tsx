@@ -82,7 +82,7 @@ export default function NotificationHistoryTable() {
                     </select>
                 </div>
 
-                <div className="text-xs font-black text-gray-400 uppercase tracking-widest px-2">
+                <div className="text-xs font-semibold text-gray-400 uppercase tracking-widest px-2">
                     Tổng: {totalElements.toLocaleString()} bản ghi
                 </div>
             </div>
@@ -92,11 +92,11 @@ export default function NotificationHistoryTable() {
                 <table className="w-full text-left border-collapse">
                     <thead>
                         <tr className="border-b border-gray-50">
-                            <th className="px-6 py-5 text-[11px] font-black text-gray-400 uppercase tracking-widest">Thời gian</th>
-                            <th className="px-6 py-5 text-[11px] font-black text-gray-400 uppercase tracking-widest">Nội dung thông báo</th>
-                            <th className="px-6 py-5 text-[11px] font-black text-gray-400 uppercase tracking-widest text-center">Đối tượng</th>
-                            <th className="px-6 py-5 text-[11px] font-black text-gray-400 uppercase tracking-widest text-center">Đã gửi</th>
-                            <th className="px-6 py-5 text-[11px] font-black text-gray-400 uppercase tracking-widest">Ảnh</th>
+                            <th className="px-6 py-5 text-[11px] font-semibold text-gray-400 uppercase tracking-widest">Thời gian</th>
+                            <th className="px-6 py-5 text-[11px] font-semibold text-gray-400 uppercase tracking-widest">Nội dung thông báo</th>
+                            <th className="px-6 py-5 text-[11px] font-semibold text-gray-400 uppercase tracking-widest text-center">Đối tượng</th>
+                            <th className="px-6 py-5 text-[11px] font-semibold text-gray-400 uppercase tracking-widest text-center">Đã gửi</th>
+                            <th className="px-6 py-5 text-[11px] font-semibold text-gray-400 uppercase tracking-widest">Ảnh</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-50">
@@ -128,14 +128,14 @@ export default function NotificationHistoryTable() {
                                     </td>
                                     <td className="px-6 py-5 text-center">
                                         <span className={cn(
-                                            "inline-flex px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider",
+                                            "inline-flex px-3 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider",
                                             audienceStyles[record.targetAudience]?.bg,
                                             audienceStyles[record.targetAudience]?.text
                                         )}>
                                             {audienceStyles[record.targetAudience]?.label}
                                         </span>
                                     </td>
-                                    <td className="px-6 py-5 text-center font-black text-sm text-gray-700">
+                                    <td className="px-6 py-5 text-center font-semibold text-sm text-gray-700">
                                         {record.recipientCount.toLocaleString()}
                                     </td>
                                     <td className="px-6 py-5">
@@ -169,7 +169,7 @@ export default function NotificationHistoryTable() {
                 >
                     <Filter className="rotate-90" size={16} />
                 </button>
-                <div className="px-5 py-2.5 bg-white border border-gray-200 rounded-2xl text-xs font-black text-gray-600 uppercase tracking-widest">
+                <div className="px-5 py-2.5 bg-white border border-gray-200 rounded-2xl text-xs font-semibold text-gray-600 uppercase tracking-widest">
                     Trang {page + 1}
                 </div>
                 <button 

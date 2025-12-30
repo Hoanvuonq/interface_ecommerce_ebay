@@ -34,7 +34,7 @@ export const CountdownFlashSale = () => {
 
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
-                <h2 className="text-xl sm:text-2xl font-black italic text-slate-800 uppercase leading-none">
+                <h2 className="text-xl sm:text-2xl font-semibold italic text-slate-800 uppercase leading-none">
                   Flash <span className="text-orange-600">Sale</span>
                 </h2>
                 <span className="bg-red-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-sm animate-bounce">

@@ -63,12 +63,12 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
                                 Tổng cộng ({selectedItems})
                             </span>
                             {selectedDiscount > 0 && (
-                                <span className="bg-red-50 text-red-600 text-[9px] font-black px-1.5 py-0.5 rounded uppercase">
+                                <span className="bg-red-50 text-red-600 text-[9px] font-semibold px-1.5 py-0.5 rounded uppercase">
                                     Giảm {formatPrice(selectedDiscount)}
                                 </span>
                             )}
                         </div>
-                        <div className="text-xl font-black text-orange-600 truncate leading-none">
+                        <div className="text-xl font-semibold text-orange-600 truncate leading-none">
                             {formatPrice(selectedTotal)}
                         </div>
                     </div>
@@ -121,7 +121,7 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
                                 <TagIcon size={14} className="fill-red-100" />
                                 <span className="text-xs font-bold uppercase">Giảm giá</span>
                             </div>
-                            <span className="text-sm font-black text-red-600">
+                            <span className="text-sm font-semibold text-red-600">
                                 -{formatPrice(selectedDiscount)}
                             </span>
                         </div>
@@ -154,7 +154,7 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
                     <div className="flex justify-between items-start mb-4">
                         <span className="text-base font-bold text-gray-800 uppercase tracking-tight">Tổng cộng</span>
                         <div className="text-right">
-                            <p className="text-3xl font-black text-orange-600 leading-none mb-1">
+                            <p className="text-3xl font-semibold text-orange-600 leading-none mb-1">
                                 {formatPrice(selectedTotal)}
                             </p>
                             {selectedDiscount > 0 && (
@@ -169,7 +169,7 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
                         onClick={onCheckout}
                         disabled={!hasSelectedItems || loading}
                         className={cn(
-                            "w-full h-14 rounded-xl font-black text-lg transition-all shadow-lg active:scale-95 flex items-center justify-center gap-3 border-none",
+                            "w-full h-14 rounded-xl font-semibold text-lg transition-all shadow-lg active:scale-95 flex items-center justify-center gap-3 border-none",
                             hasSelectedItems 
                                 ? "bg-orange-500 hover:bg-orange-600 text-white shadow-orange-200" 
                                 : "bg-gray-200 text-gray-400 cursor-not-allowed shadow-none"

@@ -27,7 +27,7 @@ export const CustomResult: React.FC<CustomResultProps> = ({
       </div>
     </div>
 
-    <h1 className="text-3xl font-black text-gray-800 dark:text-white mb-4 tracking-tight">
+    <h1 className="text-3xl font-semibold text-gray-800 dark:text-white mb-4 tracking-tight">
       {title}
     </h1>
     <p className="text-gray-500 dark:text-slate-400 mb-10 leading-relaxed px-4">

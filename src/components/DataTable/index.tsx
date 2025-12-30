@@ -68,7 +68,7 @@ export const DataTable = <T,>({
                   <th
                     key={idx}
                     className={cn(
-                      "px-6 py-4 text-[10px] font-black uppercase text-gray-400 tracking-[0.2em] whitespace-nowrap",
+                      "px-6 py-4 text-[10px] font-semibold uppercase text-gray-400 tracking-[0.2em] whitespace-nowrap",
                       col.align === "center" ? "text-center" : col.align === "right" ? "text-right" : "text-left",
                       col.headerClassName
                     )}
@@ -88,7 +88,7 @@ export const DataTable = <T,>({
                         <div className="p-3 bg-orange-50 rounded-2xl">
                           <FiLoader className="w-6 h-6 text-orange-500 animate-spin" />
                         </div>
-                        <span className="text-[10px] font-black uppercase tracking-widest text-gray-300">Đang đồng bộ...</span>
+                        <span className="text-[10px] font-semibold uppercase tracking-widest text-gray-300">Đang đồng bộ...</span>
                       </div>
                     </td>
                   </motion.tr>
@@ -100,7 +100,7 @@ export const DataTable = <T,>({
                           <FiInbox className="w-8 h-8 text-gray-200" />
                         </div>
                         <div>
-                          <h3 className="text-gray-900 font-black text-xs uppercase tracking-widest">Trống</h3>
+                          <h3 className="text-gray-900 font-semibold text-xs uppercase tracking-widest">Trống</h3>
                           <p className="text-[10px] text-gray-400 font-bold uppercase">{emptyMessage}</p>
                         </div>
                       </div>
@@ -139,7 +139,7 @@ export const DataTable = <T,>({
         </div>
 
         <div className="bg-white px-8 py-5 border-t border-gray-50 flex items-center justify-between">
-          <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+          <div className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">
             Showing <span className="text-gray-900">{totalElements > 0 ? fromItem : 0}-{toItem}</span> of <span className="text-gray-900">{totalElements}</span> items
           </div>
 
@@ -152,7 +152,7 @@ export const DataTable = <T,>({
               <FiChevronLeft size={20} />
             </button>
 
-            <div className="px-4 py-1.5 rounded-lg bg-slate-50 border border-gray-100 text-[10px] font-black text-slate-600 tracking-tighter">
+            <div className="px-4 py-1.5 rounded-lg bg-slate-50 border border-gray-100 text-[10px] font-semibold text-slate-600 tracking-tighter">
               PAGE {page + 1} / {totalPages || 1}
             </div>
 

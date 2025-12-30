@@ -23,7 +23,7 @@ export function TopCategoriesList({ categories, loading = false }: TopCategories
                         <LayoutGrid size={20} strokeWidth={2.5} />
                     </div>
                     <div>
-                        <h3 className="text-sm font-black text-gray-800 uppercase tracking-[0.15em] leading-none mb-1">
+                        <h3 className="text-sm font-semibold text-gray-800 uppercase tracking-[0.15em] leading-none mb-1">
                             Top <span className="text-blue-600">Ngành hàng</span>
                         </h3>
                         <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-0.5">Phân tích thị hiếu</p>
@@ -37,9 +37,9 @@ export function TopCategoriesList({ categories, loading = false }: TopCategories
                 <table className="w-full text-left border-collapse">
                     <thead>
                         <tr className="bg-gray-50/30">
-                            <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Danh mục</th>
-                            <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest text-right">Đơn hàng</th>
-                            <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest text-right">Doanh thu</th>
+                            <th className="px-6 py-4 text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Danh mục</th>
+                            <th className="px-6 py-4 text-[10px] font-semibold text-gray-400 uppercase tracking-widest text-right">Đơn hàng</th>
+                            <th className="px-6 py-4 text-[10px] font-semibold text-gray-400 uppercase tracking-widest text-right">Doanh thu</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-50">
@@ -52,24 +52,24 @@ export function TopCategoriesList({ categories, loading = false }: TopCategories
                                                 <div className="p-2 bg-gray-50 rounded-lg text-gray-400 group-hover:text-blue-500 group-hover:bg-blue-50 transition-all">
                                                     <ShoppingBag size={18} />
                                                 </div>
-                                                <div className="absolute -top-1 -left-1 w-4 h-4 bg-gray-100 rounded-full flex items-center justify-center text-[8px] font-black text-gray-500 border border-white">
+                                                <div className="absolute -top-1 -left-1 w-4 h-4 bg-gray-100 rounded-full flex items-center justify-center text-[8px] font-semibold text-gray-500 border border-white">
                                                     {index + 1}
                                                 </div>
                                             </div>
-                                            <div className="font-black text-sm text-gray-800 tracking-tight group-hover:text-blue-700 transition-colors">
+                                            <div className="font-semibold text-sm text-gray-800 tracking-tight group-hover:text-blue-700 transition-colors">
                                                 {cat.categoryName}
                                             </div>
                                         </div>
                                     </td>
                                     <td className="px-6 py-4 text-right">
-                                        <span className="inline-flex px-2.5 py-1 rounded-lg bg-blue-50 text-blue-600 text-[11px] font-black border border-blue-100 uppercase tracking-tighter shadow-sm">
+                                        <span className="inline-flex px-2.5 py-1 rounded-lg bg-blue-50 text-blue-600 text-[11px] font-semibold border border-blue-100 uppercase tracking-tighter shadow-sm">
                                             {formatNumber(cat.orders)} đơn
                                         </span>
                                     </td>
                                     <td className="px-6 py-4 text-right">
                                         <div className="flex items-center justify-end gap-1.5">
                                             <TrendingUp size={12} className="text-emerald-500" />
-                                            <span className="text-sm font-black text-emerald-600 tabular-nums tracking-tight">
+                                            <span className="text-sm font-semibold text-emerald-600 tabular-nums tracking-tight">
                                                 {formatCurrency(cat.revenue)}
                                             </span>
                                         </div>
@@ -88,7 +88,7 @@ export function TopCategoriesList({ categories, loading = false }: TopCategories
             </div>
 
             <div className="p-4 bg-gray-50/50 border-t border-gray-100 text-center">
-                <button className="text-[10px] font-black text-blue-600 uppercase tracking-[0.2em] hover:opacity-70 transition-opacity">
+                <button className="text-[10px] font-semibold text-blue-600 uppercase tracking-[0.2em] hover:opacity-70 transition-opacity">
                     Xem báo cáo ngành →
                 </button>
             </div>

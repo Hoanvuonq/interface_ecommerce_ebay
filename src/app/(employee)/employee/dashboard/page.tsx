@@ -35,7 +35,7 @@ export default function EmployeeDashboardScreen() {
       <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
           <div className="flex items-center gap-2 mb-2.5">
-            <span className="px-3 py-1 rounded-full bg-orange-100 text-orange-700 text-[10px] font-black uppercase tracking-widest border border-orange-200">
+            <span className="px-3 py-1 rounded-full bg-orange-100 text-orange-700 text-[10px] font-semibold uppercase tracking-widest border border-orange-200">
               Employee Hub
             </span>
             <span className="text-slate-300 text-xs">•</span>
@@ -47,7 +47,7 @@ export default function EmployeeDashboardScreen() {
               })}
             </span>
           </div>
-          <h2 className="text-4xl flex gap-2 items-center font-black tracking-tighter text-slate-900 mb-2 leading-tight">
+          <h2 className="text-4xl flex gap-2 items-center font-semibold tracking-tighter text-slate-900 mb-2 leading-tight">
             Xin chào,
             <span className="text-transparent bg-clip-text bg-linear-to-r from-orange-500 to-amber-500">
               {displayName}
@@ -90,7 +90,7 @@ export default function EmployeeDashboardScreen() {
                   <div className="p-2 bg-orange-50 text-orange-600 rounded-xl">
                     <Sparkles size={18} strokeWidth={2.5} />
                   </div>
-                  <span className="font-black text-slate-800 tracking-tight">
+                  <span className="font-semibold text-slate-800 tracking-tight">
                     NHIỆM VỤ CỦA TÔI
                   </span>
                   <span className="px-2 py-0.5 bg-slate-100 text-slate-500 text-[10px] font-bold rounded-md">
@@ -105,7 +105,7 @@ export default function EmployeeDashboardScreen() {
           >
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
-                <thead className="bg-slate-50/50 border-b border-slate-100 text-[10px] font-black uppercase text-slate-400 tracking-wider">
+                <thead className="bg-slate-50/50 border-b border-slate-100 text-[10px] font-semibold uppercase text-slate-400 tracking-wider">
                   <tr>
                     {[
                       "Mã NV",

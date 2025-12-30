@@ -119,7 +119,7 @@ const ContentTable: React.FC<ContentTableProps> = ({
     return (
       <div className="flex flex-col items-center justify-center h-96 bg-white rounded-4xl border border-gray-100 shadow-sm">
         <Loader2 className="w-10 h-10 text-orange-500 animate-spin mb-4" />
-        <p className="text-gray-400 font-black uppercase tracking-widest text-[10px]">
+        <p className="text-gray-400 font-semibold uppercase tracking-widest text-[10px]">
           Đang đồng bộ dữ liệu...
         </p>
       </div>
@@ -142,7 +142,7 @@ const ContentTable: React.FC<ContentTableProps> = ({
           ) : (
             <AlertTriangle size={20} />
           )}
-          <span className="text-xs font-black uppercase tracking-widest">
+          <span className="text-xs font-semibold uppercase tracking-widest">
             {toast.message}
           </span>
         </div>
@@ -151,7 +151,7 @@ const ContentTable: React.FC<ContentTableProps> = ({
       {/* Header & Search Bar */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-[28px] border border-gray-100 shadow-sm">
         <div>
-          <h2 className="text-xl font-black text-gray-800 uppercase tracking-tighter italic leading-none">
+          <h2 className="text-xl font-semibold text-gray-800 uppercase tracking-tighter italic leading-none">
             Category <span className="text-orange-500">Explorer</span>
           </h2>
           <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mt-2">
@@ -173,7 +173,7 @@ const ContentTable: React.FC<ContentTableProps> = ({
           <button
             onClick={handleExportExcel}
             disabled={exportLoading}
-            className="flex items-center gap-2 px-6 py-3 bg-white border-2 border-gray-100 hover:border-orange-500 text-gray-700 hover:text-orange-600 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all shadow-sm active:scale-95 disabled:opacity-50"
+            className="flex items-center gap-2 px-6 py-3 bg-white border-2 border-gray-100 hover:border-orange-500 text-gray-700 hover:text-orange-600 rounded-2xl font-semibold text-[10px] uppercase tracking-widest transition-all shadow-sm active:scale-95 disabled:opacity-50"
           >
             {exportLoading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -191,19 +191,19 @@ const ContentTable: React.FC<ContentTableProps> = ({
           <table className="w-full border-collapse text-left">
             <thead>
               <tr className="bg-gray-50/50 text-gray-400 border-b border-gray-100">
-                <th className="px-8 py-6 text-[10px] font-black uppercase tracking-[0.2em]">
+                <th className="px-8 py-6 text-[10px] font-semibold uppercase tracking-[0.2em]">
                   Visual
                 </th>
-                <th className="px-6 py-6 text-[10px] font-black uppercase tracking-[0.2em]">
+                <th className="px-6 py-6 text-[10px] font-semibold uppercase tracking-[0.2em]">
                   Metadata
                 </th>
-                <th className="px-6 py-6 text-[10px] font-black uppercase tracking-[0.2em]">
+                <th className="px-6 py-6 text-[10px] font-semibold uppercase tracking-[0.2em]">
                   Slug Hash
                 </th>
-                <th className="px-6 py-6 text-[10px] font-black uppercase tracking-[0.2em]">
+                <th className="px-6 py-6 text-[10px] font-semibold uppercase tracking-[0.2em]">
                   State
                 </th>
-                <th className="px-8 py-6 text-right text-[10px] font-black uppercase tracking-[0.2em]">
+                <th className="px-8 py-6 text-right text-[10px] font-semibold uppercase tracking-[0.2em]">
                   Actions
                 </th>
               </tr>
@@ -231,25 +231,25 @@ const ContentTable: React.FC<ContentTableProps> = ({
                   </td>
                   <td className="px-6 py-5">
                     <div className="space-y-1">
-                      <div className="text-sm font-black text-gray-800 tracking-tight group-hover:text-orange-600 transition-colors uppercase">
+                      <div className="text-sm font-semibold text-gray-800 tracking-tight group-hover:text-orange-600 transition-colors uppercase">
                         {category.name}
                       </div>
                       {category.parent && (
-                        <div className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-blue-50 text-blue-600 rounded-lg text-[9px] font-black uppercase tracking-tighter border border-blue-100">
+                        <div className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-blue-50 text-blue-600 rounded-lg text-[9px] font-semibold uppercase tracking-tighter border border-blue-100">
                           <Folder size={10} /> {category.parent.name}
                         </div>
                       )}
                     </div>
                   </td>
                   <td className="px-6 py-5">
-                    <code className="text-[10px] font-black text-gray-400 bg-gray-50 px-2.5 py-1.5 rounded-xl border border-gray-100">
+                    <code className="text-[10px] font-semibold text-gray-400 bg-gray-50 px-2.5 py-1.5 rounded-xl border border-gray-100">
                       /{category.slug}
                     </code>
                   </td>
                   <td className="px-6 py-5">
                     <span
                       className={cn(
-                        "inline-flex items-center px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border",
+                        "inline-flex items-center px-3 py-1 rounded-full text-[9px] font-semibold uppercase tracking-widest border",
                         category.active
                           ? "bg-emerald-50 text-emerald-600 border-emerald-100"
                           : "bg-rose-50 text-rose-600 border-rose-100"
@@ -291,7 +291,7 @@ const ContentTable: React.FC<ContentTableProps> = ({
 
         {/* Pagination */}
         <div className="px-8 py-6 bg-gray-50/30 flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-gray-100">
-          <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">
+          <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-[0.2em]">
             Shard {currentPage} of {totalPages}
           </p>
           <div className="flex items-center gap-2">
@@ -310,7 +310,7 @@ const ContentTable: React.FC<ContentTableProps> = ({
                     key={i}
                     onClick={() => handlePageChange(i + 1)}
                     className={cn(
-                      "w-10 h-10 rounded-xl text-[11px] font-black transition-all",
+                      "w-10 h-10 rounded-xl text-[11px] font-semibold transition-all",
                       currentPage === i + 1
                         ? "bg-orange-500 text-white shadow-lg shadow-orange-200"
                         : "bg-white text-gray-500 hover:bg-orange-50"
@@ -360,7 +360,7 @@ const ContentTable: React.FC<ContentTableProps> = ({
               <div className="w-20 h-20 bg-rose-50 text-rose-500 rounded-3xl flex items-center justify-center animate-pulse">
                 <AlertCircle size={40} strokeWidth={2.5} />
               </div>
-              <h3 className="text-2xl font-black text-gray-800 uppercase tracking-tighter italic">
+              <h3 className="text-2xl font-semibold text-gray-800 uppercase tracking-tighter italic">
                 Terminate Asset?
               </h3>
               <p className="text-[11px] font-bold text-gray-500 uppercase tracking-widest leading-relaxed">
@@ -380,13 +380,13 @@ const ContentTable: React.FC<ContentTableProps> = ({
                     setDeleteConfirm({ category: null });
                     showToast("Purged successfully", "success");
                   }}
-                  className="w-full py-4 bg-linear-to-r from-rose-500 to-rose-600 text-white rounded-2xl font-black uppercase tracking-widest text-[11px] shadow-xl shadow-rose-200 active:scale-95 transition-all"
+                  className="w-full py-4 bg-linear-to-r from-rose-500 to-rose-600 text-white rounded-2xl font-semibold uppercase tracking-widest text-[11px] shadow-xl shadow-rose-200 active:scale-95 transition-all"
                 >
                   Confirm Termination
                 </button>
                 <button
                   onClick={() => setDeleteConfirm({ category: null })}
-                  className="w-full py-4 bg-gray-50 text-gray-400 rounded-2xl font-black uppercase tracking-widest text-[11px] hover:bg-gray-100 transition-all"
+                  className="w-full py-4 bg-gray-50 text-gray-400 rounded-2xl font-semibold uppercase tracking-widest text-[11px] hover:bg-gray-100 transition-all"
                 >
                   Abort Action
                 </button>

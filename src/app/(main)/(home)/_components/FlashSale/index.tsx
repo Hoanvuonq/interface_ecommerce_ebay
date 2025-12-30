@@ -71,7 +71,7 @@ export const FlashSaleSection: React.FC = () => {
                   )}>
                     <div className="relative">
                       {discount > 0 && (
-                        <div className="absolute top-0 right-0 z-30 bg-red-600 text-white text-[11px] font-black px-3 py-1 rounded-bl-2xl shadow-md animate-pulse">
+                        <div className="absolute top-0 right-0 z-30 bg-red-600 text-white text-[11px] font-semibold px-3 py-1 rounded-bl-2xl shadow-md animate-pulse">
                           -{discount}%
                         </div>
                       )}
@@ -82,7 +82,7 @@ export const FlashSaleSection: React.FC = () => {
                       />
 
                       {soldPercentage > 60 && (
-                        <div className="absolute top-2 left-2 z-20 bg-orange-600 text-white text-[10px] font-black px-2 py-0.5 rounded-full shadow-lg flex items-center gap-1 uppercase italic">
+                        <div className="absolute top-2 left-2 z-20 bg-orange-600 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full shadow-lg flex items-center gap-1 uppercase italic">
                           <Flame className="w-3 h-3 fill-current" />
                           Sắp hết
                         </div>

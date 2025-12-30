@@ -43,7 +43,7 @@ export default function FeaturedShopsGrid({
 
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-xl font-black tracking-tight text-slate-800">
+                <h3 className="text-xl font-semibold tracking-tight text-slate-800">
                   <span className="bg-linear-to-r from-orange-600 to-red-600 bg-clip-text text-transparent uppercase">
                     Calatha
                   </span>

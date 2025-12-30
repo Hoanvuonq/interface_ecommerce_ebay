@@ -90,7 +90,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
               <ShieldCheck className="text-white" size={24} />
             </div>
             <div>
-              <h2 className="text-xl font-black text-gray-800 uppercase tracking-tighter italic leading-none">
+              <h2 className="text-xl font-semibold text-gray-800 uppercase tracking-tighter italic leading-none">
                 Entity <span className="text-orange-500">Explorer</span>
               </h2>
               <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">
@@ -129,13 +129,13 @@ export const DetailModal: React.FC<DetailModalProps> = ({
             </div>
 
             <div className="flex-1 space-y-4 text-center md:text-left w-full">
-              <h3 className="text-3xl font-black text-gray-900 tracking-tight leading-none uppercase">
+              <h3 className="text-3xl font-semibold text-gray-900 tracking-tight leading-none uppercase">
                 {category.name}
               </h3>
               <div className="flex flex-wrap items-center gap-2 justify-center md:justify-start">
                 <span
                   className={cn(
-                    "px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border shadow-sm",
+                    "px-4 py-1.5 rounded-full text-[10px] font-semibold uppercase tracking-widest border shadow-sm",
                     category.active
                       ? "bg-emerald-50 text-emerald-600 border-emerald-100"
                       : "bg-rose-50 text-rose-600 border-rose-100"
@@ -143,7 +143,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                 >
                   {category.active ? "● Operational" : "○ Offline"}
                 </span>
-                <span className="px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 border border-blue-100 text-[10px] font-black uppercase tracking-widest shadow-sm">
+                <span className="px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 border border-blue-100 text-[10px] font-semibold uppercase tracking-widest shadow-sm">
                   v{category.version}.0
                 </span>
               </div>
@@ -185,10 +185,10 @@ export const DetailModal: React.FC<DetailModalProps> = ({
           {/* Children Entities Accordion */}
           <div className="space-y-4">
             <div className="flex items-center justify-between border-l-4 border-orange-500 pl-4 py-1">
-              <h4 className="text-sm font-black text-gray-800 uppercase tracking-[0.2em]">
+              <h4 className="text-sm font-semibold text-gray-800 uppercase tracking-[0.2em]">
                 Nested Entities
               </h4>
-              <span className="bg-gray-100 text-gray-500 px-3 py-1 rounded-lg text-[10px] font-black">
+              <span className="bg-gray-100 text-gray-500 px-3 py-1 rounded-lg text-[10px] font-semibold">
                 {children.length}
               </span>
             </div>
@@ -207,7 +207,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                       <div className="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center text-gray-400 group-hover:text-blue-500 transition-colors">
                         <Box size={20} />
                       </div>
-                      <span className="text-sm font-black text-gray-700 uppercase tracking-tight">
+                      <span className="text-sm font-semibold text-gray-700 uppercase tracking-tight">
                         {child.name}
                       </span>
                     </div>
@@ -223,7 +223,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                     <div className="px-6 pb-6 pt-2 bg-gray-50/50 space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-1">
-                          <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest leading-none">
+                          <p className="text-[9px] font-semibold text-gray-400 uppercase tracking-widest leading-none">
                             Slug
                           </p>
                           <p className="text-xs font-bold text-gray-600">
@@ -231,7 +231,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                           </p>
                         </div>
                         <div className="space-y-1 text-right">
-                          <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest leading-none">
+                          <p className="text-[9px] font-semibold text-gray-400 uppercase tracking-widest leading-none">
                             Modified
                           </p>
                           <p className="text-xs font-bold text-gray-600">
@@ -244,13 +244,13 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                       <div className="flex gap-2 pt-2 border-t border-gray-100">
                         <button
                           onClick={() => onEdit?.(child)}
-                          className="flex-1 py-2.5 bg-white border border-gray-200 rounded-xl text-[10px] font-black uppercase text-gray-600 hover:text-orange-500 hover:border-orange-200 transition-all flex items-center justify-center gap-2"
+                          className="flex-1 py-2.5 bg-white border border-gray-200 rounded-xl text-[10px] font-semibold uppercase text-gray-600 hover:text-orange-500 hover:border-orange-200 transition-all flex items-center justify-center gap-2"
                         >
                           <Edit3 size={12} /> Edit
                         </button>
                         <button
                           onClick={() => onDelete?.(child.id)}
-                          className="flex-1 py-2.5 bg-white border border-gray-200 rounded-xl text-[10px] font-black uppercase text-gray-600 hover:text-rose-500 hover:border-rose-200 transition-all flex items-center justify-center gap-2"
+                          className="flex-1 py-2.5 bg-white border border-gray-200 rounded-xl text-[10px] font-semibold uppercase text-gray-600 hover:text-rose-500 hover:border-rose-200 transition-all flex items-center justify-center gap-2"
                         >
                           <Trash2 size={12} /> Purge
                         </button>
@@ -270,7 +270,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
               onEdit?.(category);
               onClose();
             }}
-            className="flex-1 py-4 bg-gray-900 text-white rounded-2xl font-black uppercase tracking-widest text-[11px] hover:bg-orange-600 transition-all shadow-xl active:scale-95 flex items-center justify-center gap-2"
+            className="flex-1 py-4 bg-gray-900 text-white rounded-2xl font-semibold uppercase tracking-widest text-[11px] hover:bg-orange-600 transition-all shadow-xl active:scale-95 flex items-center justify-center gap-2"
           >
             <Edit3 size={16} /> Modify Hierarchy
           </button>
@@ -330,10 +330,10 @@ function InfoCard({ icon, label, value, color }: InfoCardProps) {
           })}
         </div>
         <div>
-          <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1.5">
+          <p className="text-[9px] font-semibold text-gray-400 uppercase tracking-widest leading-none mb-1.5">
             {label}
           </p>
-          <p className="text-sm font-black text-gray-800 tracking-tight uppercase leading-none">
+          <p className="text-sm font-semibold text-gray-800 tracking-tight uppercase leading-none">
             {value}
           </p>
         </div>

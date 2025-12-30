@@ -185,7 +185,7 @@ const handleSort = (val: string) => {
             <div className="bg-gray-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
               <Search size={32} className="text-gray-300" />
             </div>
-            <h3 className="text-xl font-black text-gray-800">
+            <h3 className="text-xl font-semibold text-gray-800">
               Không tìm thấy gì cả
             </h3>
             <p className="text-gray-500 mt-2">

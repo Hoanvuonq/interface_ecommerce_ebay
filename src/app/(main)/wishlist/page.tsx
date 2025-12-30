@@ -56,7 +56,7 @@ export default function WishlistPage() {
     <PageContentTransition>
       <div className="min-h-screen bg-[#fafafa] text-slate-900 pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-          <nav className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-10">
+          <nav className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 mb-10">
             <Link
               href="/"
               className="hover:text-orange-500 transition-colors flex items-center gap-1.5 font-bold"
@@ -74,7 +74,7 @@ export default function WishlistPage() {
               <div className="flex items-center justify-between px-2">
                 <div className="flex items-center gap-2">
                   <div className="w-1.5 h-5 bg-orange-500 rounded-full" />
-                  <h2 className="text-xs font-black uppercase tracking-widest text-slate-500 italic">
+                  <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-500 italic">
                     Collections
                   </h2>
                 </div>
@@ -157,7 +157,7 @@ export default function WishlistPage() {
                         </div>
 
                         <div className="flex-1 text-center md:text-left">
-                          <div className="flex flex-wrap justify-center md:justify-start gap-2 mb-4 font-black">
+                          <div className="flex flex-wrap justify-center md:justify-start gap-2 mb-4 font-semibold">
                             {selectedWishlist.isDefault && (
                               <span className="px-3 py-1 bg-orange-500 text-white rounded-full text-[9px] uppercase tracking-widest">
                                 Default
@@ -174,7 +174,7 @@ export default function WishlistPage() {
                               {selectedWishlist.isPublic ? "Public" : "Private"}
                             </span>
                           </div>
-                          <h1 className="text-4xl md:text-6xl font-black tracking-tighter text-slate-950 uppercase italic leading-[0.9] mb-4">
+                          <h1 className="text-4xl md:text-6xl font-semibold tracking-tighter text-slate-950 uppercase italic leading-[0.9] mb-4">
                             {selectedWishlist.name}
                           </h1>
                           <p className="text-slate-400 font-medium line-clamp-2 max-w-xl mb-8">
@@ -183,14 +183,14 @@ export default function WishlistPage() {
                           <div className="flex flex-wrap justify-center md:justify-start gap-3">
                             <button
                               onClick={() => setEditModalVisible(true)}
-                              className="flex items-center gap-2 px-7 py-3.5 bg-slate-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-orange-600 transition-all active:scale-95 shadow-xl shadow-slate-200"
+                              className="flex items-center gap-2 px-7 py-3.5 bg-slate-900 text-white rounded-2xl font-semibold text-[10px] uppercase tracking-widest hover:bg-orange-600 transition-all active:scale-95 shadow-xl shadow-slate-200"
                             >
                               <Edit3 size={14} /> Edit
                             </button>
                             {selectedWishlist.isPublic && (
                               <button
                                 onClick={() => setShareModalVisible(true)}
-                                className="flex items-center gap-2 px-7 py-3.5 bg-white border border-slate-200 text-slate-600 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-slate-50 transition-all active:scale-95"
+                                className="flex items-center gap-2 px-7 py-3.5 bg-white border border-slate-200 text-slate-600 rounded-2xl font-semibold text-[10px] uppercase tracking-widest hover:bg-slate-50 transition-all active:scale-95"
                               >
                                 <Share2 size={14} /> Share Link
                               </button>
@@ -223,12 +223,12 @@ export default function WishlistPage() {
                             className="text-orange-200 mb-4"
                             strokeWidth={1}
                           />
-                          <h3 className="text-slate-900 font-black uppercase text-sm tracking-widest">
+                          <h3 className="text-slate-900 font-semibold uppercase text-sm tracking-widest">
                             Danh sách trống
                           </h3>
                           <Link
                             href="/products"
-                            className="mt-6 inline-flex items-center gap-2 px-8 py-4 bg-orange-500 text-white rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] hover:bg-orange-600 transition-all"
+                            className="mt-6 inline-flex items-center gap-2 px-8 py-4 bg-orange-500 text-white rounded-2xl font-semibold uppercase text-[10px] tracking-[0.2em] hover:bg-orange-600 transition-all"
                           >
                             Khám phá ngay{" "}
                             <ChevronRight size={14} strokeWidth={3} />

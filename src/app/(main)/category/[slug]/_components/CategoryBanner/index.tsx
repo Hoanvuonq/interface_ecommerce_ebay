@@ -77,7 +77,7 @@ export default function CategoryBanner({ categorySlug, categoryId, className = '
                     ) : (
                         <div className="absolute inset-0 flex items-center justify-center px-8">
                             <div className="text-center text-white">
-                                <h2 className="text-4xl md:text-5xl font-black uppercase leading-tight drop-shadow-lg">
+                                <h2 className="text-4xl md:text-5xl font-semibold uppercase leading-tight drop-shadow-lg">
                                     {banner.title || 'Khuyến mãi đặc biệt'}
                                 </h2>
                                 {banner.subtitle && (

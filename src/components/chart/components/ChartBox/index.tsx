@@ -15,7 +15,7 @@ export const ChartBox = ({
   >
     <div className="flex items-center gap-3 mb-1">
       <div className="p-2.5 bg-slate-50 rounded-2xl text-slate-600">{icon}</div>
-      <h3 className="text-xl font-black text-slate-800 uppercase tracking-tighter italic">
+      <h3 className="text-xl font-semibold text-slate-800 uppercase tracking-tighter italic">
         {title}
       </h3>
     </div>

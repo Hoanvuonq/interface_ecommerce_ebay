@@ -116,7 +116,7 @@ export default function CreateWishlistModal({
                 <Plus size={24} strokeWidth={3} />
             </div>
             <div>
-                <h3 className="text-xl font-black text-slate-900 uppercase tracking-tight leading-none">Tạo Wishlist Mới</h3>
+                <h3 className="text-xl font-semibold text-slate-900 uppercase tracking-tight leading-none">Tạo Wishlist Mới</h3>
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Lưu trữ món đồ yêu thích</p>
             </div>
         </div>
@@ -134,7 +134,7 @@ export default function CreateWishlistModal({
             <button 
                 disabled={submitting || uploadingImage}
                 onClick={handleSubmit}
-                className="flex-[2] flex items-center justify-center gap-2 px-6 py-3.5 bg-slate-900 hover:bg-orange-600 disabled:bg-slate-200 text-white rounded-xl font-black transition-all active:scale-95 shadow-xl shadow-slate-200 uppercase text-xs tracking-[0.2em]"
+                className="flex-[2] flex items-center justify-center gap-2 px-6 py-3.5 bg-slate-900 hover:bg-orange-600 disabled:bg-slate-200 text-white rounded-xl font-semibold transition-all active:scale-95 shadow-xl shadow-slate-200 uppercase text-xs tracking-[0.2em]"
             >
                 {submitting ? <Loader2 size={18} className="animate-spin" /> : <Check size={18} strokeWidth={3} />}
                 {submitting ? "ĐANG TẠO..." : "TẠO NGAY"}
@@ -154,7 +154,7 @@ export default function CreateWishlistModal({
             <div className="space-y-6">
                 {/* Image Upload Area */}
                 <div className="space-y-3">
-                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Ảnh bìa (Tùy chọn)</label>
+                    <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 ml-1">Ảnh bìa (Tùy chọn)</label>
                     <div className="relative group aspect-[21/9] rounded-3xl border-2 border-dashed border-slate-200 bg-slate-50 overflow-hidden flex items-center justify-center transition-all hover:border-orange-300">
                         {previewImage ? (
                             <>
@@ -184,7 +184,7 @@ export default function CreateWishlistModal({
 
                 {/* Name Input */}
                 <div className="space-y-2">
-                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Tên Wishlist *</label>
+                    <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 ml-1">Tên Wishlist *</label>
                     <input 
                         value={name}
                         onChange={(e) => setName(e.target.value)}
@@ -195,7 +195,7 @@ export default function CreateWishlistModal({
 
                 {/* Description Input */}
                 <div className="space-y-2">
-                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Mô tả</label>
+                    <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 ml-1">Mô tả</label>
                     <textarea 
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
@@ -243,7 +243,7 @@ const ToggleOption = ({ active, onClick, icon, label, description }: any) => (
             {icon}
         </div>
         <div className="flex-1">
-            <h4 className={cn("text-xs font-black uppercase tracking-tight", active ? "text-orange-900" : "text-slate-700")}>
+            <h4 className={cn("text-xs font-semibold uppercase tracking-tight", active ? "text-orange-900" : "text-slate-700")}>
                 {label}
             </h4>
             <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">{description}</p>

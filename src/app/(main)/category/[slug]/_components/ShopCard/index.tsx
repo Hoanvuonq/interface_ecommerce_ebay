@@ -22,7 +22,7 @@ export const ShopCard: React.FC<{ shop: Shop; color: string; isMobile?: boolean 
 
                 {/* Container Logo chính */}
                 <div className={cn(
-                    "relative flex items-center justify-center font-black text-white shadow-lg transition-all duration-300",
+                    "relative flex items-center justify-center font-semibold text-white shadow-lg transition-all duration-300",
                     "rounded-2xl z-10",
                     "group-hover:translate-y-[-4px] group-active:translate-y-0", // Nhấc nhẹ lên thay vì scale to
                     `bg-linear-to-br ${color}`,
@@ -39,7 +39,7 @@ export const ShopCard: React.FC<{ shop: Shop; color: string; isMobile?: boolean 
                 {shop.verified && (
                     <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 z-20 flex items-center gap-0.5 rounded-full bg-white px-1.5 py-0.5 shadow-md border border-orange-100">
                         <CheckCircle className="h-3 w-3 text-orange-500 fill-orange-500" />
-                        {!isMobile && <span className="text-[7px] font-black text-orange-600 uppercase">Mall</span>}
+                        {!isMobile && <span className="text-[7px] font-semibold text-orange-600 uppercase">Mall</span>}
                     </div>
                 )}
             </div>

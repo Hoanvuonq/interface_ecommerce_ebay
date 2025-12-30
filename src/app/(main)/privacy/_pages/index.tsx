@@ -30,7 +30,7 @@ export const PrivacyPolicyScreen = () => {
               <div className="p-3 bg-orange-50 rounded-2xl text-orange-600">
                 <ShieldCheck size={32} />
               </div>
-              <h1 className="text-3xl md:text-5xl font-black tracking-tight text-slate-950 uppercase">
+              <h1 className="text-3xl md:text-5xl font-semibold tracking-tight text-slate-950 uppercase">
                 Chính sách bảo mật
               </h1>
               <div className="flex items-center gap-6 text-slate-500 text-sm font-medium">

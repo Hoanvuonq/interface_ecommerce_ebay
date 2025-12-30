@@ -75,7 +75,7 @@ export const ContactSreen = () => {
                     <p className="text-slate-400 text-[9px] uppercase tracking-widest font-bold mb-2">
                       Đơn vị chủ quản
                     </p>
-                    <p className="text-sm font-black text-slate-800 leading-tight uppercase underline decoration-orange-500/30 decoration-4 underline-offset-4">
+                    <p className="text-sm font-semibold text-slate-800 leading-tight uppercase underline decoration-orange-500/30 decoration-4 underline-offset-4">
                       {contactInfo.companyName}
                     </p>
                   </div>
@@ -84,7 +84,7 @@ export const ContactSreen = () => {
                       <p className="text-slate-400 text-[9px] uppercase tracking-widest font-bold mb-1">
                         Tax Code
                       </p>
-                      <p className="font-mono text-2xl text-slate-900 font-black">
+                      <p className="font-mono text-2xl text-slate-900 font-semibold">
                         {contactInfo.taxCode}
                       </p>
                     </div>
@@ -105,7 +105,7 @@ export const ContactSreen = () => {
               >
                 <div className="bg-white rounded-[2.3rem] p-8 flex items-center justify-between group-hover:bg-transparent">
                   <div>
-                    <h4 className="font-black text-slate-900 group-hover:text-white transition-colors">
+                    <h4 className="font-semibold text-slate-900 group-hover:text-white transition-colors">
                       Trung tâm trợ giúp
                     </h4>
                     <p className="text-xs text-slate-500 group-hover:text-orange-100 transition-colors">

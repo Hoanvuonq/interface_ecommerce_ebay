@@ -92,14 +92,14 @@ export const WishlistItemCard = memo<WishlistItemCardProps>(({
                         <motion.div 
                             initial={{ x: -20, opacity: 0 }}
                             animate={{ x: 0, opacity: 1 }}
-                            className="flex items-center gap-1.5 bg-emerald-500 text-white px-3 py-1 rounded-full text-[10px] font-black shadow-lg shadow-emerald-200"
+                            className="flex items-center gap-1.5 bg-emerald-500 text-white px-3 py-1 rounded-full text-[10px] font-semibold shadow-lg shadow-emerald-200"
                         >
                             <CheckCircle2 size={12} strokeWidth={3} />
                             ĐẠT GIÁ
                         </motion.div>
                     )}
                     {item.priority > 0 && (
-                        <div className={cn("px-3 py-1 rounded-full text-[10px] font-black border shadow-md tracking-tighter", priorityStyles)}>
+                        <div className={cn("px-3 py-1 rounded-full text-[10px] font-semibold border shadow-md tracking-tighter", priorityStyles)}>
                             {item.priority === 2 ? 'GẤP' : 'ƯU TIÊN'}
                         </div>
                     )}
@@ -137,7 +137,7 @@ export const WishlistItemCard = memo<WishlistItemCardProps>(({
                     <div className="flex items-center gap-2 mb-4">
                         <div className="flex items-center gap-1 px-2 py-0.5 bg-orange-50 rounded-lg">
                             <span className="text-[10px] font-bold text-orange-400 uppercase tracking-widest">Mục tiêu</span>
-                            <span className="text-[11px] font-black text-orange-600">{formatPrice(item.desiredPrice)}</span>
+                            <span className="text-[11px] font-semibold text-orange-600">{formatPrice(item.desiredPrice)}</span>
                         </div>
                     </div>
                 )}
@@ -147,7 +147,7 @@ export const WishlistItemCard = memo<WishlistItemCardProps>(({
                     <div className="flex flex-col">
                         <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Giá hiện tại</span>
                         <div className="flex items-baseline gap-1">
-                            <span className="text-xl font-black text-slate-900 tracking-tighter">
+                            <span className="text-xl font-semibold text-slate-900 tracking-tighter">
                                 {formatPrice(item.productPrice).replace('₫', '')}
                             </span>
                             <span className="text-xs font-bold text-slate-900">₫</span>
@@ -185,12 +185,12 @@ export const WishlistItemCard = memo<WishlistItemCardProps>(({
                             <div className="w-12 h-12 bg-red-50 rounded-2xl flex items-center justify-center mx-auto mb-4 text-red-500">
                                 <AlertCircle size={24} />
                             </div>
-                            <h4 className="text-sm font-black text-slate-900 mb-2 uppercase tracking-tight">Xóa sản phẩm?</h4>
+                            <h4 className="text-sm font-semibold text-slate-900 mb-2 uppercase tracking-tight">Xóa sản phẩm?</h4>
                             <p className="text-[11px] text-slate-500 mb-6 font-medium">Hành động này không thể hoàn tác.</p>
                             <div className="flex gap-2">
                                 <button
                                     onClick={() => setShowDeleteConfirm(false)}
-                                    className="flex-1 py-3 rounded-xl text-[10px] font-black uppercase bg-slate-50 text-slate-400 hover:bg-slate-100 transition-all"
+                                    className="flex-1 py-3 rounded-xl text-[10px] font-semibold uppercase bg-slate-50 text-slate-400 hover:bg-slate-100 transition-all"
                                 >
                                     Hủy
                                 </button>
@@ -200,7 +200,7 @@ export const WishlistItemCard = memo<WishlistItemCardProps>(({
                                         onRemove(item.variantId, item.id);
                                         setShowDeleteConfirm(false);
                                     }}
-                                    className="flex-1 py-3 rounded-xl text-[10px] font-black uppercase bg-red-500 text-white hover:bg-red-600 transition-all shadow-lg shadow-red-100"
+                                    className="flex-1 py-3 rounded-xl text-[10px] font-semibold uppercase bg-red-500 text-white hover:bg-red-600 transition-all shadow-lg shadow-red-100"
                                 >
                                     {isRemoving ? "..." : "Xác nhận"}
                                 </button>

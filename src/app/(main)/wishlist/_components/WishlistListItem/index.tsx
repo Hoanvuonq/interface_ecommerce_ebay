@@ -102,7 +102,7 @@ export const WishlistListItem = memo<WishlistListItemProps>(({
                 <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2">
                         <h4 className={cn(
-                            "truncate text-[15px] font-black uppercase tracking-tight transition-colors",
+                            "truncate text-[15px] font-semibold uppercase tracking-tight transition-colors",
                             isSelected ? "text-slate-900" : "text-slate-700 group-hover:text-orange-600"
                         )}>
                             {normalizeWishlistName(wishlist.name)}
@@ -130,7 +130,7 @@ export const WishlistListItem = memo<WishlistListItemProps>(({
                                 onTogglePrivacy(wishlist, e);
                             }}
                             className={cn(
-                                "flex items-center gap-1 text-[11px] font-black uppercase tracking-widest transition-colors",
+                                "flex items-center gap-1 text-[11px] font-semibold uppercase tracking-widest transition-colors",
                                 wishlist.isPublic ? "text-emerald-500 hover:text-emerald-600" : "text-slate-400 hover:text-slate-600"
                             )}
                         >
@@ -140,7 +140,7 @@ export const WishlistListItem = memo<WishlistListItemProps>(({
 
                         {/* Price Met Badge */}
                         {priceTargetMetCount > 0 && (
-                            <div className="flex items-center gap-1 text-[11px] font-black uppercase tracking-widest text-orange-600">
+                            <div className="flex items-center gap-1 text-[11px] font-semibold uppercase tracking-widest text-orange-600">
                                 <CheckCircle2 size={12} strokeWidth={3} />
                                 <span>{priceTargetMetCount} Met Goal</span>
                             </div>

@@ -84,7 +84,7 @@ export const CartPopover: React.FC<CartPopoverProps> = () => {
       <div className="w-[360px] flex flex-col items-center justify-center py-12 px-6 text-center bg-white">
         <Package size={48} className="text-gray-200 mb-3" strokeWidth={1} />
         <p className="text-gray-900 font-bold mb-1 uppercase text-xs">Giỏ hàng trống</p>
-        <Link href="/products" className="mt-4 px-8 py-2.5 bg-orange-600 text-white text-[11px] font-black rounded shadow-md hover:bg-orange-700 transition-all">
+        <Link href="/products" className="mt-4 px-8 py-2.5 bg-orange-600 text-white text-[11px] font-semibold rounded shadow-md hover:bg-orange-700 transition-all">
           MUA SẮM NGAY
         </Link>
       </div>
@@ -106,7 +106,7 @@ export const CartPopover: React.FC<CartPopoverProps> = () => {
                 <span className="text-[11px] text-gray-500 font-medium">
                    {formatPriceFull(item.unitPrice)} x {item.quantity}
                 </span>
-                <span className="text-[12px] font-black text-orange-600">
+                <span className="text-[12px] font-semibold text-orange-600">
                   {formatPriceFull(item.totalPrice)}
                 </span>
               </div>
@@ -126,17 +126,17 @@ export const CartPopover: React.FC<CartPopoverProps> = () => {
 
         <div className="flex items-center justify-between mb-4">
           <span className="text-[10px] text-gray-500 font-bold uppercase">Tổng thanh toán:</span>
-          <span className="text-lg font-black text-orange-600">{formatPriceFull(totalAmount)}</span>
+          <span className="text-lg font-semibold text-orange-600">{formatPriceFull(totalAmount)}</span>
         </div>
 
         <div className="flex gap-2">
-          <Link href="/cart" className="flex-1 py-2.5 bg-white border border-gray-200 rounded text-center text-[10px] font-black uppercase text-gray-600 hover:bg-gray-100 transition-all">
+          <Link href="/cart" className="flex-1 py-2.5 bg-white border border-gray-200 rounded text-center text-[10px] font-semibold uppercase text-gray-600 hover:bg-gray-100 transition-all">
             VÀO GIỎ HÀNG
           </Link>
           <button
             onClick={handleCheckout}
             disabled={checkoutProcessing || checkoutLoading}
-            className="flex-[1.5] flex items-center justify-center gap-2 py-2.5 bg-orange-600 rounded text-[10px] font-black uppercase text-white hover:bg-orange-700 transition-all shadow-md disabled:opacity-50"
+            className="flex-[1.5] flex items-center justify-center gap-2 py-2.5 bg-orange-600 rounded text-[10px] font-semibold uppercase text-white hover:bg-orange-700 transition-all shadow-md disabled:opacity-50"
           >
             {checkoutProcessing ? <Loader2 size={14} className="animate-spin" /> : "XÁC NHẬN ĐƠN"}
             {!checkoutProcessing && <ArrowRight size={14} />}

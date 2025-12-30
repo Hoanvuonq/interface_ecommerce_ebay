@@ -43,7 +43,7 @@ export const SectionLoading: React.FC<SectionLoadingProps> = ({
             initial={{ opacity: 0.5 }}
             animate={{ opacity: [0.5, 1, 0.5] }}
             transition={{ repeat: Infinity, duration: 2 }}
-            className="text-2xl md:text-3xl font-black italic uppercase tracking-tighter text-slate-900"
+            className="text-2xl md:text-3xl font-semibold italic uppercase tracking-tighter text-slate-900"
           >
             {message.split("...")[0]}
             <span className="text-orange-500">...</span>

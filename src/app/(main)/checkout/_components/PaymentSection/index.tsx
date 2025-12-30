@@ -37,7 +37,7 @@ export const PaymentSection = ({ selectedMethod, onChange }: PaymentSectionProps
 
               <div>
                 <p className={cn(
-                  "text-sm font-black uppercase tracking-tight transition-colors",
+                  "text-sm font-semibold uppercase tracking-tight transition-colors",
                   isSelected ? "text-slate-900" : "text-slate-600"
                 )}>
                   {method.label}

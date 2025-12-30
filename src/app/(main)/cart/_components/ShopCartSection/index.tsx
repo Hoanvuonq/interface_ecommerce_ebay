@@ -77,7 +77,7 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
 
             <div className="flex flex-col min-w-0">
               <div className="flex items-center gap-2">
-                <h3 className="text-sm font-black text-gray-900 truncate group-hover:text-orange-500 transition-colors">
+                <h3 className="text-sm font-semibold text-gray-900 truncate group-hover:text-orange-500 transition-colors">
                   {shop.shopName}
                 </h3>
                 <ChevronRight
@@ -96,7 +96,7 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
                   </div>
                 )}
                 {shop.isVerified && (
-                  <span className="text-[9px] font-black uppercase tracking-tighter text-blue-500 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-100">
+                  <span className="text-[9px] font-semibold uppercase tracking-tighter text-blue-500 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-100">
                     Đối tác uy tín
                   </span>
                 )}
@@ -115,7 +115,7 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
       </div>
 
       <div className="hidden lg:block">
-        <div className="grid grid-cols-12 px-6 py-3 bg-gray-50/50 text-[10px] font-black uppercase tracking-widest text-gray-400 border-b border-gray-50">
+        <div className="grid grid-cols-12 px-6 py-3 bg-gray-50/50 text-[10px] font-semibold uppercase tracking-widest text-gray-400 border-b border-gray-50">
           <div className="col-span-5">Thông tin Sản phẩm</div>
           <div className="col-span-2 text-center">Đơn giá</div>
           <div className="col-span-2 text-center">Số lượng</div>
@@ -160,7 +160,7 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
                 Cửa hàng giảm giá:
               </span>
             </div>
-            <span className="text-sm font-black text-orange-600">
+            <span className="text-sm font-semibold text-orange-600">
               -{formatPriceFull(shop.discount)}
             </span>
           </div>
@@ -171,7 +171,7 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
             <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest leading-none mb-1">
               Tạm tính ({shop.items.length} SP)
             </p>
-            <p className="text-lg font-black text-gray-900 leading-none tracking-tight">
+            <p className="text-lg font-semibold text-gray-900 leading-none tracking-tight">
               {formatPriceFull(shop.total)}
             </p>
           </div>

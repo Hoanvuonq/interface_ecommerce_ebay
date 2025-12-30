@@ -29,7 +29,7 @@ export const OrderSideInfo: React.FC<OrderSideInfoProps> = ({
     <aside className="lg:col-span-4 space-y-6">
       <section className="bg-white rounded-4xl shadow-sm border border-slate-100 overflow-hidden transition-all hover:shadow-md">
         <header className="px-6 py-4 bg-slate-50/50 border-b border-slate-100">
-          <h3 className="font-black text-slate-900 flex items-center gap-2 uppercase text-xs tracking-widest">
+          <h3 className="font-semibold text-slate-900 flex items-center gap-2 uppercase text-xs tracking-widest">
             <Receipt className="text-orange-500" size={18} /> Tóm tắt thanh toán
           </h3>
         </header>
@@ -47,7 +47,7 @@ export const OrderSideInfo: React.FC<OrderSideInfoProps> = ({
           {order.totalDiscount > 0 && (
             <div className="flex justify-between text-sm text-orange-600 bg-orange-50/50 px-3 py-2 rounded-xl border border-orange-100">
               <span className="font-bold">Giảm giá</span>
-              <span className="font-black">
+              <span className="font-semibold">
                 -{formatPrice(order.totalDiscount)}
               </span>
             </div>
@@ -62,10 +62,10 @@ export const OrderSideInfo: React.FC<OrderSideInfoProps> = ({
           )}
           <div className="h-px bg-slate-100 my-2" />
           <div className="flex justify-between items-center">
-            <span className="text-base font-black text-slate-900 uppercase">
+            <span className="text-base font-semibold text-slate-900 uppercase">
               Tổng cộng
             </span>
-            <span className="text-2xl font-black text-orange-600 tracking-tight">
+            <span className="text-2xl font-semibold text-orange-600 tracking-tight">
               {formatPrice(order.grandTotal)}
             </span>
           </div>
@@ -74,7 +74,7 @@ export const OrderSideInfo: React.FC<OrderSideInfoProps> = ({
 
       <section className="bg-white rounded-4xl shadow-sm border border-slate-100 overflow-hidden transition-all hover:shadow-md">
         <header className="px-6 py-4 bg-slate-50/50 border-b border-slate-100">
-          <h3 className="font-black text-slate-900 flex items-center gap-2 uppercase text-xs tracking-widest">
+          <h3 className="font-semibold text-slate-900 flex items-center gap-2 uppercase text-xs tracking-widest">
             <MapPin className="text-blue-500" size={18} /> Địa chỉ nhận hàng
           </h3>
         </header>
@@ -84,7 +84,7 @@ export const OrderSideInfo: React.FC<OrderSideInfoProps> = ({
               <MapPinIcon size={20} className="text-orange-500" />
             </div>
             <div className="min-w-0">
-              <p className="font-black text-slate-900 text-sm uppercase tracking-tight mb-1">
+              <p className="font-semibold text-slate-900 text-sm uppercase tracking-tight mb-1">
                 {order.recipientName || "N/A"}
               </p>
               <p className="text-xs text-slate-500 leading-relaxed font-medium">
@@ -108,7 +108,7 @@ export const OrderSideInfo: React.FC<OrderSideInfoProps> = ({
 
       <section className="bg-white rounded-4xl shadow-sm border border-slate-100 overflow-hidden transition-all hover:shadow-md">
         <header className="px-6 py-4 bg-slate-50/50 border-b border-slate-100">
-          <h3 className="font-black text-slate-900 flex items-center gap-2 uppercase text-xs tracking-widest">
+          <h3 className="font-semibold text-slate-900 flex items-center gap-2 uppercase text-xs tracking-widest">
             <Truck className="text-indigo-600" size={18} /> Vận chuyển & Thanh
             toán
           </h3>
@@ -119,7 +119,7 @@ export const OrderSideInfo: React.FC<OrderSideInfoProps> = ({
               Đơn vị
             </span>
             <div className="text-right">
-              <p className="text-sm font-black text-slate-900 uppercase tracking-tighter">
+              <p className="text-sm font-semibold text-slate-900 uppercase tracking-tighter">
                 {order.carrier || "N/A"}
               </p>
               <p className="text-[10px] text-slate-400 font-bold uppercase italic">
@@ -131,7 +131,7 @@ export const OrderSideInfo: React.FC<OrderSideInfoProps> = ({
             <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">
               Phương thức
             </span>
-            <span className="font-black bg-blue-50 text-blue-600 px-3 py-1 rounded-xl text-[10px] border border-blue-100 uppercase shadow-sm">
+            <span className="font-semibold bg-blue-50 text-blue-600 px-3 py-1 rounded-xl text-[10px] border border-blue-100 uppercase shadow-sm">
               {paymentLabel}
             </span>
           </div>

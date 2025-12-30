@@ -121,7 +121,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
           setCancelReason("");
         }}
         title={
-          <div className="flex items-center gap-2 text-orange-600 font-black uppercase tracking-tight text-lg">
+          <div className="flex items-center gap-2 text-orange-600 font-semibold uppercase tracking-tight text-lg">
             <AlertTriangle size={22} /> Hủy đơn hàng
           </div>
         }
@@ -137,7 +137,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
             <button
               onClick={handleConfirmCancel}
               disabled={cancelling || !cancelReason.trim()}
-              className="flex-2 py-3 bg-orange-600 hover:bg-orange-700 text-white text-xs font-black uppercase tracking-widest rounded-xl shadow-lg shadow-orange-200 transition-all flex items-center justify-center gap-2"
+              className="flex-2 py-3 bg-orange-600 hover:bg-orange-700 text-white text-xs font-semibold uppercase tracking-widest rounded-xl shadow-lg shadow-orange-200 transition-all flex items-center justify-center gap-2"
             >
               {cancelling && <RefreshCw size={14} className="animate-spin" />}{" "}
               Xác nhận hủy
@@ -154,7 +154,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
             ? Hành động này không thể hoàn tác.
           </p>
           <div className="space-y-2">
-            <label className="text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1">
+            <label className="text-[11px] font-semibold text-gray-400 uppercase tracking-widest ml-1">
               Lý do hủy đơn *
             </label>
             <textarea

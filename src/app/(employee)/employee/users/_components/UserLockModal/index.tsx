@@ -28,7 +28,7 @@ export const UserLockModal: React.FC<UserLockModalProps> = ({ logic }) => {
           <div className="p-2 bg-rose-100 text-rose-600 rounded-xl">
             <Lock size={20} strokeWidth={2.5} />
           </div>
-          <span className="font-black tracking-tight text-lg uppercase text-slate-800">
+          <span className="font-semibold tracking-tight text-lg uppercase text-slate-800">
             Khóa tài khoản
           </span>
         </div>
@@ -67,7 +67,7 @@ export const UserLockModal: React.FC<UserLockModalProps> = ({ logic }) => {
             <AlertTriangle size={20} />
           </div>
           <div className="space-y-1">
-            <p className="text-xs font-black text-amber-700 uppercase tracking-wider">
+            <p className="text-xs font-semibold text-amber-700 uppercase tracking-wider">
               Cảnh báo quan trọng
             </p>
             <p className="text-xs text-amber-600 font-medium leading-relaxed">
@@ -79,7 +79,7 @@ export const UserLockModal: React.FC<UserLockModalProps> = ({ logic }) => {
 
         {/* Ô nhập lý do */}
         <div className="space-y-3">
-          <label className="block text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 px-1">
+          <label className="block text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400 px-1">
             Lý do khóa tài khoản <span className="text-rose-500">*</span>
           </label>
           <textarea
@@ -103,7 +103,7 @@ export const UserLockModal: React.FC<UserLockModalProps> = ({ logic }) => {
             </p>
             <span
               className={cn(
-                "text-[10px] font-black tracking-widest",
+                "text-[10px] font-semibold tracking-widest",
                 lockModal.reason.length > 0
                   ? "text-slate-600"
                   : "text-slate-300"

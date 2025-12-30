@@ -56,7 +56,7 @@ export default function PayrollDetail({
               <Calendar size={24} />
             </div>
             <div>
-              <h3 className="text-xl font-black text-slate-900 tracking-tighter uppercase italic leading-none">
+              <h3 className="text-xl font-semibold text-slate-900 tracking-tighter uppercase italic leading-none">
                 Tháng {formatMonth(payroll.payMonth)}
               </h3>
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Chu kỳ thanh toán nhân sự</p>
@@ -64,7 +64,7 @@ export default function PayrollDetail({
           </div>
           
           <div className={cn(
-            "px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest border flex items-center gap-2",
+            "px-4 py-2 rounded-xl text-[10px] font-semibold uppercase tracking-widest border flex items-center gap-2",
             payroll.paid 
               ? "bg-emerald-50 text-emerald-600 border-emerald-100" 
               : "bg-amber-50 text-amber-600 border-amber-100"
@@ -93,8 +93,8 @@ export default function PayrollDetail({
             icon={<MinusCircle size={14} />}
           />
           <div className="p-5 rounded-3xl bg-orange-500 shadow-lg shadow-orange-200 flex flex-col justify-center">
-            <p className="text-[10px] font-black text-orange-100 uppercase tracking-widest mb-1">Thực lĩnh cuối cùng</p>
-            <p className="text-2xl font-black text-white italic tracking-tighter">{formatCurrency(payroll.total)}</p>
+            <p className="text-[10px] font-semibold text-orange-100 uppercase tracking-widest mb-1">Thực lĩnh cuối cùng</p>
+            <p className="text-2xl font-semibold text-white italic tracking-tighter">{formatCurrency(payroll.total)}</p>
           </div>
         </div>
 
@@ -123,8 +123,8 @@ export default function PayrollDetail({
               <span className="bg-white/10 px-2 py-1 rounded-lg text-emerald-400">{formatCurrency(payroll.bonus)}</span>
               <span className="text-red-400 font-bold">-</span>
               <span className="bg-white/10 px-2 py-1 rounded-lg text-red-400">{formatCurrency(payroll.deduction)}</span>
-              <span className="text-orange-400 font-black text-lg">=</span>
-              <span className="text-orange-400 font-black text-lg underline decoration-double">{formatCurrency(payroll.total)}</span>
+              <span className="text-orange-400 font-semibold text-lg">=</span>
+              <span className="text-orange-400 font-semibold text-lg underline decoration-double">{formatCurrency(payroll.total)}</span>
             </div>
           </div>
         </div>
@@ -138,7 +138,7 @@ export default function PayrollDetail({
               <div className="p-2 bg-white rounded-xl text-blue-600 shadow-sm">
                 <FileText size={18} />
               </div>
-              <span className="text-xs font-black uppercase tracking-widest text-blue-700">Sao kê chi tiết lương (.PDF)</span>
+              <span className="text-xs font-semibold uppercase tracking-widest text-blue-700">Sao kê chi tiết lương (.PDF)</span>
             </div>
             <ArrowDownToLine size={18} className="text-blue-400 group-hover:translate-y-0.5 transition-transform" />
           </button>
@@ -147,7 +147,7 @@ export default function PayrollDetail({
         <div className="pt-4 flex justify-end">
           <button 
             onClick={onClose}
-            className="px-8 py-3 rounded-2xl font-black uppercase text-[10px] tracking-widest text-slate-400 hover:bg-slate-100 transition-all active:scale-95"
+            className="px-8 py-3 rounded-2xl font-semibold uppercase text-[10px] tracking-widest text-slate-400 hover:bg-slate-100 transition-all active:scale-95"
           >
             Đóng cửa sổ
           </button>
@@ -163,9 +163,9 @@ const DetailSalaryBox = ({ label, value, color, icon }: any) => (
   <div className="p-5 rounded-3xl bg-white border border-slate-100 shadow-sm flex flex-col justify-center">
     <div className="flex items-center gap-1.5 mb-1">
       {icon}
-      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{label}</p>
+      <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">{label}</p>
     </div>
-    <p className={cn("text-xl font-black italic tracking-tighter", color)}>{value}</p>
+    <p className={cn("text-xl font-semibold italic tracking-tighter", color)}>{value}</p>
   </div>
 );
 
@@ -173,7 +173,7 @@ const DetailSalaryBox = ({ label, value, color, icon }: any) => (
 
 const PaymentStep = ({ label, date, isHighlighted }: any) => (
   <div className="space-y-1">
-    <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest">{label}</p>
+    <p className="text-[10px] font-semibold text-slate-300 uppercase tracking-widest">{label}</p>
     <div className={cn(
       "px-4 py-3 rounded-xl border font-bold text-sm",
       isHighlighted ? "bg-emerald-50 border-emerald-100 text-emerald-700" : "bg-slate-50 border-slate-100 text-slate-500"

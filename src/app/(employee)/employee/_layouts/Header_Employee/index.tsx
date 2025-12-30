@@ -35,7 +35,7 @@ export default function EmployeeHeader({
           <Menu className={cn("w-6 h-6", collapsed ? "rotate-180" : "")} />
         </button>
 
-        <h1 className="text-lg md:text-xl font-black tracking-tight text-slate-800 truncate">
+        <h1 className="text-lg md:text-xl font-semibold tracking-tight text-slate-800 truncate">
           <span className="text-transparent bg-clip-text bg-linear-to-r from-orange-500 to-amber-500">
             {isMobile ? "Dashboard" : "Employee Workspace"}
           </span>

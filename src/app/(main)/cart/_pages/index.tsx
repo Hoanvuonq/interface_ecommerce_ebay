@@ -185,14 +185,14 @@ export const CartScreen = () => {
                           className="absolute text-white opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity"
                         />
                       </div>
-                      <span className="text-sm sm:text-base font-black text-gray-700 group-hover:text-gray-900 transition-colors uppercase tracking-tight">
+                      <span className="text-sm sm:text-base font-semibold text-gray-700 group-hover:text-gray-900 transition-colors uppercase tracking-tight">
                         Chọn tất cả ({cart.itemCount})
                       </span>
                     </label>
 
                     <button
                       onClick={handleClearCart}
-                      className="flex items-center gap-1.5 px-4 py-2 text-xs font-black text-red-500 hover:bg-red-50 rounded-xl transition-all active:scale-95 uppercase tracking-tighter"
+                      className="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-red-500 hover:bg-red-50 rounded-xl transition-all active:scale-95 uppercase tracking-tighter"
                     >
                       <Trash2 size={16} />
                       <span className="hidden sm:inline">Xóa giỏ hàng</span>
@@ -217,7 +217,7 @@ export const CartScreen = () => {
 
                   <Link
                     href="/products"
-                    className="inline-flex items-center gap-2 text-orange-600 font-black hover:gap-4 transition-all text-xs uppercase tracking-widest py-4"
+                    className="inline-flex items-center gap-2 text-orange-600 font-semibold hover:gap-4 transition-all text-xs uppercase tracking-widest py-4"
                   >
                     ← Tiếp tục mua sắm
                   </Link>

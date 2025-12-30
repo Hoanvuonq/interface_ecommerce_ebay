@@ -12,16 +12,16 @@ export const GrowthCard = ({
 }) => (
   <div className="bg-white p-6 rounded-[2.2rem] border border-slate-100 shadow-sm flex flex-col justify-between relative overflow-hidden group">
     <div className="relative z-10">
-      <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2 group-hover:text-orange-500 transition-colors">
+      <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-400 mb-2 group-hover:text-orange-500 transition-colors">
         {label}
       </p>
       <div className="flex items-baseline gap-2">
-        <span className="text-4xl font-black text-slate-900 tracking-tighter italic leading-none">
+        <span className="text-4xl font-semibold text-slate-900 tracking-tighter italic leading-none">
           {value}
         </span>
         <div
           className={cn(
-            "flex items-center text-[10px] font-black px-2 py-0.5 rounded-lg border",
+            "flex items-center text-[10px] font-semibold px-2 py-0.5 rounded-lg border",
             rate >= 0
               ? "bg-emerald-50 text-emerald-600 border-emerald-100"
               : "bg-red-50 text-red-600 border-red-100"

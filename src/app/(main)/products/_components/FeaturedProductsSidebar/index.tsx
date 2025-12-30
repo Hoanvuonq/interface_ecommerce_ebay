@@ -87,7 +87,7 @@ export function FeaturedProductsSidebar({ products, loading = false }: FeaturedP
                                         loading="lazy"
                                     />
                                     {hasDiscount && (
-                                        <div className="absolute top-0 left-0 bg-red-500 text-white text-[9px] px-1.5 py-0.5 rounded-br-lg font-black shadow-sm">
+                                        <div className="absolute top-0 left-0 bg-red-500 text-white text-[9px] px-1.5 py-0.5 rounded-br-lg font-semibold shadow-sm">
                                             -{discountPercent}%
                                         </div>
                                     )}
@@ -100,7 +100,7 @@ export function FeaturedProductsSidebar({ products, loading = false }: FeaturedP
                                     </h4>
                                     
                                     <div className="mt-2 flex flex-col">
-                                        <span className="text-[15px] text-orange-600 font-black">
+                                        <span className="text-[15px] text-orange-600 font-semibold">
                                             {formatPriceFull(price)}
                                         </span>
                                         {hasDiscount && (

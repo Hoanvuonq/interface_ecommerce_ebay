@@ -88,7 +88,7 @@ const DetailField = ({
   >
     <div className="flex items-center gap-2 mb-1.5 text-slate-400">
       {Icon && <Icon size={12} strokeWidth={2.5} className="text-orange-400" />}
-      <label className="text-[10px] font-black uppercase tracking-widest leading-none">
+      <label className="text-[10px] font-semibold uppercase tracking-widest leading-none">
         {label}
       </label>
     </div>
@@ -144,7 +144,7 @@ export default function UserDetailModal({
           <div className="p-2 bg-orange-500 text-white rounded-xl shadow-lg shadow-orange-200">
             <UserIcon size={20} strokeWidth={2.5} />
           </div>
-          <span className="font-black tracking-tight text-xl text-slate-800 uppercase">
+          <span className="font-semibold tracking-tight text-xl text-slate-800 uppercase">
             Hồ sơ người dùng
           </span>
         </div>
@@ -158,13 +158,13 @@ export default function UserDetailModal({
             size={48}
             strokeWidth={1.5}
           />
-          <p className="text-slate-400 font-black text-xs uppercase tracking-widest animate-pulse">
+          <p className="text-slate-400 font-semibold text-xs uppercase tracking-widest animate-pulse">
             Đang nạp dữ liệu...
           </p>
         </div>
       ) : error ? (
         <div className="p-8 bg-rose-50 border border-rose-100 rounded-[2rem] text-rose-600 text-center">
-          <p className="font-black uppercase text-xs tracking-widest mb-2">
+          <p className="font-semibold uppercase text-xs tracking-widest mb-2">
             Đã xảy ra lỗi
           </p>
           <p className="font-bold text-sm">{error}</p>
@@ -189,7 +189,7 @@ export default function UserDetailModal({
               />
               <div
                 className={cn(
-                  "absolute -bottom-2 -right-2 px-3 py-1 rounded-full border-4 border-white text-[10px] font-black text-white shadow-lg uppercase tracking-wider",
+                  "absolute -bottom-2 -right-2 px-3 py-1 rounded-full border-4 border-white text-[10px] font-semibold text-white shadow-lg uppercase tracking-wider",
                   user.status === "ACTIVE" ? "bg-emerald-500" : "bg-rose-500"
                 )}
               >
@@ -203,7 +203,7 @@ export default function UserDetailModal({
                   <span
                     key={idx}
                     className={cn(
-                      "px-4 py-1 rounded-xl text-[10px] font-black border uppercase tracking-widest shadow-sm",
+                      "px-4 py-1 rounded-xl text-[10px] font-semibold border uppercase tracking-widest shadow-sm",
                       getRoleColor(role)
                     )}
                   >
@@ -212,7 +212,7 @@ export default function UserDetailModal({
                 ))}
               </div>
               <div>
-                <h2 className="text-4xl font-black text-slate-900 tracking-tighter mb-1 uppercase italic">
+                <h2 className="text-4xl font-semibold text-slate-900 tracking-tighter mb-1 uppercase italic">
                   {user.username}
                 </h2>
                 <p className="text-slate-400 font-bold text-sm flex items-center justify-center md:justify-start gap-2">
@@ -221,18 +221,18 @@ export default function UserDetailModal({
               </div>
               <div className="pt-2 flex flex-wrap justify-center md:justify-start gap-6 border-t border-slate-200">
                 <div className="text-center md:text-left">
-                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                  <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">
                     ID Định danh
                   </p>
-                  <p className="text-slate-700 font-black text-xs">
+                  <p className="text-slate-700 font-semibold text-xs">
                     #{user.userId.slice(-8).toUpperCase()}
                   </p>
                 </div>
                 <div className="text-center md:text-left">
-                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                  <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">
                     Ngày tham gia
                   </p>
-                  <p className="text-slate-700 font-black text-xs">
+                  <p className="text-slate-700 font-semibold text-xs">
                     {dayjs(user.createdDate).format("DD MMM, YYYY")}
                   </p>
                 </div>
@@ -246,7 +246,7 @@ export default function UserDetailModal({
             <div className="space-y-4">
               <div className="flex items-center gap-2 px-4">
                 <div className="w-1.5 h-6 bg-orange-500 rounded-full" />
-                <h3 className="font-black text-slate-800 tracking-tight uppercase text-xs">
+                <h3 className="font-semibold text-slate-800 tracking-tight uppercase text-xs">
                   Cấu hình bảo mật
                 </h3>
               </div>
@@ -282,7 +282,7 @@ export default function UserDetailModal({
             <div className="space-y-4">
               <div className="flex items-center gap-2 px-4">
                 <div className="w-1.5 h-6 bg-rose-500 rounded-full" />
-                <h3 className="font-black text-slate-800 tracking-tight uppercase text-xs text-rose-600">
+                <h3 className="font-semibold text-slate-800 tracking-tight uppercase text-xs text-rose-600">
                   Lịch sử vi phạm
                 </h3>
               </div>
@@ -297,7 +297,7 @@ export default function UserDetailModal({
                 {user.lockedAt ? (
                   <div className="space-y-3">
                     <div>
-                      <p className="text-[10px] font-black text-rose-400 uppercase tracking-widest mb-1">
+                      <p className="text-[10px] font-semibold text-rose-400 uppercase tracking-widest mb-1">
                         Lý do khóa tài khoản
                       </p>
                       <p className="text-rose-700 text-sm font-bold italic leading-relaxed">
@@ -317,7 +317,7 @@ export default function UserDetailModal({
                 ) : (
                   <div className="flex flex-col items-center justify-center h-full text-slate-400 gap-2">
                     <Shield size={24} strokeWidth={1} />
-                    <p className="text-[10px] font-black uppercase tracking-widest">
+                    <p className="text-[10px] font-semibold uppercase tracking-widest">
                       Tài khoản trong sạch
                     </p>
                   </div>
@@ -337,11 +337,11 @@ export default function UserDetailModal({
                       <div className="p-2 bg-blue-50 text-blue-600 rounded-xl">
                         <UserIcon size={18} />
                       </div>
-                      <h3 className="font-black text-slate-800 tracking-tight uppercase text-xs">
+                      <h3 className="font-semibold text-slate-800 tracking-tight uppercase text-xs">
                         Thông tin Người mua hàng
                       </h3>
                     </div>
-                    <span className="text-[10px] font-black bg-blue-100 text-blue-600 px-3 py-1 rounded-full uppercase tracking-widest">
+                    <span className="text-[10px] font-semibold bg-blue-100 text-blue-600 px-3 py-1 rounded-full uppercase tracking-widest">
                       Type: Buyer
                     </span>
                   </div>
@@ -377,11 +377,11 @@ export default function UserDetailModal({
                       <div className="p-2 bg-emerald-50 text-emerald-600 rounded-xl">
                         <Store size={18} />
                       </div>
-                      <h3 className="font-black text-slate-800 tracking-tight uppercase text-xs">
+                      <h3 className="font-semibold text-slate-800 tracking-tight uppercase text-xs">
                         Thông tin Shop đối tác
                       </h3>
                     </div>
-                    <span className="text-[10px] font-black bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full uppercase tracking-widest">
+                    <span className="text-[10px] font-semibold bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full uppercase tracking-widest">
                       Type: Merchant
                     </span>
                   </div>
@@ -420,11 +420,11 @@ export default function UserDetailModal({
                       <div className="p-2 bg-purple-50 text-purple-600 rounded-xl">
                         <Briefcase size={18} />
                       </div>
-                      <h3 className="font-black text-slate-800 tracking-tight uppercase text-xs">
+                      <h3 className="font-semibold text-slate-800 tracking-tight uppercase text-xs">
                         Thông tin Nhân sự
                       </h3>
                     </div>
-                    <span className="text-[10px] font-black bg-purple-100 text-purple-600 px-3 py-1 rounded-full uppercase tracking-widest">
+                    <span className="text-[10px] font-semibold bg-purple-100 text-purple-600 px-3 py-1 rounded-full uppercase tracking-widest">
                       Type: Staff
                     </span>
                   </div>
@@ -484,7 +484,7 @@ export default function UserDetailModal({
             <div className="relative z-10">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-1.5 h-6 bg-orange-500 rounded-full" />
-                <h3 className="font-black tracking-[0.2em] uppercase text-xs text-white">
+                <h3 className="font-semibold tracking-[0.2em] uppercase text-xs text-white">
                   Quyền hạn hệ thống
                 </h3>
                 <div className="flex-1 border-b border-white/10 ml-2" />
@@ -502,7 +502,7 @@ export default function UserDetailModal({
                 {user.userPermissions?.map((perm: any) => (
                   <span
                     key={perm.permissionId}
-                    className="px-4 py-1.5 bg-orange-500/10 text-orange-400 border border-orange-500/20 rounded-xl text-[10px] font-black transition-all hover:scale-105 cursor-default uppercase tracking-wider"
+                    className="px-4 py-1.5 bg-orange-500/10 text-orange-400 border border-orange-500/20 rounded-xl text-[10px] font-semibold transition-all hover:scale-105 cursor-default uppercase tracking-wider"
                   >
                     {perm.permissionName} (Custom)
                   </span>
@@ -520,7 +520,7 @@ export default function UserDetailModal({
       ) : (
         <div className="flex flex-col items-center justify-center py-32 text-slate-300 gap-4">
           <Activity size={48} strokeWidth={1} />
-          <p className="font-black uppercase tracking-[0.3em] text-[10px]">
+          <p className="font-semibold uppercase tracking-[0.3em] text-[10px]">
             Thực thể không tồn tại
           </p>
         </div>

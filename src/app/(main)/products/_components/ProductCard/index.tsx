@@ -200,7 +200,7 @@ export const ProductCard = ({
               </span>
               <span
                 className={cn(
-                  "text-[8px] font-black uppercase tracking-widest opacity-40",
+                  "text-[8px] font-semibold uppercase tracking-widest opacity-40",
                   categoryUI.colors.text
                 )}
               >
@@ -211,12 +211,12 @@ export const ProductCard = ({
 
           <div className="absolute top-2 left-2 flex flex-col gap-1 z-10">
             {hasDiscount && (
-              <div className="bg-red-500 text-white text-[8px] md:text-[9px] font-black px-1.5 py-0.5 rounded shadow-lg border border-white/20">
+              <div className="bg-red-500 text-white text-[8px] md:text-[9px] font-semibold px-1.5 py-0.5 rounded shadow-lg border border-white/20">
                 -{discountPercent}%
               </div>
             )}
             {highlight === "new" && !isList && (
-              <div className="bg-blue-600 text-white text-[9px] font-black px-2 py-1 rounded shadow-lg border border-white/20 uppercase tracking-tighter">
+              <div className="bg-blue-600 text-white text-[9px] font-semibold px-2 py-1 rounded shadow-lg border border-white/20 uppercase tracking-tighter">
                 New
               </div>
             )}
@@ -231,7 +231,7 @@ export const ProductCard = ({
                 }
                 className={cn(
                   "w-full bg-white/90 backdrop-blur-md cursor-pointer hover:bg-orange-500 hover:text-white text-gray-900 ",
-                  "py-2 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-xl transition-all flex items-center justify-center gap-2",
+                  "py-2 rounded-xl text-[10px] font-semibold uppercase tracking-widest shadow-xl transition-all flex items-center justify-center gap-2",
                   isOutOfStock &&
                     "opacity-70 cursor-not-allowed hover:bg-gray-200 hover:text-gray-500 grayscale"
                 )}
@@ -257,7 +257,7 @@ export const ProductCard = ({
         >
           <div className="flex justify-between items-start mb-1">
             <div className="flex items-center gap-1.5 overflow-hidden">
-              <span className="bg-orange-50 text-orange-600 text-[8px] font-black px-1.5 py-0.5 rounded border border-orange-100 uppercase shrink-0 tracking-tighter">
+              <span className="bg-orange-50 text-orange-600 text-[8px] font-semibold px-1.5 py-0.5 rounded border border-orange-100 uppercase shrink-0 tracking-tighter">
                 Mall
               </span>
               <span className="text-[10px] text-gray-400 font-bold uppercase tracking-tight truncate">
@@ -308,7 +308,7 @@ export const ProductCard = ({
               <div className="flex items-baseline gap-2 mb-0.5">
                 <span
                   className={cn(
-                    "font-black text-orange-600 tracking-tighter leading-none",
+                    "font-semibold text-orange-600 tracking-tighter leading-none",
                     isList ? "text-lg md:text-xl" : "text-lg"
                   )}
                 >

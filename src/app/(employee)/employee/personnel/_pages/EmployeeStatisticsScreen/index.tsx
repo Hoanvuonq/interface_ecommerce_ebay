@@ -29,7 +29,7 @@ export default function EmployeeStatisticsPage() {
       <div className="p-8 pb-4">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
-            <h1 className="text-4xl font-black text-slate-900 tracking-tighter uppercase italic leading-none">
+            <h1 className="text-4xl font-semibold text-slate-900 tracking-tighter uppercase italic leading-none">
               Báo cáo <span className="text-orange-500">Nhân sự</span>
             </h1>
             <p className="text-slate-400 text-sm font-bold uppercase tracking-widest mt-2">
@@ -43,7 +43,7 @@ export default function EmployeeStatisticsPage() {
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key as TabKey)}
                 className={cn(
-                  "flex items-center gap-2 px-6 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all duration-300",
+                  "flex items-center gap-2 px-6 py-2.5 text-[10px] font-semibold uppercase tracking-widest rounded-xl transition-all duration-300",
                   activeTab === tab.key
                     ? "bg-orange-500 text-white shadow-lg shadow-orange-200"
                     : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"
@@ -63,7 +63,7 @@ export default function EmployeeStatisticsPage() {
              <div className="p-2 bg-orange-100 rounded-lg text-orange-600">
                 {activeTab === "overview" ? <LayoutDashboard size={20}/> : <CalendarDays size={20}/>}
              </div>
-             <span className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
+             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
                 Đang hiển thị: {activeTab === "overview" ? "Cấu trúc tổ chức" : "Dòng thời gian tăng trưởng"}
              </span>
           </div>

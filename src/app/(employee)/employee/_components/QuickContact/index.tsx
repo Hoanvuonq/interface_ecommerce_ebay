@@ -9,7 +9,7 @@ export const QuickContact = () => {
         <div className="p-2.5 bg-orange-50 rounded-2xl">
           <Phone className="text-orange-500" size={20} />
         </div>
-        <span className="font-black text-slate-800 tracking-tight text-sm uppercase">
+        <span className="font-semibold text-slate-800 tracking-tight text-sm uppercase">
           LIÊN HỆ NHANH
         </span>
       </div>

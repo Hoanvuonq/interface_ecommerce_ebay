@@ -40,7 +40,7 @@ export const ContactItem: React.FC<ContactItemProps> = ({
       <div className="space-y-1.5 ml-1">
         <div className="flex items-center gap-2 text-slate-600 hover:text-orange-600 transition-colors cursor-pointer group/item">
           <Phone size={12} className="opacity-50 group-hover/item:opacity-100" />
-          <span className="text-xs font-black">{value.phone}</span>
+          <span className="text-xs font-semibold">{value.phone}</span>
         </div>
         
         <div className="flex items-center gap-2 text-slate-600 hover:text-orange-600 transition-colors cursor-pointer group/item">

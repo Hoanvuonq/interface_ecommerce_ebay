@@ -19,7 +19,7 @@ export default function NotFoundPage() {
           </div>
         </div>
 
-        <h1 className="mb-4 text-4xl font-black tracking-tight md:text-6xl">
+        <h1 className="mb-4 text-4xl font-semibold tracking-tight md:text-6xl">
           Trang không tìm thấy
         </h1>
         
@@ -31,7 +31,7 @@ export default function NotFoundPage() {
           <Link href="/">
             <CustomButton
               variant="dark"
-              className="h-12! px-8! hover:text-orange-600! rounded-2xl! shadow-xl shadow-orange-200 uppercase tracking-widest font-black"
+              className="h-12! px-8! hover:text-orange-600! rounded-2xl! shadow-xl shadow-orange-200 uppercase tracking-widest font-semibold"
               icon={<MoveLeft size={18} />}
             >
               Quay về trang chủ

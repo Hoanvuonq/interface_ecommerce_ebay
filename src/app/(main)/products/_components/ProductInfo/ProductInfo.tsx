@@ -47,7 +47,7 @@ export function ProductInfo({ product, selectedVariant }: ProductInfoProps) {
                         <div className="p-2.5 bg-orange-500 text-white rounded-2xl shadow-lg shadow-orange-200">
                             <Package size={20} strokeWidth={2.5} />
                         </div>
-                        <h3 className="text-lg font-black text-gray-800 uppercase tracking-tight">
+                        <h3 className="text-lg font-semibold text-gray-800 uppercase tracking-tight">
                             Thông số kỹ thuật
                         </h3>
                     </div>
@@ -77,7 +77,7 @@ export function ProductInfo({ product, selectedVariant }: ProductInfoProps) {
                         <div className="w-full border-t border-dashed border-gray-200"></div>
                     </div>
                     <div className="relative flex justify-center">
-                        <span className="bg-white px-4 text-[10px] font-black text-gray-300 uppercase tracking-[0.3em]">
+                        <span className="bg-white px-4 text-[10px] font-semibold text-gray-300 uppercase tracking-[0.3em]">
                             Details View
                         </span>
                     </div>
@@ -87,7 +87,7 @@ export function ProductInfo({ product, selectedVariant }: ProductInfoProps) {
                         <div className="p-2.5 bg-orange-100 text-orange-600 rounded-2xl">
                             <FileText size={20} strokeWidth={2.5} />
                         </div>
-                        <h3 className="text-lg font-black text-gray-800 uppercase tracking-tight">
+                        <h3 className="text-lg font-semibold text-gray-800 uppercase tracking-tight">
                             Mô tả sản phẩm
                         </h3>
                     </div>

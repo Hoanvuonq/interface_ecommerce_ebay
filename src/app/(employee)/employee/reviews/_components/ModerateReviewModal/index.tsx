@@ -57,7 +57,7 @@ export default function ModerateReviewModal({
   return (
     <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-6">
       <div className="space-y-2">
-        <label className="text-xs font-black uppercase tracking-widest text-slate-500 ml-1">
+        <label className="text-xs font-semibold uppercase tracking-widest text-slate-500 ml-1">
           Trạng thái kiểm duyệt
         </label>
         <Controller
@@ -77,7 +77,7 @@ export default function ModerateReviewModal({
 
       {currentStatus === ReviewStatus.REJECTED && (
         <div className="space-y-2 animate-in fade-in slide-in-from-top-2 duration-300">
-          <label className="text-xs font-black uppercase tracking-widest text-red-500 ml-1 flex items-center gap-1">
+          <label className="text-xs font-semibold uppercase tracking-widest text-red-500 ml-1 flex items-center gap-1">
             <Ban size={14} /> Lý do từ chối
           </label>
           <textarea
@@ -148,7 +148,7 @@ export default function ModerateReviewModal({
           type="login"
           disabled={isSubmitting}
           className={cn(
-            "flex-[1.5] py-3.5 rounded-2xl font-black uppercase text-[11px] tracking-[0.2em] text-white shadow-xl transition-all active:scale-95 flex items-center justify-center gap-2",
+            "flex-[1.5] py-3.5 rounded-2xl font-semibold uppercase text-[11px] tracking-[0.2em] text-white shadow-xl transition-all active:scale-95 flex items-center justify-center gap-2",
             currentStatus === ReviewStatus.REJECTED
               ? "bg-red-500 hover:bg-red-600 shadow-red-500/20"
               : "bg-orange-500 hover:bg-orange-600 shadow-orange-500/20",

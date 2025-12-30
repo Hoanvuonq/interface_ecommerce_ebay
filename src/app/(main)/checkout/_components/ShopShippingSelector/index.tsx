@@ -37,7 +37,7 @@ export const ShopShippingSelector: React.FC<ShopShippingSelectorProps> = ({
           <div className="w-8 h-8 bg-white rounded-xl flex items-center justify-center shadow-sm text-orange-500">
             <Truck size={16} strokeWidth={2.5} />
           </div>
-          <h4 className="text-sm font-black uppercase tracking-tight text-slate-700">
+          <h4 className="text-sm font-semibold uppercase tracking-tight text-slate-700">
             Phương thức vận chuyển
           </h4>
         </div>
@@ -66,7 +66,7 @@ export const ShopShippingSelector: React.FC<ShopShippingSelectorProps> = ({
                 >
                   <div className="flex-1 min-w-0 pr-2">
                     <p className={cn(
-                      "text-[11px] font-black uppercase tracking-tight transition-colors",
+                      "text-[11px] font-semibold uppercase tracking-tight transition-colors",
                       isSelected ? "text-orange-600" : "text-slate-700"
                     )}>
                       {option.providerName} - {option.methodName}
@@ -77,7 +77,7 @@ export const ShopShippingSelector: React.FC<ShopShippingSelectorProps> = ({
                   </div>
                   
                   <div className="flex flex-col items-end gap-1">
-                    <span className="text-sm font-black text-slate-900 leading-none">
+                    <span className="text-sm font-semibold text-slate-900 leading-none">
                       {formatPrice(option.fee)}
                     </span>
                     {isSelected && (
@@ -89,7 +89,7 @@ export const ShopShippingSelector: React.FC<ShopShippingSelectorProps> = ({
             })
           ) : (
             <div className="col-span-full text-center py-4 bg-red-50 rounded-2xl border border-red-100">
-              <p className="text-[11px] font-black uppercase tracking-widest text-red-500">
+              <p className="text-[11px] font-semibold uppercase tracking-widest text-red-500">
                 Chưa hỗ trợ vận chuyển đến địa chỉ này
               </p>
             </div>

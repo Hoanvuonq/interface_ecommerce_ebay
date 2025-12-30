@@ -159,16 +159,16 @@ export default function PayrollForm({
           <div className="flex items-center justify-between p-4 bg-orange-50 border border-orange-100 rounded-2xl border-dashed">
             <div className="flex items-center gap-2 text-orange-700">
               <Info size={16} />
-              <span className="text-[10px] font-black uppercase tracking-widest">Gợi ý thực lĩnh:</span>
+              <span className="text-[10px] font-semibold uppercase tracking-widest">Gợi ý thực lĩnh:</span>
             </div>
             <div className="flex items-baseline gap-2">
-              <span className="text-xl font-black text-orange-600 italic">
+              <span className="text-xl font-semibold text-orange-600 italic">
                 {new Intl.NumberFormat("vi-VN").format(suggestedTotal)}
               </span>
               <button 
                 type="button" 
                 onClick={() => setValue("total", suggestedTotal)}
-                className="text-[9px] font-black underline uppercase text-orange-400 hover:text-orange-600"
+                className="text-[9px] font-semibold underline uppercase text-orange-400 hover:text-orange-600"
               >
                 Áp dụng
               </button>
@@ -213,14 +213,14 @@ export default function PayrollForm({
           <button 
             type="button" 
             onClick={onClose} 
-            className="px-8 py-3.5 rounded-2xl font-black uppercase text-[11px] tracking-widest text-slate-400 hover:bg-slate-100 transition-all"
+            className="px-8 py-3.5 rounded-2xl font-semibold uppercase text-[11px] tracking-widest text-slate-400 hover:bg-slate-100 transition-all"
           >
             Hủy bỏ
           </button>
           <button 
             type="submit" 
             disabled={isSubmitting}
-            className="bg-slate-900 hover:bg-orange-500 text-white px-10 py-3.5 rounded-2xl font-black uppercase text-[11px] tracking-widest shadow-xl shadow-slate-200 transition-all duration-500 flex items-center gap-2 disabled:opacity-70"
+            className="bg-slate-900 hover:bg-orange-500 text-white px-10 py-3.5 rounded-2xl font-semibold uppercase text-[11px] tracking-widest shadow-xl shadow-slate-200 transition-all duration-500 flex items-center gap-2 disabled:opacity-70"
           >
             {isSubmitting ? <Loader2 size={16} className="animate-spin" /> : <DollarSign size={16} />}
             {mode === "create" ? "Phê duyệt bảng lương" : "Cập nhật dữ liệu"}
@@ -235,7 +235,7 @@ export default function PayrollForm({
 
 const InputField = React.forwardRef(({ label, icon, error, className, ...props }: any, ref: any) => (
   <div className="space-y-1.5 w-full">
-    <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-1 flex items-center gap-2">
+    <label className="text-[10px] font-semibold uppercase text-slate-400 tracking-widest ml-1 flex items-center gap-2">
       {icon} {label}
     </label>
     <input

@@ -33,7 +33,7 @@ export default function EmployeeStatistics() {
     return (
       <div className="flex flex-col items-center justify-center h-96 gap-4">
         <RotateCw className="animate-spin text-orange-500" size={40} />
-        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-300 italic">
+        <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-slate-300 italic">
           Đang khởi tạo báo cáo...
         </span>
       </div>
@@ -45,7 +45,7 @@ export default function EmployeeStatistics() {
     <div className="p-8 space-y-10 animate-in fade-in duration-700">
       <div className="flex justify-between items-end">
         <div className="space-y-1">
-          <h2 className="text-3xl font-black text-slate-900 tracking-tighter uppercase italic leading-none">
+          <h2 className="text-3xl font-semibold text-slate-900 tracking-tighter uppercase italic leading-none">
             Cấu trúc{" "}
             <span className="text-orange-500 underline decoration-4 underline-offset-8 italic">
               Tổ chức
@@ -109,7 +109,7 @@ export default function EmployeeStatistics() {
                   verticalAlign="bottom"
                   iconType="circle"
                   formatter={(value) => (
-                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">
+                    <span className="text-[10px] font-semibold uppercase tracking-widest text-slate-500">
                       {value}
                     </span>
                   )}

@@ -123,7 +123,7 @@ export const FileUploadField: React.FC<FileUploadFieldProps> = ({
           </div>
 
           <div className="text-center">
-            <p className="text-sm font-black text-slate-700 uppercase tracking-tighter italic">
+            <p className="text-sm font-semibold text-slate-700 uppercase tracking-tighter italic">
               Nhấp hoặc kéo file vào đây
             </p>
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">

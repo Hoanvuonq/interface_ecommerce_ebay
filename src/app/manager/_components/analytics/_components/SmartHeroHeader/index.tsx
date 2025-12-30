@@ -57,7 +57,7 @@ export function SmartHeroHeader({
                             <Clock className="w-6 h-6 text-white" strokeWidth={2.5} />
                         </div>
                         <div>
-                            <h2 className="text-sm font-black uppercase tracking-[0.2em] text-white/80">Doanh Số Hiện Tại</h2>
+                            <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-white/80">Doanh Số Hiện Tại</h2>
                             <p className="text-sm font-bold font-mono opacity-90">
                                 {formatDateTime(currentTime)}
                             </p>
@@ -99,11 +99,11 @@ export function SmartHeroHeader({
                 <div className="flex flex-col gap-1">
                     <div className="flex items-center gap-2 text-white/70 mb-1">
                         <TrendingUp size={16} strokeWidth={3} />
-                        <span className="text-[10px] font-black uppercase tracking-widest">Real-time GMV</span>
+                        <span className="text-[10px] font-semibold uppercase tracking-widest">Real-time GMV</span>
                     </div>
                     <div className="flex items-baseline gap-3">
-                        <span className="text-3xl md:text-4xl font-black opacity-50 select-none">₫</span>
-                        <span className="text-6xl md:text-8xl font-black tracking-tighter drop-shadow-[0_4px_12px_rgba(0,0,0,0.15)] animate-in fade-in slide-in-from-bottom-4 duration-1000">
+                        <span className="text-3xl md:text-4xl font-semibold opacity-50 select-none">₫</span>
+                        <span className="text-6xl md:text-8xl font-semibold tracking-tighter drop-shadow-[0_4px_12px_rgba(0,0,0,0.15)] animate-in fade-in slide-in-from-bottom-4 duration-1000">
                             {revenueValue}
                         </span>
                     </div>

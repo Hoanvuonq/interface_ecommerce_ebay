@@ -17,7 +17,7 @@ export const SectionHeader = ({
       {icon} 
     </div>
     <span className={cn(
-      "text-xs font-black uppercase tracking-[0.2em]", 
+      "text-xs font-semibold uppercase tracking-[0.2em]", 
       isLight ? "text-white/80" : "text-slate-800"
     )}>
       {title}

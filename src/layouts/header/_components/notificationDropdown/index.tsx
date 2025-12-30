@@ -93,7 +93,7 @@ export const NotificationDropdown = () => {
       align="right"
       onOpenChange={(open) => open && loadRecentNotifications()}
     >
-      <div className="p-4 font-black text-sm uppercase tracking-widest border-b border-gray-100 bg-white flex justify-between items-center text-slate-800">
+      <div className="p-4 font-semibold text-sm uppercase tracking-widest border-b border-gray-100 bg-white flex justify-between items-center text-slate-800">
         Thông báo mới
         {loading && (
           <Loader2 size={14} className="animate-spin text-orange-500" />
@@ -139,7 +139,7 @@ export const NotificationDropdown = () => {
                     className={cn(
                       "line-clamp-1 leading-none mb-1.5 uppercase text-[11px] tracking-tight",
                       isUnread
-                        ? "font-black text-slate-900"
+                        ? "font-semibold text-slate-900"
                         : "font-bold text-slate-500"
                     )}
                   >
@@ -176,13 +176,13 @@ export const NotificationDropdown = () => {
             e.stopPropagation();
             notificationService.markAllRead().then(loadRecentNotifications);
           }}
-          className="flex items-center justify-center gap-2 py-3 text-[10px] text-slate-500 hover:text-orange-600 hover:bg-orange-50 rounded-2xl transition-all font-black uppercase tracking-widest border border-slate-100"
+          className="flex items-center justify-center gap-2 py-3 text-[10px] text-slate-500 hover:text-orange-600 hover:bg-orange-50 rounded-2xl transition-all font-semibold uppercase tracking-widest border border-slate-100"
         >
           <CheckCircle size={14} /> Đọc hết
         </button>
         <Link
           href="/notifications"
-          className="flex items-center justify-center gap-2 py-3 text-[10px] text-white bg-slate-900 hover:bg-orange-600 rounded-2xl transition-all font-black uppercase tracking-widest shadow-lg shadow-slate-200"
+          className="flex items-center justify-center gap-2 py-3 text-[10px] text-white bg-slate-900 hover:bg-orange-600 rounded-2xl transition-all font-semibold uppercase tracking-widest shadow-lg shadow-slate-200"
         >
           Xem tất cả <Eye size={14} />
         </Link>

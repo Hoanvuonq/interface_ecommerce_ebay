@@ -13,8 +13,8 @@ export const StatCard = ({ label, value, icon, color }: { label: string, value: 
                 {icon}
             </div>
             <div>
-                <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1.5">{label}</div>
-                <div className="text-xl font-black text-gray-900 leading-none">{value}</div>
+                <div className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest leading-none mb-1.5">{label}</div>
+                <div className="text-xl font-semibold text-gray-900 leading-none">{value}</div>
             </div>
         </div>
     );

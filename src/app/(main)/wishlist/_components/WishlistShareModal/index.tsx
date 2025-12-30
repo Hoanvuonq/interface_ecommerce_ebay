@@ -78,7 +78,7 @@ export default function WishlistShareModal({
                 <Share2 size={20} />
             </div>
             <div>
-                <h3 className="text-xl font-black text-slate-900 uppercase tracking-tight leading-none">Chia sẻ Wishlist</h3>
+                <h3 className="text-xl font-semibold text-slate-900 uppercase tracking-tight leading-none">Chia sẻ Wishlist</h3>
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Gửi cho bạn bè và người thân</p>
             </div>
         </div>
@@ -117,7 +117,7 @@ export default function WishlistShareModal({
                     <>
                         {/* URL Input Area */}
                         <div className="space-y-3">
-                            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Liên kết chia sẻ</label>
+                            <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 ml-1">Liên kết chia sẻ</label>
                             <div className="flex p-1.5 bg-slate-50 border border-slate-200 rounded-2xl focus-within:border-orange-500 focus-within:ring-4 focus-within:ring-orange-500/10 transition-all shadow-inner">
                                 <input 
                                     readOnly 
@@ -126,7 +126,7 @@ export default function WishlistShareModal({
                                 />
                                 <button 
                                     onClick={handleCopyLink}
-                                    className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-wider transition-all ${
+                                    className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-[10px] uppercase tracking-wider transition-all ${
                                         copied ? 'bg-emerald-500 text-white shadow-emerald-200' : 'bg-slate-900 text-white hover:bg-orange-600 shadow-slate-200'
                                     } shadow-lg active:scale-95`}
                                 >
@@ -140,7 +140,7 @@ export default function WishlistShareModal({
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center pt-2">
                             {/* Social Icons */}
                             <div className="space-y-4 text-center md:text-left">
-                                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1 block">Mạng xã hội</label>
+                                <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 ml-1 block">Mạng xã hội</label>
                                 <div className="flex justify-center md:justify-start gap-3">
                                     <SocialButton icon={<Facebook />} color="bg-[#1877F2]" onClick={() => handleShare('fb')} />
                                     <SocialButton icon={<Twitter />} color="bg-[#1DA1F2]" onClick={() => handleShare('tw')} />
@@ -155,7 +155,7 @@ export default function WishlistShareModal({
                                 </div>
                                 <div className="flex items-center gap-1.5 text-slate-400">
                                     <QrCode size={12} />
-                                    <span className="text-[9px] font-black uppercase tracking-[0.2em]">Quét mã QR</span>
+                                    <span className="text-[9px] font-semibold uppercase tracking-[0.2em]">Quét mã QR</span>
                                 </div>
                             </div>
                         </div>
@@ -175,7 +175,7 @@ export default function WishlistShareModal({
                                         }
                                     }
                                 }}
-                                className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl border-2 border-dashed border-slate-200 text-slate-400 hover:border-orange-200 hover:text-orange-500 transition-all font-black text-[10px] uppercase tracking-widest active:scale-98"
+                                className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl border-2 border-dashed border-slate-200 text-slate-400 hover:border-orange-200 hover:text-orange-500 transition-all font-semibold text-[10px] uppercase tracking-widest active:scale-98"
                             >
                                 <RefreshCcw size={14} className={isRegenerating ? 'animate-spin' : ''} />
                                 Regenerate Public Link

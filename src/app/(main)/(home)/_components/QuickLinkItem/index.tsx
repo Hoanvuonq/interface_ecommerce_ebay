@@ -77,7 +77,7 @@ export const QuickLinkItem = ({ item, isLoading }: { item?: any; isLoading?: boo
       </div>
       
       <span 
-        className="text-[12px]  sm:text-[13px] font-light transition-all duration-300 text-center leading-tight coiny-regular tracking-tight"
+        className="text-[12px]  sm:text-[13px] font-bold transition-all duration-300 text-center leading-tight tracking-tight"
         style={{ 
           color: isHovered ? color : "#444",
           textShadow: isHovered ? `0 0 10px ${color}22` : "none"

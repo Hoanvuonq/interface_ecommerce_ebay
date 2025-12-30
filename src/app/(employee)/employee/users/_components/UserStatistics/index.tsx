@@ -228,7 +228,7 @@ const [activeTab, setActiveTab] = useState('overview');
         return (
             <div className="animate-in fade-in duration-500">
                 <div className="mb-8">
-                    <h2 className="text-3xl font-black tracking-tight text-slate-800">Thống kê người dùng</h2>
+                    <h2 className="text-3xl font-semibold tracking-tight text-slate-800">Thống kê người dùng</h2>
                     <p className="text-slate-500 mt-1 font-medium">Tổng quan về hoạt động và phân bố người dùng trong hệ thống</p>
                 </div>
 
@@ -240,8 +240,8 @@ const [activeTab, setActiveTab] = useState('overview');
                                 <User size={24} />
                             </div>
                             <div>
-                                <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest">Tổng người dùng</p>
-                                <p className="text-2xl font-black text-slate-800 tracking-tight">{totalUsers.toLocaleString()}</p>
+                                <p className="text-slate-400 text-[10px] font-semibold uppercase tracking-widest">Tổng người dùng</p>
+                                <p className="text-2xl font-semibold text-slate-800 tracking-tight">{totalUsers.toLocaleString()}</p>
                             </div>
                         </div>
                         <TrendingUp className="text-green-500" size={20} />
@@ -254,8 +254,8 @@ const [activeTab, setActiveTab] = useState('overview');
                                 <Users size={24} />
                             </div>
                             <div>
-                                <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest">Tổng nhân viên</p>
-                                <p className="text-2xl font-black text-slate-800 tracking-tight">{totalEmployee.toLocaleString()}</p>
+                                <p className="text-slate-400 text-[10px] font-semibold uppercase tracking-widest">Tổng nhân viên</p>
+                                <p className="text-2xl font-semibold text-slate-800 tracking-tight">{totalEmployee.toLocaleString()}</p>
                             </div>
                         </div>
                         <TrendingUp className="text-blue-500" size={20} />
@@ -270,8 +270,8 @@ const [activeTab, setActiveTab] = useState('overview');
                                     <Users size={24} />
                                 </div>
                                 <div>
-                                    <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest">{role}</p>
-                                    <p className="text-2xl font-black text-slate-800 tracking-tight">{Number(count).toLocaleString()}</p>
+                                    <p className="text-slate-400 text-[10px] font-semibold uppercase tracking-widest">{role}</p>
+                                    <p className="text-2xl font-semibold text-slate-800 tracking-tight">{Number(count).toLocaleString()}</p>
                                 </div>
                             </div>
                         </div>
@@ -282,10 +282,10 @@ const [activeTab, setActiveTab] = useState('overview');
                     <div className="lg:col-span-8 bg-white p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-50">
                         <div className="flex justify-between items-center mb-8">
                             <div>
-                                <h4 className="text-lg font-black text-slate-800">Phân bố trạng thái</h4>
+                                <h4 className="text-lg font-semibold text-slate-800">Phân bố trạng thái</h4>
                                 <p className="text-slate-400 text-xs font-bold">Tỷ lệ các trạng thái người dùng thời gian thực</p>
                             </div>
-                            <span className="flex items-center gap-2 text-[10px] font-black uppercase bg-emerald-50 text-emerald-600 px-3 py-1 rounded-full">
+                            <span className="flex items-center gap-2 text-[10px] font-semibold uppercase bg-emerald-50 text-emerald-600 px-3 py-1 rounded-full">
                                 <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" /> Live Update
                             </span>
                         </div>
@@ -306,7 +306,7 @@ const [activeTab, setActiveTab] = useState('overview');
 
                     <div className="lg:col-span-4 space-y-6">
                         <div className="bg-white p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-50">
-                            <h4 className="text-lg font-black text-slate-800 mb-6">Tóm tắt nhanh</h4>
+                            <h4 className="text-lg font-semibold text-slate-800 mb-6">Tóm tắt nhanh</h4>
                             <div className="space-y-4">
                                 {[
                                     { label: 'Hoạt động', val: overview?.status?.ACTIVE || 0, color: 'text-emerald-500', bg: 'bg-emerald-50', icon: CheckCircle2 },
@@ -318,9 +318,9 @@ const [activeTab, setActiveTab] = useState('overview');
                                             <div className={`${item.bg} ${item.color} p-2 rounded-xl`}>
                                                 <item.icon size={16} />
                                             </div>
-                                            <span className="text-xs font-black text-slate-600 uppercase tracking-wide">{item.label}</span>
+                                            <span className="text-xs font-semibold text-slate-600 uppercase tracking-wide">{item.label}</span>
                                         </div>
-                                        <span className={`text-sm font-black ${item.color}`}>{item.val}</span>
+                                        <span className={`text-sm font-semibold ${item.color}`}>{item.val}</span>
                                     </div>
                                 ))}
                             </div>
@@ -328,14 +328,14 @@ const [activeTab, setActiveTab] = useState('overview');
 
                         {/* Analysis Card */}
                         <div className="bg-gradient-to-br from-indigo-500 to-blue-600 p-8 rounded-3xl text-white shadow-xl">
-                            <h4 className="font-black text-white uppercase tracking-[0.2em] text-[10px] mb-4 opacity-80">Insights</h4>
+                            <h4 className="font-semibold text-white uppercase tracking-[0.2em] text-[10px] mb-4 opacity-80">Insights</h4>
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <p className="text-3xl font-black tracking-tight">{totalUsers > 0 ? ((overview?.status?.ACTIVE / totalUsers) * 100).toFixed(1) : 0}%</p>
+                                    <p className="text-3xl font-semibold tracking-tight">{totalUsers > 0 ? ((overview?.status?.ACTIVE / totalUsers) * 100).toFixed(1) : 0}%</p>
                                     <p className="text-[10px] font-bold opacity-70 mt-1 uppercase tracking-wider">Active Rate</p>
                                 </div>
                                 <div>
-                                    <p className="text-3xl font-black tracking-tight">{Object.keys(roles || {}).length}</p>
+                                    <p className="text-3xl font-semibold tracking-tight">{Object.keys(roles || {}).length}</p>
                                     <p className="text-[10px] font-bold opacity-70 mt-1 uppercase tracking-wider">Roles</p>
                                 </div>
                             </div>
@@ -358,7 +358,7 @@ const [activeTab, setActiveTab] = useState('overview');
                     <button
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
-                        className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${
+                        className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-widest transition-all ${
                             activeTab === tab.id 
                             ? 'bg-orange-500 text-white shadow-lg shadow-orange-200' 
                             : 'text-slate-400 hover:text-orange-500 hover:bg-orange-50'
@@ -386,14 +386,14 @@ const [activeTab, setActiveTab] = useState('overview');
                 {activeTab === 'time' && (
                     <div className="animate-in fade-in duration-500">
                         <div className="mb-8">
-                            <h2 className="text-3xl font-black tracking-tight text-slate-800">Theo thời gian</h2>
+                            <h2 className="text-3xl font-semibold tracking-tight text-slate-800">Theo thời gian</h2>
                             <p className="text-slate-500 mt-1 font-medium">Phân tích xu hướng đăng ký tài khoản người dùng</p>
                         </div>
 
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                             <div className="lg:col-span-3">
                                 <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 space-y-4">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Chọn tháng</label>
+                                    <label className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">Chọn tháng</label>
                                     <div className="relative">
                                         <select 
                                             value={`${year}-${month}`}
@@ -401,7 +401,7 @@ const [activeTab, setActiveTab] = useState('overview');
                                                 const [y, m] = e.target.value.split("-").map(Number);
                                                 setYear(y); setMonth(m);
                                             }}
-                                            className="w-full appearance-none bg-slate-50 border-none rounded-2xl px-5 py-3.5 font-black text-slate-700 focus:ring-2 focus:ring-orange-500 outline-none"
+                                            className="w-full appearance-none bg-slate-50 border-none rounded-2xl px-5 py-3.5 font-semibold text-slate-700 focus:ring-2 focus:ring-orange-500 outline-none"
                                         >
                                             {userMonths.map((o: any) => (
                                                 <option key={`${o.year}-${o.month}`} value={`${o.year}-${o.month}`}>{o.label}</option>
@@ -412,12 +412,12 @@ const [activeTab, setActiveTab] = useState('overview');
 
                                     <div className="pt-4 border-t border-slate-50 mt-4 space-y-4">
                                         <div className="p-4 bg-blue-50 rounded-2xl">
-                                            <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-1">Trong năm</p>
-                                            <p className="text-2xl font-black text-blue-600 tracking-tight">{timeStats?.thisYear ?? 0}</p>
+                                            <p className="text-[10px] font-semibold text-blue-400 uppercase tracking-widest mb-1">Trong năm</p>
+                                            <p className="text-2xl font-semibold text-blue-600 tracking-tight">{timeStats?.thisYear ?? 0}</p>
                                         </div>
                                         <div className="p-4 bg-emerald-50 rounded-2xl">
-                                            <p className="text-[10px] font-black text-emerald-400 uppercase tracking-widest mb-1">Tăng trưởng</p>
-                                            <p className="text-2xl font-black text-emerald-600 tracking-tight">{timeStats?.yearGrowthRate ?? 0}%</p>
+                                            <p className="text-[10px] font-semibold text-emerald-400 uppercase tracking-widest mb-1">Tăng trưởng</p>
+                                            <p className="text-2xl font-semibold text-emerald-600 tracking-tight">{timeStats?.yearGrowthRate ?? 0}%</p>
                                         </div>
                                     </div>
                                 </div>
@@ -425,7 +425,7 @@ const [activeTab, setActiveTab] = useState('overview');
 
                             <div className="lg:col-span-9 bg-white p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-50">
                                 <div className="flex justify-between items-center mb-10">
-                                    <h4 className="font-black text-slate-800 tracking-tight">Đăng ký theo ngày</h4>
+                                    <h4 className="font-semibold text-slate-800 tracking-tight">Đăng ký theo ngày</h4>
                                     <TrendingUp className="text-emerald-500" />
                                 </div>
                                 {loadingTime ? <div className="flex justify-center py-20"><Loader2 className="animate-spin text-orange-500" /></div> : (
@@ -455,14 +455,14 @@ const [activeTab, setActiveTab] = useState('overview');
                 {activeTab === 'behavior' && (
                     <div className="animate-in fade-in duration-500">
                          <div className="mb-8">
-                            <h2 className="text-3xl font-black tracking-tight text-slate-800">Hành vi người dùng</h2>
+                            <h2 className="text-3xl font-semibold tracking-tight text-slate-800">Hành vi người dùng</h2>
                             <p className="text-slate-500 mt-1 font-medium">Phân tích hoạt động đăng nhập và tương tác</p>
                         </div>
 
                         <div className="bg-white p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-50 mb-6">
                             <div className="flex flex-col md:flex-row justify-between gap-8">
                                 <div className="w-full md:w-1/4">
-                                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-4">Lọc thời gian</label>
+                                     <label className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest block mb-4">Lọc thời gian</label>
                                      <div className="relative">
                                         <select 
                                             value={`${yearBehavior}-${monthBehavior}`}
@@ -470,7 +470,7 @@ const [activeTab, setActiveTab] = useState('overview');
                                                 const [y, m] = e.target.value.split("-").map(Number);
                                                 setYearBehavior(y); setMonthBehavior(m);
                                             }}
-                                            className="w-full appearance-none bg-slate-50 border-none rounded-2xl px-5 py-3.5 font-black text-slate-700 focus:ring-2 focus:ring-orange-500 outline-none"
+                                            className="w-full appearance-none bg-slate-50 border-none rounded-2xl px-5 py-3.5 font-semibold text-slate-700 focus:ring-2 focus:ring-orange-500 outline-none"
                                         >
                                             {loginMonths.map((o: any) => (
                                                 <option key={`${o.year}-${o.month}`} value={`${o.year}-${o.month}`}>{o.label}</option>
@@ -487,8 +487,8 @@ const [activeTab, setActiveTab] = useState('overview');
                                         { l: 'Năm nay', v: behaviorStats?.thisYearLoggedIn, c: 'text-purple-500', b: 'bg-purple-50' }
                                     ].map((item, i) => (
                                         <div key={i} className={`${item.b} p-4 rounded-2xl`}>
-                                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{item.l}</p>
-                                            <p className={`text-2xl font-black ${item.c} tracking-tight`}>{item.v ?? 0}</p>
+                                            <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest mb-1">{item.l}</p>
+                                            <p className={`text-2xl font-semibold ${item.c} tracking-tight`}>{item.v ?? 0}</p>
                                         </div>
                                     ))}
                                 </div>
@@ -497,7 +497,7 @@ const [activeTab, setActiveTab] = useState('overview');
 
                         <div className="bg-white p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-50">
                              <div className="flex justify-between items-center mb-10">
-                                <h4 className="font-black text-slate-800 tracking-tight uppercase tracking-[0.2em] text-xs">Biểu đồ tăng trưởng đăng nhập</h4>
+                                <h4 className="font-semibold text-slate-800 tracking-tight uppercase tracking-[0.2em] text-xs">Biểu đồ tăng trưởng đăng nhập</h4>
                                 <LogIn className="text-orange-500" size={20} />
                             </div>
                             {loadingBehavior ? <div className="flex justify-center py-20"><Loader2 className="animate-spin text-orange-500" /></div> : (

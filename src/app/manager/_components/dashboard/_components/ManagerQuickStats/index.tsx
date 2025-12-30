@@ -41,7 +41,7 @@ export function ManagerQuickStats() {
         <div className="space-y-6">
             <div className="flex items-end justify-between px-2">
                 <div>
-                    <h2 className="text-2xl font-black text-gray-800 tracking-tighter uppercase">
+                    <h2 className="text-2xl font-semibold text-gray-800 tracking-tighter uppercase">
                         Tổng Quan <span className="text-orange-500">Hôm Nay</span>
                     </h2>
                     <p className="text-xs font-bold text-gray-400 uppercase tracking-[0.2em] mt-1">
@@ -50,7 +50,7 @@ export function ManagerQuickStats() {
                 </div>
                 <a
                     href="/manager/analytics"
-                    className="group flex items-center gap-2 text-[11px] font-black uppercase tracking-widest text-gray-400 hover:text-orange-600 transition-all duration-300"
+                    className="group flex items-center gap-2 text-[11px] font-semibold uppercase tracking-widest text-gray-400 hover:text-orange-600 transition-all duration-300"
                 >
                     Chi tiết <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                 </a>

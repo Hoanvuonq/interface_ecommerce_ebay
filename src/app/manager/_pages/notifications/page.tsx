@@ -44,7 +44,7 @@ export default function NotificationsPage() {
                 <div className="max-w-7xl mx-auto px-6 relative z-10">
                     <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
                         <div className="space-y-4">
-                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-50 border border-orange-100 text-orange-600 text-[10px] font-black uppercase tracking-[0.2em]">
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-50 border border-orange-100 text-orange-600 text-[10px] font-semibold uppercase tracking-[0.2em]">
                                 Communication Hub
                             </div>
                             <div className="flex items-center gap-4">
@@ -52,7 +52,7 @@ export default function NotificationsPage() {
                                     <Bell className="text-white" size={28} strokeWidth={2.5} />
                                 </div>
                                 <div>
-                                    <h1 className="text-3xl md:text-4xl font-black text-gray-900 tracking-tighter uppercase italic">
+                                    <h1 className="text-3xl md:text-4xl font-semibold text-gray-900 tracking-tighter uppercase italic">
                                         Quản lý <span className="text-orange-500">Thông báo</span>
                                     </h1>
                                     <p className="text-gray-500 font-medium text-sm md:text-base">
@@ -79,7 +79,7 @@ export default function NotificationsPage() {
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id as any)}
                                 className={cn(
-                                    "flex items-center gap-3 px-8 py-4 rounded-3xl text-sm font-black uppercase tracking-widest transition-all duration-300",
+                                    "flex items-center gap-3 px-8 py-4 rounded-3xl text-sm font-semibold uppercase tracking-widest transition-all duration-300",
                                     activeTab === tab.id 
                                         ? "bg-white text-orange-600 shadow-sm border border-gray-100" 
                                         : "text-gray-400 hover:text-gray-600"
@@ -103,7 +103,7 @@ export default function NotificationsPage() {
                                 {activeTab === "send" ? (
                                     <div className="max-w-3xl mx-auto">
                                         <div className="mb-8 text-center">
-                                            <h3 className="text-xl font-black text-gray-800 uppercase italic">Soạn thảo nội dung</h3>
+                                            <h3 className="text-xl font-semibold text-gray-800 uppercase italic">Soạn thảo nội dung</h3>
                                             <p className="text-gray-400 text-sm font-medium italic">Vui lòng kiểm tra kỹ đối tượng trước khi gửi</p>
                                         </div>
                                         <BroadcastNotificationForm />

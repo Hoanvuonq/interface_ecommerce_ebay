@@ -65,10 +65,10 @@ export default function ReviewDetailModal({
           onCopy={() => copyToClipboard(review.id)}
         />
         <div className="flex gap-2 items-center">
-          <span className={cn("px-3 py-1 rounded-full text-[10px] font-black uppercase border", getTypeStyle(review.reviewType))}>
+          <span className={cn("px-3 py-1 rounded-full text-[10px] font-semibold uppercase border", getTypeStyle(review.reviewType))}>
             {review.reviewType}
           </span>
-          <span className={cn("px-3 py-1 rounded-full text-[10px] font-black uppercase border", getStatusStyle(review.status))}>
+          <span className={cn("px-3 py-1 rounded-full text-[10px] font-semibold uppercase border", getStatusStyle(review.status))}>
             {review.status}
           </span>
         </div>
@@ -85,7 +85,7 @@ export default function ReviewDetailModal({
               <div className="flex items-center gap-2">
                 <h4 className="font-bold text-slate-900">{review.username}</h4>
                 {review.verifiedPurchase && (
-                  <span className="flex items-center gap-1 text-[9px] font-black text-emerald-600 uppercase bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100">
+                  <span className="flex items-center gap-1 text-[9px] font-semibold text-emerald-600 uppercase bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100">
                     <BadgeCheck size={10} /> Đã mua hàng
                   </span>
                 )}
@@ -146,7 +146,7 @@ export default function ReviewDetailModal({
 
         {review.sellerResponse && (
           <div className="space-y-2">
-            <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-2">
+            <label className="text-[10px] font-semibold uppercase tracking-widest text-slate-400 flex items-center gap-2">
               <MessageSquare size={14} /> Phản hồi từ người bán
             </label>
             <div className="bg-orange-50/30 border-l-4 border-orange-400 p-4 rounded-r-xl text-sm text-slate-700 leading-relaxed">
@@ -157,7 +157,7 @@ export default function ReviewDetailModal({
 
         {review.rejectionReason && review.status === ReviewStatus.REJECTED && (
           <div className="bg-red-50 p-4 rounded-xl border border-red-100">
-            <h5 className="text-[10px] font-black text-red-500 uppercase mb-1">Lý do từ chối kiểm duyệt</h5>
+            <h5 className="text-[10px] font-semibold text-red-500 uppercase mb-1">Lý do từ chối kiểm duyệt</h5>
             <p className="text-sm text-red-700 font-medium">{review.rejectionReason}</p>
           </div>
         )}
@@ -177,7 +177,7 @@ export default function ReviewDetailModal({
     // Sub-components nội bộ để sạch code
 const InfoItem = ({ label, value, icon, copyable, onCopy }: any) => (
   <div className="space-y-1">
-    <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-1">
+    <label className="text-[10px] font-semibold uppercase tracking-widest text-slate-400 flex items-center gap-1">
       {icon} {label}
     </label>
     <div className="flex items-center gap-2">
@@ -194,7 +194,7 @@ const InfoItem = ({ label, value, icon, copyable, onCopy }: any) => (
 const StatDetail = ({ icon, label, value }: any) => (
   <div className="flex flex-col items-center p-3 bg-white rounded-2xl border border-slate-100 shadow-sm transition-transform hover:scale-105">
     <div className="mb-1">{icon}</div>
-    <span className="text-[10px] font-black text-slate-400 uppercase mb-1">{label}</span>
-    <span className="text-xl font-black text-slate-800 italic leading-none">{value}</span>
+    <span className="text-[10px] font-semibold text-slate-400 uppercase mb-1">{label}</span>
+    <span className="text-xl font-semibold text-slate-800 italic leading-none">{value}</span>
   </div>
 );

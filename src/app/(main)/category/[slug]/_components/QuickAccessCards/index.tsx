@@ -43,7 +43,7 @@ export default function QuickAccessCards({ categorySlug }: QuickAccessCardsProps
                             </span>
                             
                             {item.badge && (
-                                <span className="rounded-full bg-white/60 backdrop-blur-sm px-2.5 py-0.5 text-[9px] font-black uppercase tracking-tighter text-current ring-1 ring-current/20">
+                                <span className="rounded-full bg-white/60 backdrop-blur-sm px-2.5 py-0.5 text-[9px] font-semibold uppercase tracking-tighter text-current ring-1 ring-current/20">
                                     {item.badge}
                                 </span>
                             )}

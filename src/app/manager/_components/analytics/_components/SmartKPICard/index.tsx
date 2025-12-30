@@ -89,7 +89,7 @@ export function SmartKPICard({
                             ? React.cloneElement(icon as React.ReactElement<any>, { size: 20, strokeWidth: 2.5 })
                             : icon}
                     </div>
-                    <span className="text-[11px] font-black text-gray-400 uppercase tracking-[0.2em]">
+                    <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-[0.2em]">
                         {title}
                     </span>
                 </div>
@@ -100,11 +100,11 @@ export function SmartKPICard({
                             <div className="h-8 w-24 bg-gray-100 rounded-lg" />
                         ) : (
                             <div className="flex items-baseline gap-1">
-                                <span className="text-3xl font-black text-gray-900 tracking-tighter">
+                                <span className="text-3xl font-semibold text-gray-900 tracking-tighter">
                                     {formattedValue}
                                 </span>
                                 {suffix && (
-                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">
+                                    <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest ml-1">
                                         {suffix}
                                     </span>
                                 )}
@@ -114,7 +114,7 @@ export function SmartKPICard({
 
                     {!loading && growth !== undefined && (
                         <div className={cn(
-                            "flex items-center gap-1 text-[10px] font-black px-2.5 py-1 rounded-full border transition-colors",
+                            "flex items-center gap-1 text-[10px] font-semibold px-2.5 py-1 rounded-full border transition-colors",
                             isPositive 
                                 ? "bg-emerald-50 text-emerald-600 border-emerald-100 shadow-sm" 
                                 : "bg-rose-50 text-rose-600 border-rose-100 shadow-sm"

@@ -29,7 +29,7 @@ export default function DepartmentTable() {
             <Building2 size={20} />
           </div>
           <div>
-            <p className="font-black text-slate-900 tracking-tight leading-none">{row.departmentName}</p>
+            <p className="font-semibold text-slate-900 tracking-tight leading-none">{row.departmentName}</p>
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1.5 flex items-center gap-1">
                ID: {row.departmentId.split('-')[0]}
             </p>
@@ -49,7 +49,7 @@ export default function DepartmentTable() {
       header: "Ngày khởi tạo",
       align: "center",
       render: (row) => (
-        <span className="text-[11px] font-black text-slate-400 uppercase tracking-tighter">
+        <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-tighter">
           {dayjs(row.createdDate).format("DD/MM/YYYY")}
         </span>
       )
@@ -112,14 +112,14 @@ export default function DepartmentTable() {
       {/* 1. Header Area */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
         <div className="space-y-1">
-          <h1 className="text-5xl font-black text-slate-900 tracking-tighter uppercase italic leading-none">
+          <h1 className="text-5xl font-semibold text-slate-900 tracking-tighter uppercase italic leading-none">
             Phòng <span className="text-orange-500 underline decoration-4 underline-offset-8">Ban</span>
           </h1>
           <p className="text-slate-400 text-xs font-bold uppercase tracking-[0.3em] mt-3">Cấu trúc tổ chức hệ thống Calatha</p>
         </div>
         <button 
           onClick={() => setFormModal({ open: true, data: null })}
-          className="bg-slate-900 hover:bg-orange-500 text-white px-8 py-4 rounded-2xl font-black uppercase text-xs tracking-widest transition-all duration-500 shadow-2xl shadow-slate-200 flex items-center gap-2 active:scale-95"
+          className="bg-slate-900 hover:bg-orange-500 text-white px-8 py-4 rounded-2xl font-semibold uppercase text-xs tracking-widest transition-all duration-500 shadow-2xl shadow-slate-200 flex items-center gap-2 active:scale-95"
         >
           <Plus size={18} strokeWidth={3} /> Thêm phòng ban
         </button>

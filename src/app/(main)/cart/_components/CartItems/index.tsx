@@ -184,7 +184,7 @@ const handleRemove = async () => {
                   {formatPriceFull(item.unitPrice)}
                 </span>
               )}
-              <span className="text-sm font-black text-orange-600">
+              <span className="text-sm font-semibold text-orange-600">
                 {formatPriceFull(effectivePrice)}
               </span>
             </div>
@@ -196,7 +196,7 @@ const handleRemove = async () => {
               >
                 <Minus size={14} />
               </button>
-              <span className="w-8 text-center text-xs font-black">
+              <span className="w-8 text-center text-xs font-semibold">
                 {updating ? (
                   <Loader2 size={12} className="animate-spin inline" />
                 ) : (
@@ -253,7 +253,7 @@ const handleRemove = async () => {
             {item.productName}
           </h3>
           <div className="flex items-center gap-2 mt-2">
-            <span className="text-[10px] font-black text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full uppercase tracking-tighter border border-gray-200">
+            <span className="text-[10px] font-semibold text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full uppercase tracking-tighter border border-gray-200">
               {item.variantAttributes || "Mặc định"}
             </span>
             {item.availableStock !== undefined && item.availableStock < 10 && (
@@ -271,7 +271,7 @@ const handleRemove = async () => {
             {formatPriceFull(item.unitPrice)}
           </span>
         )}
-        <span className="text-sm font-black text-gray-700">
+        <span className="text-sm font-semibold text-gray-700">
           {formatPriceFull(effectivePrice)}
         </span>
       </div>
@@ -285,7 +285,7 @@ const handleRemove = async () => {
           >
             <Minus size={14} className="text-gray-600" />
           </button>
-          <div className="w-12 text-center text-xs font-black text-gray-800">
+          <div className="w-12 text-center text-xs font-semibold text-gray-800">
             {updating ? (
               <Loader2 size={12} className="animate-spin inline" />
             ) : (
@@ -303,7 +303,7 @@ const handleRemove = async () => {
       </div>
 
       <div className="col-span-2 text-center">
-        <span className="text-base font-black text-orange-600 tracking-tighter">
+        <span className="text-base font-semibold text-orange-600 tracking-tighter">
           {formatPriceFull(item.totalPrice)}
         </span>
       </div>

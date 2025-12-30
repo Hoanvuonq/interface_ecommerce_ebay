@@ -87,7 +87,7 @@ export default function LoginRoleGuard({
               <Link href="/">
                 <CustomButton
                   variant="dark"
-                  className="h-12! px-8! hover:text-orange-600! rounded-2xl! shadow-xl shadow-orange-200 uppercase tracking-widest font-black"
+                  className="h-12! px-8! hover:text-orange-600! rounded-2xl! shadow-xl shadow-orange-200 uppercase tracking-widest font-semibold"
                   icon={<MoveLeft size={20} />}
                 >
                   Quay về trang chủ

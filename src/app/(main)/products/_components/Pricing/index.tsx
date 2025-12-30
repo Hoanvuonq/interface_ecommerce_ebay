@@ -52,7 +52,7 @@ const Pricing: React.FC<PricingProps> = ({
                 </div>
 
                 <div className="flex items-baseline gap-3 flex-wrap">
-                    <span className="text-4xl sm:text-5xl font-black text-red-600 tracking-tight tabular-nums leading-none">
+                    <span className="text-4xl sm:text-5xl font-semibold text-red-600 tracking-tight tabular-nums leading-none">
                         {formatPrice(primaryPrice)}
                     </span>
                     

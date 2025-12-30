@@ -43,7 +43,7 @@ export default function CategorySidebar() {
           <LayoutGrid className="w-5 h-5" />
         </div>
         <div>
-          <h3 className="text-sm font-black text-gray-800 uppercase tracking-widest leading-none">
+          <h3 className="text-sm font-semibold text-gray-800 uppercase tracking-widest leading-none">
             Danh Mục
           </h3>
           <p className="text-[10px] text-orange-600 font-bold mt-1 uppercase tracking-tighter">

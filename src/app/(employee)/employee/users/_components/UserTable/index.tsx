@@ -55,7 +55,7 @@ export default function UserTable() {
             <span
               key={i}
               className={cn(
-                "px-2.5 py-0.5 rounded-lg text-[9px] font-black border uppercase tracking-wider",
+                "px-2.5 py-0.5 rounded-lg text-[9px] font-semibold border uppercase tracking-wider",
                 getRoleColorClass(r)
               )}
             >
@@ -71,7 +71,7 @@ export default function UserTable() {
       render: (user) => (
         <span
           className={cn(
-            "px-3 py-1 rounded-full text-[10px] font-black border uppercase tracking-tighter",
+            "px-3 py-1 rounded-full text-[10px] font-semibold border uppercase tracking-tighter",
             user.status === "ACTIVE"
               ? "bg-emerald-50 text-emerald-600 border-emerald-100"
               : "bg-rose-50 text-rose-600 border-rose-100"
@@ -85,7 +85,7 @@ export default function UserTable() {
       header: "Ngày tạo",
       align: "center",
       render: (user) => (
-        <span className="text-[11px] font-black text-slate-400 uppercase tracking-tighter">
+        <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-tighter">
           {dayjs(user.createdDate).format("DD/MM/YYYY")}
         </span>
       ),

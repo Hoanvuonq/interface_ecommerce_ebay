@@ -58,11 +58,11 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white p-6 rounded-4xl border border-slate-100 shadow-sm">
         <div className="space-y-2">
           <div className="flex items-center gap-3">
-            <h1 className="text-3xl font-black text-slate-900 tracking-tight">
+            <h1 className="text-3xl font-semibold text-slate-900 tracking-tight">
               Chi tiết đơn hàng
             </h1>
             <div
-              className={`px-4 py-1 rounded-full text-xs font-black uppercase border flex items-center gap-2 ${ui.statusInfo.bg} ${ui.statusInfo.text} ${ui.statusInfo.border}`}
+              className={`px-4 py-1 rounded-full text-xs font-semibold uppercase border flex items-center gap-2 ${ui.statusInfo.bg} ${ui.statusInfo.text} ${ui.statusInfo.border}`}
             >
               {ui.isDelivered ? (
                 <CheckCircle2 size={14} />
@@ -111,7 +111,7 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
           )}
 
           <div className="bg-white rounded-4xl border border-slate-100 p-8 shadow-sm">
-            <h3 className="text-lg font-black text-slate-900 mb-8 flex items-center gap-3 uppercase tracking-tight">
+            <h3 className="text-lg font-semibold text-slate-900 mb-8 flex items-center gap-3 uppercase tracking-tight">
               <div className="p-2 bg-orange-50 rounded-xl text-orange-500">
                 <Truck size={20} />
               </div>
@@ -135,14 +135,14 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
 
           <div className="bg-white rounded-4xl border border-slate-100 overflow-hidden shadow-sm">
             <div className="px-6 py-5 bg-slate-50/50 border-b border-slate-100 flex justify-between items-center">
-              <h3 className="font-black text-slate-900 uppercase text-xs tracking-widest flex items-center gap-2">
+              <h3 className="font-semibold text-slate-900 uppercase text-xs tracking-widest flex items-center gap-2">
                 <Package size={18} className="text-orange-500" /> Sản phẩm (
                 {order.items.length})
               </h3>
               {order.shopInfo && (
                 <Link
                   href={`/shops/${order.shopInfo.shopId}`}
-                  className="text-xs font-black text-orange-600 flex items-center gap-1 hover:underline"
+                  className="text-xs font-semibold text-orange-600 flex items-center gap-1 hover:underline"
                 >
                   <StoreIcon size={14} /> {order.shopInfo.shopName}
                 </Link>

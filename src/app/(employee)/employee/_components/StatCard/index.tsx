@@ -38,7 +38,7 @@ export const StatCard = ({ item }: { item: any }) => {
               type={isHighPerformance ? "new" : "hot"}
               size="small"
               className={cn(
-                "font-black tracking-tighter border-0 shadow-lg",
+                "font-semibold tracking-tighter border-0 shadow-lg",
                 isHighPerformance
                   ? "bg-emerald-500 shadow-emerald-500/20"
                   : "bg-orange-500 shadow-orange-500/20"
@@ -48,11 +48,11 @@ export const StatCard = ({ item }: { item: any }) => {
         </div>
 
         <div>
-          <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em] mb-1.5 opacity-80 group-hover:text-slate-600 transition-colors">
+          <p className="text-slate-400 text-[10px] font-semibold uppercase tracking-[0.2em] mb-1.5 opacity-80 group-hover:text-slate-600 transition-colors">
             {item.title}
           </p>
           <div className="flex items-baseline gap-2 mb-4">
-            <h3 className="text-4xl font-black text-slate-900 tracking-tighter group-hover:scale-105 origin-left transition-transform">
+            <h3 className="text-4xl font-semibold text-slate-900 tracking-tighter group-hover:scale-105 origin-left transition-transform">
               {item.value}
             </h3>
             {item.total && (

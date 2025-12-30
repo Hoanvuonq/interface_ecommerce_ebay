@@ -133,7 +133,7 @@ export const IntroBanner = () => {
                 "w-[320px] h-80 rounded-3xl flex flex-col items-center justify-center text-white bg-linear-to-br shadow-2xl p-8 text-center",
                 bannerData.gradient
               )}>
-                <h3 className="text-2xl font-black uppercase tracking-tighter mb-2 italic">
+                <h3 className="text-2xl font-semibold uppercase tracking-tighter mb-2 italic">
                     {bannerData.title}
                 </h3>
                 <p className="font-bold opacity-90 leading-tight">

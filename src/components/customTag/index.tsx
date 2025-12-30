@@ -20,7 +20,7 @@ export const CustomTag = ({ icon, children, color = "blue", className }: CustomT
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-[10px] font-black uppercase tracking-wider select-none transition-transform hover:scale-105",
+        "inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-[10px] font-semibold uppercase tracking-wider select-none transition-transform hover:scale-105",
         variants[color],
         className
       )}

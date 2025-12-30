@@ -163,7 +163,7 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ category, onSuccess, onC
                     toast.type === 'success' ? "text-emerald-600 border-emerald-100" : "text-rose-600 border-rose-100"
                 )}>
                     {toast.type === 'success' ? <CheckCircle2 size={20} /> : <AlertCircle size={20} />}
-                    <span className="text-sm font-black uppercase tracking-widest">{toast.message}</span>
+                    <span className="text-sm font-semibold uppercase tracking-widest">{toast.message}</span>
                 </div>
             )}
 
@@ -175,7 +175,7 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ category, onSuccess, onC
                         <Edit3 className="w-8 h-8 text-white" strokeWidth={3} />
                     </div>
                     <div>
-                        <h2 className="text-3xl font-black uppercase tracking-tighter italic leading-none">Update <span className="text-indigo-100 underline decoration-4 underline-offset-8">Entity</span></h2>
+                        <h2 className="text-3xl font-semibold uppercase tracking-tighter italic leading-none">Update <span className="text-indigo-100 underline decoration-4 underline-offset-8">Entity</span></h2>
                         <p className="text-indigo-100 text-xs font-bold uppercase tracking-[0.3em] mt-3 opacity-80 italic">Revision Hash: {category.id.slice(0,12).toUpperCase()}</p>
                     </div>
                 </div>
@@ -184,7 +184,7 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ category, onSuccess, onC
             <form onSubmit={handleSubmit} className="p-10 space-y-10 bg-[#fffcf9]">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
                     <div className="lg:col-span-4 space-y-4">
-                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] flex items-center gap-2">
+                        <label className="text-[10px] font-semibold text-gray-400 uppercase tracking-[0.2em] flex items-center gap-2">
                             <ImageIcon size={14} /> Visual Asset
                         </label>
                         <div 
@@ -196,7 +196,7 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ category, onSuccess, onC
                                     <img src={previewImage || currentImageUrl || ""} className="w-full h-full object-cover transition-transform group-hover:scale-110" alt="" />
                                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                         <Loader2 className={cn("text-white w-10 h-10", uploadingImage ? "animate-spin" : "hidden")} />
-                                        <span className="text-white text-[10px] font-black uppercase tracking-widest">Swap Identity</span>
+                                        <span className="text-white text-[10px] font-semibold uppercase tracking-widest">Swap Identity</span>
                                     </div>
                                     {uploadingImage && (
                                         <div className="absolute bottom-4 left-4 right-4 h-1.5 bg-white/20 rounded-full overflow-hidden">
@@ -214,7 +214,7 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ category, onSuccess, onC
                     {/* Metadata Fields */}
                     <div className="lg:col-span-8 space-y-6">
                         <div className="space-y-4">
-                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] flex items-center gap-2">
+                            <label className="text-[10px] font-semibold text-gray-400 uppercase tracking-[0.2em] flex items-center gap-2">
                                 <Layout size={14} /> Metadata Configuration
                             </label>
                             <input 
@@ -224,8 +224,8 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ category, onSuccess, onC
                             />
                             <div className="flex items-center gap-3 px-6 py-4 bg-gray-100 rounded-2xl border-2 border-gray-100">
                                 <Activity size={16} className="text-gray-400" />
-                                <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Public Endpoint:</span>
-                                <code className="text-xs font-black text-indigo-600">/{formData.slug}</code>
+                                <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Public Endpoint:</span>
+                                <code className="text-xs font-semibold text-indigo-600">/{formData.slug}</code>
                             </div>
                             <textarea 
                                 name="description" value={formData.description} onChange={handleInputChange}
@@ -240,7 +240,7 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ category, onSuccess, onC
                 {/* Section 2: Hierarchy & Logic */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6 border-t border-gray-100">
                     <div className="space-y-4">
-                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] flex items-center gap-2">
+                        <label className="text-[10px] font-semibold text-gray-400 uppercase tracking-[0.2em] flex items-center gap-2">
                             <Layers size={14} /> Node Hierarchy
                         </label>
                         <div className="relative">
@@ -256,7 +256,7 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ category, onSuccess, onC
                     </div>
 
                     <div className="space-y-4">
-                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] flex items-center gap-2">
+                        <label className="text-[10px] font-semibold text-gray-400 uppercase tracking-[0.2em] flex items-center gap-2">
                             <Activity size={14} /> Network State
                         </label>
                         <button 
@@ -267,7 +267,7 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ category, onSuccess, onC
                                 formData.active ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-rose-50 border-rose-200 text-rose-700"
                             )}
                         >
-                            <span className="text-sm font-black uppercase tracking-widest">{formData.active ? "Operational" : "Offline"}</span>
+                            <span className="text-sm font-semibold uppercase tracking-widest">{formData.active ? "Operational" : "Offline"}</span>
                             <div className={cn("w-12 h-6 rounded-full relative transition-all duration-500 p-1", formData.active ? "bg-emerald-500" : "bg-rose-500")}>
                                 <div className={cn("w-4 h-4 bg-white rounded-full transition-all duration-300 shadow-md", formData.active ? "ml-auto" : "ml-0")} />
                             </div>
@@ -279,12 +279,12 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ category, onSuccess, onC
                 <div className="space-y-6 pt-6 border-t border-gray-100">
                     <div className="flex items-center gap-3">
                         <div className="p-2 bg-blue-50 text-blue-600 rounded-xl"><Globe size={18}/></div>
-                        <h3 className="text-lg font-black text-gray-800 uppercase tracking-tighter italic text-[11px] font-black text-gray-400 uppercase tracking-[0.2em]">Shipping <span className="text-blue-600">Protocol</span></h3>
+                        <h3 className="text-lg font-semibold text-gray-800 uppercase tracking-tighter italic text-[11px] font-semibold text-gray-400 uppercase tracking-[0.2em]">Shipping <span className="text-blue-600">Protocol</span></h3>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white p-8 rounded-[40px] border-2 border-gray-100 shadow-sm">
                         <div className="space-y-2">
-                            <label className="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] ml-2 leading-none mb-1.5">Restriction Type</label>
+                            <label className="text-[9px] font-semibold text-gray-400 uppercase tracking-[0.2em] ml-2 leading-none mb-1.5">Restriction Type</label>
                             <select 
                                 value={formData.defaultShippingRestrictions?.restrictionType}
                                 onChange={(e) => setFormData(p => ({ ...p, defaultShippingRestrictions: { ...p.defaultShippingRestrictions!, restrictionType: e.target.value as any }}))}
@@ -298,7 +298,7 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ category, onSuccess, onC
 
                         {formData.defaultShippingRestrictions?.restrictionType === 'LOCAL_RADIUS' && (
                             <div className="space-y-2 animate-in slide-in-from-right">
-                                <label className="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] ml-2 leading-none mb-1.5">Radius Threshold (KM)</label>
+                                <label className="text-[9px] font-semibold text-gray-400 uppercase tracking-[0.2em] ml-2 leading-none mb-1.5">Radius Threshold (KM)</label>
                                 <input 
                                     type="number" placeholder="Enter KM..."
                                     value={formData.defaultShippingRestrictions?.maxShippingRadiusKm || ""}
@@ -314,13 +314,13 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ category, onSuccess, onC
                 <div className="flex flex-col sm:flex-row items-center justify-end gap-4 pt-10 border-t border-gray-100">
                     <button 
                         type="button" onClick={handleCancelAction}
-                        className="w-full sm:w-auto px-10 py-4 bg-gray-50 text-gray-400 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] hover:bg-gray-200 transition-all active:scale-95"
+                        className="w-full sm:w-auto px-10 py-4 bg-gray-50 text-gray-400 rounded-2xl font-semibold uppercase tracking-[0.2em] text-[10px] hover:bg-gray-200 transition-all active:scale-95"
                     >
                         Discard Revisions
                     </button>
                     <button 
                         type="submit" disabled={loading}
-                        className="w-full sm:w-auto px-12 py-4 bg-gray-900 text-white rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] hover:bg-indigo-600 transition-all shadow-xl shadow-indigo-100 active:scale-95 disabled:opacity-50 flex items-center justify-center gap-3"
+                        className="w-full sm:w-auto px-12 py-4 bg-gray-900 text-white rounded-2xl font-semibold uppercase tracking-[0.2em] text-[10px] hover:bg-indigo-600 transition-all shadow-xl shadow-indigo-100 active:scale-95 disabled:opacity-50 flex items-center justify-center gap-3"
                     >
                         {loading ? <Loader2 className="animate-spin w-5 h-5" /> : <><CheckCircle2 size={16}/> Push Revisions</>}
                     </button>

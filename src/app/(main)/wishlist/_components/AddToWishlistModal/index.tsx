@@ -183,7 +183,7 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
         <Heart size={24} className="fill-orange-500/20" />
       </div>
       <div>
-        <h4 className="text-lg font-black uppercase tracking-tight text-gray-900">
+        <h4 className="text-lg font-semibold uppercase tracking-tight text-gray-900">
           Thêm vào Wishlist
         </h4>
         <p className="text-xs text-gray-500 font-medium flex items-center gap-1">
@@ -278,7 +278,7 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
                       {v.optionValues?.map((o: any) => o.name).join(" / ") ||
                         "Default"}
                     </p>
-                    <p className="text-xs font-black text-slate-900">
+                    <p className="text-xs font-semibold text-slate-900">
                       {new Intl.NumberFormat("vi-VN").format(v.price)}đ
                     </p>
                   </div>
@@ -324,7 +324,7 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
                 >
                   <ArrowLeft size={14} /> Quay lại
                 </button>
-                <span className="text-xs font-black uppercase text-orange-500 tracking-wider">
+                <span className="text-xs font-semibold uppercase text-orange-500 tracking-wider">
                   Tạo Mới
                 </span>
               </div>
@@ -426,7 +426,7 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
               <div className="bg-white p-1 rounded-md shadow-sm text-orange-500">
                 <FileText size={14} />
               </div>
-              <span className="text-[10px] font-black uppercase tracking-widest text-gray-500">
+              <span className="text-[10px] font-semibold uppercase tracking-widest text-gray-500">
                 Ghi chú & Giá mục tiêu
               </span>
             </div>

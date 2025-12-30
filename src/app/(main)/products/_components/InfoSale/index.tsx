@@ -94,7 +94,7 @@ const InfoSale: React.FC<InfoSaleProps> = ({ discountInfo, formatPrice }) => {
                             </span>
                             <span className="text-sm font-medium text-gray-400">Tiết kiệm {formatPrice(discountInfo.originalPrice - discountInfo.finalPrice)}</span>
                         </div>
-                        <div className="text-2xl font-black text-red-600 tracking-tighter tabular-nums">
+                        <div className="text-2xl font-semibold text-red-600 tracking-tighter tabular-nums">
                             {formatPrice(discountInfo.finalPrice)}
                         </div>
                     </div>

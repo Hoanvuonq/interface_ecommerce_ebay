@@ -19,7 +19,7 @@ export const SystemOnline = ({ collapsed }: EmployeeSidebarProps) => {
         </div>
         {!collapsed && (
           <div className="flex flex-col">
-            <span className="text-[11px] font-black text-slate-700 uppercase tracking-wide">
+            <span className="text-[11px] font-semibold text-slate-700 uppercase tracking-wide">
               System Online
             </span>
             <span className="text-[9px] font-bold text-slate-400">

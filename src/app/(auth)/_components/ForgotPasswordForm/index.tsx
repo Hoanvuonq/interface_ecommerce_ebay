@@ -215,7 +215,7 @@ export default function ForgotPasswordForm() {
                   <IconComponent className="text-white text-3xl -rotate-12" />
                 </div>
               </div>
-              <h2 className="text-3xl font-black text-gray-800 dark:text-white mb-2">{config.title}</h2>
+              <h2 className="text-3xl font-semibold text-gray-800 dark:text-white mb-2">{config.title}</h2>
               <p className="text-gray-500 dark:text-gray-400 text-sm">{config.desc}</p>
             </div>
 
@@ -328,7 +328,7 @@ export default function ForgotPasswordForm() {
                 type="login"
                 disabled={submitting}
                 loading={submitting}
-                className="w-full h-14 rounded-2xl text-base font-black tracking-widest uppercase shadow-xl shadow-orange-500/20"
+                className="w-full h-14 rounded-2xl text-base font-semibold tracking-widest uppercase shadow-xl shadow-orange-500/20"
               >
                 {step === 1 ? "Gửi mã xác thực" : step === 2 ? "Xác minh OTP" : "Cập nhật mật khẩu"}
               </ButtonField>
@@ -336,7 +336,7 @@ export default function ForgotPasswordForm() {
               <CustomButton
                 onClick={() => step === 1 ? router.push("/login") : setStep(prev => (prev - 1) as any)}
                 variant="dark"
-                className="h-14 w-full rounded-full shadow-lg uppercase tracking-widest font-black"
+                className="h-14 w-full rounded-full shadow-lg uppercase tracking-widest font-semibold"
                 icon={<MoveLeft size={18} />}
               >
                 {step === 1 ? "Quay lại đăng nhập" : "Quay lại bước trước"}

@@ -28,7 +28,7 @@ export const HomeScreen = () => {
         subtitle="Dành riêng cho bạn"
       />
       <SocialProofSection />
-      <NewsletterSignup />
+      {/* <NewsletterSignup /> */}
     </HomepageProvider>
   );
 };

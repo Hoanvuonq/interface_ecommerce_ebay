@@ -44,7 +44,7 @@ export const PriceRange: React.FC<PriceRangeProps> = ({ filters, setFilters }) =
                     <DollarSign className="w-5 h-5" />
                 </div>
                 <div>
-                    <h3 className="text-sm font-black text-gray-800 uppercase tracking-widest leading-none">Khoảng giá</h3>
+                    <h3 className="text-sm font-semibold text-gray-800 uppercase tracking-widest leading-none">Khoảng giá</h3>
                     <p className="text-[10px] text-orange-600 font-bold mt-1 uppercase tracking-tighter">Chọn mức ngân sách</p>
                 </div>
             </div>

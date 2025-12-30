@@ -30,7 +30,7 @@ export const PayOSCheckoutModal: React.FC<PayOSCheckoutModalProps> = ({
         <CreditCard size={20} />
       </div>
       <div>
-        <h3 className="text-xl font-black text-slate-900 uppercase tracking-tight leading-none">
+        <h3 className="text-xl font-semibold text-slate-900 uppercase tracking-tight leading-none">
           Thanh toán <span className="text-orange-500">QR</span>
         </h3>
         <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
@@ -53,7 +53,7 @@ export const PayOSCheckoutModal: React.FC<PayOSCheckoutModalProps> = ({
           <div className="flex items-center justify-between bg-slate-50 border border-slate-100 p-4 rounded-2xl shadow-inner">
             <div className="flex items-center gap-2 text-slate-500">
               <Timer size={16} />
-              <span className="text-xs font-black uppercase tracking-widest">Hết hạn sau</span>
+              <span className="text-xs font-semibold uppercase tracking-widest">Hết hạn sau</span>
             </div>
             <span
               className={`font-mono font-bold text-lg px-3 py-1 rounded-lg ${
@@ -87,7 +87,7 @@ export const PayOSCheckoutModal: React.FC<PayOSCheckoutModalProps> = ({
             <Loader2 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-orange-500" size={24} />
           </div>
           <div className="text-center space-y-2">
-             <p className="text-slate-900 font-black uppercase tracking-tighter text-lg">Đang khởi tạo mã QR</p>
+             <p className="text-slate-900 font-semibold uppercase tracking-tighter text-lg">Đang khởi tạo mã QR</p>
              <p className="text-slate-400 text-xs font-medium italic">Vui lòng chờ trong giây lát...</p>
           </div>
         </div>

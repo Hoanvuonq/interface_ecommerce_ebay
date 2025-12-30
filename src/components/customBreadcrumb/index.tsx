@@ -39,7 +39,7 @@ export const CustomBreadcrumb: React.FC<BreadcrumbProps> = ({ items }) => {
               <div className="flex items-center">
                 {isLast || !item.href ? (
                   <span
-                    className="text-sm font-black text-orange-600 cursor-default px-2 py-1 rounded-md bg-orange-50/50"
+                    className="text-sm font-semibold text-orange-600 cursor-default px-2 py-1 rounded-md bg-orange-50/50"
                     aria-current="page"
                   >
                     {item.title}

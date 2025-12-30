@@ -61,7 +61,7 @@ export default function EmployeeTable() {
     return (
       <span
         className={cn(
-          "px-3 py-1 text-[10px] font-black rounded-full uppercase tracking-tighter border",
+          "px-3 py-1 text-[10px] font-semibold rounded-full uppercase tracking-tighter border",
           configs[status] || configs.RESIGNED
         )}
       >
@@ -83,13 +83,13 @@ export default function EmployeeTable() {
                 alt={emp.fullName}
               />
             ) : (
-              <span className="text-orange-500 font-black text-lg">
+              <span className="text-orange-500 font-semibold text-lg">
                 {emp.fullName.charAt(0)}
               </span>
             )}
           </div>
           <div className="min-w-0">
-            <p className="font-black text-slate-900 tracking-tight text-sm leading-none truncate">
+            <p className="font-semibold text-slate-900 tracking-tight text-sm leading-none truncate">
               {emp.fullName}
             </p>
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1.5 flex items-center gap-1">
@@ -103,7 +103,7 @@ export default function EmployeeTable() {
       header: "Vị trí & Phòng ban",
       render: (emp) => (
         <div className="space-y-1">
-          <p className="text-sm font-black text-slate-700 italic flex items-center gap-1">
+          <p className="text-sm font-semibold text-slate-700 italic flex items-center gap-1">
             <Briefcase size={12} className="text-orange-400" />{" "}
             {emp.positionName}
           </p>
@@ -163,7 +163,7 @@ export default function EmployeeTable() {
                 key={key}
                 onClick={() => updateFilter({ activeTab: key })}
                 className={cn(
-                  "relative px-5 py-2 text-[10px] font-black uppercase tracking-widest rounded-lg transition-colors duration-300 z-10",
+                  "relative px-5 py-2 text-[10px] font-semibold uppercase tracking-widest rounded-lg transition-colors duration-300 z-10",
                   isActive
                     ? "text-orange-500"
                     : "text-slate-400 hover:text-slate-600"
@@ -240,7 +240,7 @@ export default function EmployeeTable() {
     <div className="p-8 bg-[#F8FAFC] min-h-screen space-y-8 animate-in fade-in duration-700">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
         <div className="space-y-2">
-          <h1 className="text-5xl font-black text-slate-900 tracking-tighter uppercase italic leading-none">
+          <h1 className="text-5xl font-semibold text-slate-900 tracking-tighter uppercase italic leading-none">
             Human{" "}
             <span className="text-orange-500 underline decoration-4 underline-offset-8">
               Resources
@@ -256,7 +256,7 @@ export default function EmployeeTable() {
             setModeForm("create");
             setOpenForm(true);
           }}
-          className="bg-slate-900 hover:bg-orange-500 text-white px-8 py-4 rounded-3xl font-black uppercase text-xs tracking-widest transition-all duration-500 shadow-2xl shadow-slate-200 flex items-center gap-2 active:scale-95"
+          className="bg-slate-900 hover:bg-orange-500 text-white px-8 py-4 rounded-3xl font-semibold uppercase text-xs tracking-widest transition-all duration-500 shadow-2xl shadow-slate-200 flex items-center gap-2 active:scale-95"
         >
           <Plus size={18} strokeWidth={3} /> Khởi tạo nhân sự
         </button>

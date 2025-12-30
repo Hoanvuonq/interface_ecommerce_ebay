@@ -87,7 +87,7 @@ export default function PublicWishlistClient({ shareToken }: Props) {
               <div className="w-20 h-20 bg-red-50 rounded-3xl flex items-center justify-center mx-auto mb-6 text-red-500">
                 <Lock size={40} />
               </div>
-              <h2 className="text-2xl font-black text-slate-900 mb-4 uppercase">Không thể truy cập</h2>
+              <h2 className="text-2xl font-semibold text-slate-900 mb-4 uppercase">Không thể truy cập</h2>
               <p className="text-slate-500 mb-8 leading-relaxed">{error}</p>
               <button 
                 onClick={() => router.push("/")}
@@ -123,7 +123,7 @@ export default function PublicWishlistClient({ shareToken }: Props) {
 
                   {/* Text Content */}
                   <div className="flex-1 space-y-4">
-                    <h1 className="text-3xl md:text-5xl font-black tracking-tighter text-slate-950 uppercase italic">
+                    <h1 className="text-3xl md:text-5xl font-semibold tracking-tighter text-slate-950 uppercase italic">
                       {wishlist.name}
                     </h1>
                     
@@ -144,7 +144,7 @@ export default function PublicWishlistClient({ shareToken }: Props) {
 
                       <div className="flex items-center gap-2 px-4 py-1.5 bg-emerald-50 text-emerald-600 rounded-full border border-emerald-100">
                         <Package size={14} />
-                        <span className="text-xs font-black uppercase tracking-widest">{wishlist.itemCount} sản phẩm</span>
+                        <span className="text-xs font-semibold uppercase tracking-widest">{wishlist.itemCount} sản phẩm</span>
                       </div>
                     </div>
 
@@ -161,7 +161,7 @@ export default function PublicWishlistClient({ shareToken }: Props) {
               <div className="space-y-8">
                 <div className="flex items-center gap-3">
                   <div className="w-2 h-8 bg-slate-900 rounded-full" />
-                  <h2 className="text-2xl font-black uppercase tracking-tight">Danh sách sản phẩm</h2>
+                  <h2 className="text-2xl font-semibold uppercase tracking-tight">Danh sách sản phẩm</h2>
                 </div>
 
                 {wishlist.items && wishlist.items.length > 0 ? (

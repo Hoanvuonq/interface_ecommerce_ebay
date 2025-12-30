@@ -42,7 +42,7 @@ export function SmartPlatformDashboard() {
                 <div className="p-4 bg-gray-50 rounded-full mb-4">
                     <Inbox className="w-12 h-12 text-gray-300" />
                 </div>
-                <h3 className="text-lg font-black text-gray-800 uppercase tracking-widest">Không có dữ liệu</h3>
+                <h3 className="text-lg font-semibold text-gray-800 uppercase tracking-widest">Không có dữ liệu</h3>
                 <p className="text-gray-400 text-sm font-medium">Vui lòng thử lại hoặc chọn một ngày khác.</p>
             </div>
         );
@@ -129,7 +129,7 @@ export function SmartPlatformDashboard() {
             <div className="space-y-6">
                 <div className="flex items-center gap-2 px-2">
                     <BarChart3 className="text-orange-500 w-5 h-5" />
-                    <h2 className="text-xl font-black text-gray-800 uppercase tracking-tighter italic">
+                    <h2 className="text-xl font-semibold text-gray-800 uppercase tracking-tighter italic">
                         Bảng xếp hạng <span className="text-orange-500">Hiệu suất</span>
                     </h2>
                 </div>

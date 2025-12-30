@@ -51,14 +51,14 @@ useEffect(() => {
       <div className="h-20 flex items-center px-4 mb-4 relative overflow-hidden">
         <Link href="/" className="flex items-center gap-3 w-full group">
           <div className="w-10 h-10 shrink-0 bg-gradient-to-br from-orange-500 to-amber-500 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-orange-200 group-hover:rotate-6 transition-transform duration-300">
-            <span className="text-xl font-black italic">C</span>
+            <span className="text-xl font-semibold italic">C</span>
           </div>
           {!collapsed && (
             <div className="flex flex-col animate-in fade-in slide-in-from-left-2 duration-500">
-              <span className="text-lg font-black tracking-tighter text-slate-800 leading-none">
+              <span className="text-lg font-semibold tracking-tighter text-slate-800 leading-none">
                 CALATHA
               </span>
-              <span className="text-[10px] font-black text-orange-500 uppercase tracking-[0.2em] mt-1">
+              <span className="text-[10px] font-semibold text-orange-500 uppercase tracking-[0.2em] mt-1">
                 Employee Hub
               </span>
             </div>

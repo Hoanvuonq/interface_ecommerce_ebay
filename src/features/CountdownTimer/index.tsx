@@ -6,7 +6,7 @@ import { SlotNumber } from "../SlotNumber";
 
 const Separator = () => (
   <div className="flex flex-col justify-center items-center h-8 sm:h-10 pb-1 mx-0.5 sm:mx-1">
-    <div className="text-orange-500 font-black text-lg sm:text-xl animate-pulse">:</div>
+    <div className="text-orange-500 font-semibold text-lg sm:text-xl animate-pulse">:</div>
   </div>
 );
 

@@ -168,7 +168,7 @@ const ShopDetailModal: React.FC<ShopDetailModalProps> = ({
                       <p className="flex items-center gap-2">
                         <strong className="text-gray-400">Trạng thái:</strong>
                         <span 
-                          className="px-2 py-0.5 rounded text-[10px] font-black uppercase text-white"
+                          className="px-2 py-0.5 rounded text-[10px] font-semibold uppercase text-white"
                           style={{ backgroundColor: verifyStatusColorMap[detailData.legalInfo.verifiedStatus as VerifiedStatus] }}
                         >
                           {verifyStatusMap[detailData.legalInfo.verifiedStatus as VerifiedStatus]}
@@ -233,7 +233,7 @@ const ShopDetailModal: React.FC<ShopDetailModalProps> = ({
                     <p className="flex items-center gap-2">
                       <strong className="text-gray-400">Trạng thái:</strong>
                       <span 
-                        className="px-2 py-0.5 rounded text-[10px] font-black uppercase text-white"
+                        className="px-2 py-0.5 rounded text-[10px] font-semibold uppercase text-white"
                         style={{ backgroundColor: verifyStatusColorMap[detailData.taxInfo.verifiedStatus as VerifiedStatus] }}
                       >
                         {verifyStatusMap[detailData.taxInfo.verifiedStatus as VerifiedStatus]}

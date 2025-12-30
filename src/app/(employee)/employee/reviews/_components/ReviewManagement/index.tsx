@@ -65,7 +65,7 @@ export default function ReviewManagement() {
       {/* 1. Header & Stats */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-4xl font-black text-slate-900 tracking-tighter uppercase italic leading-none">
+          <h1 className="text-4xl font-semibold text-slate-900 tracking-tighter uppercase italic leading-none">
             Kiểm duyệt <span className="text-orange-500">Đánh giá</span>
           </h1>
           <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mt-2">
@@ -109,7 +109,7 @@ export default function ReviewManagement() {
                   setQueryParams((p) => ({ ...p, page: 0 }));
                 }}
                 className={cn(
-                  "px-8 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all",
+                  "px-8 py-2.5 text-[10px] font-semibold uppercase tracking-widest rounded-xl transition-all",
                   activeTab === tab 
                     ? "bg-white text-orange-500 shadow-sm" 
                     : "text-slate-400 hover:text-slate-600"
@@ -121,7 +121,7 @@ export default function ReviewManagement() {
           </div>
 
           <div className="flex items-center gap-4">
-            <span className="text-[10px] font-black text-slate-400 uppercase tracking-tighter">Hiển thị:</span>
+            <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-tighter">Hiển thị:</span>
             <SelectComponent
               options={[
                 { label: "20 dòng", value: "20" },
@@ -138,7 +138,7 @@ export default function ReviewManagement() {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-slate-50/50 text-[10px] uppercase font-black tracking-[0.2em] text-slate-400 border-b border-slate-50">
+              <tr className="bg-slate-50/50 text-[10px] uppercase font-semibold tracking-[0.2em] text-slate-400 border-b border-slate-50">
                 <th className="px-8 py-5">STT</th>
                 <th className="px-6 py-5">Người đánh giá</th>
                 <th className="px-6 py-5">Đánh giá</th>
@@ -154,7 +154,7 @@ export default function ReviewManagement() {
                   <tr>
                     <td colSpan={7} className="py-32 text-center">
                       <RotateCw className="animate-spin text-orange-500 mx-auto" size={40} />
-                      <p className="text-[10px] font-black text-slate-300 uppercase mt-4 tracking-widest">Đang tải dữ liệu...</p>
+                      <p className="text-[10px] font-semibold text-slate-300 uppercase mt-4 tracking-widest">Đang tải dữ liệu...</p>
                     </td>
                   </tr>
                 ) : reviews.length > 0 ? (
@@ -174,7 +174,7 @@ export default function ReviewManagement() {
                           <div className="flex items-center gap-1.5 font-bold text-slate-700">
                             {record.username}
                             {record.verifiedPurchase && (
-                              <div className="flex items-center gap-0.5 bg-emerald-50 text-emerald-600 px-1.5 py-0.5 rounded-md text-[9px] uppercase font-black border border-emerald-100">
+                              <div className="flex items-center gap-0.5 bg-emerald-50 text-emerald-600 px-1.5 py-0.5 rounded-md text-[9px] uppercase font-semibold border border-emerald-100">
                                 <BadgeCheck size={10} /> Verified
                               </div>
                             )}
@@ -242,7 +242,7 @@ export default function ReviewManagement() {
 
         {/* Custom Pagination Footer */}
         <div className="p-6 border-t border-slate-50 flex justify-between items-center bg-slate-50/30">
-          <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+          <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">
             Tổng cộng: {pagination.total} đánh giá
           </span>
           <div className="flex gap-2">
@@ -253,7 +253,7 @@ export default function ReviewManagement() {
             >
               Trước
             </button>
-            <div className="flex items-center px-4 text-xs font-black text-orange-500 bg-white rounded-xl shadow-sm border border-orange-100">
+            <div className="flex items-center px-4 text-xs font-semibold text-orange-500 bg-white rounded-xl shadow-sm border border-orange-100">
               {queryParams.page + 1} / {Math.ceil(pagination.total / queryParams.size) || 1}
             </div>
             <button

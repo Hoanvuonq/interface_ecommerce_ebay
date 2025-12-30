@@ -55,7 +55,7 @@ const CustomTag: React.FC<any> = ({
 }) => (
   <span
     className={cn(
-      "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-black uppercase tracking-wider transition-all shadow-sm border",
+      "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold uppercase tracking-wider transition-all shadow-sm border",
       colorClass || "bg-orange-50 text-orange-700 border-orange-200",
       className
     )}
@@ -158,7 +158,7 @@ export default function ProductFilters({
           <div className="bg-orange-500 p-2 rounded-xl text-white shadow-lg shadow-orange-200 transition-transform group-hover:scale-110">
             <Filter size={18} />
           </div>
-          <span className="text-sm font-black text-gray-800 tracking-widest uppercase">
+          <span className="text-sm font-semibold text-gray-800 tracking-widest uppercase">
             Bộ lọc sản phẩm
           </span>
           {hasActiveFilters && (
@@ -189,7 +189,7 @@ export default function ProductFilters({
         <div className="p-6 space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="space-y-2.5">
-              <label className="text-[11px] font-black text-gray-800 uppercase tracking-widest flex items-center gap-2">
+              <label className="text-[11px] font-semibold text-gray-800 uppercase tracking-widest flex items-center gap-2">
                 <Search size={14} className="text-orange-500" /> Từ khóa tìm
                 kiếm
               </label>
@@ -203,7 +203,7 @@ export default function ProductFilters({
             </div>
 
             <div className="space-y-2.5">
-              <label className="text-[11px] font-black text-gray-800 uppercase tracking-widest flex items-center gap-2">
+              <label className="text-[11px] font-semibold text-gray-800 uppercase tracking-widest flex items-center gap-2">
                 <TagsIcon size={14} className="text-orange-500" /> Nhóm danh mục
               </label>
               <SelectComponent
@@ -219,7 +219,7 @@ export default function ProductFilters({
             </div>
 
             <div className="space-y-2.5">
-              <label className="text-[11px] font-black text-gray-800 uppercase tracking-widest flex items-center gap-2">
+              <label className="text-[11px] font-semibold text-gray-800 uppercase tracking-widest flex items-center gap-2">
                 <RotateCw size={14} className="text-orange-500" /> Thứ tự ưu
                 tiên
               </label>
@@ -235,7 +235,7 @@ export default function ProductFilters({
 
           {/* Price Slider Section */}
           <div className="bg-orange-50/30 rounded-2xl p-6 border border-orange-100">
-            <label className="text-[11px] font-black text-orange-600 uppercase tracking-widest flex items-center gap-2 mb-6">
+            <label className="text-[11px] font-semibold text-orange-600 uppercase tracking-widest flex items-center gap-2 mb-6">
               <DollarSign size={14} /> Khoảng giá mong muốn
             </label>
 
@@ -268,7 +268,7 @@ export default function ProductFilters({
                   <p className="text-[10px] text-gray-400 uppercase font-bold mb-1">
                     Tối thiểu
                   </p>
-                  <span className="text-sm font-black text-orange-600">
+                  <span className="text-sm font-semibold text-orange-600">
                     {formatVND(localPriceRange[0])}
                   </span>
                 </div>
@@ -277,7 +277,7 @@ export default function ProductFilters({
                   <p className="text-[10px] text-gray-400 uppercase font-bold mb-1">
                     Tối đa
                   </p>
-                  <span className="text-sm font-black text-orange-600">
+                  <span className="text-sm font-semibold text-orange-600">
                     {formatVND(localPriceRange[1])}
                   </span>
                 </div>
@@ -301,7 +301,7 @@ export default function ProductFilters({
             <div className="flex flex-wrap gap-2">
               {hasActiveFilters ? (
                 <>
-                  <span className="text-[10px] font-black text-gray-400 uppercase w-full mb-1">
+                  <span className="text-[10px] font-semibold text-gray-400 uppercase w-full mb-1">
                     Đang lọc theo:
                   </span>
                   {value.keyword && (

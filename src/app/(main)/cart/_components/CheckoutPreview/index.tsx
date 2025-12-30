@@ -59,7 +59,7 @@ export const CheckoutPreview: React.FC<CheckoutPreviewProps> = ({
               )}
             </div>
             <div>
-              <h3 className="text-lg font-black text-gray-900 uppercase tracking-tight">
+              <h3 className="text-lg font-semibold text-gray-900 uppercase tracking-tight">
                 Xem trước đơn hàng
               </h3>
               <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">
@@ -80,7 +80,7 @@ export const CheckoutPreview: React.FC<CheckoutPreviewProps> = ({
           {loading ? (
             <div className="flex flex-col items-center justify-center py-20 gap-4">
               <Loader2 size={40} className="animate-spin text-orange-500" />
-              <p className="text-gray-400 font-black uppercase tracking-widest text-xs">
+              <p className="text-gray-400 font-semibold uppercase tracking-widest text-xs">
                 Đang tính toán đơn hàng...
               </p>
             </div>
@@ -96,7 +96,7 @@ export const CheckoutPreview: React.FC<CheckoutPreviewProps> = ({
                         size={20}
                       />
                       <div>
-                        <h4 className="text-sm font-black text-red-700 uppercase">
+                        <h4 className="text-sm font-semibold text-red-700 uppercase">
                           Lỗi đơn hàng
                         </h4>
                         <ul className="list-disc pl-4 mt-1 text-xs text-red-600 space-y-1 font-medium">
@@ -115,7 +115,7 @@ export const CheckoutPreview: React.FC<CheckoutPreviewProps> = ({
                       size={20}
                     />
                     <div>
-                      <h4 className="text-sm font-black text-amber-700 uppercase">
+                      <h4 className="text-sm font-semibold text-amber-700 uppercase">
                         Cảnh báo
                       </h4>
                       <ul className="list-disc pl-4 mt-1 text-xs text-amber-600 space-y-1 font-medium">
@@ -129,7 +129,7 @@ export const CheckoutPreview: React.FC<CheckoutPreviewProps> = ({
 
                 {/* Shop Sections */}
                 <div className="space-y-4">
-                  <h4 className="text-xs font-black text-gray-400 uppercase tracking-widest px-1">
+                  <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-widest px-1">
                     Chi tiết từng shop
                   </h4>
                   {preview.shops.map((shop) => (
@@ -141,7 +141,7 @@ export const CheckoutPreview: React.FC<CheckoutPreviewProps> = ({
                       <div className="px-4 py-3 bg-gray-50/50 border-b border-gray-100 flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <Store size={16} className="text-gray-400" />
-                          <span className="text-sm font-black text-gray-800 uppercase tracking-tighter">
+                          <span className="text-sm font-semibold text-gray-800 uppercase tracking-tighter">
                             {shop.shopName}
                           </span>
                         </div>
@@ -167,13 +167,13 @@ export const CheckoutPreview: React.FC<CheckoutPreviewProps> = ({
                               <div className="flex items-center gap-2 mt-0.5 text-xs text-gray-400 font-medium italic">
                                 <span>Số lượng: {item.quantity}</span>
                                 {!item.isAvailable && (
-                                  <span className="text-red-500 not-italic font-black text-[10px] uppercase underline">
+                                  <span className="text-red-500 not-italic font-semibold text-[10px] uppercase underline">
                                     {item.availabilityMessage || "Hết hàng"}
                                   </span>
                                 )}
                               </div>
                             </div>
-                            <span className="text-sm font-black text-gray-700 whitespace-nowrap">
+                            <span className="text-sm font-semibold text-gray-700 whitespace-nowrap">
                               {formatPriceFull(item.lineTotal)}
                             </span>
                           </div>
@@ -194,7 +194,7 @@ export const CheckoutPreview: React.FC<CheckoutPreviewProps> = ({
                             <span>-{formatPriceFull(shop.discount)}</span>
                           </div>
                         )}
-                        <div className="flex justify-between font-black text-gray-900 text-sm pt-1 border-t border-dashed border-gray-200">
+                        <div className="flex justify-between font-semibold text-gray-900 text-sm pt-1 border-t border-dashed border-gray-200">
                           <span>Tổng Shop:</span>
                           <span className="text-orange-600">
                             {formatPriceFull(shop.shopTotal)}
@@ -207,7 +207,7 @@ export const CheckoutPreview: React.FC<CheckoutPreviewProps> = ({
 
                 {/* Final Summary Card */}
                 <div className="bg-gray-900 rounded-3xl p-6 text-white shadow-xl shadow-gray-200">
-                  <h4 className="text-xs font-black text-gray-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                  <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
                     <CreditCard size={14} /> Tổng kết đơn hàng
                   </h4>
                   <div className="space-y-3">
@@ -230,10 +230,10 @@ export const CheckoutPreview: React.FC<CheckoutPreviewProps> = ({
                       </span>
                     </div>
                     <div className="pt-4 border-t border-white/10 flex justify-between items-end">
-                      <span className="text-sm font-black uppercase tracking-widest">
+                      <span className="text-sm font-semibold uppercase tracking-widest">
                         Thành tiền
                       </span>
-                      <span className="text-3xl font-black text-orange-500 tracking-tighter">
+                      <span className="text-3xl font-semibold text-orange-500 tracking-tighter">
                         {formatPriceFull(preview.grandTotal)}
                       </span>
                     </div>
@@ -245,7 +245,7 @@ export const CheckoutPreview: React.FC<CheckoutPreviewProps> = ({
                         <TagIcon size={20} className="fill-white" />
                       </div>
                       <div>
-                        <p className="text-[11px] font-black text-blue-400 uppercase leading-none mb-1">
+                        <p className="text-[11px] font-semibold text-blue-400 uppercase leading-none mb-1">
                           Điểm thành viên
                         </p>
                         <p className="text-xs font-medium text-gray-300">
@@ -272,7 +272,7 @@ export const CheckoutPreview: React.FC<CheckoutPreviewProps> = ({
         <div className="p-6 border-t border-gray-100 bg-white flex gap-3">
           <button
             onClick={onClose}
-            className="flex-1 py-3.5 text-sm font-black text-gray-500 bg-gray-100 hover:bg-gray-200 rounded-2xl transition-all active:scale-95 uppercase tracking-widest"
+            className="flex-1 py-3.5 text-sm font-semibold text-gray-500 bg-gray-100 hover:bg-gray-200 rounded-2xl transition-all active:scale-95 uppercase tracking-widest"
           >
             Trở lại
           </button>
@@ -280,7 +280,7 @@ export const CheckoutPreview: React.FC<CheckoutPreviewProps> = ({
             onClick={onConfirm}
             disabled={!preview?.isValid || loading}
             className={cn(
-              "flex-2 py-3.5 text-sm font-black text-white rounded-2xl transition-all shadow-lg active:scale-95 uppercase tracking-widest flex items-center justify-center gap-2",
+              "flex-2 py-3.5 text-sm font-semibold text-white rounded-2xl transition-all shadow-lg active:scale-95 uppercase tracking-widest flex items-center justify-center gap-2",
               preview?.isValid
                 ? "bg-orange-500 hover:bg-orange-600 shadow-orange-200"
                 : "bg-gray-300 cursor-not-allowed shadow-none"

@@ -69,7 +69,7 @@ const AddressModal: React.FC<AddressModalProps> = ({
       <div className="relative bg-white rounded-4xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
         <div className="px-8 py-6 border-b border-slate-100 flex justify-between items-center bg-white">
           <div>
-            <h2 className="text-xl font-black text-slate-900 uppercase italic tracking-tight">
+            <h2 className="text-xl font-semibold text-slate-900 uppercase italic tracking-tight">
               Địa chỉ <span className="text-orange-500">giao hàng</span>
             </h2>
             <p className="text-xs text-slate-400 font-bold uppercase tracking-widest mt-1">
@@ -89,7 +89,7 @@ const AddressModal: React.FC<AddressModalProps> = ({
         <div className="flex bg-slate-50 p-2 gap-2 mx-6 mt-4 rounded-2xl border border-slate-100">
           <button
             type="button"
-            className={`flex-1 py-3 text-[10px] font-black uppercase tracking-widest transition-all rounded-xl ${
+            className={`flex-1 py-3 text-[10px] font-semibold uppercase tracking-widest transition-all rounded-xl ${
               activeTab === "saved"
                 ? "bg-white text-orange-600 shadow-sm ring-1 ring-slate-200"
                 : "text-slate-400 hover:text-slate-600"
@@ -100,7 +100,7 @@ const AddressModal: React.FC<AddressModalProps> = ({
           </button>
           <button
             type="button"
-            className={`flex-1 py-3 text-[10px] font-black uppercase tracking-widest transition-all rounded-xl ${
+            className={`flex-1 py-3 text-[10px] font-semibold uppercase tracking-widest transition-all rounded-xl ${
               activeTab === "new"
                 ? "bg-white text-orange-600 shadow-sm ring-1 ring-slate-200"
                 : "text-slate-400 hover:text-slate-600"
@@ -137,13 +137,13 @@ const AddressModal: React.FC<AddressModalProps> = ({
 
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
-                            <span className="font-black text-slate-900 uppercase text-sm italic">
+                            <span className="font-semibold text-slate-900 uppercase text-sm italic">
                               {addr.recipientName}
                             </span>
                             <span className="text-slate-300">|</span>
                             <span className="text-slate-500 font-bold text-sm">{addr.phone}</span>
                             {index === 0 && (
-                              <span className="ml-auto text-[9px] font-black bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-md uppercase tracking-tighter">
+                              <span className="ml-auto text-[9px] font-semibold bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-md uppercase tracking-tighter">
                                 Gần đây
                               </span>
                             )}
@@ -161,7 +161,7 @@ const AddressModal: React.FC<AddressModalProps> = ({
                    <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
                       <Info className="text-slate-300" size={32} />
                    </div>
-                   <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Danh sách trống</p>
+                   <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">Danh sách trống</p>
                 </div>
               )}
             </div>
@@ -248,7 +248,7 @@ const AddressModal: React.FC<AddressModalProps> = ({
             onClick={handleConfirm}
             className="min-w-40 shadow-orange-200"
           >
-            <div className="flex items-center gap-2 uppercase tracking-widest text-[11px] font-black">
+            <div className="flex items-center gap-2 uppercase tracking-widest text-[11px] font-semibold">
               {activeTab === "new" ? <Plus size={16} strokeWidth={3} /> : <CheckCircle2 size={16} strokeWidth={3} />}
               Xác nhận địa chỉ
             </div>
@@ -263,7 +263,7 @@ const AddressModal: React.FC<AddressModalProps> = ({
 
 const InputGroup = ({ label, required, children }: { label: string; required?: boolean; children: React.ReactNode }) => (
   <div className="flex flex-col gap-2">
-    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">
+    <label className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest ml-1">
       {label} {required && <span className="text-orange-500">*</span>}
     </label>
     {children}

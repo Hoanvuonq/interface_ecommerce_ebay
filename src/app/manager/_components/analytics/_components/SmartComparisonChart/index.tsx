@@ -51,7 +51,7 @@ export function SmartComparisonChart({
                             <TrendingUp size={20} strokeWidth={2.5} />
                         </div>
                         <div>
-                            <h3 className="text-sm font-black text-gray-800 uppercase tracking-[0.15em] leading-none mb-1">
+                            <h3 className="text-sm font-semibold text-gray-800 uppercase tracking-[0.15em] leading-none mb-1">
                                 Biểu đồ <span className="text-blue-600">Doanh số</span>
                             </h3>
                             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">So sánh hiệu suất 24h</p>
@@ -61,11 +61,11 @@ export function SmartComparisonChart({
                     <div className="flex items-center gap-6 px-4 py-2 bg-gray-50/50 rounded-2xl border border-gray-100/50">
                         <div className="flex items-center gap-2">
                             <span className="w-2.5 h-2.5 rounded-full bg-[#EE4D2D] shadow-[0_0_8px_rgba(238,77,45,0.4)]"/>
-                            <span className="text-[11px] font-black text-gray-600 uppercase tracking-wider">{todayLabel}</span>
+                            <span className="text-[11px] font-semibold text-gray-600 uppercase tracking-wider">{todayLabel}</span>
                         </div>
                         <div className="flex items-center gap-2">
                             <span className="w-2.5 h-2.5 rounded-full bg-gray-300"></span>
-                            <span className="text-[11px] font-black text-gray-400 uppercase tracking-wider">{yesterdayLabel}</span>
+                            <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">{yesterdayLabel}</span>
                         </div>
                     </div>
                 </div>

@@ -212,7 +212,7 @@ export default async function CategoryScreen({
                       </Link>
 
                       <div className="flex items-center gap-2">
-                        <span className="flex items-center justify-center w-12 h-12 rounded-2xl bg-orange-500 text-white font-black shadow-lg shadow-orange-100">
+                        <span className="flex items-center justify-center w-12 h-12 rounded-2xl bg-orange-500 text-white font-semibold shadow-lg shadow-orange-100">
                           {page + 1}
                         </span>
                         <span className="text-gray-400 font-medium px-2">

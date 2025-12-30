@@ -52,7 +52,7 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
       <ScrollReveal animation="slideUp" delay={150}>
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-col items-center text-center mb-12 space-y-3">
-            <h2 className="text-3xl md:text-5xl font-black tracking-tighter text-slate-900 uppercase italic">
+            <h2 className="text-3xl md:text-5xl font-semibold tracking-tighter text-slate-900 uppercase italic">
               {title}
             </h2>
             <p className="text-slate-500 font-medium tracking-wide uppercase text-xs md:text-sm">{subtitle}</p>
@@ -68,7 +68,7 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
                     className={cn(
-                      "relative flex items-center gap-2 md:px-6 px-5 md:py-2.5 rounded-full text-xs font-black uppercase tracking-widest transition-all duration-300 z-10",
+                      "relative flex items-center gap-2 md:px-6 px-5 md:py-2.5 rounded-full text-xs font-semibold uppercase tracking-widest transition-all duration-300 z-10",
                       IsActive ? "text-white" : "text-slate-400 hover:text-slate-600"
                     )}
                   >
@@ -112,7 +112,7 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
               <button
                 onClick={() => currentQuery.fetchNextPage()}
                 disabled={currentQuery.isFetchingNextPage}
-                className="flex items-center gap-2 px-8 py-4 bg-white border border-slate-200 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] text-slate-600 hover:border-orange-500 hover:text-orange-600 transition-all shadow-sm active:scale-95 disabled:opacity-50"
+                className="flex items-center gap-2 px-8 py-4 bg-white border border-slate-200 rounded-2xl font-semibold text-[10px] uppercase tracking-[0.2em] text-slate-600 hover:border-orange-500 hover:text-orange-600 transition-all shadow-sm active:scale-95 disabled:opacity-50"
               >
                 {currentQuery.isFetchingNextPage ? (
                   <Loader2 size={14} className="animate-spin" />

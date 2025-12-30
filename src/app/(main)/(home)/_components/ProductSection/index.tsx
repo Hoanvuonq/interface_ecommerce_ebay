@@ -60,12 +60,10 @@ export const ProductSection: React.FC<ProductSectionProps> = ({
   return (
     <section className="py-16 bg-[#ffffff] relative overflow-hidden">
       <ScrollReveal animation="slideUp" delay={250}>
-        {/* Background Gradients trang trí */}
         <div className="absolute top-1/4 -left-20 w-96 h-96 bg-orange-100/30 rounded-full blur-[120px] pointer-events-none" />
         <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-blue-100/20 rounded-full blur-[120px] pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 relative z-10">
-          {/* Header Section */}
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6 border-b border-slate-100 pb-8 px-2">
             <div className="space-y-3">
               {showBadge && (
@@ -76,7 +74,7 @@ export const ProductSection: React.FC<ProductSectionProps> = ({
                   className="mb-1"
                 />
               )}
-              <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase italic leading-none text-slate-950 flex items-center gap-4">
+              <h2 className="text-4xl md:text-6xl font-semibold tracking-tighter uppercase italic leading-none text-slate-950 flex items-center gap-4">
                 {icon && <span className="text-orange-500 drop-shadow-sm">{icon}</span>}
                 {title || config.title}
               </h2>
@@ -88,7 +86,7 @@ export const ProductSection: React.FC<ProductSectionProps> = ({
             {showViewAll && (
               <Link
                 href={viewAllHref}
-                className="group inline-flex items-center gap-3 px-6 py-3 bg-slate-50 hover:bg-orange-500 rounded-2xl text-[11px] font-black uppercase tracking-widest text-slate-600 hover:text-white transition-all duration-300 shadow-sm"
+                className="group inline-flex items-center gap-3 px-6 py-3 bg-slate-50 hover:bg-orange-500 rounded-2xl text-[11px] font-semibold uppercase tracking-widest text-slate-600 hover:text-white transition-all duration-300 shadow-sm"
               >
                 XEM TẤT CẢ
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
@@ -133,7 +131,6 @@ export const ProductSection: React.FC<ProductSectionProps> = ({
                   )}
                 </AnimatePresence>
 
-                {/* Grid Sản phẩm */}
                 <div
                   className={cn(
                     "grid gap-6 md:gap-8",

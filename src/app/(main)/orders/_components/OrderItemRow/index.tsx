@@ -37,14 +37,14 @@ export const OrderItemRow = ({
             Số lượng: <b className="text-slate-900">{item.quantity}</b>
           </span>
           <div className="text-right">
-            <p className="text-lg font-black text-slate-900">
+            <p className="text-lg font-semibold text-slate-900">
               {formatPrice(item.lineTotal)}
             </p>
             {canReview && (
               <button
                 onClick={onReview}
                 disabled={isReviewed}
-                className={`mt-2 flex items-center gap-2 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all border ${
+                className={`mt-2 flex items-center gap-2 px-3 py-1 rounded-lg text-[10px] font-semibold uppercase tracking-widest transition-all border ${
                   isReviewed
                     ? "bg-slate-50 text-slate-300 border-slate-100"
                     : "bg-white text-orange-600 border-orange-100 hover:bg-orange-50"

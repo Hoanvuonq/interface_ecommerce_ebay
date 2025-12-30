@@ -112,7 +112,7 @@ export default function BroadcastNotificationForm() {
         <form onSubmit={handleSubmit} className="space-y-8">
             {/* Target Audience Selector */}
             <div className="space-y-3">
-                <label className="flex items-center gap-2 text-sm font-black text-gray-700 uppercase tracking-wider">
+                <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 uppercase tracking-wider">
                     <Target size={16} className="text-orange-500" /> Đối tượng nhận
                 </label>
                 <div className="grid grid-cols-3 gap-3">
@@ -137,7 +137,7 @@ export default function BroadcastNotificationForm() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Notification Type */}
                 <div className="space-y-3">
-                    <label className="flex items-center gap-2 text-sm font-black text-gray-700 uppercase tracking-wider">
+                    <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 uppercase tracking-wider">
                         <Layers size={16} className="text-orange-500" /> Loại thông báo
                     </label>
                     <select 
@@ -156,7 +156,7 @@ export default function BroadcastNotificationForm() {
 
                 {/* Priority Selector */}
                 <div className="space-y-3">
-                    <label className="flex items-center gap-2 text-sm font-black text-gray-700 uppercase tracking-wider">
+                    <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 uppercase tracking-wider">
                         <Zap size={16} className="text-orange-500" /> Độ ưu tiên
                     </label>
                     <select 
@@ -176,7 +176,7 @@ export default function BroadcastNotificationForm() {
             {/* Title & Content */}
             <div className="space-y-4">
                 <div className="space-y-2">
-                    <label className="text-sm font-black text-gray-700 uppercase tracking-wider px-1">Tiêu đề</label>
+                    <label className="text-sm font-semibold text-gray-700 uppercase tracking-wider px-1">Tiêu đề</label>
                     <input 
                         name="title"
                         value={formData.title}
@@ -187,7 +187,7 @@ export default function BroadcastNotificationForm() {
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-sm font-black text-gray-700 uppercase tracking-wider px-1">Nội dung chi tiết</label>
+                    <label className="text-sm font-semibold text-gray-700 uppercase tracking-wider px-1">Nội dung chi tiết</label>
                     <textarea 
                         name="content"
                         value={formData.content}
@@ -201,7 +201,7 @@ export default function BroadcastNotificationForm() {
 
             {/* Image Upload Custom */}
             <div className="space-y-3">
-                <label className="text-sm font-black text-gray-700 uppercase tracking-wider px-1">Hình ảnh đính kèm</label>
+                <label className="text-sm font-semibold text-gray-700 uppercase tracking-wider px-1">Hình ảnh đính kèm</label>
                 <div className="flex items-center gap-4">
                     <AnimatePresence mode="wait">
                         {formData.imageUrl ? (
@@ -222,7 +222,7 @@ export default function BroadcastNotificationForm() {
                         ) : (
                             <label className="w-32 h-32 rounded-3xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center cursor-pointer hover:bg-orange-50 hover:border-orange-300 transition-all group">
                                 <ImageIcon className="text-gray-300 group-hover:text-orange-400 transition-colors" size={28} />
-                                <span className="text-[10px] font-black text-gray-300 group-hover:text-orange-400 uppercase mt-2">Tải ảnh</span>
+                                <span className="text-[10px] font-semibold text-gray-300 group-hover:text-orange-400 uppercase mt-2">Tải ảnh</span>
                                 <input type="file" hidden accept="image/*" onChange={handleImageUpload} />
                             </label>
                         )}
@@ -236,7 +236,7 @@ export default function BroadcastNotificationForm() {
 
             {/* Redirect URL */}
             <div className="space-y-2">
-                <label className="text-sm font-black text-gray-700 uppercase tracking-wider px-1">URL Chuyển hướng</label>
+                <label className="text-sm font-semibold text-gray-700 uppercase tracking-wider px-1">URL Chuyển hướng</label>
                 <input 
                     name="redirectUrl"
                     value={formData.redirectUrl}
@@ -250,7 +250,7 @@ export default function BroadcastNotificationForm() {
             <div className="pt-4 border-t border-gray-100">
                 <button
                     disabled={loading || uploading}
-                    className="w-full py-5 bg-linear-to-r from-orange-500 to-red-600 hover:scale-[1.01] active:scale-[0.98] disabled:from-gray-200 disabled:to-gray-300 text-white rounded-3xl font-black uppercase tracking-[0.2em] text-sm transition-all flex items-center justify-center gap-3 shadow-xl shadow-orange-200"
+                    className="w-full py-5 bg-linear-to-r from-orange-500 to-red-600 hover:scale-[1.01] active:scale-[0.98] disabled:from-gray-200 disabled:to-gray-300 text-white rounded-3xl font-semibold uppercase tracking-[0.2em] text-sm transition-all flex items-center justify-center gap-3 shadow-xl shadow-orange-200"
                 >
                     {loading ? (
                         <Loader2 className="animate-spin" size={20} />

@@ -218,11 +218,11 @@ export default function EmployeeForm(props: EmployeeFormProps) {
         </div>
 
         <div className="flex items-center justify-end gap-3 pt-6 border-t border-slate-100">
-          <button type="button" onClick={onClose} className="px-8 py-3 rounded-2xl font-black uppercase text-[10px] tracking-widest text-slate-400 hover:bg-slate-100 transition-all">Hủy bỏ</button>
+          <button type="button" onClick={onClose} className="px-8 py-3 rounded-2xl font-semibold uppercase text-[10px] tracking-widest text-slate-400 hover:bg-slate-100 transition-all">Hủy bỏ</button>
           <button 
             type="submit" 
             disabled={isSubmitting}
-            className="bg-orange-500 hover:bg-orange-600 text-white px-10 py-3 rounded-2xl font-black uppercase text-[10px] tracking-widest shadow-xl shadow-orange-500/20 transition-all flex items-center gap-2 disabled:opacity-70"
+            className="bg-orange-500 hover:bg-orange-600 text-white px-10 py-3 rounded-2xl font-semibold uppercase text-[10px] tracking-widest shadow-xl shadow-orange-500/20 transition-all flex items-center gap-2 disabled:opacity-70"
           >
             {isSubmitting && <Loader2 size={14} className="animate-spin" />}
             {mode === "create" ? "Tạo nhân sự" : "Lưu thay đổi"}

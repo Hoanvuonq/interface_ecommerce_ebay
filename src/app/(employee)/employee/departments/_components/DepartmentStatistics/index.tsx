@@ -54,7 +54,7 @@ export default function DepartmentStatistics() {
   if (loading) return (
     <div className="flex flex-col items-center justify-center h-96 gap-4">
       <RotateCw className="animate-spin text-orange-500" size={40} />
-      <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-300 italic">Đang phân tích dữ liệu...</span>
+      <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-slate-300 italic">Đang phân tích dữ liệu...</span>
     </div>
   );
 
@@ -69,7 +69,7 @@ export default function DepartmentStatistics() {
   return (
     <div className="p-8 bg-[#F8FAFC] min-h-screen space-y-10 animate-in fade-in duration-700">
       <div className="space-y-2">
-        <h1 className="text-5xl font-black text-slate-900 tracking-tighter uppercase italic leading-none">
+        <h1 className="text-5xl font-semibold text-slate-900 tracking-tighter uppercase italic leading-none">
           Phân tích <span className="text-orange-500 underline decoration-4 underline-offset-8">Phòng Ban</span>
         </h1>
         <p className="text-slate-400 text-xs font-bold uppercase tracking-[0.3em]">Báo cáo cấu trúc nhân sự và định biên chức vụ</p>
@@ -96,7 +96,7 @@ export default function DepartmentStatistics() {
                   ))}
                 </Pie>
                 <RechartsTooltip content={<TooltipComponents unit="Nhân sự" />} />
-                <Legend verticalAlign="bottom" iconType="circle" formatter={(value) => <span className="text-[10px] font-black uppercase text-slate-500 tracking-widest">{value}</span>} />
+                <Legend verticalAlign="bottom" iconType="circle" formatter={(value) => <span className="text-[10px] font-semibold uppercase text-slate-500 tracking-widest">{value}</span>} />
               </PieChart>
             </ResponsiveContainer>
           </div>

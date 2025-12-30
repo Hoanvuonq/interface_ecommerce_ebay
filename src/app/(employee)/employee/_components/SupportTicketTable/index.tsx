@@ -30,10 +30,10 @@ export const SupportTicketTable: React.FC<SupportTicketTableProps> = ({
               <Users size={18} strokeWidth={2.5} />
             </div>
             <div className="flex flex-col">
-              <span className="text-[10px] font-black text-orange-500 uppercase tracking-widest leading-none mb-1">
+              <span className="text-[10px] font-semibold text-orange-500 uppercase tracking-widest leading-none mb-1">
                 Support Queue
               </span>
-              <span className="font-black text-slate-800 tracking-tight text-sm">
+              <span className="font-semibold text-slate-800 tracking-tight text-sm">
                 HỖ TRỢ KHÁCH HÀNG
               </span>
             </div>
@@ -46,7 +46,7 @@ export const SupportTicketTable: React.FC<SupportTicketTableProps> = ({
     >
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
-          <thead className="bg-slate-50/50 border-b border-slate-100 text-[10px] font-black uppercase text-slate-400 tracking-wider">
+          <thead className="bg-slate-50/50 border-b border-slate-100 text-[10px] font-semibold uppercase text-slate-400 tracking-wider">
             <tr>
               {[
                 "Ticket ID",
@@ -56,7 +56,7 @@ export const SupportTicketTable: React.FC<SupportTicketTableProps> = ({
                 "Thời gian",
                 "",
               ].map((h, i) => (
-                <th key={i} className="px-6 py-4 font-black">
+                <th key={i} className="px-6 py-4 font-semibold">
                   {h}
                 </th>
               ))}
@@ -86,7 +86,7 @@ export const SupportTicketTable: React.FC<SupportTicketTableProps> = ({
                 <td className="px-6 py-4 text-right">
                   <button
                     className={cn(
-                      "text-[11px] font-black uppercase text-orange-600 hover:text-white hover:bg-orange-600",
+                      "text-[11px] font-semibold uppercase text-orange-600 hover:text-white hover:bg-orange-600",
                       "px-4 py-2 rounded-xl transition-all border border-orange-100 hover:border-orange-600 hover:shadow-lg hover:shadow-orange-200"
                     )}
                   >

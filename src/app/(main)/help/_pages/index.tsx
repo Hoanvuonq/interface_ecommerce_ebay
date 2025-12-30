@@ -28,7 +28,7 @@ export default function HelpScreen() {
         
         <section className="bg-white pt-16 pb-12 border-b border-slate-100 relative overflow-hidden text-center">
           <div className="max-w-3xl mx-auto px-4 relative z-10">
-            <h1 className="text-3xl md:text-4xl font-black tracking-tighter mb-4 uppercase">
+            <h1 className="text-3xl md:text-4xl font-semibold tracking-tighter mb-4 uppercase">
               Chúng tôi có thể <span className="text-orange-600">giúp gì?</span>
             </h1>
             <div className="relative max-w-xl mx-auto group">
@@ -72,7 +72,7 @@ export default function HelpScreen() {
 
             <div className="lg:col-span-8">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-black tracking-tight flex items-center gap-2">
+                <h2 className="text-xl font-semibold tracking-tight flex items-center gap-2">
                   <HelpCircle size={20} className="text-orange-600" /> Phổ biến
                 </h2>
                 <span className="text-slate-400 text-[10px] italic">{filteredFaqs.length} kết quả</span>

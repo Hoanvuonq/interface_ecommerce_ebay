@@ -58,7 +58,7 @@ export const UserTableFilter: React.FC<UserTableFilterProps> = ({ logic }) => {
           </button>
           <button
             onClick={() => logic.fetchUsers()}
-            className="flex items-center gap-2 px-8 py-3 bg-orange-500 text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-lg shadow-orange-200 hover:scale-[1.02] active:scale-95 transition-all"
+            className="flex items-center gap-2 px-8 py-3 bg-orange-500 text-white rounded-2xl font-semibold text-xs uppercase tracking-widest shadow-lg shadow-orange-200 hover:scale-[1.02] active:scale-95 transition-all"
           >
             <RotateCw
               size={16}
@@ -88,7 +88,7 @@ export const UserTableFilter: React.FC<UserTableFilterProps> = ({ logic }) => {
                 })
               }
               className={cn(
-                "px-6 py-4 font-black text-[11px] uppercase tracking-widest transition-all relative whitespace-nowrap group",
+                "px-6 py-4 font-semibold text-[11px] uppercase tracking-widest transition-all relative whitespace-nowrap group",
                 isActive
                   ? "text-orange-500"
                   : "text-slate-400 hover:text-slate-600"

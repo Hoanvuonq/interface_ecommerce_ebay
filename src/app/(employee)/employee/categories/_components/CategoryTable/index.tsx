@@ -106,7 +106,7 @@ export default function CategoryTable() {
           <td className="px-6 py-4 text-center">
             <span
               className={cn(
-                "px-3 py-1 text-[10px] font-black rounded-full uppercase shadow-xs",
+                "px-3 py-1 text-[10px] font-semibold rounded-full uppercase shadow-xs",
                 node.active
                   ? "bg-emerald-50 text-emerald-600"
                   : "bg-slate-100 text-slate-400"
@@ -147,7 +147,7 @@ export default function CategoryTable() {
   return (
     <div className="p-8 bg-[#F8FAFC] min-h-screen space-y-8">
       <div className="flex justify-between items-center">
-        <h1 className="text-4xl font-black text-slate-900 tracking-tighter uppercase italic">
+        <h1 className="text-4xl font-semibold text-slate-900 tracking-tighter uppercase italic">
           Danh mục <span className="text-orange-500">Sản phẩm</span>
         </h1>
         <button
@@ -155,7 +155,7 @@ export default function CategoryTable() {
             setEditingCategory(null);
             setIsFormModalOpen(true);
           }}
-          className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3.5 rounded-2xl font-black uppercase text-xs tracking-widest shadow-xl shadow-orange-200 transition-all active:scale-95 flex items-center gap-2"
+          className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3.5 rounded-2xl font-semibold uppercase text-xs tracking-widest shadow-xl shadow-orange-200 transition-all active:scale-95 flex items-center gap-2"
         >
           <Plus size={18} /> Thêm mới
         </button>
@@ -193,7 +193,7 @@ export default function CategoryTable() {
                 key={t}
                 onClick={() => setActiveTab(t)}
                 className={cn(
-                  "px-6 py-2 text-[10px] font-black uppercase rounded-lg transition-all",
+                  "px-6 py-2 text-[10px] font-semibold uppercase rounded-lg transition-all",
                   activeTab === t
                     ? "bg-white text-orange-500 shadow-sm"
                     : "text-slate-400 hover:text-slate-600"
@@ -223,7 +223,7 @@ export default function CategoryTable() {
         </div>
 
         <table className="w-full text-left">
-          <thead className="bg-slate-50/50 text-[10px] uppercase font-black tracking-widest text-slate-400 border-b border-slate-50">
+          <thead className="bg-slate-50/50 text-[10px] uppercase font-semibold tracking-widest text-slate-400 border-b border-slate-50">
             <tr>
               <th className="px-8 py-5">Cấu trúc tên</th>
               <th className="px-6 py-5">Slug</th>

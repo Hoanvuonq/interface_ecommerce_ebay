@@ -79,7 +79,7 @@ const AnimatedBadge: React.FC<AnimatedBadgeProps> = ({
         <div
             className={cn(
                 "inline-flex items-center gap-1 uppercase italic transition-all duration-500",
-                "rounded-full font-black tracking-tighter text-white border border-white/20",
+                "rounded-full font-semibold tracking-tighter text-white border border-white/20",
                 config.bg,
                 config.accent,
                 sizeStyle.padding,

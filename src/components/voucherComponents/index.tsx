@@ -33,7 +33,6 @@ export const VoucherComponents: React.FC<VoucherInputProps> = ({
     const [error, setError] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
 
-    // ✅ Lấy voucher Order và Shipping từ appliedVouchers (được sync từ preview API)
     const activeOrderVoucher = appliedVouchers?.order || (appliedVoucher ? { code: appliedVoucher.code, discount: appliedVoucher.discount } : null);
     const activeShippingVoucher = appliedVouchers?.shipping;
     const hasAnyVoucher = !!activeOrderVoucher || !!activeShippingVoucher;
@@ -83,10 +82,10 @@ export const VoucherComponents: React.FC<VoucherInputProps> = ({
 
                             <div className="relative z-10 space-y-2.5">
                                 <div className="flex items-center justify-between border-b border-emerald-200/50 pb-1.5">
-                                    <p className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">
+                                    <p className="text-[10px] font-semibold text-emerald-600 uppercase tracking-widest">
                                         Voucher đang áp dụng
                                     </p>
-                                    <div className="bg-emerald-500 text-white text-[9px] px-2 py-0.5 rounded-full font-black uppercase">
+                                    <div className="bg-emerald-500 text-white text-[9px] px-2 py-0.5 rounded-full font-semibold uppercase">
                                         Tốt nhất
                                     </div>
                                 </div>
@@ -100,13 +99,13 @@ export const VoucherComponents: React.FC<VoucherInputProps> = ({
                                             </div>
                                             <div className="flex flex-col">
                                                 <span className="text-slate-400 text-[9px] font-bold uppercase leading-none mb-1">Giảm giá</span>
-                                                <span className="text-slate-900 font-black text-xs truncate uppercase tracking-tighter">
+                                                <span className="text-slate-900 font-semibold text-xs truncate uppercase tracking-tighter">
                                                     {activeOrderVoucher.code}
                                                 </span>
                                             </div>
                                         </div>
                                         <div className="text-right">
-                                            <span className="text-red-600 font-black text-sm italic">
+                                            <span className="text-red-600 font-semibold text-sm italic">
                                                 -{formatPrice(activeOrderVoucher.discount || 0)}
                                             </span>
                                         </div>
@@ -121,13 +120,13 @@ export const VoucherComponents: React.FC<VoucherInputProps> = ({
                                             </div>
                                             <div className="flex flex-col">
                                                 <span className="text-slate-400 text-[9px] font-bold uppercase leading-none mb-1">Vận chuyển</span>
-                                                <span className="text-slate-900 font-black text-xs truncate uppercase tracking-tighter">
+                                                <span className="text-slate-900 font-semibold text-xs truncate uppercase tracking-tighter">
                                                     {activeShippingVoucher.code}
                                                 </span>
                                             </div>
                                         </div>
                                         <div className="text-right">
-                                            <span className="text-red-600 font-black text-sm italic">
+                                            <span className="text-red-600 font-semibold text-sm italic">
                                                 -{formatPrice(activeShippingVoucher.discount || 0)}
                                             </span>
                                         </div>
@@ -147,7 +146,7 @@ export const VoucherComponents: React.FC<VoucherInputProps> = ({
                             onClick={() => setModalOpen(true)} 
                             className="w-full flex items-center justify-between px-5 py-4 bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl text-slate-500 hover:border-orange-400 hover:text-orange-600 transition-all group active:scale-[0.98]"
                         >
-                            <div className="flex items-center gap-3 font-black text-xs uppercase tracking-widest">
+                            <div className="flex items-center gap-3 font-semibold text-xs uppercase tracking-widest">
                                 <Ticket className="w-5 h-5 text-orange-500 group-hover:rotate-12 transition-transform" />
                                 <span>{shopName ? `Voucher ${shopName}` : 'Chọn mã giảm giá'}</span>
                             </div>
@@ -201,7 +200,7 @@ export const VoucherComponents: React.FC<VoucherInputProps> = ({
                     type="button" 
                     onClick={handleApplyInput} 
                     disabled={loading || !voucherCode} 
-                    className="px-6 bg-slate-900 text-white font-black text-xs uppercase rounded-xl hover:bg-orange-500 disabled:bg-slate-200 transition-all active:scale-95"
+                    className="px-6 bg-slate-900 text-white font-semibold text-xs uppercase rounded-xl hover:bg-orange-500 disabled:bg-slate-200 transition-all active:scale-95"
                 >
                     {loading ? <Loader2 className="animate-spin w-4 h-4" /> : 'Áp dụng'}
                 </button>
