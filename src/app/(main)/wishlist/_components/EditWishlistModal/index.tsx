@@ -144,7 +144,7 @@ export default function EditWishlistModal({
             <button 
                 disabled={updating || uploadingImage}
                 onClick={handleSubmit}
-                className="flex-[2] flex items-center justify-center gap-2 px-6 py-3.5 bg-slate-900 hover:bg-orange-600 disabled:bg-slate-200 text-white rounded-xl font-black transition-all active:scale-95 shadow-xl shadow-slate-200 uppercase text-xs tracking-[0.2em]"
+                className="flex-2 flex items-center justify-center gap-2 px-6 py-3.5 bg-slate-900 hover:bg-orange-600 disabled:bg-slate-200 text-white rounded-xl font-black transition-all active:scale-95 shadow-xl shadow-slate-200 uppercase text-xs tracking-[0.2em]"
             >
                 {updating ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
                 {updating ? "ĐANG LƯU..." : "LƯU THAY ĐỔI"}
@@ -164,7 +164,7 @@ export default function EditWishlistModal({
             <div className="space-y-6">
                 <div className="space-y-3">
                     <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Ảnh bìa danh mục</label>
-                    <div className="relative group aspect-[21/9] rounded-3xl border-2 border-dashed border-slate-200 bg-slate-50 overflow-hidden flex items-center justify-center transition-all hover:border-orange-300 shadow-inner">
+                    <div className="relative group aspect-21/9 rounded-3xl border-2 border-dashed border-slate-200 bg-slate-50 overflow-hidden flex items-center justify-center transition-all hover:border-orange-300 shadow-inner">
                         {previewImage ? (
                             <>
                                 <img src={previewImage} alt="Preview" className="w-full h-full object-cover" />
@@ -187,11 +187,10 @@ export default function EditWishlistModal({
                             </label>
                         )}
 
-                        {/* Progress Bar Overlay */}
                         {uploadingImage && (
                             <div className="absolute inset-0 bg-white/80 backdrop-blur-sm flex flex-col items-center justify-center p-6">
                                 <Loader2 className="w-8 h-8 animate-spin text-orange-500 mb-2" />
-                                <div className="w-full max-w-[200px] h-1 bg-slate-100 rounded-full overflow-hidden">
+                                <div className="w-full max-w-50 h-1 bg-slate-100 rounded-full overflow-hidden">
                                     <motion.div 
                                         className="h-full bg-orange-500"
                                         initial={{ width: 0 }}

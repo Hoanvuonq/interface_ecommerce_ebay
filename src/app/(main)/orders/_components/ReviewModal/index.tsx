@@ -322,14 +322,12 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
   if (!open || !mounted) return null;
 
   const modalContent = (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 animate-fade-in font-sans">
-      {/* Backdrop */}
+    <div className="fixed inset-0 z-9999 flex items-center justify-center p-4 sm:p-6 animate-fade-in font-sans">
       <div
         className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
         onClick={handleClose}
       ></div>
 
-      {/* Modal Container */}
       <div className="relative w-full max-w-xl bg-white rounded-2xl shadow-2xl transform transition-all flex flex-col overflow-hidden border border-gray-100 z-10 max-h-[90vh]">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 bg-white">
@@ -347,9 +345,7 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
           </button>
         </div>
 
-        {/* Scrollable Body */}
         <div className="p-6 overflow-y-auto custom-scrollbar flex-1">
-          {/* Product Info */}
           <div className="mb-6 p-4 bg-gray-50 border border-gray-100 rounded-xl">
             <p className="text-xs text-gray-500 font-medium uppercase tracking-wide mb-1">
               Sản phẩm
@@ -360,7 +356,6 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
           </div>
 
           <div className="space-y-6">
-            {/* Rating Section */}
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-3">
                 Chất lượng sản phẩm <span className="text-red-500">*</span>
@@ -400,7 +395,6 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
               </div>
             </div>
 
-            {/* Comment Section */}
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-2">
                 Nhận xét{" "}
@@ -421,7 +415,6 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
               </div>
             </div>
 
-            {/* Media Upload Section (Only for Create Mode) */}
             {!isUpdateMode && (
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-2">
@@ -451,7 +444,6 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
                         />
                       )}
 
-                      {/* Uploading Overlay */}
                       {(file.status === "uploading" ||
                         uploadingFiles.has(file.uid)) && (
                         <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
@@ -459,14 +451,12 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
                         </div>
                       )}
 
-                      {/* Error Overlay */}
                       {file.status === "error" && (
                         <div className="absolute inset-0 bg-red-500/20 flex items-center justify-center border-2 border-red-500">
                           <AlertCircle className="w-6 h-6 text-red-600" />
                         </div>
                       )}
 
-                      {/* Type Indicator */}
                       <div className="absolute top-1 left-1 bg-black/50 p-0.5 rounded text-white">
                         {file.type?.startsWith("video/") ? (
                           <Video size={10} />
@@ -475,7 +465,6 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
                         )}
                       </div>
 
-                      {/* Remove Button */}
                       <button
                         onClick={() => handleRemoveFile(file.uid)}
                         className="absolute top-1 right-1 bg-white rounded-full p-0.5 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity hover:bg-gray-100"
@@ -486,7 +475,6 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
                     </div>
                   ))}
 
-                  {/* Upload Button */}
                   {fileList.length < 7 && (
                     <div
                       onClick={() => fileInputRef.current?.click()}
@@ -498,7 +486,6 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
                   )}
                 </div>
 
-                {/* Hidden Input */}
                 <input
                   type="file"
                   ref={fileInputRef}
@@ -510,7 +497,6 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
               </div>
             )}
 
-            {/* Note for Create Mode */}
             {!isUpdateMode && (
               <div className="flex gap-2 p-3 bg-blue-50 border border-blue-100 rounded-lg text-blue-700">
                 <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
