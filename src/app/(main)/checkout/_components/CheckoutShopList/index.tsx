@@ -123,7 +123,7 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
                       compact
                       shopId={shop.shopId}
                       shopName={shop.shopName}
-                      onSelectVoucher={(v) =>
+                      onSelectVoucher={(v: any) =>
                         handleSelectShopVoucher(shop.shopId, v)
                       }
                       appliedVouchers={{
