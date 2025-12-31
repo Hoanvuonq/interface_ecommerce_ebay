@@ -169,7 +169,7 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
                         onClick={onCheckout}
                         disabled={!hasSelectedItems || loading}
                         className={cn(
-                            "w-full h-14 rounded-xl font-semibold text-lg transition-all shadow-lg active:scale-95 flex items-center justify-center gap-3 border-none",
+                            "w-full h-12 rounded-2xl font-semibold text-md transition-all shadow-lg active:scale-95 flex items-center justify-center gap-3 border-none",
                             hasSelectedItems 
                                 ? "bg-orange-500 hover:bg-orange-600 text-white shadow-orange-200" 
                                 : "bg-gray-200 text-gray-400 cursor-not-allowed shadow-none"
@@ -177,14 +177,13 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
                     >
                         {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : (
                             <>
-                                <ShoppingCart size={20} />
+                                <ShoppingCart size={18} />
                                 <span>THANH TOÁN {hasSelectedItems && `(${selectedItems})`}</span>
                             </>
                         )}
                     </button>
                 </div>
 
-                {/* Promotional Message */}
                 {hasSelectedItems && selectedDiscount > 0 && (
                     <div className="flex items-center gap-2 justify-center bg-green-50 p-2.5 rounded-xl border border-green-100">
                         <Gift className="w-4 h-4 text-green-600 animate-bounce" />
@@ -194,7 +193,6 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
                     </div>
                 )}
 
-                {/* Continue Shopping */}
                 {!hasSelectedItems && (
                     <div className="text-center pt-2">
                         <Link href="/products" className="text-xs font-bold text-blue-500 hover:text-blue-600 transition-colors inline-flex items-center gap-1 group">

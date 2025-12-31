@@ -49,7 +49,7 @@ export const CategoryItem = (
           )}
         </div>
       </div>
-      <p className="text-[9px] sm:text-[10px] font-bold uppercase text-center leading-tight line-clamp-2 h-6 px-0.5 text-slate-500 group-hover/item:text-orange-600 transition-colors">
+      <p className="text-[9px] sm:text-[10px] font-bold  text-center line-clamp-1 h-6 px-0.5 text-slate-600 group-hover/item:text-orange-600 transition-colors">
         {category.name}
       </p>
     </Link>

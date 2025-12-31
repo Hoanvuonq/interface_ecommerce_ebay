@@ -72,7 +72,7 @@ export const ProductScreen = () => {
                 { title: "Sản phẩm", href: "" },
               ]}
             />
-            <div className="flex items-center gap-3">
+            {/* <div className="flex items-center gap-3">
               <CustomTag icon={<Clock className="w-3.5 h-3.5" />} color="blue">
                 Mới cập nhật
               </CustomTag>
@@ -83,7 +83,7 @@ export const ProductScreen = () => {
               >
                 {stats.featured} Yêu thích
               </CustomTag>
-            </div>
+            </div> */}
           </div>
 
           <div className="lg:hidden mb-6">
@@ -167,14 +167,14 @@ export const ProductScreen = () => {
                 </div>
               )}
 
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+              <div className="bg-slate-50 rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <div className="flex overflow-x-auto no-scrollbar border-b border-gray-100">
                   {tabItems.map((item) => (
                     <button
                       key={item.key}
                       onClick={() => setActiveTab(item.key as TabView)}
                       className={cn(
-                        "flex-1 cursor-pointer flex items-center justify-center gap-2 py-4 px-6 text-sm font-bold transition-all min-w-max",
+                        "flex-1 cursor-pointer flex items-center justify-center gap-2 py-3 px-4 text-sm font-bold transition-all min-w-max",
                         activeTab === item.key
                           ? "text-orange-600 border-b-2 border-orange-600 bg-orange-50/50"
                           : "text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:bg-gray-50"
@@ -186,7 +186,7 @@ export const ProductScreen = () => {
                   ))}
                 </div>
 
-                <div className="p-4 sm:p-6 bg-white">
+                <div className="p-2 bg-white rounded-3xl">
                   {activeTab === "all" && (
                     <ProductFilters
                       value={filters}

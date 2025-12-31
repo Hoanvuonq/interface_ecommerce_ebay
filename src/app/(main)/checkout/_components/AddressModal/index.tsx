@@ -15,7 +15,9 @@ const AddressModal: React.FC<AddressModalProps> = ({
   onConfirmNew,
 }) => {
   const [activeTab, setActiveTab] = useState<"saved" | "new">("saved");
-  const [selectedId, setSelectedId] = useState<string | undefined>(currentAddressId);
+  const [selectedId, setSelectedId] = useState<string | undefined>(
+    currentAddressId
+  );
 
   const [newAddress, setNewAddress] = useState<NewAddressForm>({
     recipientName: "",
@@ -27,7 +29,6 @@ const AddressModal: React.FC<AddressModalProps> = ({
     email: "",
   });
 
-  // Đồng bộ tab và địa chỉ đã chọn khi mở modal
   useEffect(() => {
     if (isOpen) {
       setSelectedId(currentAddressId);
@@ -39,7 +40,6 @@ const AddressModal: React.FC<AddressModalProps> = ({
   if (!isOpen) return null;
 
   const handleConfirm = (e: React.MouseEvent) => {
-    // Ngăn chặn trigger submit form cha
     e.preventDefault();
     e.stopPropagation();
 
@@ -61,11 +61,11 @@ const AddressModal: React.FC<AddressModalProps> = ({
 
   const modalContent = (
     <div className="fixed inset-0 z-999 flex items-center justify-center p-4">
-      <div 
-        className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" 
-        onClick={onClose} 
+      <div
+        className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+        onClick={onClose}
       />
-      
+
       <div className="relative bg-white rounded-4xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
         <div className="px-8 py-6 border-b border-slate-100 flex justify-between items-center bg-white">
           <div>
@@ -73,7 +73,9 @@ const AddressModal: React.FC<AddressModalProps> = ({
               Địa chỉ <span className="text-orange-500">giao hàng</span>
             </h2>
             <p className="text-xs text-slate-400 font-bold uppercase tracking-widest mt-1">
-              {activeTab === 'saved' ? 'Chọn từ danh sách đã lưu' : 'Nhập thông tin nhận hàng mới'}
+              {activeTab === "saved"
+                ? "Chọn từ danh sách đã lưu"
+                : "Nhập thông tin nhận hàng mới"}
             </p>
           </div>
           <button
@@ -111,7 +113,6 @@ const AddressModal: React.FC<AddressModalProps> = ({
           </button>
         </div>
 
-        {/* Scrollable Content */}
         <div className="px-8 py-6 overflow-y-auto flex-1 custom-scrollbar">
           {activeTab === "saved" ? (
             <div className="grid grid-cols-1 gap-3">
@@ -129,10 +130,16 @@ const AddressModal: React.FC<AddressModalProps> = ({
                       }`}
                     >
                       <div className="flex gap-4">
-                        <div className={`w-6 h-6 rounded-full border-2 mt-0.5 flex items-center justify-center shrink-0 transition-colors ${
-                            isSelected ? "border-orange-500 bg-orange-500" : "border-slate-300 bg-white"
-                        }`}>
-                          {isSelected && <div className="w-2 h-2 rounded-full bg-white" />}
+                        <div
+                          className={`w-6 h-6 rounded-full border-2 mt-0.5 flex items-center justify-center shrink-0 transition-colors ${
+                            isSelected
+                              ? "border-orange-500 bg-orange-500"
+                              : "border-slate-300 bg-white"
+                          }`}
+                        >
+                          {isSelected && (
+                            <div className="w-2 h-2 rounded-full bg-white" />
+                          )}
                         </div>
 
                         <div className="flex-1 min-w-0">
@@ -141,7 +148,9 @@ const AddressModal: React.FC<AddressModalProps> = ({
                               {addr.recipientName}
                             </span>
                             <span className="text-slate-300">|</span>
-                            <span className="text-slate-500 font-bold text-sm">{addr.phone}</span>
+                            <span className="text-slate-500 font-bold text-sm">
+                              {addr.phone}
+                            </span>
                             {index === 0 && (
                               <span className="ml-auto text-[9px] font-semibold bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-md uppercase tracking-tighter">
                                 Gần đây
@@ -149,7 +158,8 @@ const AddressModal: React.FC<AddressModalProps> = ({
                             )}
                           </div>
                           <p className="text-xs text-slate-400 font-bold leading-relaxed line-clamp-2">
-                            {addr.detailAddress}, {addr.ward}, {addr.district}, {addr.province}
+                            {addr.detailAddress}, {addr.ward}, {addr.district},{" "}
+                            {addr.province}
                           </p>
                         </div>
                       </div>
@@ -158,10 +168,12 @@ const AddressModal: React.FC<AddressModalProps> = ({
                 })
               ) : (
                 <div className="text-center py-16">
-                   <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Info className="text-slate-300" size={32} />
-                   </div>
-                   <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">Danh sách trống</p>
+                  <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Info className="text-slate-300" size={32} />
+                  </div>
+                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
+                    Danh sách trống
+                  </p>
                 </div>
               )}
             </div>
@@ -174,7 +186,12 @@ const AddressModal: React.FC<AddressModalProps> = ({
                     placeholder="NGUYỄN VĂN A"
                     className="w-full px-5 py-3 rounded-2xl border-2 border-slate-100 focus:border-orange-500 outline-none transition-all font-bold text-sm uppercase italic tracking-tight"
                     value={newAddress.recipientName}
-                    onChange={(e) => setNewAddress({...newAddress, recipientName: e.target.value.toUpperCase()})}
+                    onChange={(e) =>
+                      setNewAddress({
+                        ...newAddress,
+                        recipientName: e.target.value.toUpperCase(),
+                      })
+                    }
                   />
                 </InputGroup>
                 <InputGroup label="Số điện thoại" required>
@@ -183,7 +200,12 @@ const AddressModal: React.FC<AddressModalProps> = ({
                     placeholder="09xx xxx xxx"
                     className="w-full px-5 py-3 rounded-2xl border-2 border-slate-100 focus:border-orange-500 outline-none transition-all font-bold text-sm"
                     value={newAddress.phoneNumber}
-                    onChange={(e) => setNewAddress({...newAddress, phoneNumber: e.target.value})}
+                    onChange={(e) =>
+                      setNewAddress({
+                        ...newAddress,
+                        phoneNumber: e.target.value,
+                      })
+                    }
                   />
                 </InputGroup>
               </div>
@@ -194,7 +216,12 @@ const AddressModal: React.FC<AddressModalProps> = ({
                   placeholder="SỐ NHÀ, TÊN ĐƯỜNG..."
                   className="w-full px-5 py-3 rounded-2xl border-2 border-slate-100 focus:border-orange-500 outline-none transition-all font-bold text-sm"
                   value={newAddress.detailAddress}
-                  onChange={(e) => setNewAddress({...newAddress, detailAddress: e.target.value})}
+                  onChange={(e) =>
+                    setNewAddress({
+                      ...newAddress,
+                      detailAddress: e.target.value,
+                    })
+                  }
                 />
               </InputGroup>
 
@@ -205,7 +232,9 @@ const AddressModal: React.FC<AddressModalProps> = ({
                     placeholder="TP. HCM"
                     className="w-full px-5 py-3 rounded-2xl border-2 border-slate-100 focus:border-orange-500 outline-none transition-all font-bold text-sm"
                     value={newAddress.province}
-                    onChange={(e) => setNewAddress({...newAddress, province: e.target.value})}
+                    onChange={(e) =>
+                      setNewAddress({ ...newAddress, province: e.target.value })
+                    }
                   />
                 </InputGroup>
                 <InputGroup label="Quận/Huyện" required>
@@ -214,7 +243,9 @@ const AddressModal: React.FC<AddressModalProps> = ({
                     placeholder="QUẬN 1"
                     className="w-full px-5 py-3 rounded-2xl border-2 border-slate-100 focus:border-orange-500 outline-none transition-all font-bold text-sm"
                     value={newAddress.district}
-                    onChange={(e) => setNewAddress({...newAddress, district: e.target.value})}
+                    onChange={(e) =>
+                      setNewAddress({ ...newAddress, district: e.target.value })
+                    }
                   />
                 </InputGroup>
                 <InputGroup label="Phường/Xã" required>
@@ -223,7 +254,9 @@ const AddressModal: React.FC<AddressModalProps> = ({
                     placeholder="PHƯỜNG..."
                     className="w-full px-5 py-3 rounded-2xl border-2 border-slate-100 focus:border-orange-500 outline-none transition-all font-bold text-sm"
                     value={newAddress.ward}
-                    onChange={(e) => setNewAddress({...newAddress, ward: e.target.value})}
+                    onChange={(e) =>
+                      setNewAddress({ ...newAddress, ward: e.target.value })
+                    }
                   />
                 </InputGroup>
               </div>
@@ -231,17 +264,16 @@ const AddressModal: React.FC<AddressModalProps> = ({
           )}
         </div>
 
-        {/* Footer Actions */}
         <div className="px-8 py-6 border-t border-slate-100 flex flex-col sm:flex-row justify-end gap-3 bg-slate-50/50">
-          <Button 
-            type="button" 
-            variant="edit" 
-            onClick={onClose} 
+          <Button
+            type="button"
+            variant="edit"
+            onClick={onClose}
             className="border-0 bg-transparent "
           >
             Hủy bỏ
           </Button>
-          
+
           <Button
             type="button"
             variant="edit"
@@ -249,7 +281,11 @@ const AddressModal: React.FC<AddressModalProps> = ({
             className="min-w-40 shadow-orange-200"
           >
             <div className="flex items-center gap-2 uppercase tracking-widest text-[11px] font-semibold">
-              {activeTab === "new" ? <Plus size={16} strokeWidth={3} /> : <CheckCircle2 size={16} strokeWidth={3} />}
+              {activeTab === "new" ? (
+                <Plus size={16} strokeWidth={3} />
+              ) : (
+                <CheckCircle2 size={16} strokeWidth={3} />
+              )}
               Xác nhận địa chỉ
             </div>
           </Button>
@@ -261,7 +297,15 @@ const AddressModal: React.FC<AddressModalProps> = ({
   return createPortal(modalContent, document.body);
 };
 
-const InputGroup = ({ label, required, children }: { label: string; required?: boolean; children: React.ReactNode }) => (
+const InputGroup = ({
+  label,
+  required,
+  children,
+}: {
+  label: string;
+  required?: boolean;
+  children: React.ReactNode;
+}) => (
   <div className="flex flex-col gap-2">
     <label className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest ml-1">
       {label} {required && <span className="text-orange-500">*</span>}

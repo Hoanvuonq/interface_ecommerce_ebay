@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { IPortalModal } from "./type";
+import { cn } from "@/utils/cn";
 
 export const PortalModal: React.FC<IPortalModal> = ({
   isOpen,
@@ -54,15 +55,17 @@ export const PortalModal: React.FC<IPortalModal> = ({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 10 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className={`
+            className={cn(
+              `
               relative w-full ${width} bg-white rounded-2xl shadow-2xl flex flex-col 
               overflow-hidden border border-gray-100 z-10 max-h-[90vh] 
               ${className}
-            `}
+            `
+            )}
           >
             {title && (
-              <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-white sticky top-0 z-20">
-                <div className="text-xl font-bold text-gray-800">{title}</div>
+              <div className="flex items-center justify-between px-5 py-3 border-b border-gray-100 bg-white sticky top-0 z-20">
+                <div className="text-base font-bold text-gray-800">{title}</div>
                 <button
                   onClick={onClose}
                   className="p-2 cursor-pointer text-gray-400 hover:text-orange-600 hover:bg-amber-50 rounded-lg transition-colors hover:scale-105 focus:outline-none"
@@ -72,12 +75,12 @@ export const PortalModal: React.FC<IPortalModal> = ({
               </div>
             )}
 
-            <div className="p-6 overflow-y-auto custom-scrollbar flex-1 relative">
+            <div className="p-4 overflow-y-auto custom-scrollbar flex-1 relative">
               {children}
             </div>
 
             {footer && (
-              <div className="bg-gray-50 px-6 py-4 border-t border-gray-100 flex justify-end gap-2 sticky bottom-0 z-20">
+              <div className="bg-gray-50 px-6 py-2 border-t border-gray-100 flex justify-end gap-2 sticky bottom-0 z-20">
                 {footer}
               </div>
             )}

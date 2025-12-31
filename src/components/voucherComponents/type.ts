@@ -26,6 +26,8 @@ export interface VoucherModalProps {
     open: boolean;
     onClose: () => void;
     onConfirm: (selectedVouchers?: { order?: VoucherOption; shipping?: VoucherOption }) => void;
+    vouchersData?: VoucherOption[] | GroupedVouchers;
+    isLoading?: boolean;
     onFetchVouchers?: () => Promise<VoucherOption[] | GroupedVouchers>;
     onApplyVoucherCode?: (code: string) => Promise<{ success: boolean; voucher?: VoucherOption; error?: string }>;
     appliedVouchers?: {

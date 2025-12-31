@@ -26,6 +26,7 @@ import { useRouter } from "next/navigation";
 import { cn } from "@/utils/cn";
 import { CustomButton } from "@/components/button";
 import { TabsChangeLayout } from "../TabsChangeLayout";
+import { useToast } from "@/hooks/useToast";
 
 const CustomPagination: React.FC<{
   page: number;
@@ -35,6 +36,7 @@ const CustomPagination: React.FC<{
 }> = ({ page, pageSize, total, onChange }) => {
   const totalPages = Math.ceil(total / pageSize);
   if (totalPages <= 1) return null;
+ 
 
   return (
     <div className="flex items-center justify-center gap-4 mt-12 bg-white p-2 rounded-2xl shadow-sm border border-gray-100 w-fit mx-auto">
@@ -42,7 +44,7 @@ const CustomPagination: React.FC<{
         variant="outline"
         onClick={() => onChange(page - 1, pageSize)}
         disabled={page <= 1}
-        className="!h-10 !w-10 !p-0 rounded-xl"
+        className="h-10 w-10 p-0 rounded-xl"
         icon={<ArrowLeft size={18} />}
       />
       <div className="flex items-center gap-2 px-4">
@@ -56,7 +58,7 @@ const CustomPagination: React.FC<{
         variant="outline"
         onClick={() => onChange(page + 1, pageSize)}
         disabled={page >= totalPages}
-        className="!h-10 !w-10 !p-0 rounded-xl"
+        className="h-10 w-10 p-0 rounded-xl"
         icon={<ArrowRight size={18} />}
       />
     </div>
@@ -73,7 +75,7 @@ export default function ProductList({
   const router = useRouter();
   const { quickAddToCart } = useCart();
 
-  // State Management
+   const { error , warning, success : ToastSuccsess } = useToast();
   const [products, setProducts] = useState<PublicProductListItemDTO[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -82,7 +84,6 @@ export default function ProductList({
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [addingToCart, setAddingToCart] = useState<string | null>(null);
 
-  // Fetching Logic
   const fetchProducts = useCallback(async () => {
     try {
       setLoading(true);
@@ -119,7 +120,7 @@ export default function ProductList({
       setProducts(data?.content || (Array.isArray(data) ? data : []));
       setTotal(data?.totalElements || (Array.isArray(data) ? data.length : 0));
     } catch (err) {
-      toast.error("Không thể kết nối đến máy chủ");
+      error("Không thể kết nối đến máy chủ");
       setProducts([]);
     } finally {
       setLoading(false);
@@ -144,12 +145,12 @@ export default function ProductList({
         detail.data.variants?.find((v: any) => v.stockQuantity > 0) ||
         detail.data.variants?.[0];
 
-      if (!variant) return toast.warning("Sản phẩm hết hàng");
+      if (!variant) return warning("Sản phẩm hết hàng");
 
       const success = await quickAddToCart(variant.id, 1);
-      if (success) toast.success(`Đã thêm ${product.name}`);
-    } catch (error) {
-      toast.error("Lỗi khi thêm vào giỏ");
+      if (success) ToastSuccsess(`Đã thêm ${product.name}`);
+    } catch (err) {
+      error("Lỗi khi thêm vào giỏ");
     } finally {
       setAddingToCart(null);
     }

@@ -93,11 +93,12 @@ export const NotificationDropdown = () => {
       align="right"
       onOpenChange={(open) => open && loadRecentNotifications()}
     >
-      <div className="p-4 font-semibold text-sm uppercase tracking-widest border-b border-gray-100 bg-white flex justify-between items-center text-slate-800">
-        Thông báo mới
-        {loading && (
-          <Loader2 size={14} className="animate-spin text-orange-500" />
-        )}
+      
+       <div className="bg-white border-b border-gray-100 p-4 flex items-center gap-2">
+        <Bell size={16} className="text-gray-400" />
+        <span className="text-sm font-bold text-gray-700">
+          Thông báo mới
+        </span>
       </div>
 
       <div className="max-h-112.5 overflow-y-auto custom-scrollbar bg-slate-50/30">

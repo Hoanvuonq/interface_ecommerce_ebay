@@ -8,7 +8,6 @@ import {
   NotificationDropdown,
   TopHeader,
   HotKeywords,
-  
 } from "../_components";
 import { Search, MobileMenuDrawer } from "@/components";
 import { useProductSearch } from "@/hooks/useProductSearch";
@@ -18,8 +17,6 @@ import {
   SuggestionItemDTO,
 } from "@/services/search/search.service";
 import { AccountDropdown } from "../_components/AccountDropdown";
-
-const PRIMARY_COLOR = "var(--color-primary)";
 
 export const Header = () => {
   const isLoggedIn = !!isAuthenticated();
@@ -63,10 +60,7 @@ export const Header = () => {
         <TopHeader />
       </div>
 
-      <div
-        className="backdrop-blur-md bg-opacity-95"
-        style={{ backgroundColor: PRIMARY_COLOR }}
-      >
+      <div className="backdrop-blur-md bg-opacity-95 background-main-gradient">
         <div className="container mx-auto px-3 sm:px-4 lg:px-30">
           <div className="flex flex-col md:flex-row items-center justify-between py-3 md:h-18 h-auto gap-3">
             <div className="flex items-center justify-between w-full md:w-auto gap-4">
@@ -88,8 +82,8 @@ export const Header = () => {
               </div>
 
               <div className="flex md:hidden items-center gap-3">
-                  <CartBadge />
-                <AccountDropdown/>
+                <CartBadge />
+                <AccountDropdown />
               </div>
             </div>
 
@@ -115,7 +109,7 @@ export const Header = () => {
             <div className="hidden md:flex items-center space-x-3 lg:space-x-5 shrink-0">
               {isLoggedIn && <NotificationDropdown />}
               <CartBadge />
-              <AccountDropdown/>
+              <AccountDropdown />
             </div>
           </div>
         </div>

@@ -211,7 +211,7 @@ export const AddressFormModal = ({
       <div className="p-2 bg-orange-100 rounded-full text-orange-600">
         <MapPin size={20} />
       </div>
-      <h3 className="text-xl font-bold text-gray-800">
+      <h3 className="text-sm font-semibold text-gray-700">
         {initialValues ? "Cập nhật địa chỉ" : "Thêm địa chỉ mới"}
       </h3>
     </div>
@@ -229,7 +229,7 @@ export const AddressFormModal = ({
           type="login"
           loading={loading}
           className="flex w-40 items-center gap-2 px-5 py-2 rounded-lg text-sm font-semibold shadow-md shadow-orange-500/20 transition-all active:scale-95 border-0 h-auto"
-        >
+        > 
           <span className="flex items-center gap-2">
             {loading ? (
               <Loader2 className="animate-spin w-4 h-4" />
@@ -256,7 +256,6 @@ export const AddressFormModal = ({
         onSubmit={handleSubmit}
         className="space-y-6 py-2"
       >
-        {/* 1. Tên & SĐT */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
             <label className="text-sm font-semibold text-gray-700">
@@ -267,7 +266,7 @@ export const AddressFormModal = ({
               value={formData.recipientName}
               onChange={handleInputChange}
               placeholder="VD: Nguyễn Văn A"
-              className="w-full h-11 px-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-200 focus:border-orange-500 outline-none transition-all"
+              className="w-full h-11 px-4 text-sm border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-200 focus:border-orange-500 outline-none transition-all"
             />
           </div>
           <div className="space-y-2">
@@ -279,7 +278,7 @@ export const AddressFormModal = ({
               value={formData.phone}
               onChange={handleInputChange}
               placeholder="Nhập số điện thoại"
-              className="w-full h-11 px-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-200 focus:border-orange-500 outline-none transition-all"
+              className="w-full h-11 px-4 text-sm border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-200 focus:border-orange-500 outline-none transition-all"
             />
           </div>
         </div>
@@ -294,7 +293,7 @@ export const AddressFormModal = ({
             onChange={handleInputChange}
             rows={2}
             placeholder="Số nhà, tên đường, tòa nhà..."
-            className="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-200 focus:border-orange-500 outline-none transition-all resize-none"
+            className="w-full p-4 border text-sm border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-200 focus:border-orange-500 outline-none transition-all resize-none"
           />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

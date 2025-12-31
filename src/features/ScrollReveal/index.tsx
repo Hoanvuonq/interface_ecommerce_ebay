@@ -84,10 +84,12 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
     <div
       ref={elementRef}
       className={cn(
-        `transition-all ease-out
+        `
+        transition-all ease-out
         ${isVisible ? config.animate : config.initial}
         ${config.transform}
-        ${className}`,
+        ${className}
+      `
       )}
       style={{
         transitionDuration: `${duration}ms`,

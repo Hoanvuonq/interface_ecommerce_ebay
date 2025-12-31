@@ -23,10 +23,7 @@ export const HomeScreen = () => {
         rows={2}
         sidebar={<BannerSidebar />}
       />
-      <ProductShowcase
-        title="GỢI Ý HÔM NAY"
-        subtitle="Dành riêng cho bạn"
-      />
+      <ProductShowcase />
       <CalathaMallSection />
       {/* <NewsletterSignup /> */}
     </HomepageProvider>

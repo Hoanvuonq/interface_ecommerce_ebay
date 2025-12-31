@@ -1,20 +1,27 @@
 import { Shop } from "@/app/(main)/category/_types/category";
 import { cn } from "@/utils/cn";
-import { CheckCircle, Crown } from "lucide-react";
+import { CheckCircle, Crown, Store } from "lucide-react";
+import Image from "next/image"; // Nếu dùng Next.js
+import React, { useState } from "react";
 
 export const ShopCard: React.FC<{ shop: Shop; color: string; isMobile?: boolean }> = ({ shop, color, isMobile }) => {
+    const [imageError, setImageError] = useState(false);
+
     // Kích thước cố định để tránh layout shift
     const containerWidth = isMobile ? 'w-[80px]' : 'w-full';
     const avatarSize = isMobile ? 'h-14 w-14 text-xl' : 'h-16 w-16 text-2xl';
 
+    // Link ảnh mẫu từ Unsplash hoặc UI Avatars nếu shop.logoUrl trống
+    const displayImage = shop.logoUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(shop.name)}&background=random`;
+
     return (
         <div className={cn(
-            "group relative flex flex-col items-center p-2 transition-all duration-300",
+            "group relative flex flex-col items-center p-2 transition-all duration-300 cursor-pointer",
             containerWidth
         )}>
             {/* Phần Avatar Shop */}
             <div className="relative mb-3">
-                {/* Vòng bezel phát sáng bên ngoài - Hiệu ứng Glow khi hover */}
+                {/* Hiệu ứng Glow nền */}
                 <div className={cn(
                     "absolute inset-[-4px] rounded-2xl opacity-0 blur-md transition-all duration-500 group-hover:opacity-100",
                     `bg-linear-to-br ${color}`
@@ -23,17 +30,32 @@ export const ShopCard: React.FC<{ shop: Shop; color: string; isMobile?: boolean 
                 {/* Container Logo chính */}
                 <div className={cn(
                     "relative flex items-center justify-center font-semibold text-white shadow-lg transition-all duration-300",
-                    "rounded-2xl z-10",
-                    "group-hover:translate-y-[-4px] group-active:translate-y-0", // Nhấc nhẹ lên thay vì scale to
-                    `bg-linear-to-br ${color}`,
+                    "rounded-2xl z-10 overflow-hidden bg-white", // Thêm bg-white để ảnh PNG trong suốt trông đẹp hơn
+                    "group-hover:translate-y-[-4px] group-active:translate-y-0 border-2 border-transparent group-hover:border-white/50", 
                     avatarSize
                 )}>
-                    {/* Hiệu ứng kính lấp lánh chạy qua khi hover */}
-                    <div className="absolute inset-0 overflow-hidden rounded-2xl">
-                        <div className="absolute inset-0 translate-x-[-100%] bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 group-hover:translate-x-[100%]" />
+                    {/* Hiển thị Hình ảnh từ mạng */}
+                    {!imageError ? (
+                        <img
+                            src={displayImage}
+                            alt={shop.name}
+                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                            onError={() => setImageError(true)}
+                        />
+                    ) : (
+                        // Fallback sang Gradient + Chữ cái đầu nếu ảnh lỗi
+                        <div className={cn(
+                            "flex h-full w-full items-center justify-center bg-linear-to-br",
+                            color
+                        )}>
+                            {shop.name.charAt(0)}
+                        </div>
+                    )}
+
+                    {/* Hiệu ứng tia sáng lướt qua khi hover */}
+                    <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl">
+                        <div className="absolute inset-0 translate-x-[-100%] bg-linear-to-r from-transparent via-white/40 to-transparent transition-transform duration-1000 group-hover:translate-x-[100%]" />
                     </div>
-                    
-                    {shop.name.charAt(0)}
                 </div>
 
                 {shop.verified && (
@@ -55,6 +77,8 @@ export const ShopCard: React.FC<{ shop: Shop; color: string; isMobile?: boolean 
                 
                 <div className="flex items-center gap-0.5 text-[8px] text-slate-400 font-medium">
                     <span className="text-orange-500">★</span> 4.9
+                    <span className="mx-0.5">•</span>
+                    <span>1k+ bán</span>
                 </div>
             </div>
 

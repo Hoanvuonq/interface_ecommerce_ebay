@@ -8,6 +8,7 @@ import { getUserInfo, hasRole } from "@/utils/jwt";
 import { logout } from "@/utils/local.storage";
 import {
   ChevronDown,
+  CircleDollarSign,
   Heart,
   Home,
   LayoutDashboard,
@@ -50,38 +51,103 @@ export const AccountDropdown = () => {
   }, [isActuallyAuthenticated]);
 
   const handleLogoutAction = () => {
-    const context = pathname?.startsWith("/employee") ? "employee" : 
-                    pathname?.startsWith("/shop") ? "shop" : "default";
-    logout(context as any); 
+    const context = pathname?.startsWith("/employee")
+      ? "employee"
+      : pathname?.startsWith("/shop")
+      ? "shop"
+      : "default";
+    logout(context as any);
   };
 
   const guestMenuItems: MenuItem[] = [
-    { key: "login", label: "Đăng nhập", href: "/login", icon: <LogIn size={18} /> },
-    { key: "register", label: "Đăng ký", href: "/register", icon: <UserPlus size={18} /> },
+    {
+      key: "login",
+      label: "Đăng nhập",
+      href: "/login",
+      icon: <LogIn size={18} />,
+    },
+    {
+      key: "register",
+      label: "Đăng ký",
+      href: "/register",
+      icon: <UserPlus size={18} />,
+    },
   ];
 
   const buyerMenuItems: MenuItem[] = [
-    { key: "profile", label: "Hồ sơ cá nhân", href: "/profile", icon: <User size={18} /> },
-    { key: "orders", label: "Đơn hàng của tôi", href: "/orders", icon: <Package size={18} /> },
-    { key: "wishlist", label: "Yêu thích", href: "/wishlist", icon: <Heart size={18} /> },
+    {
+      key: "profile",
+      label: "Hồ sơ cá nhân",
+      href: "/profile",
+      icon: <User size={18} />,
+    },
+    {
+      key: "orders",
+      label: "Đơn hàng của tôi",
+      href: "/orders",
+      icon: <Package size={18} />,
+    },
+    {
+      key: "wishlist",
+      label: "Yêu thích",
+      href: "/wishlist",
+      icon: <Heart size={18} />,
+    },
   ];
 
   const shopMenuItems: MenuItem[] = [
-    { key: "dashboard", label: "Quản trị Shop", href: "/shop/dashboard", icon: <LayoutDashboard size={18} /> },
-    { key: "profile", label: "Hồ sơ Shop", href: "/shop/profile", icon: <Store size={18} /> },
-    { key: "settings", label: "Cài đặt Shop", href: "/shop/settings", icon: <Settings size={18} /> },
+    {
+      key: "dashboard",
+      label: "Quản trị Shop",
+      href: "/shop/dashboard",
+      icon: <LayoutDashboard size={18} />,
+    },
+    {
+      key: "profile",
+      label: "Hồ sơ Shop",
+      href: "/shop/profile",
+      icon: <Store size={18} />,
+    },
+    {
+      key: "settings",
+      label: "Cài đặt Shop",
+      href: "/shop/settings",
+      icon: <Settings size={18} />,
+    },
   ];
 
   const employeeMenuItems: MenuItem[] = [
-    { key: "dashboard", label: "Workspace", href: "/employee/dashboard", icon: <LayoutDashboard size={18} /> },
-    { key: "profile", label: "Hồ sơ nhân viên", href: "/employee/profile", icon: <User size={18} /> },
+    {
+      key: "dashboard",
+      label: "Workspace",
+      href: "/employee/dashboard",
+      icon: <LayoutDashboard size={18} />,
+    },
+    {
+      key: "profile",
+      label: "Hồ sơ nhân viên",
+      href: "/employee/profile",
+      icon: <User size={18} />,
+    },
   ];
 
   const adminMenuItems: MenuItem[] = [
-    { key: "admin_dash", label: "Hệ thống quản trị", href: "/admin/dashboard", icon: <ShieldCheck size={18} /> },
-    ...(pathname?.startsWith("/admin") ? [
-        { key: "home", label: "Về trang chủ", href: "/", icon: <Home size={18} /> }
-    ] : []),
+    {
+      key: "admin_dash",
+      label: "Hệ thống quản trị",
+      href: "/admin/dashboard",
+      icon: <ShieldCheck size={18} />,
+    },
+    ...(pathname?.startsWith("/admin")
+      ? [
+          {
+            key: "home",
+            label: "Về trang chủ",
+            href: "/",
+            icon: <Home size={18} />,
+          },
+        ]
+      : []),
   ];
 
   let currentMenuItems: MenuItem[] = [];
@@ -90,130 +156,216 @@ export const AccountDropdown = () => {
     currentMenuItems = guestMenuItems;
   } else {
     if (pathname?.startsWith("/shop")) currentMenuItems = shopMenuItems;
-    else if (pathname?.startsWith("/employee")) currentMenuItems = employeeMenuItems;
+    else if (pathname?.startsWith("/employee"))
+      currentMenuItems = employeeMenuItems;
     else if (pathname?.startsWith("/admin")) currentMenuItems = adminMenuItems;
     else {
-       currentMenuItems = [...buyerMenuItems];
-       if (hasRole(RoleEnum.SHOP)) currentMenuItems.push({ key: "go_shop", label: "Kênh người bán", href: "/shop/dashboard", icon: <Store size={18} /> });
-       if (hasRole(RoleEnum.EMPLOYEE)) currentMenuItems.push({ key: "go_work", label: "Kênh nhân viên", href: "/employee/dashboard", icon: <LayoutDashboard size={18} /> });
-       if (hasRole(RoleEnum.ADMIN)) currentMenuItems.push({ key: "go_admin", label: "Trang quản trị", href: "/admin/dashboard", icon: <ShieldCheck size={18} /> });
+      currentMenuItems = [...buyerMenuItems];
+      if (hasRole(RoleEnum.SHOP))
+        currentMenuItems.push({
+          key: "go_shop",
+          label: "Kênh người bán",
+          href: "/shop/dashboard",
+          icon: <Store size={18} />,
+        });
+      if (hasRole(RoleEnum.EMPLOYEE))
+        currentMenuItems.push({
+          key: "go_work",
+          label: "Kênh nhân viên",
+          href: "/employee/dashboard",
+          icon: <LayoutDashboard size={18} />,
+        });
+      if (hasRole(RoleEnum.ADMIN))
+        currentMenuItems.push({
+          key: "go_admin",
+          label: "Trang quản trị",
+          href: "/admin/dashboard",
+          icon: <ShieldCheck size={18} />,
+        });
     }
-    currentMenuItems.push({ key: "logout", label: "Đăng xuất", icon: <LogOut size={18} />, action: handleLogoutAction, isLogout: true });
+    currentMenuItems.push({
+      key: "logout",
+      label: "Đăng xuất",
+      icon: <LogOut size={18} />,
+      action: handleLogoutAction,
+      isLogout: true,
+    });
   }
 
-  const buttonLabel = isActuallyAuthenticated ? userData.name : "Tài khoản";
-
   const getRoleBadge = () => {
-    const baseClass = "px-2.5 py-0.5 rounded-lg text-[10px] font-semibold uppercase tracking-widest border shadow-sm backdrop-blur-md";
+    const baseClass =
+      "px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-tighter border shadow-none";
     switch (currentRole) {
       case RoleEnum.ADMIN:
-        return <span className={cn(baseClass, "bg-rose-50 text-rose-600 border-rose-100")}>Admin</span>;
+        return (
+          <span
+            className={cn(
+              baseClass,
+              "bg-rose-100 text-rose-600 border-rose-200"
+            )}
+          >
+            Quản trị viên
+          </span>
+        );
       case RoleEnum.EMPLOYEE:
-        return <span className={cn(baseClass, "bg-blue-50 text-blue-600 border-blue-100")}>Staff</span>;
+        return (
+          <span
+            className={cn(baseClass, "bg-sky-100 text-sky-600 border-sky-200")}
+          >
+            Nhân viên
+          </span>
+        );
       case RoleEnum.SHOP:
-        return <span className={cn(baseClass, "bg-orange-50 text-orange-600 border-orange-100")}>Seller</span>;
+        return (
+          <span
+            className={cn(
+              baseClass,
+              "bg-amber-100 text-amber-700 border-amber-200"
+            )}
+          >
+            Người bán
+          </span>
+        );
       default:
-        return <span className={cn(baseClass, "bg-slate-50 text-slate-500 border-slate-100")}>Member</span>;
+        return (
+          <span
+            className={cn(
+              baseClass,
+              "bg-slate-100 text-slate-500 border-slate-200"
+            )}
+          >
+            Thành viên
+          </span>
+        );
     }
   };
 
   const Trigger = (
-    <div className={cn(
-      "flex items-center gap-2.5 px-1.5 py-1.5 pr-3 rounded-full transition-all duration-300 cursor-pointer select-none group",
-      "hover:bg-orange-50/80 hover:shadow-sm border border-transparent hover:border-orange-100",
-      isActuallyAuthenticated ? "bg-white/80 backdrop-blur-sm shadow-[0_2px_8px_-2px_rgba(0,0,0,0.05)] border-slate-100" : ""
-    )}>
-      <div className={cn(
-        "w-8 h-8 rounded-full flex items-center justify-center overflow-hidden shrink-0 border transition-all duration-300",
-        isActuallyAuthenticated 
-          ? "bg-linear-to-br from-orange-100 to-amber-50 border-white shadow-sm group-hover:scale-105" 
-          : "bg-slate-50 border-slate-100 text-slate-400 group-hover:bg-white group-hover:text-orange-500"
-      )}>
+    <div
+      className={cn(
+        "flex items-center gap-2 px-2 py-1.5 rounded-full transition-all duration-300 cursor-pointer select-none group border border-transparent",
+        "hover:bg-white/10",
+        isActuallyAuthenticated
+          ? "bg-white/5 backdrop-blur-md border-white/10 shadow-sm"
+          : ""
+      )}
+    >
+      <div
+        className={cn(
+          "w-7 h-7 rounded-full flex items-center justify-center overflow-hidden shrink-0 border transition-all duration-300",
+          isActuallyAuthenticated
+            ? "bg-slate-200 border-white/20"
+            : "bg-slate-100 border-slate-200 text-slate-400 group-hover:text-blue-600"
+        )}
+      >
         {isActuallyAuthenticated && userData.image ? (
-           <img src={userData.image} alt="avatar" className="w-full h-full object-cover" />
+          <img
+            src={userData.image}
+            alt="avatar"
+            className="w-full h-full object-cover"
+          />
         ) : (
-           <User size={18} strokeWidth={2.5} />
+          <User size={16} strokeWidth={2} />
         )}
       </div>
-      <div className="flex flex-col items-start gap-0.5">
-        <span className="hidden sm:inline font-bold text-white group-hover:text-orange-900 transition-colors text-xs truncate max-w-25 leading-tight">
-          {buttonLabel}
+      <div className="flex flex-col gap-0.5 items-start min-w-0">
+        <span className="hidden sm:inline font-bold text-slate-100 group-hover:text-white transition-colors text-[13px] truncate max-w-24 leading-none">
+          {isActuallyAuthenticated ? userData.name : "Tài khoản"}
         </span>
-        {isActuallyAuthenticated && (
-           <span className="hidden sm:inline text-[9px] font-bold text-slate-400 uppercase tracking-wider group-hover:text-orange-500 transition-colors leading-none">
-             {currentRole === 'GUEST' ? 'Khách' : currentRole}
-           </span>
-        )}
+        <span className="flex gap-1 items-center">
+          <CircleDollarSign size={16} className="text-yellow-500" />
+          <span className="font-semibold text-yellow-500 text-[10px]">1.000 Xu</span>
+        </span>
       </div>
-      <ChevronDown size={14} className="opacity-40 group-hover:opacity-100 group-hover:text-orange-500 transition-all ml-1 group-hover:translate-y-0.5" />
+      <ChevronDown
+        size={14}
+        className="text-slate-300 group-hover:text-white transition-all ml-0.5"
+      />
     </div>
   );
 
   return (
-    <AppPopover trigger={Trigger} className="w-72 p-2" align="right">
+    <AppPopover trigger={Trigger} className="w-72 p-1.5" align="right">
       {isActuallyAuthenticated && (
-        <div className="p-4 mb-2 bg-linear-to-br from-white to-orange-50/30 border border-orange-100/50 rounded-2xl flex items-center gap-4 shadow-sm relative overflow-hidden group">
-          <div className="absolute -top-6 -right-6 w-20 h-20 bg-linear-to-br from-orange-200/40 to-amber-200/0 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-          
-          <div className="w-14 h-14 bg-white rounded-full p-1 border border-orange-100 shadow-md shrink-0 relative z-10 group-hover:scale-105 transition-transform duration-300">
-            <div className="w-full h-full rounded-full overflow-hidden bg-slate-50 flex items-center justify-center relative">
-                {userData.image ? (
-                <img src={userData.image} alt="avatar" className="w-full h-full object-cover" />
-                ) : (
-                <User size={28} className="text-slate-300" />
-                )}
-            </div>
+        <div className="p-3 mb-2 bg-slate-50 border border-slate-100 rounded-xl flex items-center gap-3">
+          <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-sm shrink-0">
+            {userData.image ? (
+              <img
+                src={userData.image}
+                alt="avatar"
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full bg-slate-200 flex items-center justify-center text-slate-400">
+                <User size={24} />
+              </div>
+            )}
           </div>
-          
-          <div className="flex-1 min-w-0 relative z-10">
-            <div className="font-semibold text-white text-sm truncate leading-tight mb-1 group-hover:text-orange-950 transition-colors">
+
+          <div className="flex-1 min-w-0">
+            <div className="font-bold text-slate-800 text-sm truncate leading-tight">
               {userData.name}
             </div>
-            <div className="text-[10px] text-white truncate mb-2.5 font-medium">
+            <div className="text-[11px] text-slate-500 truncate mb-1">
               {userData.email}
             </div>
-            {getRoleBadge()}
           </div>
         </div>
       )}
 
-      <div className="space-y-1">
+      <div className="space-y-0.5">
         {currentMenuItems.map((item) => {
           const isLogout = item.isLogout;
-          
           const content = (
             <div className="flex items-center gap-3 w-full">
-              <div className={cn(
-                  "p-1.5 rounded-lg transition-all duration-300",
-                  isLogout 
-                    ? "bg-rose-50 text-rose-500 group-hover:bg-rose-500 group-hover:text-white group-hover:shadow-md group-hover:shadow-rose-500/20" 
-                    : "bg-slate-50 text-slate-500 group-hover:bg-orange-500 group-hover:text-white group-hover:shadow-md group-hover:shadow-orange-500/20"
-              )}>
-                  {item.icon}
+              <div
+                className={cn(
+                  "p-1.5 rounded-lg transition-colors",
+                  isLogout
+                    ? "bg-rose-50 text-orange-500 group-hover:bg-orange-100"
+                    : "bg-slate-50 text-slate-500 group-hover:bg-blue-50 group-hover:text-orange-500"
+                )}
+              >
+                {item.icon}
               </div>
-              <span className="flex-1 text-left font-bold text-xs tracking-wide transition-transform group-hover:translate-x-1 duration-200">
+              <span
+                className={cn(
+                  "flex-1 text-left text-[13px] font-medium transition-colors",
+                  isLogout
+                    ? "text-orange-600"
+                    : "text-slate-600 group-hover:text-orange-500"
+                )}
+              >
                 {item.label}
               </span>
             </div>
           );
 
           const commonClass = cn(
-            "group flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 w-full cursor-pointer select-none",
-            isLogout 
-              ? "mt-2 text-rose-500 hover:bg-rose-50 border border-transparent hover:border-rose-100" 
-              : "text-slate-600 hover:bg-orange-50 hover:text-orange-900 border border-transparent hover:border-orange-100"
+            "group flex items-center gap-3 px-2 py-2 rounded-lg transition-all duration-200 w-full cursor-pointer select-none",
+            isLogout
+              ? "mt-1 hover:bg-orange-50/50 border border-transparent"
+              : "hover:bg-slate-50 border border-transparent"
           );
 
           if (item.action) {
             return (
-              <button key={item.key} onClick={item.action} className={commonClass}>
+              <button
+                key={item.key}
+                onClick={item.action}
+                className={commonClass}
+              >
                 {content}
               </button>
             );
           }
 
           return (
-            <Link key={item.key} href={item.href || "#"} className={commonClass}>
+            <Link
+              key={item.key}
+              href={item.href || "#"}
+              className={commonClass}
+            >
               {content}
             </Link>
           );

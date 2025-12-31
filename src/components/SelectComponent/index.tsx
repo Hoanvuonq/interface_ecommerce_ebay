@@ -168,7 +168,7 @@ export const SelectComponent = ({
                     <div
                       key={opt.value}
                       className={cn(
-                        "px-3 py-2 text-sm cursor-pointer rounded-lg transition-all flex items-center justify-between mb-0.5",
+                        "px-3 py-2 text-xs cursor-pointer rounded-lg transition-all flex items-center justify-between mb-0.5",
                         isSelected
                           ? "bg-orange-50 text-orange-600 font-bold"
                           : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"

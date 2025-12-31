@@ -30,7 +30,7 @@ export const TopHeader = () => {
         <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0 ">
           <div className="flex items-center gap-1 sm:gap-2 min-w-0">
             <span className="inline-flex h-2 w-2 rounded-full bg-white/90 animate-pulse shadow-[0_0_8px_white]" />
-            <span className="font-semibold text-xs sm:text-sm tracking-wide whitespace-nowrap shrikhand-regular italic">
+            <span className="font-semibold text-xs whitespace-nowrap">
               Freeship 199k • Flash Sale 12h
             </span>
           </div>

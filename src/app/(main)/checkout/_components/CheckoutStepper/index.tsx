@@ -1,5 +1,4 @@
 import React from "react";
-import { ShoppingCart, MapPin, CreditCard, CheckCircle2 } from "lucide-react";
 import { ISteps } from "../../_types/stepper";
 interface CheckoutStepperProps {
   currentStep: number;
@@ -8,7 +7,7 @@ interface CheckoutStepperProps {
 const CheckoutStepper: React.FC<CheckoutStepperProps> = ({ currentStep }) => {
  
   return (
-    <div className="w-full bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
+    <div className="w-full bg-white rounded-xl shadow-sm border border-gray-100 py-3 px-6">
       <div className="flex items-center justify-between w-full">
         {ISteps.map((step, index) => {
           const isCompleted = currentStep > index;
@@ -32,7 +31,7 @@ const CheckoutStepper: React.FC<CheckoutStepperProps> = ({ currentStep }) => {
                   <step.icon size={isActive ? 20 : 18} strokeWidth={isActive ? 2.5 : 2} />
                 </div>
                 <span
-                  className={`mt-2 text-sm font-medium transition-colors duration-300 hidden sm:block absolute top-10 w-32 text-center
+                  className={`mt-2 text-xs font-medium transition-colors duration-300 hidden sm:block absolute top-10 w-32 text-center
                     ${
                       isActive
                         ? "text-orange-600 font-bold"

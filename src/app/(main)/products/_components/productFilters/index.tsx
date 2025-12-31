@@ -1,6 +1,5 @@
 "use client";
 
-import { CustomButton } from "@/components";
 import { CategoryService } from "@/services/categories/category.service";
 import type { CategoryResponse } from "@/types/categories/category.detail";
 import { cn } from "@/utils/cn";
@@ -19,7 +18,9 @@ import React, { useEffect, useMemo, useState } from "react";
 import { PRICE_PRESETS, ProductFilterValues, SORT_OPTIONS } from "./type";
 import { SelectComponent } from "@/components/SelectComponent";
 import { Button } from "@/components/button/button";
+import { CustomButton } from "@/components";
 
+// Input được làm mỏng và sắc nét hơn
 const CustomInput: React.FC<any> = ({
   placeholder,
   value,
@@ -35,28 +36,27 @@ const CustomInput: React.FC<any> = ({
       value={value}
       onChange={onChange}
       className={cn(
-        "w-full px-4 py-2.5 text-sm border text-gray-800 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 outline-none transition-all bg-white hover:border-orange-300 shadow-sm",
+        "w-full px-4 py-3 text-xs border-2 border-slate-100 rounded-xl text-slate-800 placeholder:text-slate-500 focus:border-orange-500 outline-none transition-all bg-white",
         className
       )}
       {...rest}
     />
     {Icon && (
-      <Icon className="w-4 h-4 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2 group-focus-within:text-orange-500 transition-colors" />
+      <Icon className="w-3.5 h-3.5 text-black absolute right-3 top-1/2 -translate-y-1/2 group-focus-within:text-orange-500 transition-colors" />
     )}
   </div>
 );
 
+// Tag trạng thái nhỏ gọn
 const CustomTag: React.FC<any> = ({
   children,
   closable,
   onClose,
-  colorClass,
   className,
 }) => (
   <span
     className={cn(
-      "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold uppercase tracking-wider transition-all shadow-sm border",
-      colorClass || "bg-orange-50 text-orange-700 border-orange-200",
+      "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase  bg-slate-50 text-slate-600 border border-slate-200 shadow-sm",
       className
     )}
   >
@@ -64,7 +64,7 @@ const CustomTag: React.FC<any> = ({
     {closable && (
       <X
         onClick={onClose}
-        className="w-3 h-3 cursor-pointer hover:scale-125 transition-transform"
+        className="w-3 h-3 cursor-pointer hover:text-red-500 transition-all"
       />
     )}
   </span>
@@ -74,7 +74,6 @@ export default function ProductFilters({
   value,
   onChange,
   onSearch,
-  autoSearch = true,
   showAdvanced = true,
 }: {
   value: ProductFilterValues;
@@ -84,7 +83,6 @@ export default function ProductFilters({
   showAdvanced?: boolean;
 }) {
   const [categories, setCategories] = useState<CategoryResponse[]>([]);
-  const [loading, setLoading] = useState(false);
   const [showMoreFilters, setShowMoreFilters] = useState(false);
   const [isFilterVisible, setIsFilterVisible] = useState(true);
   const [localPriceRange, setLocalPriceRange] = useState<[number, number]>([
@@ -99,14 +97,11 @@ export default function ProductFilters({
   useEffect(() => {
     (async () => {
       try {
-        setLoading(true);
         const res = await CategoryService.getAllParents();
         const cats = Array.isArray(res) ? res : (res as any)?.data || [];
         setCategories(cats);
       } catch (error) {
         setCategories([]);
-      } finally {
-        setLoading(false);
       }
     })();
   }, []);
@@ -115,10 +110,8 @@ export default function ProductFilters({
     () => categories.map((c) => ({ label: c.name, value: c.id })),
     [categories]
   );
-
-  const handleFilterChange = (updates: Partial<ProductFilterValues>) => {
+  const handleFilterChange = (updates: Partial<ProductFilterValues>) =>
     onChange({ ...value, ...updates });
-  };
 
   const clearAllFilters = () => {
     onChange({
@@ -127,10 +120,6 @@ export default function ProductFilters({
       minPrice: undefined,
       maxPrice: undefined,
       sort: undefined,
-      brands: undefined,
-      minRating: undefined,
-      inStock: undefined,
-      onSale: undefined,
     });
     setLocalPriceRange([0, 100_000_000]);
   };
@@ -139,62 +128,49 @@ export default function ProductFilters({
     return !!(
       value.keyword ||
       value.categoryId ||
-      value.brands?.length ||
-      value.minRating ||
-      value.inStock ||
-      value.onSale ||
       (value.minPrice ?? 0) > 0 ||
       (value.maxPrice ?? 100_000_000) < 100_000_000
     );
   }, [value]);
 
   return (
-    <div className="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100 overflow-hidden transition-all duration-500">
+    <div className="bg-slate-50 rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
       <div
-        className="bg-linear-to-r from-orange-50 to-amber-50 px-6 py-5 border-b border-orange-100/50 cursor-pointer flex items-center justify-between group"
+        className="px-5 py-4 border-b border-slate-50 cursor-pointer flex items-center justify-between bg-slate-50/50 group"
         onClick={() => setIsFilterVisible(!isFilterVisible)}
       >
-        <div className="flex items-center gap-3">
-          <div className="bg-orange-500 p-2 rounded-xl text-white shadow-lg shadow-orange-200 transition-transform group-hover:scale-110">
-            <Filter size={18} />
+        <div className="flex items-center gap-2.5">
+          <div className="bg-orange-500 p-1.5 rounded-lg text-white shadow-md transition-transform group-hover:scale-105">
+            <Filter size={14} strokeWidth={2.5} />
           </div>
-          <span className="text-sm font-semibold text-gray-800 tracking-widest uppercase">
-            Bộ lọc sản phẩm
+          <span className="text-[11px] font-bold text-slate-800 tracking-[0.15em] uppercase">
+            Bộ lọc thông minh
           </span>
           {hasActiveFilters && (
-            <span className="bg-orange-600 text-white px-2.5 py-0.5 rounded-full font-bold text-[10px] animate-pulse">
-              Active
-            </span>
+            <div className="w-1.5 h-1.5 rounded-full bg-orange-600 animate-pulse" />
           )}
         </div>
-        <CustomButton
-          variant="outline"
-          className="p-2! h-10! w-10! rounded-full border-orange-200 text-orange-600 bg-white/50"
-          icon={
-            isFilterVisible ? (
-              <ChevronUp size={18} className="ml-1" />
-            ) : (
-              <ChevronDown size={18} className="ml-1" />
-            )
-          }
-        />
+        {isFilterVisible ? (
+          <ChevronUp size={16} className="text-black" />
+        ) : (
+          <ChevronDown size={16} className="text-black" />
+        )}
       </div>
 
       <div
         className={cn(
-          "transition-all duration-500 ease-in-out overflow-hidden",
-          isFilterVisible ? "max-h-500 opacity-100" : "max-h-0 opacity-0"
+          "transition-all duration-500",
+          isFilterVisible ? "max-h-250 opacity-100" : "max-h-0 opacity-0"
         )}
       >
-        <div className="p-6 space-y-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="space-y-2.5">
-              <label className="text-[11px] font-semibold text-gray-800 uppercase tracking-widest flex items-center gap-2">
-                <Search size={14} className="text-orange-500" /> Từ khóa tìm
-                kiếm
+        <div className="p-5 space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div className="space-y-1.5">
+              <label className="text-[10px] font-bold text-black uppercase tracking-widest flex items-center gap-1.5 ml-1">
+                <Search size={12} className="text-orange-500" /> Từ khóa
               </label>
               <CustomInput
-                placeholder="Nhập tên sản products..."
+                placeholder="Tìm tên sản phẩm..."
                 value={value.keyword || ""}
                 onChange={(e: any) =>
                   handleFilterChange({ keyword: e.target.value })
@@ -202,9 +178,9 @@ export default function ProductFilters({
               />
             </div>
 
-            <div className="space-y-2.5">
-              <label className="text-[11px] font-semibold text-gray-800 uppercase tracking-widest flex items-center gap-2">
-                <TagsIcon size={14} className="text-orange-500" /> Nhóm danh mục
+            <div className="space-y-1.5">
+              <label className="text-[10px] font-bold text-black uppercase tracking-widest flex items-center gap-1.5 ml-1">
+                <TagsIcon size={12} className="text-orange-500" /> Danh mục
               </label>
               <SelectComponent
                 options={[
@@ -215,13 +191,13 @@ export default function ProductFilters({
                 onChange={(val: any) =>
                   handleFilterChange({ categoryId: val || undefined })
                 }
+                className="h-9! text-[11px]!"
               />
             </div>
 
-            <div className="space-y-2.5">
-              <label className="text-[11px] font-semibold text-gray-800 uppercase tracking-widest flex items-center gap-2">
-                <RotateCw size={14} className="text-orange-500" /> Thứ tự ưu
-                tiên
+            <div className="space-y-1.5">
+              <label className="text-[10px] font-bold text-black uppercase tracking-widest flex items-center gap-1.5 ml-1">
+                <RotateCw size={12} className="text-orange-500" /> Sắp xếp
               </label>
               <SelectComponent
                 options={SORT_OPTIONS}
@@ -229,17 +205,17 @@ export default function ProductFilters({
                 onChange={(val: any) =>
                   handleFilterChange({ sort: val || undefined })
                 }
+                className="h-9! text-[11px]!"
               />
             </div>
           </div>
 
-          {/* Price Slider Section */}
-          <div className="bg-orange-50/30 rounded-2xl p-6 border border-orange-100">
-            <label className="text-[11px] font-semibold text-orange-600 uppercase tracking-widest flex items-center gap-2 mb-6">
-              <DollarSign size={14} /> Khoảng giá mong muốn
+          <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100">
+            <label className="text-[10px] font-bold text-slate-600 uppercase tracking-widest flex items-center gap-1.5 mb-4">
+              <DollarSign size={12} className="text-orange-600" /> Khoảng giá
             </label>
 
-            <div className="flex flex-wrap gap-2 mb-6">
+            <div className="flex flex-wrap gap-1.5 mb-5">
               {PRICE_PRESETS.map((preset, idx) => (
                 <button
                   key={idx}
@@ -250,11 +226,11 @@ export default function ProductFilters({
                     })
                   }
                   className={cn(
-                    "px-4 py-2 rounded-xl text-xs font-bold transition-all border",
+                    "px-3 py-1.5 rounded-lg text-[10px] font-semibold transition-all border",
                     localPriceRange[0] === preset.min &&
                       localPriceRange[1] === preset.max
-                      ? "bg-orange-500 text-white border-orange-500 shadow-md shadow-orange-100"
-                      : "bg-white text-gray-600 border-gray-200 hover:border-orange-300 hover:text-orange-600"
+                      ? "bg-orange-500 text-white border-orange-500 shadow-sm shadow-orange-200"
+                      : "bg-white text-black border-slate-200 hover:border-orange-300 hover:text-orange-600"
                   )}
                 >
                   {preset.label}
@@ -262,25 +238,15 @@ export default function ProductFilters({
               ))}
             </div>
 
-            <div className="space-y-4">
-              <div className="flex justify-between items-end">
-                <div className="text-center">
-                  <p className="text-[10px] text-gray-400 uppercase font-bold mb-1">
-                    Tối thiểu
-                  </p>
-                  <span className="text-sm font-semibold text-orange-600">
-                    {formatVND(localPriceRange[0])}
-                  </span>
-                </div>
-                <div className="h-px flex-1 bg-orange-200 mx-4 mb-2 opacity-30"></div>
-                <div className="text-center">
-                  <p className="text-[10px] text-gray-400 uppercase font-bold mb-1">
-                    Tối đa
-                  </p>
-                  <span className="text-sm font-semibold text-orange-600">
-                    {formatVND(localPriceRange[1])}
-                  </span>
-                </div>
+            <div className="space-y-3">
+              <div className="flex justify-between items-center px-1">
+                <span className="text-[11px] font-bold text-slate-800">
+                  {formatVND(localPriceRange[0])}
+                </span>
+                <div className="h-px flex-1 bg-slate-200 mx-4 opacity-50" />
+                <span className="text-[11px] font-bold text-slate-800">
+                  {formatVND(localPriceRange[1])}
+                </span>
               </div>
               <input
                 type="range"
@@ -291,25 +257,21 @@ export default function ProductFilters({
                 onChange={(e) =>
                   handleFilterChange({ maxPrice: Number(e.target.value) })
                 }
-                className="w-full h-1.5 bg-orange-100 rounded-lg appearance-none cursor-pointer accent-orange-600"
+                className="w-full h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-orange-600"
               />
             </div>
           </div>
 
-          {/* Advanced & Badges */}
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pt-4">
-            <div className="flex flex-wrap gap-2">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 pt-2">
+            <div className="flex flex-wrap gap-1.5">
               {hasActiveFilters ? (
                 <>
-                  <span className="text-[10px] font-semibold text-gray-400 uppercase w-full mb-1">
-                    Đang lọc theo:
-                  </span>
                   {value.keyword && (
                     <CustomTag
                       closable
                       onClose={() => handleFilterChange({ keyword: "" })}
                     >
-                      "{value.keyword}"
+                      {value.keyword}
                     </CustomTag>
                   )}
                   {value.categoryId && (
@@ -332,30 +294,30 @@ export default function ProductFilters({
                   )}
                 </>
               ) : (
-                <p className="text-xs text-gray-400 italic">
+                <span className="text-[10px] text-black font-medium italic">
                   Chưa áp dụng bộ lọc nào
-                </p>
+                </span>
               )}
             </div>
 
-            <div className="flex gap-3 w-full md:w-auto">
+            <div className="flex gap-2 w-full sm:w-auto">
               <Button
                 variant="edit"
                 onClick={clearAllFilters}
-                icon={<RotateCw size={16} />}
+                className="h-10! px-4! rounded-xl border-slate-200 text-slate-900 text-[10px] uppercase "
+                icon={<RotateCw size={14} />}
               >
                 Làm mới
               </Button>
-              {showAdvanced && (
-                <CustomButton
-                  variant="dark"
-                  icon={<Filter size={16} />}
-                  onClick={() => setShowMoreFilters(!showMoreFilters)}
-                  className="flex-1 md:flex-initial shadow-lg shadow-orange-100"
-                >
-                  {showMoreFilters ? "Thu gọn" : "Lọc nâng cao"}
-                </CustomButton>
-              )}
+
+              <CustomButton
+                variant="dark"
+                onClick={onSearch}
+                className="h-10! px-6! rounded-xl bg-orange-600 text-[10px] uppercase  flex-1 sm:flex-none shadow-sm text-white"
+                icon={<Search size={14} />}
+              >
+                Tìm kiếm
+              </CustomButton>
             </div>
           </div>
         </div>

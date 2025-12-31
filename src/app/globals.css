@@ -15,7 +15,7 @@
   --color-bg-soft: #f5f7ff;
   --color-border-soft: #e6e9ff;
   --color-gradient-1: #6cd6ff;
-  --color-gradient-2: #c9e8ff;
+  --color-gradient-2: #a0cdf0;
   --background: var(--color-bg-soft);
   --foreground: #111827;
   --primary-color: var(--color-primary);
@@ -41,7 +41,7 @@ input::-ms-clear {
 }
 
 body {
-  background: var(--foreground);
+  background: #F8FAFC;
   color: #000;
   font-family: "Bai Jamjuree", sans-serif;
 }
@@ -75,7 +75,11 @@ body {
 .coiny-regular {
   font-family: "Coiny", system-ui;
 }
-
+.background-main-gradient {
+  background: linear-gradient(135deg, #1c73ca 0%, #0a4da2 50%, #0842b4 100%);
+  width: 100%;
+  border: none;
+}
 
 .hero-carousel .custom-dots li button {
   width: 14px !important;

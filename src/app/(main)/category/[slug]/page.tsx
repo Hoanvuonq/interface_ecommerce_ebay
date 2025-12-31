@@ -122,7 +122,6 @@ export default async function CategoryScreen({
       </div>
 
       <div className="mx-auto max-w-7xl px-4 mt-6">
-        {/* 2. Marketing Sections */}
         <div className="space-y-6 mb-8">
           <FeaturedShopsGrid categorySlug={rawSlug} />
           <QuickAccessCards categorySlug={rawSlug} />
@@ -131,24 +130,21 @@ export default async function CategoryScreen({
         <div className="grid grid-cols-12 gap-6 mt-6">
           <aside className="col-span-12 lg:col-span-3 xl:col-span-2 space-y-5">
             <div className="sticky top-24 space-y-5">
-              <div className="rounded-2xl bg-white p-5 shadow-sm border border-gray-100">
-                <CategoryFilter
-                  currentCategory={currentCategory}
-                  currentChildren={currentChildren}
-                  allCategories={categories}
-                  currentSlug={rawSlug}
-                />
-              </div>
+              <CategoryFilter
+                currentCategory={currentCategory}
+                currentChildren={currentChildren}
+                allCategories={categories}
+                currentSlug={rawSlug}
+              />
 
               <div className="rounded-2xl bg-white shadow-sm border border-gray-100 overflow-hidden">
-                <div className="bg-orange-50/50 border-b border-orange-100 px-5 py-4 flex items-center gap-2.5">
-                  <Filter size={18} className="text-orange-600" />
-                  <h3 className="text-[15px] font-bold text-gray-900 uppercase tracking-tight">
+                <div className="bg-slate-50 border-b border-slate-100 px-3 py-4 flex items-center gap-2.5">
+                  <Filter size={18} className="text-gray-700"/>
+                  <h3 className="text-[14px] font-bold text-gray-900 uppercase tracking-tight">
                     Bộ lọc tìm kiếm
                   </h3>
                 </div>
                 <div className="p-5 space-y-4">
-                  {/* Placeholder for Price/Rating filters */}
                   <div className="text-xs text-gray-400 italic">
                     Công cụ lọc đang được đồng bộ...
                   </div>
@@ -164,7 +160,7 @@ export default async function CategoryScreen({
               totalPages={totalPages}
             />
 
-            <div className="min-h-[400px]">
+            <div className="min-h-100">
               {errorMessage ? (
                 <div className="flex flex-col items-center justify-center py-20 bg-white rounded-3xl border border-red-100">
                   <p className="text-red-500 font-medium">{errorMessage}</p>

@@ -1,6 +1,6 @@
 "use client";
 
-import { CustomBreadcrumb } from "@/components";
+import { CustomBreadcrumb, CustomButton } from "@/components";
 import { Button } from "@/components/button/button";
 import PageContentTransition from "@/features/PageContentTransition";
 import { useOrders } from "@/hooks/useOrders";
@@ -9,8 +9,10 @@ import _ from "lodash";
 import {
   Inbox,
   Loader2,
+  MoveLeft,
   RotateCw,
-  ShoppingBag
+  Search,
+  ShoppingBag,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -78,40 +80,28 @@ export const OrdersScreen = () => {
             <div className="px-6 sm:px-8 py-6 border-b border-gray-100 bg-white">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-orange-50 flex items-center justify-center text-orange-600 shadow-sm">
-                    <ShoppingBag size={24} />
+                  <div className="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600 shadow-sm">
+                    <ShoppingBag size={18} />
                   </div>
-                  <div>
-                    <h1 className="text-2xl font-bold text-gray-900">
+                  <div className="flex flex-col gap-1">
+                    <h1 className="text-xl font-bold text-gray-900">
                       Đơn hàng của tôi
                     </h1>
-                    <p className="text-sm text-gray-500 mt-1">
+                    <p className="text-xs text-gray-500 ">
                       Quản lý và theo dõi đơn hàng của bạn
                     </p>
                   </div>
                 </div>
-
-                <Button
-                  variant="edit"
-                  onClick={() => refetch()}
-                  icon={
-                    <RotateCw
-                      className={loading ? "animate-spin" : ""}
-                      size={16}
-                    />
-                  }
-                >
-                  Làm mới
-                </Button>
               </div>
 
               <div className="flex flex-col md:flex-row gap-4 items-end md:items-center">
-                  <OrderFilters
-                    searchText={searchText}
-                    statusFilter={statusFilter}
-                    onSearchChange={setSearchText}
-                    onStatusChange={setStatusFilter}
-                  />
+                <OrderFilters
+                  searchText={searchText}
+                  statusFilter={statusFilter}
+                  onSearchChange={setSearchText}
+                  onStatusChange={setStatusFilter}
+                  onRefresh={() => refetch()}
+                />
               </div>
             </div>
 
@@ -124,17 +114,45 @@ export const OrdersScreen = () => {
                   </p>
                 </div>
               ) : _.isEmpty(filteredOrders) ? (
-                <div className="flex flex-col items-center justify-center py-16 text-center">
-                  <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-6">
-                    <Inbox size={40} className="text-gray-300" />
+                <div className="flex flex-col items-center justify-center py-24 px-4 bg-white rounded-[2.5rem] border-2 border-dashed border-slate-100 my-4 animate-in fade-in zoom-in duration-500">
+                  <div className="relative mb-8">
+                    <div className="w-24 h-24 bg-slate-50 rounded-3xl flex items-center justify-center shadow-inner">
+                      <Inbox
+                        size={48}
+                        strokeWidth={1.5}
+                        className="text-slate-300"
+                      />
+                    </div>
+                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center border-4 border-white shadow-sm">
+                      <Search
+                        size={14}
+                        className="text-orange-600"
+                        strokeWidth={3}
+                      />
+                    </div>
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900">
-                    Không tìm thấy đơn hàng
-                  </h3>
-                  <Link href="/products" className="mt-6">
-                    <button className="px-6 py-3 bg-slate-900 text-white font-bold rounded-xl text-xs uppercase tracking-widest hover:bg-orange-600 transition-all active:scale-95">
-                      Tiếp tục mua sắm
-                    </button>
+
+                  <div className="space-y-2 text-center max-w-xs mb-5">
+                    <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider leading-relaxed">
+                      Chúng tôi không tìm thấy bất kỳ đơn hàng nào khớp với yêu
+                      cầu của bạn.
+                    </p>
+                  </div>
+
+                  <Link href="/products">
+                    <CustomButton
+                      variant="dark"
+                      className="h-14 px-6 rounded-full shadow-[0_20px_40px_rgba(0,0,0,0.1)] hover:shadow-orange-200/50 transition-all duration-300 group"
+                      icon={
+                        <div className="bg-orange-500 p-1.5 rounded-lg group-hover:rotate-12 transition-transform">
+                          <ShoppingBag size={18} className="text-white" />
+                        </div>
+                      }
+                    >
+                      <span className="font-bold uppercase tracking-widest text-xs ml-2">
+                        Bắt đầu mua sắm ngay
+                      </span>
+                    </CustomButton>
                   </Link>
                 </div>
               ) : (

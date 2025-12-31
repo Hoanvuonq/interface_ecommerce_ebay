@@ -28,17 +28,17 @@ export default function FeaturedShopsGrid({
     >
       <div className="relative overflow-hidden px-6 pt-6 pb-4">
         <div className="absolute top-0 left-0 h-1 w-full bg-linear-to-r from-orange-400 via-orange-500 to-red-500" />
-        
+
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             {/* Icon Box nổi bật */}
             <div className="relative">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-linear-to-br from-orange-500 to-red-600 shadow-lg shadow-orange-200">
-                    <Store className="w-6 h-6 text-white" />
-                </div>
-                <div className="absolute -top-1 -right-1">
-                    <Sparkles className="w-4 h-4 text-orange-400 animate-pulse" />
-                </div>
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-linear-to-br from-orange-500 to-red-600 shadow-lg shadow-orange-200">
+                <Store className="w-6 h-6 text-white" />
+              </div>
+              <div className="absolute -top-1 -right-1">
+                <Sparkles className="w-4 h-4 text-orange-400 animate-pulse" />
+              </div>
             </div>
 
             <div>
@@ -55,7 +55,7 @@ export default function FeaturedShopsGrid({
               <div className="flex items-center gap-2 mt-0.5">
                 <div className="h-1 w-1 rounded-full bg-orange-400" />
                 <p className="text-[13px] font-medium text-slate-500">
-                   Thương hiệu độc quyền · Miễn phí trả hàng · 100% Chính hãng
+                  Thương hiệu độc quyền · Miễn phí trả hàng · 100% Chính hãng
                 </p>
               </div>
             </div>
@@ -73,8 +73,8 @@ export default function FeaturedShopsGrid({
 
       <div className="hidden grid-cols-4 gap-5 p-6 md:grid lg:grid-cols-8 bg-linear-to-b from-white to-orange-50/20">
         {shops.map((shop, index) => (
-          <div 
-            key={shop.id} 
+          <div
+            key={shop.id}
             className="transition-transform duration-300 hover:-translate-y-2"
           >
             <Link href={`/shop/${shop.slug}`} className="block">
@@ -105,12 +105,6 @@ export default function FeaturedShopsGrid({
       </div>
 
       <div className="h-1.5 w-full bg-linear-to-r from-transparent via-orange-100/50 to-transparent" />
-      
-      <style jsx global>{`
-        .custom-scrollbar-none::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
     </div>
   );
 }

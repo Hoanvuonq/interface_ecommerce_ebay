@@ -30,7 +30,6 @@ const mapBannerToDisplay = (banner: BannerResponseDTO, index: number) => {
 };
 
 export const IntroBanner = () => {
-  // 1. Khởi tạo false để tránh lỗi Hydration và logic check chính xác hơn
   const [isDismissed, setIsDismissed] = useState(true);
   const [showBanner, setShowBanner] = useState(false);
   
@@ -38,7 +37,6 @@ export const IntroBanner = () => {
   const introBanners = banners?.intro || [];
 
   useEffect(() => {
-    // 2. Kiểm tra localStorage chuẩn xác
     const dismissedAt = localStorage.getItem(INTRO_BANNER_STORAGE_KEY);
     const isExpired = !dismissedAt || (Date.now() - Number(dismissedAt) > INTRO_BANNER_EXPIRATION_MS);
 
@@ -48,14 +46,12 @@ export const IntroBanner = () => {
     }
   }, []);
 
-  // 3. FIX Scroll Lock: Đảm bảo lock body khi banner thực sự hiển thị
   useEffect(() => {
     const shouldLock = showBanner && !isDismissed && introBanners.length > 0;
     
     if (shouldLock) {
       const originalStyle = window.getComputedStyle(document.body).overflow;
       document.body.style.overflow = "hidden";
-      // Chống nhảy layout khi mất scrollbar (optional)
       document.body.style.paddingRight = "var(--removed-body-scroll-bar-size, 0px)"; 
 
       return () => {

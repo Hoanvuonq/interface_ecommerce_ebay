@@ -97,7 +97,7 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
     <div className="h-full w-full animate-fade-in relative">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 pb-6 border-b border-gray-100 gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-gray-800">
+          <h2 className="text-xl font-bold text-gray-800">
             Địa chỉ giao hàng
           </h2>
           <p className="text-sm text-gray-500 mt-1">

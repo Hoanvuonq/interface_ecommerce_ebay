@@ -16,20 +16,20 @@ export const HeaderCart: React.FC<HeaderCartProps> = ({
   onRefresh 
 }) => {
   return (
-    <div className="bg-white rounded-3xl p-6 mb-6 shadow-sm border border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all hover:shadow-md">
+    <div className="bg-white rounded-2xl py-3 px-5 mb-4 shadow-sm border border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all hover:shadow-md">
       <div className="flex items-center gap-4">
-        <div className="w-14 h-14 rounded-2xl bg-orange-100 flex items-center justify-center text-orange-600 shadow-inner shrink-0">
-          <ShoppingCart size={28} />
+        <div className="w-10 h-10 rounded-2xl bg-orange-100 flex items-center justify-center text-orange-600 shadow-inner shrink-0">
+          <ShoppingCart size={22} />
         </div>
         <div>
-          <h1 className="text-2xl font-semibold text-gray-900 tracking-tight">
+          <h1 className="text-xl font-bold text-gray-900 ">
             Giỏ hàng của bạn
           </h1>
           <div className="flex items-center gap-2 mt-1">
-            <span className="bg-blue-50 text-blue-600 text-xs font-bold px-2.5 py-0.5 rounded-full border border-blue-100">
+            <span className="bg-blue-50 text-blue-600 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-blue-50">
               {itemCount} sản phẩm
             </span>
-            <span className="text-red-700 text-xs font-bold">
+            <span className="text-red-700 text-[10px] font-bold">
               • Kiểm tra kỹ trước khi thanh toán
             </span>
           </div>

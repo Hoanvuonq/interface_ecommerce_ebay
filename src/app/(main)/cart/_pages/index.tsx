@@ -167,7 +167,7 @@ export const CartScreen = () => {
               )}
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2 space-y-4">
-                  <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between sticky top-20 ">
+                  <div className="bg-white py-2 px-4 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between sticky top-20 ">
                     <label className="flex items-center gap-3 cursor-pointer group">
                       <div className="relative flex items-center justify-center">
                         <input
@@ -185,7 +185,7 @@ export const CartScreen = () => {
                           className="absolute text-white opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity"
                         />
                       </div>
-                      <span className="text-sm sm:text-base font-semibold text-gray-700 group-hover:text-gray-900 transition-colors uppercase tracking-tight">
+                      <span className="text-sm sm:text-md font-semibold text-gray-700 group-hover:text-gray-900 transition-colors uppercase tracking-tight">
                         Chọn tất cả ({cart.itemCount})
                       </span>
                     </label>
@@ -217,7 +217,7 @@ export const CartScreen = () => {
 
                   <Link
                     href="/products"
-                    className="inline-flex items-center gap-2 text-orange-600 font-semibold hover:gap-4 transition-all text-xs uppercase tracking-widest py-4"
+                    className="inline-flex items-center gap-2 text-orange-600 font-semibold hover:gap-4 transition-all text-xs uppercase py-4"
                   >
                     ← Tiếp tục mua sắm
                   </Link>
