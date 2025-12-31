@@ -19,16 +19,16 @@ const TimeUnit = ({ value, label }: { value: number; label: string }) => {
         {digits.map((digit, index) => (
           <div 
             key={index} 
-            className="w-12 h-14 sm:w-9 sm:h-10 flex items-center justify-center bg-linear-to-b from-orange-500 to-red-600 rounded-md shadow-sm border-b-2 border-red-800"
+            className="w-12 h-14 sm:w-8 sm:h-9 flex items-center justify-center bg-linear-to-b from-orange-500 to-red-600 rounded-md shadow-sm border-b-2 border-red-800"
           >
-            <div className="text-white font-bold text-lg sm:text-xl leading-none shadow-black/20 drop-shadow-md">
+            <div className="text-white font-bold leading-none shadow-black/20 drop-shadow-md">
                 <SlotNumber value={digit} />
             </div>
           </div>
         ))}
       </div>
       
-      <span className="text-base sm:text-md font-light text-black  tracking-wider passero-one-regular">
+      <span className="text-base sm:text-sm font-light text-black  tracking-wider passero-one-regular">
         {label}
       </span>
     </div>

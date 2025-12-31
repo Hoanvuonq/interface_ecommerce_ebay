@@ -42,14 +42,14 @@ const BrandCard = ({ product, isWishlisted }: { product: any; isWishlisted: bool
   return (
     <motion.div 
       whileHover={{ y: -5 }}
-      className="flex flex-col items-center bg-white p-4 rounded-xl border border-orange-50 hover:border-orange-200 hover:shadow-lg hover:shadow-orange-500/5 transition-all cursor-pointer group h-full relative"
+      className="flex flex-col items-center bg-white p-4 rounded-xl border border-amber-50 hover:border-amber-200 hover:shadow-lg hover:shadow-amber-500/5 transition-all cursor-pointer group h-full relative"
     >
       <div className="absolute top-3 right-3 z-10">
         <Heart 
           size={16} 
           className={cn(
             "transition-colors", 
-            isWishlisted ? "fill-red-500 text-red-500" : "text-orange-600"
+            isWishlisted ? "fill-red-500 text-red-500" : "text-amber-600"
           )} 
         />
       </div>
@@ -72,10 +72,10 @@ const BrandCard = ({ product, isWishlisted }: { product: any; isWishlisted: bool
       </div>
       
       <div className="mt-auto flex flex-col items-center w-full">
-        <div className="bg-orange-50 text-orange-600 px-3 py-1 rounded-full text-[9px] font-bold uppercase mb-2 truncate max-w-full tracking-tighter">
+        <div className="bg-amber-50 text-amber-600 px-3 py-1 rounded-full text-[9px] font-bold uppercase mb-2 truncate max-w-full tracking-tighter">
           CaLaTha Store
         </div>
-        <p className="text-orange-500 text-[11px] font-bold text-center line-clamp-1 group-hover:text-orange-700 leading-tight">
+        <p className="text-amber-500 text-[11px] font-bold text-center line-clamp-1 group-hover:text-amber-700 leading-tight">
           {product.comparePrice && product.comparePrice > product.basePrice 
             ? `GIẢM ${Math.round(((product.comparePrice - product.basePrice) / product.comparePrice) * 100)}%` 
             : "ƯU ĐÃI MALL"}
@@ -103,19 +103,19 @@ export const CalathaMallSection = () => {
     <section className="bg-slate-50/50 py-10">
       <div className="max-w-7xl mx-auto px-4">
         {/* Header Bar */}
-        <div className="flex flex-wrap items-center justify-between border-b border-orange-100 pb-4 mb-6 gap-4">
+        <div className="flex flex-wrap items-center justify-between border-b border-amber-100 pb-4 mb-6 gap-4">
           <div className="flex items-center gap-6">
-            <h2 className="text-xl font-extrabold text-orange-600 flex items-center gap-2">
-              <span className="bg-orange-600 text-white px-2 py-0.5 rounded text-sm">CALATHA</span>
+            <h2 className="text-xl font-extrabold text-amber-600 flex items-center gap-2">
+              <span className="bg-amber-600 text-white px-2 py-0.5 rounded text-sm">CALATHA</span>
               MALL
             </h2>
             <div className="hidden lg:flex items-center gap-6 text-[10px] font-bold text-slate-400 uppercase">
-              <div className="flex items-center gap-1.5"><RotateCcw size={14} className="text-orange-500" /> 7 Ngày Trả Hàng</div>
-              <div className="flex items-center gap-1.5"><ShieldCheck size={14} className="text-orange-500" /> 100% Chính Hãng</div>
-              <div className="flex items-center gap-1.5"><Truck size={14} className="text-orange-500" /> Miễn Phí Vận Chuyển</div>
+              <div className="flex items-center gap-1.5"><RotateCcw size={14} className="text-amber-500" /> 7 Ngày Trả Hàng</div>
+              <div className="flex items-center gap-1.5"><ShieldCheck size={14} className="text-amber-500" /> 100% Chính Hãng</div>
+              <div className="flex items-center gap-1.5"><Truck size={14} className="text-amber-500" /> Miễn Phí Vận Chuyển</div>
             </div>
           </div>
-          <Link href="/products" className="group flex items-center gap-1 text-orange-500 text-[11px] font-bold uppercase tracking-wider">
+          <Link href="/products" className="group flex items-center gap-1 text-amber-500 text-[11px] font-bold uppercase tracking-wider">
             KHÁM PHÁ NGAY <ChevronRight size={12} strokeWidth={3} className="group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
@@ -133,12 +133,12 @@ export const CalathaMallSection = () => {
               priority
               className="object-cover transition-transform duration-1000 group-hover:scale-110"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-orange-900/80 via-transparent to-transparent p-8 flex flex-col justify-end">
-              <span className="text-orange-300 text-[10px] font-bold tracking-[0.3em] uppercase mb-2">Thương hiệu quốc tế</span>
+            <div className="absolute inset-0 bg-gradient-to-t from-amber-900/80 via-transparent to-transparent p-8 flex flex-col justify-end">
+              <span className="text-amber-300 text-[10px] font-bold tracking-[0.3em] uppercase mb-2">Thương hiệu quốc tế</span>
               <h3 className="text-white text-4xl font-black leading-none mb-6 italic">
-                PREMIUM <br /> <span className="text-orange-400">CHOICE.</span>
+                PREMIUM <br /> <span className="text-amber-400">CHOICE.</span>
               </h3>
-              <Link href="/products" className="w-fit bg-white text-orange-600 px-6 py-2.5 rounded-full font-bold text-[10px] uppercase shadow-lg hover:bg-orange-50 transition-all active:scale-95">
+              <Link href="/products" className="w-fit bg-white text-amber-600 px-6 py-2.5 rounded-full font-bold text-[10px] uppercase shadow-lg hover:bg-amber-50 transition-all active:scale-95">
                 Săn Deal Ngay
               </Link>
             </div>
@@ -160,11 +160,11 @@ export const CalathaMallSection = () => {
               </motion.div>
             ))}
 
-            <Link href="/products" className="flex flex-col items-center justify-center bg-white rounded-xl border-2 border-dashed border-orange-100 hover:border-orange-300 hover:bg-orange-50/30 transition-all group p-4 h-full">
-              <div className="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center text-orange-500 group-hover:bg-orange-600 group-hover:text-white transition-all mb-2">
+            <Link href="/products" className="flex flex-col items-center justify-center bg-white rounded-xl border-2 border-dashed border-amber-100 hover:border-amber-300 hover:bg-amber-50/30 transition-all group p-4 h-full">
+              <div className="w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center text-amber-500 group-hover:bg-amber-600 group-hover:text-white transition-all mb-2">
                 <ArrowRight size={18} />
               </div>
-              <span className="text-[10px] font-bold text-orange-500 uppercase">Xem tất cả</span>
+              <span className="text-[10px] font-bold text-amber-500 uppercase">Xem tất cả</span>
             </Link>
           </div>
         </div>

@@ -30,43 +30,40 @@ const mapBannerToDisplay = (banner: BannerResponseDTO, index: number) => {
 };
 
 export const IntroBanner = () => {
+  // 1. Khởi tạo false để tránh lỗi Hydration và logic check chính xác hơn
   const [isDismissed, setIsDismissed] = useState(true);
   const [showBanner, setShowBanner] = useState(false);
   
-  // Updated to use the unified HomepageContext
   const { banners, isLoading } = useHomepageContext();
   const introBanners = banners?.intro || [];
 
-  // Check localStorage on mount
   useEffect(() => {
-    const dismissedAt = Number(localStorage.getItem(INTRO_BANNER_STORAGE_KEY));
-    const isExpired = !dismissedAt || (Date.now() - dismissedAt > INTRO_BANNER_EXPIRATION_MS);
+    // 2. Kiểm tra localStorage chuẩn xác
+    const dismissedAt = localStorage.getItem(INTRO_BANNER_STORAGE_KEY);
+    const isExpired = !dismissedAt || (Date.now() - Number(dismissedAt) > INTRO_BANNER_EXPIRATION_MS);
 
     if (isExpired) {
-      localStorage.removeItem(INTRO_BANNER_STORAGE_KEY);
       setIsDismissed(false);
       setShowBanner(true);
-    } else {
-      setIsDismissed(true);
-      setShowBanner(false);
     }
   }, []);
 
-  // Handle body scroll lock when banner is active
+  // 3. FIX Scroll Lock: Đảm bảo lock body khi banner thực sự hiển thị
   useEffect(() => {
-    if (!showBanner || isDismissed) return;
+    const shouldLock = showBanner && !isDismissed && introBanners.length > 0;
+    
+    if (shouldLock) {
+      const originalStyle = window.getComputedStyle(document.body).overflow;
+      document.body.style.overflow = "hidden";
+      // Chống nhảy layout khi mất scrollbar (optional)
+      document.body.style.paddingRight = "var(--removed-body-scroll-bar-size, 0px)"; 
 
-    const originalOverflow = document.body.style.overflow;
-    const originalPaddingRight = document.body.style.paddingRight;
-    
-    // Simple scroll lock
-    document.body.style.overflow = "hidden";
-    
-    return () => {
-      document.body.style.overflow = originalOverflow;
-      document.body.style.paddingRight = originalPaddingRight;
-    };
-  }, [showBanner, isDismissed]);
+      return () => {
+        document.body.style.overflow = originalStyle;
+        document.body.style.paddingRight = "0px";
+      };
+    }
+  }, [showBanner, isDismissed, introBanners]);
 
   const bannerData = useMemo(() => {
     if (introBanners.length === 0) return null;
@@ -79,23 +76,25 @@ export const IntroBanner = () => {
     localStorage.setItem(INTRO_BANNER_STORAGE_KEY, Date.now().toString());
   };
 
+  // Nếu đang load hoặc không có dữ liệu thì không render
   if (isLoading || isDismissed || !showBanner || !bannerData) return null;
 
   const hasImage = !!(bannerData.imageUrl || bannerData.imageUrlDesktop || bannerData.imageUrlMobile);
 
   return (
-    <div className="fixed inset-0 z-2000 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+      {/* Overlay: clickable để đóng */}
       <div 
-        className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" 
+        className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity animate-in fade-in duration-500" 
         onClick={handleDismiss} 
       />
 
-      <div className="relative z-2100 w-full max-w-fit flex items-center justify-center animate-in zoom-in-95 duration-300">
+      <div className="relative z-[10000] w-full max-w-fit flex items-center justify-center animate-in zoom-in-95 duration-300">
         <button
           onClick={handleDismiss}
           className={cn(
-            "absolute -top-4 -right-4 z-2200 bg-white text-slate-900",
-            "rounded-full w-10 h-10 flex items-center justify-center",
+            "absolute -top-3 -right-3 z-[10001] bg-white text-slate-900",
+            "rounded-full w-8 h-8 md:w-10 md:h-10 flex items-center justify-center",
             "shadow-xl border border-slate-200 hover:scale-110 active:scale-95 transition-all"
           )}
           aria-label="Đóng banner"
@@ -121,8 +120,8 @@ export const IntroBanner = () => {
                 alt={bannerData.title}
                 className="rounded-2xl shadow-2xl object-contain ring-4 ring-white/10"
                 style={{
-                  maxWidth: "min(90vw, 540px)",
-                  maxHeight: "70vh",
+                  maxWidth: "min(90vw, 500px)",
+                  maxHeight: "80vh",
                   width: "auto",
                   height: "auto",
                 }}
@@ -130,20 +129,23 @@ export const IntroBanner = () => {
             </picture>
           ) : (
             <div className={cn(
-                "w-[320px] h-80 rounded-3xl flex flex-col items-center justify-center text-white bg-linear-to-br shadow-2xl p-8 text-center",
+                "w-[280px] md:w-[350px] aspect-square rounded-3xl flex flex-col items-center justify-center text-white bg-linear-to-br shadow-2xl p-8 text-center",
                 bannerData.gradient
               )}>
-                <h3 className="text-2xl font-semibold uppercase tracking-tighter mb-2 italic">
+                <h3 className="text-2xl font-bold uppercase mb-4 italic leading-tight">
                     {bannerData.title}
                 </h3>
-                <p className="font-bold opacity-90 leading-tight">
+                <p className="font-medium opacity-95 text-lg">
                     {bannerData.description}
                 </p>
                 {bannerData.description2 && (
-                    <p className="text-sm mt-2 opacity-80 italic">
+                    <p className="text-sm mt-4 opacity-80 italic">
                         {bannerData.description2}
                     </p>
                 )}
+                <div className="mt-6 px-6 py-2 bg-white text-slate-900 rounded-full font-bold text-sm">
+                    XEM NGAY
+                </div>
             </div>
           )}
         </Link>

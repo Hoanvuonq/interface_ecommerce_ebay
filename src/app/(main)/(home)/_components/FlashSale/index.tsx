@@ -48,7 +48,7 @@ export const FlashSaleSection: React.FC = () => {
   if (flashSale.length === 0) return null;
 
   return (
-    <section className="py-6 bg-linear-to-br from-(--color-gradient-1) via-white to-(--color-gradient-2) relative overflow-hidden">
+    <section className="py-2 bg-linear-to-br from-(--color-gradient-1) via-white to-(--color-gradient-2) relative overflow-hidden">
       <div className="absolute top-0 left-0 w-96 h-96 bg-white/40 rounded-full blur-3xl" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-white/30 rounded-full blur-3xl" />
       
@@ -56,7 +56,7 @@ export const FlashSaleSection: React.FC = () => {
         <div className="max-w-328 mx-auto px-4 sm:px-6 relative z-10">
           <CountdownFlashSale />
           
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 pt-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 pt-3">
             {flashSale.map((product: any) => {
               const firstVariant = product.variants?.[0] || {};
               const discount = calculateDiscount(firstVariant.price, firstVariant.salePrice);
@@ -111,7 +111,7 @@ export const FlashSaleSection: React.FC = () => {
             })}
           </div>
 
-          <div className="text-center w-full all-center mt-10">
+          <div className="text-center w-full all-center mt-4">
             <Link href="/products?filter=sale">
               <ButtonField
                 htmlType="submit"

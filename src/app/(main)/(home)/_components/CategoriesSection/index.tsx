@@ -1,24 +1,20 @@
 "use client";
 
-import { categoryIcons } from "@/app/(main)/(home)/_types/categories";
 import { SectionLoading } from "@/components";
 import ScrollReveal from "@/features/ScrollReveal";
 import { CategoryResponse } from "@/types/categories/category.detail";
 import { cn } from "@/utils/cn";
-import { resolveVariantImageUrl } from "@/utils/products/media.helpers";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
 import React, { useEffect, useMemo, useState } from "react";
 import { useHomepageContext } from "../../_context/HomepageContext";
-
+import { CategoryItem } from "../CategoryItem";
 export const CategoriesSection: React.FC = () => {
   const { categories, isLoading } = useHomepageContext();
   
   const [pageSize, setPageSize] = useState(20);
   const [currentPage, setCurrentPage] = useState(0);
 
- const displayCategories = useMemo(() => {
+  const displayCategories = useMemo(() => {
     return (categories as CategoryResponse[] || [])
       .filter((cat: CategoryResponse) => cat.name)
       .slice(0, 40);
@@ -45,69 +41,41 @@ export const CategoriesSection: React.FC = () => {
   if (isLoading && displayCategories.length === 0) return <SectionLoading message="Đang tải danh mục..." />;
   if (!isLoading && displayCategories.length === 0) return null;
 
-  const renderCategoryItem = (category: CategoryResponse, index: number, isMobile = false) => {
-    return (
-      <Link
-        key={`${isMobile ? "m" : "p"}-${category.id}-${index}`}
-        href={`/category/${category.slug}`}
-        className={cn(
-          "group/item flex flex-col items-center gap-2 transition-all duration-300",
-          isMobile ? "w-22 shrink-0 snap-center pb-2" : "w-full py-2"
-        )}
-      >
-        <div className="relative w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center overflow-hidden rounded-[1.4rem] border-2 border-white shadow-sm bg-white group-hover/item:-translate-y-1.5 group-hover/item:shadow-lg transition-all duration-500">
-          <div className="absolute inset-0 bg-linear-to-tr from-transparent via-white/30 to-white/60 pointer-events-none z-10" />
-          <div className="w-full h-full p-2 flex items-center justify-center transition-transform duration-500 group-hover/item:scale-110">
-             {category.imageBasePath ? (
-                 <Image
-                    src={resolveVariantImageUrl({ imageBasePath: category.imageBasePath, imageExtension: category.imageExtension! }, "_thumb")}
-                    alt={category.name}
-                    width={80}
-                    height={80}
-                    className="object-contain w-full h-full"
-                 />
-             ) : (
-                <span className="text-3xl">{categoryIcons[category.name.toLowerCase()] || "🛍️"}</span>
-             )}
-          </div>
-        </div>
-        <p className="text-[10px] sm:text-[11px] font-bold uppercase text-center leading-tight line-clamp-2 h-7 px-1 text-gray-700 group-hover/item:text-orange-600 transition-colors">
-          {category.name}
-        </p>
-      </Link>
-    );
-  };
+ 
 
   return (
-    <section className="bg-gray-50 py-8">
+    <section className="bg-white/80 py-2 border-b border-gray-100">
       <ScrollReveal animation="slideUp" delay={150}>
         <div className="max-w-7xl mx-auto px-4">
           <div className="relative">
-            <div className="flex sm:hidden overflow-x-auto gap-2 pb-6 snap-x scroll-smooth scrollbar-none">
-              {displayCategories.map((cat, idx) => renderCategoryItem(cat, idx, true))}
+            {/* MOBILE CAROUSEL - Cuộn ngang mượt mà */}
+            <div className="flex sm:hidden overflow-x-auto gap-4 pb-1 snap-x scroll-smooth scrollbar-none">
+              {displayCategories.map((cat, idx) => CategoryItem(cat, idx, true))}
             </div>
 
+            {/* DESKTOP GRID - Nhỏ gọn và chuyên nghiệp */}
             <div className="hidden sm:block">
-              <div className="grid grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-x-2">
-                {chunkedPages[currentPage]?.map((cat, idx) => renderCategoryItem(cat, idx))}
+              <div className="grid grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-y-2 gap-x-2">
+                {chunkedPages[currentPage]?.map((cat, idx) => CategoryItem(cat, idx))}
               </div>
 
+              {/* PAGINATION - Tông Xanh Mall */}
               {chunkedPages.length > 1 && (
-                <div className="flex justify-center items-center gap-6 mt-8">
+                <div className="flex justify-center items-center gap-4 mt-2">
                   <button
                     onClick={() => setCurrentPage((p) => Math.max(p - 1, 0))}
                     disabled={currentPage === 0}
-                    className="p-2 rounded-xl border border-gray-100 disabled:opacity-20 hover:bg-white hover:shadow-md transition-all"
+                    className="p-1 rounded-lg border border-gray-100 disabled:opacity-20 hover:bg-orange-50 hover:text-orange-600 transition-all"
                   >
-                    <ChevronLeft className="w-5 h-5 text-gray-600" />
+                    <ChevronLeft className="w-4 h-4" />
                   </button>
-                  <div className="flex gap-2">
+                  <div className="flex gap-1.5">
                     {chunkedPages.map((_, idx) => (
                       <div
                         key={idx}
                         className={cn(
-                          "h-1.5 transition-all duration-300 rounded-full",
-                          currentPage === idx ? "w-8 bg-orange-500 shadow-md" : "w-2 bg-gray-200"
+                          "h-1 transition-all duration-300 rounded-full",
+                          currentPage === idx ? "w-6 bg-orange-600" : "w-1.5 bg-gray-200"
                         )}
                       />
                     ))}
@@ -115,9 +83,9 @@ export const CategoriesSection: React.FC = () => {
                   <button
                     onClick={() => setCurrentPage((p) => Math.min(p + 1, chunkedPages.length - 1))}
                     disabled={currentPage === chunkedPages.length - 1}
-                    className="p-2 rounded-xl border border-gray-100 disabled:opacity-20 hover:bg-white hover:shadow-md transition-all"
+                    className="p-1 rounded-lg border border-gray-100 disabled:opacity-20 hover:bg-orange-50 hover:text-orange-600 transition-all"
                   >
-                    <ChevronRight className="w-5 h-5 text-gray-600" />
+                    <ChevronRight className="w-4 h-4" />
                   </button>
                 </div>
               )}
