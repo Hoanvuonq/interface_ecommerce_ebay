@@ -3,6 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Sriracha&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Coiny&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Commissioner:wght@100..900&display=swap');
 
 @import url('https://fonts.googleapis.com/css2?family=Hubot+Sans:ital,wght@0,200..900;1,200..900&display=swap');
 @import "tailwindcss";
@@ -42,7 +43,6 @@ input::-ms-clear {
 body {
   background: var(--foreground);
   color: #000;
-  font-family: "Hubot Sans", sans-serif;
 }
 
 .all-center {
@@ -171,6 +171,7 @@ body {
 .shadow-newLetter {
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
 }
+
 .shadow-productCard {
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
 }
@@ -227,12 +228,18 @@ body {
 
 @theme {
   @keyframes infinite-scroll {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
+    from {
+      transform: translateX(0);
+    }
+
+    to {
+      transform: translateX(-50%);
+    }
   }
 
   --animate-infinite-scroll: infinite-scroll 40s linear infinite;
 }
+
 @layer utilities {
   .animate-infinite-scroll {
     animation: infinite-scroll 40s linear infinite;

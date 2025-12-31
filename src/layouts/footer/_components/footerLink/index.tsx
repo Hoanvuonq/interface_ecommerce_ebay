@@ -10,22 +10,13 @@ interface FooterLinkProps extends BaseProps {
   children: React.ReactNode;
 }
 
-export const FooterLink = ({ href, children, className }: FooterLinkProps) => (
-  <li className="w-fit">
+export const FooterLinkItem = ({ href, children }: { href: string; children: React.ReactNode }) => (
+  <li>
     <Link
       href={href}
-      className={cn(
-        "group flex items-center text-white transition-colors duration-200",
-        "hover:text-orange-400",
-        className
-      )}
+      className="text-white/90 hover:text-amber-400 hover:translate-x-1 transition-all duration-200 inline-block text-[12px] font-medium"
     >
-      <span className="w-0 overflow-hidden opacity-0 transition-all duration-300 group-hover:w-4 group-hover:opacity-100">
-        <ArrowRight size={14} className="mr-2" />
-      </span>
-      <span className="transition-transform duration-300 group-hover:translate-x-1">
-        {children}
-      </span>
+      {children}
     </Link>
   </li>
 );
