@@ -112,7 +112,6 @@ export default async function CategoryScreen({
 
   return (
     <section className="min-h-screen bg-[#f5f5f5] pb-12">
-      {/* 1. Top Section: Banner & Branding */}
       <div className="bg-white border-b border-gray-200 shadow-sm">
         <div className="mx-auto max-w-7xl px-4 py-4 md:py-6">
           <CategoryBanner
@@ -129,9 +128,7 @@ export default async function CategoryScreen({
           <QuickAccessCards categorySlug={rawSlug} />
         </div>
 
-        {/* 3. Main Content Layout */}
         <div className="grid grid-cols-12 gap-6 mt-6">
-          {/* Sidebar Filter */}
           <aside className="col-span-12 lg:col-span-3 xl:col-span-2 space-y-5">
             <div className="sticky top-24 space-y-5">
               <div className="rounded-2xl bg-white p-5 shadow-sm border border-gray-100">

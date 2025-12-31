@@ -25,7 +25,6 @@ export default function QuickAccessCards({ categorySlug }: QuickAccessCardsProps
                             item.bgClass 
                         )}
                     >
-                        {/* Container Icon: Sử dụng Flex shrink để tránh bóp méo icon */}
                         <div className={cn(
                             "flex h-14 w-14 shrink-0 items-center justify-center rounded-[18px] bg-white shadow-sm ring-1 transition-all duration-500",
                             "group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-md",

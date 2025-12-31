@@ -44,7 +44,7 @@ export const CategoriesSection: React.FC = () => {
  
 
   return (
-    <section className="bg-white/80 py-2 border-b border-gray-100">
+    <section className="bg-gray-50 py-2 border-b border-gray-100">
       <ScrollReveal animation="slideUp" delay={150}>
         <div className="max-w-7xl mx-auto px-4">
           <div className="relative">

@@ -32,9 +32,9 @@ export const Footer: React.FC = () => {
       className="text-white relative border-t border-white/10"
       style={{ backgroundColor: BG_BLUE }}
     >
-      <div className="absolute top-0 left-1/4 w-96 h-auto bg-blue-400/10 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-0 left-1/4 w-96 bg-blue-400/10 rounded-full blur-[100px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-6 py-10 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 py-3 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-10 lg:gap-x-12">
           
           <div className="lg:col-span-4 space-y-5">
@@ -109,7 +109,7 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
-        <div className="mt-4 pt-4 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-white/40">
+        <div className="mt-2 pt-2 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-white/40">
           <p className="text-[13px] font-medium italic">
             &copy; {new Date().getFullYear()} CaLaTha Tech. Design for Excellence.
           </p>
@@ -118,7 +118,7 @@ export const Footer: React.FC = () => {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-[12px] font-semibold hover:text-white transition-colors uppercase tracking-wider"
+                className="text-[10px] font-semibold hover:text-white transition-colors uppercase tracking-wider"
               >
                 {link.label}
               </Link>

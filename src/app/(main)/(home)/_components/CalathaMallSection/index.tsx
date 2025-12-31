@@ -100,7 +100,7 @@ export const CalathaMallSection = () => {
   if (!displayProducts.length) return null;
 
   return (
-    <section className="bg-slate-50/50 py-10">
+    <section className="bg-gray-50 py-10">
       <div className="max-w-7xl mx-auto px-4">
         {/* Header Bar */}
         <div className="flex flex-wrap items-center justify-between border-b border-amber-100 pb-4 mb-6 gap-4">

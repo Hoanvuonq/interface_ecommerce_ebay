@@ -136,7 +136,7 @@ export const AccountDropdown = () => {
         )}
       </div>
       <div className="flex flex-col items-start gap-0.5">
-        <span className="hidden sm:inline font-bold text-slate-700 group-hover:text-orange-900 transition-colors text-xs truncate max-w-25 leading-tight">
+        <span className="hidden sm:inline font-bold text-white group-hover:text-orange-900 transition-colors text-xs truncate max-w-25 leading-tight">
           {buttonLabel}
         </span>
         {isActuallyAuthenticated && (
@@ -153,7 +153,6 @@ export const AccountDropdown = () => {
     <AppPopover trigger={Trigger} className="w-72 p-2" align="right">
       {isActuallyAuthenticated && (
         <div className="p-4 mb-2 bg-linear-to-br from-white to-orange-50/30 border border-orange-100/50 rounded-2xl flex items-center gap-4 shadow-sm relative overflow-hidden group">
-          {/* Decorative background blob */}
           <div className="absolute -top-6 -right-6 w-20 h-20 bg-linear-to-br from-orange-200/40 to-amber-200/0 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           
           <div className="w-14 h-14 bg-white rounded-full p-1 border border-orange-100 shadow-md shrink-0 relative z-10 group-hover:scale-105 transition-transform duration-300">
@@ -167,10 +166,10 @@ export const AccountDropdown = () => {
           </div>
           
           <div className="flex-1 min-w-0 relative z-10">
-            <div className="font-semibold text-slate-800 text-sm truncate leading-tight mb-1 group-hover:text-orange-950 transition-colors">
+            <div className="font-semibold text-white text-sm truncate leading-tight mb-1 group-hover:text-orange-950 transition-colors">
               {userData.name}
             </div>
-            <div className="text-[10px] text-slate-500 truncate mb-2.5 font-medium">
+            <div className="text-[10px] text-white truncate mb-2.5 font-medium">
               {userData.email}
             </div>
             {getRoleBadge()}
