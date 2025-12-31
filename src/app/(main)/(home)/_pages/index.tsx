@@ -7,7 +7,7 @@ import { CategoriesSection } from "../_components/CategoriesSection";
 import { FlashSaleSection } from "../_components/FlashSale";
 import NewsletterSignup from "../_components/NewsletterSignup";
 import { ProductShowcase } from "../_components/ProductShowcase";
-import { SocialProofSection } from "../_components/SocialProofSection";
+import { CalathaMallSection } from "../_components/CalathaMallSection";
 
 export const HomeScreen = () => {
   return (
@@ -27,7 +27,7 @@ export const HomeScreen = () => {
         title="GỢI Ý HÔM NAY"
         subtitle="Dành riêng cho bạn"
       />
-      <SocialProofSection />
+      <CalathaMallSection />
       {/* <NewsletterSignup /> */}
     </HomepageProvider>
   );

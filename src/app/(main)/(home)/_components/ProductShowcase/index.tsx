@@ -22,7 +22,6 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
   subtitle = "Dành riêng cho bạn" 
 }) => {
   const [activeTab, setActiveTab] = useState<"all" | "sale" | "new">("all");
-
   const saleQuery = useInfiniteProducts("sale");
   const newQuery = useInfiniteProducts("new");
 
@@ -33,7 +32,7 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
     if (activeTab === "sale") return saleList;
     if (activeTab === "new") return newList;
 
-    return _.take(_.compact(_.flatten(_.zip(saleList, newList))), 12);
+    return _.take(_.compact(_.flatten(_.zip(saleList, newList))), 20);
   }, [activeTab, saleList, newList]);
 
   const { wishlistMap } = useWishlistStatus(displayProducts);
