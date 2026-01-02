@@ -27,7 +27,9 @@ export const OrderTrackingTimeline: React.FC<OrderTrackingTimelineProps> = ({ tr
 
     useEffect(() => {
         const fetchTrackingData = async () => {
-            if (!trackingCode || carrier !== 'CONKIN') {
+            const carrierUpper = carrier?.trim().toUpperCase();
+            
+            if (!trackingCode || carrierUpper !== 'CONKIN') {
                 setLoading(false);
                 return;
             }
@@ -48,7 +50,6 @@ export const OrderTrackingTimeline: React.FC<OrderTrackingTimelineProps> = ({ tr
         fetchTrackingData();
     }, [trackingCode, carrier]);
 
-    // Map status to Vietnamese and Icon
     const getStatusInfo = (status: string) => {
         const statusMap: Record<string, { label: string; icon: React.ReactNode; color: string }> = {
             'ORDER_CREATED': { label: 'Đã tạo đơn', icon: <Package size={16} />, color: 'text-blue-600 bg-blue-100' },
@@ -62,136 +63,80 @@ export const OrderTrackingTimeline: React.FC<OrderTrackingTimelineProps> = ({ tr
         };
         
         return statusMap[status] || { 
-            label: status.replace(/_/g, ' '), 
+            label: status?.replace(/_/g, ' ') || 'Cập nhật hành trình', 
             icon: <MapPin size={16} />, 
             color: 'text-gray-600 bg-gray-100' 
         };
     };
 
-    if (carrier !== 'CONKIN') {
-        return null;
-    }
+    if (carrier?.trim().toUpperCase() !== 'CONKIN') return null;
 
-    const statuses = (trackingData?.statuses || []).filter(Boolean);
+    const statuses = trackingData?.statuses || [];
     const hasManyStatuses = statuses.length > 4;
-    const visibleStatuses = showAll || !hasManyStatuses ? statuses : statuses.slice(0, 4);
+    const visibleStatuses = showAll ? statuses : statuses.slice(0, 4);
 
     return (
-        <div className="rounded-2xl border border-gray-100 shadow-sm bg-white overflow-hidden">
-            {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-gray-50/50">
-                <div>
-                    <h3 className="text-lg font-bold text-gray-900">Theo dõi vận chuyển</h3>
-                    <p className="text-gray-500 text-xs mt-0.5">Cập nhật mới nhất từ Conkin</p>
+        <div className="w-full min-h-25">
+            {loading ? (
+                <div className="flex flex-col items-center justify-center py-10">
+                    <RotateCw size={24} className="text-orange-500 animate-spin mb-2" />
+                    <span className="text-gray-400 text-xs">Đang lấy dữ liệu hành trình...</span>
                 </div>
-                <div className="bg-orange-100 text-orange-700 font-mono text-xs px-3 py-1 rounded-full font-medium border border-orange-200">
-                    {trackingCode}
+            ) : error ? (
+                <div className="p-4 bg-red-50 rounded-xl text-red-500 text-xs flex items-center gap-2">
+                    <AlertCircle size={14} /> {error}
                 </div>
-            </div>
-
-            <div className="p-6">
-                {loading ? (
-                    <div className="flex flex-col items-center justify-center py-8">
-                        <RotateCw size={32} className="text-orange-500 animate-spin mb-3" />
-                        <span className="text-gray-500 text-sm">Đang tải thông tin vận chuyển...</span>
-                    </div>
-                ) : error ? (
-                    <div className="flex flex-col items-center text-center gap-3 py-6">
-                        <div className="p-3 bg-red-50 text-red-500 rounded-full">
-                            <AlertCircle size={32} />
-                        </div>
-                        <div>
-                            <p className="font-medium text-gray-900 mb-1">Hiện không lấy được thông tin theo dõi</p>
-                            <p className="text-sm text-gray-500 max-w-xs mx-auto">
-                                Vui lòng thử lại sau hoặc sử dụng mã vận đơn ở trên để tra cứu trực tiếp.
-                            </p>
-                        </div>
-                    </div>
-                ) : !trackingData || !trackingData.statuses || trackingData.statuses.length === 0 ? (
-                    <div className="flex flex-col items-center text-center py-8">
-                        <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4">
-                            <Package size={32} className="text-gray-300" />
-                        </div>
-                        <p className="text-gray-500 text-sm">Chưa có thông tin vận chuyển</p>
-                    </div>
-                ) : (
-                    <>
-                        {/* Info Summary */}
-                        <div className="bg-orange-50/50 rounded-xl border border-orange-100 p-4 mb-6">
-                            <div className="flex flex-wrap gap-y-4 gap-x-8">
-                                <div>
-                                    <span className="text-gray-500 block text-xs mb-1">Ngày tạo</span>
-                                    <span className="font-semibold text-gray-900 text-sm">{trackingData.date_create}</span>
-                                </div>
-                                <div>
-                                    <span className="text-gray-500 block text-xs mb-1">Dịch vụ</span>
-                                    <span className="font-semibold text-gray-900 text-sm">{trackingData.company_service}</span>
-                                </div>
-                                {trackingData.country_name && (
-                                    <div>
-                                        <span className="text-gray-500 block text-xs mb-1">Quốc gia</span>
-                                        <span className="font-semibold text-gray-900 text-sm">{trackingData.country_name}</span>
+            ) : statuses.length === 0 ? (
+                <div className="text-center py-6">
+                    <Package size={32} className="text-gray-200 mx-auto mb-2" />
+                    <p className="text-gray-400 text-xs italic">Chưa có thông tin cập nhật hành trình</p>
+                </div>
+            ) : (
+                <div className="space-y-6">
+                    <div className="relative pl-6 border-l-2 border-orange-100 ml-2 space-y-8 py-2">
+                        {visibleStatuses.map((status, index) => {
+                            const info = getStatusInfo(status.name);
+                            const isFirst = index === 0;
+                            return (
+                                <div key={index} className="relative">
+                                    <div className={`absolute -left-8.25 top-0 w-5 h-5 rounded-full border-4 border-white shadow-sm z-10 ${
+                                        isFirst ? 'bg-orange-500 ring-4 ring-orange-100' : 'bg-gray-200'
+                                    }`}>
+                                        {isFirst && <div className="w-full h-full animate-ping bg-orange-400 rounded-full opacity-20" />}
                                     </div>
-                                )}
-                            </div>
-                        </div>
-
-                        {/* Timeline */}
-                        <div className="relative pl-4 border-l-2 border-gray-100 space-y-8 ml-3 my-4">
-                            {visibleStatuses.map((status, index) => {
-                                const info = getStatusInfo(status.name);
-                                const isFirst = index === 0;
-                                
-                                return (
-                                    <div key={index} className="relative">
-                                        <div className={`absolute -left-6.25 top-0 w-5 h-5 rounded-full border-2 border-white shadow-sm flex items-center justify-center ${
-                                            isFirst ? 'bg-orange-500 text-white ring-4 ring-orange-100' : 'bg-gray-200 text-gray-500'
-                                        }`}>
-                                            {isFirst && <div className="w-2 h-2 bg-white rounded-full" />}
+                                    
+                                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1">
+                                        <div>
+                                            <p className={`text-sm font-bold ${isFirst ? 'text-slate-900' : 'text-slate-500'}`}>
+                                                {info.label}
+                                            </p>
+                                            <p className="text-[11px] text-slate-400 mt-0.5">
+                                                {status.description || 'Đơn hàng đang trong quá trình xử lý'}
+                                            </p>
                                         </div>
-
-                                        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 sm:gap-4">
-                                            <div>
-                                                <div className="flex items-center gap-2 mb-1">
-                                                    <span className={`font-semibold text-sm ${isFirst ? 'text-gray-900' : 'text-gray-600'}`}>
-                                                        {info.label}
-                                                    </span>
-                                                    {isFirst && (
-                                                        <span className="px-2 py-0.5 bg-orange-100 text-orange-700 text-[10px] font-bold uppercase rounded-full tracking-wide">
-                                                            Mới nhất
-                                                        </span>
-                                                    )}
-                                                </div>
-                                                <div className="text-xs text-gray-500">
-                                                    {/* If location info is available in status object, display it here */}
-                                                    {/* {status.location && <span>{status.location}</span>} */}
-                                                </div>
-                                            </div>
-                                            <span className="text-xs text-gray-400 font-mono whitespace-nowrap bg-gray-50 px-2 py-1 rounded">
-                                                {status.createdAt}
-                                            </span>
-                                        </div>
+                                        <span className="text-[10px] font-mono text-slate-400 bg-slate-50 px-2 py-1 rounded w-fit">
+                                            {status.createdAt}
+                                        </span>
                                     </div>
-                                );
-                            })}
-                        </div>
+                                </div>
+                            );
+                        })}
+                    </div>
 
-                        {hasManyStatuses && (
-                            <button
-                                type="button"
-                                className="flex items-center gap-1 text-xs font-medium text-orange-600 hover:text-orange-700 hover:bg-orange-50 px-3 py-1.5 rounded-lg transition-colors ml-auto"
-                                onClick={() => setShowAll((prev) => !prev)}
-                            >
-                                {showAll ? (
-                                    <>Thu gọn <ChevronUp size={14} /></>
-                                ) : (
-                                    <>Xem thêm <ChevronDown size={14} /></>
-                                )}
-                            </button>
-                        )}
-                    </>
-                )}
-            </div>
+                    {hasManyStatuses && (
+                        <button 
+                            onClick={() => setShowAll(!showAll)}
+                            className="flex items-center gap-1 text-[11px] font-bold text-orange-600 uppercase tracking-wider hover:bg-orange-50 px-3 py-1.5 rounded-lg transition-all"
+                        >
+                            {showAll ? (
+                                <>Thu gọn <ChevronUp size={14} /></>
+                            ) : (
+                                <>Xem thêm {statuses.length - 4} cập nhật <ChevronDown size={14} /></>
+                            )}
+                        </button>
+                    )}
+                </div>
+            )}
         </div>
     );
 };

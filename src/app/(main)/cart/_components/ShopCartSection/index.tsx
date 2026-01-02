@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import type { ShopDto } from "@/types/cart/cart.types";
 import { CartItem } from "../CartItems";
-import { VoucherComponents } from "@/components/voucherComponents";
+import { VoucherComponents } from "@/components/voucher/_components/voucherComponents";
 import { useAppDispatch } from "@/store/store";
 import { toggleShopSelectionLocal } from "@/store/theme/cartSlice";
 import { cn } from "@/utils/cn";

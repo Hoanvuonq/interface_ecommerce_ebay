@@ -1,6 +1,10 @@
+/* eslint-disable @next/next/no-img-element */
 import { formatPrice } from "@/hooks/useFormatPrice";
 import { resolveOrderItemImageUrl } from "../../_types/order";
-import { Link, Package, Star } from "lucide-react";
+import { Package, Star } from "lucide-react";
+import NextLink from "next/link";
+import { cn } from "@/utils/cn";
+import Image from "next/image";
 
 export const OrderItemRow = ({
   item,
@@ -13,51 +17,70 @@ export const OrderItemRow = ({
     item.imageExtension,
     "_medium"
   );
+
   return (
-    <div className="p-6 flex gap-6 hover:bg-slate-50/30 transition-colors">
-      <div className="w-24 h-24 rounded-2xl overflow-hidden border border-slate-100 shrink-0 bg-slate-50 flex items-center justify-center">
+    <div className="p-4 sm:p-5 flex gap-4 sm:gap-6 hover:bg-slate-50/50 transition-all duration-300 group border-b border-slate-50 last:border-0">
+      
+      {/* 1. Hình ảnh sản phẩm - FIX LỖI NHÁT HÌNH */}
+      {/* Dùng w-20 h-20 cố định và thêm relative */}
+      <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden border border-slate-100 shrink-0 bg-white shadow-sm flex items-center justify-center transition-transform group-hover:scale-[1.02]">
         {imageUrl ? (
-          <img src={imageUrl} className="w-full h-full object-cover" alt="" />
+          <Image 
+            src={imageUrl} 
+            alt={item.productName}
+            width={96} // Đặt width/height cụ thể thay vì fill để an toàn tuyệt đối
+            height={96}
+            className="w-full h-full object-cover" 
+          />
         ) : (
-          <Package size={32} className="text-slate-200" />
+          <div className="w-full h-full bg-orange-50 flex items-center justify-center text-orange-500">
+            <Package size={28} strokeWidth={1.5} />
+          </div>
         )}
       </div>
-      <div className="flex-1 space-y-2">
-        <Link
-          href={`/products/${item.productId}`}
-          className="font-bold text-slate-900 hover:text-orange-600 transition-colors block text-base line-clamp-1"
-        >
-          {item.productName}
-        </Link>
-        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-          SKU: {item.sku || "N/A"}
-        </p>
-        <div className="flex justify-between items-end pt-2">
-          <span className="text-slate-400 text-sm font-medium">
-            Số lượng: <b className="text-slate-900">{item.quantity}</b>
-          </span>
-          <div className="text-right">
-            <p className="text-lg font-semibold text-slate-900">
-              {formatPrice(item.lineTotal)}
-            </p>
-            {canReview && (
-              <button
-                onClick={onReview}
-                disabled={isReviewed}
-                className={`mt-2 flex items-center gap-2 px-3 py-1 rounded-lg text-[10px] font-semibold uppercase tracking-widest transition-all border ${
-                  isReviewed
-                    ? "bg-slate-50 text-slate-300 border-slate-100"
-                    : "bg-white text-orange-600 border-orange-100 hover:bg-orange-50"
-                }`}
-              >
-                <Star
-                  size={12}
-                  className={isReviewed ? "fill-slate-200" : "fill-orange-500"}
-                />{" "}
-                {isReviewed ? "Đã đánh giá" : "Đánh giá"}
-              </button>
-            )}
+
+      <div className="flex-1 min-w-0 flex flex-col justify-between py-1">
+        <div className="space-y-1">
+          <NextLink
+            href={`/products/${item.productId}`}
+            className="font-semibold text-slate-700 hover:text-orange-600 transition-colors block text-[15px] sm:text-base truncate pr-4"
+          >
+            {item.productName}
+          </NextLink>
+          
+          <div className="flex items-center gap-3">
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-slate-50 px-2 py-0.5 rounded border border-slate-100">
+              SKU: {item.sku || "N/A"}
+            </span>
+            <span className="text-slate-400 text-xs font-medium uppercase">
+              Số lượng: <b className="text-slate-700">{item.quantity}</b>
+            </span>
           </div>
+        </div>
+
+        <div className="flex justify-between items-end mt-2">
+          <p className="text-base sm:text-2xl font-bold text-orange-600 tracking-tighter">
+            {formatPrice(item.lineTotal)}
+          </p>
+
+          {canReview && (
+            <button
+              onClick={onReview}
+              disabled={isReviewed}
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all border shadow-sm",
+                isReviewed
+                  ? "bg-slate-50 text-slate-300 border-slate-100 cursor-not-allowed"
+                  : "bg-white text-orange-600 border-orange-100 hover:bg-orange-600 hover:text-white hover:border-orange-600 active:scale-95"
+              )}
+            >
+              <Star
+                size={12}
+                className={cn(isReviewed ? "fill-slate-200" : "fill-current")}
+              />
+              {isReviewed ? "Đã đánh giá" : "Viết nhận xét"}
+            </button>
+          )}
         </div>
       </div>
     </div>

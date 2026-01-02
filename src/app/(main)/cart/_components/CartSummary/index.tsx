@@ -12,7 +12,7 @@ import {
     ArrowRight
 } from 'lucide-react';
 import type { CartDto } from '@/types/cart/cart.types';
-import { VoucherComponents } from '@/components/voucherComponents';
+import { VoucherComponents } from '@/components/voucher/_components/voucherComponents';
 import Link from 'next/link';
 import { cn } from '@/utils/cn';
 import { formatPrice } from '@/hooks/useFormatPrice';

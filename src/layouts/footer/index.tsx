@@ -29,13 +29,12 @@ export const Footer: React.FC = () => {
   return (
     <footer className="text-white relative border-t border-white/10 background-main-gradient">
       <div className="absolute top-0 left-1/4 w-96 bg-blue-400/10 rounded-full blur-[100px] pointer-events-none" />
-
       <div className="max-w-7xl mx-auto px-6 py-3 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-10 lg:gap-x-12">
           <div className="lg:col-span-4 space-y-5">
             <Link href="/" className="inline-block group">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-white text-[#930505] rounded-xl flex items-center justify-center font-black text-xl shadow-lg transition-transform group-hover:-rotate-6">
+                <div className="w-10 h-10 bg-white text-[#053293] rounded-xl flex items-center justify-center font-black text-xl shadow-lg transition-transform group-hover:-rotate-6">
                   C
                 </div>
                 <div className="flex flex-col">
@@ -59,8 +58,6 @@ export const Footer: React.FC = () => {
               <SocialCircle icon={Twitter} />
             </div>
           </div>
-
-          {/* Links Grid */}
           <div className="lg:col-span-5 grid grid-cols-1 md:grid-cols-2 gap-8">
             <FooterSection
               title="Về CaLaTha"

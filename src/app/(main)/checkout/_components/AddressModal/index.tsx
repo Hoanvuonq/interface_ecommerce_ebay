@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { X, CheckCircle2, Plus, Info } from "lucide-react";
+import { CheckCircle2, Plus, Info } from "lucide-react";
 import { AddressModalProps, NewAddressForm } from "../../_types/address";
-import { createPortal } from "react-dom";
 import { Button } from "@/components/button/button";
+import { PortalModal } from "@/features/PortalModal";
 
 const AddressModal: React.FC<AddressModalProps> = ({
   isOpen,
@@ -15,9 +15,7 @@ const AddressModal: React.FC<AddressModalProps> = ({
   onConfirmNew,
 }) => {
   const [activeTab, setActiveTab] = useState<"saved" | "new">("saved");
-  const [selectedId, setSelectedId] = useState<string | undefined>(
-    currentAddressId
-  );
+  const [selectedId, setSelectedId] = useState<string | undefined>(currentAddressId);
 
   const [newAddress, setNewAddress] = useState<NewAddressForm>({
     recipientName: "",
@@ -37,12 +35,7 @@ const AddressModal: React.FC<AddressModalProps> = ({
     }
   }, [isOpen, currentAddressId, savedAddresses.length]);
 
-  if (!isOpen) return null;
-
-  const handleConfirm = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-
+  const handleConfirm = () => {
     if (activeTab === "saved") {
       if (selectedId) onConfirmSaved(selectedId);
     } else {
@@ -59,39 +52,64 @@ const AddressModal: React.FC<AddressModalProps> = ({
     }
   };
 
-  const modalContent = (
-    <div className="fixed inset-0 z-999 flex items-center justify-center p-4">
-      <div
-        className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+  // Header Component cho PortalModal
+  const modalTitle = (
+    <div className="flex flex-col">
+      <h2 className="text-lg font-semibold text-slate-900 uppercase italic tracking-tight">
+        Địa chỉ <span className="text-orange-500">giao hàng</span>
+      </h2>
+      <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">
+        {activeTab === "saved"
+          ? "Chọn từ danh sách đã lưu"
+          : "Nhập thông tin nhận hàng mới"}
+      </p>
+    </div>
+  );
+
+  // Footer Component cho PortalModal
+  const modalFooter = (
+    <>
+      <Button
+        type="button"
+        variant="edit"
         onClick={onClose}
-      />
+        className="border-0 bg-transparent"
+      >
+        Hủy bỏ
+      </Button>
 
-      <div className="relative bg-white rounded-4xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
-        <div className="px-8 py-6 border-b border-slate-100 flex justify-between items-center bg-white">
-          <div>
-            <h2 className="text-xl font-semibold text-slate-900 uppercase italic tracking-tight">
-              Địa chỉ <span className="text-orange-500">giao hàng</span>
-            </h2>
-            <p className="text-xs text-slate-400 font-bold uppercase tracking-widest mt-1">
-              {activeTab === "saved"
-                ? "Chọn từ danh sách đã lưu"
-                : "Nhập thông tin nhận hàng mới"}
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="p-2 hover:bg-slate-100 rounded-full text-slate-400 transition-colors"
-          >
-            <X size={24} strokeWidth={3} />
-          </button>
+      <Button
+        type="button"
+        variant="edit"
+        onClick={handleConfirm}
+        className="min-w-40 shadow-orange-200"
+      >
+        <div className="flex items-center gap-2 uppercase tracking-widest text-[11px] font-semibold">
+          {activeTab === "new" ? (
+            <Plus size={16} strokeWidth={3} />
+          ) : (
+            <CheckCircle2 size={16} strokeWidth={3} />
+          )}
+          Xác nhận địa chỉ
         </div>
+      </Button>
+    </>
+  );
 
+  return (
+    <PortalModal
+      isOpen={isOpen}
+      onClose={onClose}
+      title={modalTitle}
+      footer={modalFooter}
+      width="max-w-2xl"
+    >
+      <div className="flex flex-col h-full">
         {/* Tabs Navigation */}
-        <div className="flex bg-slate-50 p-2 gap-2 mx-6 mt-4 rounded-2xl border border-slate-100">
+        <div className="flex bg-slate-50 p-1.5 gap-2 mb-6 rounded-2xl border border-slate-100">
           <button
             type="button"
-            className={`flex-1 py-3 text-[10px] font-semibold uppercase tracking-widest transition-all rounded-xl ${
+            className={`flex-1 py-3 text-[10px] font-bold uppercase tracking-widest transition-all rounded-xl ${
               activeTab === "saved"
                 ? "bg-white text-orange-600 shadow-sm ring-1 ring-slate-200"
                 : "text-slate-400 hover:text-slate-600"
@@ -102,7 +120,7 @@ const AddressModal: React.FC<AddressModalProps> = ({
           </button>
           <button
             type="button"
-            className={`flex-1 py-3 text-[10px] font-semibold uppercase tracking-widest transition-all rounded-xl ${
+            className={`flex-1 py-3 text-[10px] font-bold uppercase tracking-widest transition-all rounded-xl ${
               activeTab === "new"
                 ? "bg-white text-orange-600 shadow-sm ring-1 ring-slate-200"
                 : "text-slate-400 hover:text-slate-600"
@@ -113,7 +131,8 @@ const AddressModal: React.FC<AddressModalProps> = ({
           </button>
         </div>
 
-        <div className="px-8 py-6 overflow-y-auto flex-1 custom-scrollbar">
+        {/* Tab Content */}
+        <div className="flex-1">
           {activeTab === "saved" ? (
             <div className="grid grid-cols-1 gap-3">
               {savedAddresses.length > 0 ? (
@@ -167,7 +186,7 @@ const AddressModal: React.FC<AddressModalProps> = ({
                   );
                 })
               ) : (
-                <div className="text-center py-16">
+                <div className="text-center py-12">
                   <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Info className="text-slate-300" size={32} />
                   </div>
@@ -263,38 +282,9 @@ const AddressModal: React.FC<AddressModalProps> = ({
             </div>
           )}
         </div>
-
-        <div className="px-8 py-6 border-t border-slate-100 flex flex-col sm:flex-row justify-end gap-3 bg-slate-50/50">
-          <Button
-            type="button"
-            variant="edit"
-            onClick={onClose}
-            className="border-0 bg-transparent "
-          >
-            Hủy bỏ
-          </Button>
-
-          <Button
-            type="button"
-            variant="edit"
-            onClick={handleConfirm}
-            className="min-w-40 shadow-orange-200"
-          >
-            <div className="flex items-center gap-2 uppercase tracking-widest text-[11px] font-semibold">
-              {activeTab === "new" ? (
-                <Plus size={16} strokeWidth={3} />
-              ) : (
-                <CheckCircle2 size={16} strokeWidth={3} />
-              )}
-              Xác nhận địa chỉ
-            </div>
-          </Button>
-        </div>
       </div>
-    </div>
+    </PortalModal>
   );
-
-  return createPortal(modalContent, document.body);
 };
 
 const InputGroup = ({

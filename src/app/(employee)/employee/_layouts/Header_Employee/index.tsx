@@ -1,7 +1,7 @@
 "use client";
 
 import { LanguageSwitcher, ThemeSwitcher } from "@/components";
-import { AccountDropdown } from "@/layouts/header/_components/AccountDropdown";
+import { AccountDropdown } from "@/layouts/header/_components/accountDropdown";
 import { cn } from "@/utils/cn";
 import { Bell, Menu } from "lucide-react";
 

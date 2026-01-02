@@ -257,7 +257,7 @@ export const ProductCard = ({
         >
           <div className="flex justify-between items-start mb-1">
             <div className="flex items-center gap-1.5 overflow-hidden">
-              <span className="bg-orange-50 text-orange-600 text-[8px] font-semibold px-1.5 py-0.5 rounded border border-orange-100 uppercase shrink-0 tracking-tighter">
+              <span className="bg-orange-50 text-(--color-mainColor) text-[8px] font-semibold px-1.5 py-0.5 rounded border border-orange-100 uppercase shrink-0 tracking-tighter">
                 Mall
               </span>
               <span className="text-[10px] text-gray-400 font-bold uppercase tracking-tight truncate">
@@ -289,7 +289,7 @@ export const ProductCard = ({
 
           <h3
             className={cn(
-              "font-bold text-gray-800 group-hover:text-orange-600 transition-colors leading-snug mb-2",
+              "font-bold text-gray-800 group-hover:text-(--color-mainColor) transition-colors leading-snug mb-2",
               isList
                 ? "text-sm md:text-base line-clamp-1"
                 : "text-sm line-clamp-2 h-10"
@@ -308,7 +308,7 @@ export const ProductCard = ({
               <div className="flex items-baseline gap-2 mb-0.5">
                 <span
                   className={cn(
-                    "font-semibold text-orange-600 tracking-tighter leading-none",
+                    "font-semibold text-(--color-mainColor) tracking-tighter leading-none",
                     isList ? "text-lg md:text-xl" : "text-lg"
                   )}
                 >

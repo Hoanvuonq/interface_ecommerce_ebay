@@ -48,37 +48,46 @@ export const useCheckoutInitialization = (
     [shopAddressResults]
   );
 
+  // 1. Khởi tạo địa chỉ và Sync Preview ngay lập tức (Gửi payload lồng ghép)
   useEffect(() => {
-    if (buyerQueryResult.isSuccess && buyerData) {
-      const addresses = (_.get(buyerData, "addresses") || []) as BuyerAddressResponse[];
-      
-      const sortedAddr = _.orderBy(addresses, ["isDefault", "createdDate"], ["desc", "desc"]);
-      
+    if (buyerQueryResult.isSuccess && buyerData && initialPreview?.shops) {
+      const addresses = (_.get(buyerData, "addresses") || []) as any[];
+      const sortedAddr = _.orderBy(addresses, ["isDefault"], ["desc"]);
       store.setBuyerData(buyerData, sortedAddr);
 
       if (!hasInitializedRef.current) {
         const defaultAddress = _.find(sortedAddr, { isDefault: true }) || _.first(sortedAddr);
 
         if (defaultAddress?.addressId) {
-          const newRequest = { 
-            ...initialRequest, 
-            addressId: defaultAddress.addressId 
+          // PAYLOAD ĐÚNG CẤU TRÚC LỒNG GHÉP
+          const fullPayload = {
+            addressId: defaultAddress.addressId,
+            globalVouchers: initialRequest?.globalVouchers || [],
+            shops: _.map(initialPreview.shops, (s: any) => ({
+              shopId: s.shopId,
+              itemIds: _.map(s.items, "itemId"),
+              vouchers: [],
+              shippingFee: 0
+            }))
           };
-          
-          syncPreview(newRequest);
+
+          syncPreview(fullPayload);
           hasInitializedRef.current = true;
         }
       }
     }
-  }, [buyerQueryResult.isSuccess, buyerData, initialRequest, syncPreview]);
+  }, [buyerQueryResult.isSuccess, buyerData, initialPreview]);
 
+  // 2. Load địa chỉ Shop (Fix lỗi TypeScript tại đây)
   useEffect(() => {
     if (isAllShopAddressSuccess && !shopAddressLoadedRef.current) {
       const idMap: Record<string, string> = {};
       const fullMap: Record<string, any> = {};
 
-      _.forEach(initialPreview?.shops, (shop, index:any) => {
-        const addresses = _.get(shopAddressResults[index], "data.data", []);
+      // SỬA LỖI TS: Sử dụng shopIndex thay vì ép kiểu index:any
+      _.forEach(initialPreview?.shops, (shop: any, shopIndex: number) => {
+        const queryResult: any = shopAddressResults[shopIndex]; // Lấy query tương ứng
+        const addresses = _.get(queryResult, "data.data", []);
         const defaultAddr = _.find(addresses, { isDefaultPickup: true }) || _.first(addresses);
 
         if (defaultAddr) {
@@ -103,7 +112,7 @@ export const useCheckoutInitialization = (
 
       shopAddressLoadedRef.current = true;
     }
-  }, [isAllShopAddressSuccess, initialPreview?.shops]);
+  }, [isAllShopAddressSuccess, initialPreview?.shops, shopAddressResults]);
 
   return { 
     isAllShopAddressSuccess, 

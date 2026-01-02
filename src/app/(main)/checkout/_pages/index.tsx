@@ -1,27 +1,22 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { CreditCard } from "lucide-react";
-
 import { CustomBreadcrumb, SectionLoading } from "@/components";
 import PageContentTransition from "@/features/PageContentTransition";
+import { useToast } from "@/hooks/useToast";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import AddressModal from "../_components/AddressModal";
 import { CheckoutShippingAddress } from "../_components/CheckoutShippingAddress";
+import { CheckoutShopList } from "../_components/CheckoutShopList";
 import CheckoutStepper from "../_components/CheckoutStepper";
 import { NoteSection } from "../_components/NoteSection";
 import { OrderSuccessModal } from "../_components/OrderSuccessModal";
 import { OrderSummary } from "../_components/OrderSummary";
 import { PaymentSection } from "../_components/PaymentSection";
 import { PayOSCheckoutModal } from "../_components/PayOSCheckoutModal";
-import AddressModal from "../_components/AddressModal";
-import { VoucherComponents } from "@/components/voucherComponents";
-
 import { useCheckoutActions } from "../_hooks/useCheckoutActions";
-import { useCheckoutStore } from "../_store/useCheckoutStore";
 import { useCheckoutAddress } from "../_hooks/useCheckoutAddress";
-import { CheckoutShopList } from "../_components/CheckoutShopList";
-import { useToast } from "@/hooks/useToast";
+import { useCheckoutStore } from "../_store/useCheckoutStore";
 export const CheckoutScreen = () => {
   const router = useRouter();
   const {
@@ -109,6 +104,7 @@ export const CheckoutScreen = () => {
                 loading={loading}
                 updateShippingMethod={updateShippingMethod}
                 request={request}
+                preview={preview}
               />
             </div>
 
@@ -119,35 +115,6 @@ export const CheckoutScreen = () => {
                   setFormData((p) => ({ ...p, paymentMethod: val }))
                 }
               />
-              <VoucherComponents
-                compact
-                onSelectVoucher={async (v: any) => {
-                  const codes = [v.order?.code, v.shipping?.code].filter(
-                    Boolean
-                  ) as string[];
-                  const result = await syncPreview({
-                    ...request,
-                    globalVouchers: codes,
-                  });
-                  return !!result;
-                }}
-                appliedVouchers={{
-                  order:
-                    preview.voucherApplication?.globalVouchers?.discountDetails?.find(
-                      (d: any) =>
-                        ["ORDER", "PRODUCT"].includes(d.discountTarget)
-                    )?.voucherCode,
-                  shipping:
-                    preview.voucherApplication?.globalVouchers?.discountDetails?.find(
-                      (d: any) => d.discountTarget === "SHIPPING"
-                    )?.voucherCode,
-                }}
-                context={{
-                  totalAmount: preview.subtotal,
-                  shippingFee: preview.totalShippingFee,
-                }}
-              />
-
               <NoteSection
                 value={formData.customerNote}
                 onChange={(val: string) =>

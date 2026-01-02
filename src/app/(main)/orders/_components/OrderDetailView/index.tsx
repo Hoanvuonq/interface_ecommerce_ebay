@@ -7,22 +7,18 @@ import {
   Package,
   StoreIcon,
   Truck,
-  XCircle
+  XCircle,
 } from "lucide-react";
 import Link from "next/link";
 import React, { useMemo } from "react";
 import { ORDER_STATUS_UI } from "../../_constants/order";
-import {
-  PAYMENT_METHOD_LABELS
-} from "../../_types/order";
-
+import { PAYMENT_METHOD_LABELS } from "../../_types/order";
 import { OrderCancelModal } from "../OrderCancelModal";
 import { OrderExpirationTimer } from "../OrderExpirationTimer";
 import { OrderSideInfo } from "../OrderSideInfo";
 import { OrderStatusTimeline } from "../OrderStatusTimeline";
 import { OrderTrackingTimeline } from "../OrderTrackingTimeline";
 import { ReviewModal } from "../ReviewModal";
-
 import { useOrderDetailView } from "../../_hooks/useOrderDetailView";
 import { OrderItemRow } from "../OrderItemRow";
 import { OrderDetailViewProps } from "./type";
@@ -41,8 +37,18 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
 
   const ui = useMemo(() => {
     const status = order.status;
+
+    const statusInfo = ORDER_STATUS_UI[status] ||
+      ORDER_STATUS_UI.DEFAULT || {
+        label: status,
+        bg: "bg-slate-100",
+        text: "text-slate-600",
+        border: "border-slate-200",
+        icon: null,
+      };
+
     return {
-      statusInfo: ORDER_STATUS_UI[status] || ORDER_STATUS_UI.DEFAULT,
+      statusInfo,
       isDelivered: status === "DELIVERED",
       isCancelled: status === "CANCELLED",
       canCancel: ["CREATED", "PENDING_PAYMENT"].includes(status),
@@ -110,8 +116,8 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
             />
           )}
 
-          <div className="bg-white rounded-4xl border border-slate-100 p-8 shadow-sm">
-            <h3 className="text-lg font-semibold text-slate-900 mb-8 flex items-center gap-3 uppercase tracking-tight">
+          <div className="bg-white rounded-4xl border border-slate-100 px-6 py-4 shadow-sm">
+            <h3 className="text-lg font-semibold text-slate-900 flex items-center gap-3 mb-2 uppercase tracking-tight">
               <div className="p-2 bg-orange-50 rounded-xl text-orange-500">
                 <Truck size={20} />
               </div>
@@ -125,7 +131,13 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
           </div>
 
           {ui.showTracking && (
-            <div className="bg-white rounded-4xl border border-slate-100 p-8 shadow-sm">
+            <div className="bg-white rounded-4xl border border-slate-100 px-6 py-4 shadow-sm">
+              <h3 className="text-lg font-semibold text-slate-900 flex items-center gap-3 mb-2 uppercase tracking-tight">
+                <div className="p-2 bg-blue-50 rounded-xl text-orange-500">
+                  <Truck size={20} />
+                </div>
+                Chi tiết vận chuyển
+              </h3>
               <OrderTrackingTimeline
                 trackingCode={order.trackingNumber!}
                 carrier={order.carrier!}

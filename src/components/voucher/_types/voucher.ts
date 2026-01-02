@@ -2,19 +2,22 @@
 export interface VoucherOption {
     id: string;
     code: string;
+    name?: string;
     description?: string;
     imageBasePath?: string | null;
     imageExtension?: string | null;
-    discountAmount?: number;
-    discountType?: 'PERCENTAGE' | 'FIXED';
-    minOrderValue?: number;
-    maxDiscount?: number;
+    discountAmount: number; 
+    discountType: 'PERCENTAGE' | 'FIXED';
+    minOrderValue: number; 
+    maxDiscount?: number | null;
     maxUsage?: number;
     usedCount?: number;
     remainingCount?: number;
     remainingPercentage?: number;
-    canSelect?: boolean;
-    reason?: string;
+    canSelect: boolean; 
+    reason?: string | null;
+    isValid?: boolean; 
+    voucherScope?: 'SHOP_ORDER' | 'SHIPPING' | 'PRODUCT' | 'ORDER';
 }
 
 export interface GroupedVouchers {
@@ -28,7 +31,7 @@ export interface VoucherModalProps {
     onConfirm: (selectedVouchers?: { order?: VoucherOption; shipping?: VoucherOption }) => void;
     vouchersData?: VoucherOption[] | GroupedVouchers;
     isLoading?: boolean;
-    onFetchVouchers?: () => Promise<VoucherOption[] | GroupedVouchers>;
+    onFetchVouchers?: () => Promise<GroupedVouchers | VoucherOption[] | undefined>;
     onApplyVoucherCode?: (code: string) => Promise<{ success: boolean; voucher?: VoucherOption; error?: string }>;
     appliedVouchers?: {
         order?: VoucherOption;
@@ -38,35 +41,28 @@ export interface VoucherModalProps {
     title?: string;
     shopName?: string;
     isShopVoucher?: boolean;
+    isPlatform?: boolean; 
 }
-
 export interface VoucherInputProps {
     shopId?: string;
     shopName?: string;
+    title?: string; 
     onApplyVoucher?: (shopId: string, voucherCode: string) => Promise<boolean>;
-    onSelectVoucher?: (voucher: { order?: any; shipping?: any }) => Promise<boolean>;
-    appliedVoucher?: {
-        code: string;
-        discount: number;
-        description?: string;
-    };
+    onSelectVoucher?: (voucher: { order?: VoucherOption; shipping?: VoucherOption }) => Promise<boolean>;
+    
     appliedVouchers?: {
-        order?: {
-            code: string;
-            discount: number;
-            description?: string;
-        };
-        shipping?: {
-            code: string;
-            discount: number;
-            description?: string;
-        };
+        order?: VoucherOption;
+        shipping?: VoucherOption;
     };
+    
     compact?: boolean;
     className?: string;
+    forcePlatform?: boolean;
+
     context?: {
-        totalAmount?: number;
-        shopIds?: string[];
+        totalAmount: number;
+        shopId?: string;      
+        shopIds?: string[];   
         productIds?: string[];
         shippingFee?: number;
         shippingMethod?: string;
@@ -79,5 +75,4 @@ export interface VoucherInputProps {
             limit?: number;
         };
     };
-    forcePlatform?: boolean;
 }

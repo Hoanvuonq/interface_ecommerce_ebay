@@ -22,7 +22,7 @@ export const CustomResult: React.FC<CustomResultProps> = ({
           <ShieldAlert size={48} className="text-white" />
         </div>
         <div className="absolute -bottom-2 -right-2 bg-white dark:bg-slate-700 p-2 rounded-full shadow-lg">
-          <Lock size={16} className="text-orange-500" />
+          <Lock size={16} className="text-(--color-mainColor)" />
         </div>
       </div>
     </div>

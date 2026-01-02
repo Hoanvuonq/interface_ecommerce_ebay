@@ -4,26 +4,28 @@ import { SectionLoading } from "@/components";
 import { SectionSreen } from "@/features/SectionSreen";
 import { CategoryResponse } from "@/types/categories/category.detail";
 import { cn } from "@/utils/cn";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { AnimatePresence, motion, PanInfo } from "framer-motion";
 import React, { useEffect, useMemo, useState } from "react";
 import { useHomepageContext } from "../../_context/HomepageContext";
 import { CategoryItem } from "../CategoryItem";
+
 export const CategoriesSection: React.FC = () => {
   const { categories, isLoading } = useHomepageContext();
-
   const [pageSize, setPageSize] = useState(20);
   const [currentPage, setCurrentPage] = useState(0);
 
   const displayCategories = useMemo(() => {
     return ((categories as CategoryResponse[]) || [])
-      .filter((cat: CategoryResponse) => cat.name)
+      .filter((cat) => cat.name && cat.slug)
       .slice(0, 40);
   }, [categories]);
 
   useEffect(() => {
     const updatePageSize = () => {
-      if (window.innerWidth >= 1024) setPageSize(20);
+      if (window.innerWidth >= 1280) setPageSize(20);
+      else if (window.innerWidth >= 1024) setPageSize(16);
       else if (window.innerWidth >= 768) setPageSize(12);
+      else setPageSize(8); 
     };
     updatePageSize();
     window.addEventListener("resize", updatePageSize);
@@ -38,60 +40,70 @@ export const CategoriesSection: React.FC = () => {
     return chunks;
   }, [displayCategories, pageSize]);
 
+  useEffect(() => { setCurrentPage(0); }, [pageSize]);
+
+  const handleDragEnd = (event: any, info: PanInfo) => {
+    const swipeThreshold = 50; 
+    if (info.offset.x < -swipeThreshold && currentPage < chunkedPages.length - 1) {
+      setCurrentPage(prev => prev + 1);
+    } else if (info.offset.x > swipeThreshold && currentPage > 0) {
+      setCurrentPage(prev => prev - 1);
+    }
+  };
+
   if (isLoading && displayCategories.length === 0)
     return <SectionLoading message="Đang tải danh mục..." />;
   if (!isLoading && displayCategories.length === 0) return null;
 
   return (
     <SectionSreen isWhite id="categories" animation="slideUp">
-      <div className="relative">
-        <div className="flex sm:hidden overflow-x-auto gap-4 pb-1 snap-x scroll-smooth scrollbar-none">
-          {displayCategories.map((cat, idx) => CategoryItem(cat, idx, true))}
+      <div className="relative group/section px-2 touch-pan-y"> 
+        
+        <div className="relative overflow-hidden">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={currentPage}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.2}
+              onDragEnd={handleDragEnd}
+              
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -50 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className={cn(
+                "grid gap-y-1 gap-x-2 sm:gap-x-4 cursor-grab active:cursor-grabbing",
+                "grid-cols-4 md:grid-cols-4 lg:grid-cols-8 xl:grid-cols-8"
+              )}
+            >
+              {chunkedPages[currentPage]?.map((cat, idx) => (
+                <div key={cat.id || idx} className="flex justify-center select-none">
+                   <CategoryItem category={cat} index={idx} />
+                </div>
+              ))}
+            </motion.div>
+          </AnimatePresence>
         </div>
 
-        <div className="hidden sm:block">
-          <div className="grid grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-y-2 gap-x-2">
-            {chunkedPages[currentPage]?.map((cat, idx) =>
-              CategoryItem(cat, idx)
-            )}
-          </div>
-
-          {chunkedPages.length > 1 && (
-            <div className="flex justify-center items-center gap-4 mt-2">
-              <button
-                onClick={() => setCurrentPage((p) => Math.max(p - 1, 0))}
-                disabled={currentPage === 0}
-                className="p-1 rounded-lg border border-gray-100 disabled:opacity-20 hover:bg-orange-50 hover:text-orange-600 transition-all"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              <div className="flex gap-1.5">
-                {chunkedPages.map((_, idx) => (
-                  <div
-                    key={idx}
-                    className={cn(
-                      "h-1 transition-all duration-300 rounded-full",
-                      currentPage === idx
-                        ? "w-6 bg-orange-600"
-                        : "w-1.5 bg-gray-200"
-                    )}
-                  />
-                ))}
-              </div>
-              <button
-                onClick={() =>
-                  setCurrentPage((p) =>
-                    Math.min(p + 1, chunkedPages.length - 1)
-                  )
-                }
-                disabled={currentPage === chunkedPages.length - 1}
-                className="p-1 rounded-lg border border-gray-100 disabled:opacity-20 hover:bg-orange-50 hover:text-orange-600 transition-all"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
+        {chunkedPages.length > 1 && (
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-6 mt-2">
+            <div className="flex gap-2 items-center order-2 sm:order-1">
+              {chunkedPages.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setCurrentPage(idx)}
+                  className={cn(
+                    "h-1.5 transition-all duration-500 rounded-full",
+                    currentPage === idx
+                      ? "w-10 bg-orange-600 shadow-sm shadow-orange-200"
+                      : "w-3 bg-slate-200 hover:bg-slate-300"
+                  )}
+                />
+              ))}
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </SectionSreen>
   );

@@ -1,175 +1,131 @@
-/* eslint-disable @next/next/no-img-element */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-"use client";
+  /* eslint-disable @next/next/no-img-element */
+  "use client";
 
-import React, { useMemo } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import _ from "lodash";
-import {
-  ChevronRight,
-  Clock,
-  Eye,
-  MessageCircle,
-  Package,
-  RefreshCw,
-  Store,
-  Truck,
-  AlertTriangle,
-} from "lucide-react";
+  import React, { useMemo } from "react";
+  import _ from "lodash";
+  import { ShieldCheck, ShoppingBag, ArrowRight, Package, Truck, Wallet } from "lucide-react";
+  import { formatPrice } from "@/hooks/useFormatPrice";
+  import { ORDER_STATUS_UI, PAYMENT_METHOD_LABELS } from "../../_constants/order";
+  import { OrderCardProps, resolveOrderItemImageUrl } from "../../_types/order";
+  import { useOrderActions } from "../../_hooks/useOrderActions";
+  import { cn } from "@/utils/cn";
+  import Image from "next/image";
 
-import { SimpleModal } from "@/components";
-import { Button } from "@/components/button/button";
-import { formatPrice } from "@/hooks/useFormatPrice";
-import { formatDate } from "@/hooks/format";
-import { ORDER_STATUS_MAP, STATUS_STYLE } from "../../_constants/order";
-import { OrderCardProps, resolveOrderItemImageUrl } from "../../_types/order";
-import { useOrderActions } from "../../_hooks/useOrderActions";
-import { FaEdit } from "react-icons/fa";
-import { OrderCardHeader } from "../OrderCardHeader";
-import { OrderCardContent } from "../OrderCardContent";
-import { cn } from "@/utils/cn";
-import { OrderCardActions } from "../OrderCardActions";
+  export const OrderCard: React.FC<OrderCardProps> = ({ order, onViewDetail, onOrderCancelled }) => {
+    const { state } = useOrderActions(order.orderId, order.status, onOrderCancelled);
+    
+    const ui = useMemo(() => {
+      const config = ORDER_STATUS_UI[order.status] || ORDER_STATUS_UI.CREATED;
+      const shopName = _.get(order, "shopInfo.shopName", "Cửa hàng");
 
-export const OrderCard: React.FC<OrderCardProps> = ({
-  order,
-  onViewDetail,
-  onOrderCancelled,
-}) => {
-  // Logic Actions & State từ Hook
-  const { state, actions } = useOrderActions(
-    order.orderId,
-    order.status,
-    onOrderCancelled
-  );
-  const {
-    cancelModalVisible,
-    cancelReason,
-    cancelling,
-    canCancel,
-    isPendingPayment,
-    isDelivered,
-  } = state;
-  const { setCancelModalVisible, setCancelReason, handleConfirmCancel } =
-    actions;
+      return {
+        config,
+        shopName: _.truncate(shopName, { length: 25 }),
+        itemCount: order.items.length,
+        firstItem: _.first(order.items),
+        paymentLabel: PAYMENT_METHOD_LABELS[order.paymentMethod] || order.paymentMethod
+      };
+    }, [order]);
 
-  const ui = useMemo(() => {
-    const status = ORDER_STATUS_MAP[order.status] || {
-      label: order.status,
-      icon: <Clock size={14} />,
-    };
-    const style = STATUS_STYLE[order.status] || STATUS_STYLE.DEFAULT;
-    const shopName = _.get(order, "shopInfo.shopName", "Cửa hàng");
+    return (
+      <article className="group relative bg-white border border-slate-100 rounded-4xl p-4 sm:p-5 hover:shadow-2xl hover:shadow-orange-500/10 transition-all duration-500 mb-3 overflow-hidden">
+        <div 
+          className="absolute left-0 top-0 bottom-0 w-1 transition-all duration-500 group-hover:w-1.5" 
+        />
 
-    return {
-      status,
-      style,
-      shop: {
-        name: shopName,
-        logo: _.get(order, "shopInfo.logoUrl") ?? null,
-        link: _.get(order, "shopInfo.shopId", order.shopId) ?? "",
-        initials: _.toUpper(shopName.substring(0, 2)),
-      },
-      items: {
-        thumbnails: _.take(order.items, 3),
-        remaining: order.items.length - 3,
-        first: _.first(order.items),
-      },
-    };
-  }, [order]);
-
-  return (
-    <article
-      className={cn(
-        "group relative bg-white/80 backdrop-blur-sm rounded-3xl border border-gray-100 ",
-        "shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_12px_40px_rgba(234,88,12,0.12)] hover:border-orange-100 transition-all duration-500 overflow-hidden"
-      )}
-    >
-      <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-orange-500" />
-
-      <div className="p-3 pl-5">
-        <OrderCardHeader shop={ui.shop} orderNumber={order.orderNumber} />
-        <div className="grid lg:grid-cols-12 gap-6 items-center">
-          <OrderCardContent
-            status={ui.status}
-            trackingNumber={order.trackingNumber}
-            createdAt={order.createdAt}
-            items={order.items}
-            thumbnails={ui.items.thumbnails}
-            remaining={ui.items.remaining}
-            isDelivered={isDelivered}
-            onViewDetail={() => onViewDetail(order.orderId)}
-          />
-          <OrderCardActions
-            grandTotal={order.grandTotal}
-            paymentMethod={order.paymentMethod}
-            isPendingPayment={isPendingPayment}
-            paymentUrl={order.paymentUrl}
-            canCancel={canCancel}
-            isDelivered={isDelivered}
-            firstProductId={ui.items.first?.productId}
-            onViewDetail={() => onViewDetail(order.orderId)}
-            onCancelClick={() => actions.setCancelModalVisible(true)}
-          />
-        </div>
-      </div>
-
-      <SimpleModal
-        isOpen={cancelModalVisible}
-        onClose={() => {
-          setCancelModalVisible(false);
-          setCancelReason("");
-        }}
-        title={
-          <div className="flex items-center gap-2 text-orange-600 font-semibold uppercase tracking-tight text-lg">
-            <AlertTriangle size={22} /> Hủy đơn hàng
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-2xl bg-orange-50 flex items-center justify-center border border-orange-100">
+              <ShoppingBag size={16} className="text-(--color-mainColor)" />
+            </div>
+            <div className="min-w-0">
+              <h4 className="text-[13px] sm:text-[14px] font-bold text-slate-800 leading-none uppercase truncate">
+                {ui.shopName}
+              </h4>
+              <span className="text-[10px] text-slate-400 font-bold tracking-widest mt-1 block uppercase">
+                MÃ ĐƠN: #{order.orderNumber}
+              </span>
+            </div>
           </div>
-        }
-        footer={
-          <div className="flex gap-3 w-full">
-            <button
-              onClick={() => setCancelModalVisible(false)}
-              className="flex-1 py-3 text-xs font-bold text-gray-500 bg-gray-100 rounded-xl hover:bg-gray-200 transition-all"
-              disabled={cancelling}
-            >
-              Đóng
-            </button>
-            <button
-              onClick={handleConfirmCancel}
-              disabled={cancelling || !cancelReason.trim()}
-              className="flex-2 py-3 bg-orange-600 hover:bg-orange-700 text-white text-xs font-semibold uppercase tracking-widest rounded-xl shadow-lg shadow-orange-200 transition-all flex items-center justify-center gap-2"
-            >
-              {cancelling && <RefreshCw size={14} className="animate-spin" />}{" "}
-              Xác nhận hủy
-            </button>
-          </div>
-        }
-      >
-        <div className="space-y-4 py-2">
-          <p className="text-sm text-gray-600 leading-relaxed">
-            Bạn có chắc muốn hủy đơn{" "}
-            <span className="font-bold text-gray-900">
-              #{order.orderNumber}
-            </span>
-            ? Hành động này không thể hoàn tác.
-          </p>
-          <div className="space-y-2">
-            <label className="text-[11px] font-semibold text-gray-400 uppercase tracking-widest ml-1">
-              Lý do hủy đơn *
-            </label>
-            <textarea
-              rows={4}
-              className={cn(
-                "w-full p-4 text-sm border border-gray-100 bg-gray-50 rounded-2xl focus:ring-4 ",
-                "focus:ring-orange-500/10 focus:border-orange-500 outline-none transition-all resize-none"
-              )}
-              placeholder="Vui lòng nhập lý do..."
-              value={cancelReason}
-              onChange={(e) => setCancelReason(e.target.value)}
-            />
+
+          <div className={cn(
+            "px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider flex items-center gap-2 border shadow-sm",
+            ui.config.bg, ui.config.text, ui.config.border
+          )}>
+            {ui.config.icon}
+            <span>{ui.config.label}</span>
           </div>
         </div>
-      </SimpleModal>
-    </article>
-  );
-};
+
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 pl-2">
+          <div className="flex -space-x-4 overflow-hidden shrink-0 p-2">
+            {_.take(order.items, 3).map((item, i) => {
+              const imgUrl = resolveOrderItemImageUrl(item.imageBasePath, item.imageExtension, "_thumb");
+              return (
+                <div key={i} className="relative w-16 h-16 cursor-pointer rounded-2xl border-2 border-white bg-slate-50 overflow-hidden duration-300 shadow-custom transition-transform group-hover:translate-x-1">
+                  {imgUrl ? (
+                    <Image src={imgUrl} alt="sản phẩm" fill className="w-full h-full object-contain" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-slate-300 bg-slate-100">
+                      <Package size={20} strokeWidth={1.5} />
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+            {ui.itemCount > 3 && (
+              <div className="w-14 h-14 rounded-2xl border-2 border-white bg-slate-800 flex items-center justify-center text-[10px] font-bold text-white shadow-md z-10">
+                +{ui.itemCount - 3}
+              </div>
+            )}
+          </div>
+
+          <div className="flex-1 min-w-0 w-full">
+            <p className="text-[13px] font-bold text-slate-700 truncate mb-2">
+              {ui.firstItem?.productName}
+            </p>
+            
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="flex items-center gap-1.5 text-slate-600 bg-slate-50 px-2 py-0.5 rounded-lg border border-slate-100">
+                <Truck size={12} strokeWidth={2} />
+                <span className="text-[10px] font-bold uppercase tracking-tight">
+                  Giao: {order.shippingFee > 0 ? formatPrice(order.shippingFee) : "Miễn phí"}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-1.5 text-slate-500 bg-slate-50 px-2 py-0.5 rounded-lg border border-slate-200">
+                <Wallet size={12} strokeWidth={2} />
+                <span className="text-[10px] font-bold uppercase italic">
+                  {ui.paymentLabel}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto pt-3 sm:pt-0 border-t sm:border-t-0 border-slate-50">
+            <div className="flex flex-col items-start sm:items-end">
+                <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Tổng thanh toán</span>
+                <span className="text-2xl font-bold text-(--color-mainColor) tracking-tighter">
+                  {formatPrice(order.grandTotal)}
+                </span>
+            </div>
+
+            <button 
+              onClick={() => onViewDetail(order.orderId)}
+              className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl text-white flex items-center justify-center bg-(--color-mainColor) hover:scale-105 duration-300 transition-all active:scale-90 shadow-xl"
+            >
+              <ArrowRight size={22} strokeWidth={2.5} />
+            </button>
+          </div>
+        </div>
+
+        {order.status === "DELIVERED" && (
+          <div className="absolute top-0 right-0 overflow-hidden w-16 h-16 pointer-events-none rounded-tr-4xl">
+            <div className="absolute -top-1 -right-1 bg-emerald-500 text-white p-3 pt-4 pl-4 rounded-bl-full shadow-lg border-b border-l border-white/20">
+              <ShieldCheck size={16} strokeWidth={3} className="rotate-12" />
+            </div>
+          </div>
+        )}
+      </article>
+    );
+  };

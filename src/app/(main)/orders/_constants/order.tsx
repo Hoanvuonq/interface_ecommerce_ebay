@@ -1,108 +1,90 @@
-import { Package, CreditCard, CheckCircle2, Loader2, Truck, XCircle, Clock, DollarSign, RefreshCw } from "lucide-react";
+import { 
+  Package, 
+  CreditCard, 
+  CheckCircle2, 
+  Truck, 
+  XCircle, 
+  Clock, 
+  RefreshCw, 
+  PackageCheck, 
+  DollarSign
+} from "lucide-react";
 import React from "react";
 
-export const ORDER_STATUS_UI: Record<
-  string,
-  {
-    label: string;
-    icon: React.ReactNode;
-    bg: string;
-    text: string;
-    border: string;
-    strip: string;
-  }
-> = {
+export const ORDER_STATUS_UI: Record<string, { 
+  label: string; 
+  icon: React.ReactNode; 
+  bg: string; 
+  text: string; 
+  border: string; 
+  strip: string; 
+}> = {
   CREATED: {
-    label: "Đã tạo",
-    icon: <Package size={18} />,
-    bg: "bg-blue-50",
-    text: "text-blue-700",
-    border: "border-blue-200",
-    strip: "#3B82F6",
+    label: "Đã tạo đơn",
+    icon: <Clock size={14} />,
+    bg: "bg-orange-50/50",
+    text: "text-orange-500",
+    border: "border-orange-100",
+    strip: "#FFEDD5", 
   },
   PENDING_PAYMENT: {
     label: "Chờ thanh toán",
-    icon: <CreditCard size={18} />,
-    bg: "bg-orange-50",
-    text: "text-orange-700",
-    border: "border-orange-200",
-    strip: "#F97316",
+    icon: <CreditCard size={14} />,
+    bg: "bg-amber-50",
+    text: "text-amber-700",
+    border: "border-amber-200",
+    strip: "#F59E0B",
   },
   PAID: {
     label: "Đã thanh toán",
-    icon: <CheckCircle2 size={18} />,
-    bg: "bg-emerald-50",
-    text: "text-emerald-700",
-    border: "border-emerald-200",
-    strip: "#10B981",
-  },
-  FULFILLING: {
-    label: "Đang chuẩn bị",
-    icon: <Loader2 size={18} className="animate-spin" />,
-    bg: "bg-indigo-50",
-    text: "text-indigo-700",
-    border: "border-indigo-200",
-    strip: "#6366F1",
-  },
-  SHIPPED: {
-    label: "Đang giao hàng",
-    icon: <Truck size={18} />,
-    bg: "bg-blue-50",
-    text: "text-blue-700",
-    border: "border-blue-200",
-    strip: "#3B82F6",
-  },
-  OUT_FOR_DELIVERY: {
-    label: "Đang giao",
-    icon: <Truck size={18} className="animate-pulse" />,
-    bg: "bg-yellow-50",
-    text: "text-yellow-700",
-    border: "border-yellow-200",
-    strip: "#EAB308",
-  },
-  DELIVERED: {
-    label: "Giao thành công",
-    icon: <CheckCircle2 size={18} />,
-    bg: "bg-green-50",
-    text: "text-green-700",
-    border: "border-green-200",
-    strip: "#22C55E",
-  },
-  CANCELLED: {
-    label: "Đã hủy",
-    icon: <XCircle size={18} />,
-    bg: "bg-red-50",
-    text: "text-red-700",
-    border: "border-red-200",
-    strip: "#EF4444",
-  },
-  REFUNDING: {
-    label: "Đang hoàn tiền",
-    icon: <Loader2 size={18} className="animate-spin" />,
-    bg: "bg-orange-50",
+    icon: <CheckCircle2 size={14} />,
+    bg: "bg-orange-100/50",
     text: "text-orange-700",
     border: "border-orange-200",
     strip: "#F97316",
   },
-  REFUNDED: {
-    label: "Đã hoàn tiền",
-    icon: <CheckCircle2 size={18} />,
-    bg: "bg-gray-100",
-    text: "text-gray-700",
-    border: "border-gray-200",
-    strip: "#6B7280",
+  FULFILLING: {
+    label: "Đang chuẩn bị",
+    icon: <RefreshCw size={14} className="animate-spin" />,
+    bg: "bg-orange-50",
+    text: "text-orange-600",
+    border: "border-orange-100",
+    strip: "#FB923C",
+  },
+  SHIPPED: {
+    label: "Đang giao hàng",
+    icon: <Truck size={14} />,
+    bg: "bg-orange-100",
+    text: "text-orange-800",
+    border: "border-orange-200",
+    strip: "#EA580C",
+  },
+  DELIVERED: {
+    label: "Giao thành công",
+    icon: <PackageCheck size={14} />,
+    bg: "bg-orange-600", 
+    text: "text-white",
+    border: "border-orange-600",
+    strip: "#C2410C",
+  },
+  CANCELLED: {
+    label: "Đã hủy đơn",
+    icon: <XCircle size={14} />,
+    bg: "bg-slate-100",
+    text: "text-slate-500",
+    border: "border-slate-200",
+    strip: "#CBD5E1",
   },
 };
 
 export const PAYMENT_METHOD_LABELS: Record<string, string> = {
-  COD: "Thanh toán khi nhận hàng (COD)",
+  COD: "Thanh toán khi nhận hàng",
   VNPAY: "Ví VNPay",
   MOMO: "Ví MoMo",
-  PAYOS: "Chuyển khoản QR (PayOS)",
+  PAYOS: "Chuyển khoản QR",
   BANK_TRANSFER: "Chuyển khoản ngân hàng",
-  CREDIT_CARD: "Thẻ tín dụng/Ghi nợ",
+  CREDIT_CARD: "Thẻ tín dụng",
 };
-
 
 export const ORDER_STATUS_MAP: Record<
   string,

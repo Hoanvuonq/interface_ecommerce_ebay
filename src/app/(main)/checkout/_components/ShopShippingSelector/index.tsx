@@ -4,23 +4,7 @@ import React from "react";
 import { Truck, Loader2, CheckCircle2 } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { formatPrice } from "@/hooks/useFormatPrice";
-
-interface ShippingOption {
-  code: string;
-  providerName: string;
-  methodName: string;
-  fee: number;
-  estimatedDeliveryText?: string;
-}
-
-interface ShopShippingSelectorProps {
-  shopId: string;
-  shopName: string;
-  availableOptions: ShippingOption[];
-  selectedMethodCode?: string;
-  isLoading: boolean;
-  onMethodChange: (shopId: string, methodCode: string) => void;
-}
+import { ShopShippingSelectorProps } from "./type";
 
 export const ShopShippingSelector: React.FC<ShopShippingSelectorProps> = ({
   shopId,
@@ -51,12 +35,15 @@ export const ShopShippingSelector: React.FC<ShopShippingSelectorProps> = ({
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {availableOptions && availableOptions.length > 0 ? (
-            availableOptions.map((option) => {
+            availableOptions.map((option, index) => {
               const isSelected = selectedMethodCode === option.code;
+              const uniqueKey = `${option.code}-${option.providerName}-${index}`;
               return (
                 <div
-                  key={option.code}
-                  onClick={() => !isSelected && onMethodChange(shopId, option.code)}
+                  key={uniqueKey}
+                  onClick={() =>
+                    !isSelected && onMethodChange(shopId, option.code)
+                  }
                   className={cn(
                     "relative p-4 border-2 rounded-2xl cursor-pointer transition-all duration-300 flex justify-between items-center group",
                     isSelected
@@ -65,23 +52,30 @@ export const ShopShippingSelector: React.FC<ShopShippingSelectorProps> = ({
                   )}
                 >
                   <div className="flex-1 min-w-0 pr-2">
-                    <p className={cn(
-                      "text-[11px] font-semibold uppercase tracking-tight transition-colors",
-                      isSelected ? "text-orange-600" : "text-slate-700"
-                    )}>
+                    <p
+                      className={cn(
+                        "text-[11px] font-semibold uppercase tracking-tight transition-colors",
+                        isSelected ? "text-orange-600" : "text-slate-700"
+                      )}
+                    >
                       {option.providerName} - {option.methodName}
                     </p>
                     <p className="text-[10px] text-slate-400 font-bold mt-1 uppercase tracking-tighter italic">
-                      Nhận hàng: {option.estimatedDeliveryText || "Dự kiến 2-4 ngày"}
+                      Nhận hàng:{" "}
+                      {option.estimatedDeliveryText || "Dự kiến 2-4 ngày"}
                     </p>
                   </div>
-                  
+
                   <div className="flex flex-col items-end gap-1">
                     <span className="text-sm font-semibold text-slate-900 leading-none">
                       {formatPrice(option.fee)}
                     </span>
                     {isSelected && (
-                      <CheckCircle2 size={16} className="text-orange-500" strokeWidth={3} />
+                      <CheckCircle2
+                        size={16}
+                        className="text-orange-500"
+                        strokeWidth={3}
+                      />
                     )}
                   </div>
                 </div>

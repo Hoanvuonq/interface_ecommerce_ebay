@@ -9,9 +9,10 @@ import {
   preparePreviewPayload,
   prepareOrderRequest,
 } from "../_utils/checkout.mapper";
+
 export const useCheckoutActions = () => {
   const dispatch = useAppDispatch();
-  const { success, error } = useToast();
+  const { success: toastSuccess, error: toastError } = useToast();
 
   const {
     request,
@@ -22,45 +23,72 @@ export const useCheckoutActions = () => {
     setLoading,
   } = useCheckoutStore();
 
-  // 1. Mutation cho Sync Preview
   const previewMutation = useMutation({
     mutationFn: async (updatedRequest: any) => {
-      const payload = preparePreviewPayload(updatedRequest);
+      const payload = preparePreviewPayload(updatedRequest, preview);
       return await dispatch(checkoutPreviewAction(payload)).unwrap();
     },
     onMutate: () => setLoading(true),
     onSuccess: (result, variables) => {
-      // Logic kiểm tra voucher hợp lệ
-      const hasSentVoucher = _.get(variables, "globalVouchers.length") > 0;
-      const validGlobal =
-        _.get(
+      const invalidVouchers = [
+        ..._.get(
           result,
-          "voucherApplication.globalVouchers.validVouchers.length",
-          0
-        ) > 0;
-      const validShop = _.some(
-        _.get(result, "voucherApplication.shopResults"),
-        (s) => Array.isArray(s.validVouchers) && s.validVouchers.length > 0
-      );
+          "voucherApplication.globalVouchers.invalidVouchers",
+          []
+        ),
+        ..._.flatMap(
+          _.get(result, "voucherApplication.shopResults"),
+          "invalidVouchers"
+        ),
+      ].filter((v) => !!v);
 
-      if (hasSentVoucher && !validGlobal && !validShop) {
-        error(
-          _.get(result, "voucherApplication.errors[0]") ||
-            "Voucher không đủ điều kiện"
+      const isShippingError = invalidVouchers.some((v) =>
+        v.reason?.includes("Shipping fee")
+      );
+      let finalRequest = _.cloneDeep(variables);
+
+      if (invalidVouchers.length > 0) {
+        const invalidCodes = invalidVouchers.map(
+          (v) => v.voucherCode || v.code
         );
+        const hasVoucherToClear =
+          _.intersection(finalRequest.globalVouchers, invalidCodes).length >
+            0 ||
+          _.some(
+            finalRequest.shops,
+            (s) => _.intersection(s.vouchers, invalidCodes).length > 0
+          );
+
+        if (hasVoucherToClear) {
+          toastError(invalidVouchers[0].reason || "Voucher không đủ điều kiện");
+          finalRequest.globalVouchers = _.difference(
+            finalRequest.globalVouchers || [],
+            invalidCodes
+          );
+          finalRequest.shops = finalRequest.shops.map((shop: any) => ({
+            ...shop,
+            vouchers: _.difference(shop.vouchers || [], invalidCodes),
+          }));
+          previewMutation.mutate(finalRequest);
+          return;
+        }
+      }
+
+      if (isShippingError) {
+        setPreview(result);
+        setRequest(variables);
+        return;
       }
 
       setPreview(result);
-      setRequest(variables);
+      setRequest(finalRequest);
       sessionStorage.setItem("checkoutPreview", JSON.stringify(result));
-      sessionStorage.setItem("checkoutRequest", JSON.stringify(variables));
+      sessionStorage.setItem("checkoutRequest", JSON.stringify(finalRequest));
     },
-    onError: (err: any) =>
-      error(err.message || "Lỗi cập nhật thông tin đơn hàng"),
+    onError: (err: any) => toastError(err.message || "Lỗi cập nhật thông tin"),
     onSettled: () => setLoading(false),
   });
 
-  // 2. Mutation cho Confirm Order
   const orderMutation = useMutation({
     mutationFn: async ({
       customerNote,
@@ -71,7 +99,6 @@ export const useCheckoutActions = () => {
     }) => {
       if (!request || !preview)
         throw new Error("Thông tin đơn hàng không hợp lệ");
-
       const finalRequest = prepareOrderRequest({
         preview,
         request,
@@ -79,45 +106,37 @@ export const useCheckoutActions = () => {
         customerNote,
         paymentMethod,
       });
-
       return await orderService.createOrder(finalRequest);
     },
     onMutate: () => setLoading(true),
     onSuccess: (response) => {
       sessionStorage.removeItem("checkoutPreview");
       sessionStorage.removeItem("checkoutRequest");
-      success("Đặt hàng thành công!");
+      toastSuccess("Đặt hàng thành công!");
       return response;
     },
-    onError: (err: any) => {
-      error(
+    onError: (err: any) =>
+      toastError(
         _.get(err, "response.data.message") ||
           err.message ||
           "Đặt hàng thất bại"
-      );
-    },
+      ),
     onSettled: () => setLoading(false),
   });
 
   const updateShippingMethod = async (shopId: string, methodCode: string) => {
-    if (!preview?.shops) return;
-
+    if (!request) return;
     const updatedRequest = {
       ...request,
-      shops: _.map(preview.shops, (s) => ({
-        shopId: s.shopId,
-        itemIds: _.map(s.items, "itemId"),
-        selectedShippingMethod:
-          s.shopId === shopId ? methodCode : s.selectedShippingMethod,
-        vouchers: _.map(s.appliedVouchers, (v) => v.code || v),
-      })),
+      shops: request.shops.map((s: any) =>
+        s.shopId === shopId ? { ...s, selectedShippingMethod: methodCode } : s
+      ),
     };
     return previewMutation.mutateAsync(updatedRequest);
   };
- 
 
   return {
-    syncPreview: previewMutation.mutateAsync,
+    syncPreview: (req: any) => previewMutation.mutateAsync(req),
     updateShippingMethod,
     confirmOrder: (note: string, method: string) =>
       orderMutation.mutateAsync({ customerNote: note, paymentMethod: method }),

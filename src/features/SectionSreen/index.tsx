@@ -27,11 +27,11 @@ export const SectionSreen = ({
   };
 
   return (
-    <section className="py-4 transition-colors" id={id}>
+    <section className="py-1.5 transition-colors" id={id}>
       <ScrollReveal animation={animation} delay={200}>
         <div
           className={cn(
-            "max-w-7xl relative overflow-hidden rounded-xl shadow-md py-4 mx-auto px-4 transition-colors duration-300",
+            "max-w-7xl relative overflow-hidden rounded-2xl shadow-md py-4 mx-auto px-4 transition-colors duration-300",
             getBackgroundClass()
           )}
         >

@@ -12,6 +12,7 @@
   --color-primary: #2f5aff;
   --color-secondary: #4f7aff;
   --color-accent: #ff7a00;
+   --color-mainColor: #f05e0a;
   --color-bg-soft: #f5f7ff;
   --color-border-soft: #e6e9ff;
   --color-gradient-1: #6cd6ff;
@@ -249,4 +250,12 @@ body {
   .animate-infinite-scroll {
     animation: infinite-scroll 40s linear infinite;
   }
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

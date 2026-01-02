@@ -282,8 +282,8 @@ export default function ForgotPasswordForm() {
                     ref={identifierRef}
                   />
                   <div className="flex gap-3 p-4 bg-orange-50 dark:bg-orange-900/20 rounded-2xl border border-orange-100 dark:border-orange-800/50">
-                    <MdEmail className="text-orange-500 text-xl shrink-0" />
-                    <p className="text-xs text-orange-700 dark:text-orange-300 leading-relaxed font-medium">
+                    <MdEmail className="text-(--color-mainColor) text-xl shrink-0" />
+                    <p className="text-xs text-(--color-mainColor) leading-relaxed font-medium">
                       Mã OTP sẽ được gửi vào email của bạn để xác thực quyền sở
                       hữu.
                     </p>
@@ -294,7 +294,7 @@ export default function ForgotPasswordForm() {
               {step === 2 && (
                 <div className="space-y-6">
                   <div className="text-center bg-orange-50 dark:bg-orange-900/10 py-3 rounded-2xl border border-orange-100 dark:border-orange-800/50">
-                    <span className="text-[10px] text-orange-600 dark:text-orange-400 font-bold block mb-1 uppercase tracking-widest">
+                    <span className="text-[10px] text-(--color-mainColor) font-bold block mb-1 uppercase tracking-widest">
                       Email nhận mã
                     </span>
                     <span className="text-gray-800 dark:text-white font-bold">
@@ -333,14 +333,14 @@ export default function ForgotPasswordForm() {
                     {countdown > 0 ? (
                       <p className="text-sm text-gray-500">
                         Gửi lại mã sau{" "}
-                        <span className="font-bold text-orange-600">
+                        <span className="font-bold text-(--color-mainColor)">
                           {countdown}s
                         </span>
                       </p>
                     ) : (
                       <button
                         type="button"
-                        className="text-sm font-bold text-orange-600 hover:text-orange-700 underline underline-offset-4"
+                        className="text-sm font-bold text-(--color-mainColor) hover:text-orange-700 underline underline-offset-4"
                         onClick={async () => {
                           await handleForgotPassword({ email: formData.email });
                           resetCountdown();

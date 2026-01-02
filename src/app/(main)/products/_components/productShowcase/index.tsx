@@ -118,7 +118,6 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
               const wishlistStatusMap = await checkVariantsInWishlist(
                 variantIds
               );
-              // 🎯 Sửa lỗi Implicit any: Khai báo kiểu cho prev: Map<string, boolean>
               setWishlistMap((prev: Map<string, boolean>) => {
                 const newMap = new Map(prev);
                 wishlistStatusMap.forEach((value, key) => {

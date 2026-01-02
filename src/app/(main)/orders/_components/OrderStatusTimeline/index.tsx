@@ -31,7 +31,6 @@ export const OrderStatusTimeline: React.FC<OrderStatusTimelineProps> = ({
   let displaySteps = [...standardSteps];
   let currentIndex = 0;
 
-  // Xử lý logic Cancelled (Vẫn giữ bước Order Placed -> Cancelled)
   if (status === "CANCELLED") {
     displaySteps = [
       { id: "CREATED", label: "Order Placed", icon: Check },
@@ -60,7 +59,7 @@ export const OrderStatusTimeline: React.FC<OrderStatusTimelineProps> = ({
 
         return (
           <div key={step.id} className="relative flex items-start gap-4">
-            <div className="flex flex-col items-center flex-shrink-0">
+            <div className="flex flex-col items-center shrink-0">
               <div 
                 className={`relative z-10 flex h-9 w-9 items-center justify-center rounded-full border-2 transition-all duration-500 ${
                   isCompleted 
@@ -82,13 +81,12 @@ export const OrderStatusTimeline: React.FC<OrderStatusTimelineProps> = ({
                   className={`w-0.5 h-12 -my-0.5 transition-all duration-700 ${
                     index < currentIndex 
                       ? isCancel ? "bg-red-500" : "bg-emerald-500"
-                      : "bg-zinc-200 border-l-2 border-dashed border-zinc-200 bg-transparent"
+                      : "bg-zinc-200 border-l-2 border-dashed border-zinc-200"
                   }`}
                 />
               )}
             </div>
 
-            {/* Cột phải: Text */}
             <div className="flex flex-col pt-1.5 pb-8">
               <span className={`text-[15px] font-bold tracking-tight transition-colors duration-300 ${
                 isCompleted 
@@ -98,7 +96,6 @@ export const OrderStatusTimeline: React.FC<OrderStatusTimelineProps> = ({
                 {step.label}
               </span>
               
-              {/* Subtext ngày tháng */}
               <div className="mt-0.5 flex items-center gap-1.5">
                 {isCompleted ? (
                   <span className={`text-[13px] font-medium ${isCancel ? 'text-red-400' : 'text-emerald-600'}`}>

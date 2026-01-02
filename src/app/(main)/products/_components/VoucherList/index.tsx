@@ -2,7 +2,7 @@
 
 import { CustomButton } from "@/components/button";
 import { CardComponents } from "@/components/card";
-import { voucherService } from "@/services/voucher/voucher.service";
+import { voucherService } from "@/components/voucher/_service/voucher.service";
 import type { PublicProductDetailDTO } from "@/types/product/public-product.dto";
 import { cn } from "@/utils/cn";
 import { formatVND } from '@/utils/product.utils';

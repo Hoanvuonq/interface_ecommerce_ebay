@@ -27,26 +27,26 @@ export const OrdersScreen = () => {
   const [statusFilter, setStatusFilter] = useState<string>("ALL");
 
   const filteredOrders = useMemo(() => {
-    let result = orders;
+  let result = orders;
 
-    if (statusFilter !== "ALL") {
-      result = _.filter(result, { status: statusFilter });
-    }
+  if (statusFilter && statusFilter !== "ALL") {
+    result = _.filter(result, (order) => order.status === statusFilter);
+  }
 
-    if (!_.isEmpty(searchText)) {
-      const query = _.toLower(searchText);
-      result = _.filter(
-        result,
-        (order) =>
-          _.includes(_.toLower(order.orderNumber), query) ||
-          _.some(order.items, (item) =>
-            _.includes(_.toLower(item.productName), query)
-          )
-      );
-    }
+  if (!_.isEmpty(searchText)) {
+    const query = _.toLower(searchText);
+    result = _.filter(
+      result,
+      (order) =>
+        _.includes(_.toLower(order.orderNumber), query) ||
+        _.some(order.items, (item) =>
+          _.includes(_.toLower(item.productName), query)
+        )
+    );
+  }
 
-    return result;
-  }, [orders, searchText, statusFilter]);
+  return result;
+}, [orders, searchText, statusFilter]);
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },

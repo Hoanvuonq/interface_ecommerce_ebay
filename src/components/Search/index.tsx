@@ -29,7 +29,7 @@ export const Search: React.FC<ISearch> = ({
 
   return (
     <form
-      className={`flex items-center bg-[#2563ff] rounded-xl p-1 ${className}`}
+      className={`flex items-center rounded-xl  ${className}`}
       style={style}
       onSubmit={(e) => {
         e.preventDefault();

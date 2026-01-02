@@ -9,21 +9,15 @@ import { logout } from "@/utils/local.storage";
 import {
   ChevronDown,
   CircleDollarSign,
-  Heart,
-  Home,
-  LayoutDashboard,
-  LogIn,
   LogOut,
-  Package,
-  Settings,
   ShieldCheck,
   Store,
-  User,
-  UserPlus,
+  User
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import * as MenuConstants from "../../_constants/menu";
 import { MenuItem } from "../../_types/header";
 
 export const AccountDropdown = () => {
@@ -51,194 +45,32 @@ export const AccountDropdown = () => {
   }, [isActuallyAuthenticated]);
 
   const handleLogoutAction = () => {
-    const context = pathname?.startsWith("/employee")
-      ? "employee"
-      : pathname?.startsWith("/shop")
-      ? "shop"
-      : "default";
+    const context = pathname?.startsWith("/employee") ? "employee" : pathname?.startsWith("/shop") ? "shop" : "default";
     logout(context as any);
   };
 
-  const guestMenuItems: MenuItem[] = [
-    {
-      key: "login",
-      label: "Đăng nhập",
-      href: "/login",
-      icon: <LogIn size={18} />,
-    },
-    {
-      key: "register",
-      label: "Đăng ký",
-      href: "/register",
-      icon: <UserPlus size={18} />,
-    },
-  ];
+ const currentMenuItems: MenuItem[] = (() => {
+    if (!isActuallyAuthenticated) return MenuConstants.GUEST_MENU_ITEMS;
 
-  const buyerMenuItems: MenuItem[] = [
-    {
-      key: "profile",
-      label: "Hồ sơ cá nhân",
-      href: "/profile",
-      icon: <User size={18} />,
-    },
-    {
-      key: "orders",
-      label: "Đơn hàng của tôi",
-      href: "/orders",
-      icon: <Package size={18} />,
-    },
-    {
-      key: "wishlist",
-      label: "Yêu thích",
-      href: "/wishlist",
-      icon: <Heart size={18} />,
-    },
-  ];
-
-  const shopMenuItems: MenuItem[] = [
-    {
-      key: "dashboard",
-      label: "Quản trị Shop",
-      href: "/shop/dashboard",
-      icon: <LayoutDashboard size={18} />,
-    },
-    {
-      key: "profile",
-      label: "Hồ sơ Shop",
-      href: "/shop/profile",
-      icon: <Store size={18} />,
-    },
-    {
-      key: "settings",
-      label: "Cài đặt Shop",
-      href: "/shop/settings",
-      icon: <Settings size={18} />,
-    },
-  ];
-
-  const employeeMenuItems: MenuItem[] = [
-    {
-      key: "dashboard",
-      label: "Workspace",
-      href: "/employee/dashboard",
-      icon: <LayoutDashboard size={18} />,
-    },
-    {
-      key: "profile",
-      label: "Hồ sơ nhân viên",
-      href: "/employee/profile",
-      icon: <User size={18} />,
-    },
-  ];
-
-  const adminMenuItems: MenuItem[] = [
-    {
-      key: "admin_dash",
-      label: "Hệ thống quản trị",
-      href: "/admin/dashboard",
-      icon: <ShieldCheck size={18} />,
-    },
-    ...(pathname?.startsWith("/admin")
-      ? [
-          {
-            key: "home",
-            label: "Về trang chủ",
-            href: "/",
-            icon: <Home size={18} />,
-          },
-        ]
-      : []),
-  ];
-
-  let currentMenuItems: MenuItem[] = [];
-
-  if (!isActuallyAuthenticated) {
-    currentMenuItems = guestMenuItems;
-  } else {
-    if (pathname?.startsWith("/shop")) currentMenuItems = shopMenuItems;
-    else if (pathname?.startsWith("/employee"))
-      currentMenuItems = employeeMenuItems;
-    else if (pathname?.startsWith("/admin")) currentMenuItems = adminMenuItems;
+    let items: MenuItem[] = [];
+    if (pathname?.startsWith("/shop")) items = [...MenuConstants.SHOP_MENU_ITEMS];
+    else if (pathname?.startsWith("/employee")) items = [...MenuConstants.EMPLOYEE_MENU_ITEMS];
+    else if (pathname?.startsWith("/admin")) items = [...MenuConstants.ADMIN_MENU_ITEMS];
     else {
-      currentMenuItems = [...buyerMenuItems];
-      if (hasRole(RoleEnum.SHOP))
-        currentMenuItems.push({
-          key: "go_shop",
-          label: "Kênh người bán",
-          href: "/shop/dashboard",
-          icon: <Store size={18} />,
-        });
-      if (hasRole(RoleEnum.EMPLOYEE))
-        currentMenuItems.push({
-          key: "go_work",
-          label: "Kênh nhân viên",
-          href: "/employee/dashboard",
-          icon: <LayoutDashboard size={18} />,
-        });
-      if (hasRole(RoleEnum.ADMIN))
-        currentMenuItems.push({
-          key: "go_admin",
-          label: "Trang quản trị",
-          href: "/admin/dashboard",
-          icon: <ShieldCheck size={18} />,
-        });
+      items = [...MenuConstants.BUYER_MENU_ITEMS];
+      if (hasRole(RoleEnum.SHOP)) items.push({ key: "go_shop", label: "Kênh người bán", href: "/shop/dashboard", icon: <Store size={16} /> });
+      if (hasRole(RoleEnum.ADMIN)) items.push({ key: "go_admin", label: "Trang quản trị", href: "/admin/dashboard", icon: <ShieldCheck size={16} /> });
     }
-    currentMenuItems.push({
+
+    items.push({
       key: "logout",
       label: "Đăng xuất",
-      icon: <LogOut size={18} />,
+      icon: <LogOut size={16} />,
       action: handleLogoutAction,
       isLogout: true,
     });
-  }
-
-  const getRoleBadge = () => {
-    const baseClass =
-      "px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-tighter border shadow-none";
-    switch (currentRole) {
-      case RoleEnum.ADMIN:
-        return (
-          <span
-            className={cn(
-              baseClass,
-              "bg-rose-100 text-rose-600 border-rose-200"
-            )}
-          >
-            Quản trị viên
-          </span>
-        );
-      case RoleEnum.EMPLOYEE:
-        return (
-          <span
-            className={cn(baseClass, "bg-sky-100 text-sky-600 border-sky-200")}
-          >
-            Nhân viên
-          </span>
-        );
-      case RoleEnum.SHOP:
-        return (
-          <span
-            className={cn(
-              baseClass,
-              "bg-amber-100 text-amber-700 border-amber-200"
-            )}
-          >
-            Người bán
-          </span>
-        );
-      default:
-        return (
-          <span
-            className={cn(
-              baseClass,
-              "bg-slate-100 text-slate-500 border-slate-200"
-            )}
-          >
-            Thành viên
-          </span>
-        );
-    }
-  };
+    return items;
+  })();
 
   const Trigger = (
     <div
@@ -252,7 +84,7 @@ export const AccountDropdown = () => {
     >
       <div
         className={cn(
-          "w-7 h-7 rounded-full flex items-center justify-center overflow-hidden shrink-0 border transition-all duration-300",
+          "w-9 h-9 rounded-full flex items-center justify-center overflow-hidden shrink-0 border transition-all duration-300",
           isActuallyAuthenticated
             ? "bg-slate-200 border-white/20"
             : "bg-slate-100 border-slate-200 text-slate-400 group-hover:text-blue-600"
@@ -269,12 +101,12 @@ export const AccountDropdown = () => {
         )}
       </div>
       <div className="flex flex-col gap-0.5 items-start min-w-0">
-        <span className="hidden sm:inline font-bold text-slate-100 group-hover:text-white transition-colors text-[13px] truncate max-w-24 leading-none">
+        <span className="hidden sm:inline font-bold text-slate-100 group-hover:text-white transition-colors text-[12px] truncate max-w-30 leading-normal">
           {isActuallyAuthenticated ? userData.name : "Tài khoản"}
         </span>
         <span className="flex gap-1 items-center">
-          <CircleDollarSign size={16} className="text-yellow-500" />
-          <span className="font-semibold text-yellow-500 text-[10px]">1.000 Xu</span>
+          <CircleDollarSign size={14} className="text-yellow-500" />
+          <span className="font-semibold text-yellow-500 text-[10px]"> 999 Xu</span>
         </span>
       </div>
       <ChevronDown

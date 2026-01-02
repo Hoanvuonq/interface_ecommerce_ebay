@@ -2,7 +2,6 @@
 
 import { ProductCard } from "@/app/(main)/products/_components";
 import { SectionLoading } from "@/components";
-import ScrollReveal from "@/features/ScrollReveal";
 import { cn } from "@/utils/cn";
 import { AnimatePresence, motion } from "framer-motion";
 import _ from "lodash";

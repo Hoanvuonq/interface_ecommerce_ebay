@@ -10,7 +10,7 @@ interface ShopLoyaltySectionProps {
 
 export const ShopLoyaltySection: React.FC<ShopLoyaltySectionProps> = ({ loyalty }) => {
   return (
-    <div className="bg-amber-50/50 rounded-2xl p-4 border border-amber-100/50 flex flex-col h-full justify-between transition-all hover:bg-amber-50">
+    <div className="bg-amber-50/50 rounded-2xl p-4 border border-amber-100/50 flex flex-col w-full h-full justify-between transition-all hover:bg-amber-50">
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
