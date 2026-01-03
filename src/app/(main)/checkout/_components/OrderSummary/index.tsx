@@ -10,19 +10,13 @@ interface OrderSummaryProps {
   onSubmit: (e: React.FormEvent) => void;
 }
 
+
 export const OrderSummary = ({ onSubmit }: OrderSummaryProps) => {
   const preview = useCheckoutStore((state) => state.preview);
   const loading = useCheckoutStore((state) => state.loading);
-
-  const totalDiscountAmount = useMemo(() => {
-    if (!preview?.voucherApplication) return 0;
-
-    const mainTotal = preview.voucherApplication.totalDiscount || 0;
-    const shipping = preview.voucherApplication.shippingDiscountTotal || 0;
-    const product = preview.voucherApplication.productDiscountTotal || 0;
-
-    return mainTotal > 0 ? mainTotal : shipping + product;
-  }, [preview]);
+  const summary = preview.summary || preview;
+  // Always use summary.totalDiscount for voucher discount (new API)
+  const totalDiscountAmount = summary.totalDiscount || 0;
 
   if (!preview) return null;
 
@@ -41,7 +35,7 @@ export const OrderSummary = ({ onSubmit }: OrderSummaryProps) => {
             Tổng tiền hàng
           </span>
           <span className="text-sm font-semibold text-slate-900">
-            {formatPrice(preview.subtotal || 0)}
+            {formatPrice(summary.subtotal || 0)}
           </span>
         </div>
 
@@ -50,7 +44,7 @@ export const OrderSummary = ({ onSubmit }: OrderSummaryProps) => {
             Phí vận chuyển
           </span>
           <span className="text-sm font-semibold text-slate-900">
-            {formatPrice(preview.totalShippingFee || 0)}
+            {formatPrice(summary.totalShippingFee || 0)}
           </span>
         </div>
 
@@ -68,13 +62,13 @@ export const OrderSummary = ({ onSubmit }: OrderSummaryProps) => {
           </div>
         )}
 
-        {preview.totalTaxAmount > 0 && (
+        {summary.totalTaxAmount > 0 && (
           <div className="flex justify-between items-center">
             <span className="text-[11px] font-bold text-slate-600 uppercase">
               Thuế (VAT)
             </span>
             <span className="text-sm font-semibold text-slate-900">
-              {formatPrice(preview.totalTaxAmount)}
+              {formatPrice(summary.totalTaxAmount)}
             </span>
           </div>
         )}
@@ -93,7 +87,7 @@ export const OrderSummary = ({ onSubmit }: OrderSummaryProps) => {
             </span>
           </div>
           <span className="text-4xl font-semibold text-orange-600 tracking-tighter italic leading-none animate-in fade-in zoom-in duration-500">
-            {formatPrice(preview.grandTotal || 0)}
+            {formatPrice(summary.grandTotal || 0)}
           </span>
         </div>
       </div>

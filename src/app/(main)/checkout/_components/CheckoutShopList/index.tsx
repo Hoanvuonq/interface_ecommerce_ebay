@@ -9,6 +9,7 @@ import React, { useMemo } from "react";
 import { useCheckoutActions } from "../../_hooks/useCheckoutActions";
 import { ShopLoyaltySection } from "../ShopLoyaltySection";
 import { ShopShippingSelector } from "../ShopShippingSelector";
+import { TotalAmountCheckoutList } from "../TotalAmountCheckoutList";
 
 interface CheckoutShopListProps {
   shops: any[];
@@ -81,27 +82,23 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
   };
 
   const handleSelectPlatformVoucher = async (
-    shopId: string, // Thêm tham số shopId
+    shopId: string,
     selected: any
   ): Promise<boolean> => {
-    // 1. Lấy mã mới từ Modal (Order và Shipping)
     const newCodes = [selected?.order?.code, selected?.shipping?.code].filter(
       Boolean
     ) as string[];
 
-    // 2. Cập nhật mảng globalVouchers của RIÊNG shop này trong mảng shops
     const updatedShops = request.shops.map((s: any) => {
       if (s.shopId === shopId) {
         return {
           ...s,
-          globalVouchers: newCodes, // Gán vào shop cụ thể
+          globalVouchers: newCodes,
         };
       }
       return s;
     });
 
-    // 3. Gửi request đồng bộ. Lưu ý: request.globalVouchers ở root có thể để rỗng
-    // vì ta đã chuyển sang dùng globalVouchers theo từng shop.
     const result = await syncPreview({
       ...request,
       shops: updatedShops,
@@ -112,25 +109,36 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
   return (
     <div className="space-y-6">
       {shops.map((shop) => {
-        const shopVoucherResult =
-          preview?.voucherApplication?.shopResults?.find(
-            (res: any) => res.shopId === shop.shopId
-          );
+        const shopSummary = _.get(shop, "summary", {});
+        const subtotal = Number(shopSummary.subtotal || 0);
+        const shippingFee = Number(shopSummary.shippingFee || 0);
 
-        const totalDiscount = shopVoucherResult?.totalDiscount || 0;
+        const voucherResult = _.get(shop, "voucherResult", {});
+        const totalDiscount = Number(voucherResult.totalDiscount || 0);
 
+        // 3. Tính riêng mức giảm tiền Ship để hiển thị (Duyệt mảng discountDetails)
         const shipDiscount =
-          shopVoucherResult?.discountDetails?.find(
-            (d: any) =>
-              d.discountTarget === "SHIP" || d.discountTarget === "SHIPPING"
-          )?.discountAmount || 0;
+          _.chain(voucherResult.discountDetails)
+            .filter(
+              (d: any) =>
+                d.discountTarget === "SHIPPING" || d.discountTarget === "SHIP"
+            )
+            .sumBy("discountAmount")
+            .value() || 0;
 
+        // 4. Mức giảm giá hàng hóa (Voucher Shop + Voucher Sàn giảm vào đơn)
         const productOrOrderDiscount = totalDiscount - shipDiscount;
+
+        // 5. Tính toán tổng cộng thực tế hiển thị
+        const originalShopPrice = subtotal + shippingFee;
+        const finalShopTotal = Number(
+          shopSummary.shopTotal || originalShopPrice - totalDiscount
+        );
+
+        // Lấy dữ liệu request hiện tại của shop để đồng bộ UI
         const shopInRequest = request?.shops?.find(
           (s: any) => s.shopId === shop.shopId
         );
-        const originalShopPrice = shop.subtotal + (shop.shippingFee || 0);
-        const finalShopTotal = originalShopPrice - totalDiscount;
 
         return (
           <div
@@ -208,39 +216,31 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
                           handleSelectShopVoucher(shop.shopId, v)
                         }
                         appliedVouchers={{
-                          order: shopInRequest?.vouchers?.[0], // Lấy từ mảng vouchers của shop
+                          order: shopInRequest?.vouchers?.[0],
                         }}
-                        context={{
-                          totalAmount: shop.subtotal,
-                          shopId: shop.shopId,
-                          shippingFee: shop.shippingFee,
-                        }}
+                        context={{ totalAmount: subtotal, shippingFee }}
                       />
                     </div>
                     <div className="flex-1">
                       <VoucherComponents
                         compact
-                        forcePlatform={true}
+                        forcePlatform
                         onSelectVoucher={(selected: any) =>
                           handleSelectPlatformVoucher(shop.shopId, selected)
                         }
                         appliedVouchers={{
-                          order: (
-                            request?.shops?.find(
-                              (s: any) => s.shopId === shop.shopId
-                            )?.globalVouchers || []
-                          ).find((c: string) => !c.includes("FREESHIP")),
-                          shipping: (
-                            request?.shops?.find(
-                              (s: any) => s.shopId === shop.shopId
-                            )?.globalVouchers || []
-                          ).find((c: string) => c.includes("FREESHIP")),
+                          order: shopInRequest?.globalVouchers?.find(
+                            (c: string) => !c.includes("FREESHIP")
+                          ),
+                          shipping: shopInRequest?.globalVouchers?.find(
+                            (c: string) => c.includes("FREESHIP")
+                          ),
                         }}
                         context={{
-                          totalAmount: shop.subtotal,
+                          totalAmount: subtotal,
+                          shippingFee: shippingFee,
                           shopIds: [shop.shopId],
                           productIds: shop.items.map((i: any) => i.itemId),
-                          shippingFee: shop.shippingFee,
                         }}
                       />
                     </div>
@@ -252,36 +252,13 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
                 </div>
               </div>
             </div>
-
-            <div className="px-8 py-5 bg-slate-50/50 border-t border-slate-100 flex justify-between items-end">
-              <div className="flex flex-col gap-1">
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                  Tổng shop
-                </span>
-                {productOrOrderDiscount > 0 && (
-                  <p className="text-[10px] text-emerald-600 font-bold flex items-center gap-1">
-                    <CheckCircle2 size={12} /> Giảm đơn hàng: -
-                    {formatPrice(productOrOrderDiscount)}
-                  </p>
-                )}
-                {shipDiscount > 0 && (
-                  <p className="text-[10px] text-blue-600 font-bold flex items-center gap-1">
-                    <Truck size={12} /> Giảm vận chuyển: -
-                    {formatPrice(shipDiscount)}
-                  </p>
-                )}
-              </div>
-              <div className="text-right">
-                {totalDiscount > 0 && (
-                  <p className="text-[10px] text-slate-400 line-through mb-1">
-                    {formatPrice(originalShopPrice)}
-                  </p>
-                )}
-                <span className="text-2xl font-black text-slate-900 tracking-tighter">
-                  {formatPrice(finalShopTotal)}
-                </span>
-              </div>
-            </div>
+            <TotalAmountCheckoutList
+              originalShopPrice={originalShopPrice}
+              finalShopTotal={finalShopTotal}
+              totalDiscount={totalDiscount}
+              productOrOrderDiscount={productOrOrderDiscount}
+              shipDiscount={shipDiscount}
+            />
           </div>
         );
       })}

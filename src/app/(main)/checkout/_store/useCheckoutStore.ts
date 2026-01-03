@@ -38,7 +38,6 @@ interface CheckoutState {
 }
 
 export const useCheckoutStore = create<CheckoutState>((set) => ({
-  // --- States ---
   preview: null,
   request: null,
   loading: false,
@@ -50,14 +49,10 @@ export const useCheckoutStore = create<CheckoutState>((set) => ({
   provincesData: [],
   allWardsData: [],
   loadingAddress: false,
-
-  // --- Actions ---
+ 
   setLoading: (val) => set({ loading: val }),
-  
   setPreview: (preview) => set({ preview }),
-  
   setRequest: (request) => set({ request }),
-  
   setAddressMasterData: (p, w) => set({ 
     provincesData: p, 
     allWardsData: w 

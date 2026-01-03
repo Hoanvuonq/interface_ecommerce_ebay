@@ -17,6 +17,7 @@ import { PayOSCheckoutModal } from "../_components/PayOSCheckoutModal";
 import { useCheckoutActions } from "../_hooks/useCheckoutActions";
 import { useCheckoutAddress } from "../_hooks/useCheckoutAddress";
 import { useCheckoutStore } from "../_store/useCheckoutStore";
+
 export const CheckoutScreen = () => {
   const router = useRouter();
   const {
@@ -25,6 +26,7 @@ export const CheckoutScreen = () => {
     syncPreview,
     isLoading: actionLoading,
   } = useCheckoutActions();
+
   const { currentAddress, updateAddress, hasAddress } = useCheckoutAddress();
   const { preview, request, loading, savedAddresses } = useCheckoutStore();
   const { error } = useToast();

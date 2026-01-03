@@ -130,7 +130,7 @@ export interface ShopSelection {
   globalVouchers?: string[];
   shippingFee?: number;
   shippingMethodCode?: string;
-  // Backend uses shippingMethod enum
+  serviceCode?: number;
   shippingMethod?:
     | "STANDARD"
     | "EXPRESS"
