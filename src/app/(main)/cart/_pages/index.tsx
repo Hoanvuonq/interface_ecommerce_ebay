@@ -1,35 +1,28 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import {
-  ShoppingCart,
-  Trash2,
-  Home,
-  RefreshCw,
-  ChevronRight,
-  AlertTriangle,
-  Loader2,
-  CheckCircle,
-  ShoppingBag,
-} from "lucide-react";
+import { CustomBreadcrumb, SectionLoading } from "@/components";
+import PageContentTransition from "@/features/PageContentTransition";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import {
+  checkoutPreview,
+  clearCart,
+  deselectAllItemsLocal,
   fetchCart,
   selectAllItemsLocal,
-  deselectAllItemsLocal,
-  clearCart,
-  checkoutPreview,
 } from "@/store/theme/cartSlice";
-import { ShopCartSection } from "../_components/ShopCartSection";
-import { CartSummary } from "../_components/CartSummary";
-import { EmptyCart } from "../_components/EmptyCart";
-import { CheckoutPreview } from "../_components/CheckoutPreview";
-import Link from "next/link";
-import { toast } from "sonner";
-import PageContentTransition from "@/features/PageContentTransition";
 import { isAuthenticated } from "@/utils/local.storage";
-import { cn } from "@/utils/cn";
-import { CustomBreadcrumb, SectionLoading } from "@/components";
+import {
+  AlertTriangle,
+  CheckCircle,
+  Trash2
+} from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { CartSummary } from "../_components/CartSummary";
+import { CheckoutPreview } from "../_components/CheckoutPreview";
+import { EmptyCart } from "../_components/EmptyCart";
+import { ShopCartSection } from "../_components/ShopCartSection";
 import { HeaderCart } from "../_layouts/headerCart";
 
 export const CartScreen = () => {

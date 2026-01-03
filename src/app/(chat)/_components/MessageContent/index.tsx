@@ -1,0 +1,231 @@
+"use client";
+
+import React from "react";
+import _ from "lodash";
+import { useRouter } from "next/navigation";
+import { Info, ShoppingCart } from "lucide-react";
+import { ImageAttachment } from "../ImageAttachment";
+import { VideoAttachment } from "../VideoAttachment";
+import { AudioAttachment } from "../AudioAttachment";
+import { FileAttachment } from "../FileAttachment";
+import { MessageResponse } from "../../_types/chat.dto";
+import { toPublicUrl } from "@/utils/storage/url";
+import type { Message as ChatMessage } from "../../_types/chat.type";
+
+interface MessageContentProps {
+  message: ChatMessage | MessageResponse;
+}
+
+export const MessageContent: React.FC<MessageContentProps> = ({ message }) => {
+  const router = useRouter();
+  const messageType = _.toLower(_.get(message, "type", "text")) as any;
+  const attachments = _.get(message, "attachments", []);
+  const content = _.get(message, "content", "");
+
+  const getMetadata = () => {
+    const rawMetadata = _.get(message, "metadata");
+    if (!rawMetadata) return null;
+    try {
+      return _.isString(rawMetadata) ? JSON.parse(rawMetadata) : rawMetadata;
+    } catch (e) {
+      console.error("Failed to parse metadata", e);
+      return null;
+    }
+  };
+
+  const renderText = (text: string, className = "") => (
+    <span className={`whitespace-pre-wrap wrap-break-words ${className}`}>
+      {text}
+    </span>
+  );
+
+  switch (messageType) {
+    case "image":
+      return (
+        <div className="flex flex-col gap-2">
+          {!_.isEmpty(attachments) ? (
+            attachments.map((att: any, idx: number) => (
+              <ImageAttachment key={idx} attachment={att} />
+            ))
+          ) : (
+            <span className="text-gray-400 italic">[Hình ảnh]</span>
+          )}
+          {content && renderText(content, "mt-1 text-sm")}
+        </div>
+      );
+
+    case "video":
+      return (
+        <div className="flex flex-col gap-2">
+          {!_.isEmpty(attachments) ? (
+            attachments.map((att: any, idx: number) => (
+              <VideoAttachment key={idx} attachment={att} />
+            ))
+          ) : (
+            <span className="text-gray-400 italic">[Video]</span>
+          )}
+          {content && renderText(content, "mt-1 text-sm")}
+        </div>
+      );
+
+    case "audio":
+      return (
+        <div className="flex flex-col gap-1">
+          {!_.isEmpty(attachments) ? (
+            attachments.map((att: any, idx: number) => (
+              <AudioAttachment key={idx} attachment={att} />
+            ))
+          ) : (
+            <span className="text-gray-400 italic">[Âm thanh]</span>
+          )}
+        </div>
+      );
+
+    case "file":
+      return (
+        <div className="flex flex-col gap-2">
+          {!_.isEmpty(attachments) ? (
+            attachments.map((att: any, idx: number) => (
+              <FileAttachment key={idx} attachment={att} />
+            ))
+          ) : (
+            <span className="text-gray-400 italic">[Tệp đính kèm]</span>
+          )}
+          {content && renderText(content, "mt-1 text-sm")}
+        </div>
+      );
+
+    case "product":
+    case "product_card": {
+      const product = getMetadata();
+      if (!product) return renderText(content);
+
+      return (
+        <div
+          className="bg-white rounded-2xl border border-gray-100 overflow-hidden min-w-[260px] max-w-[300px] shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+          onClick={() => {
+            const path = product.slug
+              ? `/products/${product.slug}`
+              : `/products/${product.productId}`;
+            if (product.slug || product.productId) router.push(path);
+          }}
+        >
+          <div className="px-3 py-2 bg-blue-50/50 flex items-center gap-1.5 text-blue-600 font-bold text-xs uppercase tracking-tight">
+            <Info size={14} /> Sản phẩm
+          </div>
+          <div className="p-3 space-y-2">
+            {product.image && (
+              <div className="aspect-video relative rounded-lg overflow-hidden bg-gray-50 border border-gray-100">
+                <img
+                  src={toPublicUrl(product.image)}
+                  className="w-full h-full object-cover"
+                  alt="product"
+                />
+              </div>
+            )}
+            <div>
+              <p className="text-sm font-semibold text-slate-800 line-clamp-2">
+                {product.productName}
+              </p>
+              <p className="text-base font-bold text-orange-500 mt-1">
+                {Number(product.price || 0).toLocaleString("vi-VN")}₫
+              </p>
+              {product.shopName && (
+                <p className="text-[11px] text-gray-400 mt-1 uppercase font-bold">
+                  🏪 {product.shopName}
+                </p>
+              )}
+            </div>
+          </div>
+          {content && (
+            <div className="px-3 py-2 bg-slate-50 border-t border-gray-50 text-xs text-slate-500 italic">
+              {content}
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    case "order":
+    case "order_card": {
+      const order = getMetadata();
+      if (!order) return renderText(content);
+
+      return (
+        <div
+          className="bg-white rounded-2xl border border-gray-100 overflow-hidden min-w-[260px] max-w-[300px] shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+          onClick={() =>
+            order.orderId && router.push(`/orders/${order.orderId}`)
+          }
+        >
+          <div className="px-3 py-2 bg-orange-50/50 border-b border-orange-100/30">
+            {order.shopName && (
+              <div className="flex items-center gap-2 mb-1">
+                <img
+                  src={toPublicUrl(order.logoUrl)}
+                  className="w-4 h-4 rounded-full border border-white shadow-sm"
+                  alt="logo"
+                />
+                <span className="text-[10px] font-bold text-slate-600 uppercase truncate">
+                  {order.shopName}
+                </span>
+              </div>
+            )}
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-orange-600 flex items-center gap-1 uppercase">
+                <ShoppingCart size={14} /> Đơn hàng
+              </span>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-orange-100 text-orange-700 font-bold uppercase tracking-tighter">
+                {order.status || "Chờ xử lý"}
+              </span>
+            </div>
+          </div>
+
+          <div className="p-3 space-y-2 bg-slate-50/50">
+            {_.slice(_.get(order, "items", []), 0, 2).map(
+              (item: any, idx: number) => (
+                <div key={idx} className="flex items-center gap-2">
+                  <div className="w-10 h-10 bg-white rounded-lg border border-gray-100 flex-shrink-0 overflow-hidden">
+                    <img
+                      src={toPublicUrl(item.image)}
+                      className="w-full h-full object-cover"
+                      alt="item"
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-medium text-slate-700 truncate">
+                      {item.productName}
+                    </p>
+                    <p className="text-[10px] text-slate-400 font-bold">
+                      x{item.quantity}
+                    </p>
+                  </div>
+                </div>
+              )
+            )}
+          </div>
+
+          <div className="px-3 py-2 border-t border-gray-50">
+            <div className="flex justify-between items-center">
+              <span className="text-[10px] font-bold text-slate-400 uppercase">
+                Tổng cộng
+              </span>
+              <span className="text-sm font-bold text-orange-600">
+                {Number(order.totalAmount || 0).toLocaleString("vi-VN")}₫
+              </span>
+            </div>
+          </div>
+          {content && (
+            <div className="px-3 py-2 bg-slate-50 border-t border-gray-50 text-xs text-slate-500 italic">
+              {content}
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    case "text":
+    default:
+      return renderText(content);
+  }
+};

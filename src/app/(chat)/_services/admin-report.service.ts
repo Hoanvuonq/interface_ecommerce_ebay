@@ -1,4 +1,4 @@
-import { GetReportsRequest,ReportStatus } from "@/types/chat/dto";
+import { GetReportsRequest,ReportStatus } from "@/app/(chat)/_types/chat.dto";
 import { request } from "@/utils/axios.customize";
 import { ApiResponse } from "@/api/_types/api.types";
 

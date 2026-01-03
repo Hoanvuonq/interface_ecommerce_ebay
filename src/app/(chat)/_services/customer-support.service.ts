@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { request } from "@/utils/axios.customize";
 import type { ApiResponse } from "@/api/_types/api.types";
-import { BaseRequest ,ConversationType } from "@/types/chat/dto";
+import { BaseRequest ,ConversationType } from "@/app/(chat)/_types/chat.dto";
 // ==================== API ENDPOINTS ====================
 
 const API_ENDPOINT_CUSTOMER_SUPPORT = "v1/chat/customer-support";

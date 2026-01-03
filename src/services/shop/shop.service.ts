@@ -12,7 +12,7 @@ import {
 } from "@/types/shop/shop.dto";
 import { request } from "@/utils/axios.customize";
 import { ApiResponse } from "@/api/_types/api.types";
-import { FilterRequest } from "@/types/chat/dto";
+import { FilterRequest } from "@/app/(chat)/_types/chat.dto";
 
 const API_ENDPOINT_SHOP = "v1/shops";
 

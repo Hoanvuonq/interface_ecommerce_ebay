@@ -1,10 +1,10 @@
 "use client";
 
 import { useToast } from "@/hooks/useToast";
-import { createConversation } from "@/services/chat";
+import { createConversation } from "@/app/(chat)/_services";
 import { publicProductService } from "@/services/products/product.service";
 import { getProductReviewComments } from "@/services/review/review.service";
-import { ConversationType } from "@/types/chat/dto";
+import { ConversationType } from "@/app/(chat)/_types/chat.dto";
 import type {
   PublicProductDetailDTO,
   PublicProductListItemDTO,

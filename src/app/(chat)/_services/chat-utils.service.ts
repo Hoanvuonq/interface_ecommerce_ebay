@@ -16,7 +16,7 @@ import {
   ONLINE_THRESHOLD_MINUTES,
   MS_IN_WEEK,
   SENSITIVE_WORDS,
-} from "@/types/chat/chat";
+} from "@/app/(chat)/_types/chat";
 
 
 export function isMessageDeleted(

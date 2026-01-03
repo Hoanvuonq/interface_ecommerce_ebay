@@ -8,7 +8,7 @@ import React, {
   useCallback,
   useRef,
 } from "react";
-import { WebSocketService } from "@/services/chat";
+import { WebSocketService } from "@/app/(chat)/_services";
 import { isAuthenticated as checkAuth } from "@/utils/local.storage";
 
 interface WebSocketContextType {

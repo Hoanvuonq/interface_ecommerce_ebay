@@ -6,7 +6,7 @@ import { CreateConversationRequest,
   ShareContentRequest,
   AddParticipantRequest,
   FilterConversationsRequest,
-  FilterConversationsCreatedByRequest, } from "@/types/chat/dto";
+  FilterConversationsCreatedByRequest, } from "@/app/(chat)/_types/chat.dto";
 import { request } from "@/utils/axios.customize";
 import { ApiResponse } from "@/api/_types/api.types";
 

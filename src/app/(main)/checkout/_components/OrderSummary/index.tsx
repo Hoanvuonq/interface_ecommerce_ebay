@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useMemo } from "react";
-import { Info, Loader2, CheckCircle2, Ticket } from "lucide-react";
-import { formatPrice } from "@/hooks/useFormatPrice";
-import { useCheckoutStore } from "../../_store/useCheckoutStore";
 import { ButtonField } from "@/components";
+import { formatPrice } from "@/hooks/useFormatPrice";
+import { CheckCircle2, Info, Loader2, Ticket } from "lucide-react";
+import React from "react";
+import { useCheckoutStore } from "../../_store/useCheckoutStore";
 
 interface OrderSummaryProps {
   onSubmit: (e: React.FormEvent) => void;
@@ -15,7 +15,6 @@ export const OrderSummary = ({ onSubmit }: OrderSummaryProps) => {
   const preview = useCheckoutStore((state) => state.preview);
   const loading = useCheckoutStore((state) => state.loading);
   const summary = preview.summary || preview;
-  // Always use summary.totalDiscount for voucher discount (new API)
   const totalDiscountAmount = summary.totalDiscount || 0;
 
   if (!preview) return null;

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { CreateReportRequest, GetReportsRequest } from "@/types/chat/dto";
+import { CreateReportRequest, GetReportsRequest } from "@/app/(chat)/_types/chat.dto";
 import { request } from "@/utils/axios.customize";
 import type { ApiResponse } from "@/api/_types/api.types";
 

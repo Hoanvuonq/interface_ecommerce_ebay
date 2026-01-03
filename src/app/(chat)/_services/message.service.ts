@@ -9,7 +9,7 @@ import {
   FilterRequest,
   ProductCardSendRequest,
   OrderCardSendRequest,
-} from "@/types/chat/dto";
+} from "@/app/(chat)/_types/chat.dto";
 import { request } from "@/utils/axios.customize";
 import type { ApiResponse } from "@/api/_types/api.types";
 
