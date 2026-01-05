@@ -1,19 +1,17 @@
-import React, { useState, useEffect } from "react";
 import {
-  PublicProductVariantDTO,
   PublicProductOptionDTO,
+  PublicProductVariantDTO,
 } from "@/types/product/public-product.dto";
 import { cn } from "@/utils/cn";
-import {
-  resolveMediaUrl as resolveMediaUrlHelper,
-  resolveVariantImageUrl as resolveVariantImageUrlHelper,
-} from "@/utils/products/media.helpers";
+import { resolveVariantImageUrl as resolveVariantImageUrlHelper } from "@/utils/products/media.helpers";
 import { CheckCircle } from "lucide-react";
+import React, { useEffect, useMemo, useState } from "react";
 interface VariantSelectorProps {
   variants: PublicProductVariantDTO[];
   options?: PublicProductOptionDTO[];
   onVariantChange: (variant: PublicProductVariantDTO | null) => void;
   className?: string;
+  selectedVariant?: PublicProductVariantDTO | null;
 }
 
 export const VariantSelector: React.FC<VariantSelectorProps> = ({
@@ -21,10 +19,9 @@ export const VariantSelector: React.FC<VariantSelectorProps> = ({
   options,
   onVariantChange,
   className,
+  selectedVariant: propSelectedVariant,
 }) => {
-  const [selectedAttributes, setSelectedAttributes] = useState<
-    Record<string, string>
-  >({});
+  const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>({});
   const [selectedVariant, setSelectedVariant] =
     useState<PublicProductVariantDTO | null>(null);
 
@@ -95,7 +92,7 @@ export const VariantSelector: React.FC<VariantSelectorProps> = ({
     return { valueToOptionKeyMap: optionKeyMap };
   }, [normalizedOptions]);
 
-  const normalizedVariants = React.useMemo(() => {
+  const normalizedVariants = useMemo(() => {
     return variants.map((variant) => {
       if (variant.attributes && Object.keys(variant.attributes).length > 0) {
         return variant;
@@ -103,9 +100,7 @@ export const VariantSelector: React.FC<VariantSelectorProps> = ({
       const attributes: Record<string, string> = {};
       (variant as any).optionValues?.forEach(
         (optionValue: any, index: number) => {
-          const optionKey =
-            valueToOptionKeyMap[optionValue.id] ||
-            normalizedOptions[index]?.key;
+          const optionKey = valueToOptionKeyMap[optionValue.id] || normalizedOptions[index]?.key;
           if (optionKey) {
             attributes[optionKey] = optionValue.id || optionValue.name;
           }
@@ -118,6 +113,15 @@ export const VariantSelector: React.FC<VariantSelectorProps> = ({
     });
   }, [variants, normalizedOptions, valueToOptionKeyMap]);
 
+ useEffect(() => {
+    if (propSelectedVariant) {
+      const match = normalizedVariants.find(v => v.id === propSelectedVariant.id);
+      
+      if (match && match.attributes) {
+         setSelectedAttributes(match.attributes);
+      }
+    }
+  }, [propSelectedVariant, normalizedVariants]);
   useEffect(() => {
     const requiredKeys = normalizedOptions.map((option) => option.key);
     const selectedKeys = Object.keys(selectedAttributes).filter(

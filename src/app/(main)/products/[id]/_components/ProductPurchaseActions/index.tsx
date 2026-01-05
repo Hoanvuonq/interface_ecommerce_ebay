@@ -27,6 +27,8 @@ export const ProductPurchaseActions: React.FC<ProductPurchaseActionsProps> = ({
     formatPrice,
     bestPlatformVoucher,
 }) => {
+    
+    
     return (
         <section className="flex flex-col gap-y-5">
             <div className="space-y-3">
@@ -79,6 +81,7 @@ export const ProductPurchaseActions: React.FC<ProductPurchaseActionsProps> = ({
                             variants={product.variants}
                             options={product.options}
                             onVariantChange={setSelectedVariant}
+                            selectedVariant={selectedVariant} 
                         />
                         {selectedVariant?.optionValues && (
                             <div className="flex items-center gap-2 text-[13px] animate-in fade-in slide-in-from-top-1">

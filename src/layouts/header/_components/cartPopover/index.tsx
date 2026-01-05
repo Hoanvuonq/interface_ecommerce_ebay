@@ -4,38 +4,56 @@ import { categoryIcons, getStandardizedKey, ICON_BG_COLORS } from "@/app/(main)/
 import { formatPriceFull } from "@/hooks/useFormatPrice";
 import { useAppSelector } from "@/store/store";
 import { cn } from "@/utils/cn";
-import { resolveMediaUrl } from "@/utils/products/media.helpers";
 import { ShoppingBag } from "lucide-react";
-import React, { useState } from "react";
+import Image from "next/image";
+import React, { useState, useMemo } from "react";
+
+const STORAGE_BASE_URL = "https://pub-5341c10461574a539df355b9fbe87197.r2.dev/";
 
 export const CartPopoverContent: React.FC = () => {
   const { cart, loading } = useAppSelector((state) => state.cart);
   const totalItems = cart?.itemCount || 0;
-  const displayItems = cart?.shops?.flatMap((shop) => shop.items)?.slice(0, 5) || [];
+  
+  const displayItems = useMemo(() => {
+     return cart?.shops?.flatMap((shop) => shop.items)?.slice(0, 5) || [];
+  }, [cart]);
+
   const hasMoreItems = totalItems > 5;
 
   const ProductImage = ({ item }: { item: any }) => {
     const [imgError, setImgError] = useState(false);
-    const imageUrl = resolveMediaUrl(
-      {
-        imageBasePath: item.imageBasePath,
-        imageExtension: item.imageExtension,
-        imageUrl: item.thumbnailUrl || item.imageUrl,
-      },
-      "_thumb"
-    );
+
+    const imageUrl = useMemo(() => {
+        if (!item.imageBasePath || !item.imageExtension) return null;
+
+        let cleanPath = item.imageBasePath;
+        if (cleanPath.startsWith('/')) cleanPath = cleanPath.slice(1);
+
+        return `${STORAGE_BASE_URL}${cleanPath}_thumb${item.imageExtension}`;
+    }, [item]);
 
     const categoryKey = getStandardizedKey(item.productName);
     const categoryUI = ICON_BG_COLORS[categoryKey] || ICON_BG_COLORS["default"];
     const categoryEmoji = categoryIcons[categoryKey] || "📦";
 
+
     if (imageUrl && !imgError) {
       return (
-        <img
+        <Image
           src={imageUrl}
           alt={item.productName}
+          width={40}
+          height={40}
           className="w-full h-full object-contain p-1 transition-transform group-hover:scale-110 duration-500"
-          onError={() => setImgError(true)}
+          onError={(e) => {
+             const target = e.target as HTMLImageElement;
+             if (target.src.includes('_thumb')) {
+                 const cleanPath = item.imageBasePath.startsWith('/') ? item.imageBasePath.slice(1) : item.imageBasePath;
+                 target.src = `${STORAGE_BASE_URL}${cleanPath}_orig${item.imageExtension}`;
+             } else {
+                 setImgError(true);
+             }
+          }}
         />
       );
     }

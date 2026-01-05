@@ -26,6 +26,19 @@ export const useCheckoutActions = () => {
   const previewMutation = useMutation({
     mutationFn: async (updatedRequest: any) => {
       const payload = preparePreviewPayload(updatedRequest, preview);
+      if (payload.shops && Array.isArray(payload.shops)) {
+        payload.shops = payload.shops.map((shop: any) => ({
+          ...shop,
+          serviceCode: typeof shop.serviceCode === "string" ? Number(shop.serviceCode) : shop.serviceCode,
+        }));
+      }
+      // Ensure serviceCode is a number for each shop before dispatch
+      if (payload.shops && Array.isArray(payload.shops)) {
+        payload.shops = payload.shops.map((shop: any) => ({
+          ...shop,
+          serviceCode: typeof shop.serviceCode === "string" ? Number(shop.serviceCode) : shop.serviceCode,
+        }));
+      }
       return await dispatch(checkoutPreviewAction(payload)).unwrap();
     },
     onMutate: () => setLoading(true),

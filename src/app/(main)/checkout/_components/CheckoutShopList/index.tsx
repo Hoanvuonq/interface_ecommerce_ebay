@@ -4,7 +4,7 @@ import { ItemImage } from "@/components/ItemImage";
 import { VoucherComponents } from "@/components/voucher/_components/voucherComponents";
 import { formatPrice } from "@/hooks/useFormatPrice";
 import _ from "lodash";
-import { CheckCircle2, Store, Truck } from "lucide-react";
+import { Store } from "lucide-react";
 import React, { useMemo } from "react";
 import { useCheckoutActions } from "../../_hooks/useCheckoutActions";
 import { ShopLoyaltySection } from "../ShopLoyaltySection";
@@ -189,7 +189,7 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
 
               <div className="space-y-6 pt-4 border-t border-slate-100">
                 <div className="space-y-3">
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">
+                  <p className="text-[10px] font-bold text-slate-400 uppercase ">
                     Vận chuyển
                   </p>
                   <ShopShippingSelector
@@ -203,7 +203,7 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
                 </div>
 
                 <div className="space-y-3">
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">
+                  <p className="text-[10px] font-bold text-slate-400 uppercase ">
                     Ưu đãi mã giảm giá
                   </p>
                   <div className="flex flex-col lg:flex-row gap-4">

@@ -16,7 +16,7 @@ import {
   searchService,
   SuggestionItemDTO,
 } from "@/services/search/search.service";
-import { AccountDropdown } from "../_components/accountDropdown";
+import { AccountDropdown } from "../_components/AccountDropdown";
 
 export const Header = () => {
   const isLoggedIn = !!isAuthenticated();

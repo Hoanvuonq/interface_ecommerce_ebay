@@ -3,7 +3,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 import _ from "lodash";
-
 import { ConversationList } from "../ConversationList";
 import { ChatEmptyState } from "../ChatEmptyState";
 import { ChatHeader } from "../ChatHeader";
@@ -13,8 +12,6 @@ import { ProductPicker } from "../ProductPicker";
 import { MessageList } from "../MessageList";
 import { DeleteMessageModal } from "../DeleteMessageModal";
 import { ChatLoginAlert } from "../ChatLoginAlert";
-
-// Store & Logic
 import { useChatStore } from "../../_store/chatStore";
 import { useChatLogic } from "../../_hooks/chat/useChatLogic";
 import {
@@ -35,7 +32,7 @@ export const CustomerShopChat: React.FC<CustomerShopChatProps> = ({
   targetShopId,
 }) => {
   const store = useChatStore();
-  const chatLogic = useChatLogic();
+  const chatLogic = useChatLogic(targetShopId);
 
   const messagesEndRef = useRef<HTMLDivElement>(
     null
@@ -51,7 +48,6 @@ export const CustomerShopChat: React.FC<CustomerShopChatProps> = ({
   const { connect, disconnect } = useWebSocketContext();
   const currentUserId = getStoredUserDetail()?.userId;
 
-  // --- WebSocket Listener ---
   useEffect(() => {
     if (!open || !wsConnected) return;
     const unsub = subscribeToPersonalMessages((msg: any) => {
@@ -113,20 +109,22 @@ export const CustomerShopChat: React.FC<CustomerShopChatProps> = ({
         </button>
 
         <div className="flex h-full overflow-hidden">
-          {/* LEFT: Conversation List */}
           <ConversationList
             conversations={store.conversations}
             selectedConversationId={store.activeConversationId ?? undefined}
-            onSelect={(c) => store.setActiveConversation(c.id, c)}
+            onSelect={(c) => {
+              if (!c.id) return;
+              store.setActiveConversation(c.id, c);
+              store.setUiState({ isMobileChatView: true });
+            }}
             searchText={store.searchText}
             onSearchChange={(val) => store.setUiState({ searchText: val })}
             height={height}
             isMobileView={store.isMobileChatView}
-            getShopAvatar={(c) => c.avatarUrl}
-            getShopName={(c) => c.name || "Shop"}
+            getShopAvatar={chatLogic.getShopAvatar}
+            getShopName={chatLogic.getShopName}
           />
 
-          {/* RIGHT: Chat Area */}
           <div
             className={`flex-1 flex flex-col bg-slate-50 relative ${
               store.isMobileChatView ? "block" : "hidden md:flex"
@@ -141,8 +139,8 @@ export const CustomerShopChat: React.FC<CustomerShopChatProps> = ({
                   onBackMobile={() =>
                     store.setUiState({ isMobileChatView: false })
                   }
-                  getShopAvatar={(c) => c.avatarUrl}
-                  getShopName={(c) => c.name}
+                  getShopAvatar={chatLogic.getShopAvatar}
+                  getShopName={chatLogic.getShopName}
                 />
                 {!currentUserId && <ChatLoginAlert />}
                 <MessageList
@@ -183,7 +181,6 @@ export const CustomerShopChat: React.FC<CustomerShopChatProps> = ({
                   }
                   currentUsername={getStoredUserDetail()?.username}
                 />
-                {/* Pickers - Hiển thị tuyệt đối đè lên Input */}
                 {store.showOrderPicker && (
                   <div className="absolute bottom-full left-0 right-0 z-20">
                     <OrderPicker
@@ -196,14 +193,10 @@ export const CustomerShopChat: React.FC<CustomerShopChatProps> = ({
                       onClose={() =>
                         store.setUiState({ showOrderPicker: false })
                       }
-                      onSendDirect={(order) => {
-                        /* Logic gửi đơn hàng */
-                      }}
+                      onSendDirect={(order) => {}}
                       resolveOrderItemImageUrl={resolveOrderItemImageUrl}
                       isVisible={store.showOrderPicker}
-                      onViewDetails={(order) => {
-                        /* Logic xem chi tiết đơn hàng */
-                      }}
+                      onViewDetails={(order) => {}}
                       isSending={false}
                       getStatusText={(order) =>
                         typeof order === "object" && "statusText" in order
@@ -216,7 +209,7 @@ export const CustomerShopChat: React.FC<CustomerShopChatProps> = ({
                 {store.showProductPicker && (
                   <div className="absolute bottom-full left-0 right-0 z-20">
                     <ProductPicker
-                      isVisible={store.showProductPicker} // Thêm dòng này
+                      isVisible={store.showProductPicker}
                       onClose={() =>
                         store.setUiState({ showProductPicker: false })
                       }
@@ -226,14 +219,9 @@ export const CustomerShopChat: React.FC<CustomerShopChatProps> = ({
                       onSearchChange={(val) =>
                         store.setUiState({ productSearchText: val })
                       }
-                      onSendDirect={(prod) => {
-                        // Logic gửi (bạn có thể gọi hàm gửi message kèm type PRODUCT nếu backend hỗ trợ, hoặc gửi text)
-                        // Ví dụ: chatLogic.onSendMessage(`Tôi quan tâm sản phẩm: ${prod.name}`);
-                      }}
-                      // Thêm 2 dòng này
+                      onSendDirect={(prod) => {}}
                       isSending={chatLogic.isSending}
                       onViewDetails={(prod) => {
-                        // Logic mở trang chi tiết hoặc modal xem nhanh
                         window.open(`/products/${prod.id}`, "_blank");
                       }}
                     />
@@ -290,7 +278,6 @@ export const CustomerShopChat: React.FC<CustomerShopChatProps> = ({
         </div>
       </div>
 
-      {/* Modal Xóa */}
       <DeleteMessageModal
         isOpen={!!deleteConfirmMsg}
         onCancel={() => setDeleteConfirmMsg(null)}

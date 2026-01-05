@@ -5,7 +5,7 @@ export const ShopHeader = ({ shop, isFollowing, onFollow, onChat, totalProducts 
   const fallbackBanner = "https://images.unsplash.com/photo-1556740738-b6a63e27c4df?auto=format&fit=crop&w=1600&q=80";
   
   return (
-    <div className="relative w-full mb-8 group">
+    <div className="relative w-full  group">
       <div className="relative h-64 md:h-80 w-full overflow-hidden rounded-b-3xl shadow-lg">
         <img 
           src={shop.bannerUrl || fallbackBanner}

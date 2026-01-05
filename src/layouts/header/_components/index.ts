@@ -1,4 +1,4 @@
-export * from "./accountDropdown";
+export * from "./AccountDropdown";
 export * from "./cartBadge";
 export * from "./cartPopover";
 export * from "./hotKeywords";

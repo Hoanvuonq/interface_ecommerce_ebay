@@ -19,6 +19,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import * as MenuConstants from "../../_constants/menu";
 import { MenuItem } from "../../_types/header";
+import Image from "next/image";
 
 export const AccountDropdown = () => {
   const isActuallyAuthenticated = useAuth();
@@ -91,9 +92,11 @@ export const AccountDropdown = () => {
         )}
       >
         {isActuallyAuthenticated && userData.image ? (
-          <img
+          <Image
             src={userData.image}
             alt="avatar"
+            width={22}
+            height={22}
             className="w-full h-full object-cover"
           />
         ) : (
@@ -122,9 +125,11 @@ export const AccountDropdown = () => {
         <div className="p-3 mb-2 bg-slate-50 border border-slate-100 rounded-xl flex items-center gap-3">
           <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-sm shrink-0">
             {userData.image ? (
-              <img
+             <Image
                 src={userData.image}
                 alt="avatar"
+                width={48}
+                height={48}
                 className="w-full h-full object-cover"
               />
             ) : (

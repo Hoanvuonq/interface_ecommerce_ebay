@@ -36,14 +36,18 @@ export const ShopShippingSelector: React.FC<ShopShippingSelectorProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {availableOptions && availableOptions.length > 0 ? (
             availableOptions.map((option, index) => {
-              const isSelected = selectedMethodCode === option.code;
-              const uniqueKey = `${option.code}-${option.providerName}-${index}`;
+              // Ensure we compare numbers correctly (backend might send number, frontend might have string or number)
+              const isSelected = Number(selectedMethodCode) === Number(option.serviceCode);
+              const uniqueKey = `${option.serviceCode}-${option.serviceType}-${index}`;
+              
               return (
                 <div
                   key={uniqueKey}
-                  onClick={() =>
-                    !isSelected && onMethodChange(shopId, option.code)
-                  }
+                  onClick={() => {
+                    if (!isSelected) {
+                      onMethodChange(shopId, String(option.serviceCode));
+                    }
+                  }}
                   className={cn(
                     "relative p-4 border-2 rounded-2xl cursor-pointer transition-all duration-300 flex justify-between items-center group",
                     isSelected
@@ -58,11 +62,11 @@ export const ShopShippingSelector: React.FC<ShopShippingSelectorProps> = ({
                         isSelected ? "text-orange-600" : "text-slate-700"
                       )}
                     >
-                      {option.providerName} - {option.methodName}
+                      {option.displayName}
                     </p>
                     <p className="text-[10px] text-slate-400 font-bold mt-1 uppercase tracking-tighter italic">
                       Nhận hàng:{" "}
-                      {option.estimatedDeliveryText || "Dự kiến 2-4 ngày"}
+                      {option.estimatedDeliveryTime || "Dự kiến 2-4 ngày"}
                     </p>
                   </div>
 

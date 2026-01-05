@@ -199,6 +199,9 @@ export interface ConversationResponse {
   lastMessagePreview?: string;
   totalMessages: number;
   unreadCount: number;
+  contextShopId?: string;
+  contextProductId?: string;
+  contextOrderId?: string;
   isMuted: boolean;
   isPinned: boolean;
   isArchived: boolean;

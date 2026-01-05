@@ -1,10 +1,26 @@
 "use client";
 
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import { useParams } from "next/navigation";
 import { useToast } from "@/hooks/useToast";
 import { createConversation } from "@/app/(chat)/_services";
 import { publicProductService } from "@/services/products/product.service";
 import { getProductReviewComments } from "@/services/review/review.service";
 import { ConversationType } from "@/app/(chat)/_types/chat.dto";
+import { getStoredUserDetail } from "@/utils/jwt";
+import {
+  resolveMediaUrl as resolveMediaUrlHelper,
+  resolveVariantImageUrl as resolveVariantImageUrlHelper,
+} from "@/utils/products/media.helpers";
+
+// Types
 import type {
   PublicProductDetailDTO,
   PublicProductListItemDTO,
@@ -14,20 +30,6 @@ import type {
   ReviewResponse,
   ReviewStatisticsResponse,
 } from "@/types/reviews/review.types";
-import { getStoredUserDetail } from "@/utils/jwt";
-import {
-  resolveMediaUrl as resolveMediaUrlHelper,
-  resolveVariantImageUrl as resolveVariantImageUrlHelper,
-} from "@/utils/products/media.helpers";
-import { useParams } from "next/navigation";
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
 
 const PLACEHOLDER_IMAGE =
   "data:image/svg+xml;utf8," +
@@ -48,7 +50,7 @@ interface ProductDetailContextType {
   loadMoreReviews: () => Promise<void>;
   creatingShopChat: boolean;
   handleOpenShopChat: () => Promise<void>;
-  galleryImages: any[];
+  galleryImages: { key: string; thumb: string; preview: string }[];
   primaryImage: string;
   activeThumbnail: string | null;
   setActiveThumbnail: (url: string | null) => void;
@@ -65,9 +67,26 @@ interface ProductDetailContextType {
   followerCount: number | string;
 }
 
-const ProductDetailContext = createContext<
-  ProductDetailContextType | undefined
->(undefined);
+const ProductDetailContext = createContext<ProductDetailContextType | undefined>(
+  undefined
+);
+
+// --- HÀM TÍNH GIÁ VOUCHER (Tách ra để dùng lại) ---
+const calculatePriceWithVoucher = (price: number, voucher: any) => {
+  if (!voucher) return price;
+  
+  let discount = 0;
+  if (voucher.discountType === "PERCENTAGE") {
+    discount = (price * (voucher.discountValue || 0)) / 100;
+    if (voucher.maxDiscount && voucher.maxDiscount > 0) {
+      discount = Math.min(discount, voucher.maxDiscount);
+    }
+  } else {
+    discount = voucher.discountAmount || 0;
+  }
+  
+  return Math.max(0, price - discount);
+};
 
 export const ProductDetailProvider = ({
   children,
@@ -75,19 +94,25 @@ export const ProductDetailProvider = ({
   children: React.ReactNode;
 }) => {
   const params = useParams() as { id: string };
+  const { success, error: toastError, warning } = useToast();
+
+  // State
   const [product, setProduct] = useState<PublicProductDetailDTO | null>(null);
   const [featured, setFeatured] = useState<PublicProductListItemDTO[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedVariant, setSelectedVariant] =
-    useState<PublicProductVariantDTO | null>(null);
+  const [selectedVariant, setSelectedVariant] = useState<PublicProductVariantDTO | null>(null);
+  
+  // Review State
   const [productReviews, setProductReviews] = useState<ReviewResponse[]>([]);
   const [reviewPage, setReviewPage] = useState(0);
   const [reviewHasMore, setReviewHasMore] = useState(false);
   const [reviewsLoading, setReviewsLoading] = useState(false);
+  
+  // Chat & UI State
   const [creatingShopChat, setCreatingShopChat] = useState(false);
   const [activeThumbnail, setActiveThumbnail] = useState<string | null>(null);
 
-  const { success, error: Error, warning } = useToast();
+  // 1. Identify if ID is slug or UUID/ID
   const isSlug = useMemo(() => {
     const id = params.id;
     if (!id) return false;
@@ -98,6 +123,7 @@ export const ProductDetailProvider = ({
     return /[a-zA-Z-]/.test(id);
   }, [params.id]);
 
+  // 2. Fetch Data
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);
@@ -105,32 +131,45 @@ export const ProductDetailProvider = ({
         ? await publicProductService.getBySlug(params.id)
         : await publicProductService.getById(params.id);
 
-      const data = (res as any)?.data || res;
+      const data = 'data' in res ? (res as any).data : res;
       setProduct(data);
 
-      const defaultV =
-        data?.variants?.find(
-          (v: any) => v.imageUrl || (v.imageBasePath && v.imageExtension)
-        ) ??
-        data?.variants?.[0] ??
-        null;
-      setSelectedVariant(defaultV);
+      // --- LOGIC CHỌN BIẾN THỂ GIÁ TỐT NHẤT ---
+      if (data?.variants && data.variants.length > 0) {
+        const bestVoucher = data.bestShopVoucher ?? data.bestPlatformVoucher;
+        
+        // Tìm biến thể có giá cuối cùng (sau voucher) thấp nhất
+        const bestVariant = data.variants.reduce((prev: any, curr: any) => {
+          const prevPrice = prev.price ?? 0;
+          const currPrice = curr.price ?? 0;
+          
+          // Nếu có sẵn giá sau giảm từ API thì dùng luôn
+          const prevFinal = prev.priceAfterDiscount ?? calculatePriceWithVoucher(prevPrice, bestVoucher);
+          const currFinal = curr.priceAfterDiscount ?? calculatePriceWithVoucher(currPrice, bestVoucher);
+
+          return currFinal < prevFinal ? curr : prev;
+        });
+
+        setSelectedVariant(bestVariant);
+      } else {
+        setSelectedVariant(null);
+      }
+      // ----------------------------------------
 
       if (data?.id) {
-        const rev = await getProductReviewComments(data.id, {
-          page: 0,
-          size: 3,
-        });
+        const [rev, featRes] = await Promise.all([
+          getProductReviewComments(data.id, { page: 0, size: 3 }),
+          publicProductService.getFeatured(0, 6)
+        ]);
+
         setProductReviews(rev.content || []);
         setReviewHasMore(!rev.last);
 
-        const featRes = await publicProductService.getFeatured(0, 6);
         const featList = featRes?.data?.content || [];
         setFeatured(featList.filter((p: any) => p.id !== data.id));
       }
     } catch (e) {
-      // Error("Không tìm thấy sản phẩm");
-      console.error(e);
+      console.error("Failed to fetch product data", e);
     } finally {
       setLoading(false);
     }
@@ -140,7 +179,7 @@ export const ProductDetailProvider = ({
     fetchData();
   }, [fetchData]);
 
-  // 3. Logic Shop Chat (Copy từ code cũ sang)
+  // 3. Shop Chat Logic
   const handleOpenShopChat = async (): Promise<void> => {
     const userDetail = getStoredUserDetail();
     if (!userDetail?.userId) {
@@ -149,7 +188,7 @@ export const ProductDetailProvider = ({
     }
     const shopUserId = product?.shop?.userId;
     if (!shopUserId) {
-      Error("Không xác định được Shop");
+      toastError("Không xác định được Shop");
       return;
     }
 
@@ -161,16 +200,16 @@ export const ProductDetailProvider = ({
         name: product?.shop?.shopName,
       });
       if (!response?.success) {
-        Error(response?.message || "Lỗi khởi tạo chat");
+        toastError(response?.message || "Lỗi khởi tạo chat");
       }
     } catch (error) {
-      Error("Không thể kết nối server chat");
+      toastError("Không thể kết nối server chat");
     } finally {
       setCreatingShopChat(false);
     }
   };
 
-  // 4. Logic Load More Reviews
+  // 4. Load More Reviews
   const loadMoreReviews = async (): Promise<void> => {
     if (!product?.id || reviewsLoading) return;
     const nextPage = reviewPage + 1;
@@ -188,23 +227,27 @@ export const ProductDetailProvider = ({
     }
   };
 
+  // 5. Price Calculation (Memoized for current selection)
   const priceInfo = useMemo(() => {
     const vPrice = selectedVariant?.price ?? product?.priceMin ?? 0;
-    const calculateVoucherPrice = () => {
-      if (!selectedVariant) return product?.priceAfterBestVoucher ?? null;
-      const bestVoucher =
-        product?.bestShopVoucher ?? product?.bestPlatformVoucher;
-      if (!bestVoucher) return null;
-      if (bestVoucher.discountType === "PERCENTAGE")
-        return Math.max(
-          0,
-          vPrice - (vPrice * bestVoucher.discountValue!) / 100
-        );
-      return Math.max(0, vPrice - (bestVoucher.discountAmount ?? 0));
-    };
-    const pAfterVoucher = calculateVoucherPrice();
+    const bestVoucher = product?.bestShopVoucher ?? product?.bestPlatformVoucher;
+    
+    // Tính giá sau voucher
+    // Nếu biến thể có sẵn giá sau giảm thì dùng luôn
+    let pAfterVoucher: number | null = (selectedVariant as any)?.priceAfterDiscount ?? null;
+    
+    if (pAfterVoucher === null && bestVoucher) {
+       pAfterVoucher = calculatePriceWithVoucher(vPrice, bestVoucher);
+    }
+
     const pPrice = pAfterVoucher ?? vPrice;
-    const cPrice = selectedVariant?.corePrice ?? product?.comparePrice;
+    
+    // Logic giá so sánh (gạch ngang)
+    // Nếu có voucher giảm -> giá gạch ngang là giá bán của biến thể
+    // Nếu không -> giá gạch ngang là corePrice (giá niêm yết)
+    const cPrice = (pAfterVoucher && pAfterVoucher < vPrice) 
+                    ? vPrice 
+                    : (selectedVariant?.corePrice ?? product?.comparePrice);
 
     return {
       variantPrice: vPrice,
@@ -222,41 +265,61 @@ export const ProductDetailProvider = ({
     };
   }, [selectedVariant, product]);
 
+  // 6. Gallery Logic (Optimized)
   const galleryImages = useMemo(() => {
     if (!product) return [];
-    const items: any[] = [];
+    
+    const items: { key: string; thumb: string; preview: string }[] = [];
+    const seenUrls = new Set<string>();
+
+    const addImage = (key: string, thumb: string, preview: string) => {
+      if (!seenUrls.has(preview)) {
+        seenUrls.add(preview);
+        items.push({ key, thumb, preview });
+      }
+    };
+
     product.media
       ?.filter((m) => m.type === "IMAGE")
       .forEach((m) => {
         const url = resolveMediaUrlHelper(m as any, "_large");
-        items.push({
-          key: `media-${m.id}`,
-          thumb: resolveMediaUrlHelper(m as any, "_thumb") || url,
-          preview: url,
-        });
+        if (url) {
+            addImage(
+                `media-${m.id}`,
+                resolveMediaUrlHelper(m as any, "_thumb") || url,
+                url
+            );
+        }
       });
+
     product.variants?.forEach((v) => {
       const url = resolveVariantImageUrlHelper(v as any, "_large");
-      if (url)
-        items.push({
-          key: `variant-${v.id}`,
-          thumb: resolveVariantImageUrlHelper(v as any, "_thumb") || url,
-          preview: url,
-        });
+      if (url) {
+        addImage(
+            `variant-${v.id}`,
+            resolveVariantImageUrlHelper(v as any, "_thumb") || url,
+            url
+        );
+      }
     });
-    return items.filter(
-      (v, i, a) => a.findIndex((t) => t.preview === v.preview) === i
-    );
+
+    return items;
   }, [product]);
 
+  // 7. Primary Display Image
   const primaryImage = useMemo(() => {
     if (activeThumbnail) return activeThumbnail;
+    
     const vImg = resolveVariantImageUrlHelper(selectedVariant as any, "_large");
-    return vImg && vImg !== "/placeholder-product.png"
-      ? vImg
-      : galleryImages[0]?.preview || PLACEHOLDER_IMAGE;
+    
+    if (vImg && vImg !== "/placeholder-product.png") {
+        return vImg;
+    }
+    
+    return galleryImages[0]?.preview || PLACEHOLDER_IMAGE;
   }, [activeThumbnail, selectedVariant, galleryImages]);
 
+  // Reset active thumbnail when variant changes
   useEffect(() => {
     setActiveThumbnail(null);
   }, [selectedVariant]);
@@ -280,7 +343,7 @@ export const ProductDetailProvider = ({
     primaryImage,
     priceInfo,
     soldCount: (product as any)?.soldCount ?? (product as any)?.totalSold ?? 0,
-    followerCount: (product as any)?.shop?.followerCount ?? 0,
+    followerCount: (product?.shop as any)?.followerCount ?? 0,
     bestPlatformVoucher: product?.bestPlatformVoucher,
   };
 
@@ -294,6 +357,6 @@ export const ProductDetailProvider = ({
 export const useProductDetail = () => {
   const context = useContext(ProductDetailContext);
   if (!context)
-    throw new Error("useProductDetail must be used within Provider");
+    throw new Error("useProductDetail must be used within ProductDetailProvider");
   return context;
 };
