@@ -205,20 +205,17 @@ body {
 }
 
 @layer utilities {
-  /* 1. Thiết lập kích thước siêu nhỏ cho cả 2 chiều */
   body::-webkit-scrollbar,
   .custom-scrollbar::-webkit-scrollbar {
-    width: 10px;  /* Chiều rộng thanh dọc */
-    height: 10px; /* Chiều cao thanh ngang */
+    width: 10px; 
+    height: 10px; 
   }
 
-  /* 2. Nền trong suốt */
   body::-webkit-scrollbar-track,
   .custom-scrollbar::-webkit-scrollbar-track {
     background: transparent;
   }
 
-  /* 3. Thanh kéo (Thumb) - Dùng thủ thuật border để làm nó trông bé hơn nữa */
   body::-webkit-scrollbar-thumb,
   .custom-scrollbar::-webkit-scrollbar-thumb {
     background-color: #af5e07; 
