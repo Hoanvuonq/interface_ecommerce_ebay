@@ -1,3 +1,5 @@
+import { ArrowDownWideNarrow, ArrowUpWideNarrow } from "lucide-react";
+
 export const VOUCHER_SHOP_DATA = [
     {
       id: 1,
@@ -49,9 +51,9 @@ export const VOUCHER_SHOP_DATA = [
     },
   ];
 
-  export const SORT_OPTIONS = [
+export const SORT_OPTIONS = [
   { value: "createdDate,desc", label: "Mới nhất" },
   { value: "sold,desc", label: "Bán chạy" },
-  { value: "price_asc", label: "Giá thấp đến cao" },
-  { value: "price_desc", label: "Giá cao đến thấp" },
+  { value: "price_asc", label: "Giá thấp đến cao", icon: <ArrowUpWideNarrow size={14} /> },
+  { value: "price_desc", label: "Giá cao đến thấp", icon: <ArrowDownWideNarrow size={14} /> },
 ];
