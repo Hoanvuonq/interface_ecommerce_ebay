@@ -3,7 +3,6 @@
 import { CustomBreadcrumb, PriceRange } from "@/components";
 import { CustomButton } from "@/components/button";
 import { CardComponents } from "@/components/card";
-import { CustomTag } from "@/components/customTag";
 import PageContentTransition from "@/features/PageContentTransition";
 import { cn } from "@/utils/cn";
 import {
@@ -100,7 +99,7 @@ export const ProductScreen = () => {
           <div className="grid grid-cols-1 lg:grid-cols-4 xl:grid-cols-5 gap-8">
             <div className="lg:col-span-1 xl:col-span-1 hidden lg:block space-y-6">
               <div className="sticky top-24 space-y-6">
-                <CategorySidebar />
+                <CategorySidebar isShop={false} />
                 <PriceRange filters={filters} setFilters={setFilters} />
 
                 <CardComponents

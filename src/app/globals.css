@@ -12,7 +12,7 @@
   --color-primary: #2f5aff;
   --color-secondary: #4f7aff;
   --color-accent: #ff7a00;
-   --color-mainColor: #f05e0a;
+  --color-mainColor: #f05e0a;
   --color-bg-soft: #f5f7ff;
   --color-border-soft: #e6e9ff;
   --color-gradient-1: #6cd6ff;
@@ -76,6 +76,7 @@ body {
 .coiny-regular {
   font-family: "Coiny", system-ui;
 }
+
 .background-main-gradient {
   background: linear-gradient(135deg, #1c73ca 0%, #0a4da2 50%, #0842b4 100%);
   width: 100%;
@@ -204,23 +205,42 @@ body {
 }
 
 @layer utilities {
+  /* 1. Thiết lập kích thước siêu nhỏ cho cả 2 chiều */
+  body::-webkit-scrollbar,
   .custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
+    width: 10px;  /* Chiều rộng thanh dọc */
+    height: 10px; /* Chiều cao thanh ngang */
   }
 
+  /* 2. Nền trong suốt */
+  body::-webkit-scrollbar-track,
   .custom-scrollbar::-webkit-scrollbar-track {
     background: transparent;
   }
 
+  /* 3. Thanh kéo (Thumb) - Dùng thủ thuật border để làm nó trông bé hơn nữa */
+  body::-webkit-scrollbar-thumb,
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #e5e7eb;
-    border-radius: 10px;
+    background-color: #af5e07; 
+    border-radius: 99px;
+    
+    border: 3px solid transparent; 
+    background-clip: content-box;
   }
 
+  body::-webkit-scrollbar-thumb:hover,
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #d1d5db;
+    background-color: #ec6a00;
+  }
+
+  body::-webkit-scrollbar-button,
+  .custom-scrollbar::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
   }
 }
+
 
 @keyframes shimmer {
   0% {
@@ -255,6 +275,7 @@ body {
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }
+
 .scrollbar-none {
   -ms-overflow-style: none;
   scrollbar-width: none;

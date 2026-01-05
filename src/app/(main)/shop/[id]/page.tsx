@@ -1,53 +1,67 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { useParams } from "next/navigation";
-import dynamic from "next/dynamic";
 import _ from "lodash";
-import { 
-  Heart, 
-  MessageCircle, 
-  Store, 
-  Filter, 
-  ChevronRight, 
-  Flame, 
-  Search,
-  ChevronDown,
-  Clock,
+import {
+  ChevronRight,
   LayoutGrid,
-  ExternalLink
+  Search,
+  Sparkles,
+  Store,
+  TicketPercent,
+  ArrowDownWideNarrow, // Icon giá giảm
+  ArrowUpWideNarrow,   // Icon giá tăng
+  ListFilter,
 } from "lucide-react";
-
-import { publicProductService } from "@/services/products/product.service";
-import { getShopDetail } from "@/services/shop/shop.service";
-import { CategoryService } from "@/services/categories/category.service";
+import dynamic from "next/dynamic";
+import { useParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 import { createConversation } from "@/app/(chat)/_services";
 import { ConversationType } from "@/app/(chat)/_types/chat.dto";
+import CategorySidebar from "@/components/categorySidebar";
+import PageContentTransition from "@/features/PageContentTransition";
+import { useToast } from "@/hooks/useToast";
+import { CategoryService } from "@/services/categories/category.service";
+import { publicProductService } from "@/services/products/product.service";
+import { getShopDetail } from "@/services/shop/shop.service";
+import type { CategoryResponse } from "@/types/categories/category.detail";
+import type { PublicProductListItemDTO } from "@/types/product/public-product.dto";
 import { getStoredUserDetail } from "@/utils/jwt";
 import { toPublicUrl } from "@/utils/storage/url";
-
-import PageContentTransition from "@/features/PageContentTransition";
 import { ProductCard } from "../../products/_components";
-import type { PublicProductListItemDTO } from "@/types/product/public-product.dto";
-import type { CategoryResponse } from "@/types/categories/category.detail";
+import { ShopHeader } from "../_components/ShopHeader";
+import { ShopVoucherCard } from "../_components/ShopVoucherCard";
 import type { ShopDetail } from "../_types/shop.detail.type";
+import ShopNavigation from "../_components/ShopNavigation";
+import { VOUCHER_SHOP_DATA } from "../_constants/voucher";
+import { cn } from "@/utils/cn";
 
-// const CustomerShopChat = dynamic(
-//   () => import("@/app/(chat)/_components/CustomerShopChat").then((m) => m.default),
-//   { ssr: false }
-// );
+const CustomerShopChat = dynamic(
+  () =>
+    import("@/app/(chat)/_components/CustomerShopChat").then(
+      (mod) => mod.CustomerShopChat
+    ),
+  { ssr: false }
+);
+
+// Cấu hình các nút sắp xếp
+const SORT_OPTIONS = [
+  { value: "createdDate,desc", label: "Mới nhất" },
+  { value: "sold,desc", label: "Bán chạy" },
+  { value: "price_asc", label: "Giá thấp đến cao", icon: <ArrowUpWideNarrow size={14} /> },
+  { value: "price_desc", label: "Giá cao đến thấp", icon: <ArrowDownWideNarrow size={14} /> },
+];
 
 export default function ShopPage() {
   const { id: shopId } = useParams() as { id: string };
-  
-  // States
+  const { success } = useToast();
+
+  // --- STATE ---
   const [loading, setLoading] = useState(true);
   const [shop, setShop] = useState<ShopDetail | null>(null);
   const [products, setProducts] = useState<PublicProductListItemDTO[]>([]);
   const [categories, setCategories] = useState<CategoryResponse[]>([]);
   const [totalProducts, setTotalProducts] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize] = useState(20);
   const [activeTab, setActiveTab] = useState("all");
   const [isFollowing, setIsFollowing] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState("");
@@ -55,369 +69,340 @@ export default function ShopPage() {
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>();
   const [loadingProducts, setLoadingProducts] = useState(false);
   const [shopChatOpen, setShopChatOpen] = useState(false);
-  const [creatingShopChat, setCreatingShopChat] = useState(false);
 
-  // Load Shop Info
+  const pageSize = 20;
+  const user = getStoredUserDetail();
+
+  const isShopHome = activeTab === "all" && !searchKeyword && !selectedCategory;
+
+  // --- FETCH DATA ---
   useEffect(() => {
-    const loadShopInfo = async () => {
-      if (!shopId) return;
+    if (!shopId) return;
+    const fetchShop = async () => {
       try {
         setLoading(true);
         const res = await getShopDetail(shopId);
         const data = _.get(res, "data");
-        if (_.get(res, "success") && data) {
+        if (data) {
           setShop({
-            shopId: _.get(data, "shopId", shopId),
-            shopName: _.get(data, "shopName", "Shop"),
-            userId: _.get(data, "userId"),
-            username: _.get(data, "username"),
+            ...data,
             logoUrl: data.logoUrl ? toPublicUrl(data.logoUrl) : undefined,
             bannerUrl: data.bannerUrl ? toPublicUrl(data.bannerUrl) : undefined,
-            description: _.get(data, "description"),
-            status: _.get(data, "status", "ACTIVE"),
-            createdDate: _.get(data, "createdDate"),
           });
         }
-      } catch (err) {
-        console.error("Shop load error:", err);
       } finally {
         setLoading(false);
       }
     };
-    loadShopInfo();
+
+    const fetchCats = async () => {
+      const res = await CategoryService.getAllParents();
+      const raw = _.get(res, "data", []) as CategoryResponse[];
+      const flatten = (list: CategoryResponse[]): CategoryResponse[] =>
+        _.flatMap(list, (cat) => [cat, ...flatten(cat.children || [])]);
+      setCategories(flatten(raw));
+    };
+
+    fetchShop();
+    fetchCats();
   }, [shopId]);
 
-  // Load & Flatten Categories using Lodash
+  // --- FETCH PRODUCTS ---
   useEffect(() => {
-    const loadCategories = async () => {
+    if (!shopId) return;
+    const fetchProducts = async () => {
+      setLoadingProducts(true);
       try {
-        const res = await CategoryService.getAllParents();
-        const rawCats = Array.isArray(res) ? res : _.get(res, "data", []);
+        const res = await publicProductService.getByShop(
+          shopId,
+          currentPage,
+          pageSize
+        );
+        let list = _.get(res, "data.content", []);
 
-        const flatten = (cats: CategoryResponse[]): CategoryResponse[] => {
-          return _.flatMap(cats, (cat) => {
-            if (!cat.active) return [];
-            return [cat, ...flatten(_.get(cat, "children", []))];
-          });
-        };
-
-        setCategories(flatten(rawCats));
-      } catch (err) {
-        console.error("Category load error:", err);
-      }
-    };
-    loadCategories();
-  }, []);
-
-  // Load Products with Lodash Filtering
-  useEffect(() => {
-    const loadProducts = async () => {
-      if (!shopId) return;
-      try {
-        setLoadingProducts(true);
-        const res = await publicProductService.getByShop(shopId, currentPage, pageSize);
-        
-        if (_.get(res, "success")) {
-          let list = _.get(res, "data.content", []);
-
-          // Client-side Filter logic using Lodash
-          if (searchKeyword) {
-            list = _.filter(list, (p) => 
-              _.toLower(p.name).includes(_.toLower(searchKeyword))
-            );
-          }
-          if (selectedCategory) {
-            list = _.filter(list, (p) => _.get(p, "category.id") === selectedCategory);
-          }
-
-          setProducts(list);
-          setTotalProducts(_.get(res, "data.totalElements", 0));
+        if (searchKeyword) {
+          list = _.filter(list, (p) =>
+            _.toLower(p.name).includes(_.toLower(searchKeyword))
+          );
         }
-      } catch (err) {
-        console.error("Products load error:", err);
+        if (selectedCategory) {
+          list = _.filter(
+            list,
+            (p) => _.get(p, "category.id") === selectedCategory
+          );
+        }
+
+        if (sortBy === "price_asc") list = _.orderBy(list, ["price"], ["asc"]);
+        if (sortBy === "price_desc") list = _.orderBy(list, ["price"], ["desc"]);
+
+        setProducts(list);
+        setTotalProducts(_.get(res, "data.totalElements", 0));
       } finally {
         setLoadingProducts(false);
       }
     };
-    loadProducts();
-  }, [shopId, currentPage, pageSize, searchKeyword, selectedCategory, sortBy]);
+    fetchProducts();
+  }, [shopId, currentPage, searchKeyword, selectedCategory, sortBy]);
 
-  // Chat Logic
-  const handleOpenShopChat = useCallback(async () => {
-    if (creatingShopChat) return;
-    const user = getStoredUserDetail();
-    if (!_.get(user, "userId")) return alert("Vui lòng đăng nhập");
-
-    const shopUserId = _.get(shop, "userId");
-    if (!shopUserId) return;
-
-    try {
-      setCreatingShopChat(true);
+  const handleChat = useCallback(async () => {
+    if (!user?.userId) return alert("Vui lòng đăng nhập để chat!");
+    if (shop?.userId) {
       const res = await createConversation({
         conversationType: ConversationType.BUYER_TO_SHOP,
-        participantIds: [shopUserId],
-        name: _.get(shop, "shopName"),
+        participantIds: [shop.userId],
+        name: shop.shopName,
       });
       if (_.get(res, "success")) setShopChatOpen(true);
-    } finally {
-      setCreatingShopChat(false);
     }
-  }, [creatingShopChat, shop]);
+  }, [shop, user]);
 
-  // Helpers
-  const formatDate = (dateString?: string) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    const diffDays = Math.floor((new Date().getTime() - date.getTime()) / 86400000);
-    if (diffDays < 30) return `${diffDays} ngày trước`;
-    return `${Math.floor(diffDays / 30)} tháng trước`;
-  };
+  if (loading)
+    return (
+      <div className="h-screen flex items-center justify-center bg-orange-50">
+        <div className="w-10 h-10 border-4 border-orange-400 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
 
-  if (loading) return (
-    <div className="flex h-screen items-center justify-center">
-      <div className="h-12 w-12 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
-    </div>
-  );
-
-  if (!shop) return <div className="p-20 text-center text-gray-500">Không tìm thấy shop</div>;
+  if (!shop)
+    return (
+      <div className="p-20 text-center text-slate-400">Shop không tồn tại</div>
+    );
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-10">
+    <div className="min-h-screen bg-neutral-50 pb-20">
       <PageContentTransition>
-        {/* Banner Section */}
-        <div className="relative h-48 w-full md:h-72 lg:h-80">
-          <img 
-            src={shop.bannerUrl || "/placeholder-banner.jpg"} 
-            className="h-full w-full object-cover" 
-            alt="Banner" 
-          />
-          <div className="absolute inset-0 bg-black/20" />
-        </div>
+        <ShopHeader
+          shop={shop}
+          isFollowing={isFollowing}
+          onFollow={() => setIsFollowing(!isFollowing)}
+          onChat={handleChat}
+          totalProducts={totalProducts}
+        />
 
-        {/* Shop Header Card */}
-        <div className="mx-auto -mt-20 max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="rounded-xl bg-white p-6 shadow-sm border border-gray-100">
-            <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-              <div className="relative group">
-                <img 
-                  src={shop.logoUrl || "/placeholder-avatar.jpg"} 
-                  className="h-24 w-24 rounded-full border-4 border-white shadow-md object-cover md:h-32 md:w-32" 
-                  alt="Logo" 
-                />
-                <div className="absolute bottom-1 right-1 h-5 w-5 rounded-full bg-green-500 border-2 border-white" title="Online" />
-              </div>
+        <ShopNavigation
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          searchKeyword={searchKeyword}
+          setSearchKeyword={setSearchKeyword}
+        />
 
-              <div className="flex-1 space-y-2">
-                <div className="flex items-center gap-3">
-                  <h1 className="text-2xl font-bold text-gray-900">{shop.shopName}</h1>
-                  <span className="rounded bg-blue-100 px-2 py-0.5 text-[10px] font-bold uppercase text-blue-600">Mall</span>
-                </div>
-                
-                <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-500">
-                  <div className="flex items-center gap-1">
-                    <Clock size={16} />
-                    <span>Tham gia: {formatDate(shop.createdDate)}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <LayoutGrid size={16} />
-                    <span>Sản phẩm: {totalProducts}</span>
-                  </div>
-                </div>
-
-                <p className="text-sm text-gray-600 line-clamp-2 max-w-2xl bg-gray-50 p-2 rounded-lg border-l-4 border-blue-400">
-                  {shop.description || "Chào mừng bạn đến với cửa hàng của chúng tôi!"}
-                </p>
-              </div>
-
-              <div className="flex w-full md:w-auto gap-3">
-                <button 
-                  onClick={() => setIsFollowing(!isFollowing)}
-                  className={`flex-1 md:flex-none flex items-center justify-center gap-2 rounded-lg px-6 py-2.5 font-medium transition-all ${
-                    isFollowing 
-                      ? "bg-red-50 text-red-500 border border-red-200" 
-                      : "bg-white text-gray-700 border border-gray-300 hover:border-red-400 hover:text-red-500"
-                  }`}
-                >
-                  <Heart size={18} fill={isFollowing ? "currentColor" : "none"} />
-                  {isFollowing ? "Đang Theo" : "Theo Dõi"}
-                </button>
-                <button 
-                  onClick={handleOpenShopChat}
-                  disabled={creatingShopChat}
-                  className="flex-1 md:flex-none flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-8 py-2.5 font-medium text-white hover:bg-blue-700 transition-all shadow-md disabled:bg-gray-400"
-                >
-                  <MessageCircle size={18} />
-                  Chat
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Sticky Navigation */}
-        <div className="sticky top-0 z-40 mt-6 border-b border-gray-200 bg-white/80 backdrop-blur-md">
-          <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-            <div className="flex gap-8 overflow-x-auto scrollbar-hide">
-              {["all", "products", ..._.map(_.slice(categories, 0, 5), c => `cat-${c.id}`)].map((key) => {
-                const label = key === "all" ? "Trang Chủ" : key === "products" ? "Sản Phẩm" : _.find(categories, { id: key.replace("cat-", "") })?.name;
-                return (
-                  <button
-                    key={key}
-                    onClick={() => {
-                      setActiveTab(key);
-                      setSelectedCategory(key.startsWith("cat-") ? key.replace("cat-", "") : undefined);
-                      setCurrentPage(0);
-                    }}
-                    className={`whitespace-nowrap py-4 text-sm font-medium transition-all relative ${
-                      activeTab === key ? "text-blue-600" : "text-gray-500 hover:text-gray-900"
-                    }`}
-                  >
-                    {label}
-                    {activeTab === key && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 rounded-full" />}
-                  </button>
-                );
-              })}
-            </div>
+        <main className="mx-auto max-w-7xl px-4 pt-4 sm:px-6 lg:px-8">
+          <div className={`flex flex-col gap-8 ${!isShopHome ? "lg:flex-row" : ""}`}>
             
-            <div className="hidden md:flex relative items-center">
-               <Search size={16} className="absolute left-3 text-gray-400" />
-               <input 
-                placeholder="Tìm tại shop..."
-                className="bg-gray-100 border-none rounded-full pl-10 pr-4 py-1.5 text-xs focus:ring-2 focus:ring-blue-500 w-64 transition-all"
-                value={searchKeyword}
-                onChange={(e) => setSearchKeyword(e.target.value)}
-               />
-            </div>
-          </div>
-        </div>
+            {!isShopHome && (
+              <aside className="hidden lg:block w-64 space-y-6 shrink-0 sticky top-24 pb-2 h-fit animate-in fade-in slide-in-from-left-4 duration-500">
+                <CategorySidebar
+                  isShop={true}
+                  data={_.take(categories, 15)}
+                  activeId={selectedCategory}
+                  onSelect={(id) => {
+                    setSelectedCategory(id);
+                    setCurrentPage(0);
+                  }}
+                />
+              </aside>
+            )}
 
-        <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-8">
-          <div className="flex flex-col lg:flex-row gap-8">
-            {/* Sidebar Filters */}
-            <aside className="hidden lg:block w-64 space-y-6">
-              <div className="rounded-xl bg-white p-5 border border-gray-100 shadow-sm">
-                <h3 className="flex items-center gap-2 text-sm font-bold text-gray-900 mb-4">
-                  <Filter size={16} className="text-blue-500" /> DANH MỤC
-                </h3>
-                <div className="space-y-1">
-                  <button 
-                    onClick={() => { setSelectedCategory(undefined); setCurrentPage(0); }}
-                    className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-colors ${!selectedCategory ? "bg-blue-50 text-blue-600 font-bold" : "text-gray-600 hover:bg-gray-50"}`}
-                  >
-                    Tất cả sản phẩm
-                  </button>
-                  {categories.map((cat) => (
-                    <button
-                      key={cat.id}
-                      onClick={() => { setSelectedCategory(cat.id); setCurrentPage(0); }}
-                      className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-colors ${selectedCategory === cat.id ? "bg-blue-50 text-blue-600 font-bold" : "text-gray-600 hover:bg-gray-50"}`}
+            <section className="flex-1">
+              
+              {/* === PHẦN TRANG CHỦ SHOP === */}
+              {isShopHome ? (
+                <div className="animate-in slide-in-from-bottom duration-500 space-y-10 mb-10">
+                  {/* Voucher Section */}
+                  <div className="bg-white p-6 rounded-3xl border border-orange-100 shadow-sm relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-2 opacity-5 pointer-events-none">
+                      <TicketPercent size={150} className="text-[var(--color-mainColor)]" />
+                    </div>
+
+                    <div className="flex items-center gap-3 mb-6 relative z-10">
+                      <div className="p-2 bg-orange-50 rounded-xl text-[var(--color-mainColor)]">
+                        <TicketPercent size={24} />
+                      </div>
+                      <h2 className="text-xl font-bold text-slate-800 uppercase tracking-tight">
+                        Mã giảm giá Shop
+                      </h2>
+                    </div>
+
+                    <div
+                      className={cn(
+                        "flex gap-4 overflow-x-auto pb-4 pt-1 px-1 custom-scrollbar",
+                        "snap-x snap-mandatory w-full scroll-smooth"
+                      )}
                     >
-                      {cat.name}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </aside>
-
-            {/* Product Grid Area */}
-            <section className="flex-1 space-y-6">
-              {/* Hot Section (Suggestions) */}
-              {activeTab === "all" && !searchKeyword && (
-                <div className="space-y-4">
-                  <div className="flex items-center gap-2">
-                    <Flame className="text-orange-500" size={20} fill="currentColor" />
-                    <h2 className="text-lg font-bold tracking-tight text-gray-900 uppercase">Gợi ý cho bạn</h2>
+                      {VOUCHER_SHOP_DATA.map((voucher) => (
+                        <div key={voucher.id} className="snap-start shrink-0">
+                          <ShopVoucherCard
+                            code={voucher.code}
+                            discountType={voucher.discountType as any}
+                            value={voucher.value}
+                            minOrder={voucher.minOrder}
+                            endDate={voucher.endDate}
+                            onSave={() => success(`Đã lưu mã ${voucher.code}`)}
+                          />
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4">
-                    {_.slice(products, 0, 10).map((p) => (
-                      <ProductCard key={p.id} product={p} />
-                    ))}
-                  </div>
-                  <hr className="border-gray-200" />
-                </div>
-              )}
 
-              {/* Toolbar */}
-              <div className="flex items-center justify-between bg-white p-3 rounded-xl border border-gray-100 shadow-sm">
-                <div className="flex items-center gap-4">
-                  <span className="text-xs text-gray-400 font-medium">Sắp xếp:</span>
-                  <div className="flex gap-2">
-                    {["popular", "createdDate,desc", "sold,desc"].map(sort => (
-                      <button 
-                        key={sort}
-                        onClick={() => setSortBy(sort)}
-                        className={`px-4 py-1.5 rounded-lg text-[11px] font-bold transition-all ${sortBy === sort ? "bg-blue-600 text-white shadow-md shadow-blue-200" : "bg-gray-100 text-gray-500 hover:bg-gray-200"}`}
-                      >
-                        {sort === "popular" ? "PHỔ BIẾN" : sort === "sold,desc" ? "BÁN CHẠY" : "MỚI NHẤT"}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                
-                <div className="flex items-center gap-2">
-                   <span className="text-xs text-gray-400 font-mono">{currentPage + 1}/{Math.ceil(totalProducts / pageSize) || 1}</span>
-                   <button 
-                    disabled={currentPage === 0}
-                    onClick={() => setCurrentPage(p => p - 1)}
-                    className="p-1.5 rounded-lg border border-gray-200 disabled:opacity-30 bg-white"
-                   >
-                     <ChevronRight className="rotate-180" size={16} />
-                   </button>
-                   <button 
-                    disabled={currentPage >= Math.ceil(totalProducts / pageSize) - 1}
-                    onClick={() => setCurrentPage(p => p + 1)}
-                    className="p-1.5 rounded-lg border border-gray-200 disabled:opacity-30 bg-white"
-                   >
-                     <ChevronRight size={16} />
-                   </button>
-                </div>
-              </div>
-
-              {/* Grid */}
-              {loadingProducts ? (
-                <div className="py-20 text-center"><div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" /></div>
-              ) : _.isEmpty(products) ? (
-                <div className="py-20 text-center text-gray-400 flex flex-col items-center gap-4">
-                   <Store size={48} className="opacity-20" />
-                   <p>Không tìm thấy sản phẩm nào</p>
+                  {/* Sản phẩm nổi bật */}
+                  {!_.isEmpty(products) && (
+                    <div>
+                      <div className="flex items-center gap-3 mb-6 px-1">
+                        <div className="p-2 bg-yellow-50 rounded-xl text-yellow-600">
+                          <Sparkles size={24} fill="currentColor" />
+                        </div>
+                        <h2 className="text-xl font-bold text-slate-800 uppercase tracking-tight">
+                          Sản phẩm nổi bật
+                        </h2>
+                      </div>
+                      
+                      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-5">
+                        {_.map(_.slice(products, 0, 10), (p) => (
+                          <div key={`featured-${p.id}`} className="relative group">
+                            <div className="absolute -inset-0.5 bg-gradient-to-r from-yellow-300 to-orange-300 rounded-2xl opacity-0 group-hover:opacity-100 blur transition duration-500"></div>
+                            <div className="relative">
+                              <ProductCard product={p} />
+                            </div>
+                            <div className="absolute top-3 left-3 z-10">
+                              <div className="bg-yellow-400 text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-sm">
+                                HOT
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      
+                      <div className="flex justify-center mt-8">
+                        <button 
+                           onClick={() => setActiveTab('new')} 
+                           className="flex items-center gap-2 px-8 py-3 bg-white border border-gray-200 text-slate-600 font-bold rounded-full hover:bg-[var(--color-mainColor)] hover:text-white hover:border-transparent hover:shadow-lg transition-all duration-300"
+                        >
+                           Xem tất cả sản phẩm <ChevronRight size={18} />
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ) : (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4">
-                  {products.map((p) => (
-                    <ProductCard key={p.id} product={p} />
-                  ))}
-                </div>
-              )}
+                
+                /* === PHẦN DANH SÁCH SẢN PHẨM (CÓ SORT & FILTER) === */
+                <>
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 bg-white p-4 rounded-xl shadow-sm border border-slate-50 sticky top-24 z-20">
+                    
+                    {/* Tiêu đề kết quả */}
+                    <h2 className="text-sm font-bold text-slate-700 flex items-center gap-2">
+                      {searchKeyword ? (
+                        <>Kết quả cho "<span className="text-[var(--color-mainColor)]">{searchKeyword}</span>"</>
+                      ) : selectedCategory ? (
+                        "Sản phẩm theo danh mục"
+                      ) : (
+                        <>
+                          <LayoutGrid size={18} className="text-slate-400" />
+                          Tất cả sản phẩm
+                        </>
+                      )}
+                      <span className="text-slate-400 font-normal ml-1">({totalProducts})</span>
+                    </h2>
 
-              {/* Pagination Footer */}
-              {!_.isEmpty(products) && (
-                <div className="flex justify-center pt-10">
-                   <div className="flex gap-2">
-                      {_.range(Math.ceil(totalProducts / pageSize)).map(i => (
+                    {/* --- BUTTONS SORT SCROLLABLE (THAY CHO SELECT) --- */}
+                    <div className="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0 custom-scrollbar scroll-smooth snap-x">
+                        <div className="flex items-center gap-1.5 shrink-0 pr-2 border-r border-slate-100 mr-2">
+                            <ListFilter size={14} className="text-slate-400"/>
+                            <span className="text-xs text-slate-500 font-medium hidden sm:block">Sắp xếp:</span>
+                        </div>
+                        
+                        {SORT_OPTIONS.map((option) => {
+                            const isActive = sortBy === option.value;
+                            return (
+                                <button
+                                    key={option.value}
+                                    onClick={() => setSortBy(option.value)}
+                                    className={cn(
+                                        "px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 border whitespace-nowrap flex items-center gap-1.5 snap-start shrink-0",
+                                        isActive 
+                                            ? "bg-[var(--color-mainColor)] text-white border-[var(--color-mainColor)] shadow-md shadow-orange-200 transform scale-105"
+                                            : "bg-white text-slate-600 border-slate-200 hover:border-[var(--color-mainColor)] hover:text-[var(--color-mainColor)]"
+                                    )}
+                                >
+                                    {option.label}
+                                    {option.icon && <span className={isActive ? "text-white" : "text-slate-400"}>{option.icon}</span>}
+                                </button>
+                            )
+                        })}
+                    </div>
+                  </div>
+
+                  {/* Grid sản phẩm */}
+                  {loadingProducts ? (
+                    <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+                      {_.range(8).map((i) => (
+                        <div key={i} className="h-72 bg-white rounded-2xl animate-pulse shadow-sm border border-slate-50" />
+                      ))}
+                    </div>
+                  ) : _.isEmpty(products) ? (
+                    <div className="py-32 flex flex-col items-center justify-center text-slate-400">
+                      <Store size={64} strokeWidth={1} className="mb-4 opacity-20" />
+                      <p className="font-medium">Chưa tìm thấy sản phẩm nào</p>
+                      <button
+                        onClick={() => {
+                          setSearchKeyword("");
+                          setSelectedCategory(undefined);
+                        }}
+                        className="mt-4 text-[var(--color-mainColor)] text-sm hover:underline"
+                      >
+                        Xóa bộ lọc
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+                      {_.map(products, (p) => (
+                        <ProductCard key={p.id} product={p} />
+                      ))}
+                    </div>
+                  )}
+
+                  {!_.isEmpty(products) && (
+                    <div className="mt-12 flex justify-center gap-2 pb-10">
+                      {_.range(Math.min(5, Math.ceil(totalProducts / pageSize))).map((i) => (
                         <button
                           key={i}
                           onClick={() => setCurrentPage(i)}
-                          className={`w-8 h-8 rounded-lg text-xs font-bold transition-all ${currentPage === i ? "bg-blue-600 text-white shadow-lg" : "bg-white border border-gray-200 text-gray-500 hover:border-blue-400"}`}
+                          className={`w-9 h-9 rounded-lg text-sm font-bold transition-all ${
+                            currentPage === i
+                              ? "bg-orange-500 text-white shadow-lg shadow-orange-200 scale-110"
+                              : "bg-white text-slate-500 hover:bg-orange-50 hover:text-[var(--color-mainColor)] border border-slate-100"
+                          }`}
                         >
                           {i + 1}
                         </button>
                       ))}
-                   </div>
-                </div>
+                      {Math.ceil(totalProducts / pageSize) > 5 && (
+                        <span className="w-9 h-9 flex items-center justify-center text-slate-300">...</span>
+                      )}
+                      <button
+                        disabled={currentPage >= Math.ceil(totalProducts / pageSize) - 1}
+                        onClick={() => setCurrentPage((p) => p + 1)}
+                        className="w-9 h-9 rounded-lg bg-white border border-slate-100 flex items-center justify-center text-slate-400 hover:text-[var(--color-mainColor)] hover:border-orange-200 transition-all disabled:opacity-30 disabled:pointer-events-none"
+                      >
+                        <ChevronRight size={18} />
+                      </button>
+                    </div>
+                  )}
+                </>
               )}
             </section>
           </div>
         </main>
       </PageContentTransition>
 
-      {/* {shop?.userId && (
+      {shop.userId && (
         <CustomerShopChat
           open={shopChatOpen}
           onClose={() => setShopChatOpen(false)}
           targetShopId={shop.userId}
           targetShopName={shop.shopName}
         />
-      )} */}
+      )}
     </div>
   );
 }

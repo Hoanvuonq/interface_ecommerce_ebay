@@ -1,31 +1,29 @@
 "use client";
 
-import React, { useState, useEffect, useCallback, useMemo } from "react";
 import {
-  Trash2,
-  Minus,
-  Plus,
-  CheckCircle2,
-  AlertCircle,
-  Loader2,
-} from "lucide-react";
-import { useAppDispatch, useAppSelector } from "@/store/store";
-import {
-  updateCartItem,
-  removeCartItem,
-  toggleItemSelectionLocal,
-} from "@/store/theme/cartSlice";
-import { resolveVariantImageUrl } from "@/utils/products/media.helpers";
-import { cn } from "@/utils/cn";
-import { toast } from "sonner";
-import { 
-  getStandardizedKey, 
-  ICON_BG_COLORS, 
-  categoryIcons 
+  categoryIcons,
+  getStandardizedKey,
+  ICON_BG_COLORS,
 } from "@/app/(main)/(home)/_types/categories";
 import { formatPriceFull } from "@/hooks/useFormatPrice";
+import { useToast } from "@/hooks/useToast";
+import { useAppDispatch, useAppSelector } from "@/store/store";
+import {
+  removeCartItem,
+  toggleItemSelectionLocal,
+  updateCartItem,
+} from "@/store/theme/cartSlice";
+import { cn } from "@/utils/cn";
+import { resolveVariantImageUrl } from "@/utils/products/media.helpers";
+import {
+  CheckCircle2,
+  Loader2,
+  Minus,
+  Plus,
+  Trash2
+} from "lucide-react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { CartItemProps } from "../../_types/cartItems";
-
 export const CartItem: React.FC<CartItemProps> = ({
   item,
   etag,
@@ -37,70 +35,83 @@ export const CartItem: React.FC<CartItemProps> = ({
   const [quantity, setQuantity] = useState(item.quantity);
   const [updating, setUpdating] = useState(false);
   const [imgError, setImgError] = useState(false);
-
-  // Cập nhật local state khi props thay đổi (từ server/store)
+  const { success, error } = useToast();
   useEffect(() => {
     setQuantity(item.quantity);
   }, [item.quantity]);
 
-  const currentCartVersion = useAppSelector((state) => state.cart.cart?.version);
+  const currentCartVersion = useAppSelector(
+    (state) => state.cart.cart?.version
+  );
 
-  const { categoryUI, categoryEmoji, effectivePrice, imageUrl } = useMemo(() => {
-    const categoryKey = getStandardizedKey(item.productName);
-    return {
-      categoryKey,
-      categoryUI: ICON_BG_COLORS[categoryKey] || ICON_BG_COLORS["default"],
-      categoryEmoji: categoryIcons[categoryKey] || "📦",
-      effectivePrice: item.discountAmount > 0 ? item.unitPrice - item.discountAmount : item.unitPrice,
-      imageUrl: resolveVariantImageUrl(
-        {
-          imageBasePath: item.imageBasePath,
-          imageExtension: item.imageExtension,
-          imageUrl: (item as any).thumbnailUrl || (item as any).imageUrl,
-        },
-        "_thumb"
-      )
-    };
-  }, [item]);
+  const { categoryUI, categoryEmoji, effectivePrice, imageUrl } =
+    useMemo(() => {
+      const categoryKey = getStandardizedKey(item.productName);
+      return {
+        categoryKey,
+        categoryUI: ICON_BG_COLORS[categoryKey] || ICON_BG_COLORS["default"],
+        categoryEmoji: categoryIcons[categoryKey] || "📦",
+        effectivePrice:
+          item.discountAmount > 0
+            ? item.unitPrice - item.discountAmount
+            : item.unitPrice,
+        imageUrl: resolveVariantImageUrl(
+          {
+            imageBasePath: item.imageBasePath,
+            imageExtension: item.imageExtension,
+            imageUrl: (item as any).thumbnailUrl || (item as any).imageUrl,
+          },
+          "_thumb"
+        ),
+      };
+    }, [item]);
 
   // Handlers
-  const handleQuantityChange = useCallback(async (newQuantity: number) => {
-    const maxStock = item.availableStock || 999;
-    if (updating || newQuantity < 1 || newQuantity > maxStock || newQuantity === item.quantity) 
-      return;
+  const handleQuantityChange = useCallback(
+    async (newQuantity: number) => {
+      const maxStock = item.availableStock || 999;
+      if (
+        updating ||
+        newQuantity < 1 ||
+        newQuantity > maxStock ||
+        newQuantity === item.quantity
+      )
+        return;
 
-    setUpdating(true);
-    const oldQuantity = quantity;
-    setQuantity(newQuantity); 
+      setUpdating(true);
+      const oldQuantity = quantity;
+      setQuantity(newQuantity);
 
-    try {
-      await dispatch(
-        updateCartItem({
-          itemId: item.id,
-          request: { quantity: newQuantity },
-          etag: currentCartVersion?.toString() || etag, 
-        })
-      ).unwrap();
-    } catch (error: any) {
-      setQuantity(oldQuantity); 
-      toast.error(error?.message || "Không thể cập nhật số lượng");
-    } finally {
-      setUpdating(false);
-    }
-  }, [updating, item, quantity, dispatch, currentCartVersion, etag]);
+      try {
+        await dispatch(
+          updateCartItem({
+            itemId: item.id,
+            request: { quantity: newQuantity },
+            etag: currentCartVersion?.toString() || etag,
+          })
+        ).unwrap();
+      } catch (error: any) {
+        setQuantity(oldQuantity);
+        error(error?.message || "Không thể cập nhật số lượng");
+      } finally {
+        setUpdating(false);
+      }
+    },
+    [updating, item, quantity, dispatch, currentCartVersion, etag]
+  );
 
   const handleRemove = useCallback(async () => {
     if (window.confirm("Xóa sản phẩm này khỏi giỏ hàng?")) {
       try {
         await dispatch(
-          removeCartItem({ 
-            itemId: item.id, 
-            etag: currentCartVersion?.toString() || etag 
+          removeCartItem({
+            itemId: item.id,
+            etag: currentCartVersion?.toString() || etag,
           })
         ).unwrap();
-        toast.success("Đã xóa sản phẩm");
+        success("Đã xóa sản phẩm");
       } catch (error: any) {
-        toast.error(error?.message || "Lỗi khi xóa sản phẩm");
+        error(error?.message || "Lỗi khi xóa sản phẩm");
       }
     }
   }, [dispatch, item.id, currentCartVersion, etag]);
@@ -121,8 +132,15 @@ export const CartItem: React.FC<CartItemProps> = ({
           onError={() => setImgError(true)}
         />
       ) : (
-        <div className={cn("w-full h-full flex items-center justify-center text-2xl bg-slate-50", categoryUI.bg)}>
-          <span className={cn(categoryUI.text, "filter drop-shadow-sm")}>{categoryEmoji}</span>
+        <div
+          className={cn(
+            "w-full h-full flex items-center justify-center text-2xl bg-slate-50",
+            categoryUI.bg
+          )}
+        >
+          <span className={cn(categoryUI.text, "filter drop-shadow-sm")}>
+            {categoryEmoji}
+          </span>
         </div>
       )}
     </div>
@@ -131,10 +149,12 @@ export const CartItem: React.FC<CartItemProps> = ({
   // Mobile Render
   if (isMobile) {
     return (
-      <div className={cn(
-        "flex gap-3 p-4 rounded-2xl transition-all border border-transparent",
-        selected ? "bg-orange-50/40 border-orange-100" : "bg-white"
-      )}>
+      <div
+        className={cn(
+          "flex gap-3 p-4 rounded-2xl transition-all border border-transparent",
+          selected ? "bg-orange-50/40 border-orange-100" : "bg-white"
+        )}
+      >
         <label className="flex items-center cursor-pointer h-fit mt-1">
           <div className="relative flex items-center justify-center">
             <input
@@ -143,7 +163,10 @@ export const CartItem: React.FC<CartItemProps> = ({
               checked={selected}
               onChange={handleToggleSelection}
             />
-            <CheckCircle2 size={12} className="absolute text-white opacity-0 peer-checked:opacity-100 pointer-events-none" />
+            <CheckCircle2
+              size={12}
+              className="absolute text-white opacity-0 peer-checked:opacity-100 pointer-events-none"
+            />
           </div>
         </label>
 
@@ -182,7 +205,11 @@ export const CartItem: React.FC<CartItemProps> = ({
                 <Minus size={14} strokeWidth={2.5} className="text-slate-600" />
               </button>
               <div className="w-8 text-center text-xs font-bold text-slate-800">
-                {updating ? <Loader2 size={12} className="animate-spin inline" /> : quantity}
+                {updating ? (
+                  <Loader2 size={12} className="animate-spin inline" />
+                ) : (
+                  quantity
+                )}
               </div>
               <button
                 onClick={() => handleQuantityChange(quantity + 1)}
@@ -195,7 +222,10 @@ export const CartItem: React.FC<CartItemProps> = ({
           </div>
         </div>
 
-        <button onClick={handleRemove} className="text-slate-300 hover:text-red-500 p-1 self-start transition-colors">
+        <button
+          onClick={handleRemove}
+          className="text-slate-300 hover:text-red-500 p-1 self-start transition-colors"
+        >
           <Trash2 size={18} strokeWidth={2} />
         </button>
       </div>
@@ -204,10 +234,12 @@ export const CartItem: React.FC<CartItemProps> = ({
 
   // Desktop Render
   return (
-    <div className={cn(
-      "grid grid-cols-12 items-center px-8 py-6 transition-all border-b border-slate-50 group bg-white",
-      selected && "bg-orange-50/20"
-    )}>
+    <div
+      className={cn(
+        "grid grid-cols-12 items-center px-8 py-6 transition-all border-b border-slate-50 group bg-white",
+        selected && "bg-orange-50/20"
+      )}
+    >
       <div className="col-span-5 flex items-center gap-5">
         <label className="relative flex items-center justify-center cursor-pointer shrink-0">
           <input
@@ -216,7 +248,10 @@ export const CartItem: React.FC<CartItemProps> = ({
             checked={selected}
             onChange={handleToggleSelection}
           />
-          <CheckCircle2 size={12} className="absolute text-white opacity-0 peer-checked:opacity-100 pointer-events-none" />
+          <CheckCircle2
+            size={12}
+            className="absolute text-white opacity-0 peer-checked:opacity-100 pointer-events-none"
+          />
         </label>
 
         <div className="relative w-20 h-20 shrink-0 border border-slate-100 rounded-2xl overflow-hidden shadow-sm bg-slate-50">
@@ -263,7 +298,11 @@ export const CartItem: React.FC<CartItemProps> = ({
             <Minus size={14} strokeWidth={3} className="text-slate-600" />
           </button>
           <div className="w-10 text-center text-xs font-bold text-slate-900">
-            {updating ? <Loader2 size={12} className="animate-spin inline" /> : quantity}
+            {updating ? (
+              <Loader2 size={12} className="animate-spin inline" />
+            ) : (
+              quantity
+            )}
           </div>
           <button
             onClick={() => handleQuantityChange(quantity + 1)}

@@ -11,7 +11,7 @@ export const TopHeader = () => {
     <div 
       className={cn(
         "relative overflow-hidden text-white",
-        "bg-linear-to-r from-pink-500 via-red-500 to-yellow-500 bg-[length:200%_auto]",
+        "bg-linear-to-r from-pink-500 via-red-500 to-yellow-500 bg-size-[200%_auto]",
         "animate-gradient-move"
       )}
       style={{

@@ -391,8 +391,20 @@ const cartSlice = createSlice({
       })
       .addCase(removeCartItem.fulfilled, (state, action) => {
         state.loading = false;
-        const updatedCart = mergeSelectionState(action.payload, state.cart);
-        state.cart = updatedCart;
+        if (!action.payload || !action.payload.shops?.length) {
+          if (state.cart) {
+            state.cart.shops.forEach((shop) => {
+              shop.items = shop.items.filter(
+                (item) => item.id !== action.meta.arg.itemId
+              );
+            });
+            state.cart.shops = state.cart.shops.filter(
+              (shop) => shop.items.length > 0
+            );
+          }
+        } else {
+          state.cart = mergeSelectionState(action.payload, state.cart);
+        }
         success("Đã xóa sản phẩm khỏi giỏ hàng");
       })
       .addCase(removeCartItem.rejected, (state, action) => {
