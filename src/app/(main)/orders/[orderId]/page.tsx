@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import {
@@ -66,10 +65,9 @@ export default function OrderDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa] pb-20">
+    <div className="min-h-screen bg-[#f8f9fa]">
       <PageContentTransition>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="mb-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
             <CustomBreadcrumb
               items={[
                 { title: "Trang chủ", href: "/" },
@@ -77,7 +75,6 @@ export default function OrderDetailPage() {
                 { title: `Chi tiết #${order.orderNumber || params.orderId}`, href: "" },
               ]}
             />
-          </div>
 
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
             <OrderDetailView order={order} />

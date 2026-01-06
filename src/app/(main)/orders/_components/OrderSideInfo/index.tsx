@@ -26,7 +26,7 @@ export const OrderSideInfo: React.FC<OrderSideInfoProps> = ({
       .value() || "Không có thông tin địa chỉ";
 
   return (
-    <aside className="lg:col-span-4 space-y-6">
+    <aside className="lg:col-span-4 space-y-2">
       <section className="bg-white rounded-4xl shadow-sm border border-slate-100 overflow-hidden transition-all hover:shadow-md">
         <header className="px-6 py-4 bg-slate-50/50 border-b border-slate-100">
           <h3 className="font-semibold text-slate-900 flex items-center gap-2 uppercase text-xs tracking-widest">
@@ -102,38 +102,6 @@ export const OrderSideInfo: React.FC<OrderSideInfoProps> = ({
                 <Mail size={14} className="text-slate-400" /> {order.email}
               </div>
             )}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-white rounded-4xl shadow-sm border border-slate-100 overflow-hidden transition-all hover:shadow-md">
-        <header className="px-6 py-4 bg-slate-50/50 border-b border-slate-100">
-          <h3 className="font-semibold text-slate-900 flex items-center gap-2 uppercase text-xs tracking-widest">
-            <Truck className="text-indigo-600" size={18} /> Vận chuyển & Thanh
-            toán
-          </h3>
-        </header>
-        <div className="p-6 space-y-4">
-          <div className="flex justify-between items-center">
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">
-              Đơn vị
-            </span>
-            <div className="text-right">
-              <p className="text-sm font-semibold text-slate-900 uppercase tracking-tighter">
-                {order.carrier || "N/A"}
-              </p>
-              <p className="text-[10px] text-slate-400 font-bold uppercase italic">
-                {order.shippingMethod || "Tiêu chuẩn"}
-              </p>
-            </div>
-          </div>
-          <div className="flex justify-between items-center pt-4 border-t border-slate-50">
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">
-              Phương thức
-            </span>
-            <span className="font-semibold bg-blue-50 text-blue-600 px-3 py-1 rounded-xl text-[10px] border border-blue-100 uppercase shadow-sm">
-              {paymentLabel}
-            </span>
           </div>
         </div>
       </section>

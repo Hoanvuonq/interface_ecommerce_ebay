@@ -137,8 +137,8 @@ export const CheckoutScreen = () => {
         onConfirmSaved={(id) =>
           updateAddress(id).then(() => setAddressModalVisible(false))
         }
-        onConfirmNew={(data) =>
-          updateAddress(undefined, data).then(() =>
+        onConfirmNew={(data: any) =>
+          updateAddress(undefined, data,).then(() =>
             setAddressModalVisible(false)
           )
         }

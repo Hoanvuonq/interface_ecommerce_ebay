@@ -48,6 +48,7 @@ interface ProductDetailContextType {
   reviewsLoading: boolean;
   reviewHasMore: boolean;
   loadMoreReviews: () => Promise<void>;
+  fetchProductReviews: (productId: string, page?: number, reset?: boolean) => Promise<void>;
   creatingShopChat: boolean;
   handleOpenShopChat: () => Promise<void>;
   galleryImages: { key: string; thumb: string; preview: string }[];
@@ -67,14 +68,14 @@ interface ProductDetailContextType {
   followerCount: number | string;
 }
 
-const ProductDetailContext = createContext<ProductDetailContextType | undefined>(
-  undefined
-);
+const ProductDetailContext = createContext<
+  ProductDetailContextType | undefined
+>(undefined);
 
 // --- HÀM TÍNH GIÁ VOUCHER (Tách ra để dùng lại) ---
 const calculatePriceWithVoucher = (price: number, voucher: any) => {
   if (!voucher) return price;
-  
+
   let discount = 0;
   if (voucher.discountType === "PERCENTAGE") {
     discount = (price * (voucher.discountValue || 0)) / 100;
@@ -84,7 +85,7 @@ const calculatePriceWithVoucher = (price: number, voucher: any) => {
   } else {
     discount = voucher.discountAmount || 0;
   }
-  
+
   return Math.max(0, price - discount);
 };
 
@@ -94,20 +95,21 @@ export const ProductDetailProvider = ({
   children: React.ReactNode;
 }) => {
   const params = useParams() as { id: string };
-  const { success, error: toastError, warning } = useToast();
+  const { warning, error: toastError } = useToast();
 
   // State
   const [product, setProduct] = useState<PublicProductDetailDTO | null>(null);
   const [featured, setFeatured] = useState<PublicProductListItemDTO[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedVariant, setSelectedVariant] = useState<PublicProductVariantDTO | null>(null);
-  
+  const [selectedVariant, setSelectedVariant] =
+    useState<PublicProductVariantDTO | null>(null);
+
   // Review State
   const [productReviews, setProductReviews] = useState<ReviewResponse[]>([]);
   const [reviewPage, setReviewPage] = useState(0);
   const [reviewHasMore, setReviewHasMore] = useState(false);
   const [reviewsLoading, setReviewsLoading] = useState(false);
-  
+
   // Chat & UI State
   const [creatingShopChat, setCreatingShopChat] = useState(false);
   const [activeThumbnail, setActiveThumbnail] = useState<string | null>(null);
@@ -131,21 +133,23 @@ export const ProductDetailProvider = ({
         ? await publicProductService.getBySlug(params.id)
         : await publicProductService.getById(params.id);
 
-      const data = 'data' in res ? (res as any).data : res;
+      const data = "data" in res ? (res as any).data : res;
       setProduct(data);
 
       // --- LOGIC CHỌN BIẾN THỂ GIÁ TỐT NHẤT ---
       if (data?.variants && data.variants.length > 0) {
         const bestVoucher = data.bestShopVoucher ?? data.bestPlatformVoucher;
-        
-        // Tìm biến thể có giá cuối cùng (sau voucher) thấp nhất
+
         const bestVariant = data.variants.reduce((prev: any, curr: any) => {
           const prevPrice = prev.price ?? 0;
           const currPrice = curr.price ?? 0;
-          
-          // Nếu có sẵn giá sau giảm từ API thì dùng luôn
-          const prevFinal = prev.priceAfterDiscount ?? calculatePriceWithVoucher(prevPrice, bestVoucher);
-          const currFinal = curr.priceAfterDiscount ?? calculatePriceWithVoucher(currPrice, bestVoucher);
+
+          const prevFinal =
+            prev.priceAfterDiscount ??
+            calculatePriceWithVoucher(prevPrice, bestVoucher);
+          const currFinal =
+            curr.priceAfterDiscount ??
+            calculatePriceWithVoucher(currPrice, bestVoucher);
 
           return currFinal < prevFinal ? curr : prev;
         });
@@ -154,12 +158,11 @@ export const ProductDetailProvider = ({
       } else {
         setSelectedVariant(null);
       }
-      // ----------------------------------------
 
       if (data?.id) {
         const [rev, featRes] = await Promise.all([
           getProductReviewComments(data.id, { page: 0, size: 3 }),
-          publicProductService.getFeatured(0, 6)
+          publicProductService.getFeatured(0, 6),
         ]);
 
         setProductReviews(rev.content || []);
@@ -179,7 +182,55 @@ export const ProductDetailProvider = ({
     fetchData();
   }, [fetchData]);
 
-  // 3. Shop Chat Logic
+  // 3. Review Functions
+  const loadMoreReviews = async (): Promise<void> => {
+    if (!product?.id || reviewsLoading) return;
+    const nextPage = reviewPage + 1;
+    setReviewsLoading(true);
+    try {
+      const res = await getProductReviewComments(product.id, {
+        page: nextPage,
+        size: 3,
+      });
+      setProductReviews((prev) => [...prev, ...res.content]);
+      setReviewPage(nextPage);
+      setReviewHasMore(!res.last);
+    } finally {
+      setReviewsLoading(false);
+    }
+  };
+
+  const fetchProductReviews = async (
+    productId: string,
+    page = 0,
+    reset = false
+  ) => {
+    if (!productId) return;
+    setReviewsLoading(true);
+    try {
+      const res = await getProductReviewComments(productId, {
+        page,
+        size: 3, // Khớp với size bạn test
+      });
+
+      const content = res?.content ?? [];
+
+      setProductReviews((prev) => {
+        if (reset) return content;
+        const existingIds = new Set(prev.map((item) => item.id));
+        const merged = content.filter((item) => !existingIds.has(item.id));
+        return [...prev, ...merged];
+      });
+
+      setReviewPage(res?.page ?? page);
+      setReviewHasMore(!res?.last); // res.last là true nếu là trang cuối
+    } catch (error) {
+      console.error("Failed to load product reviews:", error);
+    } finally {
+      setReviewsLoading(false);
+    }
+  };
+  // 4. Shop Chat Logic
   const handleOpenShopChat = async (): Promise<void> => {
     const userDetail = getStoredUserDetail();
     if (!userDetail?.userId) {
@@ -209,45 +260,24 @@ export const ProductDetailProvider = ({
     }
   };
 
-  // 4. Load More Reviews
-  const loadMoreReviews = async (): Promise<void> => {
-    if (!product?.id || reviewsLoading) return;
-    const nextPage = reviewPage + 1;
-    setReviewsLoading(true);
-    try {
-      const res = await getProductReviewComments(product.id, {
-        page: nextPage,
-        size: 3,
-      });
-      setProductReviews((prev) => [...prev, ...res.content]);
-      setReviewPage(nextPage);
-      setReviewHasMore(!res.last);
-    } finally {
-      setReviewsLoading(false);
-    }
-  };
-
-  // 5. Price Calculation (Memoized for current selection)
+  // 5. Price Info
   const priceInfo = useMemo(() => {
     const vPrice = selectedVariant?.price ?? product?.priceMin ?? 0;
-    const bestVoucher = product?.bestShopVoucher ?? product?.bestPlatformVoucher;
-    
-    // Tính giá sau voucher
-    // Nếu biến thể có sẵn giá sau giảm thì dùng luôn
-    let pAfterVoucher: number | null = (selectedVariant as any)?.priceAfterDiscount ?? null;
-    
+    const bestVoucher =
+      product?.bestShopVoucher ?? product?.bestPlatformVoucher;
+
+    let pAfterVoucher: number | null =
+      (selectedVariant as any)?.priceAfterDiscount ?? null;
+
     if (pAfterVoucher === null && bestVoucher) {
-       pAfterVoucher = calculatePriceWithVoucher(vPrice, bestVoucher);
+      pAfterVoucher = calculatePriceWithVoucher(vPrice, bestVoucher);
     }
 
     const pPrice = pAfterVoucher ?? vPrice;
-    
-    // Logic giá so sánh (gạch ngang)
-    // Nếu có voucher giảm -> giá gạch ngang là giá bán của biến thể
-    // Nếu không -> giá gạch ngang là corePrice (giá niêm yết)
-    const cPrice = (pAfterVoucher && pAfterVoucher < vPrice) 
-                    ? vPrice 
-                    : (selectedVariant?.corePrice ?? product?.comparePrice);
+    const cPrice =
+      pAfterVoucher && pAfterVoucher < vPrice
+        ? vPrice
+        : selectedVariant?.corePrice ?? product?.comparePrice;
 
     return {
       variantPrice: vPrice,
@@ -265,10 +295,10 @@ export const ProductDetailProvider = ({
     };
   }, [selectedVariant, product]);
 
-  // 6. Gallery Logic (Optimized)
+  // 6. Gallery Logic
   const galleryImages = useMemo(() => {
     if (!product) return [];
-    
+
     const items: { key: string; thumb: string; preview: string }[] = [];
     const seenUrls = new Set<string>();
 
@@ -284,11 +314,11 @@ export const ProductDetailProvider = ({
       .forEach((m) => {
         const url = resolveMediaUrlHelper(m as any, "_large");
         if (url) {
-            addImage(
-                `media-${m.id}`,
-                resolveMediaUrlHelper(m as any, "_thumb") || url,
-                url
-            );
+          addImage(
+            `media-${m.id}`,
+            resolveMediaUrlHelper(m as any, "_thumb") || url,
+            url
+          );
         }
       });
 
@@ -296,9 +326,9 @@ export const ProductDetailProvider = ({
       const url = resolveVariantImageUrlHelper(v as any, "_large");
       if (url) {
         addImage(
-            `variant-${v.id}`,
-            resolveVariantImageUrlHelper(v as any, "_thumb") || url,
-            url
+          `variant-${v.id}`,
+          resolveVariantImageUrlHelper(v as any, "_thumb") || url,
+          url
         );
       }
     });
@@ -306,20 +336,13 @@ export const ProductDetailProvider = ({
     return items;
   }, [product]);
 
-  // 7. Primary Display Image
   const primaryImage = useMemo(() => {
     if (activeThumbnail) return activeThumbnail;
-    
     const vImg = resolveVariantImageUrlHelper(selectedVariant as any, "_large");
-    
-    if (vImg && vImg !== "/placeholder-product.png") {
-        return vImg;
-    }
-    
+    if (vImg && vImg !== "/placeholder-product.png") return vImg;
     return galleryImages[0]?.preview || PLACEHOLDER_IMAGE;
   }, [activeThumbnail, selectedVariant, galleryImages]);
 
-  // Reset active thumbnail when variant changes
   useEffect(() => {
     setActiveThumbnail(null);
   }, [selectedVariant]);
@@ -335,6 +358,7 @@ export const ProductDetailProvider = ({
     reviewsLoading,
     reviewHasMore,
     loadMoreReviews,
+    fetchProductReviews, // Added to context value
     creatingShopChat,
     handleOpenShopChat,
     activeThumbnail,
@@ -357,6 +381,8 @@ export const ProductDetailProvider = ({
 export const useProductDetail = () => {
   const context = useContext(ProductDetailContext);
   if (!context)
-    throw new Error("useProductDetail must be used within ProductDetailProvider");
+    throw new Error(
+      "useProductDetail must be used within ProductDetailProvider"
+    );
   return context;
 };

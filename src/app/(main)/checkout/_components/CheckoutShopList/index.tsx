@@ -30,30 +30,6 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
 }) => {
   const { syncPreview } = useCheckoutActions();
 
-  const allProductIds = useMemo(
-    () => _.flatMap(shops, (s) => s.items.map((i: any) => i.itemId)),
-    [shops]
-  );
-  const allShopIds = useMemo(() => shops.map((s) => s.shopId), [shops]);
-
-  const findAppliedPlatformVoucher = (target: "ORDER" | "SHIP") => {
-    const globalDetails =
-      preview?.voucherApplication?.globalVouchers?.discountDetails || [];
-    const shopDetails =
-      _.flatMap(preview?.voucherApplication?.shopResults, "discountDetails") ||
-      [];
-
-    const allDetails = [...globalDetails, ...shopDetails];
-
-    return allDetails.find(
-      (d: any) =>
-        d.voucherType === "PLATFORM" &&
-        (target === "ORDER"
-          ? ["ORDER", "PRODUCT"].includes(d.discountTarget)
-          : d.discountTarget === "SHIP" || d.discountTarget === "SHIPPING")
-    )?.voucherCode;
-  };
-
   const handleSelectShopVoucher = async (
     shopId: string,
     selected: any
@@ -210,11 +186,29 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
                           handleSelectShopVoucher(shop.shopId, v)
                         }
                         appliedVouchers={{
-                          order: _.find(discountDetails, {
-                            voucherType: "SHOP",
-                          }),
+                          order: _.find(
+                            discountDetails,
+                            (d: any) =>
+                              d.voucherType === "SHOP" &&
+                              ["ORDER", "PRODUCT"].includes(d.discountTarget)
+                          ),
                         }}
-                        context={{ totalAmount: subtotal, shippingFee }}
+                        context={{
+                          totalAmount: subtotal,
+                          shippingFee: shippingFee,
+                          items: shop.items.map((item: any) => ({
+                            productId: item.productId,
+                            shopId: shop.shopId,
+                            unitPrice: item.unitPrice, // Theo JSON response là unitPrice
+                            quantity: item.quantity,
+                            lineTotal: item.lineTotal,
+                          })),
+                          shippingProvince:
+                            preview?.buyerAddressData?.province || "",
+                          shippingDistrict:
+                            preview?.buyerAddressData?.district || "",
+                          shippingWard: preview?.buyerAddressData?.ward || "",
+                        }}
                       />
                     </div>
                     <div className="flex-1">

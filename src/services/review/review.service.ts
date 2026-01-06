@@ -106,16 +106,46 @@ export const getReviewStatistics = async (
  * Get product review comments with optional media filters
  * GET /api/v1/reviews/products/{productId}/comments
  */
+// export const getProductReviewComments = async (
+//   productId: string,
+//   params: {
+//     page?: number;
+//     size?: number;
+//     withMedia?: boolean;
+//     mediaType?: "IMAGE" | "VIDEO";
+//   } = {}
+// ): Promise<ReviewListResponse> => {
+//   const { page = 0, size = 5, withMedia, mediaType } = params;
+
+//   const response = await request<{
+//     success: boolean;
+//     code: number;
+//     message: string;
+//     data: ReviewListResponse;
+//   }>({
+//     method: "GET",
+//     url: `/v1/reviews/products/${productId}`,
+//     params: {
+//       page,
+//       size,
+//       withMedia,
+//       mediaType,
+//     },
+//   });
+
+//   return response.data;
+// };
+
+
 export const getProductReviewComments = async (
   productId: string,
   params: {
     page?: number;
     size?: number;
-    withMedia?: boolean;
-    mediaType?: "IMAGE" | "VIDEO";
+    sort?: string;
   } = {}
 ): Promise<ReviewListResponse> => {
-  const { page = 0, size = 5, withMedia, mediaType } = params;
+  const { page = 0, size = 5, sort = "createdDate,desc" } = params;
 
   const response = await request<{
     success: boolean;
@@ -124,12 +154,11 @@ export const getProductReviewComments = async (
     data: ReviewListResponse;
   }>({
     method: "GET",
-    url: `/v1/reviews/products/${productId}/comments`,
+    url: `/v1/reviews/PRODUCT/${productId}`, 
     params: {
       page,
       size,
-      withMedia,
-      mediaType,
+      sort,
     },
   });
 

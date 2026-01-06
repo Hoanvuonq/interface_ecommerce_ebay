@@ -22,6 +22,7 @@ import { ReviewModal } from "../ReviewModal";
 import { useOrderDetailView } from "../../_hooks/useOrderDetailView";
 import { OrderItemRow } from "../OrderItemRow";
 import { OrderDetailViewProps } from "./type";
+import { OrderHeader } from "../OrderDetailHeader";
 
 export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
   const { state, actions } = useOrderDetailView(order);
@@ -60,55 +61,19 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
   }, [order]);
 
   return (
-    <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-500 pb-10">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white p-6 rounded-4xl border border-slate-100 shadow-sm">
-        <div className="space-y-2">
-          <div className="flex items-center gap-3">
-            <h1 className="text-3xl font-semibold text-slate-900 tracking-tight">
-              Chi tiết đơn hàng
-            </h1>
-            <div
-              className={`px-4 py-1 rounded-full text-xs font-semibold uppercase border flex items-center gap-2 ${ui.statusInfo.bg} ${ui.statusInfo.text} ${ui.statusInfo.border}`}
-            >
-              {ui.isDelivered ? (
-                <CheckCircle2 size={14} />
-              ) : ui.isCancelled ? (
-                <XCircle size={14} />
-              ) : (
-                ui.statusInfo.icon
-              )}
-              {ui.statusInfo.label}
-            </div>
-          </div>
-          <div className="flex items-center gap-4 text-sm text-slate-400 font-medium">
-            <button
-              onClick={actions.handleCopyOrderNumber}
-              className="font-mono text-slate-900 bg-slate-50 px-3 py-1 rounded-lg hover:bg-slate-100 transition-all flex items-center gap-2"
-            >
-              #{order.orderNumber} <Copy size={12} />
-            </button>
-            <span className="flex items-center gap-2">
-              <Calendar size={14} />{" "}
-              {new Date(order.createdAt).toLocaleDateString("vi-VN")}
-            </span>
-          </div>
-        </div>
+    <div className="max-w-7xl mx-auto space-y-2 animate-in fade-in duration-500 pb-10">
+      <OrderHeader
+        order={order}
+        ui={ui}
+        actions={{
+          handleCopyOrderNumber: actions.handleCopyOrderNumber,
+          setCancelModalVisible: actions.setCancelModalVisible,
+          handleRefresh: actions.handleRefresh,
+        }}
+      />
 
-        <div className="flex gap-3">
-          {ui.canCancel && (
-            <button
-              onClick={() => actions.setCancelModalVisible(true)}
-              className="px-6 py-2.5 bg-white border border-red-100 text-red-500 font-bold rounded-xl hover:bg-red-50 transition-all text-xs uppercase tracking-widest"
-            >
-              Hủy đơn
-            </button>
-          )}
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* 2. Main Content (Left) */}
-        <div className="lg:col-span-8 space-y-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div className="lg:col-span-8 space-y-2">
           {ui.canCancel && (
             <OrderExpirationTimer
               expiresAt={order.expiresAt}
@@ -116,34 +81,22 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
             />
           )}
 
-          <div className="bg-white rounded-4xl border border-slate-100 px-6 py-4 shadow-sm">
-            <h3 className="text-lg font-semibold text-slate-900 flex items-center gap-3 mb-2 uppercase tracking-tight">
+          <div className="bg-white rounded-4xl border border-slate-100 px-6 py-5 shadow-sm">
+            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-3 mb-6 uppercase tracking-widest">
               <div className="p-2 bg-orange-50 rounded-xl text-orange-500">
-                <Truck size={20} />
+                <Truck size={18} />
               </div>
               Hành trình đơn hàng
             </h3>
+
             <OrderStatusTimeline
               status={order.status}
               createdAt={order.createdAt}
-              updatedAt={order.createdAt}
+              updatedAt={order.updatedAt}
+              trackingNumber={order.trackingNumber}
+              carrier={order.carrier}
             />
           </div>
-
-          {ui.showTracking && (
-            <div className="bg-white rounded-4xl border border-slate-100 px-6 py-4 shadow-sm">
-              <h3 className="text-lg font-semibold text-slate-900 flex items-center gap-3 mb-2 uppercase tracking-tight">
-                <div className="p-2 bg-blue-50 rounded-xl text-orange-500">
-                  <Truck size={20} />
-                </div>
-                Chi tiết vận chuyển
-              </h3>
-              <OrderTrackingTimeline
-                trackingCode={order.trackingNumber!}
-                carrier={order.carrier!}
-              />
-            </div>
-          )}
 
           <div className="bg-white rounded-4xl border border-slate-100 overflow-hidden shadow-sm">
             <div className="px-6 py-5 bg-slate-50/50 border-b border-slate-100 flex justify-between items-center">

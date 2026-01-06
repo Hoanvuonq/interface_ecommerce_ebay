@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { Province, Ward } from "vietnam-address-database";
 import { BuyerAddressResponse } from "@/types/buyer/buyer.types";
+import _ from "lodash";
 
 interface ShopAddressInfo {
   province: string;
@@ -9,8 +10,8 @@ interface ShopAddressInfo {
 }
 
 interface CheckoutState {
-  preview: any;
-  request: any;
+  preview: any; // Dữ liệu trả về từ API Preview (có validVouchers, shippingFee...)
+  request: any; // Payload gửi lên API (addressId, shops, globalVouchers...)
   loading: boolean;
   buyerInfo: any;
   savedAddresses: BuyerAddressResponse[];
@@ -22,6 +23,7 @@ interface CheckoutState {
   allWardsData: Ward[];
   loadingAddress: boolean;
 
+  // Actions
   setLoading: (val: boolean) => void;
   setPreview: (preview: any) => void;
   setRequest: (request: any) => void;
@@ -34,10 +36,17 @@ interface CheckoutState {
   }) => void;
   setLoadingAddress: (val: boolean) => void;
   
+  // Helper chuẩn để cập nhật từng phần của Request
   updateRequestPatch: (patch: any) => void;
+
+  // Cập nhật Voucher cho một shop cụ thể (Dùng cho Modal chọn voucher)
+  updateShopVouchers: (shopId: string, vouchers: { order?: string, shipping?: string }) => void;
+  
+  // Lấy danh sách voucher đang thực sự "Valid" từ Preview cho một shop
+  getValidVouchersByShop: (shopId: string) => string[];
 }
 
-export const useCheckoutStore = create<CheckoutState>((set) => ({
+export const useCheckoutStore = create<CheckoutState>((set, get) => ({
   preview: null,
   request: null,
   loading: false,
@@ -49,10 +58,11 @@ export const useCheckoutStore = create<CheckoutState>((set) => ({
   provincesData: [],
   allWardsData: [],
   loadingAddress: false,
- 
+  
   setLoading: (val) => set({ loading: val }),
   setPreview: (preview) => set({ preview }),
   setRequest: (request) => set({ request }),
+  
   setAddressMasterData: (p, w) => set({ 
     provincesData: p, 
     allWardsData: w 
@@ -74,4 +84,36 @@ export const useCheckoutStore = create<CheckoutState>((set) => ({
   updateRequestPatch: (patch) => set((state) => ({
     request: state.request ? { ...state.request, ...patch } : patch
   })),
+
+ updateShopVouchers: (shopId, { order, shipping }) => set((state) => {
+    if (!state.request) return state;
+
+    const updatedShops = state.request.shops.map((s: any) => {
+      if (s.shopId === shopId) {
+        // Backend yêu cầu mảng vouchers chứa các code chuỗi
+        const newVouchers = [order, shipping].filter((code): code is string => !!code);
+        return { ...s, vouchers: newVouchers };
+      }
+      return s;
+    });
+
+    const newRequest = { ...state.request, shops: updatedShops };
+    
+    // Lưu vào sessionStorage để tránh mất dữ liệu khi F5
+    sessionStorage.setItem("checkoutRequest", JSON.stringify(newRequest));
+
+    return { request: newRequest };
+  }),
+
+  // CHUẨN: Selector lấy mã voucher valid từ Preview
+  getValidVouchersByShop: (shopId) => {
+    const preview = get().preview;
+    const shops = _.get(preview, "data.shops", []);
+    const shop = _.find(shops, { shopId });
+    
+    return _.chain(shop?.voucherResult?.discountDetails)
+      .filter({ valid: true }) // Chỉ lấy cái nào valid: true
+      .map('voucherCode')
+      .value();
+  }
 }));

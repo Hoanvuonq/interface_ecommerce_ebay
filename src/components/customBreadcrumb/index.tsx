@@ -11,10 +11,10 @@ export const CustomBreadcrumb: React.FC<BreadcrumbProps> = ({ items }) => {
   const lastIndex = items.length - 1;
 
   return (
-    <nav className="flex items-center pb-4" aria-label="Breadcrumb">
+    <nav className="flex items-center pb-2" aria-label="Breadcrumb">
       <ol 
         role="list" 
-        className="flex items-center px-4 py-2 bg-white/50 backdrop-blur-md rounded-2xl border border-gray-100 shadow-sm transition-all duration-300 hover:shadow-md"
+        className="flex items-center p-2 bg-white/50 backdrop-blur-md rounded-2xl border border-gray-100 shadow-sm transition-all duration-300 hover:shadow-md"
       >
         <li className="flex items-center">
           <Link
@@ -39,7 +39,7 @@ export const CustomBreadcrumb: React.FC<BreadcrumbProps> = ({ items }) => {
               <div className="flex items-center">
                 {isLast || !item.href ? (
                   <span
-                    className="text-sm font-semibold text-orange-600 cursor-default px-2 py-1 rounded-md bg-orange-50/50"
+                    className="text-xs font-semibold text-orange-600 cursor-default px-2 py-1 rounded-md bg-orange-50/50"
                     aria-current="page"
                   >
                     {item.title}
@@ -47,7 +47,7 @@ export const CustomBreadcrumb: React.FC<BreadcrumbProps> = ({ items }) => {
                 ) : (
                   <Link
                     href={item.href}
-                    className="group relative text-sm font-bold text-gray-500 hover:text-orange-600 transition-all duration-200 px-2 py-1 rounded-md hover:bg-orange-50/30"
+                    className="group relative text-xs font-bold text-gray-500 hover:text-orange-600 transition-all duration-200 px-2 py-1 rounded-md hover:bg-orange-50/30"
                   >
                     {item.title}
                     <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />

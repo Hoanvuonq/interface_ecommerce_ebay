@@ -6,8 +6,7 @@ import { InfoItem } from "./_components/InfoItem";
 
 export default function AboutScreen() {
   return (
-    <div className="min-h-screen bg-white pb-20">
-      {/* Hero Banner Light */}
+    <div className="min-h-screen bg-white">
       <div className="relative bg-white py-28 overflow-hidden border-b border-gray-50">
         <div className="absolute top-0 left-0 w-full h-full">
             <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[60%] bg-blue-50/40 rounded-full blur-[120px]" />
@@ -28,7 +27,6 @@ export default function AboutScreen() {
       </div>
 
       <div className="max-w-6xl mx-auto px-4 -mt-16 relative z-20">
-        {/* Story Section */}
         <div className="bg-white/80 backdrop-blur-2xl rounded-[40px] shadow-[0_30px_100px_rgba(0,0,0,0.06)] p-8 md:p-14 mb-16 border border-white">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
             <div className="lg:col-span-7 space-y-8">

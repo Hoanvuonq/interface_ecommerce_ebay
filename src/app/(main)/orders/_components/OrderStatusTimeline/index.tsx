@@ -1,31 +1,33 @@
 "use client";
 
-import React from "react";
-import { Check, Package, Truck, Home, X, Clock } from "lucide-react";
+import React, { useState } from "react";
+import {
+  Check,
+  Package,
+  Truck,
+  Home,
+  X,
+  Clock,
+  ExternalLink,
+} from "lucide-react";
+import { OrderStatusTimelineProps } from "./type";
+import { PortalModal } from "@/features/PortalModal";
+import { OrderTrackingTimeline } from "../OrderTrackingTimeline";
 
-interface Step {
-  id: string;
-  label: string;
-  icon: React.ElementType;
-}
-
-interface OrderStatusTimelineProps {
-  status: string;
-  createdAt: string;
-  updatedAt?: string;
-}
-
-export const OrderStatusTimeline: React.FC<OrderStatusTimelineProps> = ({ 
-  status, 
-  createdAt, 
-  updatedAt 
+export const OrderStatusTimeline: React.FC<OrderStatusTimelineProps> = ({
+  status,
+  createdAt,
+  updatedAt,
+  trackingNumber,
+  carrier,
 }) => {
-  
-  const standardSteps: Step[] = [
-    { id: "CREATED", label: "Order Placed", icon: Check },
-    { id: "PROCESSING", label: "Processing", icon: Package },
-    { id: "SHIPPED", label: "Shipped", icon: Truck },
-    { id: "DELIVERED", label: "Delivered", icon: Home },
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const standardSteps = [
+    { id: "CREATED", label: "Đã đặt hàng", icon: Check },
+    { id: "PROCESSING", label: "Đang xử lý", icon: Package },
+    { id: "SHIPPED", label: "Đang giao hàng", icon: Truck },
+    { id: "DELIVERED", label: "Đã giao hàng", icon: Home },
   ];
 
   let displaySteps = [...standardSteps];
@@ -33,8 +35,8 @@ export const OrderStatusTimeline: React.FC<OrderStatusTimelineProps> = ({
 
   if (status === "CANCELLED") {
     displaySteps = [
-      { id: "CREATED", label: "Order Placed", icon: Check },
-      { id: "CANCELLED", label: "Cancelled", icon: X },
+      { id: "CREATED", label: "Đã đặt hàng", icon: Check },
+      { id: "CANCELLED", label: "Đã hủy đơn", icon: X },
     ];
     currentIndex = 1;
   } else {
@@ -57,63 +59,120 @@ export const OrderStatusTimeline: React.FC<OrderStatusTimelineProps> = ({
         const Icon = step.icon;
         const isCancel = step.id === "CANCELLED";
 
+        const canShowTracking =
+          (step.id === "SHIPPED" || step.id === "DELIVERED") &&
+          isCompleted &&
+          trackingNumber;
+
         return (
           <div key={step.id} className="relative flex items-start gap-4">
             <div className="flex flex-col items-center shrink-0">
-              <div 
+              <div
                 className={`relative z-10 flex h-9 w-9 items-center justify-center rounded-full border-2 transition-all duration-500 ${
-                  isCompleted 
-                    ? isCancel 
-                      ? "bg-red-50 border-red-500 text-red-600 shadow-[0_0_10px_rgba(239,68,68,0.2)]" 
-                      : "bg-emerald-50 border-emerald-500 text-emerald-600 shadow-[0_0_10px_rgba(16,185,129,0.2)]"
+                  isCompleted
+                    ? isCancel
+                      ? "bg-red-50 border-red-500 text-red-600 shadow-sm"
+                      : "bg-emerald-50 border-emerald-500 text-emerald-600 shadow-sm"
                     : "bg-zinc-50 border-zinc-200 text-zinc-300"
                 }`}
               >
                 <Icon size={18} strokeWidth={2.5} />
-                
                 {isCurrent && !isLast && (
-                  <span className={`absolute inset-0 rounded-full animate-ping opacity-20 ${isCancel ? 'bg-red-400' : 'bg-emerald-400'}`}></span>
+                  <span
+                    className={`absolute inset-0 rounded-full animate-ping opacity-20 ${
+                      isCancel ? "bg-red-400" : "bg-emerald-400"
+                    }`}
+                  ></span>
                 )}
               </div>
-              
               {!isLast && (
-                <div 
-                  className={`w-0.5 h-12 -my-0.5 transition-all duration-700 ${
-                    index < currentIndex 
-                      ? isCancel ? "bg-red-500" : "bg-emerald-500"
+                <div
+                  className={`w-0.5 h-10 -my-0.5 transition-all duration-700 ${
+                    index < currentIndex
+                      ? isCancel
+                        ? "bg-red-500"
+                        : "bg-emerald-500"
                       : "bg-zinc-200 border-l-2 border-dashed border-zinc-200"
                   }`}
                 />
               )}
             </div>
 
-            <div className="flex flex-col pt-1.5 pb-8">
-              <span className={`text-[15px] font-bold tracking-tight transition-colors duration-300 ${
-                isCompleted 
-                  ? isCancel ? "text-red-600" : "text-zinc-900" 
-                  : "text-zinc-400"
-              }`}>
-                {step.label}
-              </span>
-              
-              <div className="mt-0.5 flex items-center gap-1.5">
-                {isCompleted ? (
-                  <span className={`text-[13px] font-medium ${isCancel ? 'text-red-400' : 'text-emerald-600'}`}>
-                    {new Date(index === 0 ? createdAt : (updatedAt || createdAt)).toLocaleString("en-US", {
-                      month: "short", day: "numeric", hour: "2-digit", minute: "2-digit", hour12: true
-                    })}
-                  </span>
-                ) : (
-                  <span className="text-[13px] font-medium text-zinc-400 flex items-center gap-1">
-                    <Clock size={12} />
-                    {index === currentIndex + 1 ? "In progress" : "Pending"}
-                  </span>
-                )}
+            <div className="flex-1 flex justify-between items-start pt-1.5 pb-8">
+              <div className="flex flex-col">
+                <span
+                  className={`text-[12px] font-bold tracking-tight ${
+                    isCompleted
+                      ? isCancel
+                        ? "text-red-600"
+                        : "text-zinc-900"
+                      : "text-zinc-400"
+                  }`}
+                >
+                  {step.label}
+                </span>
+
+                <div className="mt-0.5 flex items-center gap-1.5">
+                  {isCompleted ? (
+                    <span
+                      className={`text-[10px] font-medium ${
+                        isCancel ? "text-red-400" : "text-emerald-600"
+                      }`}
+                    >
+                      {new Date(
+                        index === 0 ? createdAt : updatedAt || createdAt
+                      ).toLocaleString("vi-VN", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </span>
+                  ) : (
+                    <span className="text-[10px] font-medium text-zinc-400 flex items-center gap-1">
+                      <Clock size={12} />
+                      {index === currentIndex + 1
+                        ? "Đang thực hiện"
+                        : "Chờ xử lý"}
+                    </span>
+                  )}
+                </div>
               </div>
+
+              {canShowTracking && isCurrent && (
+                <button
+                  onClick={() => setIsModalOpen(true)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-all border border-blue-100 uppercase tracking-wider active:scale-95"
+                >
+                  <ExternalLink size={12} />
+                  Xem hành trình
+                </button>
+              )}
             </div>
           </div>
         );
       })}
+
+      <PortalModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Chi tiết vận chuyển"
+        width="max-w-xl"
+      >
+        <div className="py-2">
+          {trackingNumber && carrier ? (
+            <OrderTrackingTimeline
+              trackingCode={trackingNumber}
+              carrier={carrier}
+            />
+          ) : (
+            <div className="text-center py-10 text-zinc-400">
+              Không tìm thấy thông tin vận chuyển
+            </div>
+          )}
+        </div>
+      </PortalModal>
     </div>
   );
 };
