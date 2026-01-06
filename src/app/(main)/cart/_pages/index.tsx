@@ -2,6 +2,7 @@
 
 import { CustomBreadcrumb, SectionLoading } from "@/components";
 import PageContentTransition from "@/features/PageContentTransition";
+import { useToast } from "@/hooks/useToast";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import {
   checkoutPreview,
@@ -11,14 +12,9 @@ import {
   selectAllItemsLocal,
 } from "@/store/theme/cartSlice";
 import { isAuthenticated } from "@/utils/local.storage";
-import {
-  AlertTriangle,
-  CheckCircle,
-  Trash2
-} from "lucide-react";
+import { AlertTriangle, CheckCircle, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
 import { CartSummary } from "../_components/CartSummary";
 import { CheckoutPreview } from "../_components/CheckoutPreview";
 import { EmptyCart } from "../_components/EmptyCart";
@@ -37,7 +33,7 @@ export const CartScreen = () => {
   } = useAppSelector((state) => state.cart);
   const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
-
+  const { success, error: toastError, warning } = useToast();
   useEffect(() => {
     setMounted(true);
     if (isAuthenticated()) {
@@ -57,17 +53,14 @@ export const CartScreen = () => {
   }, []);
 
   const handleClearCart = async () => {
-    if (!cart?.version) return;
-    if (
-      window.confirm("Bạn có chắc muốn xóa tất cả sản phẩm trong giỏ hàng?")
-    ) {
-      try {
-        await dispatch(clearCart(cart.version.toString())).unwrap();
-        toast.success("Đã xóa sạch giỏ hàng");
-      } catch (err) {
-        toast.error("Không thể xóa giỏ hàng");
-      }
-    }
+    const version = cart?.version;
+
+    if (version === undefined) return;
+
+    try {
+      const etag = String(version);
+      await dispatch(clearCart(etag)).unwrap();
+    } catch (err: any) {}
   };
 
   const handleCheckout = async () => {
@@ -78,7 +71,7 @@ export const CartScreen = () => {
     );
 
     if (!hasSelectedItems) {
-      toast.warning("Vui lòng chọn ít nhất 1 sản phẩm để thanh toán");
+      warning("Vui lòng chọn ít nhất 1 sản phẩm để thanh toán");
       return;
     }
 
@@ -105,12 +98,13 @@ export const CartScreen = () => {
       );
       window.location.href = "/checkout";
     } catch (error) {
-      toast.error("Không thể tạo đơn hàng. Vui lòng thử lại");
+      toastError("Không thể tạo đơn hàng. Vui lòng thử lại");
     }
   };
 
   const allSelected = cart?.shops.every((shop) => shop.allSelected) || false;
-  const someSelected = cart?.shops.some((shop) => shop.hasSelectedItems) || false;
+  const someSelected =
+    cart?.shops.some((shop) => shop.hasSelectedItems) || false;
 
   if (!mounted) return null;
 

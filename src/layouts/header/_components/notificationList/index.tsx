@@ -4,6 +4,7 @@ import _ from "lodash";
 import { Bell } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { toPublicUrl } from "@/utils/storage/url";
+import Image from "next/image";
 
 export const NotificationList = ({ notifications, onRead, getIcon }: any) => {
   if (_.isEmpty(notifications)) {
@@ -32,22 +33,36 @@ export const NotificationList = ({ notifications, onRead, getIcon }: any) => {
                 : "bg-transparent opacity-80 hover:bg-gray-50"
             )}
           >
-            <div className={cn(
-              "shrink-0 w-11 h-11 rounded-2xl flex items-center justify-center border transition-all duration-300",
-              isUnread ? "bg-orange-100 border-orange-200 shadow-sm" : "bg-gray-100 border-gray-200"
-            )}>
+            <div
+              className={cn(
+                "shrink-0 w-11 h-11 rounded-2xl flex items-center justify-center border transition-all duration-300",
+                isUnread
+                  ? "bg-orange-100 border-orange-200 shadow-sm"
+                  : "bg-gray-100 border-gray-200"
+              )}
+            >
               {notif.imageUrl ? (
-                <img src={toPublicUrl(notif.imageUrl)} alt="" className="w-full h-full object-cover rounded-2xl" />
+                <Image
+                  src={toPublicUrl(notif.imageUrl)}
+                  alt="Thông Báo"
+                  width={14}
+                  height={14}
+                  className="w-full h-full object-cover rounded-2xl"
+                />
               ) : (
                 getIcon(notif.category, isUnread)
               )}
             </div>
 
             <div className="text-sm min-w-0 flex-1">
-              <p className={cn(
-                "line-clamp-1 leading-none mb-1.5 uppercase text-[11px] tracking-tight",
-                isUnread ? "font-semibold text-slate-900" : "font-bold text-slate-500"
-              )}>
+              <p
+                className={cn(
+                  "line-clamp-1 leading-none mb-1.5 uppercase text-[11px] tracking-tight",
+                  isUnread
+                    ? "font-semibold text-slate-900"
+                    : "font-bold text-slate-500"
+                )}
+              >
                 {notif.title}
               </p>
               <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed font-medium">
@@ -57,7 +72,9 @@ export const NotificationList = ({ notifications, onRead, getIcon }: any) => {
                 <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tighter">
                   {new Date(notif.createdDate).toLocaleDateString("vi-VN")}
                 </span>
-                {isUnread && <span className="w-2 h-2 rounded-full bg-orange-500 shadow-[0_0_8px_#f97316]" />}
+                {isUnread && (
+                  <span className="w-2 h-2 rounded-full bg-orange-500 shadow-[0_0_8px_#f97316]" />
+                )}
               </div>
             </div>
           </div>

@@ -1,12 +1,11 @@
 "use client";
 
-import React from "react";
-import { Search, X, RotateCw } from "lucide-react";
-import { STATUS_OPTIONS, OrderFiltersProps } from "../../_types/order";
 import { cn } from "@/utils/cn";
 import { motion } from "framer-motion";
-import { Button } from "@/components/button/button";
 import _ from "lodash";
+import { Search, X } from "lucide-react";
+import React from "react";
+import { OrderFiltersProps, STATUS_OPTIONS } from "../../_types/order";
 
 interface ExtendedOrderFiltersProps extends OrderFiltersProps {
   onRefresh: () => void;
@@ -26,7 +25,7 @@ export const OrderFilters: React.FC<ExtendedOrderFiltersProps> = ({
       <div className="flex flex-col md:flex-row items-end gap-4 w-full">
         <div className="relative flex-1 group w-full">
           <div className="relative">
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#ff7300] transition-colors duration-300">
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-(--color-mainColor)O] transition-colors duration-300">
               <Search size={18} strokeWidth={3} />
             </div>
             <input
@@ -50,7 +49,7 @@ export const OrderFilters: React.FC<ExtendedOrderFiltersProps> = ({
       <div className="flex flex-col gap-3">
         <div className="w-full overflow-hidden">
           <div className="flex w-full items-center justify-between">
-            <div className="flex items-center gap-1 py-0.5 rounded-xl border border-slate-200 bg-white text-slate-600 text-[11px] font-semibold"> 
+            <div className="flex items-center gap-1 p-2 rounded-full border border-slate-200 bg-white text-slate-600 text-[11px] font-semibold"> 
               {STATUS_OPTIONS.map((option) => {
                 const isSelected = statusFilter === option.value;
                 return (
@@ -58,7 +57,7 @@ export const OrderFilters: React.FC<ExtendedOrderFiltersProps> = ({
                     key={option.value}
                     onClick={() => onStatusChange(option.value)}
                     className={cn(
-                      "relative px-5 py-2.5 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all duration-300 whitespace-nowrap",
+                      "relative px-5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all duration-300 whitespace-nowrap",
                       isSelected 
                         ? "text-white" 
                         : "text-slate-500 hover:text-slate-900 hover:bg-white/50"
@@ -67,7 +66,7 @@ export const OrderFilters: React.FC<ExtendedOrderFiltersProps> = ({
                     {isSelected && (
                       <motion.div
                         layoutId="activeTabOrders"
-                        className="absolute inset-0 bg-[#ff7300] rounded-xl shadow-lg shadow-orange-300/50"
+                        className="absolute inset-0 bg-(--color-mainColor) rounded-full shadow-lg shadow-orange-300/50"
                         transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                       />
                     )}

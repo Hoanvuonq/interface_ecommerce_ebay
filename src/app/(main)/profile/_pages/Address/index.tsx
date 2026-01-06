@@ -9,6 +9,7 @@ import {
   FaMapMarkerAlt,
   FaPlus,
   FaTrash,
+  FaCheckCircle, // Thêm icon check cho địa chỉ mặc định
 } from "react-icons/fa";
 
 import { buyerAddressService } from "@/services/buyer/buyer-address.service";
@@ -29,7 +30,6 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
   const [addresses, setAddresses] = useState<BuyerAddressResponse[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // State điều khiển hiển thị
   const [viewMode, setViewMode] = useState<ViewMode>("LIST");
   const [editingAddress, setEditingAddress] = useState<
     BuyerAddressResponse | undefined
@@ -43,7 +43,9 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
     setLoading(true);
     try {
       const data = await buyerAddressService.getAllAddresses(buyerId);
-      setAddresses(data);
+      // Sắp xếp để địa chỉ mặc định luôn lên đầu danh sách
+      const sortedData = [...data].sort((a, b) => (b.isDefault ? 1 : 0) - (a.isDefault ? 1 : 0));
+      setAddresses(sortedData);
     } catch (error: any) {
       toast.error(error?.message || "Không thể tải địa chỉ");
     } finally {
@@ -52,23 +54,23 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
   };
 
   const handleCreateNew = () => {
-    setEditingAddress(undefined); // Reset data để tạo mới
-    setViewMode("FORM"); // Mở modal
+    setEditingAddress(undefined);
+    setViewMode("FORM");
   };
 
   const handleEdit = (address: BuyerAddressResponse) => {
-    setEditingAddress(address); // Set data cần sửa
-    setViewMode("FORM"); // Mở modal
+    setEditingAddress(address);
+    setViewMode("FORM");
   };
 
   const handleBackToList = () => {
     setEditingAddress(undefined);
-    setViewMode("LIST"); // Đóng modal
+    setViewMode("LIST");
   };
 
   const handleSaveSuccess = () => {
-    handleBackToList(); // Đóng modal
-    loadAddresses(); // Load lại danh sách
+    handleBackToList();
+    loadAddresses();
   };
 
   const handleDelete = async (addressId: string) => {
@@ -126,7 +128,7 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
             htmlType="submit"
             type="login"
             onClick={handleCreateNew}
-            className="h-10 px-6 rounded-full text-sm w-auto "
+            className="h-10 px-6 rounded-full text-sm w-auto"
           >
             <span className="flex items-center gap-2">
               <FaPlus size={16} />
@@ -139,22 +141,35 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
           {addresses.map((addr) => (
             <div
               key={addr.addressId}
-              className="group bg-white border border-gray-200 rounded-2xl py-4 px-6 hover:shadow-md hover:border-orange-200 transition-all duration-300 relative"
+              className={cn(
+                "group bg-white border rounded-2xl py-4 px-6 hover:shadow-md transition-all duration-300 relative",
+                addr.isDefault 
+                  ? "border-(--color-mainColor) ring-1 ring-(--color-mainColor)/10" 
+                  : "border-gray-200 hover:border-orange-200"
+              )}
             >
               <div className="flex justify-between items-start">
                 <div className="space-y-2">
-                  <div className="flex items-center gap-3">
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                     <span className="font-bold text-gray-900 text-lg">
                       {addr.recipientName}
                     </span>
-                    <span className="text-gray-300">|</span>
+                    <span className="text-gray-300 hidden sm:inline">|</span>
                     <span className="text-gray-600 font-medium">
                       {addr.phone}
                     </span>
 
+                    {/* Hiển thị Nhãn Mặc định (Main Color) */}
+                    {addr.isDefault && (
+                      <span className="text-[10px] font-bold px-2 py-1 rounded-md bg-(--color-mainColor) text-white flex items-center gap-1 uppercase tracking-tighter shadow-sm">
+                        <FaCheckCircle size={10} />
+                        Mặc định
+                      </span>
+                    )}
+
                     <span
                       className={cn(
-                        "ml-2 text-[10px] font-bold px-2 py-1 rounded-lg border flex items-center gap-1.5 uppercase tracking-wide",
+                        "text-[10px] font-bold px-2 py-1 rounded-lg border flex items-center gap-1.5 uppercase tracking-wide",
                         addr.type === "HOME"
                           ? "bg-blue-50 text-blue-600 border-blue-100"
                           : addr.type === "OFFICE"
@@ -181,21 +196,25 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+                <div className="flex flex-col sm:flex-row items-end sm:items-center gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                   <Button
                     variant="edit"
                     onClick={() => handleEdit(addr)}
                     icon={<FaEdit size={16} />}
+                    className="text-xs py-1"
                   >
-                    Chỉnh Sửa
+                    Sửa
                   </Button>
-                  <Button
-                    variant="edit"
-                    onClick={() => handleDelete(addr.addressId)}
-                    icon={<FaTrash size={16} />}
-                  >
-                    Xóa
-                  </Button>
+                  {!addr.isDefault && (
+                    <Button
+                      variant="edit"
+                      onClick={() => handleDelete(addr.addressId)}
+                      icon={<FaTrash size={16} />}
+                      className="text-xs py-1 text-red-500 hover:text-red-600"
+                    >
+                      Xóa
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>

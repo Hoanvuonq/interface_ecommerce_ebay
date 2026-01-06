@@ -21,7 +21,7 @@ export const ChatEmptyState: React.FC<ChatEmptyStateProps> = ({
           <MessageSquare size={40} fill="currentColor" />
         </div>
         
-        <h3 className="text-xl font-black text-slate-800 mb-3 tracking-tight">
+        <h3 className="text-xl font-bold text-slate-800 mb-3 tracking-tight">
           Chào mừng đến với Chat Shop! 👋
         </h3>
         

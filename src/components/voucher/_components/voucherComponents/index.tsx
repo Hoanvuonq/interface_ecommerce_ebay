@@ -14,15 +14,18 @@ import {
 } from "@/components/voucher/_types/voucher";
 
 export const VoucherComponents: React.FC<VoucherInputProps> = (props) => {
-  const { compact, shopName, appliedVouchers, forcePlatform, className } =
-    props;
+  const { compact, shopName, appliedVouchers, forcePlatform, className } = props;
   const { state, actions } = useVoucherLogic(props);
 
-  const activeOrderVoucherCode =
-    _.get(appliedVouchers, "order.code") || _.get(appliedVouchers, "order");
-  const activeShippingVoucherCode =
-    _.get(appliedVouchers, "shipping.code") ||
-    _.get(appliedVouchers, "shipping");
+ const activeOrderVoucherCode = 
+    _.get(appliedVouchers, "order.voucherCode") || 
+    _.get(appliedVouchers, "order.code") || 
+    (typeof appliedVouchers?.order === 'string' ? appliedVouchers.order : null);
+
+  const activeShippingVoucherCode = 
+    _.get(appliedVouchers, "shipping.voucherCode") || 
+    _.get(appliedVouchers, "shipping.code") || 
+    (typeof appliedVouchers?.shipping === 'string' ? appliedVouchers.shipping : null);
 
   const hasAnyVoucher = !!activeOrderVoucherCode || !!activeShippingVoucherCode;
 
@@ -46,25 +49,25 @@ export const VoucherComponents: React.FC<VoucherInputProps> = (props) => {
                     ? "Voucher Hệ Thống"
                     : `Ưu đãi từ ${shopName || "Shop"}`}
                 </p>
-                <div className="bg-emerald-500 text-white text-[8px] px-2 py-0.5 rounded-full font-black uppercase tracking-tighter">
+                <div className="bg-emerald-500 text-white text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter">
                   Đã áp dụng
                 </div>
               </div>
 
               <div className="space-y-1.5">
                 {[
-                  {
-                    code: activeOrderVoucherCode,
-                    label: "Giảm đơn hàng",
-                    color: "orange",
-                    discount: _.get(appliedVouchers, "order.discount"),
-                  },
-                  {
-                    code: activeShippingVoucherCode,
-                    label: "Miễn phí vận chuyển",
-                    color: "blue",
-                    discount: _.get(appliedVouchers, "shipping.discount"),
-                  },
+    {
+      code: activeOrderVoucherCode,
+      label: "Giảm đơn hàng",
+      color: "orange",
+      discount: Number(_.get(appliedVouchers, "order.discountAmount") || 0),
+    },
+    {
+      code: activeShippingVoucherCode,
+      label: "Miễn phí vận chuyển",
+      color: "blue",
+      discount: Number(_.get(appliedVouchers, "shipping.discountAmount") || 0),
+    },
                 ].map(
                   (v, idx) =>
                     v.code && (
@@ -92,12 +95,13 @@ export const VoucherComponents: React.FC<VoucherInputProps> = (props) => {
                             </span>
                           </div>
                         </div>
-                        {v.discount ? (
+
+                        {v.discount > 0 ? (
                           <span className="text-red-500 font-bold text-xs shrink-0 italic">
                             -{formatPrice(v.discount)}
                           </span>
                         ) : (
-                          <span className="text-emerald-600 font-bold text-[10px] shrink-0 uppercase tracking-tighter italic">
+                          <span className="text-emerald-600 font-bold text-[10px] shrink-0 uppercase italic">
                             Đã chọn
                           </span>
                         )}

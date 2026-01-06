@@ -16,14 +16,12 @@ class VoucherService {
   private mapRecommendationResult(result: any | null): VoucherOption | null {
     if (!result) return null;
 
-    // Hỗ trợ cả object bọc (Recommendation) hoặc object phẳng (Voucher)
     const v = result.voucher || result;
     if (!v || !v.code) return null;
 
     const maxUsage = _.get(v, "maxUsage");
     const usedCount = _.get(v, "usedCount", 0);
 
-    // Tính toán số lượng còn lại cho progress bar
     const remainingCount = !_.isNil(maxUsage)
       ? Math.max(0, maxUsage - usedCount)
       : undefined;
@@ -40,11 +38,9 @@ class VoucherService {
       imageBasePath: _.get(v, "imageBasePath"),
       imageExtension: _.get(v, "imageExtension"),
 
-      // API trả về discountValue hoặc discountAmount tùy phiên bản
       discountAmount: _.get(v, "discountValue", _.get(v, "discountAmount", 0)),
       minOrderValue: _.get(v, "minOrderAmount", _.get(v, "minOrderValue", 0)),
 
-      // Chuẩn hóa type để UI dễ xử lý
       discountType: _.includes(v.discountType, "PERCENTAGE")
         ? "PERCENTAGE"
         : "FIXED",
@@ -56,7 +52,6 @@ class VoucherService {
       remainingCount,
       remainingPercentage,
 
-      // Logic Active/Chọn: Phải có quyền áp dụng và còn lượt dùng
       canSelect:
         _.get(result, "applicable", true) &&
         (_.isNil(remainingCount) || remainingCount > 0),
@@ -66,9 +61,7 @@ class VoucherService {
       voucherScope: v.voucherScope || "SHOP_ORDER",
     };
   }
-  /**
-   * POST: Get Shop vouchers with order context (cart items, shipping fee, etc.)
-   */
+ 
   async getShopVouchersWithContext(params: any): Promise<VoucherOption[]> {
     try {
       const response: ApiResponse<VoucherRecommendationResult[]> =

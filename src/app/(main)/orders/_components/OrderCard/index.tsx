@@ -14,18 +14,20 @@
   export const OrderCard: React.FC<OrderCardProps> = ({ order, onViewDetail, onOrderCancelled }) => {
     const { state } = useOrderActions(order.orderId, order.status, onOrderCancelled);
     
-    const ui = useMemo(() => {
-      const config = ORDER_STATUS_UI[order.status] || ORDER_STATUS_UI.CREATED;
-      const shopName = _.get(order, "shopInfo.shopName", "Cửa hàng");
+   const ui = useMemo(() => {
+    const config = ORDER_STATUS_UI[order.status] || ORDER_STATUS_UI.CREATED;
+    const shopName = _.get(order, "shopInfo.shopName", "Cửa hàng");
+    const shopLogo = _.get(order, "shopInfo.logoUrl");
 
-      return {
-        config,
-        shopName: _.truncate(shopName, { length: 25 }),
-        itemCount: order.items.length,
-        firstItem: _.first(order.items),
-        paymentLabel: PAYMENT_METHOD_LABELS[order.paymentMethod] || order.paymentMethod
-      };
-    }, [order]);
+    return {
+      config,
+      shopName: _.truncate(shopName, { length: 25 }),
+      shopLogo, 
+      itemCount: order.items.length,
+      firstItem: _.first(order.items),
+      paymentLabel: PAYMENT_METHOD_LABELS[order.paymentMethod] || order.paymentMethod
+    };
+  }, [order]);
 
     return (
       <article className="group relative bg-white border border-slate-100 rounded-4xl p-4 sm:p-5 hover:shadow-2xl hover:shadow-orange-500/10 transition-all duration-500 mb-3 overflow-hidden">
@@ -35,9 +37,19 @@
 
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-2xl bg-orange-50 flex items-center justify-center border border-orange-100">
-              <ShoppingBag size={16} className="text-(--color-mainColor)" />
-            </div>
+           <div className="relative w-10 h-10 shrink-0 rounded-2xl bg-slate-50 border border-slate-100 overflow-hidden flex items-center justify-center">
+            {ui.shopLogo ? (
+              <Image 
+                src={ui.shopLogo} 
+                alt={ui.shopName} 
+                width={40}
+                height={40}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <Package size={18} className="text-slate-300" />
+            )}
+          </div>
             <div className="min-w-0">
               <h4 className="text-[13px] sm:text-[14px] font-bold text-slate-800 leading-none uppercase truncate">
                 {ui.shopName}

@@ -1,16 +1,17 @@
 "use client";
 
-import React from "react";
+import { toPublicUrl } from "@/utils/storage/url";
 import _ from "lodash";
+import { Info, Package, ShoppingCart } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Info, ShoppingCart } from "lucide-react";
-import { ImageAttachment } from "../ImageAttachment";
-import { VideoAttachment } from "../VideoAttachment";
+import React from "react";
+import { MessageResponse } from "../../_types/chat.dto";
+import type { Message as ChatMessage } from "../../_types/chat.type";
 import { AudioAttachment } from "../AudioAttachment";
 import { FileAttachment } from "../FileAttachment";
-import { MessageResponse } from "../../_types/chat.dto";
-import { toPublicUrl } from "@/utils/storage/url";
-import type { Message as ChatMessage } from "../../_types/chat.type";
+import { ImageAttachment } from "../ImageAttachment";
+import { VideoAttachment } from "../VideoAttachment";
 
 interface MessageContentProps {
   message: ChatMessage | MessageResponse;
@@ -100,9 +101,11 @@ export const MessageContent: React.FC<MessageContentProps> = ({ message }) => {
       const product = getMetadata();
       if (!product) return renderText(content);
 
+      const productImageUrl = product.image ? toPublicUrl(product.image) : null;
+
       return (
         <div
-          className="bg-white rounded-2xl border border-gray-100 overflow-hidden min-w-[260px] max-w-[300px] shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+          className="bg-white rounded-2xl border border-gray-100 overflow-hidden min-w-65 max-w-75 shadow-sm hover:shadow-md transition-shadow cursor-pointer"
           onClick={() => {
             const path = product.slug
               ? `/products/${product.slug}`
@@ -114,15 +117,19 @@ export const MessageContent: React.FC<MessageContentProps> = ({ message }) => {
             <Info size={14} /> Sản phẩm
           </div>
           <div className="p-3 space-y-2">
-            {product.image && (
-              <div className="aspect-video relative rounded-lg overflow-hidden bg-gray-50 border border-gray-100">
-                <img
-                  src={toPublicUrl(product.image)}
+            <div className="aspect-video relative rounded-lg overflow-hidden bg-gray-50 border border-gray-100 flex items-center justify-center">
+              {productImageUrl ? (
+                <Image
+                  src={productImageUrl}
+                  width={280}
+                  height={157} 
                   className="w-full h-full object-cover"
-                  alt="product"
+                  alt={product.productName || "product"}
                 />
-              </div>
-            )}
+              ) : (
+                <Package className="text-gray-300 w-10 h-10" />
+              )}
+            </div>
             <div>
               <p className="text-sm font-semibold text-slate-800 line-clamp-2">
                 {product.productName}
@@ -150,10 +157,12 @@ export const MessageContent: React.FC<MessageContentProps> = ({ message }) => {
     case "order_card": {
       const order = getMetadata();
       if (!order) return renderText(content);
+      
+      const shopLogoUrl = order.logoUrl ? toPublicUrl(order.logoUrl) : null;
 
       return (
         <div
-          className="bg-white rounded-2xl border border-gray-100 overflow-hidden min-w-[260px] max-w-[300px] shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+          className="bg-white rounded-2xl border border-gray-100 overflow-hidden min-w-65 max-w-75 shadow-sm hover:shadow-md transition-shadow cursor-pointer"
           onClick={() =>
             order.orderId && router.push(`/orders/${order.orderId}`)
           }
@@ -161,11 +170,19 @@ export const MessageContent: React.FC<MessageContentProps> = ({ message }) => {
           <div className="px-3 py-2 bg-orange-50/50 border-b border-orange-100/30">
             {order.shopName && (
               <div className="flex items-center gap-2 mb-1">
-                <img
-                  src={toPublicUrl(order.logoUrl)}
-                  className="w-4 h-4 rounded-full border border-white shadow-sm"
-                  alt="logo"
-                />
+                {shopLogoUrl ? (
+                   <Image
+                    src={shopLogoUrl}
+                    width={32}
+                    height={32}
+                    className="w-4 h-4 rounded-full border border-white shadow-sm object-cover"
+                    alt="logo"
+                  />
+                ) : (
+                   <div className="w-4 h-4 rounded-full bg-orange-200 flex items-center justify-center text-[8px] font-bold text-orange-700">
+                     {order.shopName.charAt(0)}
+                   </div>
+                )}
                 <span className="text-[10px] font-bold text-slate-600 uppercase truncate">
                   {order.shopName}
                 </span>
@@ -183,25 +200,34 @@ export const MessageContent: React.FC<MessageContentProps> = ({ message }) => {
 
           <div className="p-3 space-y-2 bg-slate-50/50">
             {_.slice(_.get(order, "items", []), 0, 2).map(
-              (item: any, idx: number) => (
-                <div key={idx} className="flex items-center gap-2">
-                  <div className="w-10 h-10 bg-white rounded-lg border border-gray-100 flex-shrink-0 overflow-hidden">
-                    <img
-                      src={toPublicUrl(item.image)}
-                      className="w-full h-full object-cover"
-                      alt="item"
-                    />
+              (item: any, idx: number) => {
+                const itemImageUrl = item.image ? toPublicUrl(item.image) : null;
+                return (
+                  <div key={idx} className="flex items-center gap-2">
+                    <div className="w-10 h-10 bg-white rounded-lg border border-gray-100 shrink-0 overflow-hidden flex items-center justify-center">
+                      {itemImageUrl ? (
+                        <Image
+                          width={40}
+                          height={40}
+                          src={itemImageUrl}
+                          className="w-full h-full object-cover"
+                          alt="item"
+                        />
+                      ) : (
+                        <Package size={20} className="text-gray-300" />
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-medium text-slate-700 truncate">
+                        {item.productName}
+                      </p>
+                      <p className="text-[10px] text-slate-400 font-bold">
+                        x{item.quantity}
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs font-medium text-slate-700 truncate">
-                      {item.productName}
-                    </p>
-                    <p className="text-[10px] text-slate-400 font-bold">
-                      x{item.quantity}
-                    </p>
-                  </div>
-                </div>
-              )
+                );
+              }
             )}
           </div>
 

@@ -25,7 +25,6 @@ export const useVoucherModalLogic = (props: VoucherModalProps) => {
   const [isGrouped, setIsGrouped] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // Allow selecting both order and shipping voucher for each shop
   const [selectedVoucher, setSelectedVoucher] = useState<{
     order?: string;
     shipping?: string;
@@ -36,20 +35,17 @@ export const useVoucherModalLogic = (props: VoucherModalProps) => {
   useEffect(() => {
     if (open) {
       const orderCode =
-        _.get(appliedVouchers, "order.code") ||
-        _.get(appliedVouchers, "order") ||
-        _.get(appliedVoucher, "code");
-
+        _.get(appliedVouchers, "order.code") || _.get(appliedVouchers, "order");
       const shipCode =
         _.get(appliedVouchers, "shipping.code") ||
         _.get(appliedVouchers, "shipping");
 
       setSelectedVoucher({
-        order: orderCode as string,
-        shipping: shipCode as string,
-      });
-    }
-  }, [open, appliedVouchers, appliedVoucher]);
+      order: orderCode as string,
+      shipping: shipCode as string,
+    });
+  }
+}, [open, appliedVouchers]);
 
   // Fetch dữ liệu vouchers
   useEffect(() => {

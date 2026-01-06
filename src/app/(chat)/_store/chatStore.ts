@@ -3,7 +3,6 @@ import _ from "lodash";
 import { ConversationResponse } from "../_types/chat.dto";
 import type { Message as ChatMessage } from "../_types/chat.type";
 
-// 1. Định nghĩa kiểu File đính kèm thuần túy
 export interface ChatAttachment {
   id: string;
   file: File;
@@ -11,10 +10,10 @@ export interface ChatAttachment {
   type: string;
   name: string;
   size: number;
+  mimeType?: string;
 }
 
 interface ChatState {
-  // --- Data States ---
   conversations: ConversationResponse[];
   messagesByConversation: Record<string, ChatMessage[]>;
   activeConversationId: string | null;
@@ -27,9 +26,7 @@ interface ChatState {
   isLoadingMore: boolean;
   hasMoreMessages: boolean;
   isMobileChatView: boolean;
-  newMessageAlert: boolean; // <--- Có thể bạn cũng thiếu cái này
-
-  // 👇 FIX: Thêm dòng này vào Interface
+  newMessageAlert: boolean;
   latestMessageId: string | null;
 
   // --- Input & Action States ---
@@ -70,6 +67,10 @@ interface ChatState {
   setReplyingTo: (msg: ChatMessage | null) => void;
   addRealtimeMessage: (convId: string, message: ChatMessage) => void;
 
+  // Conversation Actions
+  setConversations: (conversations: ConversationResponse[]) => void;
+  updateConversation: (conv: ConversationResponse) => void;
+
   // File Actions
   addAttachments: (files: FileList | File[]) => void;
   removeAttachment: (id: string) => void;
@@ -90,9 +91,7 @@ export const useChatStore = create<ChatState>((set) => ({
   isLoadingMore: false,
   hasMoreMessages: true,
   isMobileChatView: false,
-  newMessageAlert: false, // Init value
-
-  // 👇 Init value cho latestMessageId
+  newMessageAlert: false,
   latestMessageId: null,
 
   messageText: "",
@@ -115,17 +114,31 @@ export const useChatStore = create<ChatState>((set) => ({
   // --- Actions ---
   setUiState: (patch) => set((state) => ({ ...state, ...patch })),
 
-  setActiveConversation: (id, conv) =>
-    set({
-      activeConversationId: id,
-      selectedConversation: conv,
-      messageText: "",
-      attachments: [],
-      replyingToMessage: null,
-      editingMessage: null,
-      showEmojiPicker: false,
-      realtimeMessages: {},
-    }),
+ setActiveConversation: (id, conv) =>
+  set((state) => ({
+    activeConversationId: id,
+    selectedConversation: conv,
+    messageText: "",
+    attachments: [],
+    replyingToMessage: null,
+    editingMessage: null,
+    showEmojiPicker: false,
+    realtimeMessages: { ...state.realtimeMessages, [id || '']: [] }, 
+    conversations: id
+      ? state.conversations.map((c) =>
+          c.id === id ? { ...c, unreadCount: 0 } : c
+        )
+      : state.conversations,  
+  })),
+
+  setConversations: (conversations) => set({ conversations }),
+
+  updateConversation: (updatedConv) =>
+    set((state) => ({
+      conversations: state.conversations.map((c) =>
+        c.id === updatedConv.id ? updatedConv : c
+      ),
+    })),
 
   setMessages: (convId, messages) =>
     set((state) => ({
@@ -154,9 +167,9 @@ export const useChatStore = create<ChatState>((set) => ({
       const current = state.realtimeMessages[convId] || [];
       if (_.some(current, { id: message.id })) return state;
 
-      // Cập nhật cả latestMessageId khi có tin nhắn mới
       return {
-        latestMessageId: message.id, // <--- Cập nhật ở đây
+        latestMessageId: message.id,
+        newMessageAlert: true, // Trigger alert
         realtimeMessages: {
           ...state.realtimeMessages,
           [convId]: [...current, message],
@@ -189,6 +202,7 @@ export const useChatStore = create<ChatState>((set) => ({
         previewUrl: URL.createObjectURL(f),
         name: f.name,
         type: f.type.startsWith("image") ? "image" : "video",
+        mimeType: f.type,
         size: f.size,
       }));
       return { attachments: [...state.attachments, ...newItems] };
@@ -215,6 +229,9 @@ export const useChatStore = create<ChatState>((set) => ({
         selectedConversation: null,
         attachments: [],
         messageText: "",
+        realtimeMessages: {},
+        latestMessageId: null,
+        newMessageAlert: false,
       };
     }),
 }));

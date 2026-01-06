@@ -23,8 +23,8 @@ export const preparePreviewPayload = (
         itemIds: shop.itemIds || _.map(shop.items, "itemId"),
         vouchers: shop.vouchers || [],
         globalVouchers: shop.globalVouchers || [],
-        shippingMethodCode: String(
-          shop.selectedShippingMethod || shop.shippingMethodCode || "400021"
+        serviceCode: Number(
+          shop.selectedShippingMethod || shop.serviceCode || 400021
         ),
         shippingFee: actualFee,
       };

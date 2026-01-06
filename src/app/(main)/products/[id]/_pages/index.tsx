@@ -17,7 +17,7 @@ import { toPublicUrl } from "@/utils/storage/url";
 import { PlayCircle } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { FeaturedProductsSidebar } from "../../_components/FeaturedProductsSidebar";
 import { ProductInfo } from "../../_components/ProductInfo/ProductInfo";
 import { useProductDetail } from "../../_context/products";
@@ -57,21 +57,12 @@ const SimilarProducts = dynamic(
   }
 );
 
-// Customer Shop Chat (Giữ nguyên dynamic import)
-// const CustomerShopChat = dynamic(
-//     () =>
-//import("@/components/FloatingChatButtons/CustomerShopChat").then(
-//             (m) => m.default
-//         ),
-//     { ssr: false }
-// );
-
 const PLACEHOLDER_IMAGE =
   "data:image/svg+xml;utf8," +
   encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400">
-      <rect width="100%" height="100%" fill="#f5f5f5"/>
-      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#bfbfbf" font-size="16">No image</text>
-    </svg>`);
+      <rect width="100%" height="100%" fill="#f5f5f5"/>
+      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#bfbfbf" font-size="16">No image</text>
+    </svg>`);
 
 const resolveReviewMediaUrl = (media?: ReviewMediaResponse) => {
   if (!media) return "";
@@ -111,6 +102,36 @@ export const ProductDetailPage = () => {
   const [videoPreview, setVideoPreview] = useState<string | null>(null);
   const REVIEWS_PAGE_SIZE = 3;
 
+  const purchaseActionsRef = useRef<HTMLDivElement>(null);
+  const hasAutoSelectedRef = useRef(false);
+  useEffect(() => {
+    if (
+      !loading &&
+      product &&
+      product.variants &&
+      product.variants.length > 0
+    ) {
+      if (!selectedVariant && !hasAutoSelectedRef.current) {
+        const lowestPriceVariant = product.variants.reduce((prev, curr) => {
+          return prev.price < curr.price ? prev : curr;
+        });
+
+        setSelectedVariant(lowestPriceVariant);
+        hasAutoSelectedRef.current = true;
+      }
+
+      if (purchaseActionsRef.current) {
+        const timer = setTimeout(() => {
+          purchaseActionsRef.current?.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        }, 500);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [loading, product, selectedVariant, setSelectedVariant]);
+
   const hasVariantImage = (variant?: PublicProductVariantDTO | null) => {
     if (!variant) return false;
     return Boolean(
@@ -130,11 +151,11 @@ export const ProductDetailPage = () => {
 
   const { variantPrice, priceAfterVoucher, primaryPrice, comparePrice } =
     useMemo(() => {
+      const currentVariant = selectedVariant || product;
       const vPrice =
         selectedVariant?.price !== undefined && selectedVariant?.price !== null
           ? selectedVariant.price
           : product?.priceMin ?? product?.basePrice ?? 0;
-
       const calculatePriceAfterVoucher = () => {
         if (!selectedVariant) {
           return (
@@ -155,14 +176,21 @@ export const ProductDetailPage = () => {
 
           const bestVoucher =
             product?.bestShopVoucher ?? product?.bestPlatformVoucher;
+
           if (!bestVoucher) {
             return null;
           }
 
-          const { discountType, discountValue, discountAmount } = bestVoucher;
+          const { discountType, discountValue, discountAmount, maxDiscount } =
+            bestVoucher;
 
           if (discountType === "PERCENTAGE" && discountValue) {
-            const discount = (vPrice * discountValue) / 100;
+            let discount = (vPrice * discountValue) / 100;
+
+            if (maxDiscount && maxDiscount > 0) {
+              discount = Math.min(discount, maxDiscount);
+            }
+
             return Math.max(0, vPrice - discount);
           } else if (discountType === "FIXED_AMOUNT" && discountAmount) {
             return Math.max(0, vPrice - discountAmount);
@@ -178,16 +206,19 @@ export const ProductDetailPage = () => {
 
       const cPrice =
         selectedVariant?.corePrice ??
-        product?.comparePrice ??
+        (selectedVariant ? vPrice : product?.comparePrice) ??
         (product?.basePrice && product?.basePrice > pPrice
           ? product.basePrice
           : undefined);
+
+      const finalComparePrice =
+        pAfterVoucher && pAfterVoucher < vPrice ? vPrice : cPrice;
 
       return {
         variantPrice: vPrice,
         priceAfterVoucher: pAfterVoucher,
         primaryPrice: pPrice,
-        comparePrice: cPrice,
+        comparePrice: finalComparePrice,
       };
     }, [selectedVariant, product]);
 
@@ -208,6 +239,7 @@ export const ProductDetailPage = () => {
       name,
       code,
       description,
+      maxDiscount,
     } = bestVoucher;
 
     const originalPrice = comparePrice ?? variantPrice;
@@ -217,6 +249,9 @@ export const ProductDetailPage = () => {
     let discountText = "";
     if (discountType === "PERCENTAGE" && discountValue) {
       discountText = `Giảm ${discountValue}%`;
+      if (maxDiscount && maxDiscount > 0) {
+        discountText += ` (Tối đa ${formatCompactNumber(maxDiscount)})`;
+      }
     } else if (discountType === "FIXED_AMOUNT" && discountAmount) {
       if (discountAmount >= 1000) {
         discountText = `Giảm ${Math.round(discountAmount / 1000)}k`;
@@ -289,7 +324,6 @@ export const ProductDetailPage = () => {
                 }
               }}
             />
-             
           </div>
         ))}
         {videoMedia.map((vid) => {
@@ -377,22 +411,25 @@ export const ProductDetailPage = () => {
                         </div>
                       )}
                     </section>
-                    <ProductPurchaseActions
-                      product={product}
-                      selectedVariant={selectedVariant}
-                      setSelectedVariant={setSelectedVariant}
-                      reviewSummary={reviewSummary}
-                      soldCount={soldCount}
-                      formatCompactNumber={formatCompactNumber}
-                      discountInfo={discountInfo}
-                      priceRangeLabel={priceRangeLabel}
-                      primaryPrice={primaryPrice}
-                      comparePrice={comparePrice}
-                      discountPercentage={discountPercentage}
-                      priceAfterVoucher={priceAfterVoucher}
-                      formatPrice={formatPriceFull}
-                      bestPlatformVoucher={bestPlatformVoucher}
-                    />
+
+                    <div ref={purchaseActionsRef}>
+                      <ProductPurchaseActions
+                        product={product}
+                        selectedVariant={selectedVariant}
+                        setSelectedVariant={setSelectedVariant}
+                        reviewSummary={reviewSummary}
+                        soldCount={soldCount}
+                        formatCompactNumber={formatCompactNumber}
+                        discountInfo={discountInfo}
+                        priceRangeLabel={priceRangeLabel}
+                        primaryPrice={primaryPrice}
+                        comparePrice={comparePrice}
+                        discountPercentage={discountPercentage}
+                        priceAfterVoucher={priceAfterVoucher}
+                        formatPrice={formatPriceFull}
+                        bestPlatformVoucher={bestPlatformVoucher}
+                      />
+                    </div>
                   </div>
                 </CardComponents>
                 <InfomationShop

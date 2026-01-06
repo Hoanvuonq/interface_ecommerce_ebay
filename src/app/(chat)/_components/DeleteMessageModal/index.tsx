@@ -21,8 +21,7 @@ export const DeleteMessageModal: React.FC<DeleteMessageModalProps> = ({
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[1001] flex items-center justify-center p-4">
-          {/* Lớp nền mờ (Backdrop) */}
+        <div className="fixed inset-0 z-1001 flex items-center justify-center p-4">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -31,12 +30,11 @@ export const DeleteMessageModal: React.FC<DeleteMessageModalProps> = ({
             className="absolute inset-0 bg-slate-900/40 backdrop-blur-[2px]"
           />
 
-          {/* Nội dung Modal */}
           <motion.div
             initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.95, opacity: 0 }}
-            className="relative w-full max-w-[400px] overflow-hidden rounded-2xl bg-white shadow-2xl"
+            className="relative w-full max-w-100 overflow-hidden rounded-2xl bg-white shadow-2xl"
           >
             <div className="p-6">
               <div className="flex items-start gap-4">

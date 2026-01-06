@@ -11,7 +11,7 @@ export interface PublicProductMediaDTO {
   basePath?: string | null;
   extension?: string | null;
   url?: string | null;
-  type: 'IMAGE' | 'VIDEO' | 'AUDIO';
+  type: "IMAGE" | "VIDEO" | "AUDIO";
   title?: string | null;
   altText?: string | null;
   sortOrder?: number;
@@ -55,11 +55,11 @@ export interface ProductVoucherInfoDTO {
   code: string;
   name?: string | null;
   description?: string | null;
-  voucherScope: 'SHOP_ORDER' | 'SHIPPING' | 'PRODUCT';
-  discountType: 'PERCENTAGE' | 'FIXED_AMOUNT';
+  voucherScope: "SHOP_ORDER" | "SHIPPING" | "PRODUCT";
+  discountType: "PERCENTAGE" | "FIXED_AMOUNT";
   discountValue?: number | null;
   maxDiscount?: number | null;
-  sponsorType?: 'PLATFORM' | 'SHOP';
+  sponsorType?: "PLATFORM" | "SHOP";
   startDate?: string | null;
   endDate?: string | null;
   discountAmount?: number;
@@ -88,11 +88,11 @@ export interface PublicProductDetailDTO {
   priceMax?: number | null;
   comparePrice?: number;
   active: boolean;
-  approvalStatus: 'APPROVED' | 'PENDING' | 'REJECTED' | 'DRAFT';
+  approvalStatus: "APPROVED" | "PENDING" | "REJECTED" | "DRAFT";
   approvedBy?: string | null;
   approvedAt?: string | null;
-  promotedUntil?: string | null; // ISO 8601 datetime string - Thời điểm hết hạn đẩy tin (Boost)
-  isFeatured?: boolean; // Đánh dấu sản phẩm nổi bật (Featured)
+  promotedUntil?: string | null;
+  isFeatured?: boolean;
   category: PublicCategoryDTO;
   shop?: PublicShopSummaryDTO;
   variants: PublicProductVariantDTO[];
@@ -121,13 +121,13 @@ export interface PublicProductListItemDTO {
   name: string;
   slug: string;
   description?: string;
-  basePrice: number; // Giá bán hiện tại
+  basePrice: number;
   priceMin?: number | null;
   priceMax?: number | null;
-  comparePrice?: number; // Giá gốc (để so sánh) - nếu có thì tính discount
+  comparePrice?: number;
   active: boolean;
-  promotedUntil?: string | null; // ISO 8601 datetime string - Thời điểm hết hạn đẩy tin (Boost)
-  isFeatured?: boolean; // Đánh dấu sản phẩm nổi bật (Featured)
+  promotedUntil?: string | null;
+  isFeatured?: boolean;
   category: PublicCategoryDTO;
   media: Array<
     Pick<PublicProductMediaDTO, "id" | "url" | "type" | "isPrimary">
@@ -149,5 +149,5 @@ export interface PublicProductSearchQueryDTO {
   maxPrice?: number;
   page?: number;
   size?: number;
-  sort?: string; // Spring Data JPA sort format: "field,direction" (e.g., "name,asc", "basePrice,desc")
+  sort?: string;
 }

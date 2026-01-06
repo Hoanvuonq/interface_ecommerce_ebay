@@ -34,7 +34,7 @@ export const Footer: React.FC = () => {
           <div className="lg:col-span-4 space-y-5">
             <Link href="/" className="inline-block group">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-white text-[#053293] rounded-xl flex items-center justify-center font-black text-xl shadow-lg transition-transform group-hover:-rotate-6">
+                <div className="w-10 h-10 bg-white text-[#053293] rounded-xl flex items-center justify-center font-bold text-xl shadow-lg transition-transform group-hover:-rotate-6">
                   C
                 </div>
                 <div className="flex flex-col">

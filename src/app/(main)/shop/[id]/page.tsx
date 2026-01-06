@@ -26,7 +26,7 @@ import PageContentTransition from "@/features/PageContentTransition";
 import { ShopHeader } from "../_components/ShopHeader";
 import ShopNavigation from "../_components/ShopNavigation";
 import HomeShopLayout from "../_components/HomeShopLayout";
-import ProductListLayout from "../_components/ProductListLayout"; // Import Component mới
+import ProductListLayout from "../_components/ProductListLayout";
 
 const CustomerShopChat = dynamic(
   () =>
@@ -174,7 +174,6 @@ export default function ShopPage() {
         <main className="mx-auto max-w-7xl px-4 pt-4 sm:px-6 lg:px-8">
           <div className={`flex flex-col gap-8 ${!isShopHome ? "lg:flex-row" : ""}`}>
             
-            {/* SIDEBAR: Chỉ hiện khi không phải trang chủ */}
             {!isShopHome && (
               <aside className="hidden lg:block w-64 space-y-6 shrink-0 sticky top-24 pb-2 h-fit animate-in fade-in slide-in-from-left-4 duration-500">
                 <CategorySidebar
