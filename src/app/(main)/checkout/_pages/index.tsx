@@ -83,7 +83,7 @@ export const CheckoutScreen = () => {
               { title: "Thanh toán", href: "/checkout" },
             ]}
           />
-          <div className="my-6 px-2 text-5xl font-black tracking-tighter uppercase italic text-slate-900">
+          <div className="my-6 px-2 text-5xl font-bold tracking-tighter uppercase italic text-slate-900">
             Thanh Toán
           </div>
           <CheckoutStepper

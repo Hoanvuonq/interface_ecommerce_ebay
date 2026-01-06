@@ -41,7 +41,7 @@ export const TotalAmountCheckoutList = ({
             {formatPrice(originalShopPrice)}
           </p>
         )}
-        <span className="text-2xl font-black text-slate-900 tracking-tighter">
+        <span className="text-2xl font-bold text-slate-900 tracking-tighter">
           {formatPrice(finalShopTotal)}
         </span>
       </div>

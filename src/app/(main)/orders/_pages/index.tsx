@@ -1,7 +1,6 @@
 "use client";
 
 import { CustomBreadcrumb, CustomButton } from "@/components";
-import { Button } from "@/components/button/button";
 import PageContentTransition from "@/features/PageContentTransition";
 import { useOrders } from "@/hooks/useOrders";
 import { motion, Variants } from "framer-motion";
@@ -9,10 +8,8 @@ import _ from "lodash";
 import {
   Inbox,
   Loader2,
-  MoveLeft,
-  RotateCw,
   Search,
-  ShoppingBag,
+  ShoppingBag
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

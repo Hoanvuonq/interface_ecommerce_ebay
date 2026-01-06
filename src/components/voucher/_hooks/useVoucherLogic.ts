@@ -18,10 +18,8 @@ export const useVoucherLogic = (props: any) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [voucherCode, setVoucherCode] = useState("");
 
-  // Dùng ref để tránh việc auto-apply chạy lại quá nhiều lần trong 1 phiên làm việc
   const hasAutoApplied = useRef<Record<string, boolean>>({});
 
-  // Memoize fetchParams để tránh trigger refetch rác
   const fetchParams = useMemo(() => {
     const totalAmount = Number(_.get(context, "totalAmount", 0));
     const shippingFee = Number(_.get(context, "shippingFee", 0));
@@ -42,7 +40,6 @@ export const useVoucherLogic = (props: any) => {
         _.get(context, "preferences", {})
       ),
     };
-    // Sử dụng ?. để an toàn tuyệt đối khi context chưa load
   }, [
     context?.totalAmount,
     context?.shippingFee,
@@ -67,37 +64,31 @@ export const useVoucherLogic = (props: any) => {
       }
       return await voucherService.getShopVouchersWithContext(fetchParams);
     },
-    // Query chỉ chạy khi có đủ context hoặc người dùng chủ động mở modal
     enabled:
       (!!fetchParams.totalAmount && (!!shopId || forcePlatform)) || modalOpen,
-    staleTime: 1000 * 60 * 5, // 5 phút
+    staleTime: 1000 * 60 * 5,
   });
 
-  // Lấy mã code hiện tại để so sánh trong useEffect
   const currentOrderVoucherCode =
     _.get(appliedVouchers, "order.code") || _.get(appliedVouchers, "order");
   const currentShipVoucherCode =
     _.get(appliedVouchers, "shipping.code") ||
     _.get(appliedVouchers, "shipping");
 
-  // LOGIC TỰ ĐỘNG CHỌN VOUCHER TỐI ƯU NHẤT
   useEffect(() => {
     const shopKey = `${shopId || "platform"}-${forcePlatform ? "p" : "s"}`;
 
     if (!isLoading && vouchersData && !hasAutoApplied.current[shopKey]) {
-      // Chỉ tự động chọn nếu người dùng chưa chọn mã nào cho mục này
       if (!currentOrderVoucherCode && !currentShipVoucherCode) {
         let bestOrder: any = null;
         let bestShipping: any = null;
 
         if (Array.isArray(vouchersData)) {
-          // Shop Vouchers: Lọc ra các mã dùng được và tìm mã giảm cao nhất
           const applicableVouchers = vouchersData.filter(
             (v: any) => v.canSelect !== false && !v.disabled
           );
           bestOrder = _.maxBy(applicableVouchers, "discountAmount");
         } else {
-          // Platform Vouchers: Tìm mã tốt nhất cho Đơn hàng và Vận chuyển riêng biệt
           const appOrderVouchers = (
             vouchersData.productOrderVouchers || []
           ).filter((v: any) => v.canSelect !== false);
@@ -110,9 +101,7 @@ export const useVoucherLogic = (props: any) => {
         }
 
         if (bestOrder || bestShipping) {
-          hasAutoApplied.current[shopKey] = true; // Đánh dấu đã auto-apply thành công
-
-          // Trì hoãn một chút để tránh xung đột render nếu có nhiều Shop component cùng chạy
+          hasAutoApplied.current[shopKey] = true; 
           onSelectVoucher?.({
             order: bestOrder || undefined,
             shipping: bestShipping || undefined,
@@ -120,7 +109,6 @@ export const useVoucherLogic = (props: any) => {
         }
       }
     }
-    // Dependency chuẩn để không bị loop
   }, [
     vouchersData,
     isLoading,
@@ -129,7 +117,6 @@ export const useVoucherLogic = (props: any) => {
     currentShipVoucherCode,
   ]);
 
-  // Reset cờ auto-apply khi số tiền thay đổi đáng kể (khách thay đổi giỏ hàng)
   useEffect(() => {
     hasAutoApplied.current = {};
   }, [context?.totalAmount]);

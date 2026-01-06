@@ -223,7 +223,7 @@ const WalletPage: React.FC<WalletPageProps> = ({
         )}
 
         <div className="mt-6 bg-orange-50/50 border border-orange-100 rounded-xl p-4 flex gap-3 items-start text-sm text-orange-800">
-          <FiAlertCircle className="w-5 h-5 shrink-0 mt-0.5 text-orange-600" />
+          <FiAlertCircle className="w-5 h-5 shrink-0 mt-0.5 text-(--color-mainColor)" />
           <div className="space-y-1">
             <p className="font-semibold text-orange-700">Thông tin quan trọng:</p>
             <ul className="list-disc list-inside opacity-90 space-y-0.5">
@@ -272,14 +272,14 @@ const WalletPage: React.FC<WalletPageProps> = ({
                 onClick={() => setActiveTab(tab.id)}
                 className={`group flex items-center gap-2 py-4 text-sm font-medium border-b-2 transition-all relative ${
                   activeTab === tab.id
-                    ? "border-orange-500 text-orange-600"
+                    ? "border-(--color-mainColor) text-(--color-mainColor)"
                     : "border-transparent text-gray-500 hover:text-gray-800 hover:border-gray-200"
                 }`}
               >
                 <tab.icon
                   className={`w-4 h-4 transition-colors ${
                     activeTab === tab.id
-                      ? "text-orange-500"
+                      ? "text-(--color-mainColor)"
                       : "text-gray-400 group-hover:text-gray-600"
                   }`}
                 />

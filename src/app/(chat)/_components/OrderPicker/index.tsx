@@ -194,7 +194,7 @@ export const OrderPicker: React.FC<OrderPickerProps> = ({
                     <span className="text-[10px] text-slate-400 font-medium">
                       Tổng thanh toán
                     </span>
-                    <span className="text-sm font-black text-orange-600">
+                    <span className="text-sm font-bold text-orange-600">
                       {_.get(order, "grandTotal", 0).toLocaleString("vi-VN")}₫
                     </span>
                   </div>

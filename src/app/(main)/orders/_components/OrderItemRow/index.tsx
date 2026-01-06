@@ -21,14 +21,12 @@ export const OrderItemRow = ({
   return (
     <div className="p-4 sm:p-5 flex gap-4 sm:gap-6 hover:bg-slate-50/50 transition-all duration-300 group border-b border-slate-50 last:border-0">
       
-      {/* 1. Hình ảnh sản phẩm - FIX LỖI NHÁT HÌNH */}
-      {/* Dùng w-20 h-20 cố định và thêm relative */}
       <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden border border-slate-100 shrink-0 bg-white shadow-sm flex items-center justify-center transition-transform group-hover:scale-[1.02]">
         {imageUrl ? (
           <Image 
             src={imageUrl} 
             alt={item.productName}
-            width={96} // Đặt width/height cụ thể thay vì fill để an toàn tuyệt đối
+            width={96} 
             height={96}
             className="w-full h-full object-cover" 
           />
@@ -43,16 +41,16 @@ export const OrderItemRow = ({
         <div className="space-y-1">
           <NextLink
             href={`/products/${item.productId}`}
-            className="font-semibold text-slate-700 hover:text-orange-600 transition-colors block text-[15px] sm:text-base truncate pr-4"
+            className="font-semibold text-slate-700 hover:text-orange-600 transition-colors block text-[12px] truncate pr-4"
           >
             {item.productName}
           </NextLink>
           
           <div className="flex items-center gap-3">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-slate-50 px-2 py-0.5 rounded border border-slate-100">
+            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest bg-slate-50 px-2 py-0.5 rounded border border-slate-100">
               SKU: {item.sku || "N/A"}
             </span>
-            <span className="text-slate-400 text-xs font-medium uppercase">
+            <span className="text-slate-400 text-[9px] font-medium uppercase">
               Số lượng: <b className="text-slate-700">{item.quantity}</b>
             </span>
           </div>

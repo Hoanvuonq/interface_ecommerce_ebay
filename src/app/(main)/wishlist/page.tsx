@@ -2,16 +2,17 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import {
-    ChevronRight,
-    Edit3,
-    Heart,
-    Home,
-    Package,
-    Plus,
-    Share2,
+  ChevronRight,
+  Edit3,
+  Heart,
+  Home,
+  Package,
+  Plus,
+  Share2,
+  Settings,
 } from "lucide-react";
 import Link from "next/link";
-
+import { CustomBreadcrumb } from "@/components";
 import PageContentTransition from "@/features/PageContentTransition";
 import { cn } from "@/utils/cn";
 import { toSizedVariant } from "@/utils/products/media.helpers";
@@ -23,6 +24,7 @@ import { WishlistItemCard } from "./_components/WishlistItemCard";
 import { WishlistListItem } from "./_components/WishlistListItem";
 import WishlistShareModal from "./_components/WishlistShareModal";
 import { useWishlistPage } from "./_hooks/useWishlistPage";
+
 export default function WishlistPage() {
   const {
     wishlists,
@@ -49,49 +51,39 @@ export default function WishlistPage() {
     loadAllWishlists,
     loadWishlistDetails,
     setSelectedWishlistId,
-    priceTargetMetData,
     regenerateShareToken,
   } = useWishlistPage();
+
   return (
     <PageContentTransition>
-      <div className="min-h-screen bg-[#fafafa] text-slate-900 pb-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-          <nav className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 mb-10">
-            <Link
-              href="/"
-              className="hover:text-orange-500 transition-colors flex items-center gap-1.5 font-bold"
-            >
-              <Home size={12} /> HOME
-            </Link>
-            <ChevronRight size={10} strokeWidth={3} />
-            <span className="text-slate-900 font-bold">
-              WISHLIST COLLECTIONS
-            </span>
-          </nav>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-            <aside className="lg:col-span-3 sticky top-28 space-y-6">
-              <div className="flex items-center justify-between px-2">
-                <div className="flex items-center gap-2">
-                  <div className="w-1.5 h-5 bg-orange-500 rounded-full" />
-                  <h2 className="text-xs font-semibold uppercase tracking-widest text-slate-500 italic">
-                    Collections
-                  </h2>
-                </div>
+      <div className="min-h-screen bg-[#fcfcfc] text-slate-900 pb-10">
+        <div className="max-w-6xl mx-auto px-4 py-4">
+          <CustomBreadcrumb
+            items={[
+              { title: "Trang chủ", href: "/" },
+              { title: "WISHLIST", href: "" },
+            ]}
+          />
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            <aside className="lg:col-span-3 sticky top-24 space-y-4">
+              <div className="flex items-center justify-between px-1">
+                <h2 className="text-[10px] font-bold uppercase tracking-tighter text-(--color-mainColor)">
+                  My Collections
+                </h2>
                 <button
                   onClick={() => setCreateModalVisible(true)}
-                  className="p-2 bg-orange-500 text-white rounded-xl hover:bg-orange-600 transition-all shadow-lg shadow-orange-100 active:scale-95"
+                  className="p-1.5 bg-slate-900 text-white rounded-lg hover:bg-orange-500 transition-all active:scale-95"
                 >
-                  <Plus size={16} strokeWidth={3} />
+                  <Plus size={14} strokeWidth={3} />
                 </button>
               </div>
 
-              <div className="space-y-3 max-h-[calc(100vh-250px)] overflow-y-auto pr-2 custom-scrollbar">
+              <div className="space-y-1 max-h-[calc(100vh-200px)] overflow-y-auto pr-1 custom-scrollbar">
                 {loading
                   ? [1, 2, 3].map((i) => (
                       <div
                         key={i}
-                        className="h-20 bg-white border border-slate-100 animate-pulse rounded-2xl"
+                        className="h-14 bg-slate-100 animate-pulse rounded-xl"
                       />
                     ))
                   : wishlists.map((w) => (
@@ -108,33 +100,31 @@ export default function WishlistPage() {
               </div>
             </aside>
 
+            {/* Main Content */}
             <main className="lg:col-span-9">
               <AnimatePresence mode="wait">
                 {loadingDetails ? (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6"
-                  >
-                    {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    {[1, 2, 3, 4].map((i) => (
                       <div
                         key={i}
-                        className="aspect-3/4 bg-white rounded-[2.5rem] animate-pulse border border-slate-100"
+                        className="aspect-4/5 bg-slate-100 rounded-3xl animate-pulse"
                       />
                     ))}
-                  </motion.div>
+                  </div>
                 ) : selectedWishlist ? (
                   <motion.div
-                    initial={{ opacity: 0, y: 10 }}
+                    initial={{ opacity: 0, y: 5 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="space-y-8"
+                    className="space-y-6"
                   >
-                    <div className="bg-white border border-slate-100 rounded-[3rem] p-6 shadow-sm relative overflow-hidden group">
-                      <div className="absolute top-0 right-0 w-80 h-80 bg-orange-500/5 rounded-full blur-[100px] -mr-40 -mt-40 transition-colors" />
-                      <div className="flex flex-col md:flex-row gap-10 items-center relative z-10">
-                        <div className="w-44 h-44 shrink-0 relative">
-                          <div className="absolute inset-0 bg-orange-100 rounded-[2.8rem] rotate-6 group-hover:rotate-12 transition-transform duration-500" />
-                          <div className="relative w-full h-full bg-white rounded-[2.8rem] overflow-hidden border-4 border-white shadow-2xl flex items-center justify-center">
+                    {/* Header Banner Nhỏ gọn hơn */}
+                    <div className="bg-white border border-slate-100 rounded-4xl p-4 shadow-sm relative overflow-hidden">
+                      <div className="flex flex-row gap-6 items-center">
+                        {/* Cover Image nhỏ gọn */}
+                        <div className="w-24 h-24 sm:w-32 sm:h-32 shrink-0 relative">
+                          <div className="absolute inset-0 bg-orange-50 rounded-3xl rotate-3" />
+                          <div className="relative w-full h-full bg-white rounded-3xl overflow-hidden border-2 border-white shadow-lg flex items-center justify-center">
                             {selectedWishlist.imageBasePath ? (
                               <img
                                 src={toPublicUrl(
@@ -148,51 +138,56 @@ export default function WishlistPage() {
                               />
                             ) : (
                               <Heart
-                                size={56}
-                                className="text-orange-500 fill-orange-50"
-                                strokeWidth={1}
+                                size={32}
+                                className="text-orange-500/20 fill-orange-500/10"
+                                strokeWidth={1.5}
                               />
                             )}
                           </div>
                         </div>
 
-                        <div className="flex-1 text-center md:text-left">
-                          <div className="flex flex-wrap justify-center md:justify-start gap-2 mb-4 font-semibold">
+                        <div className="flex-1 space-y-2">
+                          <div className="flex items-center gap-2">
                             {selectedWishlist.isDefault && (
-                              <span className="px-3 py-1 bg-orange-500 text-white rounded-full text-[9px] uppercase tracking-widest">
+                              <span className="px-2 py-0.5 bg-orange-500 text-white rounded-md text-[7px] font-bold uppercase tracking-tighter">
                                 Default
                               </span>
                             )}
                             <span
                               className={cn(
-                                "px-3 py-1 rounded-full text-[9px] uppercase tracking-widest border",
+                                "px-2 py-0.5 rounded-md text-[7px] font-bold uppercase tracking-tighter border",
                                 selectedWishlist.isPublic
                                   ? "bg-emerald-50 text-emerald-600 border-emerald-100"
-                                  : "bg-slate-50 text-slate-400 border-slate-200"
+                                  : "bg-slate-50 text-(--color-mainColor) border-slate-200"
                               )}
                             >
                               {selectedWishlist.isPublic ? "Public" : "Private"}
                             </span>
                           </div>
-                          <h1 className="text-4xl md:text-6xl font-semibold tracking-tighter text-slate-950 uppercase italic leading-[0.9] mb-4">
+
+                          <h1 className="text-2xl md:text-3xl font-bold tracking-tighter text-slate-900 uppercase italic leading-none">
                             {selectedWishlist.name}
                           </h1>
-                          <p className="text-slate-400 font-medium line-clamp-2 max-w-xl mb-8">
-                            {selectedWishlist.description}
+
+                          <p className="text-[11px] text-(--color-mainColor) font-medium line-clamp-1 max-w-md">
+                            {selectedWishlist.description ||
+                              "No description provided."}
                           </p>
-                          <div className="flex flex-wrap justify-center md:justify-start gap-3">
+
+                          <div className="flex gap-2 pt-1">
                             <button
                               onClick={() => setEditModalVisible(true)}
-                              className="flex items-center gap-2 px-7 py-3.5 bg-slate-900 text-white rounded-2xl font-semibold text-[10px] uppercase tracking-widest hover:bg-orange-600 transition-all active:scale-95 shadow-xl shadow-slate-200"
+                              className="p-2 hover:bg-slate-100 rounded-lg text-(--color-mainColor) hover:text-slate-900 transition-all border border-transparent hover:border-slate-200"
+                              title="Edit Collection"
                             >
-                              <Edit3 size={14} /> Edit
+                              <Settings size={14} />
                             </button>
                             {selectedWishlist.isPublic && (
                               <button
                                 onClick={() => setShareModalVisible(true)}
-                                className="flex items-center gap-2 px-7 py-3.5 bg-white border border-slate-200 text-slate-600 rounded-2xl font-semibold text-[10px] uppercase tracking-widest hover:bg-slate-50 transition-all active:scale-95"
+                                className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-(--color-mainColor) rounded-xl font-bold text-[9px] uppercase tracking-wider hover:bg-slate-50 transition-all active:scale-95 shadow-sm"
                               >
-                                <Share2 size={14} /> Share Link
+                                <Share2 size={12} /> Share
                               </button>
                             )}
                           </div>
@@ -200,7 +195,8 @@ export default function WishlistPage() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                    {/* Grid Items - Sử dụng grid 3 cột trên desktop nhưng 2 cột trên mobile */}
+                    <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-3 gap-4">
                       {(selectedWishlist.items ?? []).length > 0 ? (
                         (selectedWishlist.items ?? []).map((item: any) => (
                           <WishlistItemCard
@@ -217,21 +213,20 @@ export default function WishlistPage() {
                           />
                         ))
                       ) : (
-                        <div className="col-span-full py-28 bg-white rounded-[3.5rem] border-2 border-dashed border-slate-100 text-center flex flex-col items-center">
+                        <div className="col-span-full py-16 bg-slate-50/50 rounded-4xl border border-dashed border-slate-200 text-center flex flex-col items-center">
                           <Package
-                            size={48}
-                            className="text-orange-200 mb-4"
-                            strokeWidth={1}
+                            size={32}
+                            className="text-slate-300 mb-2"
+                            strokeWidth={1.5}
                           />
-                          <h3 className="text-slate-900 font-semibold uppercase text-sm tracking-widest">
-                            Danh sách trống
+                          <h3 className="text-(--color-mainColor) font-bold uppercase text-[10px] tracking-widest">
+                            Collection is empty
                           </h3>
                           <Link
                             href="/products"
-                            className="mt-6 inline-flex items-center gap-2 px-8 py-4 bg-orange-500 text-white rounded-2xl font-semibold uppercase text-[10px] tracking-[0.2em] hover:bg-orange-600 transition-all"
+                            className="mt-4 text-[9px] font-bold uppercase text-orange-600 hover:underline tracking-tighter"
                           >
-                            Khám phá ngay{" "}
-                            <ChevronRight size={14} strokeWidth={3} />
+                            Explore Products →
                           </Link>
                         </div>
                       )}
@@ -243,6 +238,7 @@ export default function WishlistPage() {
           </div>
         </div>
 
+        {/* Modals giữ nguyên logic */}
         <CreateWishlistModal
           visible={createModalVisible}
           onCancel={() => setCreateModalVisible(false)}

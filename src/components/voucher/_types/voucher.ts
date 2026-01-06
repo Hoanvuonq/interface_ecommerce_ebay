@@ -16,8 +16,10 @@ export interface VoucherOption {
     disabled?: boolean;
     remainingPercentage?: number;
     canSelect: boolean; 
+    voucher?: any;
     applicable?: boolean;
     reason?: string | null;
+    type?: string;
     isValid?: boolean; 
     voucherScope?: 'SHOP_ORDER' | 'SHIPPING' | 'PRODUCT' | 'ORDER';
 }

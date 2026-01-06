@@ -146,7 +146,6 @@ export const CartItem: React.FC<CartItemProps> = ({
     </div>
   );
 
-  // Mobile Render
   if (isMobile) {
     return (
       <div
@@ -232,7 +231,6 @@ export const CartItem: React.FC<CartItemProps> = ({
     );
   }
 
-  // Desktop Render
   return (
     <div
       className={cn(
@@ -266,11 +264,6 @@ export const CartItem: React.FC<CartItemProps> = ({
             <span className="text-[9px] font-bold text-slate-400 bg-slate-100 px-2 py-1 rounded-lg  tracking-widest border border-slate-100">
               {item.variantAttributes || "Mặc định"}
             </span>
-            {/* {item.availableStock !== undefined && item.availableStock < 10 && (
-              <span className="flex items-center gap-1 text-[9px] font-bold text-amber-600 bg-amber-50 px-2 py-1 rounded-lg border border-amber-100 animate-pulse">
-                <AlertCircle size={10} /> CHỈ CÒN {item.availableStock}
-              </span>
-            )} */}
           </div>
         </div>
       </div>
