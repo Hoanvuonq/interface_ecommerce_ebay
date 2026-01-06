@@ -27,11 +27,14 @@ export const CheckoutProvider = ({
     });
 
     store.setAddressMasterData(pList, wList);
+    // Đảm bảo set Request và Preview vào store ngay lập tức
     store.setPreview(initialPreview);
     store.setRequest(initialRequest);
-  }, [initialPreview, initialRequest]);
+  }, [initialPreview, initialRequest, store]);
 
-  useCheckoutInitialization(initialPreview, initialRequest);
+  // FIX: Chỉ truyền 1 object duy nhất chứa cả 2 nếu hook yêu cầu vậy, 
+  // hoặc chỉ truyền initialPreview nếu logic bên trong hook tự lấy request từ store.
+  useCheckoutInitialization(initialPreview); 
 
   return <>{children}</>;
 };

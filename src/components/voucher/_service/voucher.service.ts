@@ -45,7 +45,24 @@ class VoucherService {
       return [];
     }
   }
+ async getShopVouchersForBuyer(shopId: string): Promise<VoucherOption[]> {
+    try {
+      const response: ApiResponse<VoucherRecommendationResult[]> =
+        await request({
+          url: `${VOUCHER_API_BASE}/recommend/by-shop`,
+          method: "GET",
+          params: { shopId },
+        });
 
+      return _.chain(response.data)
+        .map((res) => this.mapRecommendationResult(res))
+        .filter(_.isObject)
+        .value() as VoucherOption[];
+    } catch (error) {
+      console.error("Error in getShopVouchersForBuyer:", error);
+      return [];
+    }
+  }
   async getPlatformVouchersWithContext(params: any): Promise<GroupedVouchers> {
     try {
       const response: ApiResponse<PlatformVoucherRecommendationsData> = await request({
