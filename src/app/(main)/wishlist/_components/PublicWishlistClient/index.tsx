@@ -64,10 +64,9 @@ export default function PublicWishlistClient({ shareToken }: Props) {
   };
 
   return (
-    <div className="min-h-screen bg-[#fafafa] text-slate-900 pb-20">
+    <div className="min-h-screen bg-[#fafafa] text-slate-900">
       <PageContentTransition>
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-          {/* Breadcrumb Section */}
           <div className="mb-8">
             <CustomBreadcrumb
               items={[
@@ -78,7 +77,7 @@ export default function PublicWishlistClient({ shareToken }: Props) {
           </div>
 
           {loading ? (
-            <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
+            <div className="flex flex-col items-center justify-center min-h-100 gap-4">
               <Loader2 className="w-10 h-10 animate-spin text-orange-500" />
               <p className="text-slate-400 font-medium animate-pulse">Đang tải danh mục yêu thích...</p>
             </div>
@@ -98,12 +97,10 @@ export default function PublicWishlistClient({ shareToken }: Props) {
             </div>
           ) : wishlist ? (
             <div className="space-y-10">
-              {/* Enhanced Header Card */}
               <div className="bg-white border border-slate-100 rounded-[2.5rem] p-8 md:p-10 shadow-sm relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/5 rounded-full blur-3xl -mr-32 -mt-32" />
                 
                 <div className="flex flex-col md:flex-row gap-8 items-start md:items-center relative z-10">
-                  {/* Cover Image / Icon */}
                   <div className="shrink-0">
                     {getCoverImageUrl(wishlist) ? (
                       <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-[2rem] overflow-hidden border-4 border-white shadow-xl rotate-3 hover:rotate-0 transition-transform duration-500">

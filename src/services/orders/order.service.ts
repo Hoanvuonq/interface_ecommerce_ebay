@@ -128,11 +128,21 @@ class OrderService {
    * Hủy order
    */
   async cancelOrder(orderId: string, reason: string): Promise<void> {
-    await request({
-      url: `${BUYER_API_BASE}/${orderId}/cancel`,
-      method: "PUT",
-      data: { reason },
-    });
+    // Check lý do trước khi gửi
+    if (!reason || reason.trim().length < 5) {
+      throw new Error("Lý do hủy quá ngắn hoặc trống");
+    }
+
+    try {
+      await request({
+        url: `${BUYER_API_BASE}/${orderId}/cancel`,
+        method: "PUT",
+        data: { reason: reason.trim() },
+      });
+    } catch (error: any) {
+      console.error("❌ Backend error message:", error?.response?.data);
+      throw error;
+    }
   }
 
   /**

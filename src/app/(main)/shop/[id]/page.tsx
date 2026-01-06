@@ -154,7 +154,7 @@ export default function ShopPage() {
     );
 
   return (
-    <div className="min-h-screen bg-neutral-50 pb-20">
+    <div className="min-h-screen bg-neutral-50">
       <PageContentTransition>
         <ShopHeader
           shop={shop}

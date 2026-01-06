@@ -52,6 +52,7 @@ export interface CartItemDto {
   variantId: string;
   version: number;
   productName: string;
+  productId?: string;
   unitPrice: number;
   discountAmount: number;
   quantity: number;
@@ -65,7 +66,6 @@ export interface CartItemDto {
   shopId?: string;
   shopName?: string;
   shopLogo?: string;
-  productId?: string;
   selectedForCheckout?: boolean;
   stock?: number;
   attributes?: Record<string, string>;

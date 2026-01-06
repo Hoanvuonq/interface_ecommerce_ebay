@@ -128,6 +128,7 @@ export interface OrderResponse {
     addressLine1: string;
     addressLine2: string;
     city: string;
+    updatedAt?: string;
     province: string;
     postalCode: string;
     country: string;

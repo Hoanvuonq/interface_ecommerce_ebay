@@ -34,9 +34,10 @@ export const useOrderDetailView = (order: OrderResponse) => {
   };
 
   const handleRefresh = () => {
-    setRefreshKey((prev) => prev + 1);
-    queryClient.invalidateQueries({ queryKey: ["orders", "detail", order.orderId] });
-  };
+  setRefreshKey((prev) => prev + 1);
+  queryClient.invalidateQueries({ queryKey: ["orders"] }); 
+  queryClient.invalidateQueries({ queryKey: ["order", order.orderId] });
+};
 
   const handleReviewClick = (item: OrderItemResponse) => {
     if (item.productId && reviewedProductIds.has(item.productId)) {
@@ -51,8 +52,11 @@ export const useOrderDetailView = (order: OrderResponse) => {
     if (selectedItem?.productId) {
       setReviewedProductIds((prev) => new Set(prev).add(selectedItem.productId!));
     }
+     success("Đánh giá thành công!");
+  queryClient.invalidateQueries({ queryKey: ["orders", "detail", order.orderId] });
     handleRefresh();
   };
+  
 
   const handleCancelOrder = async () => {
     if (!_.trim(cancelReason)) {
@@ -66,7 +70,8 @@ export const useOrderDetailView = (order: OrderResponse) => {
       success("Hủy đơn hàng thành công");
       setCancelModalVisible(false);
       setCancelReason("");
-      handleRefresh();
+      
+      await handleRefresh(); 
     } catch (err: any) {
       error(_.get(err, "response.data.message", "Không thể hủy đơn hàng"));
     } finally {

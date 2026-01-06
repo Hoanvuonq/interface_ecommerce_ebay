@@ -2,7 +2,7 @@
 import { ReactNode, MouseEvent } from "react";
 
 export interface ButtonFieldProps {
-    type?: "primary" | "secondary" | "danger" | "text" | "login" | "register";
+    type?: "primary" | "secondary" | "danger" | "text" | "login" | "register" | "button";
     htmlType?: "button" | "submit" | "reset";
     size?: "small" | "middle" | "large";
     block?: boolean;

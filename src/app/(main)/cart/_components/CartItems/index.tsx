@@ -15,15 +15,10 @@ import {
 } from "@/store/theme/cartSlice";
 import { cn } from "@/utils/cn";
 import { resolveVariantImageUrl } from "@/utils/products/media.helpers";
-import {
-  CheckCircle2,
-  Loader2,
-  Minus,
-  Plus,
-  Trash2
-} from "lucide-react";
+import { CheckCircle2, Loader2, Minus, Plus, Trash2 } from "lucide-react";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { CartItemProps } from "../../_types/cartItems";
+import Link from "next/link";
 export const CartItem: React.FC<CartItemProps> = ({
   item,
   etag,
@@ -257,13 +252,17 @@ export const CartItem: React.FC<CartItemProps> = ({
         </div>
 
         <div className="min-w-0 flex-1 pr-2 space-y-2">
-          <h3 className="text-[13px] font-bold text-slate-800 line-clamp-2 uppercase leading-snug tracking-tight">
+          <Link
+            href={`/products/${item?.id}`}
+            className="font-semibold text-slate-700 hover:text-orange-600 transition-colors block text-[12px] truncate pr-4"
+          >
             {item.productName}
-          </h3>
+          </Link>
           <div className="flex items-center gap-2">
             <span className="text-[9px] font-bold text-slate-400 bg-slate-100 px-2 py-1 rounded-lg  tracking-widest border border-slate-100">
               {item.variantAttributes || "Mặc định"}
             </span>
+            
           </div>
         </div>
       </div>

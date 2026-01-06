@@ -1,31 +1,26 @@
+"use client";
 import { useState, useEffect, useTransition, useCallback } from "react";
-import { useToast } from "@/hooks/useToast";
 import {
   GroupedVouchers,
   VoucherOption,
   VoucherModalProps,
+  VoucherSelection,
 } from "@/components/voucher/_types/voucher";
 import _ from "lodash";
 
 export const useVoucherModalLogic = (props: VoucherModalProps) => {
-  const {
-    open,
-    appliedVouchers,
-    appliedVoucher,
-    onFetchVouchers,
-    onClose,
-    onConfirm,
-  } = props;
+  const { open, appliedVouchers, onFetchVouchers, onClose, onConfirm, previewData, shopId } = props;
+
+  const [loading, setLoading] = useState(false);
   const [voucherCode, setVoucherCode] = useState("");
   const [vouchers, setVouchers] = useState<VoucherOption[]>([]);
+  const [isGrouped, setIsGrouped] = useState(false);
   const [groupedVouchers, setGroupedVouchers] = useState<GroupedVouchers>({
     productOrderVouchers: [],
     shippingVouchers: [],
   });
-  const [isGrouped, setIsGrouped] = useState(false);
-  const [loading, setLoading] = useState(false);
 
-  const [selectedVoucher, setSelectedVoucher] = useState<{
+  const [tempSelection, setTempSelection] = useState<{
     order?: string;
     shipping?: string;
   }>({});
@@ -34,20 +29,26 @@ export const useVoucherModalLogic = (props: VoucherModalProps) => {
 
   useEffect(() => {
     if (open) {
-      const orderCode =
-        _.get(appliedVouchers, "order.code") || _.get(appliedVouchers, "order");
-      const shipCode =
-        _.get(appliedVouchers, "shipping.code") ||
-        _.get(appliedVouchers, "shipping");
+      const shopPreview = previewData?.data?.shops?.find((s: any) => s.shopId === shopId);
+      if (shopPreview?.voucherResult?.discountDetails) {
+        const validDetails = shopPreview.voucherResult.discountDetails;
+        const orderV = validDetails.find((v: any) => v.valid && v.discountTarget === "ORDER");
+        const shipV = validDetails.find((v: any) => v.valid && v.discountTarget === "SHIP");
 
-      setSelectedVoucher({
-      order: orderCode as string,
-      shipping: shipCode as string,
-    });
-  }
-}, [open, appliedVouchers]);
+        setTempSelection({
+          order: orderV?.voucherCode,
+          shipping: shipV?.voucherCode,
+        });
+      } else {
+        setTempSelection({
+          order: _.get(appliedVouchers, "order.code") || _.get(appliedVouchers, "order.id"),
+          shipping: _.get(appliedVouchers, "shipping.code") || _.get(appliedVouchers, "shipping.id"),
+        });
+      }
+    }
+  }, [open, previewData, shopId, appliedVouchers]);
 
-  // Fetch dữ liệu vouchers
+  // Fetch danh sách voucher
   useEffect(() => {
     if (open && onFetchVouchers) {
       setLoading(true);
@@ -68,43 +69,34 @@ export const useVoucherModalLogic = (props: VoucherModalProps) => {
     }
   }, [open, onFetchVouchers]);
 
-  // Setters for selecting voucher
-  const setSelectedOrderVoucherId = (id?: string) => {
-    setSelectedVoucher((prev) => ({ ...prev, order: id }));
-  };
-  const setSelectedShippingVoucherId = (id?: string) => {
-    setSelectedVoucher((prev) => ({ ...prev, shipping: id }));
-  };
+  const toggleOrderVoucher = useCallback((code?: string) => {
+    setTempSelection(prev => ({
+      ...prev,
+      order: prev.order === code ? undefined : code 
+    }));
+  }, []);
+
+  const toggleShipVoucher = useCallback((code?: string) => {
+    setTempSelection(prev => ({
+      ...prev,
+      shipping: prev.shipping === code ? undefined : code
+    }));
+  }, []);
 
   const handleConfirm = useCallback(() => {
-    const findV = (list: VoucherOption[], idOrCode?: string) =>
-      list.find((v) => v.id === idOrCode || v.code === idOrCode);
+    const findV = (list: VoucherOption[], code?: string) =>
+      list.find((v) => v.code === code || v.id === code);
 
-    const result: any = {};
-    if (isGrouped) {
-      result.order = findV(
-        groupedVouchers.productOrderVouchers,
-        selectedVoucher.order
-      );
-      result.shipping = findV(
-        groupedVouchers.shippingVouchers,
-        selectedVoucher.shipping
-      );
-    } else {
-      result.order = findV(vouchers, selectedVoucher.order);
-      result.shipping = findV(vouchers, selectedVoucher.shipping);
-    }
+    const selection: VoucherSelection = {};
+    const allOrder = isGrouped ? groupedVouchers.productOrderVouchers : vouchers.filter(v => v.voucherScope !== 'SHIPPING');
+    const allShip = isGrouped ? groupedVouchers.shippingVouchers : vouchers.filter(v => v.voucherScope === 'SHIPPING');
 
-    onConfirm(result);
+    selection.order = findV(allOrder, tempSelection.order);
+    selection.shipping = findV(allShip, tempSelection.shipping);
+
+    onConfirm(selection);
     onClose();
-  }, [
-    isGrouped,
-    groupedVouchers,
-    vouchers,
-    selectedVoucher,
-    onConfirm,
-    onClose,
-  ]);
+  }, [isGrouped, groupedVouchers, vouchers, tempSelection, onConfirm, onClose]);
 
   return {
     state: {
@@ -113,14 +105,14 @@ export const useVoucherModalLogic = (props: VoucherModalProps) => {
       groupedVouchers,
       isGrouped,
       loading,
-      selectedOrderVoucherId: selectedVoucher.order,
-      selectedShippingVoucherId: selectedVoucher.shipping,
+      selectedOrderVoucherId: tempSelection.order,
+      selectedShippingVoucherId: tempSelection.shipping,
       isPending,
     },
     actions: {
       setVoucherCode,
-      setSelectedOrderVoucherId,
-      setSelectedShippingVoucherId,
+      setSelectedOrderVoucherId: toggleOrderVoucher,
+      setSelectedShippingVoucherId: toggleShipVoucher,
       handleConfirm,
     },
   };

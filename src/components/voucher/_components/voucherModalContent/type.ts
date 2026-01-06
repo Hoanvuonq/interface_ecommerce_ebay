@@ -11,4 +11,7 @@ export interface ContentProps {
   onSelectShip: (id: string | undefined) => void;
   voucherCode: string;
   onCodeChange: (code: string) => void;
+  onApplyCode?: (code: string) => void;
+  previewData?: any;
+  shopId?: string;
 }

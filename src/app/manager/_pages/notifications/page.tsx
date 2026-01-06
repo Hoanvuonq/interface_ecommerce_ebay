@@ -34,7 +34,7 @@ export default function NotificationsPage() {
     ];
 
     return (
-        <div className="min-h-screen bg-[#fffcf9] pb-20">
+        <div className="min-h-screen bg-[#fffcf9]">
             <div className="relative bg-white py-16 overflow-hidden border-b border-gray-100">
                 <div className="absolute top-0 left-0 w-full h-full opacity-40">
                     <div className="absolute top-[-20%] right-[-10%] w-[40%] h-[60%] bg-orange-100 rounded-full blur-[120px]" />

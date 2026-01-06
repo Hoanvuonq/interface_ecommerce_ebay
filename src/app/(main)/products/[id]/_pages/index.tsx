@@ -24,6 +24,7 @@ import { useProductDetail } from "../../_context/products";
 import { ProductPurchaseActions } from "../_components";
 import { InfomationShop } from "../_components/InfomationShop";
 import { ProductReviews } from "../_components/ProductReviews";
+import Image from "next/image";
 
 const RelatedProducts = dynamic(
   () =>
@@ -477,9 +478,11 @@ export const ProductDetailPage = () => {
             className="absolute top-5 right-5 text-white hover:text-gray-300 transition-colors"
             onClick={() => setImagePreview(null)}
           ></button>
-          <img
+          <Image
             src={imagePreview}
             alt="Preview"
+            width={800}
+            height={800}
             className="max-w-full max-h-full rounded-lg shadow-2xl"
           />
         </div>

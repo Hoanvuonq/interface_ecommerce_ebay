@@ -16,6 +16,7 @@ import { toggleShopSelectionLocal } from "@/store/theme/cartSlice";
 import { cn } from "@/utils/cn";
 import { ShopCartSectionProps } from "../../_types/shop";
 import { formatPriceFull } from "@/hooks/useFormatPrice";
+import Image from "next/image";
 
 export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
   shop,
@@ -58,9 +59,11 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
 
           <div className="flex items-center gap-3 min-w-0 group cursor-pointer">
             <div className="relative shrink-0">
-              <img
+              <Image
                 src={shop.shopLogo || ""}
                 alt={shop.shopName}
+                  width={40}
+                height={40}
                 className="w-10 h-10 rounded-xl object-cover border border-gray-100 shadow-sm transition-transform group-hover:scale-105"
                 onError={(e) => {
                   (

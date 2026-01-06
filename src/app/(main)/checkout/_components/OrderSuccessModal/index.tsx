@@ -63,7 +63,7 @@ export const OrderSuccessModal: React.FC<OrderSuccessModalProps> = ({
         </div>
 
         <div className="space-y-3 animate-in fade-in slide-in-from-bottom-2 duration-700 delay-150 fill-mode-both">
-          <h2 className="text-3xl font-black text-slate-900 uppercase italic tracking-tighter">
+          <h2 className="text-3xl font-bold text-slate-900 uppercase italic tracking-tighter">
             Đặt hàng <span className="text-green-500">thành công!</span>
           </h2>
           <p className="text-slate-500 font-medium leading-relaxed px-6 text-sm">

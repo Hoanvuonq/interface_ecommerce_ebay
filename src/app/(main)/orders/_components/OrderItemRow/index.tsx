@@ -21,13 +21,12 @@ export const OrderItemRow = ({
   return (
     <div className="p-4 sm:p-5 flex gap-4 sm:gap-6 hover:bg-slate-50/50 transition-all duration-300 group border-b border-slate-50 last:border-0">
       
-      <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden border border-slate-100 shrink-0 bg-white shadow-sm flex items-center justify-center transition-transform group-hover:scale-[1.02]">
+      <div className="relative w-20 h-20 sm:w-16 sm:h-16 rounded-xl overflow-hidden border border-slate-100 shrink-0 bg-white shadow-sm flex items-center justify-center transition-transform group-hover:scale-[1.02]">
         {imageUrl ? (
           <Image 
             src={imageUrl} 
             alt={item.productName}
-            width={96} 
-            height={96}
+            fill
             className="w-full h-full object-cover" 
           />
         ) : (
@@ -37,7 +36,7 @@ export const OrderItemRow = ({
         )}
       </div>
 
-      <div className="flex-1 min-w-0 flex flex-col justify-between py-1">
+      <div className="flex-1 min-w-0 flex items-center justify-between py-1">
         <div className="space-y-1">
           <NextLink
             href={`/products/${item.productId}`}

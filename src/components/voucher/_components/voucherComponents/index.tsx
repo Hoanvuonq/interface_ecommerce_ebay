@@ -14,18 +14,19 @@ import {
 } from "@/components/voucher/_types/voucher";
 
 export const VoucherComponents: React.FC<VoucherInputProps> = (props) => {
-  const { compact, shopName, appliedVouchers, forcePlatform, className } = props;
+ const { compact, shopName, appliedVouchers, forcePlatform, className } = props;
   const { state, actions } = useVoucherLogic(props);
 
- const activeOrderVoucherCode = 
-    _.get(appliedVouchers, "order.voucherCode") || 
-    _.get(appliedVouchers, "order.code") || 
-    (typeof appliedVouchers?.order === 'string' ? appliedVouchers.order : null);
-
+  // FIX Ở ĐÂY: API trả về voucherCode, Modal trả về code. Phải lấy cả 2.
+  const activeOrderVoucherCode = 
+    _.get(appliedVouchers, "order.voucherCode") || _.get(appliedVouchers, "order.code");
+  
   const activeShippingVoucherCode = 
-    _.get(appliedVouchers, "shipping.voucherCode") || 
-    _.get(appliedVouchers, "shipping.code") || 
-    (typeof appliedVouchers?.shipping === 'string' ? appliedVouchers.shipping : null);
+    _.get(appliedVouchers, "shipping.voucherCode") || _.get(appliedVouchers, "shipping.code");
+
+  // Lấy giá trị giảm giá từ API discountAmount
+  const orderDiscount = _.get(appliedVouchers, "order.discountAmount", 0);
+  const shipDiscount = _.get(appliedVouchers, "shipping.discountAmount", 0);
 
   const hasAnyVoucher = !!activeOrderVoucherCode || !!activeShippingVoucherCode;
 
@@ -44,65 +45,59 @@ export const VoucherComponents: React.FC<VoucherInputProps> = (props) => {
             <div className="relative z-10 space-y-2">
               <div className="flex items-center justify-between border-b border-emerald-200/30 pb-2">
                 <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest flex items-center gap-1.5">
-                  <CheckCircle2 size={12} />{" "}
-                  {forcePlatform
-                    ? "Voucher Hệ Thống"
-                    : `Ưu đãi từ ${shopName || "Shop"}`}
+                  <CheckCircle2 size={12} />
+                  {forcePlatform ? "Voucher Hệ Thống" : `Ưu đãi từ ${shopName || "Shop"}`}
                 </p>
-                <div className="bg-emerald-500 text-white text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter">
+                <div className="bg-emerald-500 text-white text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter animate-in fade-in zoom-in">
                   Đã áp dụng
                 </div>
               </div>
 
               <div className="space-y-1.5">
                 {[
-    {
-      code: activeOrderVoucherCode,
-      label: "Giảm đơn hàng",
-      color: "orange",
-      discount: Number(_.get(appliedVouchers, "order.discountAmount") || 0),
-    },
-    {
-      code: activeShippingVoucherCode,
-      label: "Miễn phí vận chuyển",
-      color: "blue",
-      discount: Number(_.get(appliedVouchers, "shipping.discountAmount") || 0),
-    },
+                  {
+                    code: activeOrderVoucherCode,
+                    label: "Giảm đơn hàng",
+                    color: "orange",
+                    discount: Number(orderDiscount),
+                  },
+                  {
+                    code: activeShippingVoucherCode,
+                    label: "Miễn phí vận chuyển",
+                    color: "blue",
+                    discount: Number(shipDiscount),
+                  },
                 ].map(
                   (v, idx) =>
                     v.code && (
                       <div
                         key={idx}
-                        className="flex items-center justify-between bg-white/70 p-2 rounded-xl border border-emerald-50 shadow-xs backdrop-blur-sm"
+                        className="flex items-center justify-between bg-white/80 p-2 rounded-xl border border-emerald-50 shadow-sm backdrop-blur-sm"
                       >
                         <div className="flex items-center gap-2 min-w-0">
-                          <div
-                            className={cn(
-                              "p-1.5 rounded-lg shrink-0",
-                              v.color === "orange"
-                                ? "bg-orange-100 text-orange-600"
-                                : "bg-blue-100 text-blue-600"
-                            )}
-                          >
+                          <div className={cn(
+                            "p-1.5 rounded-lg shrink-0",
+                            v.color === "orange" ? "bg-orange-100 text-orange-600" : "bg-blue-100 text-blue-600"
+                          )}>
                             <Ticket size={12} />
                           </div>
                           <div className="flex flex-col min-w-0">
-                            <span className="text-slate-400 text-[8px] font-bold uppercase leading-none mb-1">
+                            <span className="text-slate-400 text-[7px] font-bold uppercase leading-none mb-1">
                               {v.label}
                             </span>
-                            <span className="text-slate-800 font-bold text-[11px] truncate uppercase tracking-tight">
-                              {v.code as any}
+                            <span className="text-slate-800 font-bold text-[10px] truncate uppercase tracking-tight">
+                              {v.code}
                             </span>
                           </div>
                         </div>
 
-                        {v.discount > 0 ? (
-                          <span className="text-red-500 font-bold text-xs shrink-0 italic">
+                       {v.discount > 0 ? (
+                          <span className="text-red-500 font-bold text-[11px] shrink-0 italic">
                             -{formatPrice(v.discount)}
                           </span>
                         ) : (
-                          <span className="text-emerald-600 font-bold text-[10px] shrink-0 uppercase italic">
-                            Đã chọn
+                          <span className="text-emerald-600 font-bold text-[9px] shrink-0 uppercase italic">
+                            Đã tối ưu
                           </span>
                         )}
                       </div>
@@ -142,15 +137,13 @@ export const VoucherComponents: React.FC<VoucherInputProps> = (props) => {
           open={state.modalOpen}
           onClose={() => actions.setModalOpen(false)}
           onConfirm={actions.handleConfirm}
+          shopName={shopName}
           onFetchVouchers={async () => {
-            return state.vouchersData as
-              | VoucherOption[]
-              | GroupedVouchers
-              | undefined;
+            return state.vouchersData;
           }}
-          vouchersData={state.vouchersData as any}
+          vouchersData={state.vouchersData}
           isLoading={state.isLoading}
-          appliedVouchers={appliedVouchers as any}
+          appliedVouchers={appliedVouchers}
           isPlatform={forcePlatform}
         />
       </div>
@@ -191,6 +184,18 @@ export const VoucherComponents: React.FC<VoucherInputProps> = (props) => {
           )}
         </button>
       </div>
+      
+      <VoucherModal
+          open={state.modalOpen}
+          onClose={() => actions.setModalOpen(false)}
+          onConfirm={actions.handleConfirm}
+          shopName={shopName}
+          onFetchVouchers={async () => state.vouchersData}
+          vouchersData={state.vouchersData}
+          isLoading={state.isLoading}
+          appliedVouchers={appliedVouchers}
+          isPlatform={forcePlatform}
+        />
     </div>
   );
 };
