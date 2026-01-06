@@ -118,7 +118,7 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
   return (
     <div className={itemContainerClasses(color, border)}>
       <div className="flex items-center gap-3 flex-1 min-w-0">
-        <div className="p-2 bg-white rounded-xl shadow-sm flex-shrink-0">
+        <div className="p-2 bg-white rounded-xl shadow-sm shrink-0">
           <Icon size={24} className={iconClass} />
         </div>
         
@@ -139,7 +139,6 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
             )}
           </div>
           
-          {/* Progress Bar Tùy chỉnh */}
           {downloading && (
             <div className="mt-2 w-full bg-slate-200 rounded-full h-1 overflow-hidden">
               <div 
@@ -178,7 +177,6 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
   );
 };
 
-// Helper function cho Tailwind classes
 const itemContainerClasses = (color: string, border: string) => `
   mt-2 p-3 rounded-2xl border transition-all duration-200 
   flex items-center justify-between max-w-[360px] group

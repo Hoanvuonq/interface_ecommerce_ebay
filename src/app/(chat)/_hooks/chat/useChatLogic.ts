@@ -164,7 +164,6 @@ useEffect(() => {
       const shopByRole = conv.participants.find(
         (p) => p.role === ParticipantRole.SHOP
       );
-      // Sử dụng optional chaining (?.) an toàn
       if (shopByRole?.user?.shopId) return shopByRole.user.shopId;
 
       const otherParticipant = conv.participants.find(
@@ -175,48 +174,38 @@ useEffect(() => {
     return null;
   }, [store.selectedConversation, currentUserId]);
 
-  // Helper lấy Avatar (Chuẩn)
   const getShopAvatar = useCallback(
     (conv: ConversationResponse | null | undefined) => {
-      // 0. Base check
       if (!conv) return undefined;
-
-      // 1. Tìm người đóng vai trò SHOP
       const shopParticipant = conv.participants?.find(
         (p) => p.role === ParticipantRole.SHOP
       );
 
-      // Nếu tìm thấy shop và có logo
       if (shopParticipant?.user?.logoUrl) {
         return toPublicUrl(shopParticipant.user.logoUrl);
       }
 
-      // 2. Fallback: Tìm người không phải mình (trong chat 1-1 thì đó là đối phương)
       if (currentUserId) {
         const otherParticipant = conv.participants?.find(
           (p) => p.user?.userId !== currentUserId
         );
 
         if (otherParticipant?.user) {
-          // Ưu tiên logoUrl -> image
           const url =
             otherParticipant.user.logoUrl || otherParticipant.user.image;
           if (url) return toPublicUrl(url);
         }
       }
 
-      // 3. Cuối cùng dùng avatar của conversation (nếu có)
       return conv.avatarUrl ? toPublicUrl(conv.avatarUrl) : undefined;
     },
     [currentUserId]
   );
 
-  // Helper lấy Tên (Chuẩn)
   const getShopName = useCallback(
     (conv: ConversationResponse | null | undefined) => {
       if (!conv) return "Shop";
 
-      // 1. Tìm shop theo role
       const shopParticipant = conv.participants?.find(
         (p) => p.role === ParticipantRole.SHOP
       );
@@ -228,7 +217,6 @@ useEffect(() => {
         );
       }
 
-      // 2. Fallback tìm đối phương
       if (currentUserId) {
         const otherParticipant = conv.participants?.find(
           (p) => p.user?.userId !== currentUserId
@@ -248,8 +236,6 @@ useEffect(() => {
     [currentUserId]
   );
 
-  // --- 4. DATA FETCHING CHO PICKER ---
-  // Sử dụng getShopId() trực tiếp
   const activeShopId = getShopId();
 
   const { data: orders = [], isLoading: loadingOrders } = useQuery({
@@ -272,7 +258,6 @@ useEffect(() => {
     enabled: store.showProductPicker && !!activeShopId,
   });
 
-  // --- 5. MUTATIONS (Send/Revoke) - Giữ nguyên logic ---
   const sendMessageMutation = useMutation({
     mutationFn: async () => {
       const text = store.messageText.trim();
@@ -436,8 +421,6 @@ useEffect(() => {
     activeConversationId: store.activeConversationId,
     typingUsers: store.typingUsers,
     latestMessageId: store.latestMessageId || null,
-
-    // Export Helpers
     getShopAvatar,
     getShopName,
 

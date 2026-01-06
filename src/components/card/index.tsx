@@ -5,6 +5,7 @@ interface CardComponentsProps {
   title?: React.ReactNode;
   children: React.ReactNode;
   className?: string;
+  bodyClassName?: string;
   [key: string]: any;
 }
 
@@ -12,6 +13,7 @@ export const CardComponents: React.FC<CardComponentsProps> = ({
   title,
   children,
   className,
+  bodyClassName,
   ...rest
 }) => {
   const baseClasses = cn(
@@ -28,10 +30,13 @@ export const CardComponents: React.FC<CardComponentsProps> = ({
       )}
 
       <div
-        className={cn({
-          "p-4": !title,
-          "p-0": title,
-        })}
+        className={cn(
+          {
+            "p-4": !title,
+            "p-0": title,
+          },
+          bodyClassName
+        )}
       >
         {children}
       </div>

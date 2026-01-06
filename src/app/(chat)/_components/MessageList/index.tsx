@@ -18,47 +18,11 @@ import { TypingIndicator } from "../TypingIndicator";
 import { vi } from "date-fns/locale";
 import { formatTimeFriendly } from "@/hooks/formatDistanceToNow";
 import Image from "next/image";
-// --- Types ---
-interface MenuItem {
-  key: string;
-  label: string;
-  icon?: React.ReactNode;
-  danger?: boolean;
-  onClick: () => void;
-}
-
-interface MessageListProps {
-  messages: ChatMessage[];
-  currentUserId?: string;
-  isInitializing: boolean;
-  isLoadingMore: boolean;
-  hasMoreMessages: boolean;
-  typingUsers?: string[];
-  activeConversationId: string | null;
-  latestMessageId?: string | null;
-
-  // Refs
-  messagesContainerRef: RefObject<HTMLDivElement>;
-  messagesEndRef: React.RefObject<HTMLDivElement>;
-  onScroll: (e: React.UIEvent<HTMLDivElement>) => void;
-
-  getMessageSender: (m: ChatMessage) => "customer" | "shop" | "system";
-  getMessageSenderName: (m: ChatMessage) => string;
-  getMessageSenderAvatar: (m: ChatMessage) => string | undefined;
-    formatTime: (ts: string) => string;
-  isMessageDeleted: (m: ChatMessage, username?: string) => boolean;
-  getMessageMenuItems: (
-    m: ChatMessage,
-    isMine: boolean
-  ) => (MenuItem | boolean | undefined)[];
-  currentUsername?: string;
-
-  isLoadingMessages?: boolean;
-}
+import { MenuItem, MessageListProps } from "./type";
 
 
 
-// --- Main Component ---
+
 export const MessageList: React.FC<MessageListProps> = ({
   messages,
   currentUserId,
@@ -90,7 +54,6 @@ formatTime,
     );
   }
 
-  // --- Empty State ---
   if (_.isEmpty(messages)) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center bg-slate-50 p-8 text-center h-full">
@@ -105,7 +68,6 @@ formatTime,
     );
   }
 
-  // --- Message List ---
   return (
     <div
       ref={messagesContainerRef}
@@ -125,7 +87,6 @@ formatTime,
         {messages.map((m) => {
           const senderType = getMessageSender(m);
           const isMine = senderType === "customer";
-          // Fix: Ensure menuItems are valid objects
           const menuItemsRaw = getMessageMenuItems(m, isMine);
           const menuItems = menuItemsRaw.filter(
             (item): item is MenuItem => !!item && typeof item === "object"

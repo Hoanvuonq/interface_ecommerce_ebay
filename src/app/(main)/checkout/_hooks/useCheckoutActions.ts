@@ -32,7 +32,6 @@ export const useCheckoutActions = () => {
           serviceCode: typeof shop.serviceCode === "string" ? Number(shop.serviceCode) : shop.serviceCode,
         }));
       }
-      // Ensure serviceCode is a number for each shop before dispatch
       if (payload.shops && Array.isArray(payload.shops)) {
         payload.shops = payload.shops.map((shop: any) => ({
           ...shop,

@@ -4,6 +4,7 @@ import { BuyerAddressResponse } from "@/types/buyer/buyer.types";
 import { getStoredUserDetail } from "@/utils/jwt";
 import { useQueries } from "@tanstack/react-query";
 import _ from "lodash";
+import { voucherService } from "@/components/voucher/_service/voucher.service";
 import { useEffect, useMemo, useRef } from "react";
 import { useCheckoutStore } from "../_store/useCheckoutStore";
 import { useCheckoutActions } from "./useCheckoutActions";
@@ -48,45 +49,92 @@ export const useCheckoutInitialization = (
     [shopAddressResults]
   );
 
-  // 1. Khởi tạo địa chỉ và Sync Preview ngay lập tức (Gửi payload lồng ghép)
   useEffect(() => {
-    if (buyerQueryResult.isSuccess && buyerData && initialPreview?.shops) {
+    const autoInitAndApplyVouchers = async () => {
+      if (!buyerQueryResult.isSuccess || !buyerData || !initialPreview?.shops?.length) return;
+      
+      if (hasInitializedRef.current) return;
+      hasInitializedRef.current = true; 
+
       const addresses = (_.get(buyerData, "addresses") || []) as any[];
       const sortedAddr = _.orderBy(addresses, ["isDefault"], ["desc"]);
       store.setBuyerData(buyerData, sortedAddr);
 
-      if (!hasInitializedRef.current) {
-        const defaultAddress = _.find(sortedAddr, { isDefault: true }) || _.first(sortedAddr);
+      const defaultAddress = _.find(sortedAddr, { isDefault: true }) || _.first(sortedAddr);
+      
+      if (defaultAddress?.addressId) {
+        try {
+          const shopVoucherPromises = initialPreview.shops.map(async (s: any) => {
+            const recommend = await voucherService.getShopVouchersWithContext({
+              shopId: s.shopId,
+              itemIds: s.items.map((i: any) => i.itemId),
+              addressId: defaultAddress.addressId,
+              totalAmount: s.summary?.subtotal || 0 // Thêm context tiền để gợi ý chuẩn hơn
+            });
+            if (!recommend?.length) return null;
+            return _.maxBy(recommend, 'discountAmount')?.code || null;
+          });
 
-        if (defaultAddress?.addressId) {
-          // PAYLOAD ĐÚNG CẤU TRÚC LỒNG GHÉP
+          const platformVoucherPromise = voucherService.getPlatformVouchersWithContext({
+            shopIds: initialPreview.shops.map((s: any) => s.shopId),
+            productIds: initialPreview.shops.flatMap((s: any) => s.items.map((i: any) => i.itemId)),
+            addressId: defaultAddress.addressId,
+          });
+
+          const [shopVoucherCodes, platformRecommend] = await Promise.all([
+            Promise.all(shopVoucherPromises),
+            platformVoucherPromise
+          ]);
+
+          // 4. Lọc voucher platform tốt nhất
+          const globalVouchers: string[] = [];
+          const bestOrder = _.maxBy(platformRecommend.productOrderVouchers, 'discountAmount');
+          const bestShip = _.maxBy(platformRecommend.shippingVouchers, 'discountAmount');
+          
+          if (bestOrder?.code) globalVouchers.push(bestOrder.code);
+          if (bestShip?.code) globalVouchers.push(bestShip.code);
+
+          // 5. Build Payload
           const fullPayload = {
             addressId: defaultAddress.addressId,
-            globalVouchers: initialRequest?.globalVouchers || [],
-            shops: _.map(initialPreview.shops, (s: any) => ({
+            globalVouchers,
+            shops: initialPreview.shops.map((s: any, idx: number) => ({
               shopId: s.shopId,
-              itemIds: _.map(s.items, "itemId"),
-              vouchers: [],
+              itemIds: s.items.map((i: any) => i.itemId),
+              vouchers: shopVoucherCodes[idx] ? [shopVoucherCodes[idx]] : [],
               shippingFee: 0
             }))
           };
 
-          syncPreview(fullPayload);
-          hasInitializedRef.current = true;
+          // 6. Đồng bộ về store/server
+          await syncPreview(fullPayload);
+        } catch (error) {
+          console.error("Lỗi khởi tạo checkout:", error);
+          // Nếu lỗi thì ít nhất vẫn khởi tạo với địa chỉ
+          syncPreview({
+            addressId: defaultAddress.addressId,
+            shops: initialPreview.shops.map((s: any) => ({
+              shopId: s.shopId,
+              itemIds: s.items.map((i: any) => i.itemId),
+              vouchers: [],
+              shippingFee: 0
+            }))
+          });
         }
       }
-    }
-  }, [buyerQueryResult.isSuccess, buyerData, initialPreview]);
+    };
 
-  // 2. Load địa chỉ Shop (Fix lỗi TypeScript tại đây)
+    autoInitAndApplyVouchers();
+  }, [buyerQueryResult.isSuccess, buyerData, initialPreview?.shops]); // Theo dõi shops để chắc chắn có dữ liệu mới chạy
+
+  // Logic load địa chỉ Shop giữ nguyên (đã fix lỗi TS của bạn)
   useEffect(() => {
     if (isAllShopAddressSuccess && !shopAddressLoadedRef.current) {
       const idMap: Record<string, string> = {};
       const fullMap: Record<string, any> = {};
 
-      // SỬA LỖI TS: Sử dụng shopIndex thay vì ép kiểu index:any
       _.forEach(initialPreview?.shops, (shop: any, shopIndex: number) => {
-        const queryResult: any = shopAddressResults[shopIndex]; // Lấy query tương ứng
+        const queryResult: any = shopAddressResults[shopIndex];
         const addresses = _.get(queryResult, "data.data", []);
         const defaultAddr = _.find(addresses, { isDefaultPickup: true }) || _.first(addresses);
 
@@ -100,9 +148,7 @@ export const useCheckoutInitialization = (
         }
       });
 
-      const mainShop = _.maxBy(initialPreview?.shops, (s: any) =>
-        _.get(s, "items.length", 0)
-      );
+      const mainShop = _.maxBy(initialPreview?.shops, (s: any) => _.get(s, "items.length", 0));
 
       store.setShopAddressData({
         idMap,
@@ -118,4 +164,4 @@ export const useCheckoutInitialization = (
     isAllShopAddressSuccess, 
     isLoading: _.some(results, "isLoading") 
   };
-};
+};  

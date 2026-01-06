@@ -419,13 +419,25 @@ const cartSlice = createSlice({
       })
       .addCase(clearCart.fulfilled, (state, action) => {
         state.loading = false;
-        state.cart = mergeSelectionState(action.payload, state.cart);
+
+        if (action.payload) {
+          state.cart = {
+            ...action.payload,
+            shops: [],
+            itemCount: 0,
+            totalAmount: 0,
+            version: action.payload?.version || 0,
+          };
+        } else {
+          state.cart = null;
+        }
+
         success("Đã xóa tất cả sản phẩm");
       })
       .addCase(clearCart.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
-        error(action.payload as string);
+        error((action.payload as string) || "Không thể xóa giỏ hàng");
       });
 
     builder

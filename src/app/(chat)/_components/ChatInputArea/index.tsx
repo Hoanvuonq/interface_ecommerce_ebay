@@ -14,8 +14,8 @@ import {
   X,
 } from "lucide-react";
 import dynamic from "next/dynamic";
-import { ChatAttachment } from "../../_store/chatStore"; // Import type từ store
-
+import { ChatAttachment } from "../../_store/chatStore";
+import { cn } from "@/utils/cn";
 const EmojiPicker = dynamic(() => import("emoji-picker-react"), { ssr: false });
 
 interface ChatInputAreaProps {
@@ -23,25 +23,18 @@ interface ChatInputAreaProps {
   setMessageText: (val: string) => void;
   onSendMessage: () => void;
   onAttachmentChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-
-  // FIX: Thêm 2 props này
   attachments: ChatAttachment[];
   onRemoveAttachment: (id: string) => void;
-
   isUploading: boolean;
   sendingMessage: boolean;
   disabled: boolean;
-
   showEmojiPicker: boolean;
   setShowEmojiPicker: (val: boolean) => void;
   onEmojiClick: (emojiData: any) => void;
-
   toggleOrderPicker: () => void;
   toggleProductPicker: () => void;
-
-  showQuickReplies?: boolean; // Optional vì có thể chưa dùng
+  showQuickReplies?: boolean;
   setShowQuickReplies?: (val: boolean) => void;
-
   editingMessage: any;
   replyingToMessage: any;
   inputRef: React.RefObject<HTMLTextAreaElement>;
@@ -52,7 +45,7 @@ export const ChatInputArea: React.FC<ChatInputAreaProps> = ({
   setMessageText,
   onSendMessage,
   onAttachmentChange,
-  attachments = [], // Mặc định rỗng
+  attachments = [],
   onRemoveAttachment,
   isUploading,
   sendingMessage,
@@ -217,7 +210,10 @@ export const ChatInputArea: React.FC<ChatInputAreaProps> = ({
           disabled={
             disabled || (!messageText.trim() && attachments.length === 0)
           }
-          className="w-11 h-11 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 text-white flex items-center justify-center shadow-lg shadow-orange-200 hover:scale-105 active:scale-95 transition-all disabled:grayscale disabled:opacity-50 disabled:scale-100"
+          className={cn(
+            "w-11 h-11 rounded-2xl bg-linear-to-br from-orange-500 to-amber-500 text-white flex items-center justify-center shadow-lg ",
+            "shadow-orange-200 hover:scale-105 active:scale-95 transition-all disabled:grayscale disabled:opacity-50 disabled:scale-100"
+          )}
         >
           {sendingMessage || isUploading ? (
             <Loader2 size={20} className="animate-spin" />

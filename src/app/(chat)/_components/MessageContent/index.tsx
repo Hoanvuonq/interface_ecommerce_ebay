@@ -1,17 +1,17 @@
 "use client";
 
-import React, { useState } from "react";
+import { toPublicUrl } from "@/utils/storage/url";
 import _ from "lodash";
+import { Info, Package, ShoppingCart } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Info, ShoppingCart, Package } from "lucide-react";
-import { ImageAttachment } from "../ImageAttachment";
-import { VideoAttachment } from "../VideoAttachment";
+import React from "react";
+import { MessageResponse } from "../../_types/chat.dto";
+import type { Message as ChatMessage } from "../../_types/chat.type";
 import { AudioAttachment } from "../AudioAttachment";
 import { FileAttachment } from "../FileAttachment";
-import { MessageResponse } from "../../_types/chat.dto";
-import { toPublicUrl } from "@/utils/storage/url";
-import type { Message as ChatMessage } from "../../_types/chat.type";
-import Image from "next/image";
+import { ImageAttachment } from "../ImageAttachment";
+import { VideoAttachment } from "../VideoAttachment";
 
 interface MessageContentProps {
   message: ChatMessage | MessageResponse;
@@ -105,7 +105,7 @@ export const MessageContent: React.FC<MessageContentProps> = ({ message }) => {
 
       return (
         <div
-          className="bg-white rounded-2xl border border-gray-100 overflow-hidden min-w-[260px] max-w-[300px] shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+          className="bg-white rounded-2xl border border-gray-100 overflow-hidden min-w-65 max-w-75 shadow-sm hover:shadow-md transition-shadow cursor-pointer"
           onClick={() => {
             const path = product.slug
               ? `/products/${product.slug}`
@@ -162,7 +162,7 @@ export const MessageContent: React.FC<MessageContentProps> = ({ message }) => {
 
       return (
         <div
-          className="bg-white rounded-2xl border border-gray-100 overflow-hidden min-w-[260px] max-w-[300px] shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+          className="bg-white rounded-2xl border border-gray-100 overflow-hidden min-w-65 max-w-75 shadow-sm hover:shadow-md transition-shadow cursor-pointer"
           onClick={() =>
             order.orderId && router.push(`/orders/${order.orderId}`)
           }
@@ -204,7 +204,7 @@ export const MessageContent: React.FC<MessageContentProps> = ({ message }) => {
                 const itemImageUrl = item.image ? toPublicUrl(item.image) : null;
                 return (
                   <div key={idx} className="flex items-center gap-2">
-                    <div className="w-10 h-10 bg-white rounded-lg border border-gray-100 flex-shrink-0 overflow-hidden flex items-center justify-center">
+                    <div className="w-10 h-10 bg-white rounded-lg border border-gray-100 shrink-0 overflow-hidden flex items-center justify-center">
                       {itemImageUrl ? (
                         <Image
                           width={40}

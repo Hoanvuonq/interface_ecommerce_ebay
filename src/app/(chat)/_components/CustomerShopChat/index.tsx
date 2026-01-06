@@ -20,10 +20,7 @@ import {
 } from "@/providers/WebSocketProvider";
 import { getStoredUserDetail } from "@/utils/jwt";
 import { isMessageDeleted } from "../../_services/chat-utils.service";
-import {
-  CustomerShopChatProps,
-  resolveOrderItemImageUrl,
-} from "../../_types/customerShopChat.type";
+import { CustomerShopChatProps, resolveOrderItemImageUrl } from "../../_types/customerShopChat.type";
 
 export const CustomerShopChat: React.FC<CustomerShopChatProps> = ({
   open,
