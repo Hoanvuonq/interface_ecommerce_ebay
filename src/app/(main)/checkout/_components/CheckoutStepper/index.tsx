@@ -7,7 +7,7 @@ interface CheckoutStepperProps {
 const CheckoutStepper: React.FC<CheckoutStepperProps> = ({ currentStep }) => {
  
   return (
-    <div className="w-full bg-white rounded-xl shadow-sm border border-gray-100 py-3 px-6">
+    <div className="w-full bg-white rounded-xl shadow-custom border border-gray-100 py-2 px-6">
       <div className="flex items-center justify-between w-full">
         {ISteps.map((step, index) => {
           const isCompleted = currentStep > index;
@@ -59,7 +59,7 @@ const CheckoutStepper: React.FC<CheckoutStepperProps> = ({ currentStep }) => {
         })}
       </div>
       
-      <div className="h-6 sm:h-8"/>
+      <div className="h-6"/>
     </div>
   );
 };

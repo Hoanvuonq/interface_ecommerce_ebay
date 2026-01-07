@@ -260,6 +260,29 @@ export const checkoutPreview = createAsyncThunk(
   }
 );
 
+export const removeCartItems = createAsyncThunk(
+  "cart/removeCartItems",
+  async (
+    { itemIds, etag }: { itemIds: string[]; etag: string },
+    { rejectWithValue }
+  ) => {
+    try {
+     
+      const deletePromises = itemIds.map((id) => 
+        cartService.removeCartItem(id, etag)
+      );
+      
+      await Promise.all(deletePromises);
+      
+      return itemIds;
+    } catch (error: any) {
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to remove items"
+      );
+    }
+  }
+);
+
 // Slice
 const cartSlice = createSlice({
   name: "cart",

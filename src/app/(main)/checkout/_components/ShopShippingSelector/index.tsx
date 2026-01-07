@@ -15,20 +15,20 @@ export const ShopShippingSelector: React.FC<ShopShippingSelectorProps> = ({
   onMethodChange,
 }) => {
   return (
-    <div className="bg-slate-50/50 p-4 sm:p-6 rounded-4xl border border-slate-100 space-y-4">
+    <div className="bg-gray-50/50 p-4 rounded-2xl border border-gray-100 space-y-2">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-white rounded-xl flex items-center justify-center shadow-sm text-orange-500">
             <Truck size={16} strokeWidth={2.5} />
           </div>
-          <h4 className="text-sm font-semibold uppercase tracking-tight text-slate-700">
+          <h4 className="text-sm font-semibold uppercase tracking-tight text-gray-700">
             Phương thức vận chuyển
           </h4>
         </div>
       </div>
 
       {isLoading ? (
-        <div className="flex gap-3 items-center justify-center py-6 bg-white rounded-2xl border border-dashed border-slate-200 text-sm text-slate-400 font-bold uppercase tracking-widest">
+        <div className="flex gap-3 items-center justify-center py-6 bg-white rounded-2xl border border-dashed border-gray-200 text-sm text-gray-400 font-bold uppercase tracking-widest">
           <Loader2 className="animate-spin w-5 h-5 text-orange-500" />
           Đang tính phí vận chuyển...
         </div>
@@ -51,28 +51,26 @@ export const ShopShippingSelector: React.FC<ShopShippingSelectorProps> = ({
                     "relative p-4 border-2 rounded-2xl cursor-pointer transition-all duration-300 flex justify-between items-center group",
                     isSelected
                       ? "border-orange-500 bg-white shadow-md ring-1 ring-orange-500/20"
-                      : "border-slate-100 bg-white/50 hover:border-orange-200 hover:bg-white"
+                      : "border-gray-100 bg-white/50 hover:border-orange-200 hover:bg-white"
                   )}
                 >
                   <div className="flex-1 min-w-0 pr-2">
                     <p
                       className={cn(
                         "text-[11px] font-semibold uppercase tracking-wide transition-colors",
-                        isSelected ? "text-orange-600" : "text-slate-700"
+                        isSelected ? "text-orange-600" : "text-gray-700"
                       )}
                     >
                       {option.displayName}
                     </p>
-                    <p className="text-[10px] text-slate-400 font-bold mt-1 uppercase tracking-widest italic">
+                    <p className="text-[10px] text-gray-600 font-bold mt-1 uppercase  italic">
                       Nhận hàng:{" "}
                       {option.estimatedDeliveryTime || "Dự kiến 2-4 ngày"}
                     </p>
                   </div>
 
                   <div className="flex flex-col items-end gap-1">
-                    <span className="text-sm font-semibold text-slate-900 leading-none">
-                      {formatPrice(option.fee)}
-                    </span>
+                   
                     {isSelected && (
                       <CheckCircle2
                         size={16}
@@ -80,6 +78,9 @@ export const ShopShippingSelector: React.FC<ShopShippingSelectorProps> = ({
                         strokeWidth={3}
                       />
                     )}
+                     <span className="text-sm font-semibold text-gray-900 leading-none">
+                      {formatPrice(option.fee)}
+                    </span>
                   </div>
                 </div>
               );

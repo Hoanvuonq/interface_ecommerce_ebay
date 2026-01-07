@@ -13,7 +13,6 @@ import {
 export const useCheckoutActions = () => {
   const dispatch = useAppDispatch();
   const { success: toastSuccess, error: toastError } = useToast();
-
   const {
     request,
     preview,
@@ -25,59 +24,60 @@ export const useCheckoutActions = () => {
 
   const previewMutation = useMutation({
     mutationFn: async (updatedRequest: any) => {
-      const basePayload = preparePreviewPayload(updatedRequest, preview);
-
-      const finalPayload = {
-        addressId: basePayload.addressId || updatedRequest.addressId,
-        globalVouchers: updatedRequest.globalVouchers || [],
-        shops: (updatedRequest.shops || basePayload.shops).map((shop: any) => {
-          const shopPreview = preview?.data?.shops?.find(
-            (s: any) => s.shopId === shop.shopId
-          );
-          const selectedOption = shopPreview?.availableShippingOptions?.find(
-            (opt: any) =>
-              opt.serviceCode ===
-              Number(shop.serviceCode || shop.selectedShippingMethod)
-          );
-
-          return {
-            shopId: shop.shopId,
-            itemIds: shop.itemIds,
-            serviceCode: Number(
-              shop.serviceCode || shop.selectedShippingMethod || 400021
-            ),
-            shippingFee: selectedOption?.fee || shop.shippingFee || 0,
-          };
-        }),
-      };
-
+      const finalPayload = preparePreviewPayload(updatedRequest, preview);
       return await dispatch(checkoutPreviewAction(finalPayload)).unwrap();
     },
     onMutate: () => setLoading(true),
-   onSuccess: (result, variables) => {
-      // Backend mới trả về data nằm trong result.data
-      const shopData = _.get(result, "data.shops", []);
-      
-      // Thu thập voucher lỗi từ cấu trúc mới
-      const invalidVouchers = _.flatMap(shopData, (s) => 
-        _.get(s, "voucherResult.invalidVouchers", [])
-      );
 
-      if (invalidVouchers.length > 0) {
-          // Nếu có voucher lỗi, xóa nó khỏi request và gọi lại
-          let finalRequest = _.cloneDeep(variables);
-          // Logic lọc voucher code ở đây...
-          // previewMutation.mutate(finalRequest); 
-          // return;
-      }
-
+    onSuccess: (result: any, variables: any) => {
       setPreview(result);
-      setRequest(variables);
-      // Lưu vào session thì nên lưu result (đã bao gồm result.data)
-      sessionStorage.setItem("checkoutPreview", JSON.stringify(result));
-      sessionStorage.setItem("checkoutRequest", JSON.stringify(variables));
+      const shopData = _.get(result, "data.shops", []);
+
+      const updatedShops = variables.shops.map((s: any) => {
+        const freshShop = _.find(shopData, { shopId: s.shopId });
+
+        const services =
+          _.get(freshShop, "availableShippingOptions") ||
+          _.get(freshShop, "shipping.services") ||
+          [];
+
+        let finalServiceCode = s.serviceCode;
+        let finalFee = _.get(freshShop, "summary.shippingFee", s.shippingFee);
+
+        const isCurrentCodeValid = _.some(
+          services,
+          (srv) => Number(srv.serviceCode) === Number(finalServiceCode)
+        );
+
+        if (!isCurrentCodeValid && services.length > 0) {
+          const sortedServices = _.sortBy(services, [(o) => Number(o.fee)]);
+          const cheapestService = sortedServices[0];
+
+          if (cheapestService) {
+            finalServiceCode = cheapestService.serviceCode;
+            finalFee = cheapestService.fee;
+          }
+        } else if (isCurrentCodeValid) {
+          const currentService = _.find(
+            services,
+            (srv) => Number(srv.serviceCode) === Number(finalServiceCode)
+          );
+          if (currentService) {
+            finalFee = currentService.fee;
+          }
+        }
+
+        return {
+          ...s,
+          serviceCode: Number(finalServiceCode),
+          shippingFee: finalFee,
+          vouchers: _.get(freshShop, "voucherResult.validVouchers", s.vouchers),
+        };
+      });
+
+      setRequest({ ...variables, shops: updatedShops });
     },
-    onError: (err: any) => toastError(err.message || "Lỗi cập nhật thông tin"),
+
     onSettled: () => setLoading(false),
   });
 
@@ -107,12 +107,17 @@ export const useCheckoutActions = () => {
       toastSuccess("Đặt hàng thành công!");
       return response;
     },
-    onError: (err: any) =>
-      toastError(
-        _.get(err, "response.data.message") ||
-          err.message ||
-          "Đặt hàng thất bại"
-      ),
+    onError: (err: any) => {
+      const errCode = _.get(err, "response.data.code");
+      if (errCode === 3001) {
+        previewMutation.mutate(request);
+        toastError(
+          "Thông tin vận chuyển vừa cập nhật. Vui lòng nhấn Đặt hàng lần nữa."
+        );
+      } else {
+        toastError(_.get(err, "response.data.message") || "Đặt hàng thất bại");
+      }
+    },
     onSettled: () => setLoading(false),
   });
 
@@ -121,9 +126,7 @@ export const useCheckoutActions = () => {
     const updatedRequest = {
       ...request,
       shops: request.shops.map((s: any) =>
-        s.shopId === shopId 
-          ? { ...s, serviceCode: Number(methodCode) }
-          : s
+        s.shopId === shopId ? { ...s, serviceCode: Number(methodCode) } : s
       ),
     };
     return previewMutation.mutateAsync(updatedRequest);

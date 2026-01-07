@@ -96,7 +96,7 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
     }
 
     return (
-        <div className="bg-white rounded-2xl shadow-xl shadow-gray-200/50 border border-gray-100 overflow-hidden sticky top-24">
+        <div className="bg-white rounded-2xl shadow-custom shadow-gray-200/50 border border-gray-100 overflow-hidden sticky top-24">
             <div className="p-5 space-y-5">
                 <div className="flex items-center justify-between bg-gray-50/80 p-3 rounded-xl border border-gray-100">
                     <div className="flex items-center gap-2.5">
@@ -138,23 +138,21 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
 
                 <div className="h-px bg-dashed-gray bg-[linear-gradient(to_right,#e5e7eb_50%,transparent_50%)] bg-size-[8px_1px] w-full" />
 
-                {/* Platform Voucher */}
                 <div className="space-y-3">
                     <div className="flex items-center gap-2">
-                        <div className="p-1.5 bg-orange-100 rounded-lg text-orange-600">
+                        <div className="p-1.5 bg-orange-100 rounded-lg text-(--color-mainColor)">
                             <TagIcon size={16} />
                         </div>
-                        <span className="text-sm font-extrabold text-gray-800">Mã giảm giá</span>
+                        <span className="text-sm font-bold text-gray-800">Mã giảm giá</span>
                     </div>
                     <VoucherComponents compact />
                 </div>
 
-                {/* Total Section */}
                 <div className="bg-gray-50 -mx-5 px-5 py-5 border-t border-gray-100 mt-2">
                     <div className="flex justify-between items-start mb-4">
                         <span className="text-base font-bold text-gray-800 uppercase tracking-tight">Tổng cộng</span>
                         <div className="text-right">
-                            <p className="text-3xl font-semibold text-orange-600 leading-none mb-1">
+                            <p className="text-3xl font-semibold text-(--color-mainColor) leading-none mb-1">
                                 {formatPrice(selectedTotal)}
                             </p>
                             {selectedDiscount > 0 && (
@@ -171,7 +169,7 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
                         className={cn(
                             "w-full h-12 rounded-2xl font-semibold text-md transition-all shadow-lg active:scale-95 flex items-center justify-center gap-3 border-none",
                             hasSelectedItems 
-                                ? "bg-orange-500 hover:bg-orange-600 text-white shadow-orange-200" 
+                                ? "bg-(--color-mainColor) hover:bg-orange-600 text-white shadow-orange-200" 
                                 : "bg-gray-200 text-gray-400 cursor-not-allowed shadow-none"
                         )}
                     >

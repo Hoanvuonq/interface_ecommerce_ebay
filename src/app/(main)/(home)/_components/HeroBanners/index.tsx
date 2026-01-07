@@ -38,7 +38,7 @@ export const HeroBanners: React.FC<HeroBannersProps> = ({ banners }) => {
         >
           <CustomCarousel banners={mainBanners} className="h-60 lg:h-80" />
           
-          <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+          <div className="absolute inset-x-0 bottom-0 h-20 bg-linear-to-t from-black/20 to-transparent pointer-events-none" />
         </motion.div>
 
         <div className="lg:w-[32%] flex flex-col gap-3">

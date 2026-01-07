@@ -1,72 +1,102 @@
 import { buyerService } from "@/services/buyer/buyer.service";
-import { getAllShopAddresses } from "@/services/shop/shop.service";
 import { getStoredUserDetail } from "@/utils/jwt";
-import { useQueries, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import _ from "lodash";
-import { voucherService } from "@/components/voucher/_service/voucher.service";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useCheckoutStore } from "../_store/useCheckoutStore";
 import { useCheckoutActions } from "./useCheckoutActions";
 
 export const useCheckoutInitialization = (initialPreview: any) => {
   const store = useCheckoutStore();
   const { syncPreview } = useCheckoutActions();
-  const hasInitializedRef = useRef(false);
+  const hasInitialized = useRef(false);
   const user = getStoredUserDetail();
 
-  const { data: buyerData, isSuccess: isBuyerSuccess } = useQuery({
+  const { data: buyerData, isSuccess } = useQuery({
     queryKey: ["buyer-detail", user?.buyerId],
     queryFn: () => buyerService.getBuyerDetail(user?.buyerId!),
     enabled: !!user?.buyerId,
   });
 
   useEffect(() => {
-    const autoInit = async () => {
-      if (
-        hasInitializedRef.current ||
-        !isBuyerSuccess ||
-        !buyerData ||
-        !initialPreview?.shops?.length
-      ) {
+    const runInit = async () => {
+      if (hasInitialized.current || !isSuccess || !buyerData) return;
+
+      const addresses = _.get(buyerData, "addresses") || [];
+      const defaultAddr =
+        _.find(addresses, { isDefault: true }) || addresses[0];
+
+      if (!defaultAddr) {
+        store.setBuyerData(buyerData, []);
+        hasInitialized.current = true;
         return;
       }
 
-      hasInitializedRef.current = true;
+      hasInitialized.current = true;
+      store.setBuyerData(
+        buyerData,
+        _.orderBy(addresses, ["isDefault"], ["desc"])
+      );
 
-      const addresses = _.get(buyerData, "addresses") || [];
-      const sortedAddr = _.orderBy(addresses, ["isDefault"], ["desc"]);
-      const defaultAddress =
-        _.find(sortedAddr, { isDefault: true }) || _.first(sortedAddr);
-      store.setBuyerData(buyerData, sortedAddr);
+      const initPayload = {
+        addressId: defaultAddr.addressId,
+        shops:
+          initialPreview?.shops?.map((s: any) => ({
+            shopId: s.shopId,
+            itemIds: s.items.map((i: any) => i.itemId || i.id),
+            serviceCode: 400021,
 
-      if (defaultAddress?.addressId) {
-        try {
-          store.setLoading(true);
+            vouchers: [],
+          })) || [],
+        globalVouchers: [],
+      };
+      // ------------------------------------
 
-          const fullPayload = {
-            addressId: defaultAddress.addressId,
-            globalVouchers: [],
-            shops: initialPreview.shops.map((s: any) => ({
-              shopId: s.shopId,
-              itemIds: s.items.map((i: any) => i.itemId),
-              serviceCode: Number(s.selectedShippingMethod || 400021),
-              shippingFee: s.summary?.shippingFee || 0,
-            })),
-          };
-          await syncPreview(fullPayload);
-          const result = await syncPreview(fullPayload);
+      store.setRequest(initPayload);
 
-          store.setBuyerData(buyerData, sortedAddr);
-        } catch (error) {
-          console.error("Init Checkout Failed:", error);
-        } finally {
-          store.setLoading(false);
-        }
+      try {
+        const result = await syncPreview(initPayload);
+        const data = result?.data || result;
+
+        const finalRequest = {
+          ...initPayload,
+          globalVouchers: _.get(data, "summary.globalVouchers", []),
+          shops: initPayload.shops.map((shop: any) => {
+            const freshShop = _.find(data.shops, { shopId: shop.shopId });
+
+            const options =
+              _.get(freshShop, "availableShippingOptions") ||
+              _.get(freshShop, "shipping.services") ||
+              [];
+
+            let bestServiceCode = shop.serviceCode;
+            let bestFee = _.get(freshShop, "summary.shippingFee", 0);
+
+            if (options && options.length > 0) {
+              const sorted = _.sortBy(options, [(o) => Number(o.fee)]);
+              const cheapest = sorted[0];
+              if (cheapest) {
+                bestServiceCode = cheapest.serviceCode;
+                bestFee = cheapest.fee;
+              }
+            }
+
+            return {
+              ...shop,
+              serviceCode: Number(bestServiceCode),
+              shippingFee: bestFee,
+              vouchers: _.get(freshShop, "voucherResult.validVouchers", []),
+            };
+          }),
+        };
+
+        store.setRequest(finalRequest);
+      } catch (e) {
+        console.error("❌ Init Error:", e);
+        hasInitialized.current = false;
       }
     };
 
-    autoInit();
-  }, [isBuyerSuccess, initialPreview?.shops?.length]);
-
-  return { isLoading: !isBuyerSuccess };
+    runInit();
+  }, [isSuccess, buyerData, initialPreview]);
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React from "react";
 import {
   Store,
   CheckCircle2,
@@ -8,7 +8,6 @@ import {
   ChevronRight,
   Tag as TagIcon,
 } from "lucide-react";
-import type { ShopDto } from "@/types/cart/cart.types";
 import { CartItem } from "../CartItems";
 import { VoucherComponents } from "@/components/voucher/_components/voucherComponents";
 import { useAppDispatch } from "@/store/store";
@@ -34,16 +33,17 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
   };
 
   return (
-    <section className="mb-6 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all hover:shadow-md">
-      <div className="flex flex-col md:flex-row md:items-center justify-between px-5 py-4 gap-4 bg-white border-b border-gray-50">
-        <div className="flex items-center gap-4 flex-1 min-w-0">
+    <section className="mb-6 bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden transition-all hover:shadow-md">
+      {/* Header Shop - Giảm padding và chỉnh màu nền dịu hơn */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between px-4 py-3 gap-4 bg-slate-50/50 border-b border-slate-100">
+        <div className="flex items-center gap-3 flex-1 min-w-0">
           <div className="relative flex items-center justify-center">
             <input
               type="checkbox"
               id={`shop-${shop.shopId}`}
               className={cn(
-                " checked:bg-orange-500 checked:border-orange-500 transition-all cursor-pointer",
-                "peer appearance-none w-5 h-5 border-2 border-gray-200 rounded-md"
+                "peer appearance-none w-5 h-5 border-2 border-slate-200 rounded-md",
+                "checked:bg-orange-500 checked:border-orange-500 transition-all cursor-pointer"
               )}
               checked={shop.allSelected}
               onChange={handleShopCheckboxChange}
@@ -62,45 +62,43 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
               <Image
                 src={shop.shopLogo || ""}
                 alt={shop.shopName}
-                  width={40}
-                height={40}
-                className="w-10 h-10 rounded-xl object-cover border border-gray-100 shadow-sm transition-transform group-hover:scale-105"
+                width={32} 
+                height={32}
+                className="w-8 h-8 rounded-lg object-cover border border-slate-100 shadow-sm transition-transform group-hover:scale-105"
                 onError={(e) => {
-                  (
-                    e.target as HTMLImageElement
-                  ).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                  (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
                     shop.shopName
-                  )}&background=f3f4f6&color=6b7280`;
+                  )}&background=f1f5f9&color=64748b`;
                 }}
               />
-              <div className="absolute -bottom-1 -right-1 bg-white rounded-full p-0.5 shadow-sm border border-gray-50">
-                <Store size={10} className="text-gray-400" />
+              <div className="absolute -bottom-1 -right-1 bg-white rounded-full p-0.5 shadow-sm border border-slate-50">
+                <Store size={8} className="text-slate-400" />
               </div>
             </div>
 
             <div className="flex flex-col min-w-0">
               <div className="flex items-center gap-2">
-                <h3 className="text-sm font-semibold text-gray-900 truncate group-hover:text-orange-500 transition-colors">
+                <h3 className="text-xs font-bold text-slate-700 truncate group-hover:text-orange-600 transition-colors uppercase tracking-tight">
                   {shop.shopName}
                 </h3>
                 <ChevronRight
                   size={14}
-                  className="text-gray-300 group-hover:text-orange-400 transition-transform group-hover:translate-x-0.5"
+                  className="text-slate-300 group-hover:text-orange-400 transition-transform group-hover:translate-x-0.5"
                 />
               </div>
 
               <div className="flex items-center gap-2 mt-0.5">
                 {shop.rating && shop.rating > 0 && (
-                  <div className="flex items-center gap-0.5 px-1.5 py-0.5 bg-amber-50 rounded-md">
-                    <Star size={10} className="text-amber-400 fill-amber-400" />
-                    <span className="text-[10px] font-bold text-amber-700">
+                  <div className="flex items-center gap-0.5 px-1 py-0.5 bg-amber-50 rounded-md border border-amber-100/50">
+                    <Star size={8} className="text-amber-400 fill-amber-400" />
+                    <span className="text-[9px] font-bold text-amber-700">
                       {shop.rating.toFixed(1)}
                     </span>
                   </div>
                 )}
                 {shop.isVerified && (
-                  <span className="text-[9px] font-semibold uppercase tracking-tighter text-blue-500 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-100">
-                    Đối tác uy tín
+                  <span className="text-[8px] font-bold uppercase tracking-wider text-blue-500 bg-blue-50 px-1 py-0.5 rounded border border-blue-100">
+                    Uy tín
                   </span>
                 )}
               </div>
@@ -112,21 +110,21 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
           <VoucherComponents
             shopId={shop.shopId}
             shopName={shop.shopName}
-            className="w-full sm:w-auto"
+            className="w-full sm:w-auto scale-90 origin-right" 
           />
         </div>
       </div>
 
       <div className="hidden lg:block">
-        <div className="grid grid-cols-12 px-6 py-3 bg-gray-50/50 text-[10px] font-semibold uppercase tracking-widest text-gray-400 border-b border-gray-50">
-          <div className="col-span-5">Thông tin Sản phẩm</div>
+        <div className="grid grid-cols-12 px-6 py-2 bg-slate-50 text-[10px] font-semibold uppercase tracking-widest text-slate-400 border-b border-slate-100">
+          <div className="col-span-5">Sản phẩm</div>
           <div className="col-span-2 text-center">Đơn giá</div>
           <div className="col-span-2 text-center">Số lượng</div>
           <div className="col-span-2 text-center">Thành tiền</div>
           <div className="col-span-1 text-right">Xử lý</div>
         </div>
 
-        <div className="divide-y divide-gray-50 bg-white">
+        <div className="divide-y divide-slate-50 bg-white">
           {shop.items.map((item) => (
             <CartItem
               key={item.id}
@@ -138,11 +136,11 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
         </div>
       </div>
 
-      <div className="lg:hidden divide-y divide-gray-50 bg-white">
+      <div className="lg:hidden divide-y divide-slate-50 bg-white">
         {shop.items.map((item) => (
           <div
             key={item.id}
-            className="p-2 transition-colors active:bg-gray-50"
+            className="p-2 transition-colors active:bg-slate-50"
           >
             <CartItem
               item={item}
@@ -154,27 +152,27 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
         ))}
       </div>
 
-      <div className="bg-gray-50/50 border-t border-gray-100 mt-auto">
+      <div className="bg-slate-50/30 border-t border-slate-100 mt-auto">
         {shop.discount > 0 && (
-          <div className="px-5 py-2.5 flex justify-between items-center bg-orange-50/40 border-b border-orange-100/50">
+          <div className="px-5 py-2 flex justify-between items-center bg-orange-50/30 border-b border-orange-100/30">
             <div className="flex items-center gap-2 text-orange-600">
-              <TagIcon size={14} className="fill-orange-50" />
-              <span className="text-[11px] font-bold uppercase tracking-tight">
-                Cửa hàng giảm giá:
+              <TagIcon size={12} className="fill-orange-50" />
+              <span className="text-[10px] font-bold uppercase tracking-tight">
+                Shop giảm giá:
               </span>
             </div>
-            <span className="text-sm font-semibold text-orange-600">
+            <span className="text-xs font-bold text-orange-600">
               -{formatPriceFull(shop.discount)}
             </span>
           </div>
         )}
 
-        <div className="px-5 py-4 flex justify-end items-center gap-4">
-          <div className="text-right">
-            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest leading-none mb-1">
-              Tạm tính ({shop.items.length} SP)
+        <div className="px-5 py-3 flex justify-end items-center gap-3">
+          <div className="text-right flex items-baseline gap-2">
+            <p className="text-[10px] text-slate-600 font-bold uppercase leading-none">
+              Tạm tính ({shop.items.length} SP):
             </p>
-            <p className="text-lg font-semibold text-gray-900 leading-none tracking-tight">
+            <p className="text-2xl font-bold text-(--color-mainColor) leading-none tracking-tight">
               {formatPriceFull(shop.total)}
             </p>
           </div>

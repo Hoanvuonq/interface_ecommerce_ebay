@@ -37,7 +37,7 @@ const CustomModal: React.FC<any> = ({ open, onCancel, title, children, width = 6
     if (!open) return null;
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-[1050] flex justify-center items-start pt-10 px-4 sm:px-0 transition-opacity duration-300">
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-1050 flex justify-center items-start pt-10 px-4 sm:px-0 transition-opacity duration-300">
             <div 
                 className="bg-white rounded-xl shadow-2xl relative animate-fadeInDown"
                 style={{ width: width, maxWidth: '90vw' }}

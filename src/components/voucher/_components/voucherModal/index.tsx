@@ -12,6 +12,7 @@ import { ButtonField } from "../../../buttonField";
 import { VoucherModalContent } from "../voucherModalContent";
 import { useCheckoutStore } from "@/app/(main)/checkout/_store/useCheckoutStore";
 import { useCheckoutActions } from "@/app/(main)/checkout/_hooks/useCheckoutActions";
+import _ from "lodash";
 
 export const VoucherModal: React.FC<VoucherModalProps> = (props) => {
   const { open, onClose, title, shopName, isPlatform, shopId } = props;
@@ -19,7 +20,25 @@ export const VoucherModal: React.FC<VoucherModalProps> = (props) => {
   const { syncPreview } = useCheckoutActions();
   const { state, actions } = useVoucherModalLogic(props);
 
- const handleConfirmVouchers = async () => {
+  const handleConfirmVouchers = async () => {
+  // 1. Trường hợp Voucher Sàn (Platform)
+  if (isPlatform) {
+    const platformVouchers = [
+      state.selectedOrderVoucherId,
+      state.selectedShippingVoucherId,
+    ].filter(Boolean) as string[];
+
+    // Cập nhật toàn bộ sàn vào globalVouchers
+    const updatedRequest = {
+      ...request,
+      globalVouchers: platformVouchers,
+    };
+    
+    onClose();
+    await syncPreview(updatedRequest);
+    return;
+  }
+
   if (!shopId) return;
 
   updateShopVouchers(shopId, {
@@ -30,14 +49,16 @@ export const VoucherModal: React.FC<VoucherModalProps> = (props) => {
   onClose();
 
   if (request) {
-    const updatedRequest = { ...request };
+    const updatedRequest = _.cloneDeep(request); // Clone sâu để tránh mutate state
     const targetShop = updatedRequest.shops.find((s: any) => s.shopId === shopId);
+    
     if (targetShop) {
       targetShop.vouchers = [
         state.selectedOrderVoucherId,
         state.selectedShippingVoucherId,
-      ].filter((code): code is string => !!code);
+      ].filter(Boolean) as string[];
     }
+    
     await syncPreview(updatedRequest);
   }
 };

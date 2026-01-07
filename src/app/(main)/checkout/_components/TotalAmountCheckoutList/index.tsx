@@ -20,7 +20,7 @@ export const TotalAmountCheckoutList = ({
   return (
     <div className="px-8 py-5 bg-slate-50/50 border-t border-slate-100 flex justify-between items-end">
       <div className="flex flex-col gap-1">
-        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+        <span className="text-[10px] font-semibold text-slate-400 uppercase">
           Tổng shop
         </span>
         {productOrOrderDiscount > 0 && (
@@ -41,7 +41,7 @@ export const TotalAmountCheckoutList = ({
             {formatPrice(originalShopPrice)}
           </p>
         )}
-        <span className="text-2xl font-bold text-slate-900 tracking-tighter">
+        <span className="text-2xl font-semibold text-slate-900 tracking-tighter">
           {formatPrice(finalShopTotal)}
         </span>
       </div>

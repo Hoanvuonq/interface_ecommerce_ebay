@@ -1,7 +1,7 @@
 "use client";
 
-import { CustomBreadcrumb, SectionLoading } from "@/components";
-import PageContentTransition from "@/features/PageContentTransition";
+import { SectionLoading } from "@/components";
+import { SectionPageComponents } from "@/features/SectionPageComponents";
 import { useToast } from "@/hooks/useToast";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -69,65 +69,62 @@ export const CheckoutScreen = () => {
       }
     } catch (err) {}
   };
+  const breadcrumbData = [
+    { title: "Trang chủ", href: "/" },
+    { title: "Giỏ hàng", href: "/cart" },
+    { title: "Thanh toán", href: "/checkout" },
+  ];
 
   if (!preview) return <SectionLoading message="Đang chuẩn bị đơn hàng..." />;
 
   return (
-    <div className="min-h-screen bg-[#fafafa] pb-16 font-sans text-slate-900">
-      <PageContentTransition>
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <CustomBreadcrumb
-            items={[
-              { title: "Trang chủ", href: "/" },
-              { title: "Giỏ hàng", href: "/cart" },
-              { title: "Thanh toán", href: "/checkout" },
-            ]}
+    <SectionPageComponents
+      loading={loading && !preview}
+      breadcrumbItems={breadcrumbData}
+    >
+      <div className="my-4 px-2 text-5xl font-bold tracking-tighter uppercase italic text-slate-900">
+        Thanh <span className="text-(--color-mainColor)">Toán</span>
+      </div>
+      <CheckoutStepper
+        currentStep={successModalVisible || payosModalVisible ? 3 : 1}
+      />
+      <div
+        onSubmit={handleSubmit}
+        className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-2"
+      >
+        <div className="lg:col-span-8 space-y-2">
+          <CheckoutShippingAddress
+            selectedAddress={currentAddress}
+            hasAddress={hasAddress}
+            onOpenModal={() => setAddressModalVisible(true)}
           />
-          <div className="my-6 px-2 text-5xl font-bold tracking-tighter uppercase italic text-slate-900">
-            Thanh Toán
-          </div>
-          <CheckoutStepper
-            currentStep={successModalVisible || payosModalVisible ? 3 : 1}
+
+          <CheckoutShopList
+            shops={preview.shops}
+            voucherApplication={preview.voucherApplication}
+            loading={loading}
+            updateShippingMethod={updateShippingMethod}
+            request={request}
+            preview={preview}
           />
-          <div
-            onSubmit={handleSubmit}
-            className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-10"
-          >
-            <div className="lg:col-span-8 space-y-8">
-              <CheckoutShippingAddress
-                selectedAddress={currentAddress}
-                hasAddress={hasAddress}
-                onOpenModal={() => setAddressModalVisible(true)}
-              />
-
-              <CheckoutShopList
-                shops={preview.shops}
-                voucherApplication={preview.voucherApplication}
-                loading={loading}
-                updateShippingMethod={updateShippingMethod}
-                request={request}
-                preview={preview}
-              />
-            </div>
-
-            <div className="lg:col-span-4 space-y-6">
-              <PaymentSection
-                selectedMethod={formData.paymentMethod}
-                onChange={(val) =>
-                  setFormData((p) => ({ ...p, paymentMethod: val }))
-                }
-              />
-              <NoteSection
-                value={formData.customerNote}
-                onChange={(val: string) =>
-                  setFormData((p) => ({ ...p, customerNote: val }))
-                }
-              />
-              <OrderSummary onSubmit={handleSubmit} />
-            </div>
-          </div>
         </div>
-      </PageContentTransition>
+
+        <div className="lg:col-span-4 space-y-2">
+          <PaymentSection
+            selectedMethod={formData.paymentMethod}
+            onChange={(val) =>
+              setFormData((p) => ({ ...p, paymentMethod: val }))
+            }
+          />
+          <NoteSection
+            value={formData.customerNote}
+            onChange={(val: string) =>
+              setFormData((p) => ({ ...p, customerNote: val }))
+            }
+          />
+          <OrderSummary onSubmit={handleSubmit} />
+        </div>
+      </div>
 
       <AddressModal
         isOpen={addressModalVisible}
@@ -138,7 +135,7 @@ export const CheckoutScreen = () => {
           updateAddress(id).then(() => setAddressModalVisible(false))
         }
         onConfirmNew={(data: any) =>
-          updateAddress(undefined, data,).then(() =>
+          updateAddress(undefined, data).then(() =>
             setAddressModalVisible(false)
           )
         }
@@ -155,6 +152,6 @@ export const CheckoutScreen = () => {
         remainingSeconds={null}
         formatRemain={() => "00:00"}
       />
-    </div>
+    </SectionPageComponents>
   );
 };

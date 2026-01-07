@@ -14,17 +14,18 @@ import {
 } from "@/components/voucher/_types/voucher";
 
 export const VoucherComponents: React.FC<VoucherInputProps> = (props) => {
- const { compact, shopName, appliedVouchers, forcePlatform, className } = props;
+  const { compact, shopName, appliedVouchers, forcePlatform, className } =
+    props;
   const { state, actions } = useVoucherLogic(props);
 
-  // FIX Ở ĐÂY: API trả về voucherCode, Modal trả về code. Phải lấy cả 2.
-  const activeOrderVoucherCode = 
-    _.get(appliedVouchers, "order.voucherCode") || _.get(appliedVouchers, "order.code");
-  
-  const activeShippingVoucherCode = 
-    _.get(appliedVouchers, "shipping.voucherCode") || _.get(appliedVouchers, "shipping.code");
+  const activeOrderVoucherCode =
+    _.get(appliedVouchers, "order.voucherCode") ||
+    _.get(appliedVouchers, "order.code");
 
-  // Lấy giá trị giảm giá từ API discountAmount
+  const activeShippingVoucherCode =
+    _.get(appliedVouchers, "shipping.voucherCode") ||
+    _.get(appliedVouchers, "shipping.code");
+
   const orderDiscount = _.get(appliedVouchers, "order.discountAmount", 0);
   const shipDiscount = _.get(appliedVouchers, "shipping.discountAmount", 0);
 
@@ -35,7 +36,7 @@ export const VoucherComponents: React.FC<VoucherInputProps> = (props) => {
       <div className={cn("w-full", className)}>
         {hasAnyVoucher ? (
           <div
-            className="bg-emerald-50/50 rounded-2xl p-4 border border-emerald-100 cursor-pointer hover:bg-emerald-100/50 transition-all shadow-sm group relative overflow-hidden"
+            className="bg-emerald-50 rounded-2xl py-2 px-3 border border-emerald-100 cursor-pointer hover:bg-emerald-100/50 transition-all shadow-sm group relative overflow-hidden"
             onClick={() => actions.setModalOpen(true)}
           >
             <div className="absolute -right-2 -top-2 opacity-5 group-hover:rotate-12 transition-transform text-emerald-600 pointer-events-none">
@@ -46,7 +47,9 @@ export const VoucherComponents: React.FC<VoucherInputProps> = (props) => {
               <div className="flex items-center justify-between border-b border-emerald-200/30 pb-2">
                 <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest flex items-center gap-1.5">
                   <CheckCircle2 size={12} />
-                  {forcePlatform ? "Voucher Hệ Thống" : `Ưu đãi từ ${shopName || "Shop"}`}
+                  {forcePlatform
+                    ? "Voucher Hệ Thống"
+                    : `Ưu đãi từ ${shopName || "Shop"}`}
                 </p>
                 <div className="bg-emerald-500 text-white text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter animate-in fade-in zoom-in">
                   Đã áp dụng
@@ -72,31 +75,35 @@ export const VoucherComponents: React.FC<VoucherInputProps> = (props) => {
                     v.code && (
                       <div
                         key={idx}
-                        className="flex items-center justify-between bg-white/80 p-2 rounded-xl border border-emerald-50 shadow-sm backdrop-blur-sm"
+                        className="flex items-center justify-between bg-white/80 py-2 px-3 rounded-xl border border-emerald-50 shadow-sm backdrop-blur-sm"
                       >
                         <div className="flex items-center gap-2 min-w-0">
-                          <div className={cn(
-                            "p-1.5 rounded-lg shrink-0",
-                            v.color === "orange" ? "bg-orange-100 text-orange-600" : "bg-blue-100 text-blue-600"
-                          )}>
+                          <div
+                            className={cn(
+                              "p-1.5 rounded-lg shrink-0",
+                              v.color === "orange"
+                                ? "bg-orange-100 text-orange-600"
+                                : "bg-blue-100 text-blue-600"
+                            )}
+                          >
                             <Ticket size={12} />
                           </div>
                           <div className="flex flex-col min-w-0">
-                            <span className="text-slate-400 text-[7px] font-bold uppercase leading-none mb-1">
+                            <span className="text-gray-400 text-[7px] font-semibold uppercase -tracking-tighter leading-none mb-1">
                               {v.label}
                             </span>
-                            <span className="text-slate-800 font-bold text-[10px] truncate uppercase tracking-tight">
+                            <span className="text-gray-800 font-semibold text-[10px] truncate uppercase tracking-tighter">
                               {v.code}
                             </span>
                           </div>
                         </div>
 
-                       {v.discount > 0 ? (
-                          <span className="text-red-500 font-bold text-[11px] shrink-0 italic">
+                        {v.discount > 0 ? (
+                          <span className="text-red-500 font-semibold text-[11px] shrink-0 italic">
                             -{formatPrice(v.discount)}
                           </span>
                         ) : (
-                          <span className="text-emerald-600 font-bold text-[9px] shrink-0 uppercase italic">
+                          <span className="text-emerald-600 font-semibold text-[9px] shrink-0 uppercase italic">
                             Đã tối ưu
                           </span>
                         )}
@@ -104,19 +111,13 @@ export const VoucherComponents: React.FC<VoucherInputProps> = (props) => {
                     )
                 )}
               </div>
-
-              <div className="flex items-center justify-center pt-1">
-                <span className="text-[9px] font-bold text-emerald-500 uppercase tracking-widest flex items-center gap-1 group-hover:translate-y-0.5 transition-transform">
-                  <ChevronDown size={10} /> Chạm để thay đổi
-                </span>
-              </div>
             </div>
           </div>
         ) : (
           <button
             type="button"
             onClick={() => actions.setModalOpen(true)}
-            className="w-full flex items-center justify-between px-4 py-3 bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl text-slate-500 hover:border-orange-300 hover:text-orange-600 hover:bg-white transition-all group active:scale-[0.98]"
+            className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl text-gray-500 hover:border-orange-300 hover:text-orange-600 hover:bg-white transition-all group active:scale-[0.98]"
           >
             <div className="flex items-center gap-3 font-bold uppercase tracking-widest">
               <div className="w-8 h-8 rounded-xl bg-white flex items-center justify-center shadow-sm group-hover:scale-110 group-hover:bg-orange-50 transition-all">
@@ -128,7 +129,7 @@ export const VoucherComponents: React.FC<VoucherInputProps> = (props) => {
             </div>
             <ChevronDown
               size={14}
-              className="group-hover:translate-y-0.5 transition-transform"
+              className="group-hover:trangray-y-0.5 transition-transform"
             />
           </button>
         )}
@@ -156,12 +157,12 @@ export const VoucherComponents: React.FC<VoucherInputProps> = (props) => {
         <div className="relative flex-1 group">
           <Ticket
             size={14}
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-orange-500 transition-colors pointer-events-none"
+            className="absolute left-4 top-1/2 -trangray-y-1/2 text-gray-300 group-focus-within:text-orange-500 transition-colors pointer-events-none"
           />
           <input
             type="text"
             placeholder="NHẬP MÃ GIẢM GIÁ..."
-            className="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-xl font-bold text-[11px] uppercase tracking-wider focus:border-orange-500 focus:ring-4 focus:ring-orange-50 outline-none transition-all placeholder:text-slate-300"
+            className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl font-bold text-[11px] uppercase tracking-wider focus:border-orange-500 focus:ring-4 focus:ring-orange-50 outline-none transition-all placeholder:text-gray-300"
             value={state.voucherCode}
             onChange={(e) =>
               actions.setVoucherCode(e.target.value.toUpperCase())
@@ -175,7 +176,7 @@ export const VoucherComponents: React.FC<VoucherInputProps> = (props) => {
           type="button"
           onClick={() => actions.applyVoucher(state.voucherCode)}
           disabled={state.isApplying || !state.voucherCode}
-          className="px-6 bg-slate-900 text-white font-bold text-[11px] uppercase tracking-widest rounded-xl hover:bg-orange-600 disabled:bg-slate-200 disabled:shadow-none transition-all active:scale-95 shadow-lg shadow-slate-200"
+          className="px-6 bg-gray-900 text-white font-bold text-[11px] uppercase tracking-widest rounded-xl hover:bg-orange-600 disabled:bg-gray-200 disabled:shadow-none transition-all active:scale-95 shadow-lg shadow-gray-200"
         >
           {state.isApplying ? (
             <Loader2 className="animate-spin w-4 h-4" />
@@ -184,18 +185,18 @@ export const VoucherComponents: React.FC<VoucherInputProps> = (props) => {
           )}
         </button>
       </div>
-      
+
       <VoucherModal
-          open={state.modalOpen}
-          onClose={() => actions.setModalOpen(false)}
-          onConfirm={actions.handleConfirm}
-          shopName={shopName}
-          onFetchVouchers={async () => state.vouchersData}
-          vouchersData={state.vouchersData}
-          isLoading={state.isLoading}
-          appliedVouchers={appliedVouchers}
-          isPlatform={forcePlatform}
-        />
+        open={state.modalOpen}
+        onClose={() => actions.setModalOpen(false)}
+        onConfirm={actions.handleConfirm}
+        shopName={shopName}
+        onFetchVouchers={async () => state.vouchersData}
+        vouchersData={state.vouchersData}
+        isLoading={state.isLoading}
+        appliedVouchers={appliedVouchers}
+        isPlatform={forcePlatform}
+      />
     </div>
   );
 };

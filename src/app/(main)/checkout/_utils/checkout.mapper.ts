@@ -5,95 +5,112 @@ export const preparePreviewPayload = (
   currentPreview?: any
 ) => {
   const raw = _.cloneDeep(updatedRequest);
+  const previewData = currentPreview?.data || currentPreview;
 
   return {
     addressId: raw.addressId,
-    globalVouchers: raw.globalVouchers || [],
     shops: _.map(raw.shops, (shop) => {
-      const shopFromPreview = _.find(currentPreview?.shops, {
+      const shopFromPreview = _.find(previewData?.shops, {
         shopId: shop.shopId,
       });
 
-      const actualFee = Number(
-        _.get(shopFromPreview, "summary.shippingFee", 0)
+      const availableOptions =
+        _.get(shopFromPreview, "availableShippingOptions") ||
+        _.get(shopFromPreview, "shipping.services") ||
+        [];
+
+      let targetServiceCode = shop.serviceCode || shop.selectedShippingMethod;
+      let targetFee = shop.shippingFee || 0;
+
+      const isSelectedValid = _.some(
+        availableOptions,
+        (o) => Number(o.serviceCode) === Number(targetServiceCode)
       );
+
+      if (!targetServiceCode || !isSelectedValid) {
+        if (availableOptions && availableOptions.length > 0) {
+          const sortedOptions = _.sortBy(availableOptions, [
+            (o) => Number(o.fee),
+          ]);
+          const cheapestOption = sortedOptions[0];
+
+          if (cheapestOption) {
+            targetServiceCode = cheapestOption.serviceCode;
+            targetFee = cheapestOption.fee;
+          }
+        } else {
+          targetServiceCode = 400021;
+        }
+      } else {
+        const selectedOption = _.find(
+          availableOptions,
+          (o) => Number(o.serviceCode) === Number(targetServiceCode)
+        );
+        if (selectedOption) {
+          targetFee = selectedOption.fee;
+        }
+      }
 
       return {
         shopId: shop.shopId,
         itemIds: shop.itemIds || _.map(shop.items, "itemId"),
-        vouchers: shop.vouchers || [],
-        globalVouchers: shop.globalVouchers || [],
-        serviceCode: Number(
-          shop.selectedShippingMethod || shop.serviceCode || 400021
-        ),
-        shippingFee: actualFee,
+        serviceCode: Number(targetServiceCode),
+        shippingFee: Number(targetFee),
       };
     }),
   };
 };
 
-export const prepareOrderRequest = (params: {
-  preview: any;
-  request: any;
-  savedAddresses: any[];
-  customerNote: string;
-  paymentMethod: string;
-}): any => {
+export const prepareOrderRequest = (params: any): any => {
   const { preview, request, savedAddresses, customerNote, paymentMethod } =
     params;
 
-  const fullAddressData =
-    _.find(savedAddresses, { addressId: request.addressId }) ||
-    request.shippingAddress;
+  const data = preview?.data || preview;
+  const fullAddressData = _.find(savedAddresses, {
+    addressId: request.addressId,
+  });
 
-  const previewAt = _.get(preview, "previewAt");
+  const allSelectedItemIds = _.flatMap(data.shops, (s: any) =>
+    _.map(s.items, "itemId")
+  );
 
   return {
-    shops: _.map(preview.shops, (s) => ({
-      shopId: s.shopId,
-      itemIds: _.map(s.items, "itemId"),
-      serviceCode: Number(s.selectedShippingMethod || 400021),
-      shippingFee: Number(_.get(s, "summary.shippingFee", 0)),
-      vouchers: [],
-      globalVouchers: [],
-    })),
+    shops: _.map(data.shops, (s) => {
+      const shopReq = _.find(request.shops, { shopId: s.shopId });
 
-    shippingMethod: "STANDARD",
-    buyerAddressId: String(request.addressId),
+      const shopGlobalVouchers = _.chain(s.voucherResult?.discountDetails)
+        .filter({ voucherType: "PLATFORM", valid: true })
+        .map("voucherCode")
+        .value();
+
+      return {
+        shopId: s.shopId,
+        itemIds: _.map(s.items, "itemId"),
+        vouchers: shopReq?.vouchers || [],
+
+        serviceCode: Number(
+          shopReq?.serviceCode || s.selectedShippingMethod || 400021
+        ),
+
+        shippingFee: Number(_.get(s, "summary.shippingFee", 0)),
+        globalVouchers: shopGlobalVouchers,
+        loyaltyPoints: Number(_.get(shopReq, "loyaltyPoints", 0)),
+      };
+    }),
+
     buyerAddressData: {
-      ..._.get(preview, "buyerAddressData", {}),
-      buyerAddressId: String(request.addressId),
       addressId: String(request.addressId),
-      addressType: 0,
+      buyerAddressId: String(request.addressId),
+      addressType: Number(_.get(fullAddressData, "addressType", 0)),
+      taxAddress: _.get(fullAddressData, "taxAddress", null),
     },
 
-    shippingAddress: {
-      addressId: request.addressId,
-      recipientName:
-        _.get(fullAddressData, "recipientName") ||
-        _.get(fullAddressData, "fullName", ""),
-      phoneNumber:
-        _.get(fullAddressData, "phone") ||
-        _.get(fullAddressData, "phoneNumber", ""),
-      addressLine1:
-        _.get(fullAddressData, "detailAddress") ||
-        _.get(fullAddressData, "detail", ""),
-      city:
-        _.get(fullAddressData, "city") ||
-        _.get(fullAddressData, "district", "") ||
-        "Hồ Chí Minh",
-      state: _.get(fullAddressData, "province", ""),
-      postalCode: _.get(fullAddressData, "ward", ""),
-      country: "VN",
-    },
-
-    paymentMethod,
-    customerNote,
-    previewAt: preview.previewAt,
-    globalVouchers: _.get(
-      preview,
-      "voucherApplication.globalVouchers.validVouchers",
-      []
-    ),
+    loyaltyPoints: 0,
+    paymentMethod: paymentMethod || "COD",
+    previewId: data.cartId || data.previewId || "",
+    previewAt: data.previewAt,
+    customerNote: customerNote || "",
+    confirmAllSelected: true,
+    allSelectedItemIds: allSelectedItemIds,
   };
 };

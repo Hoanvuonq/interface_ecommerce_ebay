@@ -18,7 +18,7 @@ export const CheckoutShippingAddress: React.FC<ShippingAddressCardProps> = ({
   ]).join(", ");
 
   return (
-    <div className="bg-white rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.08)] border border-gray-100 py-3 px-5">
+    <div className="bg-white rounded-xl shadow-custom border border-gray-100 py-3 px-5">
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-2">

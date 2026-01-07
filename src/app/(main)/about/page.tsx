@@ -6,7 +6,7 @@ import { InfoItem } from "./_components/InfoItem";
 
 export default function AboutScreen() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#fafafa]">
       <div className="relative bg-white py-28 overflow-hidden border-b border-gray-50">
         <div className="absolute top-0 left-0 w-full h-full">
             <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[60%] bg-blue-50/40 rounded-full blur-[120px]" />

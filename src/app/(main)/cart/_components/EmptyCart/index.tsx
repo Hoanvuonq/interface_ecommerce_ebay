@@ -30,7 +30,7 @@ export const EmptyCart: React.FC = () => {
             </div>
           </div>
 
-          <h2 className="text-2xl md:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">
+          <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-4 tracking-tight">
             Giỏ hàng của bạn đang trống
           </h2>
 

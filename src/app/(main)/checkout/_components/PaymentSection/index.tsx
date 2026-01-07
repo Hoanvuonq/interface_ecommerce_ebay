@@ -15,7 +15,7 @@ export const PaymentSection = ({ selectedMethod, onChange }: PaymentSectionProps
     <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
       <div className="px-5 py-4 border-b border-slate-100 flex items-center gap-2.5 bg-slate-50">
         <CreditCard className="text-slate-900" size={18} />
-        <h2 className="text-[12px] font-bold uppercase tracking-wider text-slate-900">
+        <h2 className="text-[12px] font-semibold uppercase  text-slate-900">
           Phương thức thanh toán
         </h2>
       </div>

@@ -31,7 +31,7 @@ export const ItemImage: React.FC<ItemImageProps> = ({
   const FallbackIcon = () => (
     <div
       className={cn(
-        "flex items-center justify-center bg-gray-50 text-gray-300 transition-colors duration-300 group-hover:bg-gray-100 group-hover:text-orange-400",
+        "flex items-center justify-center bg-gray-50  transition-colors duration-300 text-(--color-mainColor)",
         className
       )}
     >

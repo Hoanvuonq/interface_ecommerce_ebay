@@ -6,23 +6,27 @@ import { useToast } from "@/hooks/useToast";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import {
   checkoutPreview,
-  clearCart,
   deselectAllItemsLocal,
   fetchCart,
+  removeCartItems,
   selectAllItemsLocal,
 } from "@/store/theme/cartSlice";
 import { isAuthenticated } from "@/utils/local.storage";
 import { AlertTriangle, CheckCircle, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CartSummary } from "../_components/CartSummary";
 import { CheckoutPreview } from "../_components/CheckoutPreview";
 import { EmptyCart } from "../_components/EmptyCart";
+import { NotificationRemoveModal } from "../_components/NotificationRemoveModal";
 import { ShopCartSection } from "../_components/ShopCartSection";
 import { HeaderCart } from "../_layouts/headerCart";
+import { SectionPageComponents } from "@/features/SectionPageComponents";
 
 export const CartScreen = () => {
   const [showCheckoutPreview, setShowCheckoutPreview] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
   const dispatch = useAppDispatch();
   const {
     cart,
@@ -31,9 +35,11 @@ export const CartScreen = () => {
     checkoutPreview: preview,
     checkoutLoading,
   } = useAppSelector((state) => state.cart);
+
   const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const { success, error: toastError, warning } = useToast();
+  const { error: toastError, warning } = useToast();
+
   useEffect(() => {
     setMounted(true);
     if (isAuthenticated()) {
@@ -52,14 +58,45 @@ export const CartScreen = () => {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const handleClearCart = async () => {
-    const version = cart?.version;
+  const selectedCount = useMemo(() => {
+    if (!cart) return 0;
+    return cart.shops.reduce((acc, shop) => {
+      return acc + shop.items.filter((item) => item.selectedForCheckout).length;
+    }, 0);
+  }, [cart]);
 
-    if (version === undefined) return;
+  const handleDeleteClick = () => {
+    if (selectedCount === 0) {
+      warning("Vui lòng chọn sản phẩm cần xóa");
+      return;
+    }
+    setShowDeleteModal(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!cart) return;
+
+    const selectedItemIds: string[] = [];
+    cart.shops.forEach((shop) => {
+      shop.items.forEach((item) => {
+        if (item.selectedForCheckout) {
+          selectedItemIds.push(item.id);
+        }
+      });
+    });
+
+    if (selectedItemIds.length === 0) return;
+    const version = String(cart.version);
 
     try {
-      const etag = String(version);
-      await dispatch(clearCart(etag)).unwrap();
+      await dispatch(
+        removeCartItems({
+          itemIds: selectedItemIds,
+          etag: version,
+        })
+      ).unwrap();
+      setShowDeleteModal(false);
+      dispatch(fetchCart());
     } catch (err: any) {}
   };
 
@@ -102,146 +139,156 @@ export const CartScreen = () => {
     }
   };
 
-  const allSelected = cart?.shops.every((shop) => shop.allSelected) || false;
-  const someSelected =
-    cart?.shops.some((shop) => shop.hasSelectedItems) || false;
+  const allSelected =
+    cart?.shops.every((shop: any) => shop.allSelected) || false;
 
   if (!mounted) return null;
+  
+  const breadcrumbData = [
+    { title: "Trang chủ", href: "/" },
+    { title: "Giỏ hàng", href: "" },
+  ];
 
   return (
-    <div className="min-h-screen bg-white">
-      <PageContentTransition>
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-32 lg:pb-12">
-          <div className="mb-4 sm:mb-6">
-            <CustomBreadcrumb
-              items={[
-                { title: "Trang chủ", href: "/" },
-                { title: "Giỏ hàng", href: "" },
-              ]}
+    <SectionPageComponents
+      loading={loading && !cart}
+      breadcrumbItems={breadcrumbData}
+      background="bg-white"
+    >
+      {!cart || cart.itemCount === 0 ? (
+        <EmptyCart />
+      ) : (
+        <div className="flex flex-col "> 
+          <div className="shrink-0 ">
+            <HeaderCart
+              itemCount={cart?.itemCount || 0}
+              loading={loading}
+              onRefresh={() => dispatch(fetchCart())}
             />
+            {cart?.warnings && cart.warnings.length > 0 && (
+              <div className="mb-6 space-y-2">
+                {cart.warnings.map((warning, index) => (
+                  <div
+                    key={index}
+                    className="flex items-start gap-3 p-4 bg-amber-50 text-amber-700 border border-amber-100 rounded-2xl text-sm animate-in slide-in-from-top-2"
+                  >
+                    <AlertTriangle size={18} className="shrink-0 mt-0.5" />
+                    <p className="font-medium">{warning}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+            {error && (
+              <div className="mb-6 flex items-center gap-3 p-4 bg-red-50 text-red-700 border border-red-100 rounded-2xl text-sm">
+                <AlertTriangle size={18} />
+                <p className="font-bold">{error}</p>
+              </div>
+            )}
           </div>
 
-          {loading && !cart ? (
-            <SectionLoading message="Đang tải dữ liệu..." />
-          ) : !cart || cart.itemCount === 0 ? (
-            <EmptyCart />
-          ) : (
-            <>
-              <HeaderCart
-                itemCount={cart?.itemCount || 0}
-                loading={loading}
-                onRefresh={() => dispatch(fetchCart())}
-              />
-              {cart?.warnings && cart.warnings.length > 0 && (
-                <div className="mb-6 space-y-2">
-                  {cart.warnings.map((warning, index) => (
-                    <div
-                      key={index}
-                      className="flex items-start gap-3 p-4 bg-amber-50 text-amber-700 border border-amber-100 rounded-2xl text-sm animate-in slide-in-from-top-2"
-                    >
-                      <AlertTriangle size={18} className="shrink-0 mt-0.5" />
-                      <p className="font-medium">{warning}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {error && (
-                <div className="mb-6 flex items-center gap-3 p-4 bg-red-50 text-red-700 border border-red-100 rounded-2xl text-sm">
-                  <AlertTriangle size={18} />
-                  <p className="font-bold">{error}</p>
-                </div>
-              )}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div className="lg:col-span-2 space-y-4">
-                  <div className="bg-white py-2 px-4 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between sticky top-20 ">
-                    <label className="flex items-center gap-3 cursor-pointer group">
-                      <div className="relative flex items-center justify-center">
-                        <input
-                          type="checkbox"
-                          checked={allSelected}
-                          onChange={
-                            allSelected
-                              ? () => dispatch(deselectAllItemsLocal())
-                              : () => dispatch(selectAllItemsLocal())
-                          }
-                          className="peer appearance-none w-6 h-6 border-2 border-gray-200 rounded-lg checked:bg-orange-500 checked:border-orange-500 transition-all cursor-pointer"
-                        />
-                        <CheckCircle
-                          size={14}
-                          className="absolute text-white opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity"
-                        />
-                      </div>
-                      <span className="text-sm sm:text-md font-semibold text-gray-700 group-hover:text-gray-900 transition-colors uppercase tracking-tight">
-                        Chọn tất cả ({cart.itemCount})
-                      </span>
-                    </label>
-
-                    <button
-                      onClick={handleClearCart}
-                      className="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-red-500 hover:bg-red-50 rounded-xl transition-all active:scale-95 uppercase tracking-tighter"
-                    >
-                      <Trash2 size={16} />
-                      <span className="hidden sm:inline">Xóa giỏ hàng</span>
-                      <span className="sm:hidden">Xóa</span>
-                    </button>
-                  </div>
-
-                  <div className="space-y-6">
-                    {cart.shops.map((shop, index) => (
-                      <div
-                        key={shop.shopId}
-                        className="animate-in fade-in slide-in-from-bottom-4 duration-500 fill-mode-both"
-                        style={{ animationDelay: `${index * 150}ms` }}
-                      >
-                        <ShopCartSection
-                          shop={shop}
-                          etag={cart.version.toString()}
-                        />
-                      </div>
-                    ))}
-                  </div>
-
-                  <Link
-                    href="/products"
-                    className="inline-flex items-center gap-2 text-orange-600 font-semibold hover:gap-4 transition-all text-xs uppercase py-4"
-                  >
-                    ← Tiếp tục mua sắm
-                  </Link>
-                </div>
-
-                {!isMobile && (
-                  <aside className="lg:col-span-1 h-fit">
-                    <CartSummary
-                      cart={cart}
-                      onCheckout={handleCheckout}
-                      loading={checkoutLoading}
-                      isMobile={false}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 relative items-start mt-4">
+            <div className="lg:col-span-2 space-y-4">
+              <div className="bg-white py-3 px-4 rounded-2xl shadow-custom border border-gray-100 flex items-center justify-between z-10 sticky top-4">
+                <label className="flex items-center gap-3 cursor-pointer group">
+                  <div className="relative flex items-center justify-center">
+                    <input
+                      type="checkbox"
+                      checked={allSelected}
+                      onChange={
+                        allSelected
+                          ? () => dispatch(deselectAllItemsLocal())
+                          : () => dispatch(selectAllItemsLocal())
+                      }
+                      className="peer appearance-none w-6 h-6 border-2 border-gray-200 rounded-lg checked:bg-orange-500 checked:border-orange-500 transition-all cursor-pointer"
                     />
-                  </aside>
-                )}
+                    <CheckCircle
+                      size={14}
+                      className="absolute text-white opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity"
+                    />
+                  </div>
+                  <span className="text-sm sm:text-md font-semibold text-gray-700 group-hover:text-gray-900 transition-colors uppercase tracking-tight">
+                    Chọn tất cả ({cart.itemCount})
+                  </span>
+                </label>
+
+                <button
+                  onClick={handleDeleteClick}
+                  disabled={selectedCount === 0}
+                  className={`flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-xl transition-all uppercase tracking-tighter
+                        ${
+                          selectedCount > 0
+                            ? "text-red-500 hover:bg-red-50 active:scale-95 cursor-pointer"
+                            : "text-gray-300 cursor-not-allowed"
+                        }`}
+                >
+                  <Trash2 size={16} />
+                  <span className="hidden sm:inline">
+                    Xóa đã chọn ({selectedCount})
+                  </span>
+                  <span className="sm:hidden">Xóa ({selectedCount})</span>
+                </button>
               </div>
-            </>
-          )}
 
-          {isMobile && cart && cart.itemCount > 0 && (
-            <CartSummary
-              cart={cart}
-              onCheckout={handleCheckout}
-              loading={checkoutLoading}
-              isMobile={true}
-            />
-          )}
+              <div className="space-y-6 pb-4">
+                {cart.shops.map((shop, index) => (
+                  <div
+                    key={shop.shopId}
+                    className="animate-in fade-in slide-in-from-bottom-4 duration-500 fill-mode-both"
+                    style={{ animationDelay: `${index * 150}ms` }}
+                  >
+                    <ShopCartSection
+                      shop={shop}
+                      etag={cart.version.toString()}
+                    />
+                  </div>
+                ))}
 
-          {showCheckoutPreview && preview && (
-            <CheckoutPreview
-              preview={preview}
-              open={showCheckoutPreview}
-              onClose={() => setShowCheckoutPreview(false)}
-            />
-          )}
-        </main>
-      </PageContentTransition>
-    </div>
+                <Link
+                  href="/products"
+                  className="inline-flex items-center gap-2 text-orange-600 font-semibold hover:gap-4 transition-all text-xs uppercase py-4"
+                >
+                  ← Tiếp tục mua sắm
+                </Link>
+              </div>
+            </div>
+            {!isMobile && (
+              <aside className="lg:col-span-1 h-fit sticky top-30">
+                <CartSummary
+                  cart={cart}
+                  onCheckout={handleCheckout}
+                  loading={checkoutLoading}
+                  isMobile={false}
+                />
+              </aside>
+            )}
+          </div>
+        </div>
+      )}
+
+      {isMobile && cart && cart.itemCount > 0 && (
+        <CartSummary
+          cart={cart}
+          onCheckout={handleCheckout}
+          loading={checkoutLoading}
+          isMobile={true}
+        />
+      )}
+
+      {showCheckoutPreview && preview && (
+        <CheckoutPreview
+          preview={preview}
+          open={showCheckoutPreview}
+          onClose={() => setShowCheckoutPreview(false)}
+        />
+      )}
+
+      <NotificationRemoveModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={handleConfirmDelete}
+        count={selectedCount}
+        isLoading={loading}
+      />
+    </SectionPageComponents>
   );
 };

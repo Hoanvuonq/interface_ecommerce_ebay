@@ -57,10 +57,9 @@ export interface CartItemDto {
   discountAmount: number;
   quantity: number;
   totalPrice: number;
-  // Image properties
   imageBasePath?: string | null;
   imageExtension?: string | null;
-  thumbnailUrl?: string; // Deprecated, use imageBasePath + imageExtension
+  thumbnailUrl?: string; 
   sku?: string;
   variantAttributes?: string;
   shopId?: string;
@@ -70,14 +69,9 @@ export interface CartItemDto {
   stock?: number;
   attributes?: Record<string, string>;
 
-  // ========== Stock Status Fields ==========
-  /** Available stock for this variant */
   availableStock?: number;
-  /** Stock status: IN_STOCK, LOW_STOCK, OUT_OF_STOCK, ADJUSTED, UNAVAILABLE */
   stockStatus?: StockStatus;
-  /** Human-readable stock message */
   stockMessage?: string;
-  /** Previous quantity before adjustment (if any) */
   previousQuantity?: number;
 }
 
@@ -163,7 +157,6 @@ export interface OrderPreviewResponse {
   totalQuantity: number;
   subtotal: number;
   totalDiscount: number;
-  // Discount breakdown by scope
 
   shippingDiscount?: number; // Giảm giá vận chuyển (SHIPPING scope)
   productDiscount?: number; // Giảm giá sản phẩm (PRODUCT scope)
