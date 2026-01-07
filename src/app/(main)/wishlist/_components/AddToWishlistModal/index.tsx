@@ -278,7 +278,7 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
                       {v.optionValues?.map((o: any) => o.name).join(" / ") ||
                         "Default"}
                     </p>
-                    <p className="text-xs font-semibold text-slate-900">
+                    <p className="text-xs font-semibold text-gray-900">
                       {new Intl.NumberFormat("vi-VN").format(v.price)}đ
                     </p>
                   </div>
@@ -344,9 +344,9 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
                     <>
                       <Camera
                         size={20}
-                        className="text-gray-400 group-hover:text-orange-500 mb-1"
+                        className="text-gray-600 group-hover:text-orange-500 mb-1"
                       />
-                      <span className="text-[9px] font-bold text-gray-400 group-hover:text-orange-500">
+                      <span className="text-[9px] font-bold text-gray-600 group-hover:text-orange-500">
                         Ảnh bìa
                       </span>
                     </>
@@ -432,7 +432,7 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
             </div>
             <ChevronDown
               size={16}
-              className="text-gray-400 group-open:rotate-180 transition-transform duration-300"
+              className="text-gray-600 group-open:rotate-180 transition-transform duration-300"
             />
           </summary>
 

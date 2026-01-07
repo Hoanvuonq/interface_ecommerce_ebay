@@ -260,7 +260,7 @@ export const ProductCard = ({
               <span className="bg-orange-50 text-(--color-mainColor) text-[8px] font-semibold px-1.5 py-0.5 rounded border border-orange-100 uppercase shrink-0 tracking-tighter">
                 Mall
               </span>
-              <span className="text-[10px] text-gray-400 font-bold uppercase tracking-tight truncate">
+              <span className="text-[10px] text-gray-600 font-bold uppercase tracking-tight truncate">
                 CaLaTha Store
               </span>
             </div>
@@ -281,7 +281,7 @@ export const ProductCard = ({
               ) : (
                 <Heart
                   size={isList ? 16 : 14}
-                  className="text-gray-400 group-hover:text-red-500"
+                  className="text-gray-600 group-hover:text-red-500"
                 />
               )}
             </button>
@@ -315,7 +315,7 @@ export const ProductCard = ({
                   {formatPrice(product.basePrice)}
                 </span>
                 {hasDiscount && (
-                  <span className="text-[10px] text-gray-400 line-through font-medium">
+                  <span className="text-[10px] text-gray-600 line-through font-medium">
                     {formatPrice(product.comparePrice!)}
                   </span>
                 )}
@@ -329,7 +329,7 @@ export const ProductCard = ({
                     4.5
                   </span>
                 </div>
-                <span className="text-[10px] font-medium text-gray-400 border-l border-gray-200 pl-2">
+                <span className="text-[10px] font-medium text-gray-600 border-l border-gray-200 pl-2">
                   Đã bán 1.2k+
                 </span>
                 <span

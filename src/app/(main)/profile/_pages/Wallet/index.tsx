@@ -280,7 +280,7 @@ const WalletPage: React.FC<WalletPageProps> = ({
                   className={`w-4 h-4 transition-colors ${
                     activeTab === tab.id
                       ? "text-(--color-mainColor)"
-                      : "text-gray-400 group-hover:text-gray-600"
+                      : "text-gray-600 group-hover:text-gray-600"
                   }`}
                 />
                 {tab.label}

@@ -60,7 +60,7 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
       case "7z":
         return { Icon: FileArchive, iconClass: "text-purple-500", color: "bg-purple-50", border: "border-purple-100" };
       case "txt":
-        return { Icon: FileCode, iconClass: "text-slate-500", color: "bg-slate-50", border: "border-slate-100" };
+        return { Icon: FileCode, iconClass: "text-gray-500", color: "bg-gray-50", border: "border-gray-100" };
       default:
         return { Icon: FileIcon, iconClass: "text-gray-500", color: "bg-gray-50", border: "border-gray-100" };
     }
@@ -124,23 +124,23 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
         
         <div className="flex-1 min-w-0">
           <div 
-            className="font-semibold text-sm text-slate-800 truncate" 
+            className="font-semibold text-sm text-gray-800 truncate" 
             title={fileName}
           >
             {fileName}
           </div>
-          <div className="text-[11px] font-medium text-slate-400 flex items-center gap-2">
+          <div className="text-[11px] font-medium text-gray-600 flex items-center gap-2">
             <span>{formatFileSize(fileSize)}</span>
             {mimeType && (
               <>
-                <span className="w-1 h-1 bg-slate-300 rounded-full" />
+                <span className="w-1 h-1 bg-gray-300 rounded-full" />
                 <span>{_.toUpper(_.last(_.split(mimeType, "/")))}</span>
               </>
             )}
           </div>
           
           {downloading && (
-            <div className="mt-2 w-full bg-slate-200 rounded-full h-1 overflow-hidden">
+            <div className="mt-2 w-full bg-gray-200 rounded-full h-1 overflow-hidden">
               <div 
                 className="bg-blue-500 h-full transition-all duration-300" 
                 style={{ width: `${downloadProgress}%` }}
@@ -154,7 +154,7 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
         {["pdf", "txt", "csv"].includes(_.toLower(_.last(_.split(fileName, "."))) || "") && (
           <button
             onClick={handlePreview}
-            className="p-2 text-slate-400 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
+            className="p-2 text-gray-600 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
             title="Xem trước"
           >
             <Eye size={18} />
@@ -163,7 +163,7 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
         <button
           onClick={handleDownload}
           disabled={downloading}
-          className="p-2 text-slate-400 hover:text-green-500 hover:bg-green-50 rounded-lg transition-colors disabled:opacity-50"
+          className="p-2 text-gray-600 hover:text-green-500 hover:bg-green-50 rounded-lg transition-colors disabled:opacity-50"
           title="Tải xuống"
         >
           {downloading ? (

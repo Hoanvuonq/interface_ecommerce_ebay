@@ -89,7 +89,7 @@ export function SmartKPICard({
                             ? React.cloneElement(icon as React.ReactElement<any>, { size: 20, strokeWidth: 2.5 })
                             : icon}
                     </div>
-                    <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-[0.2em]">
+                    <span className="text-[11px] font-semibold text-gray-600 uppercase tracking-[0.2em]">
                         {title}
                     </span>
                 </div>
@@ -104,7 +104,7 @@ export function SmartKPICard({
                                     {formattedValue}
                                 </span>
                                 {suffix && (
-                                    <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest ml-1">
+                                    <span className="text-[10px] font-semibold text-gray-600 uppercase tracking-widest ml-1">
                                         {suffix}
                                     </span>
                                 )}

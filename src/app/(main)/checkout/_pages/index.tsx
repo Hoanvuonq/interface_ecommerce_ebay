@@ -82,7 +82,7 @@ export const CheckoutScreen = () => {
       loading={loading && !preview}
       breadcrumbItems={breadcrumbData}
     >
-      <div className="my-4 px-2 text-5xl font-bold tracking-tighter uppercase italic text-slate-900">
+      <div className="my-4 px-2 text-5xl font-bold tracking-tighter uppercase italic text-gray-900">
         Thanh <span className="text-(--color-mainColor)">Toán</span>
       </div>
       <CheckoutStepper

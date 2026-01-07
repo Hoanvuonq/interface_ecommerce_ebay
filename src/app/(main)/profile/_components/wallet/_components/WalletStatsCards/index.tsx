@@ -81,7 +81,7 @@ export const WalletStatsCards: React.FC<WalletStatsCardsProps> = ({
           </div>
           <div className="text-2xl font-bold text-gray-900">
             {wallet.totalDeposited.toLocaleString("vi-VN")}
-            <span className="text-sm text-gray-400 font-normal ml-1">VND</span>
+            <span className="text-sm text-gray-600 font-normal ml-1">VND</span>
           </div>
           <div className="w-full bg-gray-100 h-1 mt-4 rounded-full overflow-hidden">
             <div
@@ -108,7 +108,7 @@ export const WalletStatsCards: React.FC<WalletStatsCardsProps> = ({
             </div>
             <div className="text-2xl font-bold text-gray-900">
               {wallet.temporaryBalance.toLocaleString("vi-VN")}
-              <span className="text-sm text-gray-400 font-normal ml-1">
+              <span className="text-sm text-gray-600 font-normal ml-1">
                 VND
               </span>
             </div>
@@ -131,7 +131,7 @@ export const WalletStatsCards: React.FC<WalletStatsCardsProps> = ({
             </div>
             <div className="text-2xl font-bold text-gray-900">
               {wallet.totalWithdrawn.toLocaleString("vi-VN")}
-              <span className="text-sm text-gray-400 font-normal ml-1">
+              <span className="text-sm text-gray-600 font-normal ml-1">
                 VND
               </span>
             </div>

@@ -19,7 +19,7 @@ export const MobileFeatureList: React.FC<MobileFeatureListProps> = ({
           key={idx}
           className={cn(
             "group relative overflow-hidden rounded-2xl p-5 py-7",
-            "bg-white/70 dark:bg-slate-800/60 backdrop-blur-xl", 
+            "bg-white/70 dark:bg-gray-800/60 backdrop-blur-xl", 
             "border border-white/40 dark:border-white/10", 
             "shadow-futureBox ", 
             "transition-all duration-300 active:scale-95 hover:-translate-y-1 cursor-pointer"

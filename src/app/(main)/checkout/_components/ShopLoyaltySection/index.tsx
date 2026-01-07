@@ -35,7 +35,7 @@ export const ShopLoyaltySection: React.FC<ShopLoyaltySectionProps> = ({ loyalty 
         <div className="bg-amber-500 rounded-full p-1">
           <Sparkles size={10} className="text-white" />
         </div>
-        <span className="text-[10px] font-bold text-slate-600">
+        <span className="text-[10px] font-bold text-gray-600">
           Nhận thêm{" "}
           <b className="text-amber-700 text-xs">
             {formatPrice(loyalty?.expectedPointsEarned || 0)}

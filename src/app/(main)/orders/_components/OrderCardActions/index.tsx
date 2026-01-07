@@ -19,11 +19,11 @@ export const OrderCardActions: React.FC<ActionsProps> = ({
 }) => (
   <div className="lg:col-span-4 flex flex-col items-end border-t lg:border-t-0 lg:border-l border-gray-50 pt-5 lg:pt-0 ">
     <div className="text-right mb-5 w-full">
-      <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">
+      <span className="text-[10px] font-semibold text-gray-600 uppercase tracking-widest">
         Tổng thanh toán
       </span>
       <p className="text-2xl font-semibold text-orange-600 mt-1">{formatPrice(grandTotal)}</p>
-      <p className="text-[11px] font-bold text-slate-400 uppercase mt-1 tracking-tighter">
+      <p className="text-[11px] font-bold text-gray-600 uppercase mt-1 tracking-tighter">
         {paymentMethod}
       </p>
     </div>
@@ -41,7 +41,7 @@ export const OrderCardActions: React.FC<ActionsProps> = ({
           {canCancel && (
             <button
               onClick={onCancelClick}
-              className="w-full py-2 text-[11px] font-bold text-gray-400 hover:text-red-500 transition-colors uppercase tracking-widest"
+              className="w-full py-2 text-[11px] font-bold text-gray-600 hover:text-red-500 transition-colors uppercase tracking-widest"
             >
               Hủy đơn hàng
             </button>

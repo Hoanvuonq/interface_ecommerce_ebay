@@ -227,7 +227,7 @@ export default function BroadcastNotificationForm() {
                             </label>
                         )}
                     </AnimatePresence>
-                    <div className="text-xs text-gray-400 font-medium leading-relaxed max-w-[200px]">
+                    <div className="text-xs text-gray-600 font-medium leading-relaxed max-w-[200px]">
                         <p className="flex items-center gap-1"><AlertCircle size={12} /> Hỗ trợ: WebP, JPG, PNG</p>
                         <p>Dung lượng tối đa 5MB</p>
                     </div>

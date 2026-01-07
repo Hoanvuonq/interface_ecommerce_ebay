@@ -18,7 +18,7 @@ export const SectionHeader = ({
     </div>
     <span className={cn(
       "text-xs font-semibold uppercase tracking-[0.2em]", 
-      isLight ? "text-white/80" : "text-slate-800"
+      isLight ? "text-white/80" : "text-gray-800"
     )}>
       {title}
     </span>

@@ -89,7 +89,7 @@ export const VoucherComponents: React.FC<VoucherInputProps> = (props) => {
                             <Ticket size={12} />
                           </div>
                           <div className="flex flex-col min-w-0">
-                            <span className="text-gray-400 text-[7px] font-semibold uppercase -tracking-tighter leading-none mb-1">
+                            <span className="text-gray-600 text-[7px] font-semibold uppercase -tracking-tighter leading-none mb-1">
                               {v.label}
                             </span>
                             <span className="text-gray-800 font-semibold text-[10px] truncate uppercase tracking-tighter">

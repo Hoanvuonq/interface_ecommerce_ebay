@@ -68,7 +68,7 @@ export const ICON_BG_COLORS: Record<string, { bg: string; text: string }> = {
     'default': { bg: 'bg-gray-100/70', text: 'text-gray-500' }, 
     'thủ công mỹ nghệ': { bg: 'bg-amber-100/70', text: 'text-amber-600' },
     'văn phòng phẩm': { bg: 'bg-sky-100/70', text: 'text-sky-600' },
-    'test': { bg: 'bg-slate-200/70', text: 'text-slate-600' },
+    'test': { bg: 'bg-gray-200/70', text: 'text-gray-600' },
     
 };
 

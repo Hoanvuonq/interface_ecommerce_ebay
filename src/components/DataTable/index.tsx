@@ -68,7 +68,7 @@ export const DataTable = <T,>({
                   <th
                     key={idx}
                     className={cn(
-                      "px-6 py-4 text-[10px] font-semibold uppercase text-gray-400 tracking-[0.2em] whitespace-nowrap",
+                      "px-6 py-4 text-[10px] font-semibold uppercase text-gray-600 tracking-[0.2em] whitespace-nowrap",
                       col.align === "center" ? "text-center" : col.align === "right" ? "text-right" : "text-left",
                       col.headerClassName
                     )}
@@ -101,7 +101,7 @@ export const DataTable = <T,>({
                         </div>
                         <div>
                           <h3 className="text-gray-900 font-semibold text-xs uppercase tracking-widest">Trống</h3>
-                          <p className="text-[10px] text-gray-400 font-bold uppercase">{emptyMessage}</p>
+                          <p className="text-[10px] text-gray-600 font-bold uppercase">{emptyMessage}</p>
                         </div>
                       </div>
                     </td>
@@ -139,7 +139,7 @@ export const DataTable = <T,>({
         </div>
 
         <div className="bg-white px-8 py-5 border-t border-gray-50 flex items-center justify-between">
-          <div className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">
+          <div className="text-[10px] font-semibold text-gray-600 uppercase tracking-widest">
             Showing <span className="text-gray-900">{totalElements > 0 ? fromItem : 0}-{toItem}</span> of <span className="text-gray-900">{totalElements}</span> items
           </div>
 
@@ -147,19 +147,19 @@ export const DataTable = <T,>({
             <button
               onClick={() => onPageChange(page - 1)}
               disabled={page === 0 || loading}
-              className="p-2 rounded-xl border border-gray-100 text-gray-400 hover:bg-gray-50 hover:text-orange-500 disabled:opacity-30 transition-all active:scale-90"
+              className="p-2 rounded-xl border border-gray-100 text-gray-600 hover:bg-gray-50 hover:text-orange-500 disabled:opacity-30 transition-all active:scale-90"
             >
               <FiChevronLeft size={20} />
             </button>
 
-            <div className="px-4 py-1.5 rounded-lg bg-slate-50 border border-gray-100 text-[10px] font-semibold text-slate-600 tracking-tighter">
+            <div className="px-4 py-1.5 rounded-lg bg-gray-50 border border-gray-100 text-[10px] font-semibold text-gray-600 tracking-tighter">
               PAGE {page + 1} / {totalPages || 1}
             </div>
 
             <button
               onClick={() => onPageChange(page + 1)}
               disabled={page >= totalPages - 1 || loading}
-              className="p-2 rounded-xl border border-gray-100 text-gray-400 hover:bg-gray-50 hover:text-orange-500 disabled:opacity-30 transition-all active:scale-90"
+              className="p-2 rounded-xl border border-gray-100 text-gray-600 hover:bg-gray-50 hover:text-orange-500 disabled:opacity-30 transition-all active:scale-90"
             >
               <FiChevronRight size={20} />
             </button>

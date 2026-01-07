@@ -118,7 +118,7 @@ export const DepositDetailModal: React.FC<DepositDetailModalProps> = ({
                       onClick={() =>
                         copyToClipboard(transaction.id, "Mã giao dịch")
                       }
-                      className="text-gray-400 cursor-pointer hover:text-orange-600 transition-colors"
+                      className="text-gray-600 cursor-pointer hover:text-orange-600 transition-colors"
                     >
                       <FiCopy size={14} />
                     </button>
@@ -166,10 +166,10 @@ export const DepositDetailModal: React.FC<DepositDetailModalProps> = ({
                       Biến động số dư
                     </p>
                     <div className="flex items-center justify-center gap-3 text-sm">
-                      <div className="text-gray-400 line-through decoration-gray-300">
+                      <div className="text-gray-600 line-through decoration-gray-300">
                         {transaction.balanceBefore.toLocaleString("vi-VN")}
                       </div>
-                      <div className="text-gray-400">→</div>
+                      <div className="text-gray-600">→</div>
                       <div className="font-bold text-gray-900 bg-gray-100 px-2 py-1 rounded">
                         {transaction.balanceAfter.toLocaleString("vi-VN")}
                       </div>
@@ -204,7 +204,7 @@ export const DepositDetailModal: React.FC<DepositDetailModalProps> = ({
                           viewBox={`0 0 256 256`}
                         />
                       </div>
-                      <p className="text-[10px] text-gray-400 mt-2">
+                      <p className="text-[10px] text-gray-600 mt-2">
                         Hết hạn:{" "}
                         {new Date(depositDetail.expiresAt).toLocaleTimeString(
                           "vi-VN",
@@ -213,7 +213,7 @@ export const DepositDetailModal: React.FC<DepositDetailModalProps> = ({
                       </p>
                     </div>
                   ) : isPaymentExpired() && transaction.status === "PENDING" ? (
-                    <div className="flex flex-col items-center justify-center h-32 bg-gray-50 rounded-lg w-full border border-gray-100 text-gray-400">
+                    <div className="flex flex-col items-center justify-center h-32 bg-gray-50 rounded-lg w-full border border-gray-100 text-gray-600">
                       <FiClock size={32} className="mb-2 opacity-50" />
                       <span className="text-xs">
                         Link thanh toán đã hết hạn
@@ -227,7 +227,7 @@ export const DepositDetailModal: React.FC<DepositDetailModalProps> = ({
                       </span>
                     </div>
                   ) : (
-                    <div className="flex flex-col items-center justify-center h-32 bg-gray-50 rounded-lg w-full border border-gray-100 text-gray-400">
+                    <div className="flex flex-col items-center justify-center h-32 bg-gray-50 rounded-lg w-full border border-gray-100 text-gray-600">
                       <span className="text-xs">
                         Không có thông tin thanh toán
                       </span>

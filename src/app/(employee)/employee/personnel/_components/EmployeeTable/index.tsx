@@ -54,7 +54,7 @@ export default function EmployeeTable() {
     const configs = {
       ACTIVE: "bg-emerald-50 text-emerald-600 border-emerald-100",
       ON_LEAVE: "bg-amber-50 text-amber-600 border-amber-100",
-      RESIGNED: "bg-slate-100 text-slate-500 border-slate-200",
+      RESIGNED: "bg-gray-100 text-gray-500 border-gray-200",
       TERMINATED: "bg-red-50 text-red-600 border-red-100",
       RETIRED: "bg-blue-50 text-blue-600 border-blue-100",
     };
@@ -89,10 +89,10 @@ export default function EmployeeTable() {
             )}
           </div>
           <div className="min-w-0">
-            <p className="font-semibold text-slate-900 tracking-tight text-sm leading-none truncate">
+            <p className="font-semibold text-gray-900 tracking-tight text-sm leading-none truncate">
               {emp.fullName}
             </p>
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1.5 flex items-center gap-1">
+            <p className="text-[10px] text-gray-600 font-bold uppercase tracking-widest mt-1.5 flex items-center gap-1">
               <MapPin size={10} /> {emp.phone}
             </p>
           </div>
@@ -103,11 +103,11 @@ export default function EmployeeTable() {
       header: "Vị trí & Phòng ban",
       render: (emp) => (
         <div className="space-y-1">
-          <p className="text-sm font-semibold text-slate-700 italic flex items-center gap-1">
+          <p className="text-sm font-semibold text-gray-700 italic flex items-center gap-1">
             <Briefcase size={12} className="text-orange-400" />{" "}
             {emp.positionName}
           </p>
-          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-4">
+          <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest ml-4">
             {emp.departmentName}
           </p>
         </div>
@@ -155,7 +155,7 @@ export default function EmployeeTable() {
   const tableHeader = (
     <div className="w-full space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="flex bg-slate-100/80 p-1 rounded-2xl relative">
+        <div className="flex bg-gray-100/80 p-1 rounded-2xl relative">
           {["ALL", "ACTIVE", "ON_LEAVE", "RESIGNED"].map((key) => {
             const isActive = filters.activeTab === key;
             return (
@@ -166,7 +166,7 @@ export default function EmployeeTable() {
                   "relative px-5 py-2 text-[10px] font-semibold uppercase tracking-widest rounded-lg transition-colors duration-300 z-10",
                   isActive
                     ? "text-orange-500"
-                    : "text-slate-400 hover:text-slate-600"
+                    : "text-gray-600 hover:text-gray-600"
                 )}
               >
                 <span className="relative z-20">
@@ -195,13 +195,13 @@ export default function EmployeeTable() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         <div className="relative group lg:col-span-2">
           <Search
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-orange-500 transition-colors"
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-orange-500 transition-colors"
             size={16}
           />
           <input
             type="text"
             placeholder="Truy vấn danh tính nhân sự..."
-            className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-100 rounded-xl focus:bg-white focus:ring-4 focus:ring-orange-500/5 outline-none transition-all text-sm font-bold shadow-inner"
+            className="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:bg-white focus:ring-4 focus:ring-orange-500/5 outline-none transition-all text-sm font-bold shadow-inner"
             value={filters.searchText}
             onChange={(e) => updateFilter({ searchText: e.target.value })}
           />
@@ -240,13 +240,13 @@ export default function EmployeeTable() {
     <div className="p-8 bg-[#F8FAFC] min-h-screen space-y-8 animate-in fade-in duration-700">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
         <div className="space-y-2">
-          <h1 className="text-5xl font-semibold text-slate-900 tracking-tighter uppercase italic leading-none">
+          <h1 className="text-5xl font-semibold text-gray-900 tracking-tighter uppercase italic leading-none">
             Human{" "}
             <span className="text-orange-500 underline decoration-4 underline-offset-8">
               Resources
             </span>
           </h1>
-          <p className="text-slate-800 text-xs font-bold uppercase tracking-[0.3em]">
+          <p className="text-gray-800 text-xs font-bold uppercase tracking-[0.3em]">
             Workspace quản trị nhân sự tập trung
           </p>
         </div>
@@ -256,7 +256,7 @@ export default function EmployeeTable() {
             setModeForm("create");
             setOpenForm(true);
           }}
-          className="bg-slate-900 hover:bg-orange-500 text-white px-8 py-4 rounded-3xl font-semibold uppercase text-xs tracking-widest transition-all duration-500 shadow-2xl shadow-slate-200 flex items-center gap-2 active:scale-95"
+          className="bg-gray-900 hover:bg-orange-500 text-white px-8 py-4 rounded-3xl font-semibold uppercase text-xs tracking-widest transition-all duration-500 shadow-2xl shadow-gray-200 flex items-center gap-2 active:scale-95"
         >
           <Plus size={18} strokeWidth={3} /> Khởi tạo nhân sự
         </button>
@@ -266,7 +266,7 @@ export default function EmployeeTable() {
         <StatCardComponents
           label="Tổng quy mô"
           value={metadata.statistics?.totalEmployees ?? 0}
-          color="text-slate-900"
+          color="text-gray-900"
         />
         <StatCardComponents
           label="Đang làm việc"

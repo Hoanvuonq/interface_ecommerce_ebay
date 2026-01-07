@@ -39,13 +39,13 @@ const Divider = ({ className, children }: {
 }) => {
     return (
         <div className={cn("flex items-center my-6", className)}>
-            <div className="grow border-t border-gray-200 dark:border-slate-700"></div>
+            <div className="grow border-t border-gray-200 dark:border-gray-700"></div>
             {children && (
-                <span className="mx-4 text-gray-400 text-sm font-medium">
+                <span className="mx-4 text-gray-600 text-sm font-medium">
                     {children}
                 </span>
             )}
-            <div className="grow border-t border-gray-200 dark:border-slate-700"></div>
+            <div className="grow border-t border-gray-200 dark:border-gray-700"></div>
         </div>
     );
 };
@@ -141,7 +141,7 @@ export function RegisterForm({ type, initialValues, onSuccess }: RegisterFormPro
     };
 
     return (
-        <div className="min-h-screen w-full relative overflow-hidden bg-linear-to-br from-blue-50 via-white to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+        <div className="min-h-screen w-full relative overflow-hidden bg-linear-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
             <Design />
             <div className="relative z-10 flex flex-col lg:flex-row min-h-screen">
                 <div className="hidden lg:flex lg:w-1/2 w-full items-center justify-center px-4 lg:px-12">
@@ -168,7 +168,7 @@ export function RegisterForm({ type, initialValues, onSuccess }: RegisterFormPro
                         </div>
 
                         <div
-                            className="w-full shadow-2xl hover:shadow-3xl transition-all duration-300 relative z-10 bg-white/90 dark:bg-slate-800/90 border-2 border-pink-500/30 dark:border-pink-500/50 p-8 sm:p-10 rounded-3xl backdrop-blur-md"
+                            className="w-full shadow-2xl hover:shadow-3xl transition-all duration-300 relative z-10 bg-white/90 dark:bg-gray-800/90 border-2 border-pink-500/30 dark:border-pink-500/50 p-8 sm:p-10 rounded-3xl backdrop-blur-md"
                             style={{ backdropFilter: "blur(12px)" }}>
                             
                             <div className="text-center mb-8 pt-1">
@@ -177,7 +177,7 @@ export function RegisterForm({ type, initialValues, onSuccess }: RegisterFormPro
                                     className="mb-2 text-3xl font-bold text-gray-800 dark:text-gray-100">
                                     {type === "shop" ? "Đăng Ký Bán Hàng" : "Đăng Ký Tài Khoản"}
                                 </Title>
-                                <Text className="text-base text-gray-500 dark:text-gray-400">
+                                <Text className="text-base text-gray-500 dark:text-gray-600">
                                     Nhập thông tin để tạo tài khoản mới
                                 </Text>
                             </div>

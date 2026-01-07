@@ -59,7 +59,7 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
                 <div className="px-4 py-3 flex items-center justify-between gap-4">
                     <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-0.5">
-                            <span className="text-[10px] uppercase font-bold text-gray-400">
+                            <span className="text-[10px] uppercase font-bold text-gray-600">
                                 Tổng cộng ({selectedItems})
                             </span>
                             {selectedDiscount > 0 && (
@@ -132,7 +132,7 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
                             <Truck size={16} />
                             <span>Phí vận chuyển</span>
                         </div>
-                        <span className="text-xs text-gray-400 italic">Tính khi thanh toán</span>
+                        <span className="text-xs text-gray-600 italic">Tính khi thanh toán</span>
                     </div>
                 </div>
 
@@ -156,7 +156,7 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
                                 {formatPrice(selectedTotal)}
                             </p>
                             {selectedDiscount > 0 && (
-                                <p className="text-[10px] text-gray-400 font-medium uppercase">
+                                <p className="text-[10px] text-gray-600 font-medium uppercase">
                                     Bạn đã tiết kiệm được {formatPrice(selectedDiscount)}
                                 </p>
                             )}
@@ -170,7 +170,7 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
                             "w-full h-12 rounded-2xl font-semibold text-md transition-all shadow-lg active:scale-95 flex items-center justify-center gap-3 border-none",
                             hasSelectedItems 
                                 ? "bg-(--color-mainColor) hover:bg-orange-600 text-white shadow-orange-200" 
-                                : "bg-gray-200 text-gray-400 cursor-not-allowed shadow-none"
+                                : "bg-gray-200 text-gray-600 cursor-not-allowed shadow-none"
                         )}
                     >
                         {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : (

@@ -97,7 +97,7 @@ export const CategoriesSection: React.FC = () => {
                     "h-1.5 transition-all duration-500 rounded-full",
                     currentPage === idx
                       ? "w-10 bg-orange-600 shadow-sm shadow-orange-200"
-                      : "w-3 bg-slate-200 hover:bg-slate-300"
+                      : "w-3 bg-gray-200 hover:bg-gray-300"
                   )}
                 />
               ))}

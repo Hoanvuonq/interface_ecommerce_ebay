@@ -24,7 +24,7 @@ export const CustomTooltip = ({
 
     return (
       <div className="bg-white/95 backdrop-blur-sm p-4 border border-gray-100 rounded-xl shadow-xl">
-        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+        <p className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-3">
           {label}
         </p>
 
@@ -52,7 +52,7 @@ export const CustomTooltip = ({
 
           {yesterdayVal > 0 && (
             <div className="pt-2 mt-2 border-t border-gray-100 flex items-center justify-between">
-              <span className="text-xs text-gray-400">Tăng trưởng</span>
+              <span className="text-xs text-gray-600">Tăng trưởng</span>
               <span
                 className={`text-xs font-bold px-2 py-0.5 rounded-full ${
                   isPositive

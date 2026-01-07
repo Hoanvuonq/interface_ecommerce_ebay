@@ -82,17 +82,17 @@ const DetailField = ({
 }) => (
   <div
     className={cn(
-      "p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md hover:border-orange-200 transition-all duration-300",
+      "p-4 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-md hover:border-orange-200 transition-all duration-300",
       className
     )}
   >
-    <div className="flex items-center gap-2 mb-1.5 text-slate-400">
+    <div className="flex items-center gap-2 mb-1.5 text-gray-600">
       {Icon && <Icon size={12} strokeWidth={2.5} className="text-orange-400" />}
       <label className="text-[10px] font-semibold uppercase tracking-widest leading-none">
         {label}
       </label>
     </div>
-    <div className="text-slate-700 font-bold text-sm truncate">
+    <div className="text-gray-700 font-bold text-sm truncate">
       {value || (
         <span className="opacity-30 font-normal italic text-xs">Trống</span>
       )}
@@ -144,7 +144,7 @@ export default function UserDetailModal({
           <div className="p-2 bg-orange-500 text-white rounded-xl shadow-lg shadow-orange-200">
             <UserIcon size={20} strokeWidth={2.5} />
           </div>
-          <span className="font-semibold tracking-tight text-xl text-slate-800 uppercase">
+          <span className="font-semibold tracking-tight text-xl text-gray-800 uppercase">
             Hồ sơ người dùng
           </span>
         </div>
@@ -158,7 +158,7 @@ export default function UserDetailModal({
             size={48}
             strokeWidth={1.5}
           />
-          <p className="text-slate-400 font-semibold text-xs uppercase tracking-widest animate-pulse">
+          <p className="text-gray-600 font-semibold text-xs uppercase tracking-widest animate-pulse">
             Đang nạp dữ liệu...
           </p>
         </div>
@@ -172,7 +172,7 @@ export default function UserDetailModal({
       ) : user ? (
         <div className="space-y-8 animate-in fade-in zoom-in-95 duration-500 pb-6">
           {/* Section 1: Top Profile Card */}
-          <div className="relative overflow-hidden p-6 md:p-8 rounded-[2.5rem] bg-slate-50 border border-slate-100 flex flex-col md:flex-row items-center md:items-start gap-8">
+          <div className="relative overflow-hidden p-6 md:p-8 rounded-[2.5rem] bg-gray-50 border border-gray-100 flex flex-col md:flex-row items-center md:items-start gap-8">
             <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none">
               <UserIcon size={180} />
             </div>
@@ -212,27 +212,27 @@ export default function UserDetailModal({
                 ))}
               </div>
               <div>
-                <h2 className="text-4xl font-semibold text-slate-900 tracking-tighter mb-1 uppercase italic">
+                <h2 className="text-4xl font-semibold text-gray-900 tracking-tighter mb-1 uppercase italic">
                   {user.username}
                 </h2>
-                <p className="text-slate-400 font-bold text-sm flex items-center justify-center md:justify-start gap-2">
+                <p className="text-gray-600 font-bold text-sm flex items-center justify-center md:justify-start gap-2">
                   <Mail size={14} className="text-orange-500" /> {user.email}
                 </p>
               </div>
-              <div className="pt-2 flex flex-wrap justify-center md:justify-start gap-6 border-t border-slate-200">
+              <div className="pt-2 flex flex-wrap justify-center md:justify-start gap-6 border-t border-gray-200">
                 <div className="text-center md:text-left">
-                  <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">
+                  <p className="text-[10px] font-semibold text-gray-600 uppercase tracking-widest">
                     ID Định danh
                   </p>
-                  <p className="text-slate-700 font-semibold text-xs">
+                  <p className="text-gray-700 font-semibold text-xs">
                     #{user.userId.slice(-8).toUpperCase()}
                   </p>
                 </div>
                 <div className="text-center md:text-left">
-                  <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">
+                  <p className="text-[10px] font-semibold text-gray-600 uppercase tracking-widest">
                     Ngày tham gia
                   </p>
-                  <p className="text-slate-700 font-semibold text-xs">
+                  <p className="text-gray-700 font-semibold text-xs">
                     {dayjs(user.createdDate).format("DD MMM, YYYY")}
                   </p>
                 </div>
@@ -246,7 +246,7 @@ export default function UserDetailModal({
             <div className="space-y-4">
               <div className="flex items-center gap-2 px-4">
                 <div className="w-1.5 h-6 bg-orange-500 rounded-full" />
-                <h3 className="font-semibold text-slate-800 tracking-tight uppercase text-xs">
+                <h3 className="font-semibold text-gray-800 tracking-tight uppercase text-xs">
                   Cấu hình bảo mật
                 </h3>
               </div>
@@ -282,7 +282,7 @@ export default function UserDetailModal({
             <div className="space-y-4">
               <div className="flex items-center gap-2 px-4">
                 <div className="w-1.5 h-6 bg-rose-500 rounded-full" />
-                <h3 className="font-semibold text-slate-800 tracking-tight uppercase text-xs text-rose-600">
+                <h3 className="font-semibold text-gray-800 tracking-tight uppercase text-xs text-rose-600">
                   Lịch sử vi phạm
                 </h3>
               </div>
@@ -291,7 +291,7 @@ export default function UserDetailModal({
                   "p-5 h-full rounded-[2rem] border transition-all duration-300",
                   user.lockedAt
                     ? "bg-rose-50 border-rose-100"
-                    : "bg-slate-50 border-slate-100 opacity-60"
+                    : "bg-gray-50 border-gray-100 opacity-60"
                 )}
               >
                 {user.lockedAt ? (
@@ -315,7 +315,7 @@ export default function UserDetailModal({
                     </div>
                   </div>
                 ) : (
-                  <div className="flex flex-col items-center justify-center h-full text-slate-400 gap-2">
+                  <div className="flex flex-col items-center justify-center h-full text-gray-600 gap-2">
                     <Shield size={24} strokeWidth={1} />
                     <p className="text-[10px] font-semibold uppercase tracking-widest">
                       Tài khoản trong sạch
@@ -337,7 +337,7 @@ export default function UserDetailModal({
                       <div className="p-2 bg-blue-50 text-blue-600 rounded-xl">
                         <UserIcon size={18} />
                       </div>
-                      <h3 className="font-semibold text-slate-800 tracking-tight uppercase text-xs">
+                      <h3 className="font-semibold text-gray-800 tracking-tight uppercase text-xs">
                         Thông tin Người mua hàng
                       </h3>
                     </div>
@@ -377,7 +377,7 @@ export default function UserDetailModal({
                       <div className="p-2 bg-emerald-50 text-emerald-600 rounded-xl">
                         <Store size={18} />
                       </div>
-                      <h3 className="font-semibold text-slate-800 tracking-tight uppercase text-xs">
+                      <h3 className="font-semibold text-gray-800 tracking-tight uppercase text-xs">
                         Thông tin Shop đối tác
                       </h3>
                     </div>
@@ -420,7 +420,7 @@ export default function UserDetailModal({
                       <div className="p-2 bg-purple-50 text-purple-600 rounded-xl">
                         <Briefcase size={18} />
                       </div>
-                      <h3 className="font-semibold text-slate-800 tracking-tight uppercase text-xs">
+                      <h3 className="font-semibold text-gray-800 tracking-tight uppercase text-xs">
                         Thông tin Nhân sự
                       </h3>
                     </div>
@@ -476,7 +476,7 @@ export default function UserDetailModal({
           </div>
 
           {/* Section 4: Permissions Tag Cloud */}
-          <div className="relative p-8 rounded-[2.5rem] bg-slate-900 overflow-hidden shadow-2xl">
+          <div className="relative p-8 rounded-[2.5rem] bg-gray-900 overflow-hidden shadow-2xl">
             <div className="absolute -top-10 -right-10 p-12 opacity-10 rotate-12 text-white">
               <Lock size={160} />
             </div>
@@ -494,7 +494,7 @@ export default function UserDetailModal({
                 {user.rolePermissions?.map((perm: any) => (
                   <span
                     key={perm.permissionId}
-                    className="px-4 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-[10px] font-bold text-slate-300 transition-all hover:scale-105 cursor-default uppercase"
+                    className="px-4 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-[10px] font-bold text-gray-300 transition-all hover:scale-105 cursor-default uppercase"
                   >
                     {perm.permissionName}
                   </span>
@@ -509,7 +509,7 @@ export default function UserDetailModal({
                 ))}
                 {!user.rolePermissions?.length &&
                   !user.userPermissions?.length && (
-                    <p className="text-slate-500 font-bold text-xs italic">
+                    <p className="text-gray-500 font-bold text-xs italic">
                       Tài khoản này chưa được cấp quyền hạn cụ thể.
                     </p>
                   )}
@@ -518,7 +518,7 @@ export default function UserDetailModal({
           </div>
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center py-32 text-slate-300 gap-4">
+        <div className="flex flex-col items-center justify-center py-32 text-gray-300 gap-4">
           <Activity size={48} strokeWidth={1} />
           <p className="font-semibold uppercase tracking-[0.3em] text-[10px]">
             Thực thể không tồn tại

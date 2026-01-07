@@ -25,11 +25,11 @@ export const ShopApprovalToolbar: React.FC<ShopApprovalToolbarProps> = ({
       <div className="flex flex-wrap gap-4 flex-1">
         <div className="relative group flex-1 min-w-75">
           <Search
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-orange-500 transition-colors"
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 group-focus-within:text-orange-500 transition-colors"
             size={18}
           />
           <input
-            className="w-full pl-12 pr-4 py-3 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-orange-500/20 outline-none font-bold text-sm text-slate-700 placeholder:text-slate-400 transition-all"
+            className="w-full pl-12 pr-4 py-3 rounded-2xl bg-gray-50 border-none focus:ring-2 focus:ring-orange-500/20 outline-none font-bold text-sm text-gray-700 placeholder:text-gray-600 transition-all"
             placeholder="Tìm kiếm theo tên shop..."
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
@@ -56,7 +56,7 @@ export const ShopApprovalToolbar: React.FC<ShopApprovalToolbarProps> = ({
           onClick={onReset}
           variant="edit"
           disabled={loading}
-          className="flex gap-2 items-center px-5 py-2.5 rounded-xl text-sm font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all active:scale-95 disabled:opacity-50"
+          className="flex gap-2 items-center px-5 py-2.5 rounded-xl text-sm font-bold bg-gray-100 text-gray-600 hover:bg-gray-200 transition-all active:scale-95 disabled:opacity-50"
         >
           <span className="flex gap-2 items-center">
             <Brush size={18} /> Reset

@@ -3,8 +3,10 @@
 import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
 import { ArrowUp } from "lucide-react";
 import { useEffect, useState } from "react";
-
-export const ScrollToTop = () => {
+interface FloatingChatButtonsProps {
+  isInGroup?: boolean;
+}
+export const ScrollToTop = ({ isInGroup = false }) => {
   const [isVisible, setIsVisible] = useState(false);
   
   const { scrollYProgress } = useScroll();
@@ -44,7 +46,7 @@ export const ScrollToTop = () => {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-orange-500 text-white shadow-[0_10px_25px_-5px_rgba(249,115,22,0.4)] transition-all duration-300 hover:bg-orange-600"
+          className="fixed bottom-24 right-8 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-orange-500 text-white shadow-[0_10px_25px_-5px_rgba(249,115,22,0.4)] transition-all duration-300 hover:bg-orange-600"
           aria-label="Scroll to top"
         >
           <svg className="absolute inset-0 h-full w-full -rotate-90">

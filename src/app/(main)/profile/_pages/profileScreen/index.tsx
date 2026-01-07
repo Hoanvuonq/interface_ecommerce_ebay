@@ -290,7 +290,7 @@ export default function ProfilePage() {
                 <h3 className="text-base font-semibold text-gray-800 mb-1">
                   Ảnh đại diện
                 </h3>
-                <p className="text-xs text-gray-400 max-w-45 text-center leading-relaxed">
+                <p className="text-xs text-gray-600 max-w-45 text-center leading-relaxed">
                   Dụng lượng file tối đa 5 MB. Định dạng: .JPEG, .PNG
                 </p>
               </div>
@@ -365,7 +365,7 @@ export default function ProfilePage() {
                           "text-base transition-colors",
                           activeTab === item.key
                             ? "text-orange-500"
-                            : "text-gray-400 group-hover:text-gray-500"
+                            : "text-gray-600 group-hover:text-gray-500"
                         )}
                       />
                       {item.label}
@@ -381,7 +381,7 @@ export default function ProfilePage() {
             <div className="flex-1">
               <div className="bg-white rounded-xl shadow-sm border border-gray-100 w-full p-6 min-h-125 flex flex-col">
                 {loading ? (
-                  <div className="h-full w-full flex-1 flex flex-col items-center justify-center text-gray-400 py-16">
+                  <div className="h-full w-full flex-1 flex flex-col items-center justify-center text-gray-600 py-16">
                     <FaSpinner className="animate-spin text-3xl mb-3 text-orange-500" />
                     <span className="text-xs font-medium">
                       Đang tải thông tin...

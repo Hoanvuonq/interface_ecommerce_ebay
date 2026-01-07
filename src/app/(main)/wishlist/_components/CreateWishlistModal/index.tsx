@@ -32,18 +32,15 @@ export default function CreateWishlistModal({
     const { createWishlist } = useWishlist();
     const { uploadFile: uploadPresigned, uploading: uploadingImage } = usePresignedUpload();
 
-    // Form States
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [isPublic, setIsPublic] = useState(false);
     const [isDefault, setIsDefault] = useState(false);
     const [submitting, setSubmitting] = useState(false);
     
-    // Image States
     const [previewImage, setPreviewImage] = useState<string>("");
     const [coverImageAssetId, setCoverImageAssetId] = useState<string>("");
 
-    // Reset form khi đóng/mở
     useEffect(() => {
         if (!visible) {
             setName("");
@@ -116,8 +113,8 @@ export default function CreateWishlistModal({
                 <Plus size={24} strokeWidth={3} />
             </div>
             <div>
-                <h3 className="text-xl font-semibold text-slate-900 uppercase tracking-tight leading-none">Tạo Wishlist Mới</h3>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Lưu trữ món đồ yêu thích</p>
+                <h3 className="text-xl font-semibold text-gray-900 uppercase tracking-tight leading-none">Tạo Wishlist Mới</h3>
+                <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest mt-1">Lưu trữ món đồ yêu thích</p>
             </div>
         </div>
     );
@@ -127,14 +124,14 @@ export default function CreateWishlistModal({
         <div className="flex w-full gap-3">
             <button 
                 onClick={onCancel}
-                className="flex-1 px-6 py-3.5 rounded-xl font-bold text-slate-400 hover:bg-slate-100 transition-colors uppercase text-xs tracking-widest"
+                className="flex-1 px-6 py-3.5 rounded-xl font-bold text-gray-600 hover:bg-gray-100 transition-colors uppercase text-xs tracking-widest"
             >
                 Hủy bỏ
             </button>
             <button 
                 disabled={submitting || uploadingImage}
                 onClick={handleSubmit}
-                className="flex-[2] flex items-center justify-center gap-2 px-6 py-3.5 bg-slate-900 hover:bg-orange-600 disabled:bg-slate-200 text-white rounded-xl font-semibold transition-all active:scale-95 shadow-xl shadow-slate-200 uppercase text-xs tracking-[0.2em]"
+                className="flex-2 flex items-center justify-center gap-2 px-6 py-3.5 bg-gray-900 hover:bg-orange-600 disabled:bg-gray-200 text-white rounded-xl font-semibold transition-all active:scale-95 shadow-xl shadow-gray-200 uppercase text-xs tracking-[0.2em]"
             >
                 {submitting ? <Loader2 size={18} className="animate-spin" /> : <Check size={18} strokeWidth={3} />}
                 {submitting ? "ĐANG TẠO..." : "TẠO NGAY"}
@@ -154,12 +151,12 @@ export default function CreateWishlistModal({
             <div className="space-y-6">
                 {/* Image Upload Area */}
                 <div className="space-y-3">
-                    <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 ml-1">Ảnh bìa (Tùy chọn)</label>
-                    <div className="relative group aspect-[21/9] rounded-3xl border-2 border-dashed border-slate-200 bg-slate-50 overflow-hidden flex items-center justify-center transition-all hover:border-orange-300">
+                    <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-600 ml-1">Ảnh bìa (Tùy chọn)</label>
+                    <div className="relative group aspect-21/9 rounded-3xl border-2 border-dashed border-gray-200 bg-gray-50 overflow-hidden flex items-center justify-center transition-all hover:border-orange-300">
                         {previewImage ? (
                             <>
                                 <img src={previewImage} alt="Preview" className="w-full h-full object-cover" />
-                                <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <div className="absolute inset-0 bg-gray-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                     <button 
                                         onClick={() => {setPreviewImage(""); setCoverImageAssetId("");}} 
                                         className="p-3 bg-white/20 backdrop-blur-md rounded-2xl text-white hover:bg-red-500 transition-colors shadow-lg"
@@ -173,7 +170,7 @@ export default function CreateWishlistModal({
                                 <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm text-orange-500 group-hover:scale-110 transition-transform">
                                     {uploadingImage ? <Loader2 className="animate-spin" /> : <ImageIcon size={24} />}
                                 </div>
-                                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                                <span className="text-xs font-bold text-gray-600 uppercase tracking-widest">
                                     {uploadingImage ? "Đang tải..." : "Tải ảnh lên"}
                                 </span>
                                 <input type="file" className="hidden" accept="image/*" onChange={handleFileChange} disabled={uploadingImage} />
@@ -184,24 +181,24 @@ export default function CreateWishlistModal({
 
                 {/* Name Input */}
                 <div className="space-y-2">
-                    <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 ml-1">Tên Wishlist *</label>
+                    <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-600 ml-1">Tên Wishlist *</label>
                     <input 
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         placeholder="Ví dụ: Đồ Decor nhà mới..."
-                        className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-bold text-slate-700 placeholder:text-slate-300 shadow-inner"
+                        className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-bold text-gray-700 placeholder:text-gray-300 shadow-inner"
                     />
                 </div>
 
                 {/* Description Input */}
                 <div className="space-y-2">
-                    <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 ml-1">Mô tả</label>
+                    <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-600 ml-1">Mô tả</label>
                     <textarea 
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         rows={3}
                         placeholder="Ghi chú về danh sách này..."
-                        className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-medium text-slate-600 resize-none placeholder:text-slate-300 shadow-inner"
+                        className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-medium text-gray-600 resize-none placeholder:text-gray-300 shadow-inner"
                     />
                 </div>
 
@@ -227,30 +224,29 @@ export default function CreateWishlistModal({
     );
 }
 
-// Sub-component ToggleOption giúp code sạch hơn
 const ToggleOption = ({ active, onClick, icon, label, description }: any) => (
     <div 
         onClick={onClick}
         className={cn(
             "flex items-center gap-4 p-4 rounded-[1.8rem] border cursor-pointer transition-all",
-            active ? "bg-orange-50 border-orange-100 ring-1 ring-orange-200 shadow-sm" : "bg-slate-50 border-slate-200 hover:border-slate-300"
+            active ? "bg-orange-50 border-orange-100 ring-1 ring-orange-200 shadow-sm" : "bg-gray-50 border-gray-200 hover:border-gray-300"
         )}
     >
         <div className={cn(
             "w-10 h-10 rounded-xl flex items-center justify-center shadow-sm transition-colors",
-            active ? "bg-orange-500 text-white" : "bg-white text-slate-400"
+            active ? "bg-orange-500 text-white" : "bg-white text-gray-600"
         )}>
             {icon}
         </div>
         <div className="flex-1">
-            <h4 className={cn("text-xs font-semibold uppercase tracking-tight", active ? "text-orange-900" : "text-slate-700")}>
+            <h4 className={cn("text-xs font-semibold uppercase tracking-tight", active ? "text-orange-900" : "text-gray-700")}>
                 {label}
             </h4>
-            <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">{description}</p>
+            <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest mt-0.5">{description}</p>
         </div>
         <div className={cn(
             "w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all",
-            active ? "bg-orange-500 border-orange-500" : "border-slate-300 bg-white"
+            active ? "bg-orange-500 border-orange-500" : "border-gray-300 bg-white"
         )}>
             {active && <Check size={12} className="text-white" strokeWidth={4} />}
         </div>

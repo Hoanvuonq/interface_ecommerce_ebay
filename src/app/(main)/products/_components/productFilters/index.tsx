@@ -36,7 +36,7 @@ const CustomInput: React.FC<any> = ({
       value={value}
       onChange={onChange}
       className={cn(
-        "w-full px-4 py-3 text-xs border-2 border-slate-100 rounded-xl text-slate-800 placeholder:text-slate-500 focus:border-orange-500 outline-none transition-all bg-white",
+        "w-full px-4 py-3 text-xs border-2 border-gray-100 rounded-xl text-gray-800 placeholder:text-gray-500 focus:border-orange-500 outline-none transition-all bg-white",
         className
       )}
       {...rest}
@@ -56,7 +56,7 @@ const CustomTag: React.FC<any> = ({
 }) => (
   <span
     className={cn(
-      "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase  bg-slate-50 text-slate-600 border border-slate-200 shadow-sm",
+      "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase  bg-gray-50 text-gray-600 border border-gray-200 shadow-sm",
       className
     )}
   >
@@ -134,16 +134,16 @@ export default function ProductFilters({
   }, [value]);
 
   return (
-    <div className="bg-slate-50 rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
+    <div className="bg-gray-50 rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
       <div
-        className="px-5 py-4 border-b border-slate-50 cursor-pointer flex items-center justify-between bg-slate-50/50 group"
+        className="px-5 py-4 border-b border-gray-50 cursor-pointer flex items-center justify-between bg-gray-50/50 group"
         onClick={() => setIsFilterVisible(!isFilterVisible)}
       >
         <div className="flex items-center gap-2.5">
           <div className="bg-orange-500 p-1.5 rounded-lg text-white shadow-md transition-transform group-hover:scale-105">
             <Filter size={14} strokeWidth={2.5} />
           </div>
-          <span className="text-[11px] font-bold text-slate-800 tracking-[0.15em] uppercase">
+          <span className="text-[11px] font-bold text-gray-800 tracking-[0.15em] uppercase">
             Bộ lọc thông minh
           </span>
           {hasActiveFilters && (
@@ -210,8 +210,8 @@ export default function ProductFilters({
             </div>
           </div>
 
-          <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100">
-            <label className="text-[10px] font-bold text-slate-600 uppercase tracking-widest flex items-center gap-1.5 mb-4">
+          <div className="bg-gray-50 rounded-2xl p-4 border border-gray-100">
+            <label className="text-[10px] font-bold text-gray-600 uppercase tracking-widest flex items-center gap-1.5 mb-4">
               <DollarSign size={12} className="text-orange-600" /> Khoảng giá
             </label>
 
@@ -230,7 +230,7 @@ export default function ProductFilters({
                     localPriceRange[0] === preset.min &&
                       localPriceRange[1] === preset.max
                       ? "bg-orange-500 text-white border-orange-500 shadow-sm shadow-orange-200"
-                      : "bg-white text-black border-slate-200 hover:border-orange-300 hover:text-orange-600"
+                      : "bg-white text-black border-gray-200 hover:border-orange-300 hover:text-orange-600"
                   )}
                 >
                   {preset.label}
@@ -240,11 +240,11 @@ export default function ProductFilters({
 
             <div className="space-y-3">
               <div className="flex justify-between items-center px-1">
-                <span className="text-[11px] font-bold text-slate-800">
+                <span className="text-[11px] font-bold text-gray-800">
                   {formatVND(localPriceRange[0])}
                 </span>
-                <div className="h-px flex-1 bg-slate-200 mx-4 opacity-50" />
-                <span className="text-[11px] font-bold text-slate-800">
+                <div className="h-px flex-1 bg-gray-200 mx-4 opacity-50" />
+                <span className="text-[11px] font-bold text-gray-800">
                   {formatVND(localPriceRange[1])}
                 </span>
               </div>
@@ -257,7 +257,7 @@ export default function ProductFilters({
                 onChange={(e) =>
                   handleFilterChange({ maxPrice: Number(e.target.value) })
                 }
-                className="w-full h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-orange-600"
+                className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-orange-600"
               />
             </div>
           </div>
@@ -304,7 +304,7 @@ export default function ProductFilters({
               <Button
                 variant="edit"
                 onClick={clearAllFilters}
-                className="h-10! px-4! rounded-xl border-slate-200 text-slate-900 text-[10px] uppercase "
+                className="h-10! px-4! rounded-xl border-gray-200 text-gray-900 text-[10px] uppercase "
                 icon={<RotateCw size={14} />}
               >
                 Làm mới

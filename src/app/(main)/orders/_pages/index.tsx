@@ -99,18 +99,18 @@ export const OrdersScreen = () => {
           {loading ? (
             <div className="flex flex-col justify-center items-center py-20">
               <Loader2 size={40} className="text-orange-500 animate-spin" />
-              <p className="mt-4 text-gray-400 text-xs font-bold uppercase tracking-widest">
+              <p className="mt-4 text-gray-600 text-xs font-bold uppercase tracking-widest">
                 Đang đồng bộ dữ liệu...
               </p>
             </div>
           ) : _.isEmpty(filteredOrders) ? (
-            <div className="flex flex-col items-center justify-center py-24 px-4 bg-white rounded-[2.5rem] border-2 border-dashed border-slate-100 my-4 animate-in fade-in zoom-in duration-500">
+            <div className="flex flex-col items-center justify-center py-24 px-4 bg-white rounded-[2.5rem] border-2 border-dashed border-gray-100 my-4 animate-in fade-in zoom-in duration-500">
               <div className="relative mb-8">
-                <div className="w-24 h-24 bg-slate-50 rounded-3xl flex items-center justify-center shadow-inner">
+                <div className="w-24 h-24 bg-gray-50 rounded-3xl flex items-center justify-center shadow-inner">
                   <Inbox
                     size={48}
                     strokeWidth={1.5}
-                    className="text-slate-300"
+                    className="text-gray-300"
                   />
                 </div>
                 <div className="absolute -top-2 -right-2 w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center border-4 border-white shadow-sm">
@@ -123,7 +123,7 @@ export const OrdersScreen = () => {
               </div>
 
               <div className="space-y-2 text-center max-w-xs mb-5">
-                <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider leading-relaxed">
+                <p className="text-[11px] font-bold text-gray-600 uppercase tracking-wider leading-relaxed">
                   Chúng tôi không tìm thấy bất kỳ đơn hàng nào khớp với yêu cầu
                   của bạn.
                 </p>

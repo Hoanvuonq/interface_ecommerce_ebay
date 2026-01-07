@@ -62,7 +62,7 @@ export const useProductSearch = () => {
             <div key={s.keyword} className="flex flex-col">
               <span className="font-medium">{s.keyword}</span>
               {typeof s.searchCount === "number" && (
-                <span className="text-xs text-gray-400">
+                <span className="text-xs text-gray-600">
                   Đã tìm {new Intl.NumberFormat("vi-VN").format(s.searchCount)}{" "} lần
                 </span>
               )}

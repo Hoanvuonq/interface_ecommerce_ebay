@@ -30,7 +30,7 @@ const InfoSale: React.FC<InfoSaleProps> = ({ discountInfo, formatPrice }) => {
             <div className="p-4 space-y-4">
                 {discountInfo.voucherName && (
                     <div className="space-y-2">
-                        <div className="flex items-center gap-1.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                        <div className="flex items-center gap-1.5 text-[11px] font-bold text-gray-600 uppercase tracking-wider">
                             <Ticket className="w-3 h-3" />
                             Voucher áp dụng
                         </div>
@@ -59,7 +59,7 @@ const InfoSale: React.FC<InfoSaleProps> = ({ discountInfo, formatPrice }) => {
                 <div className="space-y-2 pt-2">
                     <div className="flex justify-between items-center text-xs">
                         <span className="text-gray-500">Giá niêm yết</span>
-                        <span className="text-gray-400 line-through tabular-nums">
+                        <span className="text-gray-600 line-through tabular-nums">
                             {formatPrice(discountInfo.originalPrice)}
                         </span>
                     </div>
@@ -67,7 +67,7 @@ const InfoSale: React.FC<InfoSaleProps> = ({ discountInfo, formatPrice }) => {
                     {discountInfo.variantPrice !== discountInfo.finalPrice && (
                         <div className="flex justify-between items-center text-xs">
                             <span className="text-gray-500">Giá đang bán</span>
-                            <span className="text-gray-400 line-through tabular-nums">
+                            <span className="text-gray-600 line-through tabular-nums">
                                 {formatPrice(discountInfo.variantPrice)}
                             </span>
                         </div>
@@ -89,10 +89,10 @@ const InfoSale: React.FC<InfoSaleProps> = ({ discountInfo, formatPrice }) => {
                 <div className="border-t border-dashed border-gray-200 pt-4 mt-2">
                     <div className="flex justify-between items-end">
                         <div className="flex flex-col">
-                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">
+                            <span className="text-[10px] font-bold text-gray-600 uppercase tracking-widest leading-none mb-1">
                                 Giá thanh toán
                             </span>
-                            <span className="text-sm font-medium text-gray-400">Tiết kiệm {formatPrice(discountInfo.originalPrice - discountInfo.finalPrice)}</span>
+                            <span className="text-sm font-medium text-gray-600">Tiết kiệm {formatPrice(discountInfo.originalPrice - discountInfo.finalPrice)}</span>
                         </div>
                         <div className="text-2xl font-semibold text-red-600 tracking-tighter tabular-nums">
                             {formatPrice(discountInfo.finalPrice)}
@@ -100,7 +100,7 @@ const InfoSale: React.FC<InfoSaleProps> = ({ discountInfo, formatPrice }) => {
                     </div>
                 </div>
             </div>
-            <div className="px-4 py-2 bg-gray-50 text-[10px] text-gray-400 text-center border-t border-gray-100">
+            <div className="px-4 py-2 bg-gray-50 text-[10px] text-gray-600 text-center border-t border-gray-100">
                 Giá cuối cùng đã bao gồm các loại thuế và phí
             </div>
         </div>

@@ -39,7 +39,7 @@ export const InputField = forwardRef<
       "focus:outline-none focus:ring-2 focus:ring-orange-500",
       disabled
         ? "bg-gray-100 text-gray-500 cursor-not-allowed"
-        : "bg-white dark:bg-slate-700 text-gray-800 dark:text-gray-200 border-gray-300 dark:border-slate-600",
+        : "bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 border-gray-300 dark:border-gray-600",
       errorMessage &&
         "border-red-500 focus:border-red-500 focus:ring-red-500/50",
       isPasswordType && "pr-12",
@@ -95,7 +95,7 @@ export const InputField = forwardRef<
               onClick={togglePasswordVisibility}
               className={cn(
                 "right-3 top-1/2 -translate-y-1/2 p-1.5 hover:text-orange-500 focus:outline-none ",
-                "transition-colors z-20 cursor-pointer absolute text-gray-400"
+                "transition-colors z-20 cursor-pointer absolute text-gray-600"
               )}
               tabIndex={-1}
             >
@@ -108,7 +108,7 @@ export const InputField = forwardRef<
           )}
 
           {maxLength && !isPasswordType && (
-            <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-400 dark:text-gray-500">
+            <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-600 dark:text-gray-500">
               {`${propValue ? String(propValue).length : 0}/${maxLength}`}
             </span>
           )}
@@ -121,7 +121,7 @@ export const InputField = forwardRef<
         )}
 
         {!errorMessage && helpText && (
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-600">
             {helpText}
           </p>
         )}

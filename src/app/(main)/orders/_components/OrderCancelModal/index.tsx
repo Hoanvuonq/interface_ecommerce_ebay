@@ -98,7 +98,7 @@ export const OrderCancelModal: React.FC<OrderCancelModalProps> = ({
           </label>
           <textarea
             rows={4}
-            className="w-full px-4 py-3 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-4 focus:ring-red-500/10 focus:border-red-500 transition-all placeholder:text-gray-400 resize-none bg-gray-50 focus:bg-white"
+            className="w-full px-4 py-3 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-4 focus:ring-red-500/10 focus:border-red-500 transition-all placeholder:text-gray-600 resize-none bg-gray-50 focus:bg-white"
             placeholder="Vui lòng cho chúng tôi biết lý do tại sao bạn muốn hủy đơn hàng này..."
             value={cancelReason}
             onChange={(e) => setCancelReason(e.target.value)}
@@ -106,10 +106,10 @@ export const OrderCancelModal: React.FC<OrderCancelModalProps> = ({
             disabled={isCancelling}
           />
           <div className="flex justify-between items-center px-1">
-             <span className="text-[10px] text-gray-400 italic">
+             <span className="text-[10px] text-gray-600 italic">
                *Thông tin này giúp chúng tôi cải thiện dịch vụ
              </span>
-            <span className={`text-xs font-bold ${cancelReason.length >= 500 ? 'text-red-500' : 'text-gray-400'}`}>
+            <span className={`text-xs font-bold ${cancelReason.length >= 500 ? 'text-red-500' : 'text-gray-600'}`}>
               {cancelReason.length}/500
             </span>
           </div>

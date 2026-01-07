@@ -41,7 +41,7 @@ export default function ReviewDetailModal({
       [ReviewStatus.REJECTED]: "bg-red-50 text-red-600 border-red-100",
       [ReviewStatus.FLAGGED]: "bg-amber-50 text-amber-600 border-amber-100",
     };
-    return configs[status] || "bg-slate-50 text-slate-600";
+    return configs[status] || "bg-gray-50 text-gray-600";
   };
 
   const getTypeStyle = (type: ReviewType) => {
@@ -50,7 +50,7 @@ export default function ReviewDetailModal({
       [ReviewType.SHOP]: "bg-purple-50 text-purple-600 border-purple-100",
       [ReviewType.ORDER]: "bg-cyan-50 text-cyan-600 border-cyan-100",
     };
-    return configs[type] || "bg-slate-50 text-slate-600";
+    return configs[type] || "bg-gray-50 text-gray-600";
   };
 
   return (
@@ -75,7 +75,7 @@ export default function ReviewDetailModal({
       </div>
 
       {/* 2. Main Content Card */}
-      <div className="bg-slate-50/50 rounded-2xl p-5 border border-slate-100 space-y-4">
+      <div className="bg-gray-50/50 rounded-2xl p-5 border border-gray-100 space-y-4">
         <div className="flex justify-between items-start">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600">
@@ -83,27 +83,27 @@ export default function ReviewDetailModal({
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h4 className="font-bold text-slate-900">{review.username}</h4>
+                <h4 className="font-bold text-gray-900">{review.username}</h4>
                 {review.verifiedPurchase && (
                   <span className="flex items-center gap-1 text-[9px] font-semibold text-emerald-600 uppercase bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100">
                     <BadgeCheck size={10} /> Đã mua hàng
                   </span>
                 )}
               </div>
-              <p className="text-xs text-slate-400 font-medium">Buyer ID: {review.buyerId}</p>
+              <p className="text-xs text-gray-600 font-medium">Buyer ID: {review.buyerId}</p>
             </div>
           </div>
           <div className="flex flex-col items-end">
             <div className="flex gap-0.5 mb-1">
               {[...Array(5)].map((_, i) => (
-                <Star key={i} size={14} className={cn(i < review.rating ? "text-orange-400 fill-orange-400" : "text-slate-200 fill-slate-200")} />
+                <Star key={i} size={14} className={cn(i < review.rating ? "text-orange-400 fill-orange-400" : "text-gray-200 fill-gray-200")} />
               ))}
             </div>
-            <span className="text-xs font-bold text-slate-500">{review.rating}/5 sao</span>
+            <span className="text-xs font-bold text-gray-500">{review.rating}/5 sao</span>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl p-4 border border-slate-100 shadow-sm italic text-slate-600 text-sm leading-relaxed">
+        <div className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm italic text-gray-600 text-sm leading-relaxed">
           "{review.comment || "Người dùng không để lại lời nhắn"}"
         </div>
       </div>
@@ -130,8 +130,8 @@ export default function ReviewDetailModal({
       {/* 4. Order & Seller Response Section */}
       <div className="space-y-4">
         {review.orderId && (
-          <div className="flex items-center justify-between p-3 bg-white border border-dashed border-slate-200 rounded-xl">
-             <div className="flex items-center gap-2 text-slate-500">
+          <div className="flex items-center justify-between p-3 bg-white border border-dashed border-gray-200 rounded-xl">
+             <div className="flex items-center gap-2 text-gray-500">
                <Package size={16} />
                <span className="text-xs font-bold uppercase tracking-widest">Mã đơn hàng:</span>
              </div>
@@ -146,10 +146,10 @@ export default function ReviewDetailModal({
 
         {review.sellerResponse && (
           <div className="space-y-2">
-            <label className="text-[10px] font-semibold uppercase tracking-widest text-slate-400 flex items-center gap-2">
+            <label className="text-[10px] font-semibold uppercase tracking-widest text-gray-600 flex items-center gap-2">
               <MessageSquare size={14} /> Phản hồi từ người bán
             </label>
-            <div className="bg-orange-50/30 border-l-4 border-orange-400 p-4 rounded-r-xl text-sm text-slate-700 leading-relaxed">
+            <div className="bg-orange-50/30 border-l-4 border-orange-400 p-4 rounded-r-xl text-sm text-gray-700 leading-relaxed">
               {review.sellerResponse}
             </div>
           </div>
@@ -164,12 +164,12 @@ export default function ReviewDetailModal({
       </div>
 
       {/* 5. Footer Metadata */}
-      <div className="pt-4 border-t border-slate-100 flex flex-wrap justify-between gap-4 text-[10px] font-bold text-slate-400 uppercase tracking-tighter">
+      <div className="pt-4 border-t border-gray-100 flex flex-wrap justify-between gap-4 text-[10px] font-bold text-gray-600 uppercase tracking-tighter">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-1"><Calendar size={12}/> Tạo: {dayjs(review.createdDate).format("DD/MM/YYYY HH:mm")}</div>
           <div className="flex items-center gap-1"><RotateCw size={12}/> Sửa: {dayjs(review.lastModifiedDate).format("DD/MM/YYYY HH:mm")}</div>
         </div>
-        <div className="bg-slate-100 px-2 py-0.5 rounded text-slate-500">Version: {review.version}</div>
+        <div className="bg-gray-100 px-2 py-0.5 rounded text-gray-500">Version: {review.version}</div>
       </div>
     </div>
   );
@@ -177,13 +177,13 @@ export default function ReviewDetailModal({
     // Sub-components nội bộ để sạch code
 const InfoItem = ({ label, value, icon, copyable, onCopy }: any) => (
   <div className="space-y-1">
-    <label className="text-[10px] font-semibold uppercase tracking-widest text-slate-400 flex items-center gap-1">
+    <label className="text-[10px] font-semibold uppercase tracking-widest text-gray-600 flex items-center gap-1">
       {icon} {label}
     </label>
     <div className="flex items-center gap-2">
-      <span className="text-sm font-bold text-slate-700 truncate max-w-[200px]">{value}</span>
+      <span className="text-sm font-bold text-gray-700 truncate max-w-[200px]">{value}</span>
       {copyable && (
-        <button onClick={onCopy} className="text-slate-300 hover:text-orange-500 transition-colors">
+        <button onClick={onCopy} className="text-gray-300 hover:text-orange-500 transition-colors">
           <Copy size={12} />
         </button>
       )}
@@ -192,9 +192,9 @@ const InfoItem = ({ label, value, icon, copyable, onCopy }: any) => (
 );
 
 const StatDetail = ({ icon, label, value }: any) => (
-  <div className="flex flex-col items-center p-3 bg-white rounded-2xl border border-slate-100 shadow-sm transition-transform hover:scale-105">
+  <div className="flex flex-col items-center p-3 bg-white rounded-2xl border border-gray-100 shadow-sm transition-transform hover:scale-105">
     <div className="mb-1">{icon}</div>
-    <span className="text-[10px] font-semibold text-slate-400 uppercase mb-1">{label}</span>
-    <span className="text-xl font-semibold text-slate-800 italic leading-none">{value}</span>
+    <span className="text-[10px] font-semibold text-gray-600 uppercase mb-1">{label}</span>
+    <span className="text-xl font-semibold text-gray-800 italic leading-none">{value}</span>
   </div>
 );

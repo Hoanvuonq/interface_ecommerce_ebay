@@ -30,7 +30,7 @@ const CustomInputNumber: React.FC<IInputProps> = ({
         disabled={disabled}
         className={cn(
           "w-14 h-10 text-center font-bold text-gray-900 border-x-0 border-y border-gray-200 focus:outline-none transition duration-200",
-          disabled && "bg-gray-50 text-gray-400"
+          disabled && "bg-gray-50 text-gray-600"
         )}
       />
     </div>

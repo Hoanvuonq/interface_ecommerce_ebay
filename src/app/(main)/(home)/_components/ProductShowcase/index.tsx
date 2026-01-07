@@ -51,7 +51,7 @@ export const ProductShowcase = ({
   return (
     <SectionSreen id="calatha-mall" animation="slideUp">
       <div className="flex flex-col items-center text-center mb-4">
-        <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-800 uppercase italic">
+        <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-gray-800 uppercase italic">
           {title}
         </h2>
         <p className="text-late-600 font-medium tracking-widest text-[11px] uppercase">
@@ -61,7 +61,7 @@ export const ProductShowcase = ({
       </div>
 
       <div className="flex justify-center mb-6">
-        <div className="inline-flex p-1 bg-slate-50 border border-slate-200/60 rounded-full relative">
+        <div className="inline-flex p-1 bg-gray-50 border border-gray-200/60 rounded-full relative">
           {tabConfigs.map((tab) => {
             const IsActive = activeTab === tab.id;
             return (
@@ -72,7 +72,7 @@ export const ProductShowcase = ({
                   "relative flex items-center gap-1.5 px-5 py-1.5 rounded-full text-[11px] font-bold uppercase transition-all duration-300 z-10",
                   IsActive
                     ? "text-white"
-                    : "text-slate-400 hover:text-slate-600"
+                    : "text-gray-600 hover:text-gray-600"
                 )}
               >
                 {IsActive && (
@@ -122,15 +122,15 @@ export const ProductShowcase = ({
           >
             <Link
               href="/products"
-              className="group h-full flex flex-col items-center justify-center p-6 bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl hover:bg-orange-50 hover:border-orange-200 transition-all duration-300"
+              className="group h-full flex flex-col items-center justify-center p-6 bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl hover:bg-orange-50 hover:border-orange-200 transition-all duration-300"
             >
               <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm group-hover:scale-110 group-hover:bg-orange-500 group-hover:text-white transition-all duration-300">
                 <ArrowRight size={20} />
               </div>
-              <span className="mt-4 text-[11px] font-bold uppercase tracking-widest text-slate-500 group-hover:text-orange-600">
+              <span className="mt-4 text-[11px] font-bold uppercase tracking-widest text-gray-500 group-hover:text-orange-600">
                 Xem tất cả
               </span>
-              <div className="mt-1 flex items-center gap-1 text-[9px] text-slate-400 font-medium">
+              <div className="mt-1 flex items-center gap-1 text-[9px] text-gray-600 font-medium">
                 <Plus size={10} />
                 <span>Hơn 1000+ sản phẩm</span>
               </div>

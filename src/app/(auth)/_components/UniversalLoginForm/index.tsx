@@ -74,7 +74,7 @@ export function UniversalLoginForm({ mode }: UniversalLoginFormProps) {
   };
 
   return (
-    <div className="min-h-screen w-full relative overflow-hidden bg-linear-to-br from-blue-50 via-white to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <div className="min-h-screen w-full relative overflow-hidden bg-linear-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <Design /> 
       <div className="relative z-10 flex flex-col lg:flex-row min-h-screen w-full">
         <div className="hidden lg:flex lg:w-1/2 items-center justify-center px-4 lg:px-12">
@@ -94,10 +94,10 @@ export function UniversalLoginForm({ mode }: UniversalLoginFormProps) {
               </div>
             </div>
 
-            <div className="w-full shadow-2xl bg-white/90 dark:bg-slate-800/90 border-2 border-pink-500/30 p-8 sm:p-10 rounded-3xl backdrop-blur-md">
+            <div className="w-full shadow-2xl bg-white/90 dark:bg-gray-800/90 border-2 border-pink-500/30 p-8 sm:p-10 rounded-3xl backdrop-blur-md">
               <div className="text-center mb-8 space-y-3">
                 <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100">{config.welcomeTitle}</h2>
-                <p className="text-base text-gray-500 dark:text-gray-400">{config.welcomeDesc}</p>
+                <p className="text-base text-gray-500 dark:text-gray-600">{config.welcomeDesc}</p>
               </div>
 
               <div className="mb-6 grid grid-cols-2 gap-3">
@@ -115,7 +115,7 @@ export function UniversalLoginForm({ mode }: UniversalLoginFormProps) {
                 />
               </div>
 
-              <div className="flex items-center my-6 text-gray-400 text-sm italic">
+              <div className="flex items-center my-6 text-gray-600 text-sm italic">
                 <hr className="grow border-gray-200" />
                 <span className="px-3">hoặc đăng nhập bằng tài khoản</span>
                 <hr className="grow border-gray-200" />

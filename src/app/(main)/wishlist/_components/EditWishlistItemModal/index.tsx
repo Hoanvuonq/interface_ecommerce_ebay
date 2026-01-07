@@ -88,8 +88,8 @@ export default function EditWishlistItemModal({
                 <Edit3 size={20} />
             </div>
             <div>
-                <h3 className="text-xl font-semibold text-slate-900 uppercase tracking-tight leading-none">Chỉnh sửa mục</h3>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1 truncate max-w-[200px]">
+                <h3 className="text-xl font-semibold text-gray-900 uppercase tracking-tight leading-none">Chỉnh sửa mục</h3>
+                <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest mt-1 truncate max-w-[200px]">
                     {item?.productName || "Sản phẩm"}
                 </p>
             </div>
@@ -100,14 +100,14 @@ export default function EditWishlistItemModal({
         <div className="flex w-full gap-3">
             <button 
                 onClick={onClose}
-                className="flex-1 px-6 py-3.5 rounded-xl font-bold text-slate-400 hover:bg-slate-100 transition-colors uppercase text-xs tracking-widest"
+                className="flex-1 px-6 py-3.5 rounded-xl font-bold text-gray-600 hover:bg-gray-100 transition-colors uppercase text-xs tracking-widest"
             >
                 Bỏ qua
             </button>
             <button 
                 disabled={updating}
                 onClick={handleSubmit}
-                className="flex-[2] flex items-center justify-center gap-2 px-6 py-3.5 bg-slate-900 hover:bg-orange-600 disabled:bg-slate-200 text-white rounded-xl font-semibold transition-all active:scale-95 shadow-xl shadow-slate-200 uppercase text-xs tracking-[0.2em]"
+                className="flex-[2] flex items-center justify-center gap-2 px-6 py-3.5 bg-gray-900 hover:bg-orange-600 disabled:bg-gray-200 text-white rounded-xl font-semibold transition-all active:scale-95 shadow-xl shadow-gray-200 uppercase text-xs tracking-[0.2em]"
             >
                 {updating ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
                 {updating ? "ĐANG LƯU..." : "CẬP NHẬT NGAY"}
@@ -129,11 +129,11 @@ export default function EditWishlistItemModal({
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Quantity Picker */}
                     <div className="space-y-2">
-                        <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 ml-1">Số lượng</label>
-                        <div className="flex items-center bg-slate-50 border border-slate-200 rounded-2xl p-1 shadow-inner">
+                        <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-600 ml-1">Số lượng</label>
+                        <div className="flex items-center bg-gray-50 border border-gray-200 rounded-2xl p-1 shadow-inner">
                             <button 
                                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                                className="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white transition-colors text-slate-500 hover:text-orange-600"
+                                className="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white transition-colors text-gray-500 hover:text-orange-600"
                             >
                                 <Minus size={16} />
                             </button>
@@ -141,11 +141,11 @@ export default function EditWishlistItemModal({
                                 type="number"
                                 value={quantity}
                                 onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
-                                className="flex-1 bg-transparent text-center font-semibold text-slate-700 outline-none"
+                                className="flex-1 bg-transparent text-center font-semibold text-gray-700 outline-none"
                             />
                             <button 
                                 onClick={() => setQuantity(quantity + 1)}
-                                className="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white transition-colors text-slate-500 hover:text-orange-600"
+                                className="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white transition-colors text-gray-500 hover:text-orange-600"
                             >
                                 <Plus size={16} />
                             </button>
@@ -154,8 +154,8 @@ export default function EditWishlistItemModal({
 
                     {/* Priority Selector */}
                     <div className="space-y-2">
-                        <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 ml-1">Độ ưu tiên</label>
-                        <div className="flex bg-slate-50 border border-slate-200 rounded-2xl p-1 gap-1 shadow-inner">
+                        <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-600 ml-1">Độ ưu tiên</label>
+                        <div className="flex bg-gray-50 border border-gray-200 rounded-2xl p-1 gap-1 shadow-inner">
                             {[0, 1, 2].map((p) => (
                                 <button
                                     key={p}
@@ -165,8 +165,8 @@ export default function EditWishlistItemModal({
                                         priority === p 
                                             ? p === 2 ? "bg-red-500 text-white shadow-lg shadow-red-200" : 
                                               p === 1 ? "bg-orange-500 text-white shadow-lg shadow-orange-200" : 
-                                              "bg-slate-900 text-white"
-                                            : "text-slate-400 hover:text-slate-600"
+                                              "bg-gray-900 text-white"
+                                            : "text-gray-600 hover:text-gray-600"
                                     )}
                                 >
                                     {p === 0 ? "Thấp" : p === 1 ? "Cao" : "Gấp"}
@@ -179,10 +179,10 @@ export default function EditWishlistItemModal({
                 {/* Desired Price */}
                 <div className="space-y-2">
                     <div className="flex items-center justify-between ml-1">
-                        <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400">Giá mong muốn (VND)</label>
+                        <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-600">Giá mong muốn (VND)</label>
                         <div className="group relative">
-                            <HelpCircle size={14} className="text-slate-300 cursor-help" />
-                            <div className="absolute bottom-full right-0 mb-2 w-48 p-2 bg-slate-800 text-white text-[9px] rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20 font-medium">
+                            <HelpCircle size={14} className="text-gray-300 cursor-help" />
+                            <div className="absolute bottom-full right-0 mb-2 w-48 p-2 bg-gray-800 text-white text-[9px] rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20 font-medium">
                                 Hệ thống sẽ thông báo khi sản phẩm đạt mức giá này.
                             </div>
                         </div>
@@ -196,21 +196,21 @@ export default function EditWishlistItemModal({
                                 setDesiredPrice(val ? parseInt(val) : "");
                             }}
                             placeholder="Nhập giá bạn muốn chờ đợi..."
-                            className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-semibold text-orange-600 placeholder:text-slate-300 shadow-inner"
+                            className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-semibold text-orange-600 placeholder:text-gray-300 shadow-inner"
                         />
-                        <span className="absolute right-5 top-1/2 -translate-y-1/2 font-semibold text-slate-300 group-focus-within:text-orange-300">₫</span>
+                        <span className="absolute right-5 top-1/2 -translate-y-1/2 font-semibold text-gray-300 group-focus-within:text-orange-300">₫</span>
                     </div>
                 </div>
 
                 {/* Notes */}
                 <div className="space-y-2">
-                    <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400 ml-1">Ghi chú</label>
+                    <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-600 ml-1">Ghi chú</label>
                     <textarea 
                         value={notes}
                         onChange={(e) => setNotes(e.target.value)}
                         rows={3}
                         placeholder="Lưu ý về size, màu sắc hoặc thời điểm mua..."
-                        className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-medium text-slate-600 resize-none placeholder:text-slate-300 shadow-inner"
+                        className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-medium text-gray-600 resize-none placeholder:text-gray-300 shadow-inner"
                     />
                 </div>
             </div>

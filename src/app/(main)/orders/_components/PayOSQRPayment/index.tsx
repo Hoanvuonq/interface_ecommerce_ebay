@@ -304,7 +304,7 @@ export const PayOSQRPayment: React.FC<PayOSQRPaymentProps> = ({
                     onClick={() =>
                       copyToClipboard(payOSData.accountNumber, "số tài khoản")
                     }
-                    className="text-gray-400 hover:text-blue-600 p-1 transition-colors"
+                    className="text-gray-600 hover:text-blue-600 p-1 transition-colors"
                     title="Copy số tài khoản"
                   >
                     <Copy size={16} />
@@ -322,7 +322,7 @@ export const PayOSQRPayment: React.FC<PayOSQRPaymentProps> = ({
                     onClick={() =>
                       copyToClipboard(payOSData.accountName, "tên tài khoản")
                     }
-                    className="text-gray-400 hover:text-blue-600 p-1 transition-colors"
+                    className="text-gray-600 hover:text-blue-600 p-1 transition-colors"
                     title="Copy tên tài khoản"
                   >
                     <Copy size={16} />

@@ -214,7 +214,7 @@ export default function ForgotPasswordForm() {
   const IconComponent = config.icon;
 
   return (
-    <div className="min-h-screen w-full relative overflow-hidden bg-slate-50 dark:from-slate-900 dark:to-slate-800 transition-colors duration-500">
+    <div className="min-h-screen w-full relative overflow-hidden bg-gray-50 dark:from-gray-900 dark:to-gray-800 transition-colors duration-500">
       <Design />
 
       <div className="relative z-10 flex items-center justify-center min-h-screen p-4">
@@ -229,7 +229,7 @@ export default function ForgotPasswordForm() {
                       ? `bg-orange-500 text-white border-transparent shadow-lg scale-110`
                       : s < step
                       ? "bg-orange-500 text-white border-transparent"
-                      : "bg-white dark:bg-slate-700 text-gray-400 border-gray-200 dark:border-slate-600"
+                      : "bg-white dark:bg-gray-700 text-gray-600 border-gray-200 dark:border-gray-600"
                   }`}
                 >
                   {s < step ? <FaCheckCircle size={18} /> : s}
@@ -239,7 +239,7 @@ export default function ForgotPasswordForm() {
                     className={`w-12 h-0.5 mx-1 ${
                       s < step
                         ? "bg-orange-500"
-                        : "bg-gray-200 dark:bg-slate-600"
+                        : "bg-gray-200 dark:bg-gray-600"
                     }`}
                   />
                 )}
@@ -247,7 +247,7 @@ export default function ForgotPasswordForm() {
             ))}
           </div>
 
-          <div className="bg-white/95 dark:bg-slate-800/95 backdrop-blur-md rounded-4xl shadow-2xl border border-white/20 p-8 sm:p-10 transition-all">
+          <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-md rounded-4xl shadow-2xl border border-white/20 p-8 sm:p-10 transition-all">
             <div className="text-center mb-8">
               <div className="flex justify-center mb-6">
                 <div
@@ -262,7 +262,7 @@ export default function ForgotPasswordForm() {
               <h2 className="text-3xl font-semibold text-gray-800 dark:text-white mb-2">
                 {config.title}
               </h2>
-              <p className="text-gray-500 dark:text-gray-400 text-sm">
+              <p className="text-gray-500 dark:text-gray-600 text-sm">
                 {config.desc}
               </p>
             </div>
@@ -320,9 +320,9 @@ export default function ForgotPasswordForm() {
                           "w-10 h-12 sm:w-12 sm:h-14 text-center text-xl font-bold rounded-xl border-2 transition-all duration-200 outline-none",
                           "focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 focus:-translate-y-1",
                           "bg-gray-50 border-gray-200 text-gray-800",
-                          "dark:bg-slate-700/50 dark:border-slate-600 dark:text-gray-100",
+                          "dark:bg-gray-700/50 dark:border-gray-600 dark:text-gray-100",
                           data
-                            ? "border-orange-500 bg-white dark:bg-slate-700 shadow-sm"
+                            ? "border-orange-500 bg-white dark:bg-gray-700 shadow-sm"
                             : ""
                         )}
                       />
@@ -373,7 +373,7 @@ export default function ForgotPasswordForm() {
                     <button
                       type="button"
                       onClick={handleGeneratePassword}
-                      className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 rounded-xl text-[10px] font-bold text-slate-600 dark:text-slate-200 transition-all uppercase"
+                      className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 rounded-xl text-[10px] font-bold text-gray-600 dark:text-gray-200 transition-all uppercase"
                     >
                       <FaRandom /> Tạo tự động
                     </button>
@@ -384,7 +384,7 @@ export default function ForgotPasswordForm() {
                           success("Đã sao chép!")
                         )
                       }
-                      className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 rounded-xl text-[10px] font-bold text-slate-600 dark:text-slate-200 transition-all uppercase"
+                      className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 rounded-xl text-[10px] font-bold text-gray-600 dark:text-gray-200 transition-all uppercase"
                     >
                       <FaCopy /> Sao chép
                     </button>
@@ -434,7 +434,7 @@ export default function ForgotPasswordForm() {
               </CustomButton>
             </form>
 
-            <div className="mt-10 pt-8 border-t border-gray-100 dark:border-slate-700">
+            <div className="mt-10 pt-8 border-t border-gray-100 dark:border-gray-700">
               <div className="flex items-center gap-4 p-4 bg-amber-50/50 dark:bg-amber-900/10 rounded-2xl">
                 <MdSecurity className="text-amber-500 text-2xl shrink-0" />
                 <div className="text-[11px] text-amber-800 dark:text-amber-300 font-bold leading-tight">

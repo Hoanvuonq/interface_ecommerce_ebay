@@ -16,6 +16,7 @@ import { cn } from "@/utils/cn";
 import { ShopCartSectionProps } from "../../_types/shop";
 import { formatPriceFull } from "@/hooks/useFormatPrice";
 import Image from "next/image";
+import { Checkbox } from "@/components/checkbox";
 
 export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
   shop,
@@ -33,57 +34,45 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
   };
 
   return (
-    <section className="mb-6 bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden transition-all hover:shadow-md">
-      {/* Header Shop - Giảm padding và chỉnh màu nền dịu hơn */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between px-4 py-3 gap-4 bg-slate-50/50 border-b border-slate-100">
+    <section className="mb-6 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all hover:shadow-md">
+      <div className="flex flex-col md:flex-row md:items-center justify-between px-4 py-3 gap-4 bg-gray-50/50 border-b border-gray-100">
         <div className="flex items-center gap-3 flex-1 min-w-0">
-          <div className="relative flex items-center justify-center">
-            <input
-              type="checkbox"
-              id={`shop-${shop.shopId}`}
-              className={cn(
-                "peer appearance-none w-5 h-5 border-2 border-slate-200 rounded-md",
-                "checked:bg-orange-500 checked:border-orange-500 transition-all cursor-pointer"
-              )}
-              checked={shop.allSelected}
-              onChange={handleShopCheckboxChange}
-            />
-            <CheckCircle2
-              size={12}
-              className="absolute text-white opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity"
-            />
-            {shop.hasSelectedItems && !shop.allSelected && (
-              <div className="absolute w-2.5 h-0.5 bg-orange-500 rounded-full" />
-            )}
-          </div>
-
+          <Checkbox
+            checked={shop.allSelected}
+            onChange={handleShopCheckboxChange}
+          />
+          {shop.hasSelectedItems && !shop.allSelected && (
+            <div className="absolute w-2.5 h-0.5 bg-orange-500 rounded-full" />
+          )}
           <div className="flex items-center gap-3 min-w-0 group cursor-pointer">
             <div className="relative shrink-0">
               <Image
                 src={shop.shopLogo || ""}
                 alt={shop.shopName}
-                width={32} 
+                width={32}
                 height={32}
-                className="w-8 h-8 rounded-lg object-cover border border-slate-100 shadow-sm transition-transform group-hover:scale-105"
+                className="md:w-8 w-10 md:h-8 h-10 rounded-lg object-cover border border-gray-100 shadow-sm transition-transform group-hover:scale-105"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                  (
+                    e.target as HTMLImageElement
+                  ).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
                     shop.shopName
                   )}&background=f1f5f9&color=64748b`;
                 }}
               />
-              <div className="absolute -bottom-1 -right-1 bg-white rounded-full p-0.5 shadow-sm border border-slate-50">
-                <Store size={8} className="text-slate-400" />
+              <div className="absolute -bottom-1 -right-1 bg-white rounded-full p-0.5 shadow-sm border border-gray-50">
+                <Store size={8} className="text-gray-600" />
               </div>
             </div>
 
             <div className="flex flex-col min-w-0">
               <div className="flex items-center gap-2">
-                <h3 className="text-xs font-bold text-slate-700 truncate group-hover:text-orange-600 transition-colors uppercase tracking-tight">
+                <h3 className="md:text-xs text-base font-bold text-gray-700 truncate group-hover:text-orange-600 transition-colors uppercase tracking-tight">
                   {shop.shopName}
                 </h3>
                 <ChevronRight
-                  size={14}
-                  className="text-slate-300 group-hover:text-orange-400 transition-transform group-hover:translate-x-0.5"
+                  size={22}
+                  className="text-gray-300 group-hover:text-orange-400 transition-transform group-hover:translate-x-0.5"
                 />
               </div>
 
@@ -105,18 +94,10 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
             </div>
           </div>
         </div>
-
-        <div className="shrink-0 flex items-center">
-          <VoucherComponents
-            shopId={shop.shopId}
-            shopName={shop.shopName}
-            className="w-full sm:w-auto scale-90 origin-right" 
-          />
-        </div>
       </div>
 
       <div className="hidden lg:block">
-        <div className="grid grid-cols-12 px-6 py-2 bg-slate-50 text-[10px] font-semibold uppercase tracking-widest text-slate-400 border-b border-slate-100">
+        <div className="grid grid-cols-12 px-6 py-2 bg-gray-50 text-[10px] font-semibold uppercase tracking-widest text-gray-600 border-b border-gray-100">
           <div className="col-span-5">Sản phẩm</div>
           <div className="col-span-2 text-center">Đơn giá</div>
           <div className="col-span-2 text-center">Số lượng</div>
@@ -124,7 +105,7 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
           <div className="col-span-1 text-right">Xử lý</div>
         </div>
 
-        <div className="divide-y divide-slate-50 bg-white">
+        <div className="divide-y divide-gray-50 bg-white">
           {shop.items.map((item) => (
             <CartItem
               key={item.id}
@@ -136,11 +117,11 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
         </div>
       </div>
 
-      <div className="lg:hidden divide-y divide-slate-50 bg-white">
+      <div className="lg:hidden divide-y divide-gray-50 bg-white">
         {shop.items.map((item) => (
           <div
             key={item.id}
-            className="p-2 transition-colors active:bg-slate-50"
+            className="p-2 transition-colors active:bg-gray-50"
           >
             <CartItem
               item={item}
@@ -152,7 +133,7 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
         ))}
       </div>
 
-      <div className="bg-slate-50/30 border-t border-slate-100 mt-auto">
+      <div className="bg-gray-50/30 border-t border-gray-100 mt-auto">
         {shop.discount > 0 && (
           <div className="px-5 py-2 flex justify-between items-center bg-orange-50/30 border-b border-orange-100/30">
             <div className="flex items-center gap-2 text-orange-600">
@@ -169,7 +150,7 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
 
         <div className="px-5 py-3 flex justify-end items-center gap-3">
           <div className="text-right flex items-baseline gap-2">
-            <p className="text-[10px] text-slate-600 font-bold uppercase leading-none">
+            <p className="text-[10px] text-gray-600 font-bold uppercase leading-none">
               Tạm tính ({shop.items.length} SP):
             </p>
             <p className="text-2xl font-bold text-(--color-mainColor) leading-none tracking-tight">

@@ -95,7 +95,7 @@ export function RelatedProducts({ shopId, excludeProductId }: RelatedProductsPro
       <CardComponents className="border-none shadow-sm bg-white">
         <div className="flex flex-col items-center justify-center py-12 gap-3">
           <CustomSpinner />
-          <p className="text-sm text-gray-400 font-medium animate-pulse">Đang tìm thêm sản phẩm từ shop...</p>
+          <p className="text-sm text-gray-600 font-medium animate-pulse">Đang tìm thêm sản phẩm từ shop...</p>
         </div>
       </CardComponents>
     );
@@ -140,7 +140,7 @@ export function RelatedProducts({ shopId, excludeProductId }: RelatedProductsPro
           ))}
           
           {loading && hasMore && (
-            <div className="shrink-0 w-32 flex flex-col items-center justify-center gap-2 text-gray-400">
+            <div className="shrink-0 w-32 flex flex-col items-center justify-center gap-2 text-gray-600">
               <div className="w-8 h-8 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
               <span className="text-[10px] font-bold uppercase tracking-tighter">Tải thêm</span>
             </div>

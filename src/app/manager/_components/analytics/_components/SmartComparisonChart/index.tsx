@@ -54,7 +54,7 @@ export function SmartComparisonChart({
                             <h3 className="text-sm font-semibold text-gray-800 uppercase tracking-[0.15em] leading-none mb-1">
                                 Biểu đồ <span className="text-blue-600">Doanh số</span>
                             </h3>
-                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">So sánh hiệu suất 24h</p>
+                            <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest">So sánh hiệu suất 24h</p>
                         </div>
                     </div>
 
@@ -65,7 +65,7 @@ export function SmartComparisonChart({
                         </div>
                         <div className="flex items-center gap-2">
                             <span className="w-2.5 h-2.5 rounded-full bg-gray-300"></span>
-                            <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">{yesterdayLabel}</span>
+                            <span className="text-[11px] font-semibold text-gray-600 uppercase tracking-wider">{yesterdayLabel}</span>
                         </div>
                     </div>
                 </div>

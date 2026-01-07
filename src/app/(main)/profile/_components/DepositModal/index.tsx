@@ -167,7 +167,7 @@ export const DepositModal: React.FC<DepositModalProps> = ({
           </h3>
           <button
             onClick={handleClose}
-            className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors focus:outline-none"
+            className="p-2 text-gray-600 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors focus:outline-none"
           >
             <FiX size={20} />
           </button>
@@ -213,7 +213,7 @@ export const DepositModal: React.FC<DepositModalProps> = ({
                           : "border-gray-200 focus:border-orange-500 focus:ring-orange-100 group-hover:border-orange-300"
                       }`}
                     />
-                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 font-medium text-sm">
+                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 font-medium text-sm">
                       VND
                     </span>
                   </div>
@@ -247,7 +247,7 @@ export const DepositModal: React.FC<DepositModalProps> = ({
                           : "border-gray-200 focus:border-orange-500 focus:ring-orange-100 hover:border-orange-300"
                       }`}
                     />
-                    <span className="absolute right-3 bottom-3 text-[10px] text-gray-400 font-medium bg-gray-100 px-1.5 py-0.5 rounded">
+                    <span className="absolute right-3 bottom-3 text-[10px] text-gray-600 font-medium bg-gray-100 px-1.5 py-0.5 rounded">
                       {description.length}/25
                     </span>
                   </div>
@@ -310,7 +310,7 @@ export const DepositModal: React.FC<DepositModalProps> = ({
                           viewBox={`0 0 256 256`}
                         />
                       </div>
-                      <p className="mt-3 text-xs font-medium text-gray-400 text-center">
+                      <p className="mt-3 text-xs font-medium text-gray-600 text-center">
                         Hết hạn lúc:{" "}
                         {new Date(depositResponse.expiresAt).toLocaleTimeString(
                           "vi-VN",
@@ -319,7 +319,7 @@ export const DepositModal: React.FC<DepositModalProps> = ({
                       </p>
                     </>
                   ) : (
-                    <div className="w-full h-40 bg-gray-50 rounded-xl flex items-center justify-center text-center p-4 text-xs text-gray-400 border border-dashed border-gray-300">
+                    <div className="w-full h-40 bg-gray-50 rounded-xl flex items-center justify-center text-center p-4 text-xs text-gray-600 border border-dashed border-gray-300">
                       Không tải được QR Code
                     </div>
                   )}
@@ -387,7 +387,7 @@ export const DepositModal: React.FC<DepositModalProps> = ({
                     </div>
                   </div>
 
-                  <div className="text-xs text-gray-400 italic text-center px-2">
+                  <div className="text-xs text-gray-600 italic text-center px-2">
                     *Lưu ý: Nhập chính xác nội dung chuyển khoản để được cộng
                     tiền tự động.
                   </div>

@@ -49,7 +49,7 @@ export const Button: React.FC<ButtonProps> = ({
             React.cloneElement(Icon as React.ReactElement<any>, {
               className: cn(
                 "w-5 h-5 transition-colors",
-                variant === 'edit' ? "text-gray-400 group-hover:text-orange-500" : "",
+                variant === 'edit' ? "text-gray-600 group-hover:text-orange-500" : "",
                 (Icon.props as any)?.className
               )
             })

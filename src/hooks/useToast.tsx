@@ -57,7 +57,7 @@ const ToastComponent = ({ t, message, options, config }: any) => {
         <div className="flex items-center self-center shrink-0">
           <button
             onClick={() => toast.dismiss(t)}
-            className="p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 rounded-full transition-all active:scale-90"
+            className="p-1.5 text-gray-600 hover:bg-gray-100 hover:text-gray-600 rounded-full transition-all active:scale-90"
           >
             <X size={15} />
           </button>
@@ -65,14 +65,14 @@ const ToastComponent = ({ t, message, options, config }: any) => {
       </div>
 
       {options?.description && (
-        <div className="bg-slate-50/50 px-3.5 py-2 border-t border-slate-100/50">
-          <p className="text-[11px] sm:text-[12px] text-slate-500 font-medium leading-relaxed">
+        <div className="bg-gray-50/50 px-3.5 py-2 border-t border-gray-100/50">
+          <p className="text-[11px] sm:text-[12px] text-gray-500 font-medium leading-relaxed">
             {options.description}
           </p>
         </div>
       )}
 
-      <div className="h-0.5 w-full bg-slate-100/30">
+      <div className="h-0.5 w-full bg-gray-100/30">
         <div
           className={cn("h-full transition-none", config.accent)}
           style={{ width: `${progress}%` }}

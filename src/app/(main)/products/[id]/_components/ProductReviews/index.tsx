@@ -94,7 +94,7 @@ export const ProductReviews = () => {
                     color="bg-orange-400"
                     className="h-2 flex-1"
                   />
-                  <span className="w-24 text-gray-400 text-right text-xs font-medium">
+                  <span className="w-24 text-gray-600 text-right text-xs font-medium">
                     {item.count} ({Math.round(item.percentage)}%)
                   </span>
                 </div>
@@ -165,7 +165,7 @@ export const ProductReviews = () => {
                           disabled
                         />
                       </div>
-                      <span className="text-[11px] text-gray-400 font-bold uppercase tracking-widest italic">
+                      <span className="text-[11px] text-gray-600 font-bold uppercase tracking-widest italic">
                         {new Date(review.createdDate).toLocaleDateString(
                           "vi-VN"
                         )}
@@ -216,7 +216,7 @@ export const ProductReviews = () => {
         {reviewsLoading && (
           <div className="flex flex-col items-center py-8 gap-2">
             <CustomSpinner />
-            <span className="text-xs text-gray-400 font-bold uppercase tracking-widest animate-pulse">
+            <span className="text-xs text-gray-600 font-bold uppercase tracking-widest animate-pulse">
               Đang tải thêm...
             </span>
           </div>

@@ -69,15 +69,15 @@ export const ShopVoucherCard = ({
         <div className="absolute -bottom-2 -left-2 w-4 h-4 bg-neutral-50 border-t border-r border-orange-100/60 rounded-full z-10" />
 
         <div className="space-y-1 pr-1">
-          <h3 className="text-sm font-bold text-slate-700 leading-snug line-clamp-1">
+          <h3 className="text-sm font-bold text-gray-700 leading-snug line-clamp-1">
             Giảm tối đa{" "}
             {discountType === "PERCENTAGE" ? "50k" : formatCurrency(value)}
           </h3>
           <div className="space-y-0.5 tracking-tight">
-            <p className="text-xs text-slate-500 font-medium">
+            <p className="text-xs text-gray-500 font-medium">
               Đơn tối thiểu {formatCurrency(minOrder)}
             </p>
-            <p className="text-[10px] text-slate-400 font-medium">
+            <p className="text-[10px] text-gray-600 font-medium">
               HSD: {new Date(endDate).toLocaleDateString("vi-VN")}
             </p>
           </div>

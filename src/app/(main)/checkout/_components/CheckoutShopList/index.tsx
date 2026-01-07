@@ -128,7 +128,7 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
                     <ItemImage item={item} className="w-16 h-16 rounded-2xl border border-gray-50 object-cover shadow-sm" />
                     <div className="flex-1 min-w-0">
                       <h4 className="text-xs font-bold text-gray-700 truncate uppercase tracking-wide">{item.productName}</h4>
-                      <p className="text-[10px] text-gray-400 font-semibold italic">{item.variantAttributes}</p>
+                      <p className="text-[10px] text-gray-600 font-semibold italic">{item.variantAttributes}</p>
                       <div className="flex justify-between items-center ">
                         <span className="text-[11px] text-gray-500 font-medium bg-gray-100 px-2 py-0.5 rounded-lg">x{item.quantity}</span>
                         <span className="text-md font-mono text-gray-900">{formatPrice(item.lineTotal || 0)}</span>
@@ -140,7 +140,7 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
 
               <div className="space-y-6 pt-4 border-t border-gray-100">
                 <div className="space-y-3">
-                  <p className="text-[10px] font-bold text-gray-400 uppercase">Vận chuyển</p>
+                  <p className="text-[10px] font-bold text-gray-600 uppercase">Vận chuyển</p>
                   <ShopShippingSelector
                     shopId={shop.shopId}
                     shopName={shop.shopName}
@@ -152,7 +152,7 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
                 </div>
 
                 <div className="space-y-3">
-                  <p className="text-[10px] font-bold text-gray-400 uppercase">Ưu đãi mã giảm giá</p>
+                  <p className="text-[10px] font-bold text-gray-600 uppercase">Ưu đãi mã giảm giá</p>
                   <div className="flex flex-col lg:flex-row gap-4">
                     <div className="flex-1">
                       <VoucherComponents

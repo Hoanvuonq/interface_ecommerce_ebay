@@ -150,7 +150,7 @@ export default function ShopPage() {
 
   if (!shop)
     return (
-      <div className="p-20 text-center text-slate-400">Shop không tồn tại</div>
+      <div className="p-20 text-center text-gray-600">Shop không tồn tại</div>
     );
 
   return (

@@ -103,7 +103,7 @@ export const FileUploadField: React.FC<FileUploadFieldProps> = ({
             "relative cursor-pointer group flex flex-col items-center justify-center p-10 border-2 border-dashed rounded-[2rem] transition-all duration-300",
             isDragging 
               ? "border-orange-500 bg-orange-50/50" 
-              : "border-slate-200 bg-slate-50/50 hover:bg-white hover:border-orange-300 hover:shadow-xl hover:shadow-orange-500/5"
+              : "border-gray-200 bg-gray-50/50 hover:bg-white hover:border-orange-300 hover:shadow-xl hover:shadow-orange-500/5"
           )}
         >
           <input
@@ -117,16 +117,16 @@ export const FileUploadField: React.FC<FileUploadFieldProps> = ({
 
           <div className={cn(
             "p-4 rounded-2xl mb-4 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6",
-            isDragging ? "bg-orange-500 text-white" : "bg-white text-slate-400 shadow-sm"
+            isDragging ? "bg-orange-500 text-white" : "bg-white text-gray-600 shadow-sm"
           )}>
             <CloudUpload size={32} />
           </div>
 
           <div className="text-center">
-            <p className="text-sm font-semibold text-slate-700 uppercase tracking-tighter italic">
+            <p className="text-sm font-semibold text-gray-700 uppercase tracking-tighter italic">
               Nhấp hoặc kéo file vào đây
             </p>
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
+            <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest mt-1">
               {description} • Tối đa {maxSizeMB}MB
             </p>
           </div>
@@ -138,9 +138,9 @@ export const FileUploadField: React.FC<FileUploadFieldProps> = ({
         {value.map((file) => (
           <div 
             key={file.id} 
-            className="flex items-center gap-4 p-3 bg-white border border-slate-100 rounded-2xl shadow-sm hover:shadow-md transition-all group"
+            className="flex items-center gap-4 p-3 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-md transition-all group"
           >
-            <div className="w-12 h-12 rounded-xl overflow-hidden bg-slate-50 flex items-center justify-center shrink-0 border border-slate-100">
+            <div className="w-12 h-12 rounded-xl overflow-hidden bg-gray-50 flex items-center justify-center shrink-0 border border-gray-100">
               {file.preview ? (
                 <img src={file.preview} alt="preview" className="w-full h-full object-cover" />
               ) : (
@@ -149,8 +149,8 @@ export const FileUploadField: React.FC<FileUploadFieldProps> = ({
             </div>
 
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-bold text-slate-700 truncate">{file.name}</p>
-              <p className="text-[10px] font-bold text-slate-400 uppercase">
+              <p className="text-xs font-bold text-gray-700 truncate">{file.name}</p>
+              <p className="text-[10px] font-bold text-gray-600 uppercase">
                 {(file.size / 1024).toFixed(0)} KB • {file.type?.split("/")[1]}
               </p>
             </div>
@@ -160,7 +160,7 @@ export const FileUploadField: React.FC<FileUploadFieldProps> = ({
                 <button 
                   type="button"
                   onClick={() => window.open(file.preview, "_blank")}
-                  className="p-2 text-slate-400 hover:text-orange-500 transition-colors"
+                  className="p-2 text-gray-600 hover:text-orange-500 transition-colors"
                 >
                   <Eye size={16} />
                 </button>
@@ -168,7 +168,7 @@ export const FileUploadField: React.FC<FileUploadFieldProps> = ({
               <button 
                 type="button"
                 onClick={() => removeFile(file.id)}
-                className="p-2 text-slate-400 hover:text-red-500 transition-colors"
+                className="p-2 text-gray-600 hover:text-red-500 transition-colors"
               >
                 <X size={16} />
               </button>

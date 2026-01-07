@@ -28,7 +28,7 @@ export const UserLockModal: React.FC<UserLockModalProps> = ({ logic }) => {
           <div className="p-2 bg-rose-100 text-rose-600 rounded-xl">
             <Lock size={20} strokeWidth={2.5} />
           </div>
-          <span className="font-semibold tracking-tight text-lg uppercase text-slate-800">
+          <span className="font-semibold tracking-tight text-lg uppercase text-gray-800">
             Khóa tài khoản
           </span>
         </div>
@@ -79,12 +79,12 @@ export const UserLockModal: React.FC<UserLockModalProps> = ({ logic }) => {
 
         {/* Ô nhập lý do */}
         <div className="space-y-3">
-          <label className="block text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400 px-1">
+          <label className="block text-[11px] font-semibold uppercase tracking-[0.2em] text-gray-600 px-1">
             Lý do khóa tài khoản <span className="text-rose-500">*</span>
           </label>
           <textarea
             className={cn(
-              "w-full p-5 rounded-3xl bg-slate-50 border-2 border-transparent focus:border-rose-500/20 focus:bg-white focus:ring-4 focus:ring-rose-500/5 outline-none text-sm font-bold text-slate-700 h-40 resize-none transition-all placeholder:text-slate-300 placeholder:font-normal",
+              "w-full p-5 rounded-3xl bg-gray-50 border-2 border-transparent focus:border-rose-500/20 focus:bg-white focus:ring-4 focus:ring-rose-500/5 outline-none text-sm font-bold text-gray-700 h-40 resize-none transition-all placeholder:text-gray-300 placeholder:font-normal",
               lockModal.reason.length < 5 &&
                 lockModal.reason.length > 0 &&
                 "border-rose-200 bg-rose-50/30"
@@ -98,15 +98,15 @@ export const UserLockModal: React.FC<UserLockModalProps> = ({ logic }) => {
             placeholder="Ví dụ: Vi phạm điều khoản cộng đồng, có hành vi gian lận trong giao dịch..."
           />
           <div className="flex justify-between px-2">
-            <p className="text-[10px] text-slate-400 font-bold italic">
+            <p className="text-[10px] text-gray-600 font-bold italic">
               * Lý do sẽ được gửi thông báo đến email người dùng.
             </p>
             <span
               className={cn(
                 "text-[10px] font-semibold tracking-widest",
                 lockModal.reason.length > 0
-                  ? "text-slate-600"
-                  : "text-slate-300"
+                  ? "text-gray-600"
+                  : "text-gray-300"
               )}
             >
               {lockModal.reason.length} ký tự

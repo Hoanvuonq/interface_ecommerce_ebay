@@ -41,7 +41,7 @@ export const NotificationRemoveModal: React.FC<
           <button
             onClick={onClose}
             disabled={isLoading}
-            className="px-4 py-2 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-100 transition-colors disabled:opacity-50"
+            className="px-4 py-2 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors disabled:opacity-50"
           >
             Hủy bỏ
           </button>
@@ -63,10 +63,10 @@ export const NotificationRemoveModal: React.FC<
           <AlertTriangle size={24} />
         </div>
         <div>
-          <h4 className="font-bold text-slate-800">
+          <h4 className="font-bold text-gray-800">
             Xóa sản phẩm khỏi giỏ hàng?
           </h4>
-          <p className="text-sm text-slate-500 mt-1 leading-relaxed">
+          <p className="text-sm text-gray-500 mt-1 leading-relaxed">
             {messageContent} <br />
             Hành động này không thể hoàn tác.
           </p>

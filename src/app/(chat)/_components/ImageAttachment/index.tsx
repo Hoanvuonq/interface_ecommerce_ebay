@@ -72,7 +72,7 @@ export const ImageAttachment: React.FC<ImageAttachmentProps> = ({
       {/* Loading State */}
       {loading && !error && (
         <div style={placeholderStyle}>
-          <Loader2 className="animate-spin text-gray-400" size={24} />
+          <Loader2 className="animate-spin text-gray-600" size={24} />
         </div>
       )}
 

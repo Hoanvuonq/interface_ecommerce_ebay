@@ -68,13 +68,13 @@ export const CartPopoverContent: React.FC = () => {
   if (totalItems === 0 && !loading) {
     return (
       <div className="flex flex-col items-center justify-center py-12 px-6 text-center">
-        <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-4">
-          <ShoppingBag size={32} className="text-slate-300" strokeWidth={1.5} />
+        <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4">
+          <ShoppingBag size={32} className="text-gray-300" strokeWidth={1.5} />
         </div>
-        <p className="text-slate-900 font-bold mb-1 uppercase text-[10px] tracking-widest">
+        <p className="text-gray-900 font-bold mb-1 uppercase text-[10px] tracking-widest">
           Giỏ hàng đang trống
         </p>
-        <p className="text-[11px] text-slate-400 italic">
+        <p className="text-[11px] text-gray-600 italic">
           Hãy thêm sản phẩm bạn yêu thích nhé!
         </p>
       </div>
@@ -82,19 +82,19 @@ export const CartPopoverContent: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col divide-y divide-slate-50">
-      <div className="flex flex-col divide-y divide-slate-50">
+    <div className="flex flex-col divide-y divide-gray-50">
+      <div className="flex flex-col divide-y divide-gray-50">
         {displayItems.map((item) => (
           <div key={item.id} className="flex gap-3 p-4 hover:bg-white transition-all group">
-            <div className="w-14 h-14 shrink-0 border border-slate-100 rounded-xl overflow-hidden bg-white shadow-sm flex items-center justify-center">
+            <div className="w-14 h-14 shrink-0 border border-gray-100 rounded-xl overflow-hidden bg-white shadow-sm flex items-center justify-center">
               <ProductImage item={item} />
             </div>
             <div className="flex-1 min-w-0 flex flex-col justify-center">
-              <h4 className="text-[12px] font-bold text-slate-800 truncate leading-snug">
+              <h4 className="text-[12px] font-bold text-gray-800 truncate leading-snug">
                 {item.productName}
               </h4>
               <div className="flex justify-between items-center mt-1.5">
-                <span className="text-[11px] text-slate-400 font-medium tracking-tight">
+                <span className="text-[11px] text-gray-600 font-medium tracking-tight">
                   {formatPriceFull(item.unitPrice)} <span className="text-[9px]">x</span> {item.quantity}
                 </span>
                 <span className="text-[12px] font-bold text-(--color-mainColor)">
@@ -107,8 +107,8 @@ export const CartPopoverContent: React.FC = () => {
       </div>
 
       {hasMoreItems && (
-        <div className="p-3 text-center bg-slate-50/50">
-          <span className="text-[10px] text-slate-600 font-semibold uppercase">
+        <div className="p-3 text-center bg-gray-50/50">
+          <span className="text-[10px] text-gray-600 font-semibold uppercase">
             Và {totalItems - 5} sản phẩm khác trong giỏ
           </span>
         </div>

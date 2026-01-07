@@ -35,10 +35,10 @@ export const CheckoutShippingAddress: React.FC<ShippingAddressCardProps> = ({
                 <span className="text-gray-300">|</span>
                 <span>{_.get(selectedAddress, "phone", selectedAddress?.phone || "Chưa có SĐT")}</span>
               </div>
-                <span className="leading-relaxed text-gray-600 text-sm">{fullAddressString}</span>
+                <span className="leading-relaxed text-gray-700 text-xs">{fullAddressString}</span>
             </div>
           ) : (
-            <p className="text-gray-400 text-sm ml-1 sm:ml-7 italic">Bạn chưa chọn địa chỉ giao hàng nào.</p>
+            <p className="text-gray-600 text-sm ml-1 sm:ml-7 italic">Bạn chưa chọn địa chỉ giao hàng nào.</p>
           )}
         </div>
 

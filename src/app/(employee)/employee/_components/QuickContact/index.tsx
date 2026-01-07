@@ -4,12 +4,12 @@ import { ContactItem } from "../ContactItem";
 
 export const QuickContact = () => {
   return (
-    <div className="bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-50">
+    <div className="bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-50">
       <div className="flex items-center gap-3 mb-6">
         <div className="p-2.5 bg-orange-50 rounded-2xl">
           <Phone className="text-orange-500" size={20} />
         </div>
-        <span className="font-semibold text-slate-800 tracking-tight text-sm uppercase">
+        <span className="font-semibold text-gray-800 tracking-tight text-sm uppercase">
           LIÊN HỆ NHANH
         </span>
       </div>

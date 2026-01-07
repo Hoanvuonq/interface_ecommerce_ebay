@@ -42,7 +42,7 @@ export const OrderSummary = ({ onSubmit }: OrderSummaryProps) => {
         </div>
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="text-gray-400 hover:text-orange-500"
+          className="text-gray-600 hover:text-orange-500"
         >
           <ChevronDown
             size={18}
@@ -54,7 +54,7 @@ export const OrderSummary = ({ onSubmit }: OrderSummaryProps) => {
       <div className="p-5 space-y-6">
         {shops.length > 0 && isExpanded && (
           <div className="space-y-4">
-            <div className="flex items-center justify-between text-[10px] font-bold text-gray-400 uppercase tracking-widest border-b border-gray-100 pb-2">
+            <div className="flex items-center justify-between text-[10px] font-bold text-gray-600 uppercase tracking-widest border-b border-gray-100 pb-2">
               <span>Cửa hàng / Sản phẩm</span>
               <span>Thành tiền</span>
             </div>

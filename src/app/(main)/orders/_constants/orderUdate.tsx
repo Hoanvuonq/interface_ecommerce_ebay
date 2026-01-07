@@ -69,9 +69,9 @@ export const ORDER_STATUS_UI: Record<string, {
   CANCELLED: {
     label: "Đã hủy đơn",
     icon: <XCircle size={14} />,
-    bg: "bg-slate-100",
-    text: "text-slate-500",
-    border: "border-slate-200",
+    bg: "bg-gray-100",
+    text: "text-gray-500",
+    border: "border-gray-200",
     strip: "#CBD5E1",
   },
 };

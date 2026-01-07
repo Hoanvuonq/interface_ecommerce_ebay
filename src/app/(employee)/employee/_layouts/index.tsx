@@ -22,11 +22,11 @@ export const BaseEmployeeLayout = ({ children }: { children: React.ReactNode }) 
   if (!isMounted) return <div className="h-screen w-full bg-[#fafafa]" />;
 
   return (
-    <div className="h-screen w-full bg-[#fafafa] flex overflow-hidden font-sans text-slate-800 antialiased">
+    <div className="h-screen w-full bg-[#fafafa] flex overflow-hidden font-sans text-gray-800 antialiased">
       {!isMobile && (
         <aside 
           style={{ width: `${sidebarWidth}px` }} 
-          className="h-full transition-[width] duration-300 ease-in-out shrink-0 border-r border-slate-200 bg-white z-30 overflow-hidden"
+          className="h-full transition-[width] duration-300 ease-in-out shrink-0 border-r border-gray-200 bg-white z-30 overflow-hidden"
         >
           <EmployeeSidebar collapsed={collapsed} />
         </aside>
@@ -56,7 +56,7 @@ export const BaseEmployeeLayout = ({ children }: { children: React.ReactNode }) 
           isMobile={isMobile} 
         />
         
-        <main className="flex-1 overflow-y-auto overflow-x-hidden relative bg-slate-50/50 custom-scrollbar">
+        <main className="flex-1 overflow-y-auto overflow-x-hidden relative bg-gray-50/50 custom-scrollbar">
           <div className="max-w-8xl mx-auto p-4 md:p-6 lg:p-8 min-h-full">
             <PageTransition key={pathname}>
               {children}

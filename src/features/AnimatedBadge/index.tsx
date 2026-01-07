@@ -33,8 +33,8 @@ const AnimatedBadge: React.FC<AnimatedBadgeProps> = ({
             defaultText: 'HOT',
         },
         sale: {
-            bg: 'bg-slate-900', 
-            accent: 'shadow-slate-900/40',
+            bg: 'bg-gray-900', 
+            accent: 'shadow-gray-900/40',
             icon: Percent,
             defaultText: 'OFFER',
         },

@@ -17,7 +17,6 @@ export * from "./imageWithPreview";
 export * from "./customPopover";
 export * from "./design";
 export * from "./tags";
-export * from "./headerModal";
 export * from "./DataTable";
 export * from "./simpleModal";
 export * from "./checkout";

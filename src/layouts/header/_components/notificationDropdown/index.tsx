@@ -57,7 +57,7 @@ export const NotificationDropdown = () => {
   };
 
   const getNotificationIcon = (category: string, isUnread: boolean) => {
-    const iconClass = isUnread ? "text-orange-600" : "text-gray-400";
+    const iconClass = isUnread ? "text-orange-600" : "text-gray-600";
     return category === "ORDER" ? (
       <Package size={20} className={iconClass} />
     ) : category === "SYSTEM" ? (

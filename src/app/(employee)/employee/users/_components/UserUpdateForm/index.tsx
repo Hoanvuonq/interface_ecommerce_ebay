@@ -106,14 +106,14 @@ export default function UserUpdateForm({
           <div className="p-2 bg-orange-100 text-orange-600 rounded-xl">
             <UserCircle2 size={22} strokeWidth={2.5} />
           </div>
-          <span className="font-semibold tracking-tight text-slate-800 uppercase text-lg">
+          <span className="font-semibold tracking-tight text-gray-800 uppercase text-lg">
             Cập nhật quyền hạn
           </span>
         </div>
       }
       width="max-w-2xl"
       footer={
-        <div className="flex justify-end gap-3 w-full border-t border-slate-100 pt-4 mt-2">
+        <div className="flex justify-end gap-3 w-full border-t border-gray-100 pt-4 mt-2">
           <Button variant="edit" onClick={onClose}>
             Hủy bỏ
           </Button>
@@ -138,7 +138,7 @@ export default function UserUpdateForm({
         {!user ? (
           <div className="flex flex-col items-center justify-center py-20">
             <Loader2 className="animate-spin text-orange-500 mb-4" size={48} />
-            <p className="text-slate-400 font-semibold text-xs uppercase tracking-widest animate-pulse">
+            <p className="text-gray-600 font-semibold text-xs uppercase tracking-widest animate-pulse">
               Đang nạp dữ liệu...
             </p>
           </div>
@@ -152,7 +152,7 @@ export default function UserUpdateForm({
             <div className="space-y-4">
               <div className="flex items-center gap-2 px-1">
                 <ShieldCheck size={16} className="text-orange-500" />
-                <h3 className="font-semibold text-slate-800 tracking-tight uppercase text-[11px]">
+                <h3 className="font-semibold text-gray-800 tracking-tight uppercase text-[11px]">
                   Thông tin định danh
                 </h3>
               </div>
@@ -164,7 +164,7 @@ export default function UserUpdateForm({
                   value={user.username}
                   disabled
                   itemClassName="mb-0"
-                  inputClassName="bg-slate-50/50 border-slate-100 font-bold text-slate-500 cursor-not-allowed"
+                  inputClassName="bg-gray-50/50 border-gray-100 font-bold text-gray-500 cursor-not-allowed"
                 />
                 <InputField
                   label="Địa chỉ Email"
@@ -172,25 +172,25 @@ export default function UserUpdateForm({
                   value={user.email}
                   disabled
                   itemClassName="mb-0"
-                  inputClassName="bg-slate-50/50 border-slate-100 font-bold text-slate-500 cursor-not-allowed"
+                  inputClassName="bg-gray-50/50 border-gray-100 font-bold text-gray-500 cursor-not-allowed"
                 />
                 <div className="flex flex-col gap-1">
-                  <label className="text-[11px] font-semibold uppercase tracking-widest text-slate-400 mb-1">
+                  <label className="text-[11px] font-semibold uppercase tracking-widest text-gray-600 mb-1">
                     Ngày tham gia
                   </label>
-                  <div className="px-4 py-2.5 bg-slate-50/50 border border-slate-100 rounded-xl flex items-center gap-2 text-slate-500 font-bold text-sm">
-                    <Calendar size={14} className="text-slate-400" />
+                  <div className="px-4 py-2.5 bg-gray-50/50 border border-gray-100 rounded-xl flex items-center gap-2 text-gray-500 font-bold text-sm">
+                    <Calendar size={14} className="text-gray-600" />
                     {user.createdDate
                       ? dayjs(user.createdDate).format("DD/MM/YYYY")
                       : "-"}
                   </div>
                 </div>
                 <div className="flex flex-col gap-1">
-                  <label className="text-[11px] font-semibold uppercase tracking-widest text-slate-400 mb-1">
+                  <label className="text-[11px] font-semibold uppercase tracking-widest text-gray-600 mb-1">
                     ID Tài khoản
                   </label>
-                  <div className="px-4 py-2.5 bg-slate-50/50 border border-slate-100 rounded-xl text-slate-500 font-mono text-xs font-bold flex items-center gap-2">
-                    <Hash size={12} className="text-slate-300" />#
+                  <div className="px-4 py-2.5 bg-gray-50/50 border border-gray-100 rounded-xl text-gray-500 font-mono text-xs font-bold flex items-center gap-2">
+                    <Hash size={12} className="text-gray-300" />#
                     {user.userId.slice(-12).toUpperCase()}
                   </div>
                 </div>
@@ -200,7 +200,7 @@ export default function UserUpdateForm({
             {/* --- Divider with Label --- */}
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-slate-100"></div>
+                <div className="w-full border-t border-gray-100"></div>
               </div>
               <div className="relative flex justify-center">
                 <span className="bg-white px-4 text-[10px] font-semibold uppercase tracking-[0.3em] text-orange-500">
@@ -213,7 +213,7 @@ export default function UserUpdateForm({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 rounded-4xl bg-orange-50/30 border border-orange-100/50">
               {/* Select Trạng thái mới */}
               <div className="space-y-2">
-                <label className="block text-[11px] font-semibold uppercase tracking-widest text-slate-700 ml-1">
+                <label className="block text-[11px] font-semibold uppercase tracking-widest text-gray-700 ml-1">
                   Trạng thái tài khoản{" "}
                   <span className="text-orange-500">*</span>
                 </label>
@@ -246,7 +246,7 @@ export default function UserUpdateForm({
 
               {/* Select Vai trò mới */}
               <div className="space-y-2">
-                <label className="block text-[11px] font-semibold uppercase tracking-widest text-slate-700 ml-1">
+                <label className="block text-[11px] font-semibold uppercase tracking-widest text-gray-700 ml-1">
                   Vai trò hệ thống <span className="text-orange-500">*</span>
                 </label>
                 <SelectComponent
@@ -273,9 +273,9 @@ export default function UserUpdateForm({
             </div>
 
             {/* --- Section 3: Professional Hint Box --- */}
-            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-start gap-3 shadow-sm shadow-slate-100/50">
+            <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100 flex items-start gap-3 shadow-sm shadow-gray-100/50">
               <div className="w-1.5 h-1.5 bg-orange-500 rounded-full mt-1.5 shadow-[0_0_8px_rgba(249,115,22,0.8)]" />
-              <p className="text-[10px] font-bold text-slate-400 leading-relaxed uppercase tracking-wider">
+              <p className="text-[10px] font-bold text-gray-600 leading-relaxed uppercase tracking-wider">
                 Lưu ý quan trọng: Thay đổi quyền hạn hoặc trạng thái sẽ có hiệu
                 lực ngay lập tức. Người dùng có thể cần đăng nhập lại hoặc làm
                 mới trang để đồng bộ phiên làm việc mới nhất.

@@ -20,7 +20,7 @@ export default function QuickAccessCards({ categorySlug }: QuickAccessCardsProps
                         href={item.link}
                         className={cn(
                             "group relative flex min-w-30 flex-1 flex-col items-center gap-3 rounded-xl p-2 transition-all duration-500 snap-center",
-                            "bg-white ring-1 ring-slate-100 md:min-w-0",
+                            "bg-white ring-1 ring-gray-100 md:min-w-0",
                             "hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.08)]",
                             "bg-white text-orange-600 shadow-md"
                         )}
@@ -36,7 +36,7 @@ export default function QuickAccessCards({ categorySlug }: QuickAccessCardsProps
                         </div>
 
                         <div className="flex flex-col items-center gap-1.5 z-10">
-                            <span className="text-center text-[10px] font-bold uppercase  text-slate-800 transition-colors group-hover:text-current">
+                            <span className="text-center text-[10px] font-bold uppercase  text-gray-800 transition-colors group-hover:text-current">
                                 {item.label}
                             </span>
                             

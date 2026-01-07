@@ -25,7 +25,7 @@ export const OrderFilters: React.FC<ExtendedOrderFiltersProps> = ({
       <div className="flex flex-col md:flex-row items-end gap-4 w-full">
         <div className="relative flex-1 group w-full">
           <div className="relative">
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-(--color-mainColor)O] transition-colors duration-300">
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 group-focus-within:text-(--color-mainColor)O] transition-colors duration-300">
               <Search size={18} strokeWidth={3} />
             </div>
             <input
@@ -33,12 +33,12 @@ export const OrderFilters: React.FC<ExtendedOrderFiltersProps> = ({
               placeholder="Mã đơn hàng, tên sản phẩm..."
               value={searchText}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full h-12 pl-12 pr-12 rounded-2xl border-2 border-slate-100 bg-white text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#ff7300] focus:ring-4 focus:ring-orange-50 transition-all duration-300 "
+              className="w-full h-12 pl-12 pr-12 rounded-2xl border-2 border-gray-100 bg-white text-sm font-medium text-gray-900 placeholder:text-gray-600 focus:outline-none focus:border-[#ff7300] focus:ring-4 focus:ring-orange-50 transition-all duration-300 "
             />
             {!_.isEmpty(searchText) && (
               <button
                 onClick={() => onSearchChange("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-300 hover:text-red-500 p-1.5 transition-all active:scale-90"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-300 hover:text-red-500 p-1.5 transition-all active:scale-90"
               >
                 <X size={18} strokeWidth={3} />
               </button>
@@ -49,7 +49,7 @@ export const OrderFilters: React.FC<ExtendedOrderFiltersProps> = ({
       <div className="flex flex-col gap-3">
         <div className="w-full overflow-hidden">
           <div className="flex w-full items-center justify-between">
-            <div className="flex items-center gap-1 p-2 rounded-full border border-slate-200 bg-white text-slate-600 text-[11px] font-semibold"> 
+            <div className="flex items-center gap-1 p-2 rounded-full border border-gray-200 bg-white text-gray-600 text-[11px] font-semibold"> 
               {STATUS_OPTIONS.map((option) => {
                 const isSelected = statusFilter === option.value;
                 return (
@@ -60,7 +60,7 @@ export const OrderFilters: React.FC<ExtendedOrderFiltersProps> = ({
                       "relative px-5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all duration-300 whitespace-nowrap",
                       isSelected 
                         ? "text-white" 
-                        : "text-slate-500 hover:text-slate-900 hover:bg-white/50"
+                        : "text-gray-500 hover:text-gray-900 hover:bg-white/50"
                     )}
                   >
                     {isSelected && (

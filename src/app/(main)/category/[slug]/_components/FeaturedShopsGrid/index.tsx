@@ -43,7 +43,7 @@ export default function FeaturedShopsGrid({
 
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-xl font-semibold tracking-tight text-slate-800">
+                <h3 className="text-xl font-semibold tracking-tight text-gray-800">
                   <span className="bg-linear-to-r from-orange-600 to-red-600 bg-clip-text text-transparent uppercase">
                     Calatha
                   </span>
@@ -54,7 +54,7 @@ export default function FeaturedShopsGrid({
               </div>
               <div className="flex items-center gap-2 mt-0.5">
                 <div className="h-1 w-1 rounded-full bg-orange-400" />
-                <p className="text-[13px] font-medium text-slate-500">
+                <p className="text-[13px] font-medium text-gray-500">
                   Thương hiệu độc quyền · Miễn phí trả hàng · 100% Chính hãng
                 </p>
               </div>

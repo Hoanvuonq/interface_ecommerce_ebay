@@ -20,7 +20,7 @@ const CustomSpinner: React.FC<{ size?: 'small' | 'middle' | 'large' }> = ({ size
 
 // Tag "Hết hàng" tinh tế hơn
 const SoldOutTag = () => (
-    <span className="inline-block text-[9px] uppercase tracking-wider font-bold px-2 py-0.5 rounded bg-gray-100 text-gray-400 border border-gray-200 mt-1">
+    <span className="inline-block text-[9px] uppercase tracking-wider font-bold px-2 py-0.5 rounded bg-gray-100 text-gray-600 border border-gray-200 mt-1">
         Hết hàng
     </span>
 );
@@ -61,7 +61,7 @@ export function FeaturedProductsSidebar({ products, loading = false }: FeaturedP
                 <CustomSpinner size="small" />
             ) : products.length === 0 ? (
                 <div className="py-12 text-center">
-                    <p className="text-sm text-gray-400 italic">Không có sản phẩm nổi bật.</p>
+                    <p className="text-sm text-gray-600 italic">Không có sản phẩm nổi bật.</p>
                 </div>
             ) : (
                 <div className="divide-y divide-gray-50">
@@ -104,7 +104,7 @@ export function FeaturedProductsSidebar({ products, loading = false }: FeaturedP
                                             {formatPriceFull(price)}
                                         </span>
                                         {hasDiscount && (
-                                            <span className="text-[11px] text-gray-400 line-through font-medium">
+                                            <span className="text-[11px] text-gray-600 line-through font-medium">
                                                 {formatPriceFull(comparePrice)}
                                             </span>
                                         )}

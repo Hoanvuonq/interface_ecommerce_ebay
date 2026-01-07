@@ -27,7 +27,7 @@ export const DeleteMessageModal: React.FC<DeleteMessageModalProps> = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onCancel}
-            className="absolute inset-0 bg-slate-900/40 backdrop-blur-[2px]"
+            className="absolute inset-0 bg-gray-900/40 backdrop-blur-[2px]"
           />
 
           <motion.div
@@ -42,22 +42,22 @@ export const DeleteMessageModal: React.FC<DeleteMessageModalProps> = ({
                   <AlertTriangle size={24} />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-lg font-bold text-slate-900">Thu hồi tin nhắn</h3>
-                  <p className="mt-2 text-sm text-slate-500 leading-relaxed">
+                  <h3 className="text-lg font-bold text-gray-900">Thu hồi tin nhắn</h3>
+                  <p className="mt-2 text-sm text-gray-500 leading-relaxed">
                     Bạn có muốn thu hồi tin nhắn này? (Tin nhắn sẽ bị xóa khỏi cuộc trò chuyện của mọi người).
                   </p>
                 </div>
-                <button onClick={onCancel} className="text-slate-400 hover:text-slate-600">
+                <button onClick={onCancel} className="text-gray-600 hover:text-gray-600">
                   <X size={20} />
                 </button>
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-3 bg-slate-50 px-6 py-4">
+            <div className="flex items-center justify-end gap-3 bg-gray-50 px-6 py-4">
               <button
                 onClick={onCancel}
                 disabled={isLoading}
-                className="px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-200 rounded-xl transition-all"
+                className="px-4 py-2 text-sm font-bold text-gray-600 hover:bg-gray-200 rounded-xl transition-all"
               >
                 Hủy
               </button>

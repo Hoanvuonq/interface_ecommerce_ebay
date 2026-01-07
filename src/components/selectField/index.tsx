@@ -116,7 +116,7 @@ export const SelectField = ({
           className={cn(
             "w-full h-11 px-4 border border-gray-200 rounded-xl bg-white text-gray-900 flex items-center justify-between cursor-pointer transition-all select-none font-medium",
             disabled
-              ? "bg-gray-50 text-gray-400 cursor-not-allowed ring-0 shadow-none border-gray-200"
+              ? "bg-gray-50 text-gray-600 cursor-not-allowed ring-0 shadow-none border-gray-200"
               : "hover:border-orange-500 focus:border-orange-500 shadow-sm",
             isOpen && !disabled ? "border-orange-500 ring-2 ring-orange-100" : "",
             errorMessage ? "border-red-500 ring-red-100 focus:border-red-500" : "",
@@ -126,13 +126,13 @@ export const SelectField = ({
           )}
           onClick={() => !disabled && setIsOpen(!isOpen)}
         >
-          <span className={cn("text-sm truncate", !selectedLabel && "text-gray-400 font-normal")}>
+          <span className={cn("text-sm truncate", !selectedLabel && "text-gray-600 font-normal")}>
             {selectedLabel || placeholder}
           </span>
           <ChevronDown
             size={16}
             className={cn(
-              "text-gray-400 transition-transform duration-200",
+              "text-gray-600 transition-transform duration-200",
               isOpen && "rotate-180"
             )}
           />
@@ -174,7 +174,7 @@ export const SelectField = ({
                 )
             })}
             {options.length === 0 && (
-                <div className="px-4 py-3 text-sm text-gray-400 text-center">
+                <div className="px-4 py-3 text-sm text-gray-600 text-center">
                     Không có lựa chọn
                 </div>
             )}
@@ -190,7 +190,7 @@ export const SelectField = ({
       )}
 
       {!errorMessage && helpText && (
-        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-600">
           {helpText}
         </p>
       )}

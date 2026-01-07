@@ -41,7 +41,7 @@ export default function UserTable() {
           <span className="font-medium text-black/80 text-md! tracking-wider coiny-regular">
             {user.username}
           </span>
-          <span className="text-[11px] text-slate-400 font-bold tracking-wider">
+          <span className="text-[11px] text-gray-600 font-bold tracking-wider">
             {user.email}
           </span>
         </div>
@@ -85,7 +85,7 @@ export default function UserTable() {
       header: "Ngày tạo",
       align: "center",
       render: (user) => (
-        <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-tighter">
+        <span className="text-[11px] font-semibold text-gray-600 uppercase tracking-tighter">
           {dayjs(user.createdDate).format("DD/MM/YYYY")}
         </span>
       ),

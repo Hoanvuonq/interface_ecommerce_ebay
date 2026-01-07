@@ -20,9 +20,6 @@ import { formatTimeFriendly } from "@/hooks/formatDistanceToNow";
 import Image from "next/image";
 import { MenuItem, MessageListProps } from "./type";
 
-
-
-
 export const MessageList: React.FC<MessageListProps> = ({
   messages,
   currentUserId,
@@ -42,12 +39,11 @@ formatTime,
   getMessageMenuItems,
   currentUsername,
 }) => {
-  // --- Loading State ---
   if (isInitializing) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center bg-slate-50 gap-3 h-full">
+      <div className="flex-1 flex flex-col items-center justify-center bg-gray-50 gap-3 h-full">
         <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
-        <span className="text-sm text-slate-400 font-medium">
+        <span className="text-sm text-gray-600 font-medium">
           Đang tải cuộc trò chuyện...
         </span>
       </div>
@@ -56,12 +52,12 @@ formatTime,
 
   if (_.isEmpty(messages)) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center bg-slate-50 p-8 text-center h-full">
-        <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm mb-4 text-slate-200">
+      <div className="flex-1 flex flex-col items-center justify-center bg-gray-50 p-8 text-center h-full">
+        <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm mb-4 text-gray-200">
           <User size={32} />
         </div>
-        <p className="text-slate-500 font-medium">Chưa có tin nhắn nào</p>
-        <p className="text-xs text-slate-400 mt-1">
+        <p className="text-gray-500 font-medium">Chưa có tin nhắn nào</p>
+        <p className="text-xs text-gray-600 mt-1">
           Hãy bắt đầu cuộc trò chuyện ngay!
         </p>
       </div>
@@ -72,11 +68,11 @@ formatTime,
     <div
       ref={messagesContainerRef}
       onScroll={onScroll}
-      className="flex-1 overflow-y-auto p-4 bg-slate-50 space-y-6 scroll-smooth"
+      className="flex-1 overflow-y-auto p-4 bg-gray-50 space-y-6 scroll-smooth"
     >
       {/* Loading More Spinner */}
       {isLoadingMore && (
-        <div className="flex items-center justify-center py-2 gap-2 text-slate-400 animate-in slide-in-from-top-2">
+        <div className="flex items-center justify-center py-2 gap-2 text-gray-600 animate-in slide-in-from-top-2">
           <Loader2 size={14} className="animate-spin" />
           <span className="text-xs font-medium">Đang tải tin nhắn cũ...</span>
         </div>
@@ -163,7 +159,7 @@ const MessageItem = ({
   if (isSystem) {
     return (
       <div className="flex justify-center my-4 opacity-75">
-        <span className="px-3 py-1 bg-slate-200/60 text-slate-500 rounded-full text-[10px] font-medium">
+        <span className="px-3 py-1 bg-gray-200/60 text-gray-500 rounded-full text-[10px] font-medium">
           {message.content}
         </span>
       </div>
@@ -182,7 +178,7 @@ const MessageItem = ({
         }`}
       >
         <div className="shrink-0 mt-auto">
-          <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-white shadow-sm bg-slate-200 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-white shadow-sm bg-gray-200 flex items-center justify-center">
             {avatar ? (
               <Image
                 src={avatar}
@@ -192,7 +188,7 @@ const MessageItem = ({
                 alt="avt"
               />
             ) : (
-              <User size={16} className="text-slate-400" />
+              <User size={16} className="text-gray-600" />
             )}
           </div>
         </div>
@@ -202,7 +198,7 @@ const MessageItem = ({
             isMine ? "items-end" : "items-start"
           } min-w-0 flex-1`}
         >
-          <span className="text-[10px] font-semibold text-slate-400 mb-1 px-1 uppercase tracking-tight select-none">
+          <span className="text-[10px] font-semibold text-gray-600 mb-1 px-1 uppercase tracking-tight select-none">
             {senderName}
           </span>
 
@@ -216,10 +212,10 @@ const MessageItem = ({
               className={`relative px-4 py-2.5 rounded-2xl shadow-sm text-sm wrap-break-words transition-all hover:shadow-md ${
                 isMine
                   ? "bg-linear-to-br from-orange-500 to-amber-500 text-white rounded-tr-sm"
-                  : "bg-white border border-slate-100 text-slate-800 rounded-tl-sm"
+                  : "bg-white border border-gray-100 text-gray-800 rounded-tl-sm"
               } ${
                 isDeleted
-                  ? "opacity-75 bg-slate-100 border-dashed border-slate-300 text-slate-500 shadow-none"
+                  ? "opacity-75 bg-gray-100 border-dashed border-gray-300 text-gray-500 shadow-none"
                   : ""
               }`}
             >
@@ -246,14 +242,14 @@ const MessageItem = ({
                   <span>Tin nhắn đã thu hồi</span>
                 </div>
               ) : (
-                <div className={isMine ? "text-white" : "text-slate-800"}>
+                <div className={isMine ? "text-white" : "text-gray-800"}>
                   <MessageContent message={message} />
                 </div>
               )}
 
               <div
                 className={`flex items-center justify-end gap-1.5 mt-1 text-[9px] font-bold tracking-tighter select-none ${
-                  isMine ? "text-white/60" : "text-slate-300"
+                  isMine ? "text-white/60" : "text-gray-300"
                 }`}
               >
                 <span>{formatTime(message.sentAt)}</span>
@@ -281,8 +277,8 @@ const MessageItem = ({
               >
                 <button
                   onClick={() => setShowMenu(!showMenu)}
-                  className={`p-1.5 rounded-full hover:bg-slate-200 text-slate-400 transition-all ${
-                    showMenu ? "opacity-100 bg-slate-200 text-slate-600" : ""
+                  className={`p-1.5 rounded-full hover:bg-gray-200 text-gray-600 transition-all ${
+                    showMenu ? "opacity-100 bg-gray-200 text-gray-600" : ""
                   }`}
                 >
                   <MoreHorizontal size={16} />
@@ -291,7 +287,7 @@ const MessageItem = ({
                 {/* Dropdown Menu */}
                 {showMenu && (
                   <div
-                    className={`absolute bottom-full mb-2 z-50 min-w-35 bg-white rounded-xl shadow-xl border border-slate-100 py-1.5 overflow-hidden animate-in fade-in zoom-in-95 duration-200 ${
+                    className={`absolute bottom-full mb-2 z-50 min-w-35 bg-white rounded-xl shadow-xl border border-gray-100 py-1.5 overflow-hidden animate-in fade-in zoom-in-95 duration-200 ${
                       isMine
                         ? "right-0 origin-bottom-right"
                         : "left-0 origin-bottom-left"
@@ -305,10 +301,10 @@ const MessageItem = ({
                           item.onClick();
                           setShowMenu(false);
                         }}
-                        className={`w-full text-left px-4 py-2.5 text-xs font-medium flex items-center gap-3 hover:bg-slate-50 transition-colors ${
+                        className={`w-full text-left px-4 py-2.5 text-xs font-medium flex items-center gap-3 hover:bg-gray-50 transition-colors ${
                           item.danger
                             ? "text-red-500 hover:bg-red-50"
-                            : "text-slate-700"
+                            : "text-gray-700"
                         }`}
                       >
                         {item.key === "reply" && (

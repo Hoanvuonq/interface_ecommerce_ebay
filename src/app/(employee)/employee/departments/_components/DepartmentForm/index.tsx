@@ -100,7 +100,7 @@ export default function DepartmentForm({
                 placeholder="Mô tả chức năng, nhiệm vụ của phòng ban..."
                 className={cn(
                   "w-full px-4 py-3 text-sm rounded-xl border transition-all duration-200 outline-none min-h-30",
-                  "bg-white border-slate-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/5",
+                  "bg-white border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/5",
                   errors.description && "border-red-500 focus:border-red-500"
                 )}
               />
@@ -113,11 +113,11 @@ export default function DepartmentForm({
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-3 pt-6 border-t border-slate-100 mt-4">
+        <div className="flex items-center justify-end gap-3 pt-6 border-t border-gray-100 mt-4">
           <Button
             variant="edit"
             onClick={onClose}
-            className="px-8 py-3 rounded-2xl font-semibold uppercase text-[10px] tracking-widest text-slate-400 hover:bg-slate-100 transition-all active:scale-95"
+            className="px-8 py-3 rounded-2xl font-semibold uppercase text-[10px] tracking-widest text-gray-600 hover:bg-gray-100 transition-all active:scale-95"
           >
             Hủy bỏ
           </Button>

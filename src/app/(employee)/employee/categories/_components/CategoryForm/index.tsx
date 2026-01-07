@@ -100,7 +100,7 @@ export default function CategoryForm({
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       {/* Tên danh mục */}
       <div className="space-y-1.5">
-        <label className="text-sm font-bold text-slate-700 ml-1">
+        <label className="text-sm font-bold text-gray-700 ml-1">
           Tên danh mục <span className="text-orange-500">*</span>
         </label>
         <input
@@ -109,7 +109,7 @@ export default function CategoryForm({
             "w-full h-11 px-4 rounded-xl border bg-white outline-none transition-all text-sm shadow-sm",
             errors.name 
               ? "border-red-500 focus:ring-4 focus:ring-red-50" 
-              : "border-slate-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-50"
+              : "border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-50"
           )}
           placeholder="Nhập tên danh mục..."
           disabled={isSubmitting}
@@ -119,7 +119,7 @@ export default function CategoryForm({
 
       {/* Danh mục cha */}
       <div className="space-y-1.5">
-        <label className="text-sm font-bold text-slate-700 ml-1">Danh mục cha</label>
+        <label className="text-sm font-bold text-gray-700 ml-1">Danh mục cha</label>
         <Controller
           name="parentId"
           control={control}
@@ -138,23 +138,23 @@ export default function CategoryForm({
 
       {/* Mô tả */}
       <div className="space-y-1.5">
-        <label className="text-sm font-bold text-slate-700 ml-1">Mô tả</label>
+        <label className="text-sm font-bold text-gray-700 ml-1">Mô tả</label>
         <textarea
           {...register("description", { maxLength: 5000 })}
           rows={3}
-          className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-50 outline-none transition-all text-sm resize-none shadow-sm"
+          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-50 outline-none transition-all text-sm resize-none shadow-sm"
           placeholder="Nhập mô tả chi tiết..."
           disabled={isSubmitting}
         />
       </div>
 
-      <div className="flex items-center justify-between py-2 border-t border-slate-50 pt-4">
+      <div className="flex items-center justify-between py-2 border-t border-gray-50 pt-4">
         <div className="flex items-center gap-3">
           <label className="relative inline-flex items-center cursor-pointer group">
             <input type="checkbox" {...register("active")} className="sr-only peer" disabled={isSubmitting} />
-            <div className="w-11 h-6 bg-slate-200 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-500 shadow-inner" />
+            <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-500 shadow-inner" />
           </label>
-          <span className="text-sm font-bold text-slate-600">Hoạt động</span>
+          <span className="text-sm font-bold text-gray-600">Hoạt động</span>
         </div>
 
         <div className="flex items-center gap-2">
@@ -162,7 +162,7 @@ export default function CategoryForm({
             type="button"
             onClick={onCancel}
             disabled={isSubmitting}
-            className="h-10 px-6 rounded-xl text-sm font-bold text-slate-500 hover:bg-slate-100 transition-colors disabled:opacity-50"
+            className="h-10 px-6 rounded-xl text-sm font-bold text-gray-500 hover:bg-gray-100 transition-colors disabled:opacity-50"
           >
             Hủy
           </button>

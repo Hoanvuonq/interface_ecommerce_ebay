@@ -25,7 +25,6 @@ export const HomeScreen = () => {
       />
       <ProductShowcase />
       <CalathaMallSection />
-      {/* <NewsletterSignup /> */}
     </HomepageProvider>
   );
 };

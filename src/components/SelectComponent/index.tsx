@@ -18,9 +18,7 @@ export const SelectComponent = ({
 }: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
-  const [dropdownStyle, setDropdownStyle] =
-    useState<React.CSSProperties | null>(null);
-  const [placement, setPlacement] = useState<"top" | "bottom">("bottom");
+  const [dropdownStyle, setDropdownStyle] = useState<React.CSSProperties | null>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const filteredOptions = options.filter((opt) =>
@@ -30,7 +28,14 @@ export const SelectComponent = ({
   const getDisplayLabel = () => {
     if (isMulti) {
       const vals = Array.isArray(value) ? value : [];
-      return vals.length > 0 ? `Đã chọn ${vals.length}` : placeholder;
+      if (vals.length === 0) return placeholder;
+      if (vals.length <= 2) {
+        return options
+          .filter((opt) => vals.includes(opt.value))
+          .map((opt) => opt.label)
+          .join(", ");
+      }
+      return `Đã chọn ${vals.length} mục`;
     } else {
       const selectedOpt = options.find((opt) => opt.value === value);
       return selectedOpt ? selectedOpt.label : placeholder;
@@ -41,45 +46,50 @@ export const SelectComponent = ({
     if (isOpen && wrapperRef.current) {
       const rect = wrapperRef.current.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
+      const dropdownMaxHeight = 280;
+      const gap = 8;
+      
+      // Kiểm tra không gian phía dưới
       const spaceBelow = viewportHeight - rect.bottom;
-      const dropdownMaxHeight = 250;
-      const gap = 6;
+      const showAtTop = spaceBelow < dropdownMaxHeight && rect.top > dropdownMaxHeight;
 
-      let newPlacement: "top" | "bottom" = "bottom";
-      if (spaceBelow < dropdownMaxHeight && rect.top > dropdownMaxHeight) {
-        newPlacement = "top";
+      const style: React.CSSProperties = {
+        position: 'fixed',
+        left: rect.left,
+        width: rect.width,
+        zIndex: 9999,
+      };
+
+      if (showAtTop) {
+        style.bottom = viewportHeight - rect.top + gap;
+      } else {
+        style.top = rect.bottom + gap;
       }
 
-      setPlacement(newPlacement);
-      setDropdownStyle({
-        top:
-          newPlacement === "bottom"
-            ? rect.bottom + window.scrollY + gap
-            : undefined,
-        bottom:
-          newPlacement === "top"
-            ? viewportHeight - rect.top - window.scrollY + gap
-            : undefined,
-        left: rect.left + window.scrollX,
-        width: rect.width,
-        maxHeight: `${dropdownMaxHeight}px`,
-      });
+      setDropdownStyle(style);
     }
   }, [isOpen]);
 
   useIsomorphicLayoutEffect(() => {
-    if (isOpen) updatePosition();
+    if (isOpen) {
+      updatePosition();
+      window.addEventListener("scroll", updatePosition);
+      window.addEventListener("resize", updatePosition);
+    }
+    return () => {
+      window.removeEventListener("scroll", updatePosition);
+      window.removeEventListener("resize", updatePosition);
+    };
   }, [isOpen, updatePosition]);
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen) {
+      setSearch("");
+      return;
+    }
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as Node;
-      const dropdown = document.getElementById("select-dropdown-portal");
-      if (
-        !wrapperRef.current?.contains(target) &&
-        !dropdown?.contains(target)
-      ) {
+      if (!wrapperRef.current?.contains(target) && !document.getElementById("select-dropdown-portal")?.contains(target)) {
         setIsOpen(false);
       }
     };
@@ -105,92 +115,79 @@ export const SelectComponent = ({
       <div ref={wrapperRef} className={cn("relative w-full", className)}>
         <div
           className={cn(
-            "w-full h-11 px-4 border border-slate-200 rounded-xl bg-white text-slate-700 flex items-center justify-between cursor-pointer transition-all select-none shadow-sm",
-            disabled
-              ? "opacity-50 cursor-not-allowed bg-slate-50"
-              : "hover:border-orange-400",
-            isOpen && "border-orange-500 ring-2 ring-orange-100"
+            "w-full h-12 px-5 bg-gray-50/50 border border-gray-200 rounded-2xl flex items-center justify-between cursor-pointer transition-all select-none shadow-sm",
+            disabled ? "opacity-50 cursor-not-allowed bg-gray-100" : "hover:border-orange-400 hover:bg-white",
+            isOpen && "border-orange-500 ring-4 ring-orange-500/10 bg-white"
           )}
           onClick={() => !disabled && setIsOpen(!isOpen)}
         >
-          <span
-            className={cn(
-              "text-sm truncate font-medium",
-              !value || (Array.isArray(value) && value.length === 0)
-                ? "text-slate-400"
-                : "text-slate-700"
-            )}
-          >
+          <span className={cn(
+            "text-sm font-semibold truncate",
+            (!value || (Array.isArray(value) && value.length === 0)) ? "text-gray-300" : "text-gray-700"
+          )}>
             {getDisplayLabel()}
           </span>
-          <FaChevronDown
-            className={cn(
-              "text-[10px] text-slate-400 transition-transform duration-200",
-              isOpen && "rotate-180"
-            )}
-          />
+          <FaChevronDown className={cn(
+            "text-[10px] text-gray-600 transition-transform duration-300",
+            isOpen && "rotate-180 text-orange-500"
+          )} />
         </div>
       </div>
 
-      {isOpen &&
-        createPortal(
-          <div
-            id="select-dropdown-portal"
-            className={cn(
-              "fixed z-9999 bg-white border border-slate-100 rounded-xl shadow-xl flex flex-col overflow-hidden",
-              "animate-in fade-in zoom-in-95 duration-150"
-            )}
-            style={dropdownStyle!}
-          >
-            {options.length > 5 && (
-              <div className="p-2 border-b border-slate-50 bg-slate-50/50">
-                <div className="relative">
-                  <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-300 text-xs" />
-                  <input
-                    autoFocus
-                    className="w-full pl-9 pr-3 py-1.5 text-sm bg-white border border-slate-200 rounded-lg outline-none focus:border-orange-300 transition-all"
-                    placeholder="Tìm kiếm..."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                  />
-                </div>
+      {isOpen && typeof document !== "undefined" && createPortal(
+        <div
+          id="select-dropdown-portal"
+          className={cn(
+            "bg-white border border-gray-100 rounded-2xl shadow-2xl flex flex-col overflow-hidden",
+            "animate-in fade-in zoom-in-95 duration-200 ease-out"
+          )}
+          style={dropdownStyle!}
+        >
+          <div className="p-3 border-b border-gray-50">
+            <div className="relative">
+              <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 text-xs" />
+              <input
+                autoFocus
+                className="w-full pl-10 pr-4 h-10 text-sm bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-orange-300 focus:bg-white transition-all font-medium text-gray-600"
+                placeholder="Tìm kiếm..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="overflow-y-auto max-h-55 p-2 custom-scrollbar">
+            {filteredOptions.length > 0 ? (
+              filteredOptions.map((opt) => {
+                const isSelected = isMulti
+                  ? Array.isArray(value) && value.includes(opt.value)
+                  : value === opt.value;
+
+                return (
+                  <div
+                    key={opt.value}
+                    className={cn(
+                      "px-4 py-3 text-sm cursor-pointer rounded-xl transition-all flex items-center justify-between mb-1 group",
+                      isSelected
+                        ? "bg-orange-50 text-orange-600 font-bold"
+                        : "text-gray-600 hover:bg-gray-50 hover:text-orange-500"
+                    )}
+                    onClick={() => handleSelect(opt.value)}
+                  >
+                    <span className="truncate">{opt.label}</span>
+                    {isSelected && <FaCheck className="text-orange-500 animate-in zoom-in duration-200" size={12} />}
+                  </div>
+                );
+              })
+            ) : (
+              <div className="py-8 text-center flex flex-col items-center justify-center">
+                <span className="text-sm font-medium text-gray-600">Không tìm thấy kết quả</span>
               </div>
             )}
-
-            <div className="overflow-y-auto flex-1 p-1">
-              {filteredOptions.length > 0 ? (
-                filteredOptions.map((opt) => {
-                  const isSelected = isMulti
-                    ? Array.isArray(value) && value.includes(opt.value)
-                    : value === opt.value;
-
-                  return (
-                    <div
-                      key={opt.value}
-                      className={cn(
-                        "px-3 py-2 text-xs cursor-pointer rounded-lg transition-all flex items-center justify-between mb-0.5",
-                        isSelected
-                          ? "bg-orange-50 text-orange-600 font-bold"
-                          : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                      )}
-                      onClick={() => handleSelect(opt.value)}
-                    >
-                      <span className="truncate">{opt.label}</span>
-                      {isSelected && (
-                        <FaCheck className="text-orange-500" size={12} />
-                      )}
-                    </div>
-                  );
-                })
-              ) : (
-                <div className="p-4 text-center text-xs text-slate-400">
-                  Không tìm thấy kết quả
-                </div>
-              )}
-            </div>
-          </div>,
-          document.body
-        )}
+          </div>
+        </div>,
+        document.body
+      )}
     </>
   );
 };

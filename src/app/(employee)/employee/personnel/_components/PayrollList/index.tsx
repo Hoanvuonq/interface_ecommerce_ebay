@@ -46,12 +46,12 @@ export default function PayrollList({ employeeId, employeeName }: { employeeId: 
     {
       header: "Tháng",
       align: "center",
-      render: (row) => <span className="font-semibold text-slate-700 italic">{dayjs(row.payMonth).format("MM/YYYY")}</span>
+      render: (row) => <span className="font-semibold text-gray-700 italic">{dayjs(row.payMonth).format("MM/YYYY")}</span>
     },
     {
       header: "Lương cơ bản",
       align: "center",
-      render: (row) => <span className="font-bold text-slate-600">{formatCurrency(row.baseSalary)}</span>
+      render: (row) => <span className="font-bold text-gray-600">{formatCurrency(row.baseSalary)}</span>
     },
     {
       header: "Biến động",
@@ -101,11 +101,11 @@ export default function PayrollList({ employeeId, employeeName }: { employeeId: 
   const tableHeader = (
     <div className="w-full flex flex-wrap items-center justify-between gap-6">
       <div className="flex items-center gap-4">
-        <span className="text-[10px] font-semibold uppercase text-slate-400 tracking-widest">Niên độ:</span>
+        <span className="text-[10px] font-semibold uppercase text-gray-600 tracking-widest">Niên độ:</span>
         <SelectComponent options={yearOptions} value={String(selectedYear)} onChange={(v) => setSelectedYear(Number(v))} className="w-40" />
       </div>
       <div className="flex items-center gap-3">
-         <span className="text-[10px] font-semibold uppercase text-slate-400">Hiển thị:</span>
+         <span className="text-[10px] font-semibold uppercase text-gray-600">Hiển thị:</span>
          <SelectComponent options={[{label: '10 dòng', value: '10'}, {label: '20 dòng', value: '20'}]} value={String(size)} onChange={(v) => setSize(Number(v))} className="w-32" />
       </div>
     </div>
@@ -114,24 +114,24 @@ export default function PayrollList({ employeeId, employeeName }: { employeeId: 
   return (
     <div className="p-8 bg-[#F8FAFC] min-h-screen space-y-10 animate-in fade-in duration-700">
       <div className="flex flex-col gap-6">
-        <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-widest text-slate-400">
+        <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-widest text-gray-600">
           <button onClick={() => router.push("/")} className="hover:text-orange-500 transition-colors flex items-center gap-1"><Home size={12}/> Dashboard</button>
           <ChevronRight size={10} />
           <button onClick={() => router.push("/employee/personnel")} className="hover:text-orange-500 transition-colors flex items-center gap-1"><Users size={12}/> Nhân sự</button>
           <ChevronRight size={10} />
-          <span className="text-slate-900 italic">Bảng lương: {employeeName}</span>
+          <span className="text-gray-900 italic">Bảng lương: {employeeName}</span>
         </div>
 
         <div className="flex justify-between items-end">
           <div className="space-y-1">
-            <h1 className="text-5xl font-semibold text-slate-900 tracking-tighter uppercase italic leading-none">
+            <h1 className="text-5xl font-semibold text-gray-900 tracking-tighter uppercase italic leading-none">
               Payroll <span className="text-orange-500 underline decoration-4 underline-offset-8">Account</span>
             </h1>
-            <p className="text-slate-400 text-xs font-bold uppercase tracking-[0.3em]">Quản lý thu nhập nhân sự tập trung</p>
+            <p className="text-gray-600 text-xs font-bold uppercase tracking-[0.3em]">Quản lý thu nhập nhân sự tập trung</p>
           </div>
           <button 
             onClick={() => { setFormMode("create"); setSelectedPayroll(null); setOpenForm(true); }}
-            className="bg-slate-900 hover:bg-orange-500 text-white px-8 py-4 rounded-2xl font-semibold uppercase text-xs tracking-widest transition-all duration-500 shadow-2xl shadow-slate-200 flex items-center gap-2 active:scale-95"
+            className="bg-gray-900 hover:bg-orange-500 text-white px-8 py-4 rounded-2xl font-semibold uppercase text-xs tracking-widest transition-all duration-500 shadow-2xl shadow-gray-200 flex items-center gap-2 active:scale-95"
           >
             <DollarSign size={18} /> Khởi tạo bảng lương
           </button>
@@ -139,7 +139,7 @@ export default function PayrollList({ employeeId, employeeName }: { employeeId: 
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatCardComponents label="Tổng cộng" value={stats.totalMoney || 0} icon={<DollarSign />} color="text-slate-900" />
+        <StatCardComponents label="Tổng cộng" value={stats.totalMoney || 0} icon={<DollarSign />} color="text-gray-900" />
         <StatCardComponents label="Đã quyết toán" value={stats.totalMoneyPaid || 0} icon={<CheckCircle2 />} color="text-emerald-500" />
         <StatCardComponents label="Chưa chi trả" value={stats.totalMoneyUnpaid || 0} icon={<Clock />} color="text-amber-500" />
         <StatCardComponents label="Số phiếu lương" value={stats.totalPayrolls || 0} icon={<FileText />} color="text-blue-500" />

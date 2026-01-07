@@ -13,14 +13,14 @@ export const InfoItem = ({
       <Icon className={cn("w-6 h-6", colorClass)} strokeWidth={2} />
     </div>
     <div className="flex-1 min-w-0">
-      <h4 className="text-gray-400 text-[10px] font-semibold uppercase tracking-[0.15em] mb-1.5">
+      <h4 className="text-gray-600 text-[10px] font-semibold uppercase tracking-[0.15em] mb-1.5">
         {title}
       </h4>
       <div className="text-gray-800 font-bold text-[15px] leading-snug wrap-break-words">
         {content}
       </div>
       {subContent && (
-        <div className="text-gray-400 text-xs italic mt-1.5 font-medium leading-relaxed">
+        <div className="text-gray-600 text-xs italic mt-1.5 font-medium leading-relaxed">
           {subContent}
         </div>
       )}

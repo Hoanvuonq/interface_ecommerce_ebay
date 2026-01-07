@@ -94,12 +94,12 @@ const AddressModal: React.FC<AddressModalProps> = ({
             </div>
           )}
 
-          <div className="flex bg-slate-50 p-1.5 gap-2 rounded-2xl border border-slate-100">
+          <div className="flex bg-gray-50 p-1.5 gap-2 rounded-2xl border border-gray-100">
             <button
               className={`flex-1 py-3 text-[10px] font-bold uppercase tracking-widest transition-all rounded-xl ${
                 activeTab === "saved"
                   ? "bg-white text-orange-600 shadow-sm"
-                  : "text-slate-400"
+                  : "text-gray-600"
               }`}
               onClick={() => setActiveTab("saved")}
               disabled={isUpdating}
@@ -107,7 +107,7 @@ const AddressModal: React.FC<AddressModalProps> = ({
               Đã lưu ({savedAddresses.length})
             </button>
             <button
-              className="flex-1 py-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 hover:text-orange-600 transition-all"
+              className="flex-1 py-3 text-[10px] font-bold uppercase tracking-widest text-gray-600 hover:text-orange-600 transition-all"
               onClick={() => setIsFormOpen(true)}
               disabled={isUpdating}
             >
@@ -126,13 +126,13 @@ const AddressModal: React.FC<AddressModalProps> = ({
                   className={`p-4 rounded-2xl border-2 cursor-pointer transition-all ${
                     selectedId === addr.addressId
                       ? "border-orange-500 bg-orange-50/30 ring-4 ring-orange-50"
-                      : "border-slate-100 bg-white hover:border-orange-200"
+                      : "border-gray-100 bg-white hover:border-orange-200"
                   } ${isUpdating ? "opacity-50 cursor-not-allowed" : ""}`}
                 >
                   <div className="w-full flex justify-between items-center">
-                    <div className="font-bold text-slate-900 text-sm uppercase italic">
+                    <div className="font-bold text-gray-900 text-sm uppercase italic">
                       {addr.recipientName}{" "}
-                      <span className="mx-2 text-slate-300">|</span>{" "}
+                      <span className="mx-2 text-gray-300">|</span>{" "}
                       {addr.phone}
                     </div>
                     {addr.isDefault && (
@@ -142,7 +142,7 @@ const AddressModal: React.FC<AddressModalProps> = ({
                       </div>
                     )}
                   </div>
-                  <p className="text-xs text-slate-500 mt-1 font-medium italic">
+                  <p className="text-xs text-gray-500 mt-1 font-medium italic">
                     {addr.detailAddress}, {addr.ward}, {addr.district},{" "}
                     {addr.province}
                   </p>

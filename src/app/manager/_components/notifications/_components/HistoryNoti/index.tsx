@@ -13,7 +13,7 @@ const audienceStyles: Record<string, { label: string; bg: string; text: string }
 };
 
 const priorityStyles: Record<string, { label: string; color: string }> = {
-    LOW: { label: "Thấp", color: "text-gray-400" },
+    LOW: { label: "Thấp", color: "text-gray-600" },
     NORMAL: { label: "Thường", color: "text-blue-500" },
     HIGH: { label: "Cao", color: "text-orange-500" },
     URGENT: { label: "Khẩn cấp", color: "text-red-600" },
@@ -59,7 +59,7 @@ export default function NotificationHistoryTable() {
                 <div className="flex flex-wrap items-center gap-3">
                     {/* Search Input */}
                     <div className="relative group">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-orange-500 transition-colors" size={16} />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-600 group-focus-within:text-orange-500 transition-colors" size={16} />
                         <input 
                             type="text"
                             placeholder="Tìm tiêu đề..."
@@ -82,7 +82,7 @@ export default function NotificationHistoryTable() {
                     </select>
                 </div>
 
-                <div className="text-xs font-semibold text-gray-400 uppercase tracking-widest px-2">
+                <div className="text-xs font-semibold text-gray-600 uppercase tracking-widest px-2">
                     Tổng: {totalElements.toLocaleString()} bản ghi
                 </div>
             </div>
@@ -92,11 +92,11 @@ export default function NotificationHistoryTable() {
                 <table className="w-full text-left border-collapse">
                     <thead>
                         <tr className="border-b border-gray-50">
-                            <th className="px-6 py-5 text-[11px] font-semibold text-gray-400 uppercase tracking-widest">Thời gian</th>
-                            <th className="px-6 py-5 text-[11px] font-semibold text-gray-400 uppercase tracking-widest">Nội dung thông báo</th>
-                            <th className="px-6 py-5 text-[11px] font-semibold text-gray-400 uppercase tracking-widest text-center">Đối tượng</th>
-                            <th className="px-6 py-5 text-[11px] font-semibold text-gray-400 uppercase tracking-widest text-center">Đã gửi</th>
-                            <th className="px-6 py-5 text-[11px] font-semibold text-gray-400 uppercase tracking-widest">Ảnh</th>
+                            <th className="px-6 py-5 text-[11px] font-semibold text-gray-600 uppercase tracking-widest">Thời gian</th>
+                            <th className="px-6 py-5 text-[11px] font-semibold text-gray-600 uppercase tracking-widest">Nội dung thông báo</th>
+                            <th className="px-6 py-5 text-[11px] font-semibold text-gray-600 uppercase tracking-widest text-center">Đối tượng</th>
+                            <th className="px-6 py-5 text-[11px] font-semibold text-gray-600 uppercase tracking-widest text-center">Đã gửi</th>
+                            <th className="px-6 py-5 text-[11px] font-semibold text-gray-600 uppercase tracking-widest">Ảnh</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-50">
@@ -116,7 +116,7 @@ export default function NotificationHistoryTable() {
                                             </div>
                                             <div>
                                                 <div className="text-sm font-bold text-gray-800">{dayjs(record.createdAt).format("DD/MM/YYYY")}</div>
-                                                <div className="text-[11px] text-gray-400 font-medium">{dayjs(record.createdAt).format("HH:mm")}</div>
+                                                <div className="text-[11px] text-gray-600 font-medium">{dayjs(record.createdAt).format("HH:mm")}</div>
                                             </div>
                                         </div>
                                     </td>
@@ -151,7 +151,7 @@ export default function NotificationHistoryTable() {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan={5} className="px-6 py-20 text-center text-gray-400 font-medium">
+                                <td colSpan={5} className="px-6 py-20 text-center text-gray-600 font-medium">
                                     Không tìm thấy dữ liệu lịch sử.
                                 </td>
                             </tr>

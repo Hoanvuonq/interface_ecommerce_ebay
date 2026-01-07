@@ -19,7 +19,7 @@ export const CustomBreadcrumb: React.FC<BreadcrumbProps> = ({ items }) => {
         <li className="flex items-center">
           <Link
             href="/"
-            className="text-gray-400 hover:text-orange-500 transition-colors duration-200 p-1 rounded-lg hover:bg-orange-50"
+            className="text-gray-600 hover:text-orange-500 transition-colors duration-200 p-1 rounded-lg hover:bg-orange-50"
           >
             <Home className="h-4 w-4 shrink-0" />
             <span className="sr-only">Home</span>

@@ -87,8 +87,8 @@ export const AccountDropdown = () => {
         className={cn(
           "w-9 h-9 rounded-full flex items-center justify-center overflow-hidden shrink-0 border transition-all duration-300",
           isActuallyAuthenticated
-            ? "bg-slate-200 border-white/20"
-            : "bg-slate-100 border-slate-200 text-slate-400 group-hover:text-blue-600"
+            ? "bg-gray-200 border-white/20"
+            : "bg-gray-100 border-gray-200 text-gray-600 group-hover:text-blue-600"
         )}
       >
         {isActuallyAuthenticated && userData.image ? (
@@ -104,7 +104,7 @@ export const AccountDropdown = () => {
         )}
       </div>
       <div className="flex flex-col gap-0.5 items-start min-w-0">
-        <span className="hidden sm:inline font-bold text-slate-100 group-hover:text-white transition-colors text-[12px] truncate max-w-30 leading-normal">
+        <span className="hidden sm:inline font-bold text-gray-100 group-hover:text-white transition-colors text-[12px] truncate max-w-30 leading-normal">
           {isActuallyAuthenticated ? userData.name : "Tài khoản"}
         </span>
         <span className="flex gap-1 items-center">
@@ -114,7 +114,7 @@ export const AccountDropdown = () => {
       </div>
       <ChevronDown
         size={14}
-        className="text-slate-300 group-hover:text-white transition-all ml-0.5"
+        className="text-gray-300 group-hover:text-white transition-all ml-0.5"
       />
     </div>
   );
@@ -122,7 +122,7 @@ export const AccountDropdown = () => {
   return (
     <AppPopover trigger={Trigger} className="w-72 p-1.5" align="right">
       {isActuallyAuthenticated && (
-        <div className="p-3 mb-2 bg-slate-50 border border-slate-100 rounded-xl flex items-center gap-3">
+        <div className="p-3 mb-2 bg-gray-50 border border-gray-100 rounded-xl flex items-center gap-3">
           <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-sm shrink-0">
             {userData.image ? (
              <Image
@@ -133,17 +133,17 @@ export const AccountDropdown = () => {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className="w-full h-full bg-slate-200 flex items-center justify-center text-slate-400">
+              <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-600">
                 <User size={24} />
               </div>
             )}
           </div>
 
           <div className="flex-1 min-w-0">
-            <div className="font-bold text-slate-800 text-sm truncate leading-tight">
+            <div className="font-bold text-gray-800 text-sm truncate leading-tight">
               {userData.name}
             </div>
-            <div className="text-[11px] text-slate-500 truncate mb-1">
+            <div className="text-[11px] text-gray-800 truncate mb-1">
               {userData.email}
             </div>
           </div>
@@ -160,7 +160,7 @@ export const AccountDropdown = () => {
                   "p-1.5 rounded-lg transition-colors",
                   isLogout
                     ? "bg-rose-50 text-orange-500 group-hover:bg-orange-100"
-                    : "bg-slate-50 text-slate-500 group-hover:bg-blue-50 group-hover:text-orange-500"
+                    : "bg-gray-50 text-gray-700 group-hover:bg-blue-50 group-hover:text-orange-500"
                 )}
               >
                 {item.icon}
@@ -170,7 +170,7 @@ export const AccountDropdown = () => {
                   "flex-1 text-left text-[13px] font-medium transition-colors",
                   isLogout
                     ? "text-orange-600"
-                    : "text-slate-600 group-hover:text-orange-500"
+                    : "text-gray-800 group-hover:text-orange-500"
                 )}
               >
                 {item.label}
@@ -182,7 +182,7 @@ export const AccountDropdown = () => {
             "group flex items-center gap-3 px-2 py-2 rounded-lg transition-all duration-200 w-full cursor-pointer select-none",
             isLogout
               ? "mt-1 hover:bg-orange-50/50 border border-transparent"
-              : "hover:bg-slate-50 border border-transparent"
+              : "hover:bg-gray-50 border border-transparent"
           );
 
           if (item.action) {

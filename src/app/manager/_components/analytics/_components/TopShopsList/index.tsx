@@ -15,9 +15,9 @@ export function TopShopsList({ shops, loading = false }: TopShopsListProps) {
     const getRankStyles = (rank: number) => {
         switch (rank) {
             case 1: return "bg-amber-50 text-amber-600 border-amber-200";
-            case 2: return "bg-slate-50 text-slate-500 border-slate-200";
+            case 2: return "bg-gray-50 text-gray-500 border-gray-200";
             case 3: return "bg-orange-50 text-orange-600 border-orange-200";
-            default: return "bg-gray-50 text-gray-400 border-gray-100";
+            default: return "bg-gray-50 text-gray-600 border-gray-100";
         }
     };
 
@@ -36,7 +36,7 @@ export function TopShopsList({ shops, loading = false }: TopShopsListProps) {
                         <h3 className="text-sm font-semibold text-gray-800 uppercase tracking-[0.15em] leading-none mb-1">
                             Top 10 <span className="text-emerald-600">Cửa hàng</span>
                         </h3>
-                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-0.5">Xếp hạng doanh thu</p>
+                        <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest px-0.5">Xếp hạng doanh thu</p>
                     </div>
                 </div>
                 {loading && <Loader2 className="animate-spin text-orange-500" size={18} />}
@@ -47,9 +47,9 @@ export function TopShopsList({ shops, loading = false }: TopShopsListProps) {
                 <table className="w-full text-left border-collapse">
                     <thead>
                         <tr className="bg-gray-50/30">
-                            <th className="px-6 py-4 text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Hạng</th>
-                            <th className="px-6 py-4 text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Thông tin Shop</th>
-                            <th className="px-6 py-4 text-[10px] font-semibold text-gray-400 uppercase tracking-widest text-right">Doanh thu</th>
+                            <th className="px-6 py-4 text-[10px] font-semibold text-gray-600 uppercase tracking-widest">Hạng</th>
+                            <th className="px-6 py-4 text-[10px] font-semibold text-gray-600 uppercase tracking-widest">Thông tin Shop</th>
+                            <th className="px-6 py-4 text-[10px] font-semibold text-gray-600 uppercase tracking-widest text-right">Doanh thu</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-50">
@@ -70,14 +70,14 @@ export function TopShopsList({ shops, loading = false }: TopShopsListProps) {
                                     </td>
                                     <td className="px-6 py-4">
                                         <div className="flex items-center gap-3">
-                                            <div className="p-2 bg-gray-50 rounded-lg text-gray-400 group-hover:text-orange-500 transition-colors">
+                                            <div className="p-2 bg-gray-50 rounded-lg text-gray-600 group-hover:text-orange-500 transition-colors">
                                                 <Store size={18} />
                                             </div>
                                             <div className="min-w-0">
                                                 <div className="font-semibold text-sm text-gray-800 tracking-tight truncate group-hover:text-orange-600 transition-colors">
                                                     {shop.shopName}
                                                 </div>
-                                                <div className="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">
+                                                <div className="text-[10px] font-bold text-gray-600 uppercase tracking-tighter">
                                                     ID: {shop.shopId}
                                                 </div>
                                             </div>
@@ -92,7 +92,7 @@ export function TopShopsList({ shops, loading = false }: TopShopsListProps) {
                             ))
                         ) : !loading && (
                             <tr>
-                                <td colSpan={3} className="px-6 py-20 text-center text-gray-400 font-bold uppercase tracking-widest text-xs">
+                                <td colSpan={3} className="px-6 py-20 text-center text-gray-600 font-bold uppercase tracking-widest text-xs">
                                     Chưa có dữ liệu xếp hạng
                                 </td>
                             </tr>

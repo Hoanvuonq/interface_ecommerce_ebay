@@ -68,7 +68,7 @@ export const PortalModal: React.FC<IPortalModal> = ({
                 <div className="text-base font-bold text-gray-800">{title}</div>
                 <button
                   onClick={onClose}
-                  className="p-2 cursor-pointer text-gray-400 hover:text-orange-600 hover:bg-amber-50 rounded-lg transition-colors hover:scale-105 focus:outline-none"
+                  className="p-2 cursor-pointer text-gray-600 hover:text-orange-600 hover:bg-amber-50 rounded-lg transition-colors hover:scale-105 focus:outline-none"
                 >
                   <X size={20} />
                 </button>

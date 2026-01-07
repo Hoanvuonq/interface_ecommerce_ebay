@@ -35,7 +35,7 @@ export const OrderCardHeader: React.FC<HeaderProps> = ({ shop, orderNumber }) =>
           </span>
           <ChevronRight size={14} className="text-gray-300" />
         </div>
-        <p className="text-[11px] text-gray-400 mt-1 font-medium tracking-wide uppercase">
+        <p className="text-[11px] text-gray-600 mt-1 font-medium tracking-wide uppercase">
           Mã đơn: {orderNumber}
         </p>
       </div>
