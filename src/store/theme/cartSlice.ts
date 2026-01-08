@@ -267,13 +267,12 @@ export const removeCartItems = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-     
-      const deletePromises = itemIds.map((id) => 
+      const deletePromises = itemIds.map((id) =>
         cartService.removeCartItem(id, etag)
       );
-      
+
       await Promise.all(deletePromises);
-      
+
       return itemIds;
     } catch (error: any) {
       return rejectWithValue(
@@ -298,7 +297,6 @@ const cartSlice = createSlice({
 
     toggleItemSelectionLocal: (state, action: PayloadAction<string>) => {
       if (!state.cart) return;
-
       const itemId = action.payload;
 
       for (const shop of state.cart.shops) {
@@ -306,9 +304,11 @@ const cartSlice = createSlice({
         if (item) {
           item.selectedForCheckout = !item.selectedForCheckout;
 
-          const selectedItems = shop.items.filter((i) => i.selectedForCheckout);
-          shop.hasSelectedItems = selectedItems.length > 0;
-          shop.allSelected = selectedItems.length === shop.items.length;
+          const selectedCount = shop.items.filter(
+            (i) => i.selectedForCheckout
+          ).length;
+          shop.hasSelectedItems = selectedCount > 0;
+          shop.allSelected = selectedCount === shop.items.length;
           break;
         }
       }

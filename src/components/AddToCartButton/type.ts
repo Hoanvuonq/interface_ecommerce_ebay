@@ -11,6 +11,7 @@ export interface IButtonProps {
     onSuccess?: () => void;
     onError?: (error: any) => void;
     className?: string;
+    onQuantityChange?: (quantity: number) => void;
     disabled?: boolean;
 }
 
@@ -19,6 +20,6 @@ export interface IInputProps {
     max: number;
     value: number;
     onChange: (value: number | null) => void;
-    size: 'small' | 'middle' | 'large';
+    size?: 'small' | 'middle' | 'large';
     disabled?: boolean;
 }

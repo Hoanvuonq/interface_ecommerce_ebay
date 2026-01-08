@@ -329,7 +329,6 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
       ></div>
 
       <div className="relative w-full max-w-xl bg-white rounded-2xl shadow-2xl transform transition-all flex flex-col overflow-hidden border border-gray-100 z-10 max-h-[90vh]">
-        {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 bg-white">
           <div className="flex items-center gap-2">
             <Star className="w-6 h-6 text-yellow-500 fill-yellow-500" />
@@ -424,7 +423,6 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
                   Tối đa 5 ảnh & 2 video. Mỗi file không quá 10MB.
                 </p>
 
-                {/* Grid of Images */}
                 <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
                   {fileList.map((file) => (
                     <div
@@ -510,7 +508,6 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
         </div>
 
         <div className="p-5 border-t border-gray-100 bg-gray-50 flex justify-end gap-3 rounded-b-2xl">
-         
           <Button variant="edit" onClick={handleClose} disabled={isLoading}>
             Hủy bỏ
           </Button>

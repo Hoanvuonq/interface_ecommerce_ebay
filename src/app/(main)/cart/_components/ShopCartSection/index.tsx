@@ -1,22 +1,14 @@
 "use client";
 
-import React from "react";
-import {
-  Store,
-  CheckCircle2,
-  Star,
-  ChevronRight,
-  Tag as TagIcon,
-} from "lucide-react";
-import { CartItem } from "../CartItems";
-import { VoucherComponents } from "@/components/voucher/_components/voucherComponents";
+import { Checkbox } from "@/components/checkbox";
+import { formatPriceFull } from "@/hooks/useFormatPrice";
 import { useAppDispatch } from "@/store/store";
 import { toggleShopSelectionLocal } from "@/store/theme/cartSlice";
-import { cn } from "@/utils/cn";
-import { ShopCartSectionProps } from "../../_types/shop";
-import { formatPriceFull } from "@/hooks/useFormatPrice";
+import { ChevronRight, Star, Store, Tag as TagIcon } from "lucide-react";
 import Image from "next/image";
-import { Checkbox } from "@/components/checkbox";
+import React from "react";
+import { ShopCartSectionProps } from "../../_types/shop";
+import { CartItem } from "../CartItems";
 
 export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
   shop,
@@ -25,7 +17,8 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
 }) => {
   const dispatch = useAppDispatch();
 
-  const handleShopCheckboxChange = () => {
+  const handleShopCheckboxChange = (e?: React.BaseSyntheticEvent) => {
+    e?.stopPropagation();
     if (onToggleShopSelection) {
       onToggleShopSelection(shop.shopId);
     } else {
@@ -37,13 +30,17 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
     <section className="mb-6 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all hover:shadow-md">
       <div className="flex flex-col md:flex-row md:items-center justify-between px-4 py-3 gap-4 bg-gray-50/50 border-b border-gray-100">
         <div className="flex items-center gap-3 flex-1 min-w-0">
-          <Checkbox
-            checked={shop.allSelected}
-            onChange={handleShopCheckboxChange}
-          />
-          {shop.hasSelectedItems && !shop.allSelected && (
-            <div className="absolute w-2.5 h-0.5 bg-orange-500 rounded-full" />
-          )}
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="flex items-center"
+          >
+            <Checkbox
+              id={`checkbox-shop-${shop.shopId}`}
+              checked={shop.allSelected}
+              onChange={handleShopCheckboxChange} 
+            />
+          </div>
+          
           <div className="flex items-center gap-3 min-w-0 group cursor-pointer">
             <div className="relative shrink-0">
               <Image

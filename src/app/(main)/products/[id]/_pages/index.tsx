@@ -1,13 +1,8 @@
 "use client";
 
-import {
-  CustomBreadcrumb,
-  CustomSpinner,
-  ImageWithPreview,
-} from "@/components";
+import { CustomSpinner, ImageWithPreview } from "@/components";
 import { CardComponents } from "@/components/card";
 import { CustomVideoModal } from "@/components/CustomVideoModal";
-import PageContentTransition from "@/features/PageContentTransition";
 import { formatCompactNumber } from "@/hooks/format";
 import { formatPriceFull } from "@/hooks/useFormatPrice";
 import type { PublicProductVariantDTO } from "@/types/product/public-product.dto";
@@ -25,18 +20,18 @@ import { ProductPurchaseActions } from "../_components";
 import { InfomationShop } from "../_components/InfomationShop";
 import { ProductReviews } from "../_components/ProductReviews";
 import Image from "next/image";
-
+import { SectionPageComponents } from "@/features/SectionPageComponents";
+import { PortalModal } from "@/features/PortalModal";
 const RelatedProducts = dynamic(
   () =>
-    import("../../_components/RelatedProducts").then((mod) => ({
-      default: mod.RelatedProducts,
-    })),
+    import("../../_components/RelatedProducts").then(
+      (mod) => mod.RelatedProducts
+    ),
   {
     ssr: false,
     loading: () => (
       <div className="text-center py-8">
         <CustomSpinner />
-        <p className="mt-2 text-gray-500">Đang tải sản phẩm của shop...</p>
       </div>
     ),
   }
@@ -44,15 +39,14 @@ const RelatedProducts = dynamic(
 
 const SimilarProducts = dynamic(
   () =>
-    import("../../_components/SimilarProducts").then((mod) => ({
-      default: mod.SimilarProducts,
-    })),
+    import("../../_components/SimilarProducts").then(
+      (mod) => mod.SimilarProducts
+    ),
   {
     ssr: false,
     loading: () => (
       <div className="text-center py-8">
         <CustomSpinner />
-        <p className="mt-2 text-gray-500">Đang tải sản phẩm liên quan...</p>
       </div>
     ),
   }
@@ -349,120 +343,112 @@ export const ProductDetailPage = () => {
     setActiveThumbnail(null);
   }, [selectedVariant]);
 
-  return (
-    <div className="flex min-h-screen flex-col bg-gray-50">
-      <div className="flex-1">
-        <PageContentTransition>
-          <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-            {loading || !product ? (
-              <div className="py-24 text-center">
-                <CustomSpinner />
-              </div>
-            ) : (
-              <>
-                <CustomBreadcrumb
-                  items={[
-                    { title: "Trang chủ", href: "/" },
-                    { title: "Sản phẩm", href: "/products" },
-                    { title: product.name, href: `/products/${product.id}` },
-                  ]}
-                />
-                <CardComponents className="overflow-visible pt-2 shadow-2xl hover:shadow-3xl transition-shadow">
-                  <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1.8fr)]">
-                    <section className="space-y-4">
-                      <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-md">
-                        <div className="relative w-full aspect-square overflow-hidden rounded-xl bg-gray-50">
-                          <ImageWithPreview
-                            src={primaryImage}
-                            alt={product.name}
-                            className="absolute inset-0 w-full h-full object-cover cursor-zoom-in transition-transform duration-500 hover:scale-105"
-                            onClick={() => setImagePreview(primaryImage)}
-                          />
-                        </div>
-                      </div>
-                      {galleryImages.length > 1 && (
-                        <div className="grid grid-cols-5 gap-2">
-                          {galleryImages.slice(0, 5).map((img) => (
-                            <div
-                              key={img.key}
-                              className={cn(
-                                "relative aspect-square w-full rounded-lg overflow-hidden border-2 transition-all cursor-pointer bg-gray-50",
-                                primaryImage === img.preview
-                                  ? "border-orange-500 scale-105 shadow-md z-10"
-                                  : "border-gray-200 hover:border-orange-300"
-                              )}
-                              onClick={() => {
-                                setActiveThumbnail(img.preview);
-                                if (img.key.startsWith("variant-")) {
-                                  const vId = img.key.replace("variant-", "");
-                                  const targetV = product.variants?.find(
-                                    (v) => v.id === vId
-                                  );
-                                  if (targetV) setSelectedVariant(targetV);
-                                }
-                              }}
-                            >
-                              <img
-                                src={img.thumb}
-                                className="absolute inset-0 h-full w-full object-cover"
-                                alt=""
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </section>
+  const breadcrumbItems = product
+    ? [
+        { title: "Trang chủ", href: "/" },
+        { title: "Sản phẩm", href: "/products" },
+        { title: product.name, href: `/products/${product.id}` },
+      ]
+    : [];
 
-                    <div ref={purchaseActionsRef}>
-                      <ProductPurchaseActions
-                        product={product}
-                        selectedVariant={selectedVariant}
-                        setSelectedVariant={setSelectedVariant}
-                        reviewSummary={reviewSummary}
-                        soldCount={soldCount}
-                        formatCompactNumber={formatCompactNumber}
-                        discountInfo={discountInfo}
-                        priceRangeLabel={priceRangeLabel}
-                        primaryPrice={primaryPrice}
-                        comparePrice={comparePrice}
-                        discountPercentage={discountPercentage}
-                        priceAfterVoucher={priceAfterVoucher}
-                        formatPrice={formatPriceFull}
-                        bestPlatformVoucher={bestPlatformVoucher}
-                      />
-                    </div>
+  return (
+    <SectionPageComponents
+      loading={loading || !product}
+      loadingMessage="Đang tải chi tiết sản phẩm..."
+      breadcrumbItems={breadcrumbItems}
+      className="space-y-3"
+    >
+      {product && (
+        <>
+          <CardComponents className="overflow-visible pt-2 shadow-custom transition-shadow">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1.8fr)]">
+              <section className="space-y-4">
+                <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-md">
+                  <div className="relative w-full aspect-square overflow-hidden rounded-xl bg-gray-50">
+                    <ImageWithPreview
+                      src={primaryImage}
+                      alt={product.name}
+                      className="absolute inset-0 w-full h-full object-cover cursor-zoom-in transition-transform duration-500 hover:scale-105"
+                      onClick={() => setImagePreview(primaryImage)}
+                    />
                   </div>
-                </CardComponents>
-                <InfomationShop
+                </div>
+                {galleryImages.length > 1 && (
+                  <div className="grid grid-cols-5 gap-2">
+                    {galleryImages.slice(0, 5).map((img) => (
+                      <div
+                        key={img.key}
+                        className={cn(
+                          "relative aspect-square w-full rounded-lg overflow-hidden border-2 transition-all cursor-pointer bg-gray-50",
+                          primaryImage === img.preview
+                            ? "border-orange-500 scale-105 shadow-md z-10"
+                            : "border-gray-200 hover:border-orange-300"
+                        )}
+                        onClick={() => {
+                          setActiveThumbnail(img.preview);
+                          if (img.key.startsWith("variant-")) {
+                            const vId = img.key.replace("variant-", "");
+                            const targetV = product.variants?.find(
+                              (v) => v.id === vId
+                            );
+                            if (targetV) setSelectedVariant(targetV);
+                          }
+                        }}
+                      >
+                       <Image
+                          src={img.thumb}
+                          alt="thumbnail"
+                          fill
+                          sizes="100px"
+                          className="object-cover"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </section>
+
+              <div ref={purchaseActionsRef}>
+                <ProductPurchaseActions
                   product={product}
+                  selectedVariant={selectedVariant}
+                  setSelectedVariant={setSelectedVariant}
                   reviewSummary={reviewSummary}
                   soldCount={soldCount}
-                  followerCount={followerCount}
-                  creatingShopChat={creatingShopChat}
-                  handleOpenShopChat={handleOpenShopChat}
+                  formatCompactNumber={formatCompactNumber}
+                  discountInfo={discountInfo}
+                  priceRangeLabel={priceRangeLabel}
+                  primaryPrice={primaryPrice}
+                  comparePrice={comparePrice}
+                  discountPercentage={discountPercentage}
+                  priceAfterVoucher={priceAfterVoucher}
+                  formatPrice={formatPriceFull}
+                  bestPlatformVoucher={bestPlatformVoucher}
                 />
-                <div className="grid gap-6 lg:grid-cols-[1fr_320px] lg:items-start">
-                  <ProductInfo
-                    product={product}
-                    selectedVariant={selectedVariant}
-                  />
-                  <FeaturedProductsSidebar
-                    products={featured}
-                    loading={loading}
-                  />
-                </div>
-                <div className="border-t border-gray-300 my-6" />
-                <ProductReviews />
-                <RelatedProducts
-                  shopId={product.shop?.shopId!}
-                  excludeProductId={product.id}
-                />
-                <SimilarProducts productId={product.id} />
-              </>
-            )}
-          </main>
-        </PageContentTransition>
-      </div>
+              </div>
+            </div>
+          </CardComponents>
+          <InfomationShop
+            product={product}
+            reviewSummary={reviewSummary}
+            soldCount={soldCount}
+            followerCount={followerCount}
+            creatingShopChat={creatingShopChat}
+            handleOpenShopChat={handleOpenShopChat}
+          />
+          <div className="grid gap-6 lg:grid-cols-[1fr_320px] lg:items-start">
+            <ProductInfo product={product} selectedVariant={selectedVariant} />
+            <FeaturedProductsSidebar products={featured} loading={loading} />
+          </div>
+          <div className="border-t border-gray-300 my-6" />
+          <ProductReviews />
+          <RelatedProducts
+            shopId={product.shop?.shopId!}
+            excludeProductId={product.id}
+          />
+          <SimilarProducts productId={product.id} />
+        </>
+      )}
 
       <CustomVideoModal
         open={Boolean(videoPreview)}
@@ -470,23 +456,27 @@ export const ProductDetailPage = () => {
         onCancel={() => setVideoPreview(null)}
       />
       {imagePreview && (
-        <div
-          className="fixed inset-0 z-9999 flex items-center justify-center bg-black/90 p-4"
-          onClick={() => setImagePreview(null)}
-        >
-          <button
-            className="absolute top-5 right-5 text-white hover:text-gray-300 transition-colors"
-            onClick={() => setImagePreview(null)}
-          ></button>
-          <Image
-            src={imagePreview}
-            alt="Preview"
-            width={800}
-            height={800}
-            className="max-w-full max-h-full rounded-lg shadow-2xl"
-          />
+       <PortalModal
+        isOpen={Boolean(imagePreview)}
+        onClose={() => setImagePreview(null)}
+        width="max-w-4xl"
+        className="bg-transparent shadow-none border-none"
+      >
+        <div className="flex items-center justify-center p-0 min-h-[50vh]">
+          {imagePreview && (
+            <div className="relative w-full aspect-square md:aspect-video">
+              <Image
+                src={imagePreview}
+                alt="Product preview"
+                fill
+                className="object-contain"
+                sizes="80vw"
+              />
+            </div>
+          )}
         </div>
+      </PortalModal>
       )}
-    </div>
+    </SectionPageComponents>
   );
 };

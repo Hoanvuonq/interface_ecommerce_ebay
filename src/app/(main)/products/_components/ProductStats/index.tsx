@@ -12,40 +12,44 @@ export const ProductStats: React.FC<IStartProps> = ({
   formatCompactNumber,
   className,
 }) => {
-  // Đảm bảo rating luôn là số và trong khoảng 0-5
   const safeRating = Math.min(5, Math.max(0, Number(averageRating ?? 0)));
 
-  // Hàm fallback nếu không có hàm format truyền từ ngoài vào
   const displaySold = formatCompactNumber 
     ? formatCompactNumber(soldCount) 
     : String(soldCount);
 
   return (
-    <div className={cn("flex items-center flex-wrap gap-y-2 text-sm tabular-nums", className)}>
-      {/* 1. Điểm đánh giá */}
-      <div className="flex items-center gap-1.5 border-r border-gray-300 pr-4">
-        <span className="font-bold text-orange-600 text-lg border-b border-orange-600 leading-tight">
+    <div className={cn("flex items-center gap-x-4 gap-y-2 select-none", className)}>
+      <div className="flex items-center gap-1.5 border-r border-gray-200 pr-4">
+        <span className="text-[22px] font-bold text-gray-800">
           {safeRating.toFixed(1)}
         </span>
-        <div className="flex items-center mb-0.5">
-          <CustomRate value={safeRating} size={14} disabled />
+        <div className="flex items-center">
+          <CustomRate 
+            value={safeRating} 
+            size={11}
+            disabled 
+            className="text-(--color-mainColor)"
+          />
         </div>
       </div>
 
-      {/* 2. Tổng số đánh giá */}
-      <div className="flex items-center px-4 border-r border-gray-300 group cursor-pointer hover:opacity-80 transition-opacity">
-        <span className="font-bold text-gray-900 text-lg border-b border-gray-900 leading-tight">
+      <div className="flex items-center gap-1 border-r border-gray-200 pr-4 group cursor-pointer transition-all">
+        <span className="text-[15px] font-bold text-gray-800 tracking-tight decoration-gray-300 underline-offset-4 group-hover:text-(--color-mainColor) group-hover:underline">
           {totalReviews}
         </span>
-        <span className="ml-1.5 text-gray-500 font-medium">Đánh giá</span>
+        <span className="text-[11px] font-medium text-gray-400 ">
+          Đánh giá
+        </span>
       </div>
 
-      {/* 3. Số lượng đã bán */}
-      <div className="flex items-center pl-4">
-        <span className="font-bold text-gray-900 text-lg leading-tight">
+      <div className="flex items-center gap-1">
+        <span className="text-[15px] font-bold text-gray-800 tracking-tight">
           {displaySold}
         </span>
-        <span className="ml-1.5 text-gray-500 font-medium">Đã bán</span>
+        <span className="text-[11px] font-medium text-gray-400 ">
+          Đã bán
+        </span>
       </div>
     </div>
   );

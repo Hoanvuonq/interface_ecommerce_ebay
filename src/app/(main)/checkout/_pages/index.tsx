@@ -82,32 +82,39 @@ export const CheckoutScreen = () => {
       loading={loading && !preview}
       breadcrumbItems={breadcrumbData}
     >
-      <div className="my-4 px-2 text-5xl font-bold tracking-tighter uppercase italic text-gray-900">
-        Thanh <span className="text-(--color-mainColor)">Toán</span>
+      <div className="mt-8 mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-100 pb-6">
+        <div>
+          <h1 className="text-5xl font-black tracking-tighter uppercase italic text-slate-900 leading-none">
+            Thanh <span className="text-orange-500">Toán</span>
+          </h1>
+          <p className="text-slate-400 text-sm font-medium mt-2">Vui lòng kiểm tra kỹ thông tin trước khi đặt hàng</p>
+        </div>
+        
+        <div className="w-full md:w-auto min-w-180">
+          <CheckoutStepper currentStep={successModalVisible || payosModalVisible ? 3 : 1} />
+        </div>
       </div>
-      <CheckoutStepper
-        currentStep={successModalVisible || payosModalVisible ? 3 : 1}
-      />
       <div
         onSubmit={handleSubmit}
         className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-2"
       >
-        <div className="lg:col-span-8 space-y-2">
+        <div className="lg:col-span-8 space-y-6">
+          
           <CheckoutShippingAddress
             selectedAddress={currentAddress}
             hasAddress={hasAddress}
             onOpenModal={() => setAddressModalVisible(true)}
           />
 
-          <CheckoutShopList
-            shops={preview.shops}
-            voucherApplication={preview.voucherApplication}
-            loading={loading}
-            updateShippingMethod={updateShippingMethod}
-            request={request}
-            preview={preview}
-          />
-        </div>
+            <CheckoutShopList
+              shops={preview.shops}
+              voucherApplication={preview.voucherApplication}
+              loading={loading}
+              updateShippingMethod={updateShippingMethod}
+              request={request}
+              preview={preview}
+            />
+          </div>
 
         <div className="lg:col-span-4 space-y-2">
           <PaymentSection

@@ -1,4 +1,5 @@
 export * from "./Search";
+export * from "./checkbox";
 export * from "./languageSwitcher";
 export * from "./mobileMenuDrawer";
 export * from "./themeSwitcher";

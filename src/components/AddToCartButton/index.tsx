@@ -3,141 +3,116 @@
 import { useCart } from "@/app/(main)/products/_hooks/useCart";
 import { requireAuthentication } from "@/utils/cart/cart-auth.utils";
 import { cn } from "@/utils/cn";
-import { Minus, Plus, ShoppingCart } from "lucide-react";
-import React, { useState } from "react";
-import { toast } from "sonner";
-import { IButtonProps, IInputProps } from "./type";
+import { Loader2, Minus, Plus, ShoppingCart } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { ButtonField } from "../buttonField";
+import { CustomInputNumber } from "../customInputNumber";
+import { IButtonProps } from "./type";
+import { useToast } from "@/hooks/useToast";
 
-const CustomInputNumber: React.FC<IInputProps> = ({
-  min,
-  max,
-  value,
-  onChange,
-  disabled = false,
-}) => {
-  return (
-    <div className="relative group">
-      <input
-        type="number"
-        min={min}
-        max={max}
-        value={value ?? ""}
-        onChange={(e) => {
-          const numValue = parseInt(e.target.value);
-          if (!isNaN(numValue)) onChange(numValue);
-          else if (e.target.value === "") onChange(null);
-        }}
-        disabled={disabled}
-        className={cn(
-          "w-14 h-10 text-center font-bold text-gray-900 border-x-0 border-y border-gray-200 focus:outline-none transition duration-200",
-          disabled && "bg-gray-50 text-gray-600"
-        )}
-      />
-    </div>
-  );
-};
-
-export const AddToCartButton: React.FC<IButtonProps> = ({
+export const AddToCartButton: React.FC<
+  IButtonProps & { onQuantityChange?: (q: number) => void }
+> = ({
   variantId,
-  productName,
   maxQuantity = 999,
-  size = "large",
   block = false,
   showQuantityInput = false,
   defaultQuantity = 1,
   disabled = false,
+  onQuantityChange,
 }) => {
   const { quickAddToCart } = useCart();
   const [quantity, setQuantity] = useState(defaultQuantity);
   const [loading, setLoading] = useState(false);
+  const { error: toastError } = useToast();
+
+  // Tự động điều chỉnh số lượng nếu vượt quá tồn kho khi đổi Variant
+  useEffect(() => {
+    if (maxQuantity === 0) {
+      updateQuantity(0);
+    } else if (quantity > maxQuantity) {
+      updateQuantity(maxQuantity);
+    } else if (quantity === 0 && maxQuantity > 0) {
+      updateQuantity(1);
+    }
+  }, [maxQuantity]);
 
   const handleAddToCart = async () => {
     if (!requireAuthentication(window.location.pathname)) return;
     setLoading(true);
     try {
       const result = await quickAddToCart(variantId, quantity);
-      if (result.success) {
-      } else {
-        toast.error(result.error || "Lỗi thêm vào giỏ");
+      if (!result.success) {
+        toastError(result.error || "Lỗi thêm vào giỏ");
       }
     } finally {
       setLoading(false);
     }
   };
 
-  if (showQuantityInput) {
-    return (
-      <div
-        className={cn(
-          "flex flex-col sm:flex-row items-stretch gap-3",
-          block && "w-full"
-        )}
+  const updateQuantity = (val: number | null) => {
+    let finalVal = val === null ? 1 : val;
+
+    // Ràng buộc logic: Không nhỏ hơn 1 (trừ khi hết hàng) và không lớn hơn tồn kho
+    if (maxQuantity > 0) {
+      if (finalVal < 1) finalVal = 1;
+      if (finalVal > maxQuantity) finalVal = maxQuantity;
+    } else {
+      finalVal = 0;
+    }
+
+    setQuantity(finalVal);
+    onQuantityChange?.(finalVal);
+  };
+
+  const QuantitySelector = (
+    <div className="flex items-center bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm h-11">
+      <button
+        type="button"
+        onClick={() => updateQuantity(quantity - 1)}
+        disabled={quantity <= 1 || loading || disabled || maxQuantity === 0}
+        className="w-10 h-full flex items-center justify-center text-gray-500 hover:bg-gray-50 hover:text-orange-500 disabled:opacity-30 transition-colors"
       >
-        <div className="flex items-center justify-center bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm h-12">
-          <button
-            onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
-            disabled={quantity <= 1 || loading || disabled}
-            className="w-10 h-full flex items-center justify-center text-gray-500 hover:bg-gray-50 hover:text-orange-500 disabled:opacity-30 transition-colors"
-          >
-            <Minus className="w-4 h-4" />
-          </button>
+        <Minus className="w-4 h-4" />
+      </button>
 
-          <CustomInputNumber
-            min={1}
-            size={size}
-            max={maxQuantity}
-            value={quantity}
-            onChange={(val) => setQuantity(val ?? 1)}
-            disabled={loading || disabled}
-          />
+      <CustomInputNumber
+        min={maxQuantity > 0 ? 1 : 0}
+        max={maxQuantity}
+        value={quantity}
+        onChange={updateQuantity}
+        disabled={loading || disabled || maxQuantity === 0}
+      />
 
-          <button
-            onClick={() =>
-              setQuantity((prev) => Math.min(maxQuantity, prev + 1))
-            }
-            disabled={quantity >= maxQuantity || loading || disabled}
-            className="w-10 h-full flex items-center justify-center text-gray-500 hover:bg-gray-50 hover:text-orange-500 disabled:opacity-30 transition-colors"
-          >
-            <Plus className="w-4 h-4" />
-          </button>
-        </div>
+      <button
+        type="button"
+        onClick={() => updateQuantity(quantity + 1)}
+        disabled={quantity >= maxQuantity || loading || disabled || maxQuantity === 0}
+        className="w-10 h-full flex items-center justify-center text-gray-500 hover:bg-gray-50 hover:text-orange-500 disabled:opacity-30 transition-colors"
+      >
+        <Plus className="w-4 h-4" />
+      </button>
+    </div>
+  );
 
-        <button
-          onClick={handleAddToCart}
-          disabled={disabled || loading || quantity < 1}
-          className={cn(
-            "flex-1 h-12 flex items-center justify-center gap-2 rounded-xl px-6 font-bold text-white shadow-lg shadow-orange-200 transition-all active:scale-[0.98]",
-            "bg-linear-to-r from-orange-500 to-rose-500 hover:from-orange-600 hover:to-rose-600",
-            "disabled:from-gray-300 disabled:to-gray-400 disabled:shadow-none disabled:cursor-not-allowed"
-          )}
-        >
-          {loading ? (
-            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-          ) : (
-            <ShoppingCart className="w-5 h-5" />
-          )}
-          <span>THÊM VÀO GIỎ</span>
-        </button>
-      </div>
-    );
-  }
+  const MainButton = (
+    <ButtonField
+      type="login"
+      onClick={handleAddToCart}
+      disabled={disabled || loading || quantity < 1 || maxQuantity === 0}
+      className={cn("flex-1 h-11 flex items-center justify-center gap-2 rounded-lg px-6 text-white shadow-lg transition-all")}
+    >
+      <span className="flex items-center gap-2">
+        {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <ShoppingCart className="w-5 h-5" />}
+        {maxQuantity === 0 ? "Hết hàng" : "Thêm vào giỏ"}
+      </span>
+    </ButtonField>
+  );
 
   return (
-    <button
-      onClick={handleAddToCart}
-      disabled={disabled || loading || quantity < 1}
-      className={cn(
-        "flex-1 h-12 flex items-center justify-center gap-2 rounded-xl px-6 font-bold text-white shadow-lg shadow-orange-200 transition-all active:scale-[0.98]",
-        "bg-linear-to-r from-orange-500 to-rose-500 hover:from-orange-600 hover:to-rose-600",
-        "disabled:from-gray-300 disabled:to-gray-400 disabled:shadow-none disabled:cursor-not-allowed"
-      )}
-    >
-      {loading ? (
-        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-      ) : (
-        <ShoppingCart className="w-5 h-5" />
-      )}
-      <span>THÊM VÀO GIỎ</span>
-    </button>
+    <div className={cn("flex flex-col sm:flex-row items-stretch gap-3", block && "w-full")}>
+      {showQuantityInput && QuantitySelector}
+      {MainButton}
+    </div>
   );
 };

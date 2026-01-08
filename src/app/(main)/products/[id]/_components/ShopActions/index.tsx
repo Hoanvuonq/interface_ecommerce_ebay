@@ -1,32 +1,33 @@
-"use client"; 
+"use client";
 
-import { CustomButton } from "@/components";
+import { ButtonField } from "@/components";
+import { Button } from "@/components/button/button";
 import { MessageSquare, Store } from "lucide-react";
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
 
 export const ShopActions = ({ shopId, onChat, chatLoading }: any) => {
-  const router = useRouter(); 
+  const router = useRouter();
 
   return (
-    <div className="flex gap-2 w-full mt-2">
-      <CustomButton
-        type="primary"
-        className="flex-1 bg-orange-600! hover:bg-orange-700! border-none! rounded-md! h-9! text-sm font-medium"
-        loading={chatLoading}
-        onClick={onChat}
-        icon={<MessageSquare className="w-4 h-4" />}
+    <div className="flex gap-3 w-full">
+      <Button variant="edit" loading={chatLoading} onClick={onChat}>
+        <span className="flex items-center gap-2">
+          <MessageSquare className="w-4 h-4" />
+          Chat ngay
+        </span>
+      </Button>
+      <ButtonField
+        form="address-form"
+        htmlType="submit"
+        type="login"
+        onClick={() => router.push(`/shop/${shopId}`)}
+        className="flex w-36 items-center gap-2 px-5 py-2 rounded-lg text-sm font-semibold shadow-md shadow-orange-500/20 transition-all active:scale-95 border-0 h-auto"
       >
-        Chat ngay
-      </CustomButton>
-
-      <CustomButton
-        type="default"
-        className="flex-1 rounded-md! h-9! border border-orange-600 text-orange-600! hover:bg-orange-50! text-sm transition-all shadow-none"
-        onClick={() => router.push(`/shop/${shopId}`)} 
-        icon={<Store className="w-4 h-4" />}
-      >
-        Xem Shop
-      </CustomButton>
+        <span className="flex items-center gap-2">
+          <Store className="w-4 h-4" />
+          Xem Shop
+        </span>
+      </ButtonField>
     </div>
   );
 };

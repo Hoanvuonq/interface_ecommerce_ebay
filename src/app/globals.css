@@ -186,6 +186,14 @@ body {
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
 }
 
+@keyframes loading-flow {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-loading-flow {
+  animation: loading-flow 2s infinite linear;
+}
 
 @theme inline {
   --color-background: var(--background);

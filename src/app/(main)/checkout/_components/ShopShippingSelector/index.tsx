@@ -1,99 +1,110 @@
 "use client";
 
 import React from "react";
-import { Truck, Loader2, CheckCircle2 } from "lucide-react";
+import { Truck, Calendar } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { formatPrice } from "@/hooks/useFormatPrice";
 import { ShopShippingSelectorProps } from "./type";
+import { SectionLoading, Checkbox } from "@/components"; 
 
 export const ShopShippingSelector: React.FC<ShopShippingSelectorProps> = ({
   shopId,
-  shopName,
   availableOptions,
   selectedMethodCode,
   isLoading,
   onMethodChange,
 }) => {
   return (
-    <div className="bg-gray-50/50 p-4 rounded-2xl border border-gray-100 space-y-2">
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-white rounded-xl flex items-center justify-center shadow-sm text-orange-500">
-            <Truck size={16} strokeWidth={2.5} />
-          </div>
-          <h4 className="text-sm font-semibold uppercase tracking-tight text-gray-700">
-            Phương thức vận chuyển
-          </h4>
-        </div>
+    <div className="bg-slate-50/50 rounded-2xl border border-slate-100 overflow-hidden relative">
+      <div className="px-4 py-2.5 border-b border-slate-100 flex items-center gap-2 bg-white/50">
+        <Truck size={14} className="text-orange-500" />
+        <h4 className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+          Đơn vị vận chuyển
+        </h4>
       </div>
 
-      {isLoading ? (
-        <div className="flex gap-3 items-center justify-center py-6 bg-white rounded-2xl border border-dashed border-gray-200 text-sm text-gray-600 font-bold uppercase tracking-widest">
-          <Loader2 className="animate-spin w-5 h-5 text-orange-500" />
-          Đang tính phí vận chuyển...
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div className="p-3 relative">
+        {isLoading && (
+          <SectionLoading
+            isOverlay
+            message="Đang tính phí..."
+            className="bg-white/40" 
+          />
+        )}
+        <div
+          className={cn(
+            "grid grid-cols-1 md:grid-cols-2 gap-2 transition-opacity duration-300",
+            isLoading && "opacity-20 pointer-events-none blur-[1px]"
+          )}
+        >
           {availableOptions && availableOptions.length > 0 ? (
             availableOptions.map((option, index) => {
-              const isSelected = Number(selectedMethodCode) === Number(option.serviceCode);
+              const isSelected =
+                Number(selectedMethodCode) === Number(option.serviceCode);
               const uniqueKey = `${option.serviceCode}-${option.serviceType}-${index}`;
-              
+
               return (
                 <div
                   key={uniqueKey}
-                  onClick={() => {
-                    if (!isSelected) {
-                      onMethodChange(shopId, String(option.serviceCode));
-                    }
-                  }}
+                  onClick={() =>
+                    !isSelected &&
+                    onMethodChange(shopId, String(option.serviceCode))
+                  }
                   className={cn(
-                    "relative p-4 border-2 rounded-2xl cursor-pointer transition-all duration-300 flex justify-between items-center group",
+                    "relative py-2 px-3 rounded-xl cursor-pointer transition-all duration-200 flex flex-col gap-2 group border",
                     isSelected
-                      ? "border-orange-500 bg-white shadow-md ring-1 ring-orange-500/20"
-                      : "border-gray-100 bg-white/50 hover:border-orange-200 hover:bg-white"
+                      ? "border-orange-500 bg-white shadow-sm ring-1 ring-orange-500/10"
+                      : "border-slate-100 bg-white/40 hover:bg-white hover:border-slate-200"
                   )}
                 >
-                  <div className="flex-1 min-w-0 pr-2">
-                    <p
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-center gap-2 min-w-0">
+                      {/* THAY THẾ DIV CŨ BẰNG COMPONENT CHECKBOX */}
+                      <Checkbox 
+                        checked={isSelected}
+                        readOnly
+                        sizeClassName="w-4 h-4 rounded-md" // Tuỳ chỉnh kích thước cho vừa UI
+                        containerClassName="pointer-events-none" // Để click div cha xử lý
+                      />
+
+                      <span
+                        className={cn(
+                          "text-[12px] font-bold truncate transition-colors uppercase tracking-tight",
+                          isSelected ? "text-slate-900" : "text-slate-600"
+                        )}
+                      >
+                        {option.displayName}
+                      </span>
+                    </div>
+
+                    <span
                       className={cn(
-                        "text-[11px] font-semibold uppercase tracking-wide transition-colors",
-                        isSelected ? "text-orange-600" : "text-gray-700"
+                        "text-[13px] font-bold shrink-0 tabular-nums",
+                        isSelected ? "text-orange-600" : "text-slate-700"
                       )}
                     >
-                      {option.displayName}
-                    </p>
-                    <p className="text-[10px] text-gray-600 font-bold mt-1 uppercase  italic">
-                      Nhận hàng:{" "}
-                      {option.estimatedDeliveryTime || "Dự kiến 2-4 ngày"}
-                    </p>
+                      {formatPrice(option.fee)}
+                    </span>
                   </div>
 
-                  <div className="flex flex-col items-end gap-1">
-                   
-                    {isSelected && (
-                      <CheckCircle2
-                        size={16}
-                        className="text-orange-500"
-                        strokeWidth={3}
-                      />
-                    )}
-                     <span className="text-sm font-semibold text-gray-900 leading-none">
-                      {formatPrice(option.fee)}
+                  <div className="flex items-center gap-1.5 text-[10px] text-gray-500 font-medium pl-6 border-t border-gray-50 pt-1.5">
+                    <Calendar size={10} className="shrink-0" />
+                    <span className="truncate italic">
+                      Nhận hàng: {option.estimatedDeliveryTime || "2-3 ngày"}
                     </span>
                   </div>
                 </div>
               );
             })
           ) : (
-            <div className="col-span-full text-center py-4 bg-red-50 rounded-2xl border border-red-100">
-              <p className="text-[11px] font-semibold uppercase tracking-widest text-red-500">
-                Chưa hỗ trợ vận chuyển đến địa chỉ này
+            <div className="col-span-full py-6 text-center">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                Vui lòng chọn địa chỉ để thấy phí vận chuyển
               </p>
             </div>
           )}
         </div>
-      )}
+      </div>
     </div>
   );
 };

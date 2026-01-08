@@ -1,17 +1,18 @@
-// hooks/useCategoryNavigation.ts
 "use client";
 
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 
-export const useCategoryNavigation = () => {
+export const useProductNavigation = () => {
   const router = useRouter();
 
-  const navigateToCategory = useCallback((id: string | number, slug: string) => {
-    router.push(`/category/${slug}?id=${id}`); 
+  const goToProduct = useCallback((id: string, slug: string) => {
+    const targetPath = `/products/${slug}`;
     
-  
+    sessionStorage.setItem(`product_id_${slug}`, id);
+
+    router.push(targetPath);
   }, [router]);
 
-  return { navigateToCategory };
+  return { goToProduct };
 };

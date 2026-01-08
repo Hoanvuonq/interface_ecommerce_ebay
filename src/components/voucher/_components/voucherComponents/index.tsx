@@ -136,6 +136,7 @@ export const VoucherComponents: React.FC<VoucherInputProps> = (props) => {
 
         <VoucherModal
           open={state.modalOpen}
+          shopId={props.shopId}
           onClose={() => actions.setModalOpen(false)}
           onConfirm={actions.handleConfirm}
           shopName={shopName}

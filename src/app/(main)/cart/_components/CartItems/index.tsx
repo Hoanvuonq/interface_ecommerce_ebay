@@ -103,12 +103,10 @@ export const CartItem: React.FC<CartItemProps> = ({
     [updating, item, quantity, dispatch, currentCartVersion, etag]
   );
 
-  // Mở modal thay vì window.confirm
   const handleRemoveClick = () => {
     setShowDeleteModal(true);
   };
 
-  // Logic xóa thực sự chuyển vào đây
   const handleConfirmRemove = useCallback(async () => {
     try {
       await dispatch(
@@ -124,10 +122,18 @@ export const CartItem: React.FC<CartItemProps> = ({
     }
   }, [dispatch, item.id, currentCartVersion, etag, success, error]);
 
-  const handleToggleSelection = useCallback(() => {
-    if (onToggleSelection) onToggleSelection(item.id);
-    else dispatch(toggleItemSelectionLocal(item.id));
-  }, [onToggleSelection, item.id, dispatch]);
+ const handleToggleSelection = useCallback(
+  (e?: React.ChangeEvent<HTMLInputElement> | React.MouseEvent) => {
+    e?.stopPropagation(); 
+    
+    if (onToggleSelection) {
+      onToggleSelection(item.id);
+    } else {
+      dispatch(toggleItemSelectionLocal(item.id));
+    }
+  },
+  [onToggleSelection, item.id, dispatch]
+);
 
   const ProductImage = () => (
     <div className="relative w-full h-full group-hover:scale-105 transition-transform duration-500">
@@ -152,6 +158,18 @@ export const CartItem: React.FC<CartItemProps> = ({
       )}
     </div>
   );
+  const renderCheckbox = () => (
+    <div 
+      onClick={(e) => e.stopPropagation()} 
+      className="flex items-center"
+    >
+      <Checkbox 
+        id={`checkbox-item-${item.id}`} 
+        checked={selected} 
+        onChange={handleToggleSelection} 
+      />
+    </div>
+  );
 
   const renderContent = () => {
     if (isMobile) {
@@ -162,7 +180,7 @@ export const CartItem: React.FC<CartItemProps> = ({
             selected ? "bg-gray-50/40 " : "bg-gray-50/10"
           )}
         >
-          <Checkbox checked={selected} onChange={handleToggleSelection} />
+          {renderCheckbox()}
 
           <div className="w-20 h-20 shrink-0 rounded-xl overflow-hidden border border-gray-100 shadow-sm">
             <ProductImage />
@@ -240,7 +258,7 @@ export const CartItem: React.FC<CartItemProps> = ({
         )}
       >
         <div className="col-span-5 flex items-center gap-2">
-          <Checkbox checked={selected} onChange={handleToggleSelection} />
+          {renderCheckbox()}
 
           <div className="relative w-20 h-20 shrink-0 border border-gray-100 rounded-2xl overflow-hidden shadow-sm bg-gray-50">
             <ProductImage />
@@ -321,7 +339,6 @@ export const CartItem: React.FC<CartItemProps> = ({
   return (
     <>
       {renderContent()}
-
       <NotificationRemoveModal
         isOpen={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}

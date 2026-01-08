@@ -18,7 +18,6 @@ const CustomSpinner: React.FC<{ size?: 'small' | 'middle' | 'large' }> = ({ size
     );
 };
 
-// Tag "Hết hàng" tinh tế hơn
 const SoldOutTag = () => (
     <span className="inline-block text-[9px] uppercase tracking-wider font-bold px-2 py-0.5 rounded bg-gray-100 text-gray-600 border border-gray-200 mt-1">
         Hết hàng
@@ -37,7 +36,7 @@ export function FeaturedProductsSidebar({ products, loading = false }: FeaturedP
         const media = (p as any).media || []; 
         if (Array.isArray(media) && media.length > 0) {
             const image = media.find((m: any) => m.isPrimary && m.type === "IMAGE") || media.find((m: any) => m.type === "IMAGE") || media[0];
-            const url = resolveMediaUrl(image, "_large"); // Dùng ảnh to hơn cho nét
+            const url = resolveMediaUrl(image, "_large");
             if (url) return url;
         }
         return PLACEHOLDER_IMAGE;
@@ -51,11 +50,11 @@ export function FeaturedProductsSidebar({ products, loading = false }: FeaturedP
                     <div className="p-1.5 bg-orange-100 rounded-lg">
                         <TrendingUp className="w-5 h-5 text-orange-600" />
                     </div>
-                    <span className="font-extrabold text-gray-900 tracking-tight text-lg">Sản phẩm nổi bật</span>
+                    <span className="font-bold text-gray-900 tracking-tight text-lg">Sản phẩm nổi bật</span>
                 </div>
             }
             className="border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-500 overflow-hidden"
-            bodyClassName="p-0" // Xóa padding mặc định để làm list khít hơn
+            bodyClassName="p-0" 
         >
             {loading ? (
                 <CustomSpinner size="small" />
@@ -78,7 +77,6 @@ export function FeaturedProductsSidebar({ products, loading = false }: FeaturedP
                                 href={`/products/${productSlug}`}
                                 className="group flex items-start gap-4 p-4 transition-all duration-300 hover:bg-orange-50/30"
                             >
-                                {/* Ảnh sản phẩm với Badge giảm giá */}
                                 <div className="relative shrink-0 w-20 h-20 rounded-xl overflow-hidden bg-gray-50 border border-gray-100 shadow-sm group-hover:shadow-md transition-shadow">
                                     <img
                                         src={getProductImage(p)}
@@ -93,7 +91,6 @@ export function FeaturedProductsSidebar({ products, loading = false }: FeaturedP
                                     )}
                                 </div>
                                 
-                                {/* Thông tin sản phẩm */}
                                 <div className="flex-1 min-w-0 pt-0.5">
                                     <h4 className="text-[13px] font-bold text-gray-800 line-clamp-2 leading-relaxed group-hover:text-orange-600 transition-colors duration-300">
                                         {p.name}
@@ -118,7 +115,6 @@ export function FeaturedProductsSidebar({ products, loading = false }: FeaturedP
                 </div>
             )}
             
-            {/* Footer của sidebar nếu cần nút Xem tất cả */}
             <div className="p-4 bg-gray-50/50 border-t border-gray-50 text-center">
                 <Link href="/products" className="text-xs font-bold text-gray-500 hover:text-orange-600 transition-colors uppercase tracking-widest">
                     Xem tất cả

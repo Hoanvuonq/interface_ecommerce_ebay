@@ -139,17 +139,14 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
               </div>
 
               <div className="space-y-6 pt-4 border-t border-gray-100">
-                <div className="space-y-3">
-                  <p className="text-[10px] font-bold text-gray-600 uppercase">Vận chuyển</p>
-                  <ShopShippingSelector
-                    shopId={shop.shopId}
-                    shopName={shop.shopName}
-                    availableOptions={shop.availableShippingOptions || []}
-                    selectedMethodCode={shop.selectedShippingMethod}
-                    isLoading={loading}
-                    onMethodChange={updateShippingMethod}
-                  />
-                </div>
+                <ShopShippingSelector
+                  shopId={shop.shopId}
+                  shopName={shop.shopName}
+                  availableOptions={shop.availableShippingOptions || []}
+                  selectedMethodCode={shop.selectedShippingMethod}
+                  isLoading={loading}
+                  onMethodChange={updateShippingMethod}
+                />
 
                 <div className="space-y-3">
                   <p className="text-[10px] font-bold text-gray-600 uppercase">Ưu đãi mã giảm giá</p>

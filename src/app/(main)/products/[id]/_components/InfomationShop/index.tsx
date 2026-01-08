@@ -15,9 +15,9 @@ export const InfomationShop = ({
   if (!product?.shop) return null;
 
   return (
-    <CardComponents className="p-6! border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300">
-      <div className="flex flex-col gap-6 md:flex-row md:items-center">
-        <div className="flex flex-col gap-4 shrink-0 w-full md:w-auto">
+    <CardComponents className="border-none shadow-sm bg-white rounded-2xl overflow-hidden">
+      <div className="flex flex-col lg:flex-row gap-8 lg:items-center">
+        <div className="flex flex-col gap-5 shrink-0 w-full lg:w-[320px]">
           <ShopBrand shop={product.shop} />
           <ShopActions
             shopId={product.shop.shopId}
@@ -25,7 +25,7 @@ export const InfomationShop = ({
             chatLoading={creatingShopChat}
           />
         </div>
-
+        <div className="hidden lg:block w-px h-12 bg-slate-100" />
         <ShopMetrics
           shop={product.shop}
           reviewSummary={reviewSummary}

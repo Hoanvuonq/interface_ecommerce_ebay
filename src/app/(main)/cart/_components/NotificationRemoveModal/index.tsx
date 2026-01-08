@@ -48,7 +48,6 @@ export const NotificationRemoveModal: React.FC<
           <button
             onClick={onConfirm}
             disabled={isLoading}
-            // UPDATE UI: Màu cam gạch (Orange)
             className="px-4 py-2 rounded-xl text-sm font-bold text-white bg-orange-600 hover:bg-orange-700 shadow-sm shadow-orange-200 transition-all active:scale-95 flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
           >
             <Trash2 size={16} />

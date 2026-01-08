@@ -122,15 +122,24 @@ export const useCheckoutActions = () => {
   });
 
   const updateShippingMethod = async (shopId: string, methodCode: string) => {
-    if (!request) return;
-    const updatedRequest = {
-      ...request,
-      shops: request.shops.map((s: any) =>
-        s.shopId === shopId ? { ...s, serviceCode: Number(methodCode) } : s
-      ),
-    };
-    return previewMutation.mutateAsync(updatedRequest);
+  if (!request || !request.shops) return;
+
+  const updatedRequest = {
+    ...request,
+    shops: request.shops.map((s: any) =>
+      s.shopId === shopId 
+        ? { ...s, serviceCode: methodCode ? Number(methodCode) : null } 
+        : s
+    ),
   };
+
+  try {
+    return await previewMutation.mutateAsync(updatedRequest);
+  } catch (error) {
+    console.error("Lỗi cập nhật phương thức vận chuyển:", error);
+    throw error; 
+  }
+};
 
   return {
     syncPreview: (req: any) => previewMutation.mutateAsync(req),
