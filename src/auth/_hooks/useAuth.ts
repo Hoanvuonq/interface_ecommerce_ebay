@@ -39,10 +39,23 @@ export function useLogin() {
     try {
       const res = await authService.login(payload);
       console.log("Login response:", res);
-      // Nếu ở local, lưu user vào localStorage
+      
+      // Check if running on localhost to store tokens in localStorage
       if (typeof window !== "undefined" && isLocalhost() && res && res.success && res.data) {
+        // Assuming res.data contains the tokens or user info you want to store
+        // You might need to adjust what exactly is stored based on your API response structure
+        // For example, if res.data has accessToken and refreshToken:
+        if (res.data.accessToken) {
+            localStorage.setItem("accessToken", res.data.accessToken);
+        }
+        if (res.data.refreshToken) {
+            localStorage.setItem("refreshToken", res.data.refreshToken);
+        }
+        
+        // Also store user info if needed
         localStorage.setItem("users", JSON.stringify(res.data));
       }
+      
       return res;
     } catch (err: any) {
       setError(err?.message || "Đăng nhập thất bại");
@@ -393,6 +406,14 @@ export function useLogout() {
     setError(null);
     try {
       const res = await authService.logout(payload);
+      
+      // Clear localStorage if on localhost
+      if (typeof window !== "undefined" && isLocalhost()) {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        localStorage.removeItem("users");
+      }
+      
       return res;
     } catch (err: any) {
       setError(err?.message || "Đăng xuất thất bại");
@@ -598,7 +619,7 @@ export function useAuthVerification(options?: {
     if (autoVerify) {
       verify();
     }
-  }, [autoVerify, verify]); 
+  }, [autoVerify, verify]);
 
   return {
     authenticated,
