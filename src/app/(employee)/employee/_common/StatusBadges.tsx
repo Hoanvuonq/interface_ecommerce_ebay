@@ -48,11 +48,11 @@ export const PriorityBadge: React.FC<PriorityBadgeProps> = ({ priority }) => {
           type="sale"
           text="THẤP"
           size="small"
-          className="bg-slate-400 shadow-slate-400/30"
+          className="bg-gray-400 shadow-gray-400/30"
         />
       );
     default:
-      return <span className="text-slate-400 text-xs">-</span>;
+      return <span className="text-gray-600 text-xs">-</span>;
   }
 };
 
@@ -86,7 +86,7 @@ export const TaskStatusBadge: React.FC<TaskStatusBadgeProps> = ({ status }) => {
         </span>
       );
     default:
-      return <span className="text-slate-400 text-xs">{status}</span>;
+      return <span className="text-gray-600 text-xs">{status}</span>;
   }
 };
 
@@ -124,13 +124,13 @@ export const TicketStatusBadge: React.FC<TicketStatusBadgeProps> = ({
     case "closed":
       return (
         <span
-          className={`${baseClass} text-slate-500 bg-slate-100 border-slate-200`}
+          className={`${baseClass} text-gray-500 bg-gray-100 border-gray-200`}
         >
           <XCircle size={12} /> Đóng
         </span>
       );
     default:
-      return <span className="text-slate-400 text-xs">{status}</span>;
+      return <span className="text-gray-600 text-xs">{status}</span>;
   }
 };
 

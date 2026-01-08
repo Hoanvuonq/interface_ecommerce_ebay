@@ -55,7 +55,7 @@ useEffect(() => {
           </div>
           {!collapsed && (
             <div className="flex flex-col animate-in fade-in slide-in-from-left-2 duration-500">
-              <span className="text-lg font-semibold tracking-tighter text-slate-800 leading-none">
+              <span className="text-lg font-semibold tracking-tighter text-gray-800 leading-none">
                 CALATHA
               </span>
               <span className="text-[10px] font-semibold text-orange-500 uppercase tracking-[0.2em] mt-1">

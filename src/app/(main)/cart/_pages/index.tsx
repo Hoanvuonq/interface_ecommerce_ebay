@@ -1,7 +1,6 @@
 "use client";
 
-import { CustomBreadcrumb, SectionLoading } from "@/components";
-import PageContentTransition from "@/features/PageContentTransition";
+import { SectionPageComponents } from "@/features/SectionPageComponents";
 import { useToast } from "@/hooks/useToast";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import {
@@ -21,7 +20,7 @@ import { EmptyCart } from "../_components/EmptyCart";
 import { NotificationRemoveModal } from "../_components/NotificationRemoveModal";
 import { ShopCartSection } from "../_components/ShopCartSection";
 import { HeaderCart } from "../_layouts/headerCart";
-import { SectionPageComponents } from "@/features/SectionPageComponents";
+import { Checkbox } from "@/components/checkbox";
 
 export const CartScreen = () => {
   const [showCheckoutPreview, setShowCheckoutPreview] = useState(false);
@@ -143,7 +142,7 @@ export const CartScreen = () => {
     cart?.shops.every((shop: any) => shop.allSelected) || false;
 
   if (!mounted) return null;
-  
+
   const breadcrumbData = [
     { title: "Trang chủ", href: "/" },
     { title: "Giỏ hàng", href: "" },
@@ -153,12 +152,11 @@ export const CartScreen = () => {
     <SectionPageComponents
       loading={loading && !cart}
       breadcrumbItems={breadcrumbData}
-      background="bg-white"
     >
       {!cart || cart.itemCount === 0 ? (
         <EmptyCart />
       ) : (
-        <div className="flex flex-col "> 
+        <div className="flex flex-col ">
           <div className="shrink-0 ">
             <HeaderCart
               itemCount={cart?.itemCount || 0}
@@ -189,27 +187,15 @@ export const CartScreen = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 relative items-start mt-4">
             <div className="lg:col-span-2 space-y-4">
               <div className="bg-white py-3 px-4 rounded-2xl shadow-custom border border-gray-100 flex items-center justify-between z-10 sticky top-4">
-                <label className="flex items-center gap-3 cursor-pointer group">
-                  <div className="relative flex items-center justify-center">
-                    <input
-                      type="checkbox"
-                      checked={allSelected}
-                      onChange={
-                        allSelected
-                          ? () => dispatch(deselectAllItemsLocal())
-                          : () => dispatch(selectAllItemsLocal())
-                      }
-                      className="peer appearance-none w-6 h-6 border-2 border-gray-200 rounded-lg checked:bg-orange-500 checked:border-orange-500 transition-all cursor-pointer"
-                    />
-                    <CheckCircle
-                      size={14}
-                      className="absolute text-white opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity"
-                    />
-                  </div>
-                  <span className="text-sm sm:text-md font-semibold text-gray-700 group-hover:text-gray-900 transition-colors uppercase tracking-tight">
-                    Chọn tất cả ({cart.itemCount})
-                  </span>
-                </label>
+                <Checkbox
+                  label={`Chọn tất cả ${cart.itemCount} sản phẩm`}
+                  checked={allSelected}
+                  onChange={
+                    allSelected
+                      ? () => dispatch(deselectAllItemsLocal())
+                      : () => dispatch(selectAllItemsLocal())
+                  }
+                />
 
                 <button
                   onClick={handleDeleteClick}

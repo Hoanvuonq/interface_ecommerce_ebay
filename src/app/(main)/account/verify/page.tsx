@@ -22,7 +22,7 @@ function VerifyPageContent() {
       <div
         className={cn(
           "min-h-screen w-full relative overflow-hidden  flex items-center justify-center p-4",
-          "bg-linear-to-br from-blue-50 via-white to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900"
+          "bg-linear-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900"
         )}
       >
         <Design />
@@ -30,8 +30,8 @@ function VerifyPageContent() {
         <div
           className={cn(
             "w-full max-w-md relative z-10 text-center",
-            "bg-white/80 dark:bg-slate-800/80 shadow-2xl",
-            "border border-white/50 dark:border-slate-700/50",
+            "bg-white/80 dark:bg-gray-800/80 shadow-2xl",
+            "border border-white/50 dark:border-gray-700/50",
             "p-8 rounded-4xl backdrop-blur-xl"
           )}
         >
@@ -44,14 +44,14 @@ function VerifyPageContent() {
           <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2">
             Liên kết không hợp lệ
           </h1>
-          <p className="text-gray-500 dark:text-gray-400 mb-6">
+          <p className="text-gray-500 dark:text-gray-600 mb-6">
             Thiếu thông tin email để xác thực. Vui lòng kiểm tra lại đường dẫn
             hoặc đăng nhập lại.
           </p>
 
           <Button
             onClick={() => router.push("/login")}
-            className="w-full bg-gray-900 text-white hover:bg-black dark:bg-slate-700 dark:hover:bg-slate-600 rounded-xl h-12 font-bold"
+            className="w-full bg-gray-900 text-white hover:bg-black dark:bg-gray-700 dark:hover:bg-gray-600 rounded-xl h-12 font-bold"
           >
             Quay lại đăng nhập
           </Button>
@@ -67,7 +67,7 @@ export default function VerifyPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen w-full flex items-center justify-center bg-gray-50 dark:bg-slate-900">
+        <div className="min-h-screen w-full flex items-center justify-center bg-gray-50 dark:bg-gray-900">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
         </div>
       }

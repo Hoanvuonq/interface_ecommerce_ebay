@@ -32,7 +32,7 @@ export default function HomeShopLayout({
           <div className="p-2 bg-orange-50 rounded-xl text-(--color-mainColor)">
             <TicketPercent size={24} />
           </div>
-          <h2 className="text-xl font-bold text-slate-800 uppercase tracking-tight">
+          <h2 className="text-xl font-bold text-gray-800 uppercase tracking-tight">
             Mã giảm giá Shop
           </h2>
         </div>
@@ -64,7 +64,7 @@ export default function HomeShopLayout({
             <div className="p-2 bg-yellow-50 rounded-xl text-yellow-600">
               <Sparkles size={24} fill="currentColor" />
             </div>
-            <h2 className="text-xl font-bold text-slate-800 uppercase tracking-tight">
+            <h2 className="text-xl font-bold text-gray-800 uppercase tracking-tight">
               Sản phẩm nổi bật
             </h2>
           </div>
@@ -88,7 +88,7 @@ export default function HomeShopLayout({
           <div className="flex justify-center mt-8">
             <button
               onClick={onViewAll}
-              className="flex items-center gap-2 px-8 py-3 bg-white border border-gray-200 text-slate-600 font-bold rounded-full hover:bg-(--color-mainColor) hover:text-white hover:border-transparent hover:shadow-lg transition-all duration-300"
+              className="flex items-center gap-2 px-8 py-3 bg-white border border-gray-200 text-gray-600 font-bold rounded-full hover:bg-(--color-mainColor) hover:text-white hover:border-transparent hover:shadow-lg transition-all duration-300"
             >
               Xem tất cả sản phẩm <ChevronRight size={18} />
             </button>

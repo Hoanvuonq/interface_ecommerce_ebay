@@ -42,9 +42,9 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
     const statusInfo = ORDER_STATUS_UI[status] ||
       ORDER_STATUS_UI.DEFAULT || {
         label: status,
-        bg: "bg-slate-100",
-        text: "text-slate-600",
-        border: "border-slate-200",
+        bg: "bg-gray-100",
+        text: "text-gray-600",
+        border: "border-gray-200",
         icon: null,
       };
 
@@ -81,8 +81,8 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
             />
           )}
 
-          <div className="bg-white rounded-4xl border border-slate-100 px-6 py-5 shadow-sm">
-            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-3 mb-6 uppercase tracking-widest">
+          <div className="bg-white rounded-4xl border border-gray-100 px-6 py-5 shadow-sm">
+            <h3 className="text-sm font-bold text-gray-900 flex items-center gap-3 mb-6 uppercase tracking-widest">
               <div className="p-2 bg-orange-50 rounded-xl text-orange-500">
                 <Truck size={18} />
               </div>
@@ -98,9 +98,9 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
             />
           </div>
 
-          <div className="bg-white rounded-4xl border border-slate-100 overflow-hidden shadow-sm">
-            <div className="px-6 py-5 bg-slate-50/50 border-b border-slate-100 flex justify-between items-center">
-              <h3 className="font-semibold text-slate-900 uppercase text-xs tracking-widest flex items-center gap-2">
+          <div className="bg-white rounded-4xl border border-gray-100 overflow-hidden shadow-sm">
+            <div className="px-6 py-5 bg-gray-50/50 border-b border-gray-100 flex justify-between items-center">
+              <h3 className="font-semibold text-gray-900 uppercase text-xs tracking-widest flex items-center gap-2">
                 <Package size={18} className="text-orange-500" /> Sản phẩm (
                 {order.items.length})
               </h3>
@@ -113,7 +113,7 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
                 </Link>
               )}
             </div>
-            <div className="divide-y divide-slate-50">
+            <div className="divide-y divide-gray-50">
               {order.items.map((item) => (
                 <OrderItemRow
                   key={item.itemId}

@@ -10,7 +10,7 @@ export const StatCard = ({ item }: { item: any }) => {
     <div
       className={cn(
         "group bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.02)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.06)]",
-        "border border-slate-100 hover:border-orange-100 transition-all duration-500 relative overflow-hidden flex flex-col justify-between min-h-47.5"
+        "border border-gray-100 hover:border-orange-100 transition-all duration-500 relative overflow-hidden flex flex-col justify-between min-h-47.5"
       )}
     >
       <div
@@ -48,15 +48,15 @@ export const StatCard = ({ item }: { item: any }) => {
         </div>
 
         <div>
-          <p className="text-slate-400 text-[10px] font-semibold uppercase tracking-[0.2em] mb-1.5 opacity-80 group-hover:text-slate-600 transition-colors">
+          <p className="text-gray-600 text-[10px] font-semibold uppercase tracking-[0.2em] mb-1.5 opacity-80 group-hover:text-gray-600 transition-colors">
             {item.title}
           </p>
           <div className="flex items-baseline gap-2 mb-4">
-            <h3 className="text-4xl font-semibold text-slate-900 tracking-tighter group-hover:scale-105 origin-left transition-transform">
+            <h3 className="text-4xl font-semibold text-gray-900 tracking-tighter group-hover:scale-105 origin-left transition-transform">
               {item.value}
             </h3>
             {item.total && (
-              <span className="text-slate-300 text-sm font-bold">
+              <span className="text-gray-300 text-sm font-bold">
                 / {item.total}
               </span>
             )}
@@ -71,7 +71,7 @@ export const StatCard = ({ item }: { item: any }) => {
                     ? "bg-emerald-500"
                     : "bg-gradient-to-r from-orange-500 to-amber-400"
                 }
-                className="h-1.5 rounded-full bg-slate-100/50"
+                className="h-1.5 rounded-full bg-gray-100/50"
               />
             </div>
           )}

@@ -29,7 +29,7 @@ export const CustomCollapseItem: React.FC<{ category: CategoryResponse }> = ({
         >
           {category.name}
         </Link>
-        <ChevronDown className="w-4 h-4 text-gray-400 transition-transform duration-300 group-open:rotate-180 group-hover/item:text-orange-500" />
+        <ChevronDown className="w-4 h-4 text-gray-600 transition-transform duration-300 group-open:rotate-180 group-hover/item:text-orange-500" />
       </summary>
 
       <div className="pl-4 mt-1 space-y-1 border-l-2 border-orange-100 ml-5 animate-in fade-in slide-in-from-top-1 duration-200">

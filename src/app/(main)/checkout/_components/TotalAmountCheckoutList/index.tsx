@@ -18,9 +18,9 @@ export const TotalAmountCheckoutList = ({
   shipDiscount,
 }: TotalAmountCheckoutListProps) => {
   return (
-    <div className="px-8 py-5 bg-slate-50/50 border-t border-slate-100 flex justify-between items-end">
+    <div className="px-8 py-5 bg-gray-50/50 border-t border-gray-100 flex justify-between items-end">
       <div className="flex flex-col gap-1">
-        <span className="text-[10px] font-semibold text-slate-400 uppercase">
+        <span className="text-[10px] font-semibold text-gray-600 uppercase">
           Tổng shop
         </span>
         {productOrOrderDiscount > 0 && (
@@ -37,11 +37,11 @@ export const TotalAmountCheckoutList = ({
       </div>
       <div className="text-right">
         {totalDiscount > 0 && (
-          <p className="text-[10px] text-slate-400 line-through mb-1">
+          <p className="text-[10px] text-gray-600 line-through mb-1">
             {formatPrice(originalShopPrice)}
           </p>
         )}
-        <span className="text-2xl font-semibold text-slate-900 tracking-tighter">
+        <span className="text-2xl font-semibold text-gray-900 tracking-tighter">
           {formatPrice(finalShopTotal)}
         </span>
       </div>

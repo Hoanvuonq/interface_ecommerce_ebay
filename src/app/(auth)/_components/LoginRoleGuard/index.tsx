@@ -78,7 +78,7 @@ export default function LoginRoleGuard({
     };
 
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#fffbf8] dark:bg-slate-900 p-6">
+      <div className="min-h-screen flex items-center justify-center bg-[#fffbf8] dark:bg-gray-900 p-6">
         <CustomResult
           title="Truy cập bị hạn chế"
           subTitle={getErrorMessage()}

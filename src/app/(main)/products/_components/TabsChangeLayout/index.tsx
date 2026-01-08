@@ -41,7 +41,7 @@ export const TabsChangeLayout: React.FC<TabsChangeLayoutProps> = ({
 
       <div className="flex items-center gap-3 ml-auto">
         <div className="hidden md:flex items-center gap-2">
-          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+          <span className="text-[10px] font-bold text-gray-600 uppercase tracking-widest">
             Sắp xếp
           </span>
           <div className="w-45">
@@ -68,7 +68,7 @@ export const TabsChangeLayout: React.FC<TabsChangeLayoutProps> = ({
               "p-2 rounded-lg cursor-pointer transition-all duration-300 flex items-center justify-center",
               viewMode === "grid"
                 ? "bg-white shadow-sm text-orange-600 scale-100"
-                : "text-gray-400 hover:text-gray-600 hover:bg-gray-200/50 scale-95 hover:scale-100"
+                : "text-gray-600 hover:text-gray-600 hover:bg-gray-200/50 scale-95 hover:scale-100"
             )}
             title="Dạng lưới"
             aria-label="Chuyển sang dạng lưới"
@@ -82,7 +82,7 @@ export const TabsChangeLayout: React.FC<TabsChangeLayoutProps> = ({
               "p-2 rounded-lg cursor-pointer transition-all duration-300 flex items-center justify-center",
               viewMode === "list"
                 ? "bg-white shadow-sm text-orange-600 scale-100"
-                : "text-gray-400 hover:text-gray-600 hover:bg-gray-200/50 scale-95 hover:scale-100"
+                : "text-gray-600 hover:text-gray-600 hover:bg-gray-200/50 scale-95 hover:scale-100"
             )}
             title="Dạng danh sách"
             aria-label="Chuyển sang dạng danh sách"

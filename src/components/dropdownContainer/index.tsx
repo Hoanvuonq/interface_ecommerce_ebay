@@ -16,22 +16,22 @@ export const DropdownContainer: React.FC<DropdownContainerProps> = ({
   maxHeight = "max-h-[450px]",
 }) => {
   return (
-    <div className={cn("w-95 flex flex-col bg-white overflow-hidden  border border-slate-100 shadow-2xl font-inter", className)}>
+    <div className={cn("w-95 flex flex-col bg-white overflow-hidden  border border-gray-100 shadow-2xl font-inter", className)}>
       <div className="px-5 py-4 border-b border-gray-100 bg-white flex items-center justify-between">
         <div className="flex items-center gap-2">
-          {icon && <span className="text-slate-400">{icon}</span>}
+          {icon && <span className="text-gray-600">{icon}</span>}
           <span className="text-sm font-bold text-gray-700 uppercase tracking-widest">
             {title}
           </span>
         </div>
         {onClose && (
-          <button onClick={onClose} className="p-1 rounded-full hover:bg-slate-100 text-slate-400 transition-colors">
+          <button onClick={onClose} className="p-1 rounded-full hover:bg-gray-100 text-gray-600 transition-colors">
             <X size={18} />
           </button>
         )}
       </div>
 
-      <div className={cn("overflow-y-auto custom-scrollbar bg-slate-50/30", maxHeight)}>
+      <div className={cn("overflow-y-auto custom-scrollbar bg-gray-50/30", maxHeight)}>
         {children}
       </div>
 

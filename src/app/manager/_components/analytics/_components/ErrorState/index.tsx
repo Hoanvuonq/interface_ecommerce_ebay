@@ -40,7 +40,7 @@ export function ErrorState({ error, onRetry, className }: ErrorStateProps) {
                     <h3 className="text-xl font-semibold text-gray-900 uppercase tracking-tighter italic">
                         Ops! <span className="text-rose-500">Đã có lỗi xảy ra</span>
                     </h3>
-                    <p className="text-sm font-bold text-gray-400 uppercase tracking-widest leading-relaxed px-4">
+                    <p className="text-sm font-bold text-gray-600 uppercase tracking-widest leading-relaxed px-4">
                         {isNetworkError
                             ? 'Không thể kết nối đến máy chủ. Vui lòng kiểm tra đường truyền internet.'
                             : errorMessage}
@@ -66,7 +66,7 @@ export function ErrorState({ error, onRetry, className }: ErrorStateProps) {
 
                 {/* Footer Decor */}
                 <div className="pt-4 opacity-30 select-none pointer-events-none">
-                    <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-[0.3em]">
+                    <p className="text-[10px] font-semibold text-gray-600 uppercase tracking-[0.3em]">
                         CaLaTha Security System
                     </p>
                 </div>

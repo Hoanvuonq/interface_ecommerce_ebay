@@ -80,7 +80,7 @@ export const OrderTrackingTimeline: React.FC<OrderTrackingTimelineProps> = ({ tr
             {loading ? (
                 <div className="flex flex-col items-center justify-center py-10">
                     <RotateCw size={24} className="text-orange-500 animate-spin mb-2" />
-                    <span className="text-gray-400 text-xs">Đang lấy dữ liệu hành trình...</span>
+                    <span className="text-gray-600 text-xs">Đang lấy dữ liệu hành trình...</span>
                 </div>
             ) : error ? (
                 <div className="p-4 bg-red-50 rounded-xl text-red-500 text-xs flex items-center gap-2">
@@ -89,7 +89,7 @@ export const OrderTrackingTimeline: React.FC<OrderTrackingTimelineProps> = ({ tr
             ) : statuses.length === 0 ? (
                 <div className="text-center py-6">
                     <Package size={32} className="text-gray-200 mx-auto mb-2" />
-                    <p className="text-gray-400 text-xs italic">Chưa có thông tin cập nhật hành trình</p>
+                    <p className="text-gray-600 text-xs italic">Chưa có thông tin cập nhật hành trình</p>
                 </div>
             ) : (
                 <div className="space-y-6">
@@ -107,14 +107,14 @@ export const OrderTrackingTimeline: React.FC<OrderTrackingTimelineProps> = ({ tr
                                     
                                     <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1">
                                         <div>
-                                            <p className={`text-sm font-bold ${isFirst ? 'text-slate-900' : 'text-slate-500'}`}>
+                                            <p className={`text-sm font-bold ${isFirst ? 'text-gray-900' : 'text-gray-500'}`}>
                                                 {info.label}
                                             </p>
-                                            <p className="text-[11px] text-slate-400 mt-0.5">
+                                            <p className="text-[11px] text-gray-600 mt-0.5">
                                                 {status.description || 'Đơn hàng đang trong quá trình xử lý'}
                                             </p>
                                         </div>
-                                        <span className="text-[10px] font-mono text-slate-400 bg-slate-50 px-2 py-1 rounded w-fit">
+                                        <span className="text-[10px] font-mono text-gray-600 bg-gray-50 px-2 py-1 rounded w-fit">
                                             {status.createdAt}
                                         </span>
                                     </div>

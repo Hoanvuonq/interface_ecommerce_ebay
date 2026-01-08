@@ -37,22 +37,22 @@ export default function OrderDetailPage() {
             <div className="w-24 h-24 bg-red-50 rounded-4xl flex items-center justify-center mb-8 shadow-sm">
               <AlertCircle className="w-12 h-12 text-red-500" />
             </div>
-            <h1 className="text-3xl font-semibold text-slate-900 uppercase tracking-tight mb-4">
+            <h1 className="text-3xl font-semibold text-gray-900 uppercase tracking-tight mb-4">
               Không tìm thấy đơn hàng
             </h1>
-            <p className="text-slate-500 max-w-md mx-auto mb-10 font-medium">
+            <p className="text-gray-500 max-w-md mx-auto mb-10 font-medium">
               {error instanceof Error ? error.message : "Đơn hàng không tồn tại hoặc bạn không có quyền truy cập. Vui lòng kiểm tra lại mã đơn hàng."}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/orders">
-                <button className="w-full sm:w-auto px-8 py-4 bg-white border border-slate-200 text-slate-700 font-bold rounded-2xl hover:bg-slate-50 transition-all shadow-sm flex items-center justify-center gap-2 uppercase text-xs tracking-widest">
+                <button className="w-full sm:w-auto px-8 py-4 bg-white border border-gray-200 text-gray-700 font-bold rounded-2xl hover:bg-gray-50 transition-all shadow-sm flex items-center justify-center gap-2 uppercase text-xs tracking-widest">
                   <ArrowLeft size={18} />
                   Danh sách đơn hàng
                 </button>
               </Link>
               <Link href="/products">
-                <button className="w-full sm:w-auto px-8 py-4 bg-slate-900 text-white font-semibold rounded-2xl hover:bg-orange-600 transition-all shadow-xl shadow-slate-200 flex items-center justify-center gap-2 uppercase text-xs tracking-widest">
+                <button className="w-full sm:w-auto px-8 py-4 bg-gray-900 text-white font-semibold rounded-2xl hover:bg-orange-600 transition-all shadow-xl shadow-gray-200 flex items-center justify-center gap-2 uppercase text-xs tracking-widest">
                   <ShoppingCart size={18} />
                   Tiếp tục mua sắm
                 </button>

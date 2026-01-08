@@ -101,7 +101,7 @@ const ShopDetailModal: React.FC<ShopDetailModalProps> = ({
                     <strong className="text-gray-500 min-w-35">Người duyệt:</strong> 
                     <span className="font-medium">{detailData.verifyBy || "--"}</span>
                   </p>
-                  <div className="pt-2 border-t border-gray-100 space-y-2 italic text-gray-400 text-xs">
+                  <div className="pt-2 border-t border-gray-100 space-y-2 italic text-gray-600 text-xs">
                     <p>Ngày tạo: {detailData.createdDate ? new Date(detailData.createdDate).toLocaleString("vi-VN") : "--"}</p>
                     <p>Cập nhật: {detailData.lastModifiedDate ? new Date(detailData.lastModifiedDate).toLocaleString("vi-VN") : "--"}</p>
                   </div>
@@ -160,13 +160,13 @@ const ShopDetailModal: React.FC<ShopDetailModalProps> = ({
                 <div className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                     <div className="space-y-2">
-                      <p><strong className="text-gray-400">Họ tên:</strong> <span className="font-semibold text-gray-800">{detailData.legalInfo.fullName}</span></p>
-                      <p><strong className="text-gray-400">Quốc tịch:</strong> {nationalityMap[detailData.legalInfo.nationality] || detailData.legalInfo.nationality || "--"}</p>
-                      <p><strong className="text-gray-400">Số giấy tờ:</strong> <span className="font-mono bg-gray-100 px-1.5 py-0.5 rounded">{detailData.legalInfo.identityNumber}</span></p>
+                      <p><strong className="text-gray-600">Họ tên:</strong> <span className="font-semibold text-gray-800">{detailData.legalInfo.fullName}</span></p>
+                      <p><strong className="text-gray-600">Quốc tịch:</strong> {nationalityMap[detailData.legalInfo.nationality] || detailData.legalInfo.nationality || "--"}</p>
+                      <p><strong className="text-gray-600">Số giấy tờ:</strong> <span className="font-mono bg-gray-100 px-1.5 py-0.5 rounded">{detailData.legalInfo.identityNumber}</span></p>
                     </div>
                     <div className="space-y-2">
                       <p className="flex items-center gap-2">
-                        <strong className="text-gray-400">Trạng thái:</strong>
+                        <strong className="text-gray-600">Trạng thái:</strong>
                         <span 
                           className="px-2 py-0.5 rounded text-[10px] font-semibold uppercase text-white"
                           style={{ backgroundColor: verifyStatusColorMap[detailData.legalInfo.verifiedStatus as VerifiedStatus] }}
@@ -174,8 +174,8 @@ const ShopDetailModal: React.FC<ShopDetailModalProps> = ({
                           {verifyStatusMap[detailData.legalInfo.verifiedStatus as VerifiedStatus]}
                         </span>
                       </p>
-                      <p><strong className="text-gray-400">Ngày duyệt:</strong> {detailData.legalInfo.verifyDate ? new Date(detailData.legalInfo.verifyDate).toLocaleString("vi-VN") : "--"}</p>
-                      <p className="text-red-500"><strong className="text-gray-400">Lý do từ chối:</strong> {detailData.legalInfo.rejectedReason || "--"}</p>
+                      <p><strong className="text-gray-600">Ngày duyệt:</strong> {detailData.legalInfo.verifyDate ? new Date(detailData.legalInfo.verifyDate).toLocaleString("vi-VN") : "--"}</p>
+                      <p className="text-red-500"><strong className="text-gray-600">Lý do từ chối:</strong> {detailData.legalInfo.rejectedReason || "--"}</p>
                     </div>
                   </div>
                   
@@ -194,7 +194,7 @@ const ShopDetailModal: React.FC<ShopDetailModalProps> = ({
                     ))}
                   </div>
                 </div>
-              ) : <p className="text-center italic text-gray-400 py-4">-- Không có dữ liệu định danh --</p>}
+              ) : <p className="text-center italic text-gray-600 py-4">-- Không có dữ liệu định danh --</p>}
             </section>
 
             {/* THÔNG TIN THUẾ */}
@@ -225,13 +225,13 @@ const ShopDetailModal: React.FC<ShopDetailModalProps> = ({
               {detailData.taxInfo ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
                   <div className="space-y-2">
-                    <p><strong className="text-gray-400">Loại hình:</strong> {type[detailData.taxInfo.type] || detailData.taxInfo.type || "--"}</p>
-                    <p><strong className="text-gray-400">Email:</strong> <span className="text-blue-600 underline underline-offset-2">{detailData.taxInfo.email}</span></p>
-                    <p><strong className="text-gray-400">MST:</strong> <span className="font-mono font-bold text-gray-700">{detailData.taxInfo.taxIdentificationNumber}</span></p>
+                    <p><strong className="text-gray-600">Loại hình:</strong> {type[detailData.taxInfo.type] || detailData.taxInfo.type || "--"}</p>
+                    <p><strong className="text-gray-600">Email:</strong> <span className="text-blue-600 underline underline-offset-2">{detailData.taxInfo.email}</span></p>
+                    <p><strong className="text-gray-600">MST:</strong> <span className="font-mono font-bold text-gray-700">{detailData.taxInfo.taxIdentificationNumber}</span></p>
                   </div>
                   <div className="space-y-2">
                     <p className="flex items-center gap-2">
-                      <strong className="text-gray-400">Trạng thái:</strong>
+                      <strong className="text-gray-600">Trạng thái:</strong>
                       <span 
                         className="px-2 py-0.5 rounded text-[10px] font-semibold uppercase text-white"
                         style={{ backgroundColor: verifyStatusColorMap[detailData.taxInfo.verifiedStatus as VerifiedStatus] }}
@@ -239,15 +239,15 @@ const ShopDetailModal: React.FC<ShopDetailModalProps> = ({
                         {verifyStatusMap[detailData.taxInfo.verifiedStatus as VerifiedStatus]}
                       </span>
                     </p>
-                    <p><strong className="text-gray-400">Địa chỉ:</strong> <span className="text-gray-600">{detailData.taxInfo.registeredAddress?.detail}</span></p>
-                    <p className="text-red-500"><strong className="text-gray-400">Lý do từ chối:</strong> {detailData.taxInfo.rejectedReason || "--"}</p>
+                    <p><strong className="text-gray-600">Địa chỉ:</strong> <span className="text-gray-600">{detailData.taxInfo.registeredAddress?.detail}</span></p>
+                    <p className="text-red-500"><strong className="text-gray-600">Lý do từ chối:</strong> {detailData.taxInfo.rejectedReason || "--"}</p>
                   </div>
                 </div>
-              ) : <p className="text-center italic text-gray-400 py-4">-- Không có dữ liệu thuế --</p>}
+              ) : <p className="text-center italic text-gray-600 py-4">-- Không có dữ liệu thuế --</p>}
             </section>
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-20 text-gray-400">
+          <div className="flex flex-col items-center justify-center py-20 text-gray-600">
              <span className="text-4xl mb-2">📭</span>
              <p className="font-medium">Không có dữ liệu shop</p>
           </div>

@@ -118,7 +118,7 @@ const InformationEditor: React.FC<InformationEditorProps> = ({
                 {statusLabelMap[formData.status as keyof typeof statusLabelMap] || formData.status}
               </span>
             ) : (
-              <span className="text-gray-400 text-sm">-</span>
+              <span className="text-gray-600 text-sm">-</span>
             )}
           </div>
         </div>
@@ -128,7 +128,7 @@ const InformationEditor: React.FC<InformationEditorProps> = ({
 };
 
 const Label = ({ label }: { label: string }) => (
-  <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">
+  <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">
     {label}
   </label>
 );

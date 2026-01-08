@@ -29,8 +29,8 @@ export default function DepartmentTable() {
             <Building2 size={20} />
           </div>
           <div>
-            <p className="font-semibold text-slate-900 tracking-tight leading-none">{row.departmentName}</p>
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1.5 flex items-center gap-1">
+            <p className="font-semibold text-gray-900 tracking-tight leading-none">{row.departmentName}</p>
+            <p className="text-[10px] text-gray-600 font-bold uppercase tracking-widest mt-1.5 flex items-center gap-1">
                ID: {row.departmentId.split('-')[0]}
             </p>
           </div>
@@ -40,7 +40,7 @@ export default function DepartmentTable() {
     {
       header: "Mô tả",
       render: (row) => (
-        <p className="text-xs text-slate-500 line-clamp-1 max-w-75 italic">
+        <p className="text-xs text-gray-500 line-clamp-1 max-w-75 italic">
           {row.description || "Chưa có mô tả..."}
         </p>
       )
@@ -49,7 +49,7 @@ export default function DepartmentTable() {
       header: "Ngày khởi tạo",
       align: "center",
       render: (row) => (
-        <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-tighter">
+        <span className="text-[11px] font-semibold text-gray-600 uppercase tracking-tighter">
           {dayjs(row.createdDate).format("DD/MM/YYYY")}
         </span>
       )
@@ -78,11 +78,11 @@ export default function DepartmentTable() {
     <div className="w-full space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="relative group flex-1 max-w-md">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-orange-500 transition-colors" size={18} />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-orange-500 transition-colors" size={18} />
           <input
             type="text"
             placeholder="Truy vấn tên phòng ban..."
-            className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:ring-4 focus:ring-orange-500/5 outline-none transition-all text-sm font-bold shadow-inner"
+            className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl focus:bg-white focus:ring-4 focus:ring-orange-500/5 outline-none transition-all text-sm font-bold shadow-inner"
             value={logic.searchText}
             onChange={(e) => logic.setSearchText(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && logic.fetchList(logic.searchText, 0)}
@@ -96,10 +96,10 @@ export default function DepartmentTable() {
             onChange={(v) => logic.fetchList(logic.searchText, 0, Number(v))}
             className="w-32"
           />
-          <button onClick={logic.refresh} className="p-3.5 bg-white text-slate-400 hover:text-orange-500 rounded-2xl border border-slate-100 shadow-sm transition-all active:scale-90">
+          <button onClick={logic.refresh} className="p-3.5 bg-white text-gray-600 hover:text-orange-500 rounded-2xl border border-gray-100 shadow-sm transition-all active:scale-90">
             <RotateCw size={20} className={cn(logic.loading && "animate-spin")} />
           </button>
-          <button onClick={() => { logic.setSearchText(""); logic.fetchList("", 0); }} className="p-3.5 bg-white text-slate-400 hover:text-red-500 rounded-2xl border border-slate-100 shadow-sm transition-all active:scale-90">
+          <button onClick={() => { logic.setSearchText(""); logic.fetchList("", 0); }} className="p-3.5 bg-white text-gray-600 hover:text-red-500 rounded-2xl border border-gray-100 shadow-sm transition-all active:scale-90">
             <Eraser size={20} />
           </button>
         </div>
@@ -112,14 +112,14 @@ export default function DepartmentTable() {
       {/* 1. Header Area */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
         <div className="space-y-1">
-          <h1 className="text-5xl font-semibold text-slate-900 tracking-tighter uppercase italic leading-none">
+          <h1 className="text-5xl font-semibold text-gray-900 tracking-tighter uppercase italic leading-none">
             Phòng <span className="text-orange-500 underline decoration-4 underline-offset-8">Ban</span>
           </h1>
-          <p className="text-slate-400 text-xs font-bold uppercase tracking-[0.3em] mt-3">Cấu trúc tổ chức hệ thống Calatha</p>
+          <p className="text-gray-600 text-xs font-bold uppercase tracking-[0.3em] mt-3">Cấu trúc tổ chức hệ thống Calatha</p>
         </div>
         <button 
           onClick={() => setFormModal({ open: true, data: null })}
-          className="bg-slate-900 hover:bg-orange-500 text-white px-8 py-4 rounded-2xl font-semibold uppercase text-xs tracking-widest transition-all duration-500 shadow-2xl shadow-slate-200 flex items-center gap-2 active:scale-95"
+          className="bg-gray-900 hover:bg-orange-500 text-white px-8 py-4 rounded-2xl font-semibold uppercase text-xs tracking-widest transition-all duration-500 shadow-2xl shadow-gray-200 flex items-center gap-2 active:scale-95"
         >
           <Plus size={18} strokeWidth={3} /> Thêm phòng ban
         </button>
@@ -127,7 +127,7 @@ export default function DepartmentTable() {
 
       {/* 2. Quick Statistics */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <StatCardComponents label="Tổng phòng ban" value={logic.statistics?.totalDepartments ?? 0} icon={<Building2 />} color="text-slate-900" />
+        <StatCardComponents label="Tổng phòng ban" value={logic.statistics?.totalDepartments ?? 0} icon={<Building2 />} color="text-gray-900" />
         <StatCardComponents label="Tổng chức vụ" value={logic.statistics?.totalPositions ?? 0} icon={<Briefcase />} color="text-blue-500" />
         <StatCardComponents label="Tổng nhân sự" value={logic.statistics?.totalEmployees ?? 0} icon={<Users />} color="text-emerald-500" />
       </div>

@@ -49,7 +49,7 @@ export const MessageContent: React.FC<MessageContentProps> = ({ message }) => {
               <ImageAttachment key={idx} attachment={att} />
             ))
           ) : (
-            <span className="text-gray-400 italic">[Hình ảnh]</span>
+            <span className="text-gray-600 italic">[Hình ảnh]</span>
           )}
           {content && renderText(content, "mt-1 text-sm")}
         </div>
@@ -63,7 +63,7 @@ export const MessageContent: React.FC<MessageContentProps> = ({ message }) => {
               <VideoAttachment key={idx} attachment={att} />
             ))
           ) : (
-            <span className="text-gray-400 italic">[Video]</span>
+            <span className="text-gray-600 italic">[Video]</span>
           )}
           {content && renderText(content, "mt-1 text-sm")}
         </div>
@@ -77,7 +77,7 @@ export const MessageContent: React.FC<MessageContentProps> = ({ message }) => {
               <AudioAttachment key={idx} attachment={att} />
             ))
           ) : (
-            <span className="text-gray-400 italic">[Âm thanh]</span>
+            <span className="text-gray-600 italic">[Âm thanh]</span>
           )}
         </div>
       );
@@ -90,7 +90,7 @@ export const MessageContent: React.FC<MessageContentProps> = ({ message }) => {
               <FileAttachment key={idx} attachment={att} />
             ))
           ) : (
-            <span className="text-gray-400 italic">[Tệp đính kèm]</span>
+            <span className="text-gray-600 italic">[Tệp đính kèm]</span>
           )}
           {content && renderText(content, "mt-1 text-sm")}
         </div>
@@ -131,21 +131,21 @@ export const MessageContent: React.FC<MessageContentProps> = ({ message }) => {
               )}
             </div>
             <div>
-              <p className="text-sm font-semibold text-slate-800 line-clamp-2">
+              <p className="text-sm font-semibold text-gray-800 line-clamp-2">
                 {product.productName}
               </p>
               <p className="text-base font-bold text-orange-500 mt-1">
                 {Number(product.price || 0).toLocaleString("vi-VN")}₫
               </p>
               {product.shopName && (
-                <p className="text-[11px] text-gray-400 mt-1 uppercase font-bold">
+                <p className="text-[11px] text-gray-600 mt-1 uppercase font-bold">
                   🏪 {product.shopName}
                 </p>
               )}
             </div>
           </div>
           {content && (
-            <div className="px-3 py-2 bg-slate-50 border-t border-gray-50 text-xs text-slate-500 italic">
+            <div className="px-3 py-2 bg-gray-50 border-t border-gray-50 text-xs text-gray-500 italic">
               {content}
             </div>
           )}
@@ -183,7 +183,7 @@ export const MessageContent: React.FC<MessageContentProps> = ({ message }) => {
                      {order.shopName.charAt(0)}
                    </div>
                 )}
-                <span className="text-[10px] font-bold text-slate-600 uppercase truncate">
+                <span className="text-[10px] font-bold text-gray-600 uppercase truncate">
                   {order.shopName}
                 </span>
               </div>
@@ -198,7 +198,7 @@ export const MessageContent: React.FC<MessageContentProps> = ({ message }) => {
             </div>
           </div>
 
-          <div className="p-3 space-y-2 bg-slate-50/50">
+          <div className="p-3 space-y-2 bg-gray-50/50">
             {_.slice(_.get(order, "items", []), 0, 2).map(
               (item: any, idx: number) => {
                 const itemImageUrl = item.image ? toPublicUrl(item.image) : null;
@@ -218,10 +218,10 @@ export const MessageContent: React.FC<MessageContentProps> = ({ message }) => {
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs font-medium text-slate-700 truncate">
+                      <p className="text-xs font-medium text-gray-700 truncate">
                         {item.productName}
                       </p>
-                      <p className="text-[10px] text-slate-400 font-bold">
+                      <p className="text-[10px] text-gray-600 font-bold">
                         x{item.quantity}
                       </p>
                     </div>
@@ -233,7 +233,7 @@ export const MessageContent: React.FC<MessageContentProps> = ({ message }) => {
 
           <div className="px-3 py-2 border-t border-gray-50">
             <div className="flex justify-between items-center">
-              <span className="text-[10px] font-bold text-slate-400 uppercase">
+              <span className="text-[10px] font-bold text-gray-600 uppercase">
                 Tổng cộng
               </span>
               <span className="text-sm font-bold text-orange-600">
@@ -242,7 +242,7 @@ export const MessageContent: React.FC<MessageContentProps> = ({ message }) => {
             </div>
           </div>
           {content && (
-            <div className="px-3 py-2 bg-slate-50 border-t border-gray-50 text-xs text-slate-500 italic">
+            <div className="px-3 py-2 bg-gray-50 border-t border-gray-50 text-xs text-gray-500 italic">
               {content}
             </div>
           )}

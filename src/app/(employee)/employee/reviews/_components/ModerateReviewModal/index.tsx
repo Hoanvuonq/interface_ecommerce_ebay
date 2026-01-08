@@ -57,7 +57,7 @@ export default function ModerateReviewModal({
   return (
     <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-6">
       <div className="space-y-2">
-        <label className="text-xs font-semibold uppercase tracking-widest text-slate-500 ml-1">
+        <label className="text-xs font-semibold uppercase tracking-widest text-gray-500 ml-1">
           Trạng thái kiểm duyệt
         </label>
         <Controller
@@ -93,10 +93,10 @@ export default function ModerateReviewModal({
             })}
             rows={4}
             className={cn(
-              "w-full px-4 py-3 rounded-2xl border bg-slate-50/50 outline-none transition-all text-sm font-medium resize-none shadow-inner",
+              "w-full px-4 py-3 rounded-2xl border bg-gray-50/50 outline-none transition-all text-sm font-medium resize-none shadow-inner",
               errors.rejectionReason
                 ? "border-red-400 focus:ring-4 focus:ring-red-50"
-                : "border-slate-200 focus:border-orange-500 focus:bg-white focus:ring-4 focus:ring-orange-50"
+                : "border-gray-200 focus:border-orange-500 focus:bg-white focus:ring-4 focus:ring-orange-50"
             )}
             placeholder="Nhập lý do cụ thể (Spam, ngôn từ thiếu văn hóa, ảnh không liên quan...)"
           />

@@ -31,15 +31,15 @@ export default function EmployeeDashboardScreen() {
   }, []);
   
   return (
-    <div className="min-h-screen bg-[#f5f5f5] rounded-2xl shadow-lg shadow-slate-200  text-slate-800 p-6 font-sans">
+    <div className="min-h-screen bg-[#f5f5f5] rounded-2xl shadow-lg shadow-gray-200  text-gray-800 p-6 font-sans">
       <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
           <div className="flex items-center gap-2 mb-2.5">
             <span className="px-3 py-1 rounded-full bg-orange-100 text-orange-700 text-[10px] font-semibold uppercase tracking-widest border border-orange-200">
               Employee Hub
             </span>
-            <span className="text-slate-300 text-xs">•</span>
-            <span className="text-slate-400 text-xs font-bold uppercase tracking-wide">
+            <span className="text-gray-300 text-xs">•</span>
+            <span className="text-gray-600 text-xs font-bold uppercase tracking-wide">
               {new Date().toLocaleDateString("vi-VN", {
                 weekday: "long",
                 day: "numeric",
@@ -47,14 +47,14 @@ export default function EmployeeDashboardScreen() {
               })}
             </span>
           </div>
-          <h2 className="text-4xl flex gap-2 items-center font-semibold tracking-tighter text-slate-900 mb-2 leading-tight">
+          <h2 className="text-4xl flex gap-2 items-center font-semibold tracking-tighter text-gray-900 mb-2 leading-tight">
             Xin chào,
             <span className="text-transparent bg-clip-text bg-linear-to-r from-orange-500 to-amber-500">
               {displayName}
             </span>
             👋
           </h2>
-          <p className="text-slate-500 font-medium text-sm flex gap-2 items-center">
+          <p className="text-gray-500 font-medium text-sm flex gap-2 items-center">
             Hôm nay bạn có
             <span className="text-orange-600 font-bold underline decoration-orange-300 underline-offset-2">
               {myTasks.filter((t) => t.status !== "completed").length} nhiệm vụ
@@ -90,14 +90,14 @@ export default function EmployeeDashboardScreen() {
                   <div className="p-2 bg-orange-50 text-orange-600 rounded-xl">
                     <Sparkles size={18} strokeWidth={2.5} />
                   </div>
-                  <span className="font-semibold text-slate-800 tracking-tight">
+                  <span className="font-semibold text-gray-800 tracking-tight">
                     NHIỆM VỤ CỦA TÔI
                   </span>
-                  <span className="px-2 py-0.5 bg-slate-100 text-slate-500 text-[10px] font-bold rounded-md">
+                  <span className="px-2 py-0.5 bg-gray-100 text-gray-500 text-[10px] font-bold rounded-md">
                     {myTasks.filter((t) => t.status !== "completed").length}
                   </span>
                 </div>
-                <button className="text-xs font-bold text-slate-400 hover:text-orange-600 flex items-center gap-1 transition-colors">
+                <button className="text-xs font-bold text-gray-600 hover:text-orange-600 flex items-center gap-1 transition-colors">
                   Xem tất cả <ArrowUpRight size={14} />
                 </button>
               </div>
@@ -105,7 +105,7 @@ export default function EmployeeDashboardScreen() {
           >
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
-                <thead className="bg-slate-50/50 border-b border-slate-100 text-[10px] font-semibold uppercase text-slate-400 tracking-wider">
+                <thead className="bg-gray-50/50 border-b border-gray-100 text-[10px] font-semibold uppercase text-gray-600 tracking-wider">
                   <tr>
                     {[
                       "Mã NV",
@@ -121,16 +121,16 @@ export default function EmployeeDashboardScreen() {
                     ))}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-50">
+                <tbody className="divide-y divide-gray-50">
                   {myTasks.map((task) => (
                     <tr
                       key={task.key}
                       className="hover:bg-orange-50/30 transition-colors group"
                     >
-                      <td className="px-6 py-4 font-bold text-slate-700 text-xs">
+                      <td className="px-6 py-4 font-bold text-gray-700 text-xs">
                         {task.id}
                       </td>
-                      <td className="px-6 py-4 text-slate-800 font-semibold text-sm group-hover:text-orange-700 transition-colors">
+                      <td className="px-6 py-4 text-gray-800 font-semibold text-sm group-hover:text-orange-700 transition-colors">
                         {task.title}
                       </td>
                       <td className="px-6 py-4">
@@ -140,7 +140,7 @@ export default function EmployeeDashboardScreen() {
                         <TaskStatusBadge status={task.status} />
                       </td>
                       <td className="px-6 py-4">
-                        <div className="flex items-center gap-1.5 text-xs font-bold text-slate-500">
+                        <div className="flex items-center gap-1.5 text-xs font-bold text-gray-500">
                           <Calendar className="w-3.5 h-3.5" />
                           <span
                             className={
@@ -153,7 +153,7 @@ export default function EmployeeDashboardScreen() {
                           </span>
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-xs font-medium text-slate-500">
+                      <td className="px-6 py-4 text-xs font-medium text-gray-500">
                         {task.department}
                       </td>
                     </tr>

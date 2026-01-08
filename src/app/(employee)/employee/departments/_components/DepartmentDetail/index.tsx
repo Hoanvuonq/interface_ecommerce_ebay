@@ -55,18 +55,18 @@ export default function DepartmentDetail({
       {loading ? (
         <div className="flex flex-col items-center justify-center py-20 gap-4">
           <Loader2 className="animate-spin text-orange-500" size={40} />
-          <span className="text-[10px] font-semibold uppercase tracking-widest text-slate-400">Đang truy xuất dữ liệu...</span>
+          <span className="text-[10px] font-semibold uppercase tracking-widest text-gray-600">Đang truy xuất dữ liệu...</span>
         </div>
       ) : department ? (
         <div className="space-y-8 pb-6 animate-in fade-in duration-500">
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="md:col-span-2 bg-slate-50/50 p-6 rounded-4xl border border-slate-100 flex flex-col justify-between">
+            <div className="md:col-span-2 bg-gray-50/50 p-6 rounded-4xl border border-gray-100 flex flex-col justify-between">
               <div>
-                <h3 className="text-3xl font-semibold text-slate-900 tracking-tighter uppercase italic leading-none mb-2">
+                <h3 className="text-3xl font-semibold text-gray-900 tracking-tighter uppercase italic leading-none mb-2">
                   {department.departmentName}
                 </h3>
-                <p className="text-sm text-slate-500 font-medium leading-relaxed">
+                <p className="text-sm text-gray-500 font-medium leading-relaxed">
                   {department.description || "Phòng ban này chưa có mô tả chi tiết nội bộ."}
                 </p>
               </div>
@@ -76,7 +76,7 @@ export default function DepartmentDetail({
               </div>
             </div>
 
-            <div className="bg-white p-6 rounded-4xl border border-slate-100 shadow-sm space-y-4">
+            <div className="bg-white p-6 rounded-4xl border border-gray-100 shadow-sm space-y-4">
               <SectionHeader icon={<Info size={16}/>} title="Metadata" />
               <div className="space-y-3">
                 <MetaItem icon={<Calendar size={12}/>} label="Ngày khởi tạo" value={dayjs(department.createdDate).format("DD/MM/YYYY")} />
@@ -102,14 +102,14 @@ export default function DepartmentDetail({
           <div className="flex justify-end pt-4">
             <button
               onClick={onClose}
-              className="px-8 py-3 rounded-2xl font-semibold uppercase text-[10px] tracking-widest text-slate-400 hover:bg-slate-100 transition-all active:scale-95"
+              className="px-8 py-3 rounded-2xl font-semibold uppercase text-[10px] tracking-widest text-gray-600 hover:bg-gray-100 transition-all active:scale-95"
             >
               Đóng cửa sổ
             </button>
           </div>
         </div>
       ) : (
-        <div className="py-20 text-center text-slate-400 font-bold uppercase text-xs tracking-widest">
+        <div className="py-20 text-center text-gray-600 font-bold uppercase text-xs tracking-widest">
           Không có dữ liệu hiển thị.
         </div>
       )}
@@ -119,21 +119,21 @@ export default function DepartmentDetail({
 
 
 const BadgeInfo = ({ icon, label, value, color, bgColor }: any) => (
-  <div className={cn("flex items-center gap-3 px-4 py-2 rounded-2xl border border-transparent transition-all hover:border-slate-200", bgColor)}>
+  <div className={cn("flex items-center gap-3 px-4 py-2 rounded-2xl border border-transparent transition-all hover:border-gray-200", bgColor)}>
     <div className={cn("p-2 rounded-xl bg-white shadow-sm", color)}>{icon}</div>
     <div>
-      <p className="text-[9px] font-semibold uppercase tracking-tighter text-slate-400 leading-none">{label}</p>
+      <p className="text-[9px] font-semibold uppercase tracking-tighter text-gray-600 leading-none">{label}</p>
       <p className={cn("text-lg font-semibold italic tracking-tighter leading-none mt-1", color)}>{value}</p>
     </div>
   </div>
 );
 
 const MetaItem = ({ icon, label, value }: any) => (
-  <div className="flex items-center justify-between py-1 border-b border-dashed border-slate-100 last:border-none">
-    <div className="flex items-center gap-2 text-slate-400">
+  <div className="flex items-center justify-between py-1 border-b border-dashed border-gray-100 last:border-none">
+    <div className="flex items-center gap-2 text-gray-600">
       {icon}
       <span className="text-[10px] font-bold uppercase tracking-widest">{label}</span>
     </div>
-    <span className="text-[11px] font-semibold text-slate-700 italic">{value}</span>
+    <span className="text-[11px] font-semibold text-gray-700 italic">{value}</span>
   </div>
 );

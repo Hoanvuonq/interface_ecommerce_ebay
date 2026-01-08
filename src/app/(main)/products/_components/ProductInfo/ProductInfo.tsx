@@ -59,7 +59,7 @@ export function ProductInfo({ product, selectedVariant }: ProductInfoProps) {
                                 className="group cursor-pointer flex items-center justify-between px-5 py-4 bg-gray-50/50 hover:bg-orange-50/50 rounded-2xl border border-transparent hover:border-orange-100 transition-all duration-300"
                             >
                                 <div className="flex flex-col gap-0.5">
-                                    <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                                    <span className="text-[11px] font-bold text-gray-600 uppercase tracking-wider">
                                         {entry.label}
                                     </span>
                                     <span className="text-[14px] font-bold text-gray-700 group-hover:text-orange-600">

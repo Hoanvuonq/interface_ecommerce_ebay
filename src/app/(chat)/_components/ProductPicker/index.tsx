@@ -32,9 +32,9 @@ export const ProductPicker: React.FC<ProductPickerProps> = ({
   if (!isVisible) return null;
 
   return (
-    <div className="bg-white border-t border-slate-200 shadow-2xl animate-in slide-in-from-bottom duration-300 rounded-t-2xl md:rounded-none">
+    <div className="bg-white border-t border-gray-200 shadow-2xl animate-in slide-in-from-bottom duration-300 rounded-t-2xl md:rounded-none">
       {/* Header */}
-      <div className="px-4 py-3 border-b border-slate-100 bg-gradient-to-r from-blue-50/50 to-indigo-50/50">
+      <div className="px-4 py-3 border-b border-gray-100 bg-gradient-to-r from-blue-50/50 to-indigo-50/50">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2 text-blue-600 font-bold text-xs uppercase tracking-wider">
             <Package size={16} />
@@ -42,7 +42,7 @@ export const ProductPicker: React.FC<ProductPickerProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="p-1 hover:bg-white/80 rounded-full text-slate-400 hover:text-red-500 transition-colors"
+            className="p-1 hover:bg-white/80 rounded-full text-gray-600 hover:text-red-500 transition-colors"
           >
             <X size={18} />
           </button>
@@ -52,33 +52,33 @@ export const ProductPicker: React.FC<ProductPickerProps> = ({
         <div className="relative group">
           <Search
             size={16}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-600 group-focus-within:text-blue-500 transition-colors"
           />
           <input
             placeholder="Tìm theo tên sản phẩm..."
             value={searchText}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="w-full bg-white border border-slate-200 rounded-xl py-2 pl-10 pr-4 text-sm outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all placeholder:text-slate-400"
+            className="w-full bg-white border border-gray-200 rounded-xl py-2 pl-10 pr-4 text-sm outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all placeholder:text-gray-600"
           />
         </div>
       </div>
 
       {/* List */}
-      <div className="max-h-[320px] overflow-y-auto bg-slate-50/50 custom-scrollbar">
+      <div className="max-h-[320px] overflow-y-auto bg-gray-50/50 custom-scrollbar">
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-12 gap-3">
             <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
-            <span className="text-xs text-slate-400 font-medium">
+            <span className="text-xs text-gray-600 font-medium">
               Đang tải dữ liệu...
             </span>
           </div>
         ) : _.isEmpty(products) ? (
-          <div className="flex flex-col items-center justify-center py-12 text-slate-400">
+          <div className="flex flex-col items-center justify-center py-12 text-gray-600">
             <Package size={32} className="opacity-20 mb-2" />
             <p className="text-xs">Không tìm thấy sản phẩm nào</p>
           </div>
         ) : (
-          <div className="divide-y divide-slate-100 bg-white">
+          <div className="divide-y divide-gray-100 bg-white">
             {_.map(products, (product) => {
               // Xử lý dữ liệu an toàn với Lodash
               const mediaList = _.get(product, "media", []);
@@ -97,7 +97,7 @@ export const ProductPicker: React.FC<ProductPickerProps> = ({
                   className="p-3 flex gap-3 hover:bg-blue-50/30 transition-colors group"
                 >
                   {/* Image */}
-                  <div className="w-16 h-16 rounded-lg border border-slate-100 overflow-hidden shrink-0 bg-slate-100">
+                  <div className="w-16 h-16 rounded-lg border border-gray-100 overflow-hidden shrink-0 bg-gray-100">
                     <img
                       src={productImageUrl || "/placeholder-product.png"}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
@@ -113,12 +113,12 @@ export const ProductPicker: React.FC<ProductPickerProps> = ({
                   <div className="flex-1 min-w-0 flex flex-col justify-between py-0.5">
                     <div>
                       <h5
-                        className="text-sm font-semibold text-slate-800 truncate"
+                        className="text-sm font-semibold text-gray-800 truncate"
                         title={product.name}
                       >
                         {product.name}
                       </h5>
-                      <p className="text-xs text-slate-500 truncate mt-0.5">
+                      <p className="text-xs text-gray-500 truncate mt-0.5">
                         Mã SP: {product.sku || product.id?.substring(0, 8)}
                       </p>
                     </div>
@@ -145,7 +145,7 @@ export const ProductPicker: React.FC<ProductPickerProps> = ({
 
                     <button
                       onClick={() => onViewDetails(product)}
-                      className="px-3 py-1.5 bg-white text-slate-600 border border-slate-200 rounded-lg text-[10px] font-bold hover:bg-slate-50 hover:border-slate-300 transition-all"
+                      className="px-3 py-1.5 bg-white text-gray-600 border border-gray-200 rounded-lg text-[10px] font-bold hover:bg-gray-50 hover:border-gray-300 transition-all"
                     >
                       Chi tiết
                     </button>

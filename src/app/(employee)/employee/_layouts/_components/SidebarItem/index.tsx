@@ -29,7 +29,7 @@ export const SidebarItem = ({
   const highlightParent = isParentOfActive && !collapsed;
 
   if (item.type === "divider") {
-    return <div className="h-px bg-slate-100 my-3 mx-4" />;
+    return <div className="h-px bg-gray-100 my-3 mx-4" />;
   }
 
   const content = (
@@ -40,14 +40,14 @@ export const SidebarItem = ({
           ? "bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-200 scale-[1.02]" 
           : highlightParent
           ? "bg-orange-50/50 text-orange-600"
-          : "text-slate-500 hover:bg-orange-50 hover:text-orange-600",
+          : "text-gray-500 hover:bg-orange-50 hover:text-orange-600",
         item.className
       )}
       onClick={() => hasChildren && onToggle(item.key)}
     >
       <span className={cn(
         "shrink-0 transition-transform duration-300 group-hover:scale-110 relative z-10",
-        isActive ? "text-white" : highlightParent ? "text-orange-500" : "text-slate-400 group-hover:text-orange-500"
+        isActive ? "text-white" : highlightParent ? "text-orange-500" : "text-gray-600 group-hover:text-orange-500"
       )}>
         {item.icon}
       </span>
@@ -60,7 +60,7 @@ export const SidebarItem = ({
 
       {!collapsed && hasChildren && (
         <span className={cn("transition-transform duration-300 relative z-10", isOpen ? "rotate-180" : "")}>
-          <ChevronDown size={14} className={isActive ? "text-white" : "text-slate-400"} />
+          <ChevronDown size={14} className={isActive ? "text-white" : "text-gray-600"} />
         </span>
       )}
     </div>
@@ -87,10 +87,10 @@ export const SidebarItem = ({
                   "flex items-center gap-3 px-4 py-2 rounded-xl text-[12px] font-bold transition-all duration-200",
                   isChildActive
                     ? "text-orange-600 bg-orange-100/50" // Làm đậm màu hơn khi active con
-                    : "text-slate-500 hover:text-orange-600 hover:bg-orange-50/50"
+                    : "text-gray-500 hover:text-orange-600 hover:bg-orange-50/50"
                 )}
               >
-                {child.icon && <span className={isChildActive ? "text-orange-500" : "text-slate-400"}>{child.icon}</span>}
+                {child.icon && <span className={isChildActive ? "text-orange-500" : "text-gray-600"}>{child.icon}</span>}
                 <span className="truncate">{child.label}</span>
               </Link>
             );

@@ -29,7 +29,7 @@ export const SectionLoading: React.FC<SectionLoadingProps> = ({
           <motion.div
             animate={{ rotate: -360 }}
             transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
-            className="absolute inset-2 border-b-2 border-l-2 border-slate-200 border-t-transparent border-r-transparent rounded-full"
+            className="absolute inset-2 border-b-2 border-l-2 border-gray-200 border-t-transparent border-r-transparent rounded-full"
           />
           <motion.div
             animate={{ scale: [1, 1.2, 1] }}
@@ -43,7 +43,7 @@ export const SectionLoading: React.FC<SectionLoadingProps> = ({
             initial={{ opacity: 0.5 }}
             animate={{ opacity: [0.5, 1, 0.5] }}
             transition={{ repeat: Infinity, duration: 2 }}
-            className="text-2xl md:text-3xl font-semibold italic uppercase tracking-tighter text-slate-900"
+            className="text-2xl md:text-3xl font-semibold italic uppercase tracking-tighter text-gray-900"
           >
             {message.split("...")[0]}
             <span className="text-orange-500">...</span>

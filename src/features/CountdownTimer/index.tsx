@@ -67,7 +67,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
     return () => clearInterval(timer);
   }, [endTime, onExpire]);
 
-  if (isExpired) return <span className="text-slate-500 text-xs font-bold">ĐÃ KẾT THÚC</span>;
+  if (isExpired) return <span className="text-gray-500 text-xs font-bold">ĐÃ KẾT THÚC</span>;
 
   return (
     <div className="flex items-start justify-center">

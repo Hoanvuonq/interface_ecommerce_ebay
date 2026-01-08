@@ -31,7 +31,7 @@ export default function EmployeeTimeStatistics() {
     return (
       <div className="flex flex-col items-center justify-center h-96 gap-4">
         <RotateCw className="animate-spin text-orange-500" size={40} />
-        <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-slate-300 italic">
+        <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-gray-300 italic">
           Đang đồng bộ dòng thời gian...
         </span>
       </div>
@@ -41,7 +41,7 @@ export default function EmployeeTimeStatistics() {
     <div className="p-8 bg-[#F8FAFC] min-h-screen space-y-10 animate-in fade-in duration-500">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div className="relative">
-          <h1 className="text-4xl font-semibold text-slate-900 tracking-tighter uppercase italic leading-none">
+          <h1 className="text-4xl font-semibold text-gray-900 tracking-tighter uppercase italic leading-none">
             Tăng trưởng <span className="text-orange-500">Nhân sự</span>
           </h1>
           {isRefetching && (
@@ -52,7 +52,7 @@ export default function EmployeeTimeStatistics() {
           )}
         </div>
 
-        <div className="flex gap-3 bg-white p-2 rounded-3xl border border-slate-100 shadow-sm shadow-orange-500/5">
+        <div className="flex gap-3 bg-white p-2 rounded-3xl border border-gray-100 shadow-sm shadow-orange-500/5">
           <SelectComponent
             options={filterOptions.years}
             value={String(selectedYear)}
@@ -209,19 +209,19 @@ export default function EmployeeTimeStatistics() {
                 {chartData?.top5Days.map((item: any, idx: number) => (
                   <div
                     key={idx}
-                    className="bg-slate-50/50 p-5 rounded-4xl border border-slate-100 relative overflow-hidden group hover:border-orange-200 transition-all"
+                    className="bg-gray-50/50 p-5 rounded-4xl border border-gray-100 relative overflow-hidden group hover:border-orange-200 transition-all"
                   >
                     <span className="absolute -right-2 -bottom-2 text-5xl opacity-[0.03] font-semibold italic group-hover:opacity-10 transition-opacity">
                       #{idx + 1}
                     </span>
-                    <p className="text-[10px] font-semibold uppercase text-slate-400 mb-1">
+                    <p className="text-[10px] font-semibold uppercase text-gray-600 mb-1">
                       {item.date
                         ? new Date(item.date).toLocaleDateString("vi-VN")
                         : `Ngày ${item.day}`}
                     </p>
-                    <p className="text-3xl font-semibold text-slate-800 italic leading-none">
+                    <p className="text-3xl font-semibold text-gray-800 italic leading-none">
                       {item.count}{" "}
-                      <span className="text-[10px] not-italic text-slate-300 uppercase font-bold tracking-tighter">
+                      <span className="text-[10px] not-italic text-gray-300 uppercase font-bold tracking-tighter">
                         New
                       </span>
                     </p>

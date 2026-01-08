@@ -70,7 +70,7 @@ export function SimilarProducts({ productId }: SimilarProductsProps) {
             <h3 className="text-lg font-bold text-gray-900 uppercase tracking-tight">
               Sản phẩm tương tự
             </h3>
-            <p className="text-xs text-gray-400 font-medium">
+            <p className="text-xs text-gray-600 font-medium">
               Khám phá thêm <span className="text-orange-500">{totalElements}</span> sản phẩm cùng loại
             </p>
           </div>
@@ -98,7 +98,7 @@ export function SimilarProducts({ productId }: SimilarProductsProps) {
         {loading && products.length === 0 && (
           <div className="flex flex-col items-center justify-center py-20 gap-4">
             <CustomSpinner />
-            <p className="text-sm text-gray-400 animate-pulse font-medium">Đang tìm kiếm sản phẩm phù hợp...</p>
+            <p className="text-sm text-gray-600 animate-pulse font-medium">Đang tìm kiếm sản phẩm phù hợp...</p>
           </div>
         )}
 

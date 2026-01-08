@@ -46,7 +46,7 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>(
             disabled={disabled}
             className={cn(
               // Base styles
-              "block w-full rounded-xl border-0 py-3 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-200 placeholder:text-gray-400 sm:text-sm sm:leading-6 transition-all duration-200 font-medium",
+              "block w-full rounded-xl border-0 py-3 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-200 placeholder:text-gray-600 sm:text-sm sm:leading-6 transition-all duration-200 font-medium",
               
               // Custom calendar icon styling for webkit browsers (Chrome, Safari)
               "[&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer",
@@ -72,7 +72,7 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>(
             size={18}
             className={cn(
               "absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none transition-colors",
-              disabled ? "text-gray-400" : "text-gray-500"
+              disabled ? "text-gray-600" : "text-gray-500"
             )}
           />
         </div>
@@ -84,7 +84,7 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>(
         )}
 
         {!errorMessage && helpText && (
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-600">
             {helpText}
           </p>
         )}

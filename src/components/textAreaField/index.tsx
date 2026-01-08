@@ -28,7 +28,7 @@ export const TextAreaField = forwardRef<HTMLTextAreaElement, TextAreaFieldProps>
           </span>
           
           {maxLength && (
-            <span className={`text-xs ${currentLength > maxLength ? 'text-red-500' : 'text-gray-400'}`}>
+            <span className={`text-xs ${currentLength > maxLength ? 'text-red-500' : 'text-gray-600'}`}>
               {currentLength}/{maxLength}
             </span>
           )}
@@ -46,7 +46,7 @@ export const TextAreaField = forwardRef<HTMLTextAreaElement, TextAreaFieldProps>
             onChange={onChange}
             className={`
               w-full px-3 py-2 text-sm bg-white border rounded-md outline-none transition-all
-              placeholder:text-gray-400
+              placeholder:text-gray-600
               disabled:cursor-not-allowed disabled:bg-gray-50
               ${error 
                 ? "border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500" 

@@ -32,7 +32,7 @@ export const VoucherCard: React.FC<VoucherCardProps> = ({
           ? isShipping 
             ? "border-emerald-500 bg-emerald-50/30 shadow-[0_10px_25px_-5px_rgba(16,185,129,0.15)] scale-[1.01] z-10"
             : "border-orange-500 bg-orange-50/30 shadow-[0_10px_25px_-5px_rgba(249,115,22,0.15)] scale-[1.01] z-10"
-          : "border-slate-100 bg-white hover:border-slate-300 shadow-sm",
+          : "border-gray-100 bg-white hover:border-gray-300 shadow-sm",
         // Trạng thái không thể chọn
         !canSelect && "opacity-60 grayscale cursor-not-allowed border-dashed"
       )}
@@ -64,7 +64,7 @@ export const VoucherCard: React.FC<VoucherCardProps> = ({
       <div className="flex-1 p-4 flex flex-col justify-center min-w-0 relative">
         <div className="flex justify-between items-start gap-2">
           <div className="min-w-0">
-            <h4 className="font-bold text-slate-400 text-[9px] truncate uppercase tracking-widest mb-1">
+            <h4 className="font-bold text-gray-600 text-[9px] truncate uppercase tracking-widest mb-1">
               {voucher.code}
             </h4>
             <p
@@ -77,7 +77,7 @@ export const VoucherCard: React.FC<VoucherCardProps> = ({
                 ? `Giảm ${voucher.discountAmount}%`
                 : `Giảm ${formatPriceFull(voucher.discountAmount)}`}
             </p>
-            <p className="text-[10px] font-medium text-slate-500 mt-1">
+            <p className="text-[10px] font-medium text-gray-500 mt-1">
               Đơn tối thiểu {formatPriceFull(voucher.minOrderValue)}
             </p>
           </div>
@@ -90,7 +90,7 @@ export const VoucherCard: React.FC<VoucherCardProps> = ({
                 ? isShipping 
                   ? "bg-emerald-500 border-emerald-500" 
                   : "bg-orange-500 border-orange-500"
-                : "bg-white border-slate-200"
+                : "bg-white border-gray-200"
             )}
           >
             <CheckCircle2
@@ -106,8 +106,8 @@ export const VoucherCard: React.FC<VoucherCardProps> = ({
 
         {/* Hạn sử dụng hoặc ghi chú thêm (Nếu có) */}
         {voucher.endDate && (
-          <div className="mt-3 pt-2 border-t border-slate-50">
-             <p className="text-[9px] text-slate-400 font-medium italic">
+          <div className="mt-3 pt-2 border-t border-gray-50">
+             <p className="text-[9px] text-gray-600 font-medium italic">
                 HSD: {new Date(voucher.endDate).toLocaleDateString('vi-VN')}
              </p>
           </div>
@@ -115,8 +115,8 @@ export const VoucherCard: React.FC<VoucherCardProps> = ({
       </div>
 
       {/* HIỆU ỨNG KHOÉT CẠNH VÉ (TICKET NOTCH) */}
-      <div className="absolute left-[90px] -top-2 w-4 h-4 bg-white border-b border-slate-100 rounded-full z-10" />
-      <div className="absolute left-[90px] -bottom-2 w-4 h-4 bg-white border-t border-slate-100 rounded-full z-10" />
+      <div className="absolute left-[90px] -top-2 w-4 h-4 bg-white border-b border-gray-100 rounded-full z-10" />
+      <div className="absolute left-[90px] -bottom-2 w-4 h-4 bg-white border-t border-gray-100 rounded-full z-10" />
     </div>
   );
 };

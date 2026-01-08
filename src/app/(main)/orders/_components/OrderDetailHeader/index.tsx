@@ -11,32 +11,15 @@ import {
 } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { OrderExpirationTimer } from "../OrderExpirationTimer";
-
-interface OrderHeaderProps {
-  order: any;
-  ui: {
-    statusInfo: any;
-    isDelivered: boolean;
-    isCancelled: boolean;
-    canCancel: boolean;
-    paymentLabel: string;
-  };
-  actions: {
-    handleCopyOrderNumber: () => void;
-    setCancelModalVisible: (visible: boolean) => void;
-    handleRefresh: () => void;
-  };
-}
-
-
+import { OrderHeaderProps } from "./type";
 
 export const OrderHeader: React.FC<OrderHeaderProps> = ({ order, ui, actions }) => {
   return (
-    <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
+    <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold text-slate-700 tracking-tight">
+            <h1 className="text-2xl font-bold text-gray-900 uppercase">
               Chi tiết đơn hàng
             </h1>
             <div className={cn(
@@ -48,14 +31,14 @@ export const OrderHeader: React.FC<OrderHeaderProps> = ({ order, ui, actions }) 
             </div>
           </div>
           
-          <div className="flex items-center gap-3 text-[11px] text-slate-400">
+          <div className="flex items-center gap-3 text-[11px] text-gray-600">
             <button 
               onClick={actions.handleCopyOrderNumber}
               className="hover:text-indigo-600 transition-colors flex items-center gap-1 font-mono"
             >
               #{order.orderNumber} <Copy size={10} />
             </button>
-            <span className="w-1 h-1 rounded-full bg-slate-200" />
+            <span className="w-1 h-1 rounded-full bg-gray-200" />
             <div className="flex items-center gap-1">
               <Calendar size={11} />
               {new Date(order.createdAt).toLocaleDateString("vi-VN")}
@@ -63,26 +46,26 @@ export const OrderHeader: React.FC<OrderHeaderProps> = ({ order, ui, actions }) 
           </div>
         </div>
 
-        <div className="flex items-center gap-4 border-t sm:border-t-0 sm:border-l border-slate-100 pt-3 sm:pt-0 sm:pl-4">
+        <div className="flex items-center gap-4 border-t sm:border-t-0 sm:border-l border-gray-100 pt-3 sm:pt-0 sm:pl-4">
           <div className="flex items-center gap-2">
-            <div className="text-slate-400"><Truck size={14} /></div>
+            <div className="text-gray-600"><Truck size={14} /></div>
             <div className="leading-tight">
-              <p className="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Giao qua</p>
-              <p className="text-xs font-semibold text-slate-700">{order.carrier || "N/A"}</p>
+              <p className="text-[9px] uppercase font-bold text-gray-600 tracking-wider">Giao qua</p>
+              <p className="text-xs font-semibold text-gray-700">{order.carrier || "N/A"}</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 border-l border-slate-100 pl-4">
-            <div className="text-slate-400"><CreditCard size={14} /></div>
+          <div className="flex items-center gap-2 border-l border-gray-100 pl-4">
+            <div className="text-gray-600"><CreditCard size={14} /></div>
             <div className="leading-tight">
-              <p className="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Thanh toán</p>
+              <p className="text-[9px] uppercase font-bold text-gray-600 tracking-wider">Thanh toán</p>
               <p className="text-[11px] font-semibold text-blue-600 uppercase">{ui.paymentLabel}</p>
             </div>
           </div>
         </div>
         {ui.canCancel && (
-        <div className="border-t border-slate-50 flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2 text-[11px] text-slate-500 italic">
+        <div className="border-t border-gray-50 flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2 text-[11px] text-gray-500 italic">
             <div className="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse" />
             Vui lòng hoàn tất trước khi hết hạn
           </div>

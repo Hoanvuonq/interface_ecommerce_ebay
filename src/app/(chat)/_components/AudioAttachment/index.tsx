@@ -111,7 +111,7 @@ export const AudioAttachment: React.FC<AudioAttachmentProps> = ({ attachment }) 
   }, [drawWaveform]);
 
   return (
-    <div className="mt-2 p-3 w-full max-w-[320px] bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl border border-slate-200 shadow-sm transition-all hover:shadow-md">
+    <div className="mt-2 p-3 w-full max-w-[320px] bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl border border-gray-200 shadow-sm transition-all hover:shadow-md">
       <audio
         ref={audioRef}
         src={fileUrl}
@@ -125,7 +125,7 @@ export const AudioAttachment: React.FC<AudioAttachmentProps> = ({ attachment }) 
         {/* Header */}
         <div className="flex items-center gap-2">
           <Mic size={14} className="text-blue-500" />
-          <span className="text-xs font-semibold text-slate-700 truncate">
+          <span className="text-xs font-semibold text-gray-700 truncate">
             {fileName}
           </span>
         </div>
@@ -136,7 +136,7 @@ export const AudioAttachment: React.FC<AudioAttachmentProps> = ({ attachment }) 
           <button
             onClick={handlePlayPause}
             disabled={isLoading}
-            className="group relative flex items-center justify-center w-10 h-10 bg-blue-500 text-white rounded-full transition-transform active:scale-90 hover:bg-blue-600 disabled:bg-slate-300 shadow-lg shadow-blue-200"
+            className="group relative flex items-center justify-center w-10 h-10 bg-blue-500 text-white rounded-full transition-transform active:scale-90 hover:bg-blue-600 disabled:bg-gray-300 shadow-lg shadow-blue-200"
           >
             {isLoading ? (
               <Loader2 size={18} className="animate-spin" />
@@ -165,7 +165,7 @@ export const AudioAttachment: React.FC<AudioAttachmentProps> = ({ attachment }) 
           <button
             onClick={handlePlaybackRateChange}
             className={`flex items-center gap-0.5 text-[10px] font-bold px-2 py-1 rounded-lg transition-colors ${
-              playbackRate !== 1 ? "bg-blue-100 text-blue-600" : "bg-slate-200 text-slate-500"
+              playbackRate !== 1 ? "bg-blue-100 text-blue-600" : "bg-gray-200 text-gray-500"
             }`}
           >
             <Zap size={10} fill={playbackRate !== 1 ? "currentColor" : "none"} />
@@ -175,10 +175,10 @@ export const AudioAttachment: React.FC<AudioAttachmentProps> = ({ attachment }) 
 
         {/* Time Display */}
         <div className="flex justify-between items-center px-1">
-          <span className="text-[10px] font-mono font-medium text-slate-500">
+          <span className="text-[10px] font-mono font-medium text-gray-500">
             {formatTime(currentTime)}
           </span>
-          <span className="text-[10px] font-mono font-medium text-slate-400">
+          <span className="text-[10px] font-mono font-medium text-gray-600">
             {formatTime(duration || initialDuration)}
           </span>
         </div>

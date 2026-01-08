@@ -10,7 +10,7 @@ export const SystemOnline = ({ collapsed }: EmployeeSidebarProps) => {
           "rounded-2xl transition-all duration-300 flex items-center gap-3 overflow-hidden",
           collapsed
             ? "justify-center p-2"
-            : "bg-slate-50 p-3.5 border border-slate-100"
+            : "bg-gray-50 p-3.5 border border-gray-100"
         )}
       >
         <div className="relative flex shrink-0">
@@ -19,10 +19,10 @@ export const SystemOnline = ({ collapsed }: EmployeeSidebarProps) => {
         </div>
         {!collapsed && (
           <div className="flex flex-col">
-            <span className="text-[11px] font-semibold text-slate-700 uppercase tracking-wide">
+            <span className="text-[11px] font-semibold text-gray-700 uppercase tracking-wide">
               System Online
             </span>
-            <span className="text-[9px] font-bold text-slate-400">
+            <span className="text-[9px] font-bold text-gray-600">
               v2.1.0-stable
             </span>
           </div>

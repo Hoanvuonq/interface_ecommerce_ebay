@@ -13,6 +13,8 @@ import { SelectComponent } from "@/components/SelectComponent";
 import { Button } from "@/components/button/button";
 import { ButtonField } from "@/components";
 import { useToast } from "@/hooks/useToast";
+import { FormInput } from "@/components/formInput";
+import { Checkbox } from "@/components/checkbox";
 
 interface AddressFormModalProps {
   isOpen: boolean;
@@ -30,11 +32,11 @@ export const AddressFormModal = ({
   onSuccess,
 }: AddressFormModalProps) => {
   const [loading, setLoading] = useState(false);
-
   const [provinces, setProvinces] = useState<Province[]>([]);
   const [allWards, setAllWards] = useState<Ward[]>([]);
   const [wards, setWards] = useState<Ward[]>([]);
   const { success, error } = useToast();
+
   const [formData, setFormData] = useState({
     recipientName: "",
     phone: "",
@@ -47,6 +49,9 @@ export const AddressFormModal = ({
     country: "Vietnam",
     isDefault: false,
   });
+
+  // State quản lý lỗi hiển thị trên FormInput
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     if (!isOpen) return;
@@ -114,9 +119,9 @@ export const AddressFormModal = ({
       });
       setWards([]);
     }
+    setErrors({});
   }, [isOpen, initialValues]);
 
-  // --- Handlers ---
   const handleProvinceChange = (code: string) => {
     const province = provinces.find((p) => p.province_code === code);
     const filteredWards = allWards.filter((w) => w.province_code === code);
@@ -128,6 +133,7 @@ export const AddressFormModal = ({
       wardCode: "",
       wardName: "",
     }));
+    if (errors.provinceCode) setErrors(prev => ({...prev, provinceCode: ""}));
   };
 
   const handleWardChange = (code: string) => {
@@ -137,28 +143,34 @@ export const AddressFormModal = ({
       wardCode: code,
       wardName: ward?.name || "",
     }));
+    if (errors.wardCode) setErrors(prev => ({...prev, wardCode: ""}));
   };
 
   const handleInputChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    // Xóa lỗi khi người dùng bắt đầu nhập lại
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (
-      !formData.recipientName ||
-      !formData.phone ||
-      !formData.provinceName ||
-      !formData.wardName ||
-      !formData.detailAddress
-    ) {
-      error("Vui lòng điền đầy đủ thông tin");
+    // Validate form
+    const newErrors: Record<string, string> = {};
+    if (!formData.recipientName) newErrors.recipientName = "Vui lòng nhập tên người nhận";
+    if (!formData.phone) newErrors.phone = "Vui lòng nhập số điện thoại";
+    if (!formData.provinceName) newErrors.provinceCode = "Vui lòng chọn tỉnh thành";
+    if (!formData.wardName) newErrors.wardCode = "Vui lòng chọn phường xã";
+    if (!formData.detailAddress) newErrors.detailAddress = "Vui lòng nhập địa chỉ chi tiết";
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      error("Vui lòng điền đầy đủ thông tin bắt buộc");
       return;
     }
 
@@ -199,8 +211,8 @@ export const AddressFormModal = ({
       }
       onSuccess();
       onClose();
-    } catch (error: any) {
-      error(error?.message || "Có lỗi xảy ra");
+    } catch (err: any) {
+      error(err?.message || "Có lỗi xảy ra");
     } finally {
       setLoading(false);
     }
@@ -218,29 +230,27 @@ export const AddressFormModal = ({
   );
 
   const footerContent = (
-    <>
-      <div className="flex items-center gap-3">
-        <Button variant="edit" onClick={onClose}>
-          Hủy bỏ
-        </Button>
-        <ButtonField
-          form="address-form"
-          htmlType="submit"
-          type="login"
-          loading={loading}
-          className="flex w-40 items-center gap-2 px-5 py-2 rounded-lg text-sm font-semibold shadow-md shadow-orange-500/20 transition-all active:scale-95 border-0 h-auto"
-        > 
-          <span className="flex items-center gap-2">
-            {loading ? (
-              <Loader2 className="animate-spin w-4 h-4" />
-            ) : (
-              <FaSave />
-            )}
-            {initialValues ? "Lưu thay đổi" : "Hoàn thành"}
-          </span>
-        </ButtonField>
-      </div>
-    </>
+    <div className="flex items-center gap-3">
+      <Button variant="edit" onClick={onClose}>
+        Hủy bỏ
+      </Button>
+      <ButtonField
+        form="address-form"
+        htmlType="submit"
+        type="login"
+        loading={loading}
+        className="flex w-40 items-center justify-center gap-2 px-5 py-2 rounded-lg text-sm font-semibold shadow-md shadow-(--color-mainColor)/20 transition-all active:scale-95 border-0 h-auto"
+      >
+        <span className="flex items-center gap-2">
+          {loading ? (
+            <Loader2 className="animate-spin w-4 h-4" />
+          ) : (
+            <FaSave />
+          )}
+          {initialValues ? "Lưu thay đổi" : "Hoàn thành"}
+        </span>
+      </ButtonField>
+    </div>
   );
 
   return (
@@ -257,57 +267,50 @@ export const AddressFormModal = ({
         className="space-y-6 py-2"
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-2">
-            <label className="text-sm font-semibold text-gray-700">
-              Tên người nhận <span className="text-red-500">*</span>
-            </label>
-            <input
-              name="recipientName"
-              value={formData.recipientName}
-              onChange={handleInputChange}
-              placeholder="VD: Nguyễn Văn A"
-              className="w-full h-11 px-4 text-sm border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-200 focus:border-orange-500 outline-none transition-all"
-            />
-          </div>
-          <div className="space-y-2">
-            <label className="text-sm font-semibold text-gray-700">
-              Số điện thoại <span className="text-red-500">*</span>
-            </label>
-            <input
-              name="phone"
-              value={formData.phone}
-              onChange={handleInputChange}
-              placeholder="Nhập số điện thoại"
-              className="w-full h-11 px-4 text-sm border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-200 focus:border-orange-500 outline-none transition-all"
-            />
-          </div>
-        </div>
-
-        <div className="space-y-2">
-          <label className="text-sm font-semibold text-gray-700">
-            Địa chỉ chi tiết <span className="text-red-500">*</span>
-          </label>
-          <textarea
-            name="detailAddress"
-            value={formData.detailAddress}
+          <FormInput
+            label="Tên người nhận"
+            required
+            name="recipientName"
+            value={formData.recipientName}
             onChange={handleInputChange}
-            rows={2}
-            placeholder="Số nhà, tên đường, tòa nhà..."
-            className="w-full p-4 border text-sm border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-200 focus:border-orange-500 outline-none transition-all resize-none"
+            placeholder="VD: Nguyễn Văn A"
+            error={errors.recipientName}
+          />
+          <FormInput
+            label="Số điện thoại"
+            required
+            name="phone"
+            value={formData.phone}
+            onChange={handleInputChange}
+            placeholder="Nhập số điện thoại"
+            error={errors.phone}
           />
         </div>
+
+        <FormInput
+          isTextArea
+          label="Địa chỉ chi tiết"
+          required
+          name="detailAddress"
+          value={formData.detailAddress}
+          onChange={handleInputChange}
+          rows={2}
+          placeholder="Số nhà, tên đường, tòa nhà..."
+          error={errors.detailAddress}
+        />
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-gray-700">
+            <label className="text-[11px] font-bold tracking-[0.15em] text-gray-600 ml-1">
               Quốc gia
             </label>
-            <div className="w-full h-11 px-4 flex items-center bg-gray-50 border border-gray-300 rounded-xl text-gray-500 cursor-not-allowed font-medium">
+            <div className="w-full h-12 px-5 flex items-center bg-gray-100/50 border border-gray-200 rounded-2xl text-gray-600 cursor-not-allowed font-semibold text-sm shadow-inner">
               Việt Nam
             </div>
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-gray-700">
+            <label className="text-[11px] font-bold tracking-[0.15em] text-gray-600 ml-1">
               Tỉnh/Thành phố <span className="text-red-500">*</span>
             </label>
             <SelectComponent
@@ -318,11 +321,13 @@ export const AddressFormModal = ({
               }))}
               value={formData.provinceCode}
               onChange={handleProvinceChange}
+              className={errors.provinceCode ? "border-red-400" : ""}
             />
+            {errors.provinceCode && <p className="text-[10px] font-medium text-red-500 ml-1">{errors.provinceCode}</p>}
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-gray-700">
+            <label className="text-[11px] font-bold tracking-[0.15em] text-gray-600 ml-1">
               Phường/Xã <span className="text-red-500">*</span>
             </label>
             <SelectComponent
@@ -334,22 +339,24 @@ export const AddressFormModal = ({
               value={formData.wardCode}
               onChange={handleWardChange}
               disabled={!formData.provinceCode}
+              className={errors.wardCode ? "border-red-400" : ""}
             />
+            {errors.wardCode && <p className="text-[10px] font-medium text-red-500 ml-1">{errors.wardCode}</p>}
           </div>
         </div>
 
         <div className="space-y-2 py-2">
-          <label className="text-sm font-semibold text-gray-700">
+          <label className="text-[11px] font-bold tracking-[0.15em] text-gray-600 ml-1">
             Loại địa chỉ
           </label>
-          <div className="flex gap-4 py-1 overflow-x-auto">
+          <div className="flex gap-4 py-1 px-2 overflow-x-auto custom-scrollbar">
             {menuAddressItems.map((type) => (
               <label
                 key={type.val}
                 className={cn(
-                  "flex-1 min-w-30 flex items-center justify-center gap-2 py-3 rounded-xl border cursor-pointer transition-all text-sm font-medium select-none",
+                  "flex-1 min-w-30 flex items-center justify-center gap-2 py-3 rounded-xl border cursor-pointer transition-all text-sm font-semibold select-none",
                   formData.type === type.val
-                    ? "border-orange-500 bg-orange-50 text-orange-700 shadow-sm ring-1 ring-orange-500"
+                    ? "border-(--color-mainColor) bg-orange-50 text-orange-700 shadow-sm ring-1 ring-(--color-mainColor)"
                     : "border-gray-200 text-gray-600 hover:bg-gray-50"
                 )}
               >
@@ -362,10 +369,11 @@ export const AddressFormModal = ({
                   className="hidden"
                 />
                 <type.icon
+                  size={18}
                   className={
                     formData.type === type.val
-                      ? "text-orange-500"
-                      : "text-gray-400"
+                      ? "text-(--color-mainColor)"
+                      : "text-gray-600"
                   }
                 />
                 {type.label}
@@ -373,23 +381,14 @@ export const AddressFormModal = ({
             ))}
           </div>
         </div>
-        <div className="flex items-center gap-3 py-2">
-          <label
-            className="text-sm font-semibold text-gray-700"
-            htmlFor="isDefault-toggle"
-          >
-            Đặt làm địa chỉ mặc định
-          </label>
-          <input
-            id="isDefault-toggle"
-            type="checkbox"
-            checked={formData.isDefault}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, isDefault: e.target.checked }))
-            }
-            className="w-5 h-5 accent-orange-500 border-gray-300 rounded focus:ring-orange-200"
-          />
-        </div>
+
+        <Checkbox
+          label="Đặt làm địa chỉ mặc định"
+          checked={formData.isDefault}
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, isDefault: e.target.checked }))
+          }
+        />
       </form>
     </PortalModal>
   );

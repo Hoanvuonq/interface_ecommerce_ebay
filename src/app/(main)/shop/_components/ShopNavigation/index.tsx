@@ -38,7 +38,7 @@ export default function ShopNavigation({
                     ${
                       isActive
                         ? "text-(--color-mainColor)"
-                        : "text-slate-500 hover:text-(--color-mainColor)/80 hover:bg-gray-50"
+                        : "text-gray-500 hover:text-(--color-mainColor)/80 hover:bg-gray-50"
                     }
                   `}
                 >
@@ -59,7 +59,7 @@ export default function ShopNavigation({
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <Search
                 size={18}
-                className="text-slate-400 transition-colors group-focus-within:text-(--color-mainColor)"
+                className="text-gray-600 transition-colors group-focus-within:text-(--color-mainColor)"
               />
             </div>
             <input
@@ -68,9 +68,9 @@ export default function ShopNavigation({
               onChange={(e) => setSearchKeyword(e.target.value)}
               placeholder="Tìm kiếm sản phẩm..."
               className={cn(
-                "block w-full pl-10 pr-4 py-2.5 placeholder:text-slate-400",
+                "block w-full pl-10 pr-4 py-2.5 placeholder:text-gray-600",
                 "bg-gray-100/50 border border-transparent",
-                "rounded-xl text-sm text-slate-700 transition-all duration-300",
+                "rounded-xl text-sm text-gray-700 transition-all duration-300",
                 "focus:bg-white",
                 "focus:border-(--color-mainColor)/30",
                 "focus:ring-4 focus:ring-(--color-mainColor)/10",

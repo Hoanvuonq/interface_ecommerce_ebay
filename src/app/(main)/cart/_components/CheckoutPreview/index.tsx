@@ -62,14 +62,14 @@ export const CheckoutPreview: React.FC<CheckoutPreviewProps> = ({
               <h3 className="text-lg font-semibold text-gray-900 uppercase tracking-tight">
                 Xem trước đơn hàng
               </h3>
-              <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">
+              <p className="text-[10px] text-gray-600 font-bold uppercase tracking-widest">
                 Vui lòng kiểm tra kỹ thông tin
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-400"
+            className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-600"
           >
             <X size={20} />
           </button>
@@ -80,7 +80,7 @@ export const CheckoutPreview: React.FC<CheckoutPreviewProps> = ({
           {loading ? (
             <div className="flex flex-col items-center justify-center py-20 gap-4">
               <Loader2 size={40} className="animate-spin text-orange-500" />
-              <p className="text-gray-400 font-semibold uppercase tracking-widest text-xs">
+              <p className="text-gray-600 font-semibold uppercase tracking-widest text-xs">
                 Đang tính toán đơn hàng...
               </p>
             </div>
@@ -129,7 +129,7 @@ export const CheckoutPreview: React.FC<CheckoutPreviewProps> = ({
 
                 {/* Shop Sections */}
                 <div className="space-y-4">
-                  <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-widest px-1">
+                  <h4 className="text-xs font-semibold text-gray-600 uppercase tracking-widest px-1">
                     Chi tiết từng shop
                   </h4>
                   {preview.shops.map((shop) => (
@@ -140,7 +140,7 @@ export const CheckoutPreview: React.FC<CheckoutPreviewProps> = ({
                       {/* Shop Sub-header */}
                       <div className="px-4 py-3 bg-gray-50/50 border-b border-gray-100 flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <Store size={16} className="text-gray-400" />
+                          <Store size={16} className="text-gray-600" />
                           <span className="text-sm font-semibold text-gray-800 uppercase tracking-tighter">
                             {shop.shopName}
                           </span>
@@ -164,7 +164,7 @@ export const CheckoutPreview: React.FC<CheckoutPreviewProps> = ({
                               <p className="text-sm font-bold text-gray-900 truncate tracking-tight">
                                 {item.productName}
                               </p>
-                              <div className="flex items-center gap-2 mt-0.5 text-xs text-gray-400 font-medium italic">
+                              <div className="flex items-center gap-2 mt-0.5 text-xs text-gray-600 font-medium italic">
                                 <span>Số lượng: {item.quantity}</span>
                                 {!item.isAvailable && (
                                   <span className="text-red-500 not-italic font-semibold text-[10px] uppercase underline">
@@ -206,11 +206,11 @@ export const CheckoutPreview: React.FC<CheckoutPreviewProps> = ({
                 </div>
 
                 <div className="bg-gray-900 rounded-3xl p-6 text-white shadow-xl shadow-gray-200">
-                  <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                  <h4 className="text-xs font-semibold text-gray-600 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
                     <CreditCard size={14} /> Tổng kết đơn hàng
                   </h4>
                   <div className="space-y-3">
-                    <div className="flex justify-between text-sm font-medium text-gray-400">
+                    <div className="flex justify-between text-sm font-medium text-gray-600">
                       <span>Tạm tính ({preview.totalItems} SP)</span>
                       <span className="text-white">
                         {formatPriceFull(preview.subtotal)}
@@ -222,7 +222,7 @@ export const CheckoutPreview: React.FC<CheckoutPreviewProps> = ({
                         <span>-{formatPriceFull(preview.totalDiscount)}</span>
                       </div>
                     )}
-                    <div className="flex justify-between text-sm font-medium text-gray-400">
+                    <div className="flex justify-between text-sm font-medium text-gray-600">
                       <span>Phí vận chuyển toàn quốc</span>
                       <span className="text-white">
                         {formatPriceFull(preview.totalShippingFee)}

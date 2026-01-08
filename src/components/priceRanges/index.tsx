@@ -79,7 +79,7 @@ export const PriceRange: React.FC<PriceRangeProps> = ({ filters, setFilters }) =
             </div>
 
             <div className="p-4 bg-gray-50/50 border-t border-gray-100">
-                <p className="text-[10px] text-gray-400 font-medium text-center italic">
+                <p className="text-[10px] text-gray-600 font-medium text-center italic">
                     * Giá đã bao gồm thuế VAT
                 </p>
             </div>

@@ -35,7 +35,7 @@ export const SubscribeForm = ({ email, loading, onChange, onSubmit }: any) => {
         disabled={loading}
         whileHover={!loading ? { scale: 1.02, translateY: -2 } : {}}
         whileTap={!loading ? { scale: 0.98 } : {}}
-        className="relative w-full py-4 bg-linear-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 disabled:opacity-70 text-slate-900 rounded-2xl font-bold uppercase tracking-widest text-[11px] transition-all shadow-xl shadow-amber-900/20 overflow-hidden"
+        className="relative w-full py-4 bg-linear-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 disabled:opacity-70 text-gray-900 rounded-2xl font-bold uppercase tracking-widest text-[11px] transition-all shadow-xl shadow-amber-900/20 overflow-hidden"
       >
         <AnimatePresence mode="wait">
           {loading ? (

@@ -16,7 +16,7 @@ interface StatCardProps {
 export const StatCardComponents: React.FC<StatCardProps> = ({
   label,
   value,
-  color = "text-slate-900",
+  color = "text-gray-900",
   icon,
   size = "md",
   className,
@@ -54,7 +54,7 @@ export const StatCardComponents: React.FC<StatCardProps> = ({
         animate: { opacity: 1, y: 0 },
       }}
       className={cn(
-        "bg-white border border-slate-100 relative overflow-hidden flex flex-col justify-between transition-all duration-300",
+        "bg-white border border-gray-100 relative overflow-hidden flex flex-col justify-between transition-all duration-300",
         "shadow-[0_2px_15px_-3px_rgba(0,0,0,0.02),0_4px_6px_-2px_rgba(0,0,0,0.02)]", 
         "hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.05),0_10px_10px_-5px_rgba(0,0,0,0.02)]",
         "hover:border-orange-100",
@@ -66,7 +66,7 @@ export const StatCardComponents: React.FC<StatCardProps> = ({
         variants={{
           hover: { x: -15, y: -5, scale: 1.1, opacity: 0.15 } 
         }}
-        className="absolute -right-2 -top-2 text-slate-400 opacity-[0.08] pointer-events-none transition-all duration-500"
+        className="absolute -right-2 -top-2 text-gray-600 opacity-[0.08] pointer-events-none transition-all duration-500"
       >
         {icon && React.isValidElement(icon)
           ? React.cloneElement(icon as React.ReactElement<{ size?: number; strokeWidth?: number }>, { 
@@ -78,7 +78,7 @@ export const StatCardComponents: React.FC<StatCardProps> = ({
 
       <div className="relative z-10 space-y-1">
         <p className={cn(
-          "font-semibold uppercase tracking-[0.25em] text-slate-600 transition-colors duration-300 group-hover:text-orange-500",
+          "font-semibold uppercase tracking-[0.25em] text-gray-600 transition-colors duration-300 group-hover:text-orange-500",
           config.label
         )}>
           {label}
@@ -100,7 +100,7 @@ export const StatCardComponents: React.FC<StatCardProps> = ({
             </motion.span>
           </AnimatePresence>
           
-          <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-tighter">
+          <span className="text-[10px] font-semibold text-gray-500 uppercase tracking-tighter">
             Items
           </span>
         </div>

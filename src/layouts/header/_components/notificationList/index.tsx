@@ -10,8 +10,8 @@ export const NotificationList = ({ notifications, onRead, getIcon }: any) => {
   if (_.isEmpty(notifications)) {
     return (
       <div className="p-12 text-center flex flex-col items-center gap-3">
-        <Bell size={40} className="text-slate-200" />
-        <p className="text-slate-400 font-bold text-xs uppercase tracking-widest">
+        <Bell size={40} className="text-gray-200" />
+        <p className="text-gray-600 font-bold text-xs uppercase tracking-widest">
           Không Có Thông Báo Mới
         </p>
       </div>
@@ -59,17 +59,17 @@ export const NotificationList = ({ notifications, onRead, getIcon }: any) => {
                 className={cn(
                   "line-clamp-1 leading-none mb-1.5 uppercase text-[11px] tracking-tight",
                   isUnread
-                    ? "font-semibold text-slate-900"
-                    : "font-bold text-slate-500"
+                    ? "font-semibold text-gray-900"
+                    : "font-bold text-gray-500"
                 )}
               >
                 {notif.title}
               </p>
-              <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed font-medium">
+              <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed font-medium">
                 {notif.content}
               </p>
               <div className="flex items-center justify-between mt-3">
-                <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tighter">
+                <span className="text-[9px] text-gray-600 font-bold uppercase tracking-tighter">
                   {new Date(notif.createdDate).toLocaleDateString("vi-VN")}
                 </span>
                 {isUnread && (

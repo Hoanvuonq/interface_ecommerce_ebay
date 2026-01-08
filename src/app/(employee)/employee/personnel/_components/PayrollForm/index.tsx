@@ -146,7 +146,7 @@ export default function PayrollForm({
         </div>
 
         {/* Section 2: Con số tài chính */}
-        <div className="bg-slate-50/50 p-8 rounded-[2.5rem] border border-slate-100 space-y-6">
+        <div className="bg-gray-50/50 p-8 rounded-[2.5rem] border border-gray-100 space-y-6">
           <SectionHeader icon={<Calculator className="text-orange-500" />} title="Chi tiết thu nhập" />
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -209,18 +209,18 @@ export default function PayrollForm({
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center justify-end gap-3 pt-6 border-t border-slate-100">
+        <div className="flex items-center justify-end gap-3 pt-6 border-t border-gray-100">
           <button 
             type="button" 
             onClick={onClose} 
-            className="px-8 py-3.5 rounded-2xl font-semibold uppercase text-[11px] tracking-widest text-slate-400 hover:bg-slate-100 transition-all"
+            className="px-8 py-3.5 rounded-2xl font-semibold uppercase text-[11px] tracking-widest text-gray-600 hover:bg-gray-100 transition-all"
           >
             Hủy bỏ
           </button>
           <button 
             type="submit" 
             disabled={isSubmitting}
-            className="bg-slate-900 hover:bg-orange-500 text-white px-10 py-3.5 rounded-2xl font-semibold uppercase text-[11px] tracking-widest shadow-xl shadow-slate-200 transition-all duration-500 flex items-center gap-2 disabled:opacity-70"
+            className="bg-gray-900 hover:bg-orange-500 text-white px-10 py-3.5 rounded-2xl font-semibold uppercase text-[11px] tracking-widest shadow-xl shadow-gray-200 transition-all duration-500 flex items-center gap-2 disabled:opacity-70"
           >
             {isSubmitting ? <Loader2 size={16} className="animate-spin" /> : <DollarSign size={16} />}
             {mode === "create" ? "Phê duyệt bảng lương" : "Cập nhật dữ liệu"}
@@ -235,15 +235,15 @@ export default function PayrollForm({
 
 const InputField = React.forwardRef(({ label, icon, error, className, ...props }: any, ref: any) => (
   <div className="space-y-1.5 w-full">
-    <label className="text-[10px] font-semibold uppercase text-slate-400 tracking-widest ml-1 flex items-center gap-2">
+    <label className="text-[10px] font-semibold uppercase text-gray-600 tracking-widest ml-1 flex items-center gap-2">
       {icon} {label}
     </label>
     <input
       ref={ref}
       className={cn(
         "w-full h-12 px-4 rounded-2xl border bg-white outline-none transition-all text-sm font-bold",
-        "border-slate-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/5",
-        props.disabled && "bg-slate-50 text-slate-400 border-slate-100 cursor-not-allowed",
+        "border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/5",
+        props.disabled && "bg-gray-50 text-gray-600 border-gray-100 cursor-not-allowed",
         className
       )}
       {...props}

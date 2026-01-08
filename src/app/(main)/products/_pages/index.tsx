@@ -166,7 +166,7 @@ export const ProductScreen = () => {
                 </div>
               )}
 
-              <div className="bg-slate-50 rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+              <div className="bg-gray-50 rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <div className="flex overflow-x-auto no-scrollbar border-b border-gray-100">
                   {tabItems.map((item) => (
                     <button

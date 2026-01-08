@@ -1,17 +1,18 @@
 "use client";
 
-import { ButtonField, HeaderModal } from "@/components";
+import React, { useEffect, useState } from "react";
+import { FiAlertCircle, FiCheck, FiLock } from "react-icons/fi";
+import { ButtonField } from "@/components";
 import { Button } from "@/components/button/button";
+import { FormInput } from "@/components/formInput";
+import { PortalModal } from "@/features/PortalModal";
 import walletService from "@/services/wallet/wallet.service";
 import type {
   ChangeWalletPasswordRequest,
   WalletResponse,
 } from "@/types/wallet/wallet.types";
 import { WalletType } from "@/types/wallet/wallet.types";
-import React, { useEffect, useState } from "react";
-import { createPortal } from "react-dom";
-import { FiAlertCircle, FiCheck } from "react-icons/fi";
-
+import { useToast } from "@/hooks/useToast";
 interface ChangePasswordModalProps {
   visible: boolean;
   onClose: () => void;
@@ -37,16 +38,10 @@ export const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
   }>({});
 
   const [loading, setLoading] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
+  const { success, error } = useToast();
   const isFirstTimeChange =
     wallet?.mustChangePassword === true && wallet?.type === WalletType.SHOP;
   const requiresCurrentPassword = !isFirstTimeChange;
-
-  useEffect(() => {
-    setMounted(true);
-    return () => setMounted(false);
-  }, []);
 
   useEffect(() => {
     if (visible) {
@@ -56,32 +51,8 @@ export const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
         confirmPassword: "",
       });
       setErrors({});
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
     }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [visible, wallet]);
-
-  const handleClose = () => {
-    setFormData({
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-    });
-    setErrors({});
-    onClose();
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name as keyof typeof errors]) {
-      setErrors((prev) => ({ ...prev, [name]: undefined }));
-    }
-  };
+  }, [visible]);
 
   const validateForm = () => {
     const newErrors: typeof errors = {};
@@ -128,190 +99,124 @@ export const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
       }
 
       await walletService.changePassword(requestData);
-
-      alert("Đổi mật khẩu ví thành công!");
-
+      success("Đổi mật khẩu ví thành công!");
       onSuccess?.();
-      handleClose();
+      onClose();
     } catch (error: any) {
-      alert(error.message || "Đổi mật khẩu thất bại");
+      error(error.message || "Đổi mật khẩu thất bại");
     } finally {
       setLoading(false);
     }
   };
 
-  if (!visible || !mounted) return null;
-
-  const modalContent = (
-    <div className="fixed inset-0 z-9999 flex items-center justify-center p-4 sm:p-6 animate-fade-in font-sans">
-      <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
-        onClick={handleClose}
-      ></div>
-      <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl transform transition-all flex flex-col overflow-hidden border border-gray-100 z-10">
-        <div className="absolute top-0 left-0 w-full h-1.5 bg-linear-to-r from-orange-400 to-orange-600"></div>
-        <HeaderModal
-          isFirstTimeChange={isFirstTimeChange}
-          onClose={handleClose}
-        />
-
-        <div className="p-6 overflow-y-auto max-h-[80vh]">
-          <div
-            className={`mb-6 p-4 rounded-xl border flex gap-3 ${
-              isFirstTimeChange
-                ? "bg-orange-50 border-orange-100 text-orange-800"
-                : "bg-orange-50 border-blue-100 text-orange-800"
-            }`}
-          >
-            <FiAlertCircle
-              className={`w-5 h-5 shrink-0 mt-0.5 ${
-                isFirstTimeChange ? "text-orange-600" : "text-orange-600"
-              }`}
-            />
-            <div className="text-sm leading-relaxed">
-              {isFirstTimeChange ? (
-                <>
-                  <span className="font-semibold block mb-1">
-                    Thiết lập lần đầu
-                  </span>
-                  Ví của bạn đã được tạo tự động. Vui lòng thiết lập mật khẩu để
-                  bảo vệ tài sản và thực hiện giao dịch.
-                </>
-              ) : (
-                <>
-                  <span className="font-semibold block mb-1">
-                    Lưu ý bảo mật
-                  </span>
-                  Mật khẩu ví dùng để xác thực khi <strong>rút tiền</strong> và{" "}
-                  <strong>thanh toán</strong>. Không chia sẻ cho người khác.
-                </>
-              )}
-            </div>
-          </div>
-
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {requiresCurrentPassword && (
-              <div className="space-y-1.5">
-                <label className="block text-sm font-semibold text-gray-700">
-                  Mật khẩu hiện tại <span className="text-red-500">*</span>
-                </label>
-                <div className="relative">
-                  <input
-                    type="password"
-                    name="currentPassword"
-                    value={formData.currentPassword}
-                    onChange={handleInputChange}
-                    placeholder="••••••"
-                    className={`w-full pl-4 pr-10 py-3 bg-gray-50 border rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:bg-white transition-all ${
-                      errors.currentPassword
-                        ? "border-red-300 focus:border-red-500 focus:ring-red-100"
-                        : "border-gray-200 focus:border-orange-500 focus:ring-orange-100"
-                    }`}
-                  />
-                </div>
-                {errors.currentPassword && (
-                  <p className="text-sm text-red-500 mt-1 flex items-center gap-1">
-                    <FiAlertCircle size={14} /> {errors.currentPassword}
-                  </p>
-                )}
-              </div>
-            )}
-
-            <div className="space-y-1.5">
-              <label className="block text-sm font-semibold text-gray-700">
-                Mật khẩu mới <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="password"
-                name="newPassword"
-                value={formData.newPassword}
-                onChange={handleInputChange}
-                placeholder="Tối thiểu 6 ký tự"
-                className={`w-full px-4 py-3 bg-gray-50 border rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:bg-white transition-all ${
-                  errors.newPassword
-                    ? "border-red-300 focus:border-red-500 focus:ring-red-100"
-                    : "border-gray-200 focus:border-orange-500 focus:ring-orange-100"
-                }`}
-              />
-              {errors.newPassword && (
-                <p className="text-sm text-red-500 mt-1 flex items-center gap-1">
-                  <FiAlertCircle size={14} /> {errors.newPassword}
-                </p>
-              )}
-            </div>
-
-            {/* Confirm Password Field */}
-            <div className="space-y-1.5">
-              <label className="block text-sm font-semibold text-gray-700">
-                Xác nhận mật khẩu <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="password"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleInputChange}
-                placeholder="Nhập lại mật khẩu mới"
-                className={`w-full px-4 py-3 bg-gray-50 border rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:bg-white transition-all ${
-                  errors.confirmPassword
-                    ? "border-red-300 focus:border-red-500 focus:ring-red-100"
-                    : "border-gray-200 focus:border-orange-500 focus:ring-orange-100"
-                }`}
-              />
-              {errors.confirmPassword && (
-                <p className="text-sm text-red-500 mt-1 flex items-center gap-1">
-                  <FiAlertCircle size={14} /> {errors.confirmPassword}
-                </p>
-              )}
-            </div>
-
-            <div className="pt-4">
-              <ButtonField
-                form="address-form"
-                htmlType="submit"
-                type="login"
-                disabled={loading}
-                className="flex w-40 items-center gap-2 px-5 py-2 rounded-lg text-sm font-semibold shadow-md shadow-orange-500/20 transition-all active:scale-95 border-0 h-auto"
-              >
-                <span className="flex items-center gap-2">
-                  {loading ? (
-                    <svg
-                      className="animate-spin h-5 w-5 text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
-                    </svg>
-                  ) : (
-                    <>
-                      <FiCheck className="w-5 h-5" />
-                      {isFirstTimeChange ? "Hoàn tất tạo ví" : "Lưu thay đổi"}
-                    </>
-                  )}
-                </span>
-              </ButtonField>
-              <Button variant="edit" onClick={handleClose} disabled={loading}>
-                Hủy bỏ
-              </Button>
-            </div>
-          </form>
-        </div>
+  const headerContent = (
+    <div className="flex items-center gap-2">
+      <div className="p-1.5 bg-orange-50 text-orange-600 rounded-lg">
+        <FiLock size={18} />
       </div>
+      <span>Đổi mật khẩu ví</span>
+    </div>
+  );
+  // --- Footer Content ---
+  const footerContent = (
+    <div className="flex items-center gap-3">
+      <Button
+        variant="edit"
+        className="flex-1 sm:flex-none rounded-xl px-5 py-2.5 font-semibold text-gray-500 bg-gray-50 hover:bg-gray-100 border-gray-200"
+        onClick={onClose}
+        disabled={loading}
+      >
+        Hủy bỏ
+      </Button>
+      <ButtonField
+        form="change-password-form"
+        htmlType="submit"
+        type="login"
+        disabled={loading}
+        className="flex-1 flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-orange-500/20 transition-all active:scale-95 border-0 h-auto"
+      >
+        {loading ? (
+          <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+        ) : (
+          <span className="flex items-center gap-2">
+            <FiCheck className="w-5 h-5" />
+            {isFirstTimeChange ? "Hoàn tất tạo ví" : "Lưu thay đổi"}
+          </span>
+        )}
+      </ButtonField>
     </div>
   );
 
-  // Render modal vào body
-  return createPortal(modalContent, document.body);
+  return (
+    <PortalModal
+      isOpen={visible}
+      onClose={onClose}
+      title={headerContent}
+      footer={footerContent}
+      width="max-w-md"
+      className="border-t-4 border-t-orange-500" 
+    >
+      <div className="space-y-6">
+        <div className="p-4 rounded-xl border bg-orange-50 border-orange-100 text-orange-800 flex gap-3 shadow-inner-sm">
+          <FiAlertCircle className="w-5 h-5 shrink-0 mt-0.5 text-orange-600" />
+          <div className="text-sm leading-relaxed">
+            <span className="font-bold block mb-1 uppercase tracking-wider text-[10px]">
+              {isFirstTimeChange ? "Thiết lập lần đầu" : "Lưu ý bảo mật"}
+            </span>
+            {isFirstTimeChange ? (
+              "Ví của bạn đã được tạo tự động. Vui lòng thiết lập mật khẩu để bảo vệ tài sản và thực hiện giao dịch."
+            ) : (
+              <>
+                Mật khẩu ví dùng để xác thực khi <strong>rút tiền</strong> và{" "}
+                <strong>thanh toán</strong>. Không chia sẻ cho người khác.
+              </>
+            )}
+          </div>
+        </div>
+
+        <form id="change-password-form" onSubmit={handleSubmit} className="space-y-5">
+          {requiresCurrentPassword && (
+            <FormInput
+              label="Mật khẩu hiện tại"
+              required
+              type="password"
+              name="currentPassword"
+              value={formData.currentPassword}
+              error={errors.currentPassword}
+              placeholder="••••••"
+              onChange={(e) =>
+                setFormData({ ...formData, currentPassword: e.target.value })
+              }
+            />
+          )}
+
+          <FormInput
+            label="Mật khẩu mới"
+            required
+            type="password"
+            name="newPassword"
+            value={formData.newPassword}
+            error={errors.newPassword}
+            placeholder="Tối thiểu 6 ký tự"
+            onChange={(e) =>
+              setFormData({ ...formData, newPassword: e.target.value })
+            }
+          />
+
+          <FormInput
+            label="Xác nhận mật khẩu"
+            required
+            type="password"
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            error={errors.confirmPassword}
+            placeholder="Nhập lại mật khẩu mới"
+            onChange={(e) =>
+              setFormData({ ...formData, confirmPassword: e.target.value })
+            }
+          />
+        </form>
+      </div>
+    </PortalModal>
+  );
 };

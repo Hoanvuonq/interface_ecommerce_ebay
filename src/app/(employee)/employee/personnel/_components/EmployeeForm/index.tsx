@@ -210,15 +210,15 @@ export default function EmployeeForm(props: EmployeeFormProps) {
 
         <div className="space-y-4">
           <SectionHeader icon={<ImageIcon size={18}/>} title="Hình ảnh định danh" />
-          <div className="p-6 bg-slate-50 rounded-4xl border border-dashed border-slate-200">
+          <div className="p-6 bg-gray-50 rounded-4xl border border-dashed border-gray-200">
             <Controller name="imageUrl" control={control} render={({field}) => (
               <ImageUploadField value={field.value} onChange={field.onChange} maxCount={1} />
             )} />
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-3 pt-6 border-t border-slate-100">
-          <button type="button" onClick={onClose} className="px-8 py-3 rounded-2xl font-semibold uppercase text-[10px] tracking-widest text-slate-400 hover:bg-slate-100 transition-all">Hủy bỏ</button>
+        <div className="flex items-center justify-end gap-3 pt-6 border-t border-gray-100">
+          <button type="button" onClick={onClose} className="px-8 py-3 rounded-2xl font-semibold uppercase text-[10px] tracking-widest text-gray-600 hover:bg-gray-100 transition-all">Hủy bỏ</button>
           <button 
             type="submit" 
             disabled={isSubmitting}

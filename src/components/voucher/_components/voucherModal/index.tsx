@@ -68,7 +68,7 @@ export const VoucherModal: React.FC<VoucherModalProps> = (props) => {
       isOpen={open}
       onClose={onClose}
       title={
-        <span className="font-black uppercase text-sm tracking-tight text-slate-800">
+        <span className="font-black uppercase text-sm tracking-tight text-gray-800">
           {title || (isPlatform ? "Ưu đãi hệ thống" : `Voucher ${shopName}`)}
         </span>
       }

@@ -26,7 +26,7 @@ export const SimpleModal = ({
           <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 transition-colors"
+            className="text-gray-600 hover:text-gray-600 transition-colors"
           >
             <X size={20} />
           </button>

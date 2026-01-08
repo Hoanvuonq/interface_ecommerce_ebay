@@ -26,7 +26,7 @@ export function TopCategoriesList({ categories, loading = false }: TopCategories
                         <h3 className="text-sm font-semibold text-gray-800 uppercase tracking-[0.15em] leading-none mb-1">
                             Top <span className="text-blue-600">Ngành hàng</span>
                         </h3>
-                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-0.5">Phân tích thị hiếu</p>
+                        <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest px-0.5">Phân tích thị hiếu</p>
                     </div>
                 </div>
                 {loading && <Loader2 className="animate-spin text-orange-500" size={18} />}
@@ -37,9 +37,9 @@ export function TopCategoriesList({ categories, loading = false }: TopCategories
                 <table className="w-full text-left border-collapse">
                     <thead>
                         <tr className="bg-gray-50/30">
-                            <th className="px-6 py-4 text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Danh mục</th>
-                            <th className="px-6 py-4 text-[10px] font-semibold text-gray-400 uppercase tracking-widest text-right">Đơn hàng</th>
-                            <th className="px-6 py-4 text-[10px] font-semibold text-gray-400 uppercase tracking-widest text-right">Doanh thu</th>
+                            <th className="px-6 py-4 text-[10px] font-semibold text-gray-600 uppercase tracking-widest">Danh mục</th>
+                            <th className="px-6 py-4 text-[10px] font-semibold text-gray-600 uppercase tracking-widest text-right">Đơn hàng</th>
+                            <th className="px-6 py-4 text-[10px] font-semibold text-gray-600 uppercase tracking-widest text-right">Doanh thu</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-50">
@@ -49,7 +49,7 @@ export function TopCategoriesList({ categories, loading = false }: TopCategories
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="flex items-center gap-3">
                                             <div className="relative">
-                                                <div className="p-2 bg-gray-50 rounded-lg text-gray-400 group-hover:text-blue-500 group-hover:bg-blue-50 transition-all">
+                                                <div className="p-2 bg-gray-50 rounded-lg text-gray-600 group-hover:text-blue-500 group-hover:bg-blue-50 transition-all">
                                                     <ShoppingBag size={18} />
                                                 </div>
                                                 <div className="absolute -top-1 -left-1 w-4 h-4 bg-gray-100 rounded-full flex items-center justify-center text-[8px] font-semibold text-gray-500 border border-white">
@@ -78,7 +78,7 @@ export function TopCategoriesList({ categories, loading = false }: TopCategories
                             ))
                         ) : !loading && (
                             <tr>
-                                <td colSpan={3} className="px-6 py-20 text-center text-gray-400 font-bold uppercase tracking-widest text-xs">
+                                <td colSpan={3} className="px-6 py-20 text-center text-gray-600 font-bold uppercase tracking-widest text-xs">
                                     Chưa có dữ liệu danh mục
                                 </td>
                             </tr>

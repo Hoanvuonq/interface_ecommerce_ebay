@@ -124,7 +124,7 @@ export default function ChangePasswordFormCompact() {
         <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-1">
           Đổi mật khẩu
         </h2>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
+        <p className="text-sm text-gray-500 dark:text-gray-600">
           Cập nhật mật khẩu thường xuyên để bảo vệ tài khoản của bạn an toàn
           hơn.
         </p>
@@ -157,7 +157,7 @@ export default function ChangePasswordFormCompact() {
                 <span className="text-sm font-bold text-gray-800 dark:text-gray-200 block">
                   Mật khẩu mới
                 </span>
-                <span className="text-xs text-gray-500 dark:text-gray-400">
+                <span className="text-xs text-gray-500 dark:text-gray-600">
                   Thiết lập mật khẩu mạnh
                 </span>
               </div>
@@ -175,7 +175,7 @@ export default function ChangePasswordFormCompact() {
               <button
                 type="button"
                 onClick={handleCopyPassword}
-                className="flex items-center gap-1.5 px-3 py-2 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600 text-xs font-semibold rounded-lg transition-all shadow-sm active:scale-95 hover:text-gray-900"
+                className="flex items-center gap-1.5 px-3 py-2 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 text-xs font-semibold rounded-lg transition-all shadow-sm active:scale-95 hover:text-gray-900"
                 title="Sao chép mật khẩu mới"
               >
                 <FaCopy /> Sao chép

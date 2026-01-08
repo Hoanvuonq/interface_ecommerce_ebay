@@ -12,7 +12,7 @@ export const SocialButton = ({
 }) => (
   <a
     href={href}
-    className={`flex items-center justify-center aspect-square rounded-2xl bg-white border border-slate-200 text-slate-400 shadow-sm transition-all duration-300 ${hoverColor} hover:text-white hover:-translate-y-1`}
+    className={`flex items-center justify-center aspect-square rounded-2xl bg-white border border-gray-200 text-gray-600 shadow-sm transition-all duration-300 ${hoverColor} hover:text-white hover:-translate-y-1`}
   >
     <Icon size={20} />
   </a>

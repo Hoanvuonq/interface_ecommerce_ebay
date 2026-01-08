@@ -77,7 +77,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
     <div className="fixed inset-0 z-[150] flex justify-end">
       {/* Backdrop Layer */}
       <div
-        className="absolute inset-0 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300"
+        className="absolute inset-0 bg-gray-900/60 backdrop-blur-md animate-in fade-in duration-300"
         onClick={onClose}
       />
 
@@ -93,14 +93,14 @@ export const DetailModal: React.FC<DetailModalProps> = ({
               <h2 className="text-xl font-semibold text-gray-800 uppercase tracking-tighter italic leading-none">
                 Entity <span className="text-orange-500">Explorer</span>
               </h2>
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">
+              <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest mt-1">
                 ID: {category.id}
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-3 hover:bg-gray-100 text-gray-400 rounded-2xl transition-all active:scale-90"
+            className="p-3 hover:bg-gray-100 text-gray-600 rounded-2xl transition-all active:scale-90"
           >
             <X size={24} strokeWidth={3} />
           </button>
@@ -204,7 +204,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                     onClick={() => toggleChildExpansion(child.id)}
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center text-gray-400 group-hover:text-blue-500 transition-colors">
+                      <div className="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center text-gray-600 group-hover:text-blue-500 transition-colors">
                         <Box size={20} />
                       </div>
                       <span className="text-sm font-semibold text-gray-700 uppercase tracking-tight">
@@ -223,7 +223,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                     <div className="px-6 pb-6 pt-2 bg-gray-50/50 space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-1">
-                          <p className="text-[9px] font-semibold text-gray-400 uppercase tracking-widest leading-none">
+                          <p className="text-[9px] font-semibold text-gray-600 uppercase tracking-widest leading-none">
                             Slug
                           </p>
                           <p className="text-xs font-bold text-gray-600">
@@ -231,7 +231,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                           </p>
                         </div>
                         <div className="space-y-1 text-right">
-                          <p className="text-[9px] font-semibold text-gray-400 uppercase tracking-widest leading-none">
+                          <p className="text-[9px] font-semibold text-gray-600 uppercase tracking-widest leading-none">
                             Modified
                           </p>
                           <p className="text-xs font-bold text-gray-600">
@@ -288,7 +288,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
 
       {/* Custom Image Preview Overlay */}
       {previewVisible && imageUrl && (
-        <div className="fixed inset-0 z-[200] bg-slate-900/90 backdrop-blur-xl flex items-center justify-center p-10 animate-in fade-in duration-300">
+        <div className="fixed inset-0 z-[200] bg-gray-900/90 backdrop-blur-xl flex items-center justify-center p-10 animate-in fade-in duration-300">
           <button
             onClick={() => setPreviewVisible(false)}
             className="absolute top-10 right-10 p-4 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all"
@@ -330,7 +330,7 @@ function InfoCard({ icon, label, value, color }: InfoCardProps) {
           })}
         </div>
         <div>
-          <p className="text-[9px] font-semibold text-gray-400 uppercase tracking-widest leading-none mb-1.5">
+          <p className="text-[9px] font-semibold text-gray-600 uppercase tracking-widest leading-none mb-1.5">
             {label}
           </p>
           <p className="text-sm font-semibold text-gray-800 tracking-tight uppercase leading-none">

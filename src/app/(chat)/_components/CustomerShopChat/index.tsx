@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { X } from "lucide-react";
+import { ArrowBigLeft, ArrowLeft, CircleChevronLeft, X } from "lucide-react";
 import _ from "lodash";
 import { ConversationList } from "../ConversationList";
 import { ChatEmptyState } from "../ChatEmptyState";
@@ -20,7 +20,10 @@ import {
 } from "@/providers/WebSocketProvider";
 import { getStoredUserDetail } from "@/utils/jwt";
 import { isMessageDeleted } from "../../_services/chat-utils.service";
-import { CustomerShopChatProps, resolveOrderItemImageUrl } from "../../_types/customerShopChat.type";
+import {
+  CustomerShopChatProps,
+  resolveOrderItemImageUrl,
+} from "../../_types/customerShopChat.type";
 
 export const CustomerShopChat: React.FC<CustomerShopChatProps> = ({
   open,
@@ -98,13 +101,7 @@ export const CustomerShopChat: React.FC<CustomerShopChatProps> = ({
       />
 
       <div className="relative w-full max-w-5xl h-full bg-white shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 z-50 p-2 bg-white/80 hover:bg-white rounded-full shadow-sm text-slate-500 hover:text-red-500 transition-all"
-        >
-          <X size={20} />
-        </button>
-
+       
         <div className="flex h-full overflow-hidden">
           <ConversationList
             conversations={store.conversations}
@@ -123,7 +120,7 @@ export const CustomerShopChat: React.FC<CustomerShopChatProps> = ({
           />
 
           <div
-            className={`flex-1 flex flex-col bg-slate-50 relative ${
+            className={`flex-1 flex flex-col bg-gray-50 relative ${
               store.isMobileChatView ? "block" : "hidden md:flex"
             }`}
           >

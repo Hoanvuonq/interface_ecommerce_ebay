@@ -43,7 +43,7 @@ export function SmartPlatformDashboard() {
                     <Inbox className="w-12 h-12 text-gray-300" />
                 </div>
                 <h3 className="text-lg font-semibold text-gray-800 uppercase tracking-widest">Không có dữ liệu</h3>
-                <p className="text-gray-400 text-sm font-medium">Vui lòng thử lại hoặc chọn một ngày khác.</p>
+                <p className="text-gray-600 text-sm font-medium">Vui lòng thử lại hoặc chọn một ngày khác.</p>
             </div>
         );
     }

@@ -82,7 +82,7 @@ export default function NotificationsPage() {
                                     "flex items-center gap-3 px-8 py-4 rounded-3xl text-sm font-semibold uppercase tracking-widest transition-all duration-300",
                                     activeTab === tab.id 
                                         ? "bg-white text-orange-600 shadow-sm border border-gray-100" 
-                                        : "text-gray-400 hover:text-gray-600"
+                                        : "text-gray-600 hover:text-gray-600"
                                 )}
                             >
                                 {tab.icon}
@@ -104,7 +104,7 @@ export default function NotificationsPage() {
                                     <div className="max-w-3xl mx-auto">
                                         <div className="mb-8 text-center">
                                             <h3 className="text-xl font-semibold text-gray-800 uppercase italic">Soạn thảo nội dung</h3>
-                                            <p className="text-gray-400 text-sm font-medium italic">Vui lòng kiểm tra kỹ đối tượng trước khi gửi</p>
+                                            <p className="text-gray-600 text-sm font-medium italic">Vui lòng kiểm tra kỹ đối tượng trước khi gửi</p>
                                         </div>
                                         <BroadcastNotificationForm />
                                     </div>

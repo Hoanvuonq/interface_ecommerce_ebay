@@ -91,7 +91,7 @@ export default function TransactionDetailModal({
                     </h3>
                     <button 
                         onClick={onClose}
-                        className="p-1 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
+                        className="p-1 text-gray-600 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -204,14 +204,14 @@ export default function TransactionDetailModal({
                                 )}
                                 <div>
                                     <div className="text-xs text-gray-500 mb-1 uppercase tracking-wide">Wallet ID</div>
-                                    <div className="text-xs font-mono text-gray-400 truncate">
+                                    <div className="text-xs font-mono text-gray-600 truncate">
                                         {transaction.walletId}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     ) : (
-                        <div className="text-center py-12 text-gray-400">
+                        <div className="text-center py-12 text-gray-600">
                             Không có dữ liệu
                         </div>
                     )}

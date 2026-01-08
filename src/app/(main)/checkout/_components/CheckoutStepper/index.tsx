@@ -37,7 +37,7 @@ const CheckoutStepper: React.FC<CheckoutStepperProps> = ({ currentStep }) => {
                         ? "text-orange-600 font-bold"
                         : isCompleted
                         ? "text-orange-500"
-                        : "text-gray-400"
+                        : "text-gray-600"
                     }
                   `}
                 >

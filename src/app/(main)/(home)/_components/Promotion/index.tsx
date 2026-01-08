@@ -27,7 +27,7 @@ export const Promotion: React.FC = () => {
   }
 
   return (
-    <section className="bg-white shadow py-1 overflow-hidden">
+    <section className="bg-white shadow-sm py-1 pb-2 overflow-hidden">
       <div className="max-w-300 mx-auto w-full">
         <HeroBanners banners={isError ? [] : mappedHeroBanners} />
         <div className="mx-auto w-full mt-6">
@@ -72,7 +72,7 @@ export const Promotion: React.FC = () => {
                   isExpanded ? "max-h-200 opacity-100 translate-y-0" : "max-h-0 opacity-0 -translate-y-4 pointer-events-none"
                 )}
               >
-                <div className="grid grid-cols-4 gap-y-8 gap-x-4 pt-8 border-t border-gray-200/50">
+                <div className="grid grid-cols-4 gap-y-8 gap-x-4 pt-8  border-t border-gray-200/50">
                    {expandableLinks.map((item) => (
                     <QuickLinkItem key={item.key} item={item} isLoading={isLoading} />
                   ))}

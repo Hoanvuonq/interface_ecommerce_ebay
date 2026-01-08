@@ -138,14 +138,14 @@ export default async function CategoryScreen({
               />
 
               <div className="rounded-2xl bg-white shadow-sm border border-gray-100 overflow-hidden">
-                <div className="bg-slate-50 border-b border-slate-100 px-3 py-4 flex items-center gap-2.5">
+                <div className="bg-gray-50 border-b border-gray-100 px-3 py-4 flex items-center gap-2.5">
                   <Filter size={18} className="text-gray-700"/>
                   <h3 className="text-[14px] font-bold text-gray-900 uppercase tracking-tight">
                     Bộ lọc tìm kiếm
                   </h3>
                 </div>
                 <div className="p-5 space-y-4">
-                  <div className="text-xs text-gray-400 italic">
+                  <div className="text-xs text-gray-600 italic">
                     Công cụ lọc đang được đồng bộ...
                   </div>
                 </div>
@@ -208,7 +208,7 @@ export default async function CategoryScreen({
                         <span className="flex items-center justify-center w-12 h-12 rounded-2xl bg-orange-500 text-white font-semibold shadow-lg shadow-orange-100">
                           {page + 1}
                         </span>
-                        <span className="text-gray-400 font-medium px-2">
+                        <span className="text-gray-600 font-medium px-2">
                           của {totalPages} trang
                         </span>
                       </div>

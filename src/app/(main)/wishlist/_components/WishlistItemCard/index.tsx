@@ -71,7 +71,7 @@ export const WishlistItemCard = memo<WishlistItemCardProps>(
         case 2:
           return "bg-red-600 text-white border-red-600 shadow-red-100";
         default:
-          return "bg-white text-slate-400 border-slate-100";
+          return "bg-white text-gray-600 border-gray-100";
       }
     }, [item.priority]);
 
@@ -81,7 +81,7 @@ export const WishlistItemCard = memo<WishlistItemCardProps>(
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         whileHover={{ y: -6 }}
-        className="group relative h-full flex flex-col bg-white rounded-[2.5rem] border border-slate-100 overflow-hidden hover:shadow-[0_30px_60px_-15px_rgba(249,115,22,0.15)] transition-all duration-500"
+        className="group relative h-full flex flex-col bg-white rounded-[2.5rem] border border-gray-100 overflow-hidden hover:shadow-[0_30px_60px_-15px_rgba(249,115,22,0.15)] transition-all duration-500"
       >
         {/* Image Section */}
         <div className="relative aspect-square overflow-hidden bg-[#fafafa]">
@@ -130,13 +130,13 @@ export const WishlistItemCard = memo<WishlistItemCardProps>(
             <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 z-10">
               <button
                 onClick={() => onEdit?.(item)}
-                className="p-3 bg-white/90 backdrop-blur-md rounded-2xl shadow-xl text-slate-700 hover:text-(--color-mainColor) hover:scale-110 transition-all"
+                className="p-3 bg-white/90 backdrop-blur-md rounded-2xl shadow-xl text-gray-700 hover:text-(--color-mainColor) hover:scale-110 transition-all"
               >
                 <Edit3 size={18} />
               </button>
               <button
                 onClick={() => setShowDeleteConfirm(true)}
-                className="p-3 bg-white/90 backdrop-blur-md rounded-2xl shadow-xl text-slate-700 hover:text-red-500 hover:scale-110 transition-all"
+                className="p-3 bg-white/90 backdrop-blur-md rounded-2xl shadow-xl text-gray-700 hover:text-red-500 hover:scale-110 transition-all"
               >
                 <Trash2 size={18} />
               </button>
@@ -147,7 +147,7 @@ export const WishlistItemCard = memo<WishlistItemCardProps>(
         {/* Content Body */}
         <div className="flex-1 p-6 flex flex-col">
           <Link href={`/products/${item.productId}`} className="block mb-3">
-            <h3 className="text-sm font-bold text-slate-800 line-clamp-2 hover:text-(--color-mainColor) transition-colors leading-snug h-10">
+            <h3 className="text-sm font-bold text-gray-800 line-clamp-2 hover:text-(--color-mainColor) transition-colors leading-snug h-10">
               {item.productName}
             </h3>
           </Link>
@@ -167,9 +167,9 @@ export const WishlistItemCard = memo<WishlistItemCardProps>(
           )}
 
           {/* Current Price & Cart Button */}
-          <div className="mt-auto pt-4 border-t border-slate-50 flex items-center justify-between">
+          <div className="mt-auto pt-4 border-t border-gray-50 flex items-center justify-between">
             <div className="flex flex-col">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+              <span className="text-[10px] font-bold text-gray-600 uppercase tracking-widest">
                 Giá hiện tại
               </span>
               <div className="flex items-baseline gap-1">
@@ -187,7 +187,7 @@ export const WishlistItemCard = memo<WishlistItemCardProps>(
               onClick={() =>
                 onAddToCart(item.variantId, item.productName, item.id)
               }
-              className="w-12 h-12 bg-(--color-mainColor) hover:bg-slate-900 disabled:bg-slate-100 text-white rounded-2xl flex items-center justify-center transition-all duration-300 active:scale-90 shadow-lg shadow-orange-200 group/btn"
+              className="w-12 h-12 bg-(--color-mainColor) hover:bg-gray-900 disabled:bg-gray-100 text-white rounded-2xl flex items-center justify-center transition-all duration-300 active:scale-90 shadow-lg shadow-orange-200 group/btn"
             >
               {isAddingToCart ? (
                 <Loader2 size={20} className="animate-spin" />
@@ -209,26 +209,26 @@ export const WishlistItemCard = memo<WishlistItemCardProps>(
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 z-50 bg-slate-900/40 backdrop-blur-xs p-6 flex items-center justify-center"
+              className="absolute inset-0 z-50 bg-gray-900/40 backdrop-blur-xs p-6 flex items-center justify-center"
             >
               <motion.div
                 initial={{ scale: 0.9, y: 10 }}
                 animate={{ scale: 1, y: 0 }}
-                className="bg-white rounded-4xl p-6 shadow-2xl w-full text-center border border-slate-100"
+                className="bg-white rounded-4xl p-6 shadow-2xl w-full text-center border border-gray-100"
               >
                 <div className="w-12 h-12 bg-red-50 rounded-2xl flex items-center justify-center mx-auto mb-4 text-red-500">
                   <AlertCircle size={24} />
                 </div>
-                <h4 className="text-sm font-semibold text-slate-900 mb-2 uppercase tracking-tight">
+                <h4 className="text-sm font-semibold text-gray-900 mb-2 uppercase tracking-tight">
                   Xóa sản phẩm?
                 </h4>
-                <p className="text-[11px] text-slate-500 mb-6 font-medium">
+                <p className="text-[11px] text-gray-500 mb-6 font-medium">
                   Hành động này không thể hoàn tác.
                 </p>
                 <div className="flex gap-2">
                   <button
                     onClick={() => setShowDeleteConfirm(false)}
-                    className="flex-1 py-3 rounded-xl text-[10px] font-semibold uppercase bg-slate-50 text-slate-400 hover:bg-slate-100 transition-all"
+                    className="flex-1 py-3 rounded-xl text-[10px] font-semibold uppercase bg-gray-50 text-gray-600 hover:bg-gray-100 transition-all"
                   >
                     Hủy
                   </button>

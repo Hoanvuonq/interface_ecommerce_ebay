@@ -11,18 +11,18 @@ import { DATA_TABS, UserTableFilterProps } from "./type";
 
 export const UserTableFilter: React.FC<UserTableFilterProps> = ({ logic }) => {
   return (
-    <div className="bg-white p-6 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-50 mb-8 space-y-6">
+    <div className="bg-white p-6 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-50 mb-8 space-y-6">
       <div className="flex flex-col lg:flex-row justify-between gap-4">
         <div className="flex flex-wrap gap-4 flex-1">
           <div className="relative group flex-1 min-w-75">
             <Search
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-orange-500 transition-colors"
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 group-focus-within:text-orange-500 transition-colors"
               size={18}
             />
             <input
               className={cn(
-                "w-full pl-12 pr-4 py-3 rounded-2xl bg-slate-50 border-none ",
-                "focus:ring-2 focus:ring-orange-500/20 outline-none font-bold text-sm text-slate-700 placeholder:text-slate-400 transition-all"
+                "w-full pl-12 pr-4 py-3 rounded-2xl bg-gray-50 border-none ",
+                "focus:ring-2 focus:ring-orange-500/20 outline-none font-bold text-sm text-gray-700 placeholder:text-gray-600 transition-all"
               )}
               placeholder="Tìm kiếm username hoặc email..."
               value={logic.searchKeyword}
@@ -51,7 +51,7 @@ export const UserTableFilter: React.FC<UserTableFilterProps> = ({ logic }) => {
         <div className="flex gap-2">
           <button
             onClick={logic.resetFilters}
-            className="p-3 bg-slate-50 text-slate-400 rounded-2xl hover:bg-rose-50 hover:text-rose-500 transition-all border border-transparent hover:border-rose-100 shadow-sm"
+            className="p-3 bg-gray-50 text-gray-600 rounded-2xl hover:bg-rose-50 hover:text-rose-500 transition-all border border-transparent hover:border-rose-100 shadow-sm"
             title="Reset bộ lọc"
           >
             <XCircle size={20} />
@@ -69,7 +69,7 @@ export const UserTableFilter: React.FC<UserTableFilterProps> = ({ logic }) => {
         </div>
       </div>
 
-      <div className="flex gap-2 border-b border-slate-100 pb-1 overflow-x-auto custom-scrollbar">
+      <div className="flex gap-2 border-b border-gray-100 pb-1 overflow-x-auto custom-scrollbar">
         {DATA_TABS.map((tab) => {
           const count = _.get(
             logic.statistics,
@@ -91,7 +91,7 @@ export const UserTableFilter: React.FC<UserTableFilterProps> = ({ logic }) => {
                 "px-6 py-4 font-semibold text-[11px] uppercase tracking-widest transition-all relative whitespace-nowrap group",
                 isActive
                   ? "text-orange-500"
-                  : "text-slate-400 hover:text-slate-600"
+                  : "text-gray-600 hover:text-gray-600"
               )}
             >
               <span className="relative z-10 flex items-center gap-2">
@@ -101,7 +101,7 @@ export const UserTableFilter: React.FC<UserTableFilterProps> = ({ logic }) => {
                     "px-2 py-0.5 rounded-lg text-[9px] transition-colors",
                     isActive
                       ? "bg-orange-100 text-orange-600"
-                      : "bg-slate-100 text-slate-500 group-hover:bg-slate-200"
+                      : "bg-gray-100 text-gray-500 group-hover:bg-gray-200"
                   )}
                 >
                   {count}

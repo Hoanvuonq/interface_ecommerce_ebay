@@ -159,7 +159,6 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
                       {addr.phone}
                     </span>
 
-                    {/* Hiển thị Nhãn Mặc định (Main Color) */}
                     {addr.isDefault && (
                       <span className="text-[10px] font-bold px-2 py-1 rounded-md bg-(--color-mainColor) text-white flex items-center gap-1 uppercase tracking-tighter shadow-sm">
                         <FaCheckCircle size={10} />

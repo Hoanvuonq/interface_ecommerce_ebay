@@ -29,14 +29,14 @@ const NewsletterSignup: React.FC = () => {
               <div className="space-y-6 text-center lg:text-left">
                 <Badge label="Quà tặng đặc biệt" icon={<Gift size={16} />} />
                 
-                <h2 className="text-4xl md:text-6xl font-semibold tracking-tighter text-slate-900 uppercase italic leading-none">
+                <h2 className="text-4xl md:text-6xl font-semibold tracking-tighter text-gray-900 uppercase italic leading-none">
                   Đừng bỏ lỡ <br />
                   <span className="bg-linear-to-r from-orange-500 to-red-600 bg-clip-text text-transparent">
                     Ưu đãi mới <br />
                   </span>
                 </h2>
 
-                <p className="text-slate-500 text-sm md:text-base font-medium max-w-md mx-auto lg:mx-0 leading-relaxed">
+                <p className="text-gray-500 text-sm md:text-base font-medium max-w-md mx-auto lg:mx-0 leading-relaxed">
                   Nhận voucher <span className="text-orange-600 font-bold">50.000đ</span> ngay lập tức và cập nhật bộ sưu tập mới nhất.
                 </p>
 
@@ -80,8 +80,8 @@ const Badge = ({ label, icon }: { label: string; icon: React.ReactNode }) => (
 
 const StatItem = ({ label, value }: { label: string; value: string }) => (
   <div className="text-center lg:text-left">
-    <div className="text-xl font-semibold text-slate-900 leading-none tracking-tight">{value}</div>
-    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1.5">{label}</div>
+    <div className="text-xl font-semibold text-gray-900 leading-none tracking-tight">{value}</div>
+    <div className="text-[10px] font-bold text-gray-600 uppercase tracking-widest mt-1.5">{label}</div>
   </div>
 );
 
@@ -105,7 +105,7 @@ const SubscribeForm = ({ email, loading, onChange, onSubmit }: any) => (
     animate={{ opacity: 1 }}
   >
     <div className="relative group">
-      <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-orange-500 transition-colors">
+      <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none text-gray-600 group-focus-within:text-orange-500 transition-colors">
         <Mail size={20} />
       </div>
       <input
@@ -114,7 +114,7 @@ const SubscribeForm = ({ email, loading, onChange, onSubmit }: any) => (
         value={email}
         onChange={(e) => onChange(e.target.value)}
         disabled={loading}
-        className="w-full bg-white border border-gray-200 rounded-2xl py-5 pl-14 pr-5 text-slate-900 outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/5 transition-all font-medium shadow-sm"
+        className="w-full bg-white border border-gray-200 rounded-2xl py-5 pl-14 pr-5 text-gray-900 outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/5 transition-all font-medium shadow-sm"
         required
       />
     </div>
@@ -127,7 +127,7 @@ const SubscribeForm = ({ email, loading, onChange, onSubmit }: any) => (
       {loading ? <Loader2 size={20} className="animate-spin" /> : <>Đăng ký nhận quà <ArrowRight size={18} strokeWidth={3} /></>}
     </button>
     
-    <p className="text-center text-[10px] text-slate-400 uppercase font-bold tracking-widest pt-2">
+    <p className="text-center text-[10px] text-gray-600 uppercase font-bold tracking-widest pt-2">
       Bảo mật thông tin bởi <a href="#" className="text-orange-500 underline">CaLaTha Team</a>
     </p>
   </motion.form>

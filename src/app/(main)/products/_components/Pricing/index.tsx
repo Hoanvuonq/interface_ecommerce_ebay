@@ -72,7 +72,7 @@ const Pricing: React.FC<PricingProps> = ({
           </span>
 
           {hasDiscount && displayOriginalPrice && (
-            <span className="text-lg font-medium text-gray-400 line-through decoration-gray-400/50">
+            <span className="text-lg font-medium text-gray-600 line-through decoration-gray-400/50">
               {formatPrice(displayOriginalPrice)}
             </span>
           )}

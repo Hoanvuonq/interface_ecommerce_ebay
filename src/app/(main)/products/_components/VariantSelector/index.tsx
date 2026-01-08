@@ -21,10 +21,11 @@ export const VariantSelector: React.FC<VariantSelectorProps> = ({
   className,
   selectedVariant: propSelectedVariant,
 }) => {
-  const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>({});
-  const [selectedVariant, setSelectedVariant] =
-    useState<PublicProductVariantDTO | null>(null);
-
+  const [selectedAttributes, setSelectedAttributes] = useState<
+    Record<string, string>
+  >({});
+  const [selectedVariant, setSelectedVariant] = useState<PublicProductVariantDTO | null>(null);
+  const lastSyncedVariantId = React.useRef<string | null>(null);
   type NormalizedOption = {
     key: string;
     label: string;
@@ -100,7 +101,9 @@ export const VariantSelector: React.FC<VariantSelectorProps> = ({
       const attributes: Record<string, string> = {};
       (variant as any).optionValues?.forEach(
         (optionValue: any, index: number) => {
-          const optionKey = valueToOptionKeyMap[optionValue.id] || normalizedOptions[index]?.key;
+          const optionKey =
+            valueToOptionKeyMap[optionValue.id] ||
+            normalizedOptions[index]?.key;
           if (optionKey) {
             attributes[optionKey] = optionValue.id || optionValue.name;
           }
@@ -115,13 +118,21 @@ export const VariantSelector: React.FC<VariantSelectorProps> = ({
 
  useEffect(() => {
     if (propSelectedVariant) {
-      const match = normalizedVariants.find(v => v.id === propSelectedVariant.id);
-      
+      if (propSelectedVariant.id === lastSyncedVariantId.current) {
+        return;
+      }
+
+      const match = normalizedVariants.find((v) => v.id === propSelectedVariant.id);
+
       if (match && match.attributes) {
-         setSelectedAttributes(match.attributes);
+        lastSyncedVariantId.current = propSelectedVariant.id;
+        
+        // Cập nhật state
+        setSelectedAttributes(match.attributes);
       }
     }
   }, [propSelectedVariant, normalizedVariants]);
+
   useEffect(() => {
     const requiredKeys = normalizedOptions.map((option) => option.key);
     const selectedKeys = Object.keys(selectedAttributes).filter(

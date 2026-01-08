@@ -70,7 +70,7 @@ export default function EmployeeDetail({
       width="max-w-4xl"
     >
       <div className="space-y-8 pb-4">
-        <div className="flex flex-col md:flex-row gap-6 items-start md:items-center p-6 bg-slate-50/50 rounded-4xl border border-slate-100">
+        <div className="flex flex-col md:flex-row gap-6 items-start md:items-center p-6 bg-gray-50/50 rounded-4xl border border-gray-100">
           <div className="relative shrink-0 group">
             <div className="w-24 h-24 rounded-4xl overflow-hidden border-4 border-white shadow-xl bg-white">
               {employee.imageUrl ? (
@@ -87,14 +87,14 @@ export default function EmployeeDetail({
             </div>
             <div className={cn(
               "absolute -bottom-2 -right-2 px-3 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider border-2 border-white shadow-sm",
-              employee.userStatus === "ACTIVE" ? "bg-emerald-500 text-white" : "bg-slate-400 text-white"
+              employee.userStatus === "ACTIVE" ? "bg-emerald-500 text-white" : "bg-gray-400 text-white"
             )}>
               {employee.userStatus === "ACTIVE" ? "Hoạt động" : "Bị khóa/Ẩn"}
             </div>
           </div>
 
           <div className="flex-1 space-y-2">
-            <h3 className="text-3xl font-semibold text-slate-900 tracking-tighter uppercase italic leading-none">
+            <h3 className="text-3xl font-semibold text-gray-900 tracking-tighter uppercase italic leading-none">
               {employee.fullName}
             </h3>
             <div className="flex flex-wrap gap-2">
@@ -115,7 +115,7 @@ export default function EmployeeDetail({
               <DetailBox icon={<Mail size={14}/>} label="Email hệ thống" value={employee.email} />
               <DetailBox icon={<Phone size={14}/>} label="Số điện thoại" value={employee.phone} />
               <div className="space-y-1.5">
-                <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest ml-1">Trạng thái tài khoản</p>
+                <p className="text-[10px] font-semibold text-gray-600 uppercase tracking-widest ml-1">Trạng thái tài khoản</p>
                 <span className={cn(
                   "inline-block px-4 py-1.5 rounded-xl text-xs font-bold border shadow-xs",
                   userStatusColorMap[employee.userStatus] === "green" ? "bg-emerald-50 text-emerald-700 border-emerald-100" : "bg-red-50 text-red-700 border-red-100"
@@ -135,7 +135,7 @@ export default function EmployeeDetail({
               </div>
               <DetailBox icon={<Clock size={14}/>} label="Hình thức" value={workerTypeLabelMap[employee.type]} />
               <div className="space-y-1.5">
-                <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest ml-1">Trạng thái làm việc</p>
+                <p className="text-[10px] font-semibold text-gray-600 uppercase tracking-widest ml-1">Trạng thái làm việc</p>
                 <span className={cn(
                   "inline-block px-4 py-1.5 rounded-xl text-xs font-bold border",
                   employee.status === "ACTIVE" ? "bg-blue-50 text-blue-700 border-blue-100" : "bg-orange-50 text-orange-700 border-orange-100"
@@ -164,11 +164,11 @@ export default function EmployeeDetail({
 
 const DetailBox = ({ icon, label, value, isFullWidth = false }: { icon: React.ReactNode; label: string; value?: string; isFullWidth?: boolean }) => (
   <div className={cn("space-y-1.5", isFullWidth ? "w-full" : "")}>
-    <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-[0.2em] ml-1 flex items-center gap-1">
+    <p className="text-[10px] font-semibold text-gray-600 uppercase tracking-[0.2em] ml-1 flex items-center gap-1">
       {icon} {label}
     </p>
-    <div className="px-4 py-3 rounded-2xl bg-white border border-slate-100 shadow-sm transition-all hover:border-orange-200 group">
-      <span className="text-sm font-bold text-slate-700 leading-none group-hover:text-slate-900">
+    <div className="px-4 py-3 rounded-2xl bg-white border border-gray-100 shadow-sm transition-all hover:border-orange-200 group">
+      <span className="text-sm font-bold text-gray-700 leading-none group-hover:text-gray-900">
         {value || "—"}
       </span>
     </div>

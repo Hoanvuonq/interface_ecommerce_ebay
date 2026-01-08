@@ -23,10 +23,10 @@ export const SocialButton: React.FC<SocialButtonProps> = ({
       disabled={loading}
       loading={loading}
       className={cn(
-        "h-12 rounded-xl border-2 border-gray-200 dark:border-slate-700",
+        "h-12 rounded-xl border-2 border-gray-200 dark:border-gray-700",
         "hover:border-orange-500 dark:hover:border-orange-500 hover:shadow-md",
         "transition-all duration-300 font-medium text-base bg-white",
-        "dark:bg-slate-700/50 dark:text-gray-200"
+        "dark:bg-gray-700/50 dark:text-gray-200"
       )}
     >
       {displayLabel}

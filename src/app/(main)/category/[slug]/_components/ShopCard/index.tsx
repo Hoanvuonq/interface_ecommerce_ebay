@@ -68,14 +68,14 @@ export const ShopCard: React.FC<{ shop: Shop; color: string; isMobile?: boolean 
 
             <div className="flex flex-col items-center gap-1 w-full z-10">
                 <span className={cn(
-                    "line-clamp-1 w-full text-center font-bold text-slate-600 transition-all duration-300",
+                    "line-clamp-1 w-full text-center font-bold text-gray-600 transition-all duration-300",
                     isMobile ? "text-[10px]" : "text-[12px]",
                     "group-hover:text-orange-600"
                 )}>
                     {shop.name}
                 </span>
                 
-                <div className="flex items-center gap-0.5 text-[8px] text-slate-400 font-medium">
+                <div className="flex items-center gap-0.5 text-[8px] text-gray-600 font-medium">
                     <span className="text-orange-500">★</span> 4.9
                     <span className="mx-0.5">•</span>
                     <span>1k+ bán</span>

@@ -110,7 +110,7 @@ export default function PositionManagement({
           <div className="p-2 bg-blue-50 rounded-lg text-blue-500">
             <Briefcase size={16} />
           </div>
-          <span className="font-semibold text-slate-800 tracking-tight">
+          <span className="font-semibold text-gray-800 tracking-tight">
             {record.positionName}
           </span>
         </div>
@@ -119,7 +119,7 @@ export default function PositionManagement({
     {
       header: "Mô tả",
       render: (record: Position) => (
-        <span className="text-slate-500 text-xs italic">
+        <span className="text-gray-500 text-xs italic">
           {record.description || "Không có mô tả"}
         </span>
       ),
@@ -131,7 +131,7 @@ export default function PositionManagement({
         const count =
           employeeCountMap[record.positionName] ?? record.totalEmployees ?? 0;
         return (
-          <div className="px-3 py-1 bg-slate-100 rounded-full inline-block">
+          <div className="px-3 py-1 bg-gray-100 rounded-full inline-block">
             <span className="font-semibold text-blue-600 text-[10px] uppercase">
               {count} Thành viên
             </span>
@@ -143,7 +143,7 @@ export default function PositionManagement({
       header: "Ngày tạo",
       align: "center" as const,
       render: (record: Position) => (
-        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">
+        <span className="text-[10px] font-bold text-gray-600 uppercase tracking-tighter">
           {record.createdDate
             ? dayjs(record.createdDate).format("DD/MM/YYYY")
             : "-"}
@@ -165,11 +165,11 @@ export default function PositionManagement({
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center bg-white p-4 rounded-3xl border border-slate-100 shadow-sm shadow-slate-200/50">
+      <div className="flex justify-between items-center bg-white p-4 rounded-3xl border border-gray-100 shadow-sm shadow-gray-200/50">
         <SectionHeader icon={<Briefcase />} title="Danh sách chức vụ" />
         <button
           onClick={() => setAddModalOpen(true)}
-          className="flex items-center gap-2 px-6 py-2.5 bg-slate-900 hover:bg-orange-500 text-white rounded-2xl font-semibold uppercase text-[10px] tracking-widest transition-all duration-300 shadow-lg shadow-slate-200 active:scale-95"
+          className="flex items-center gap-2 px-6 py-2.5 bg-gray-900 hover:bg-orange-500 text-white rounded-2xl font-semibold uppercase text-[10px] tracking-widest transition-all duration-300 shadow-lg shadow-gray-200 active:scale-95"
         >
           <Plus size={14} strokeWidth={3} /> Thêm chức vụ
         </button>
@@ -216,13 +216,13 @@ export default function PositionManagement({
             />
 
             <div className="space-y-1.5">
-              <label className="text-[10px] font-semibold uppercase text-slate-400 ml-1 tracking-widest">
+              <label className="text-[10px] font-semibold uppercase text-gray-600 ml-1 tracking-widest">
                 Mô tả chức vụ
               </label>
               <textarea
                 className={cn(
                   "w-full p-4 rounded-2xl border bg-white outline-none transition-all text-sm font-medium min-h-25",
-                  "border-slate-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/5"
+                  "border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/5"
                 )}
                 placeholder="Mô tả quyền hạn và trách nhiệm..."
                 {...register("description")}

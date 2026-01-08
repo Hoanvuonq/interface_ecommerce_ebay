@@ -125,7 +125,7 @@ export const WithdrawalRequestModal: React.FC<WithdrawalRequestModalProps> = ({
                     </h3>
                     <button 
                         onClick={handleClose}
-                        className="p-1 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
+                        className="p-1 text-gray-600 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -205,7 +205,7 @@ export const WithdrawalRequestModal: React.FC<WithdrawalRequestModalProps> = ({
                                     placeholder="Nhập ghi chú (nếu có)"
                                     className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-200 focus:border-blue-500 focus:outline-none transition-colors resize-none"
                                 />
-                                <div className="text-right text-xs text-gray-400 mt-1">
+                                <div className="text-right text-xs text-gray-600 mt-1">
                                     {note.length}/1000
                                 </div>
                             </div>

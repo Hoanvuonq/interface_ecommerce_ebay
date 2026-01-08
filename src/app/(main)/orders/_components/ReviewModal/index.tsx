@@ -339,7 +339,7 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
           </div>
           <button
             onClick={handleClose}
-            className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors focus:outline-none"
+            className="p-2 text-gray-600 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors focus:outline-none"
           >
             <X size={24} />
           </button>
@@ -398,7 +398,7 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-2">
                 Nhận xét{" "}
-                <span className="font-normal text-gray-400">(Tùy chọn)</span>
+                <span className="font-normal text-gray-600">(Tùy chọn)</span>
               </label>
               <div className="relative">
                 <textarea
@@ -407,9 +407,9 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
                   onChange={(e) => setComment(e.target.value)}
                   maxLength={2000}
                   placeholder="Hãy chia sẻ những điều bạn thích về sản phẩm này..."
-                  className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-100 focus:border-orange-500 text-sm text-gray-800 placeholder:text-gray-400 resize-none transition-all"
+                  className="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-100 focus:border-orange-500 text-sm text-gray-800 placeholder:text-gray-600 resize-none transition-all"
                 />
-                <span className="absolute bottom-3 right-3 text-xs text-gray-400 bg-white px-1">
+                <span className="absolute bottom-3 right-3 text-xs text-gray-600 bg-white px-1">
                   {comment.length}/2000
                 </span>
               </div>
@@ -478,7 +478,7 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
                   {fileList.length < 7 && (
                     <div
                       onClick={() => fileInputRef.current?.click()}
-                      className="aspect-square rounded-lg border-2 border-dashed border-gray-300 hover:border-orange-500 hover:bg-orange-50 transition-all cursor-pointer flex flex-col items-center justify-center text-gray-400 hover:text-orange-500 gap-1"
+                      className="aspect-square rounded-lg border-2 border-dashed border-gray-300 hover:border-orange-500 hover:bg-orange-50 transition-all cursor-pointer flex flex-col items-center justify-center text-gray-600 hover:text-orange-500 gap-1"
                     >
                       <UploadCloud size={24} />
                       <span className="text-[10px] font-medium">Thêm</span>

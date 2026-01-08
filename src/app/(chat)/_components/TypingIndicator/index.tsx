@@ -36,7 +36,7 @@ export const TypingIndicator: React.FC<TypingIndicatorProps> = ({
     <div className="flex items-center gap-2 px-4 py-2 animate-in fade-in slide-in-from-bottom-2 duration-300">
       {userIds.length === 1 ? (
         <div className="flex items-center gap-2">
-          <div className="relative w-6 h-6 shrink-0 bg-slate-200 rounded-full overflow-hidden border border-slate-100 flex items-center justify-center">
+          <div className="relative w-6 h-6 shrink-0 bg-gray-200 rounded-full overflow-hidden border border-gray-100 flex items-center justify-center">
             {getUserAvatar(userIds[0]) ? (
               <img
                 src={getUserAvatar(userIds[0])}
@@ -44,27 +44,27 @@ export const TypingIndicator: React.FC<TypingIndicatorProps> = ({
                 className="w-full h-full object-cover"
               />
             ) : (
-              <span className="text-[10px] font-bold text-slate-500 uppercase">
+              <span className="text-[10px] font-bold text-gray-500 uppercase">
                 {getUserName(userIds[0])[0]}
               </span>
             )}
           </div>
           
-          <span className="text-xs italic text-slate-400">
+          <span className="text-xs italic text-gray-600">
             <span className="font-semibold not-italic">{getUserName(userIds[0])}</span> đang gõ...
           </span>
         </div>
       ) : (
-        <span className="text-xs italic text-slate-400 font-medium">
+        <span className="text-xs italic text-gray-600 font-medium">
           {userIds.length} người đang gõ...
         </span>
       )}
 
       {/* Bộ ba chấm động - Tận dụng Tailwind hoặc CSS Animation */}
       <div className="flex items-center gap-1 ml-1 pt-1">
-        <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.3s]" />
-        <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.15s]" />
-        <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" />
+        <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.3s]" />
+        <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.15s]" />
+        <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" />
       </div>
 
       {/* Global CSS để tinh chỉnh animation mượt hơn (nếu không dùng Tailwind animate-bounce) */}

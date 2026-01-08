@@ -50,16 +50,16 @@ export default function PayrollDetail({
       width="max-w-2xl"
     >
       <div className="space-y-6 pb-4">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center p-6 bg-slate-50/50 rounded-4xl border border-slate-100 gap-4">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center p-6 bg-gray-50/50 rounded-4xl border border-gray-100 gap-4">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-2xl bg-orange-100 flex items-center justify-center text-orange-600 shadow-sm shadow-orange-100">
               <Calendar size={24} />
             </div>
             <div>
-              <h3 className="text-xl font-semibold text-slate-900 tracking-tighter uppercase italic leading-none">
+              <h3 className="text-xl font-semibold text-gray-900 tracking-tighter uppercase italic leading-none">
                 Tháng {formatMonth(payroll.payMonth)}
               </h3>
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Chu kỳ thanh toán nhân sự</p>
+              <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest mt-1">Chu kỳ thanh toán nhân sự</p>
             </div>
           </div>
           
@@ -78,7 +78,7 @@ export default function PayrollDetail({
           <DetailSalaryBox 
             label="Lương cơ bản" 
             value={formatCurrency(payroll.baseSalary)} 
-            color="text-slate-900"
+            color="text-gray-900"
           />
           <DetailSalaryBox 
             label="Các khoản thưởng" 
@@ -98,7 +98,7 @@ export default function PayrollDetail({
           </div>
         </div>
 
-        <div className="bg-white rounded-4xl border border-slate-100 p-6 space-y-4">
+        <div className="bg-white rounded-4xl border border-gray-100 p-6 space-y-4">
           <SectionHeader icon={<Clock size={16}/>} title="Lịch trình thanh toán" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <PaymentStep 
@@ -113,7 +113,7 @@ export default function PayrollDetail({
           </div>
         </div>
 
-        <div className="bg-slate-900 rounded-4xl p-6 text-white relative overflow-hidden">
+        <div className="bg-gray-900 rounded-4xl p-6 text-white relative overflow-hidden">
           <Calculator className="absolute -right-4 -top-4 text-white/5 rotate-12" size={120} />
           <div className="relative z-10">
             <SectionHeader icon={<Calculator size={16} className="text-orange-400" />} title="Minh bạch tài chính" isLight />
@@ -147,7 +147,7 @@ export default function PayrollDetail({
         <div className="pt-4 flex justify-end">
           <button 
             onClick={onClose}
-            className="px-8 py-3 rounded-2xl font-semibold uppercase text-[10px] tracking-widest text-slate-400 hover:bg-slate-100 transition-all active:scale-95"
+            className="px-8 py-3 rounded-2xl font-semibold uppercase text-[10px] tracking-widest text-gray-600 hover:bg-gray-100 transition-all active:scale-95"
           >
             Đóng cửa sổ
           </button>
@@ -160,10 +160,10 @@ export default function PayrollDetail({
 // --- Internal Helper Components ---
 
 const DetailSalaryBox = ({ label, value, color, icon }: any) => (
-  <div className="p-5 rounded-3xl bg-white border border-slate-100 shadow-sm flex flex-col justify-center">
+  <div className="p-5 rounded-3xl bg-white border border-gray-100 shadow-sm flex flex-col justify-center">
     <div className="flex items-center gap-1.5 mb-1">
       {icon}
-      <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">{label}</p>
+      <p className="text-[10px] font-semibold text-gray-600 uppercase tracking-widest">{label}</p>
     </div>
     <p className={cn("text-xl font-semibold italic tracking-tighter", color)}>{value}</p>
   </div>
@@ -173,10 +173,10 @@ const DetailSalaryBox = ({ label, value, color, icon }: any) => (
 
 const PaymentStep = ({ label, date, isHighlighted }: any) => (
   <div className="space-y-1">
-    <p className="text-[10px] font-semibold text-slate-300 uppercase tracking-widest">{label}</p>
+    <p className="text-[10px] font-semibold text-gray-300 uppercase tracking-widest">{label}</p>
     <div className={cn(
       "px-4 py-3 rounded-xl border font-bold text-sm",
-      isHighlighted ? "bg-emerald-50 border-emerald-100 text-emerald-700" : "bg-slate-50 border-slate-100 text-slate-500"
+      isHighlighted ? "bg-emerald-50 border-emerald-100 text-emerald-700" : "bg-gray-50 border-gray-100 text-gray-500"
     )}>
       {date}
     </div>

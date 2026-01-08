@@ -26,7 +26,7 @@ export const OrderSuccessModal: React.FC<OrderSuccessModalProps> = ({
       <button
         type="button"
         onClick={() => handleNavigate("/orders")}
-        className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 border border-slate-200 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 transition-all uppercase text-[10px] tracking-widest group"
+        className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 border border-gray-200 rounded-2xl font-bold text-gray-600 hover:bg-gray-50 transition-all uppercase text-[10px] tracking-widest group"
       >
         <ShoppingBag size={14} className="group-hover:-rotate-12 transition-transform" />
         Xem đơn hàng
@@ -63,17 +63,17 @@ export const OrderSuccessModal: React.FC<OrderSuccessModalProps> = ({
         </div>
 
         <div className="space-y-3 animate-in fade-in slide-in-from-bottom-2 duration-700 delay-150 fill-mode-both">
-          <h2 className="text-3xl font-bold text-slate-900 uppercase italic tracking-tighter">
+          <h2 className="text-3xl font-bold text-gray-900 uppercase italic tracking-tighter">
             Đặt hàng <span className="text-green-500">thành công!</span>
           </h2>
-          <p className="text-slate-500 font-medium leading-relaxed px-6 text-sm">
+          <p className="text-gray-500 font-medium leading-relaxed px-6 text-sm">
             Cảm ơn bạn đã tin tưởng mua sắm. <br />
             Đơn hàng của bạn đang được xử lý chớp nhoáng!
           </p>
         </div>
         
         <div className="mt-6 animate-in fade-in zoom-in-90 duration-1000 delay-500 fill-mode-both">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-slate-50 rounded-full text-[9px] font-bold uppercase tracking-widest text-slate-400 border border-slate-100 hover:bg-white hover:border-orange-200 transition-colors cursor-default">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 rounded-full text-[9px] font-bold uppercase tracking-widest text-gray-600 border border-gray-100 hover:bg-white hover:border-orange-200 transition-colors cursor-default">
              <span className="animate-bounce">🎉</span> Welcome to the community
           </div>
         </div>

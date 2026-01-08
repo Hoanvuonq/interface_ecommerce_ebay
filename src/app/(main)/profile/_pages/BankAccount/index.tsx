@@ -164,7 +164,7 @@ export default function BankAccountManagement({
 
         <div className="p-0">
           {loading && bankAccounts.length === 0 ? (
-            <div className="p-8 text-center text-gray-400">
+            <div className="p-8 text-center text-gray-600">
               Đang tải dữ liệu...
             </div>
           ) : bankAccounts.length === 0 ? (
@@ -216,7 +216,7 @@ export default function BankAccountManagement({
                           {acc.bankName}
                         </span>
                         {acc.branch && (
-                          <div className="text-xs text-gray-400 mt-0.5">
+                          <div className="text-xs text-gray-600 mt-0.5">
                             {acc.branch}
                           </div>
                         )}
@@ -244,14 +244,14 @@ export default function BankAccountManagement({
                             Mặc định
                           </span>
                         ) : (
-                          <span className="text-gray-400 text-sm">-</span>
+                          <span className="text-gray-600 text-sm">-</span>
                         )}
                       </td>
                       <td className="px-6 py-4 text-right">
                         <div className="flex items-center justify-end gap-3">
                           <button
                             onClick={() => openEdit(acc)}
-                            className="text-gray-400 hover:text-orange-600 transition-colors p-1"
+                            className="text-gray-600 hover:text-orange-600 transition-colors p-1"
                             title="Sửa"
                           >
                             <svg
@@ -271,7 +271,7 @@ export default function BankAccountManagement({
                           {!acc.default && (
                             <button
                               onClick={() => handleDelete(acc.bankAccountId)}
-                              className="text-gray-400 hover:text-red-600 transition-colors p-1"
+                              className="text-gray-600 hover:text-red-600 transition-colors p-1"
                               title="Xóa"
                             >
                               <svg

@@ -81,7 +81,7 @@ export default function CategorySidebar({
               <button
                 onClick={() => onSelect && onSelect(undefined)}
                 className={`w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium transition-all flex items-center justify-between group 
-                  ${!activeId ? "bg-orange-50 text-(--color-mainColor) shadow-sm" : "text-slate-600 hover:bg-slate-50"}`}
+                  ${!activeId ? "bg-orange-50 text-(--color-mainColor) shadow-sm" : "text-gray-600 hover:bg-gray-50"}`}
               >
                 <span>Tất cả sản phẩm</span>
                 {!activeId && <div className="w-1.5 h-1.5 rounded-full bg-orange-500" />}
@@ -90,14 +90,14 @@ export default function CategorySidebar({
 
             {/* List danh mục từ props */}
             {data.length === 0 ? (
-               <div className="py-4 text-center text-xs text-gray-400">Không có danh mục</div>
+               <div className="py-4 text-center text-xs text-gray-600">Không có danh mục</div>
             ) : (
               data.map((cat) => (
                 <li key={cat.id}>
                   <button
                     onClick={() => onSelect && onSelect(cat.id)}
                     className={`w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium transition-all flex items-center justify-between group 
-                      ${activeId === cat.id ? "bg-orange-50 text-(--color-mainColor) shadow-sm" : "text-slate-600 hover:bg-slate-50"}`}
+                      ${activeId === cat.id ? "bg-orange-50 text-(--color-mainColor) shadow-sm" : "text-gray-600 hover:bg-gray-50"}`}
                   >
                     <span className="truncate">{cat.name}</span>
                     {activeId === cat.id && <div className="w-1.5 h-1.5 rounded-full bg-orange-500" />}
@@ -110,7 +110,7 @@ export default function CategorySidebar({
 
           <div className="space-y-0.5">
             {internalCategories.length === 0 ? (
-              <div className="py-10 text-center text-gray-400 text-xs">Trống</div>
+              <div className="py-10 text-center text-gray-600 text-xs">Trống</div>
             ) : (
               internalCategories.map((c) => (
                 <CustomCollapseItem key={c.id} category={c} />
@@ -122,7 +122,7 @@ export default function CategorySidebar({
       
       {!isShop && (
         <div className="p-4 bg-gray-50/50 border-t border-gray-100">
-          <p className="text-[10px] text-gray-400 font-medium text-center uppercase tracking-widest">
+          <p className="text-[10px] text-gray-600 font-medium text-center uppercase tracking-widest">
             Hỗ trợ 24/7
           </p>
         </div>

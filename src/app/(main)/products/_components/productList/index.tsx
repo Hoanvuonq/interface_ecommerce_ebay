@@ -51,7 +51,7 @@ const CustomPagination: React.FC<{
         <span className="text-sm font-bold text-orange-600 bg-ortext-orange-50 px-3 py-1 rounded-lg">
           {page}
         </span>
-        <span className="text-gray-400 text-sm">/</span>
+        <span className="text-gray-600 text-sm">/</span>
         <span className="text-sm font-medium text-gray-600">{totalPages}</span>
       </div>
       <CustomButton

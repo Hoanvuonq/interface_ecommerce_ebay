@@ -52,18 +52,18 @@ export const VoucherModalContent: React.FC<ContentProps> = (props) => {
   return (
     <div className="flex flex-col h-[70vh] bg-white relative font-sans">
       {/* SEARCH BAR */}
-      <div className="flex-none p-4 bg-white border-b border-slate-50 z-20">
+      <div className="flex-none p-4 bg-white border-b border-gray-50 z-20">
         <form 
           className="relative group" 
           onSubmit={(e) => { e.preventDefault(); onApplyCode?.(voucherCode); }}
         >
-          <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" />
+          <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" />
           <input
             type="text"
             value={voucherCode}
             onChange={(e) => onCodeChange(e.target.value.toUpperCase())}
             placeholder="Nhập mã ưu đãi..."
-            className="w-full pl-11 pr-24 py-3 bg-slate-50 rounded-2xl text-[11px] font-bold outline-none focus:bg-white focus:shadow-sm transition-all"
+            className="w-full pl-11 pr-24 py-3 bg-gray-50 rounded-2xl text-[11px] font-bold outline-none focus:bg-white focus:shadow-sm transition-all"
           />
           <button 
             type="submit"
@@ -147,17 +147,17 @@ export const VoucherModalContent: React.FC<ContentProps> = (props) => {
       </div>
 
       {/* FOOTER REVIEW - THAY ĐỔI THEO LỰA CHỌN TẠM THỜI */}
-      <div className="flex-none p-4 bg-white/95 backdrop-blur-md border-t border-slate-100 flex items-center justify-between z-30 shadow-[0_-8px_20px_rgba(0,0,0,0.05)]">
+      <div className="flex-none p-4 bg-white/95 backdrop-blur-md border-t border-gray-100 flex items-center justify-between z-30 shadow-[0_-8px_20px_rgba(0,0,0,0.05)]">
         <div className="flex items-center gap-3">
           <div className={cn(
             "w-10 h-10 rounded-xl flex items-center justify-center transition-all", 
-            currentTotalSaving > 0 ? "bg-orange-500 text-white shadow-lg shadow-orange-200" : "bg-slate-100 text-slate-300"
+            currentTotalSaving > 0 ? "bg-orange-500 text-white shadow-lg shadow-orange-200" : "bg-gray-100 text-gray-300"
           )}>
             <Sparkles size={18} className={currentTotalSaving > 0 ? "animate-pulse" : ""} />
           </div>
           <div>
-            <p className="text-[10px] font-bold text-slate-400 uppercase leading-tight">Tiết kiệm dự kiến</p>
-            <p className="text-lg font-bold text-slate-900 italic leading-none mt-0.5">
+            <p className="text-[10px] font-bold text-gray-600 uppercase leading-tight">Tiết kiệm dự kiến</p>
+            <p className="text-lg font-bold text-gray-900 italic leading-none mt-0.5">
               {currentTotalSaving > 0 ? `-${formatPrice(currentTotalSaving)}` : "0đ"}
             </p>
           </div>
@@ -168,7 +168,7 @@ export const VoucherModalContent: React.FC<ContentProps> = (props) => {
             <span className="bg-emerald-500 text-white text-[8px] font-bold px-2 py-0.5 rounded-lg flex items-center gap-1 uppercase">
               <CheckCircle2 size={8} /> {selectedCount} mã đang chọn
             </span>
-            <p className="text-[9px] font-bold text-slate-400 uppercase mt-1 italic">Tạm tính trong modal</p>
+            <p className="text-[9px] font-bold text-gray-600 uppercase mt-1 italic">Tạm tính trong modal</p>
           </div>
         )}
       </div>

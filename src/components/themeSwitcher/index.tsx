@@ -33,7 +33,7 @@ export const ThemeSwitcher = () => {
         className={cn(
           "w-12 h-6 rounded-full transition-colors duration-300 ease-in-out flex items-center justify-between px-1",
           "bg-black/40 border border-white/20",
-          "peer-checked:bg-slate-800"
+          "peer-checked:bg-gray-800"
         )}
       >
         <Sun 

@@ -47,12 +47,12 @@ export const OrderCard: React.FC<OrderCardProps> = ({
   }, [order]);
 
   return (
-    <article className="group relative bg-white border border-slate-100 rounded-4xl p-4 sm:p-5 hover:shadow-2xl hover:shadow-orange-500/10 transition-all duration-500 mb-3 overflow-hidden">
+    <article className="group relative bg-white border border-gray-100 rounded-4xl p-4 sm:p-5 hover:shadow-2xl hover:shadow-orange-500/10 transition-all duration-500 mb-3 overflow-hidden">
       <div className="absolute left-0 top-0 bottom-0 w-1 transition-all duration-500 group-hover:w-1.5" />
 
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="relative w-10 h-10 shrink-0 rounded-2xl bg-slate-50 border border-slate-100 overflow-hidden flex items-center justify-center">
+          <div className="relative w-10 h-10 shrink-0 rounded-2xl bg-gray-50 border border-gray-100 overflow-hidden flex items-center justify-center">
             {ui.shopLogo ? (
               <Image
                 src={ui.shopLogo}
@@ -62,14 +62,14 @@ export const OrderCard: React.FC<OrderCardProps> = ({
                 className="w-full h-full object-cover"
               />
             ) : (
-              <Package size={18} className="text-slate-300" />
+              <Package size={18} className="text-gray-300" />
             )}
           </div>
           <div className="min-w-0">
-            <h4 className="text-[13px] sm:text-[14px] font-bold text-slate-800 leading-none uppercase truncate">
+            <h4 className="text-[13px] sm:text-[14px] font-bold text-gray-800 leading-none uppercase truncate">
               {ui.shopName}
             </h4>
-            <span className="text-[10px] text-slate-400 font-bold tracking-widest mt-1 block uppercase">
+            <span className="text-[10px] text-gray-600 font-bold tracking-widest mt-1 block uppercase">
               MÃ ĐƠN: #{order.orderNumber}
             </span>
           </div>
@@ -99,7 +99,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
             return (
               <div
                 key={i}
-                className="relative w-16 h-16 cursor-pointer rounded-2xl border-2 border-white bg-slate-50 overflow-hidden duration-300 shadow-custom transition-transform group-hover:translate-x-1"
+                className="relative w-16 h-16 cursor-pointer rounded-2xl border-2 border-white bg-gray-50 overflow-hidden duration-300 shadow-custom transition-transform group-hover:translate-x-1"
               >
                 {imgUrl ? (
                   <Image
@@ -109,7 +109,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
                     className="w-full h-full object-contain"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-slate-300 bg-slate-100">
+                  <div className="w-full h-full flex items-center justify-center text-gray-300 bg-gray-100">
                     <Package size={20} strokeWidth={1.5} />
                   </div>
                 )}
@@ -117,7 +117,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
             );
           })}
           {ui.itemCount > 3 && (
-            <div className="w-14 h-14 rounded-2xl border-2 border-white bg-slate-800 flex items-center justify-center text-[10px] font-bold text-white shadow-md z-10">
+            <div className="w-14 h-14 rounded-2xl border-2 border-white bg-gray-800 flex items-center justify-center text-[10px] font-bold text-white shadow-md z-10">
               +{ui.itemCount - 3}
             </div>
           )}
@@ -126,13 +126,13 @@ export const OrderCard: React.FC<OrderCardProps> = ({
         <div className="flex-1 min-w-0 w-full">
           <Link
             href={`/products/${ui.firstItem?.productId}`}
-            className="font-semibold text-slate-700 hover:text-orange-600 transition-colors block text-[12px] truncate pr-4"
+            className="font-semibold text-gray-700 hover:text-orange-600 transition-colors block text-[12px] truncate pr-4"
           >
             {ui.firstItem?.productName}
           </Link>
 
           <div className="flex flex-wrap items-center gap-3">
-            <div className="flex items-center gap-1.5 text-slate-600 bg-slate-50 px-2 py-0.5 rounded-lg border border-slate-100">
+            <div className="flex items-center gap-1.5 text-gray-600 bg-gray-50 px-2 py-0.5 rounded-lg border border-gray-100">
               <Truck size={12} strokeWidth={2} />
               <span className="text-[10px] font-bold uppercase tracking-tight">
                 Giao:{" "}
@@ -142,7 +142,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
               </span>
             </div>
 
-            <div className="flex items-center gap-1.5 text-slate-500 bg-slate-50 px-2 py-0.5 rounded-lg border border-slate-200">
+            <div className="flex items-center gap-1.5 text-gray-500 bg-gray-50 px-2 py-0.5 rounded-lg border border-gray-200">
               <Wallet size={12} strokeWidth={2} />
               <span className="text-[10px] font-bold uppercase italic">
                 {ui.paymentLabel}
@@ -151,9 +151,9 @@ export const OrderCard: React.FC<OrderCardProps> = ({
           </div>
         </div>
 
-        <div className="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto pt-3 sm:pt-0 border-t sm:border-t-0 border-slate-50">
+        <div className="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto pt-3 sm:pt-0 border-t sm:border-t-0 border-gray-50">
           <div className="flex flex-col items-start sm:items-end">
-            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">
+            <span className="text-[9px] font-bold text-gray-600 uppercase tracking-widest">
               Tổng thanh toán
             </span>
             <span className="text-2xl font-bold text-(--color-mainColor) tracking-tighter">

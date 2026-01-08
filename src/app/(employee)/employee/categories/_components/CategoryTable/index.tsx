@@ -59,7 +59,7 @@ export default function CategoryTable() {
   const renderRows = (nodes: CategoryResponse[], level = 0) => {
     return nodes.map((node) => (
       <React.Fragment key={node.id}>
-        <tr className="hover:bg-slate-50/80 transition-colors group border-b border-slate-50 last:border-0 text-slate-600">
+        <tr className="hover:bg-gray-50/80 transition-colors group border-b border-gray-50 last:border-0 text-gray-600">
           <td className="px-6 py-4">
             <div
               className="flex items-center"
@@ -74,7 +74,7 @@ export default function CategoryTable() {
                       : next.add(node.id);
                     setExpandedKeys(next);
                   }}
-                  className="mr-2 p-1 hover:bg-slate-100 rounded text-slate-400"
+                  className="mr-2 p-1 hover:bg-gray-100 rounded text-gray-600"
                 >
                   {expandedKeys.has(node.id) ? (
                     <ChevronDown size={14} />
@@ -90,7 +90,7 @@ export default function CategoryTable() {
                   "p-1.5 rounded-lg mr-3 shadow-sm",
                   node.children?.length
                     ? "bg-orange-50 text-orange-500"
-                    : "bg-slate-100 text-slate-400"
+                    : "bg-gray-100 text-gray-600"
                 )}
               >
                 {node.children?.length ? (
@@ -99,7 +99,7 @@ export default function CategoryTable() {
                   <FileText size={15} />
                 )}
               </div>
-              <span className="font-semibold text-slate-800">{node.name}</span>
+              <span className="font-semibold text-gray-800">{node.name}</span>
             </div>
           </td>
           <td className="px-6 py-4 text-xs font-mono">{node.slug}</td>
@@ -109,7 +109,7 @@ export default function CategoryTable() {
                 "px-3 py-1 text-[10px] font-semibold rounded-full uppercase shadow-xs",
                 node.active
                   ? "bg-emerald-50 text-emerald-600"
-                  : "bg-slate-100 text-slate-400"
+                  : "bg-gray-100 text-gray-600"
               )}
             >
               {node.active ? "Hoạt động" : "Vô hiệu"}
@@ -147,7 +147,7 @@ export default function CategoryTable() {
   return (
     <div className="p-8 bg-[#F8FAFC] min-h-screen space-y-8">
       <div className="flex justify-between items-center">
-        <h1 className="text-4xl font-semibold text-slate-900 tracking-tighter uppercase italic">
+        <h1 className="text-4xl font-semibold text-gray-900 tracking-tighter uppercase italic">
           Danh mục <span className="text-orange-500">Sản phẩm</span>
         </h1>
         <button
@@ -165,7 +165,7 @@ export default function CategoryTable() {
         <StatCardComponents
           label="Tổng danh mục"
           value={stats.total}
-          color="text-slate-900"
+          color="text-gray-900"
           size="md" 
           icon={<Folder />}
         />
@@ -179,15 +179,15 @@ export default function CategoryTable() {
         <StatCardComponents
           label="Tạm ngưng"
           value={stats.inactive}
-          color="text-slate-300"
+          color="text-gray-300"
           size="md"
           icon={<PauseCircle />}
         />
       </div>
 
-      <div className="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 overflow-hidden">
-        <div className="p-6 border-b border-slate-50 flex justify-between items-center bg-white/50 backdrop-blur-md">
-          <div className="flex bg-slate-100 p-1 rounded-xl">
+      <div className="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden">
+        <div className="p-6 border-b border-gray-50 flex justify-between items-center bg-white/50 backdrop-blur-md">
+          <div className="flex bg-gray-100 p-1 rounded-xl">
             {(["ALL", "ACTIVE", "INACTIVE"] as const).map((t) => (
               <button
                 key={t}
@@ -196,7 +196,7 @@ export default function CategoryTable() {
                   "px-6 py-2 text-[10px] font-semibold uppercase rounded-lg transition-all",
                   activeTab === t
                     ? "bg-white text-orange-500 shadow-sm"
-                    : "text-slate-400 hover:text-slate-600"
+                    : "text-gray-600 hover:text-gray-600"
                 )}
               >
                 {t === "ALL"
@@ -209,13 +209,13 @@ export default function CategoryTable() {
           </div>
           <div className="relative group max-w-sm w-full ml-4">
             <Search
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-orange-500 transition-colors"
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-orange-500 transition-colors"
               size={16}
             />
             <input
               type="text"
               placeholder="Tìm tên danh mục..."
-              className="w-full pl-11 pr-4 py-2.5 bg-slate-50 border-transparent rounded-xl focus:bg-white focus:ring-4 focus:ring-orange-500/5 focus:border-orange-500/20 outline-none transition-all text-sm font-medium"
+              className="w-full pl-11 pr-4 py-2.5 bg-gray-50 border-transparent rounded-xl focus:bg-white focus:ring-4 focus:ring-orange-500/5 focus:border-orange-500/20 outline-none transition-all text-sm font-medium"
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
             />
@@ -223,7 +223,7 @@ export default function CategoryTable() {
         </div>
 
         <table className="w-full text-left">
-          <thead className="bg-slate-50/50 text-[10px] uppercase font-semibold tracking-widest text-slate-400 border-b border-slate-50">
+          <thead className="bg-gray-50/50 text-[10px] uppercase font-semibold tracking-widest text-gray-600 border-b border-gray-50">
             <tr>
               <th className="px-8 py-5">Cấu trúc tên</th>
               <th className="px-6 py-5">Slug</th>
@@ -248,9 +248,9 @@ export default function CategoryTable() {
                 <td colSpan={4} className="py-24 text-center">
                   <AlertCircle
                     size={40}
-                    className="mx-auto text-slate-200 mb-2"
+                    className="mx-auto text-gray-200 mb-2"
                   />
-                  <p className="text-slate-400 font-bold italic">
+                  <p className="text-gray-600 font-bold italic">
                     Không tìm thấy kết quả
                   </p>
                 </td>

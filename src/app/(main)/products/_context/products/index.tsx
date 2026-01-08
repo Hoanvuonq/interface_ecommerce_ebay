@@ -223,7 +223,7 @@ export const ProductDetailProvider = ({
       });
 
       setReviewPage(res?.page ?? page);
-      setReviewHasMore(!res?.last); // res.last là true nếu là trang cuối
+      setReviewHasMore(!res?.last);
     } catch (error) {
       console.error("Failed to load product reviews:", error);
     } finally {

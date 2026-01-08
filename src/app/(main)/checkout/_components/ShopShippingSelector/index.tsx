@@ -28,7 +28,7 @@ export const ShopShippingSelector: React.FC<ShopShippingSelectorProps> = ({
       </div>
 
       {isLoading ? (
-        <div className="flex gap-3 items-center justify-center py-6 bg-white rounded-2xl border border-dashed border-gray-200 text-sm text-gray-400 font-bold uppercase tracking-widest">
+        <div className="flex gap-3 items-center justify-center py-6 bg-white rounded-2xl border border-dashed border-gray-200 text-sm text-gray-600 font-bold uppercase tracking-widest">
           <Loader2 className="animate-spin w-5 h-5 text-orange-500" />
           Đang tính phí vận chuyển...
         </div>

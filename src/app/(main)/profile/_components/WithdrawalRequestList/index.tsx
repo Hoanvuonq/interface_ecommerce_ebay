@@ -39,7 +39,7 @@ export const WithdrawalRequestList: React.FC = () => {
     {
       header: "STT",
       align: "center",
-      className: "w-16 font-medium text-gray-400",
+      className: "w-16 font-medium text-gray-600",
       render: (_, index) => page * size + index + 1,
     },
     {
@@ -48,7 +48,7 @@ export const WithdrawalRequestList: React.FC = () => {
       render: (item) => (
         <span className="font-bold text-red-600 tracking-wide tabular-nums">
           {item.amount.toLocaleString("vi-VN")}{" "}
-          <span className="text-xs font-normal text-gray-400">VND</span>
+          <span className="text-xs font-normal text-gray-600">VND</span>
         </span>
       ),
     },
@@ -61,7 +61,7 @@ export const WithdrawalRequestList: React.FC = () => {
           <span className="text-xs text-gray-500 font-mono mt-0.5">
             {item.accountNumber}
           </span>
-          <span className="text-[10px] text-gray-400 uppercase tracking-wider">
+          <span className="text-[10px] text-gray-600 uppercase tracking-wider">
             {item.accountHolderName}
           </span>
         </div>
@@ -88,7 +88,7 @@ export const WithdrawalRequestList: React.FC = () => {
           <div>
             <div className="text-gray-900">{item.approvedByUsername}</div>
             {item.approvedAt && (
-              <div className="text-xs text-gray-400">
+              <div className="text-xs text-gray-600">
                 {new Date(item.approvedAt).toLocaleString("vi-VN")}
               </div>
             )}

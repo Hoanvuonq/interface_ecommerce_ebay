@@ -56,7 +56,7 @@ export const ShippingInfo: React.FC<any> = ({
   bestPlatformVoucher,
 }) => {
   return (
-    <div className="w-full max-w-[500px] bg-white rounded-2xl border border-gray-100 p-1.5 shadow-sm">
+    <div className="w-full max-w-125 bg-white rounded-2xl border border-gray-100 p-1.5 shadow-sm">
       <div className="flex flex-col">
         
         <InfoRow
@@ -85,7 +85,7 @@ export const ShippingInfo: React.FC<any> = ({
             <span className="font-semibold text-gray-900 italic text-sm hover:text-green-600">
               Dự kiến 2 - 4 ngày làm việc
             </span>
-            <p className="text-[11px] text-gray-400 italic leading-tight mt-0.5">
+            <p className="text-[11px] text-gray-600 italic leading-tight mt-0.5">
               Phí vận chuyển hiển thị khi chọn địa chỉ
             </p>
           </div>

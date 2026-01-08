@@ -18,7 +18,7 @@ export const ShopBrand = ({ shop }: { shop: any }) => (
         <span className="text-[11px] px-2 py-0.5 bg-orange-100 text-orange-600 rounded-sm font-semibold uppercase">
           Yêu thích
         </span>
-        <p className="text-xs text-gray-400 whitespace-nowrap">
+        <p className="text-xs text-gray-600 whitespace-nowrap">
           {shop?.lastActive ? formatTimeSince(shop.lastActive) : "Vừa xong"}
         </p>
       </div>

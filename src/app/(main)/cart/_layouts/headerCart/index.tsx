@@ -16,7 +16,7 @@ export const HeaderCart: React.FC<HeaderCartProps> = ({
   onRefresh 
 }) => {
   return (
-    <div className="bg-white rounded-2xl py-3 px-5 mb-4 shadow-custom border border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all hover:shadow-md">
+    <div className="bg-white rounded-2xl py-3 px-5 shadow-custom border border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all hover:shadow-md">
       <div className="flex items-center gap-4">
         <div className="w-10 h-10 rounded-2xl bg-orange-100 flex items-center justify-center text-orange-600 shadow-inner shrink-0">
           <ShoppingCart size={22} />

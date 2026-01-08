@@ -454,7 +454,7 @@
 //                                     </label>
 //                                     <div className="relative">
 //                                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-//                                             <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                                             <svg className="h-5 w-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 //                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
 //                                             </svg>
 //                                         </div>
@@ -487,7 +487,7 @@
 //                                     </label>
 //                                     <div className="relative">
 //                                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-//                                             <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                                             <svg className="h-5 w-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 //                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
 //                                             </svg>
 //                                         </div>
@@ -571,7 +571,7 @@
 //                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
 //                                         </svg>
 //                                         Hình ảnh danh mục
-//                                         <span className="text-gray-400 ml-2 text-xs font-normal">(Tùy chọn)</span>
+//                                         <span className="text-gray-600 ml-2 text-xs font-normal">(Tùy chọn)</span>
 //                                     </span>
 //                                 </label>
 //                                 <div className="space-y-3">
@@ -660,12 +660,12 @@
 //                                     <label htmlFor="parentId" className="block text-sm font-semibold text-gray-700 mb-2">
 //                                         <span className="flex items-center">
 //                                             Danh mục cha
-//                                             <span className="text-gray-400 ml-2 text-xs font-normal">(Tùy chọn)</span>
+//                                             <span className="text-gray-600 ml-2 text-xs font-normal">(Tùy chọn)</span>
 //                                         </span>
 //                                     </label>
 //                                     <div className="relative">
 //                                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-//                                             <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                                             <svg className="h-5 w-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 //                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
 //                                             </svg>
 //                                         </div>
@@ -753,7 +753,7 @@
 //                                     </label>
 //                                     <div className="relative">
 //                                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-//                                             <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                                             <svg className="h-5 w-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 //                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
 //                                             </svg>
 //                                         </div>

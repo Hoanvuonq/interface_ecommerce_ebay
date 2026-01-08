@@ -33,12 +33,12 @@ export const SupportTicketTable: React.FC<SupportTicketTableProps> = ({
               <span className="text-[10px] font-semibold text-orange-500 uppercase tracking-widest leading-none mb-1">
                 Support Queue
               </span>
-              <span className="font-semibold text-slate-800 tracking-tight text-sm">
+              <span className="font-semibold text-gray-800 tracking-tight text-sm">
                 HỖ TRỢ KHÁCH HÀNG
               </span>
             </div>
           </div>
-          <button className="text-xs font-bold text-slate-400 hover:text-orange-600 flex items-center gap-1 transition-colors">
+          <button className="text-xs font-bold text-gray-600 hover:text-orange-600 flex items-center gap-1 transition-colors">
             Tất cả ticket <ArrowUpRight size={14} />
           </button>
         </div>
@@ -46,7 +46,7 @@ export const SupportTicketTable: React.FC<SupportTicketTableProps> = ({
     >
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
-          <thead className="bg-slate-50/50 border-b border-slate-100 text-[10px] font-semibold uppercase text-slate-400 tracking-wider">
+          <thead className="bg-gray-50/50 border-b border-gray-100 text-[10px] font-semibold uppercase text-gray-600 tracking-wider">
             <tr>
               {[
                 "Ticket ID",
@@ -62,25 +62,25 @@ export const SupportTicketTable: React.FC<SupportTicketTableProps> = ({
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-50">
+          <tbody className="divide-y divide-gray-50">
             {tickets.map((ticket) => (
               <tr
                 key={ticket.key}
                 className="hover:bg-blue-50/20 transition-all duration-200 group"
               >
-                <td className="px-6 py-4 font-mono text-xs font-bold text-slate-400 group-hover:text-blue-500 transition-colors">
+                <td className="px-6 py-4 font-mono text-xs font-bold text-gray-600 group-hover:text-blue-500 transition-colors">
                   #{ticket.ticketId}
                 </td>
-                <td className="px-6 py-4 font-bold text-slate-700 text-sm">
+                <td className="px-6 py-4 font-bold text-gray-700 text-sm">
                   {ticket.customer}
                 </td>
-                <td className="px-6 py-4 text-slate-600 text-sm max-w-50 truncate font-medium">
+                <td className="px-6 py-4 text-gray-600 text-sm max-w-50 truncate font-medium">
                   {ticket.issue}
                 </td>
                 <td className="px-6 py-4">
                   <TicketStatusBadge status={ticket.status} />
                 </td>
-                <td className="px-6 py-4 text-xs font-bold text-slate-400">
+                <td className="px-6 py-4 text-xs font-bold text-gray-600">
                   {ticket.createdAt}
                 </td>
                 <td className="px-6 py-4 text-right">
@@ -101,7 +101,7 @@ export const SupportTicketTable: React.FC<SupportTicketTableProps> = ({
 
       {tickets.length === 0 && (
         <div className="py-20 text-center">
-          <p className="text-slate-400 font-medium text-sm">
+          <p className="text-gray-600 font-medium text-sm">
             Không có yêu cầu hỗ trợ nào.
           </p>
         </div>

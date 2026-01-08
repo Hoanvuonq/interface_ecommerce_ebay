@@ -38,7 +38,7 @@ export const OrderCardContent: React.FC<ContentProps> = ({
           📦 {trackingNumber}
         </span>
       )}
-      <span className="text-[11px] text-gray-400 font-medium">
+      <span className="text-[11px] text-gray-600 font-medium">
         {formatDate(createdAt)}
       </span>
     </div>
@@ -75,7 +75,7 @@ export const OrderCardContent: React.FC<ContentProps> = ({
           );
         })}
         {remaining > 0 && (
-          <div className="w-16 h-16 rounded-2xl border-4 border-white bg-slate-800 text-white flex items-center justify-center text-xs font-bold shadow-md z-0">
+          <div className="w-16 h-16 rounded-2xl border-4 border-white bg-gray-800 text-white flex items-center justify-center text-xs font-bold shadow-md z-0">
             +{remaining}
           </div>
         )}

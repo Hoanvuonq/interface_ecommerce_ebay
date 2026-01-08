@@ -119,7 +119,7 @@ const ContentTable: React.FC<ContentTableProps> = ({
     return (
       <div className="flex flex-col items-center justify-center h-96 bg-white rounded-4xl border border-gray-100 shadow-sm">
         <Loader2 className="w-10 h-10 text-orange-500 animate-spin mb-4" />
-        <p className="text-gray-400 font-semibold uppercase tracking-widest text-[10px]">
+        <p className="text-gray-600 font-semibold uppercase tracking-widest text-[10px]">
           Đang đồng bộ dữ liệu...
         </p>
       </div>
@@ -154,14 +154,14 @@ const ContentTable: React.FC<ContentTableProps> = ({
           <h2 className="text-xl font-semibold text-gray-800 uppercase tracking-tighter italic leading-none">
             Category <span className="text-orange-500">Explorer</span>
           </h2>
-          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mt-2">
+          <p className="text-[10px] font-bold text-gray-600 uppercase tracking-[0.2em] mt-2">
             Tổng cộng: {totalElements} Asset
           </p>
         </div>
 
         <div className="flex items-center gap-3 w-full md:w-auto">
           <div className="relative flex-1 md:w-80 group">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600 group-focus-within:text-orange-500 transition-colors" />
             <input
               type="text"
               placeholder="Truy vấn danh mục..."
@@ -190,7 +190,7 @@ const ContentTable: React.FC<ContentTableProps> = ({
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-left">
             <thead>
-              <tr className="bg-gray-50/50 text-gray-400 border-b border-gray-100">
+              <tr className="bg-gray-50/50 text-gray-600 border-b border-gray-100">
                 <th className="px-8 py-6 text-[10px] font-semibold uppercase tracking-[0.2em]">
                   Visual
                 </th>
@@ -242,7 +242,7 @@ const ContentTable: React.FC<ContentTableProps> = ({
                     </div>
                   </td>
                   <td className="px-6 py-5">
-                    <code className="text-[10px] font-semibold text-gray-400 bg-gray-50 px-2.5 py-1.5 rounded-xl border border-gray-100">
+                    <code className="text-[10px] font-semibold text-gray-600 bg-gray-50 px-2.5 py-1.5 rounded-xl border border-gray-100">
                       /{category.slug}
                     </code>
                   </td>
@@ -265,19 +265,19 @@ const ContentTable: React.FC<ContentTableProps> = ({
                           setSelectedCategory(category);
                           setShowDetailModal(true);
                         }}
-                        className="p-2.5 text-gray-400 hover:text-blue-600 hover:bg-white rounded-xl transition-all shadow-xs active:scale-90"
+                        className="p-2.5 text-gray-600 hover:text-blue-600 hover:bg-white rounded-xl transition-all shadow-xs active:scale-90"
                       >
                         <Eye size={18} strokeWidth={2.5} />
                       </button>
                       <button
                         onClick={() => onEdit?.(category)}
-                        className="p-2.5 text-gray-400 hover:text-orange-600 hover:bg-white rounded-xl transition-all shadow-xs active:scale-90"
+                        className="p-2.5 text-gray-600 hover:text-orange-600 hover:bg-white rounded-xl transition-all shadow-xs active:scale-90"
                       >
                         <Edit3 size={18} strokeWidth={2.5} />
                       </button>
                       <button
                         onClick={() => setDeleteConfirm({ category })}
-                        className="p-2.5 text-gray-400 hover:text-rose-600 hover:bg-white rounded-xl transition-all shadow-xs active:scale-90"
+                        className="p-2.5 text-gray-600 hover:text-rose-600 hover:bg-white rounded-xl transition-all shadow-xs active:scale-90"
                       >
                         <Trash2 size={18} strokeWidth={2.5} />
                       </button>
@@ -291,7 +291,7 @@ const ContentTable: React.FC<ContentTableProps> = ({
 
         {/* Pagination */}
         <div className="px-8 py-6 bg-gray-50/30 flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-gray-100">
-          <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-[0.2em]">
+          <p className="text-[10px] font-semibold text-gray-600 uppercase tracking-[0.2em]">
             Shard {currentPage} of {totalPages}
           </p>
           <div className="flex items-center gap-2">
@@ -352,7 +352,7 @@ const ContentTable: React.FC<ContentTableProps> = ({
       {deleteConfirm.category && (
         <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
           <div
-            className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-300"
+            className="absolute inset-0 bg-gray-900/60 backdrop-blur-sm animate-in fade-in duration-300"
             onClick={() => setDeleteConfirm({ category: null })}
           />
           <div className="relative bg-white rounded-[40px] shadow-2xl max-w-sm w-full p-10 animate-in zoom-in-95 duration-300 border-2 border-rose-100">
@@ -386,7 +386,7 @@ const ContentTable: React.FC<ContentTableProps> = ({
                 </button>
                 <button
                   onClick={() => setDeleteConfirm({ category: null })}
-                  className="w-full py-4 bg-gray-50 text-gray-400 rounded-2xl font-semibold uppercase tracking-widest text-[11px] hover:bg-gray-100 transition-all"
+                  className="w-full py-4 bg-gray-50 text-gray-600 rounded-2xl font-semibold uppercase tracking-widest text-[11px] hover:bg-gray-100 transition-all"
                 >
                   Abort Action
                 </button>
