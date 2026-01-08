@@ -1,6 +1,6 @@
 "use client";
 
-import { CustomBreadcrumb, CustomButton } from "@/components";
+import { CustomBreadcrumb, CustomButton, SectionLoading } from "@/components";
 import PageContentTransition from "@/features/PageContentTransition";
 import { useOrders } from "@/hooks/useOrders";
 import { motion, Variants } from "framer-motion";
@@ -95,14 +95,9 @@ export const OrdersScreen = () => {
           </div>
         </div>
 
-        <div className="px-6 sm:px-8 py-8 bg-gray-50/30 min-h-100">
+        <div className="px-6  py-2 bg-gray-50 min-h-100">
           {loading ? (
-            <div className="flex flex-col justify-center items-center py-20">
-              <Loader2 size={40} className="text-orange-500 animate-spin" />
-              <p className="mt-4 text-gray-600 text-xs font-bold uppercase tracking-widest">
-                Đang đồng bộ dữ liệu...
-              </p>
-            </div>
+            <SectionLoading message="Đang đồng bộ dữ liệu..." />
           ) : _.isEmpty(filteredOrders) ? (
             <div className="flex flex-col items-center justify-center py-24 px-4 bg-white rounded-[2.5rem] border-2 border-dashed border-gray-100 my-4 animate-in fade-in zoom-in duration-500">
               <div className="relative mb-8">

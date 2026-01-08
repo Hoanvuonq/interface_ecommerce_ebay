@@ -5,7 +5,9 @@ import {
 import { cn } from "@/utils/cn";
 import { resolveVariantImageUrl as resolveVariantImageUrlHelper } from "@/utils/products/media.helpers";
 import { CheckCircle } from "lucide-react";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useRef } from "react";
+import _ from "lodash"; // Dùng lodash để so sánh deep object
+
 interface VariantSelectorProps {
   variants: PublicProductVariantDTO[];
   options?: PublicProductOptionDTO[];
@@ -24,15 +26,19 @@ export const VariantSelector: React.FC<VariantSelectorProps> = ({
   const [selectedAttributes, setSelectedAttributes] = useState<
     Record<string, string>
   >({});
-  const [selectedVariant, setSelectedVariant] = useState<PublicProductVariantDTO | null>(null);
-  const lastSyncedVariantId = React.useRef<string | null>(null);
+
+  // Xóa state dư thừa selectedVariant vì nó có thể tính toán trực tiếp hoặc được quản lý bởi parent
+  // const [selectedVariant, setSelectedVariant] = useState<PublicProductVariantDTO | null>(null);
+
+  const lastSyncedVariantId = useRef<string | null>(null);
+
   type NormalizedOption = {
     key: string;
     label: string;
     values: Array<{ id: string; label: string }>;
   };
 
-  const normalizedOptions = React.useMemo<NormalizedOption[]>(() => {
+  const normalizedOptions = useMemo<NormalizedOption[]>(() => {
     if (options?.length) {
       return options.map((option, index) => {
         const key = option.id || option.name || `option-${index}`;
@@ -83,7 +89,7 @@ export const VariantSelector: React.FC<VariantSelectorProps> = ({
       }));
   }, [options, variants]);
 
-  const { valueToOptionKeyMap } = React.useMemo(() => {
+  const { valueToOptionKeyMap } = useMemo(() => {
     const optionKeyMap: Record<string, string> = {};
     normalizedOptions.forEach((option) => {
       option.values.forEach((value) => {
@@ -116,73 +122,82 @@ export const VariantSelector: React.FC<VariantSelectorProps> = ({
     });
   }, [variants, normalizedOptions, valueToOptionKeyMap]);
 
- useEffect(() => {
-    if (propSelectedVariant) {
-      if (propSelectedVariant.id === lastSyncedVariantId.current) {
-        return;
-      }
-
-      const match = normalizedVariants.find((v) => v.id === propSelectedVariant.id);
+  // FIX 1: Chỉ chạy khi ID thay đổi thực sự
+  useEffect(() => {
+    if (
+      propSelectedVariant?.id &&
+      propSelectedVariant.id !== lastSyncedVariantId.current
+    ) {
+      const match = normalizedVariants.find(
+        (v) => v.id === propSelectedVariant.id
+      );
 
       if (match && match.attributes) {
-        lastSyncedVariantId.current = propSelectedVariant.id;
-        
-        // Cập nhật state
-        setSelectedAttributes(match.attributes);
+        // Kiểm tra xem attributes mới có khác attributes hiện tại không để tránh update dư thừa
+        setSelectedAttributes((prev) => {
+          if (_.isEqual(prev, match.attributes)) {
+            return prev;
+          }
+          lastSyncedVariantId.current = propSelectedVariant.id;
+          return match.attributes || {};
+        });
       }
     }
-  }, [propSelectedVariant, normalizedVariants]);
+  }, [propSelectedVariant?.id, normalizedVariants]); // Dependency chỉ là ID string, an toàn hơn object
 
+  // FIX 2: Tách logic tìm variant ra khỏi useEffect để tránh vòng lặp gọi onVariantChange
+  // Thay vào đó, xử lý sự kiện change ngay khi user click (handleAttributeSelect)
+  // useEffect này chỉ dùng để auto-select khi có 1 variant duy nhất
   useEffect(() => {
+    if (normalizedVariants.length === 1 && normalizedVariants[0].attributes) {
+      // Chỉ set nếu chưa set
+      setSelectedAttributes((prev) => {
+        if (_.isEmpty(prev)) return normalizedVariants[0].attributes || {};
+        return prev;
+      });
+
+      // Chỉ gọi onVariantChange một lần khi mount nếu có 1 variant
+      // onVariantChange(normalizedVariants[0]); // Cẩn thận dòng này, có thể gây loop nếu parent set lại props
+    }
+  }, [normalizedVariants.length]); // Bỏ dependency variants/options thừa
+
+  const handleAttributeSelect = (optionKey: string, valueId: string) => {
+    const newAttributes = {
+      ...selectedAttributes,
+      [optionKey]: valueId,
+    };
+
+    setSelectedAttributes(newAttributes);
+
+    // Tính toán variant ngay lập tức thay vì đợi useEffect
     const requiredKeys = normalizedOptions.map((option) => option.key);
-    const selectedKeys = Object.keys(selectedAttributes).filter(
-      (key) => selectedAttributes[key]
+    const selectedKeys = Object.keys(newAttributes).filter(
+      (key) => newAttributes[key]
     );
+
     if (
       requiredKeys.length > 0 &&
       selectedKeys.length === requiredKeys.length
     ) {
       const matchingVariant = normalizedVariants.find((variant) => {
         return requiredKeys.every((key) => {
-          const expectedValue = selectedAttributes[key];
+          const expectedValue = newAttributes[key];
           return expectedValue && variant.attributes?.[key] === expectedValue;
         });
       });
+
       const originalVariant = matchingVariant
         ? variants.find((v) => v.id === matchingVariant.id)
         : null;
-      setSelectedVariant(originalVariant || null);
-      onVariantChange(originalVariant || null);
-    } else if (
-      selectedKeys.length === 0 &&
-      normalizedOptions.length === 0 &&
-      variants.length === 1
-    ) {
-      setSelectedVariant(variants[0]);
-      onVariantChange(variants[0]);
+
+      if (originalVariant) {
+        onVariantChange(originalVariant);
+      } else {
+        onVariantChange(null);
+      }
     } else {
-      setSelectedVariant(null);
       onVariantChange(null);
     }
-  }, [
-    selectedAttributes,
-    normalizedVariants,
-    variants,
-    normalizedOptions,
-    onVariantChange,
-  ]);
-
-  useEffect(() => {
-    if (normalizedVariants.length === 1 && normalizedVariants[0].attributes) {
-      setSelectedAttributes(normalizedVariants[0].attributes);
-    }
-  }, [normalizedVariants]);
-
-  const handleAttributeSelect = (optionKey: string, valueId: string) => {
-    setSelectedAttributes((prev) => ({
-      ...prev,
-      [optionKey]: valueId,
-    }));
   };
 
   if (variants.length === 1) return null;
@@ -255,8 +270,11 @@ export const VariantSelector: React.FC<VariantSelectorProps> = ({
                       "relative flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-bold transition-all border cursor-pointer",
                       isSelected
                         ? "border-orange-500 text-orange-600 bg-orange-50/50 ring-2 ring-orange-100"
-                        : "border-gray-200 text-gray-700 hover:border-orange-300 bg-white"
+                        : "border-gray-200 text-gray-700 hover:border-orange-300 bg-white",
+                      !isAvailable &&
+                        "opacity-50 cursor-not-allowed bg-gray-50 text-gray-400 border-gray-100" // Style cho disabled
                     )}
+                    disabled={!isAvailable} // Thêm disabled native
                   >
                     {imgUrl && (
                       <img

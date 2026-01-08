@@ -10,45 +10,11 @@ import {
   Package,
   ExternalLink,
   Loader2,
+  Calendar,
+  Hash,
 } from "lucide-react";
-
-// 1. Định nghĩa cấu trúc Item bên trong Order để fix lỗi 'unknown'
-interface OrderItem {
-  productName: string;
-  quantity: number;
-  unitPrice: number;
-  imageBasePath?: string;
-  imageExtension?: string;
-  variantAttributes?: string;
-}
-
-// 2. Định nghĩa cấu trúc Order cơ bản (giúp code gợi ý tốt hơn)
-interface Order {
-  orderId: string;
-  orderNumber: string;
-  status: string;
-  items: OrderItem[];
-  grandTotal: number;
-  totalQuantity?: number;
-}
-
-interface OrderPickerProps {
-  isVisible: boolean;
-  onClose: () => void;
-  orders: Order[]; // Sử dụng Interface Order thay vì any[]
-  isLoading: boolean;
-  searchText: string;
-  onSearchChange: (value: string) => void;
-  onSendDirect: (order: Order) => void;
-  onViewDetails: (order: Order) => void;
-  isSending: boolean;
-  getStatusText: (status?: string) => string | undefined;
-  resolveOrderItemImageUrl: (
-    path?: string | null,
-    ext?: string | null,
-    size?: "_thumb" | "_medium" | "_large" | "_orig"
-  ) => string;
-}
+import { OrderItem, OrderPickerProps } from "./type";
+import { cn } from "@/utils/cn"; 
 
 export const OrderPicker: React.FC<OrderPickerProps> = ({
   isVisible,
@@ -66,156 +32,191 @@ export const OrderPicker: React.FC<OrderPickerProps> = ({
   if (!isVisible) return null;
 
   return (
-    <div className="bg-white border-t border-gray-200 shadow-2xl animate-in slide-in-from-bottom duration-300">
-      {/* Header & Search */}
-      <div className="px-4 py-3 border-b border-gray-100 bg-gradient-to-r from-orange-50/50 to-red-50/50">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2 text-orange-600 font-bold text-sm uppercase tracking-tight">
-            <ShoppingCart size={16} />
-            Chọn đơn hàng để hỗ trợ
+    <div className="bg-white border-t border-gray-200 shadow-[0_-8px_30px_rgba(0,0,0,0.12)] rounded-t-2xl overflow-hidden animate-in slide-in-from-bottom duration-300">
+      <div className="px-4 py-4 border-b border-orange-100 bg-gradient-to-r from-orange-50/80 to-white backdrop-blur-md">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2.5">
+            <div className="p-2 bg-orange-100 rounded-lg text-orange-600">
+              <ShoppingCart size={18} />
+            </div>
+            <div>
+              <h3 className="text-sm font-bold text-gray-800 uppercase tracking-tight">
+                Đơn hàng của bạn
+              </h3>
+              <p className="text-[10px] text-gray-500 font-medium italic">
+                Chọn một đơn hàng để gửi hỗ trợ nhanh
+              </p>
+            </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1 hover:bg-white rounded-full text-gray-600 hover:text-gray-600 transition-colors"
+            className="p-2 hover:bg-orange-100 rounded-full text-gray-400 hover:text-orange-600 transition-all duration-200"
           >
-            <X size={18} />
+            <X size={20} />
           </button>
         </div>
 
-        <div className="relative">
+        <div className="relative group">
           <Search
             size={16}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-600"
+            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-orange-500 transition-colors"
           />
           <input
             placeholder="Tìm theo mã đơn hoặc tên sản phẩm..."
             value={searchText}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="w-full bg-white border border-gray-200 rounded-xl py-2 pl-10 pr-4 text-sm outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
+            className="w-full bg-gray-100/50 border border-transparent rounded-xl py-2.5 pl-10 pr-4 text-sm outline-none focus:bg-white focus:border-orange-300 focus:ring-4 focus:ring-orange-500/10 transition-all placeholder:text-gray-400"
           />
         </div>
       </div>
 
       {/* Order List Area */}
-      <div className="max-h-[400px] overflow-y-auto custom-scrollbar bg-gray-50/30">
+      <div className="max-h-[450px] overflow-y-auto custom-scrollbar bg-white">
         {isLoading ? (
-          <div className="flex flex-col items-center justify-center py-12 gap-3">
-            <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
-            <span className="text-xs text-gray-600 font-medium">
-              Đang tải đơn hàng...
+          <div className="flex flex-col items-center justify-center py-20 gap-4">
+            <div className="relative">
+              <Loader2 className="w-10 h-10 text-orange-500 animate-spin" />
+              <ShoppingCart
+                size={16}
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-orange-500"
+              />
+            </div>
+            <span className="text-xs text-gray-500 font-semibold animate-pulse">
+              Đang đồng bộ đơn hàng...
             </span>
           </div>
-        ) : _.isEmpty(orders) ? (
-          <div className="flex flex-col items-center justify-center py-12 text-gray-600">
-            <Package size={40} className="opacity-20 mb-2" />
-            <p className="text-sm">Không tìm thấy đơn hàng nào</p>
+        ) : orders.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-20 text-gray-400">
+            <div className="p-5 bg-gray-50 rounded-full mb-4">
+              <Package size={48} className="opacity-20" />
+            </div>
+            <p className="text-sm font-bold text-gray-500">Không có dữ liệu</p>
+            <p className="text-xs">Thử tìm kiếm với từ khóa khác nhé!</p>
           </div>
         ) : (
-          <div className="flex flex-col gap-2 p-2">
-            {_.map(orders, (order) => (
+          <div className="flex flex-col p-3 gap-3">
+            {orders.map((order) => (
               <div
                 key={order.orderId}
-                className="bg-white rounded-xl border border-gray-100 p-3 shadow-sm hover:shadow-md transition-all"
+                className="group bg-white rounded-2xl border border-gray-100 p-4 shadow-sm hover:border-orange-200 hover:shadow-orange-100/50 hover:shadow-xl transition-all duration-300"
               >
                 {/* Order Meta */}
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex flex-col">
-                    <span className="text-[10px] text-gray-600 font-bold uppercase tracking-wider">
-                      Mã đơn hàng
-                    </span>
-                    <span className="text-xs font-bold text-gray-700">
-                      #{order.orderNumber}
-                    </span>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-1 px-2 py-1 bg-gray-100 rounded-md text-gray-600">
+                      <Hash size={12} className="opacity-60" />
+                      <span className="text-xs font-black tracking-tighter">
+                        {order.orderNumber}
+                      </span>
+                    </div>
+                    <div className="hidden sm:flex items-center gap-1 text-[10px] text-gray-400">
+                      <Calendar size={12} />
+                      {/* Giả định bạn có trường createdAt */}
+                      <span>Vừa xong</span>
+                    </div>
                   </div>
                   <span
-                    className={`text-[10px] font-bold px-2 py-1 rounded-lg uppercase tracking-tighter ${
+                    className={cn(
+                      "text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider",
                       order.status === "DELIVERED" ||
-                      order.status === "COMPLETED"
-                        ? "bg-green-100 text-green-700"
+                        order.status === "COMPLETED"
+                        ? "bg-emerald-50 text-emerald-600 border border-emerald-100"
                         : order.status === "CANCELLED"
-                        ? "bg-red-100 text-red-700"
-                        : "bg-orange-100 text-orange-700"
-                    }`}
+                        ? "bg-rose-50 text-rose-600 border border-rose-100"
+                        : "bg-amber-50 text-amber-600 border border-amber-100"
+                    )}
                   >
-                    {getStatusText(order.status) ?? "Không xác định"}
+                    {getStatusText(order.status) ?? "N/A"}
                   </span>
                 </div>
 
-                {/* Items Preview */}
-                <div className="space-y-2 mb-3">
-                  {/* ÉP KIỂU item: OrderItem để fix lỗi TS(18046) */}
-                  {_.map(
-                    _.slice(_.get(order, "items", []), 0, 2),
-                    (item: OrderItem, idx: number) => (
+                <div className="space-y-2 mb-4">
+                  {order.items
+                    ?.slice(0, 2)
+                    .map((item: OrderItem, idx: number) => (
                       <div
                         key={idx}
-                        className="flex gap-3 items-center bg-gray-50/50 p-2 rounded-lg"
+                        className="flex gap-3 items-center bg-gray-50/40 p-2 rounded-xl group-hover:bg-white group-hover:border-gray-100 border border-transparent transition-colors"
                       >
-                        <img
-                          src={
-                            resolveOrderItemImageUrl(
-                              item.imageBasePath,
-                              item.imageExtension,
-                              "_thumb"
-                            ) || "/avt.jpg"
-                          }
-                          className="w-10 h-10 rounded-lg object-cover border border-gray-200"
-                          alt="item"
-                        />
+                        <div className="relative overflow-hidden rounded-lg border border-gray-100">
+                          <img
+                            src={
+                              resolveOrderItemImageUrl(
+                                item.imageBasePath,
+                                item.imageExtension,
+                                "_thumb"
+                              ) || "/avt.jpg"
+                            }
+                            className="w-11 h-11 object-cover transition-transform duration-500 group-hover:scale-110"
+                            alt="product"
+                          />
+                        </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-xs font-medium text-gray-700 truncate">
+                          <p className="text-xs font-bold text-gray-800 truncate">
                             {item.productName}
                           </p>
-                          <p className="text-[10px] text-gray-600">
-                            x{item.quantity}
-                          </p>
-                          {item.variantAttributes && (
-                            <p className="text-[9px] text-gray-500 truncate">
-                              {item.variantAttributes}
-                            </p>
-                          )}
+                          <div className="flex items-center gap-2 mt-0.5">
+                            <span className="text-[10px] text-gray-500 font-bold bg-white px-1.5 rounded border border-gray-100">
+                              x{item.quantity}
+                            </span>
+                            {item.variantAttributes && (
+                              <span className="text-[9px] text-gray-400 truncate italic">
+                                {item.variantAttributes}
+                              </span>
+                            )}
+                          </div>
                         </div>
-                        <span className="text-xs font-bold text-gray-600">
-                          {_.get(item, "unitPrice", 0).toLocaleString("vi-VN")}₫
-                        </span>
+                        <div className="text-right">
+                          <span className="text-xs font-bold text-gray-700">
+                            {item.unitPrice?.toLocaleString("vi-VN")}₫
+                          </span>
+                        </div>
                       </div>
-                    )
-                  )}
-                  {_.get(order, "items.length", 0) > 2 && (
-                    <p className="text-[10px] text-gray-600 text-center font-medium italic">
-                      + {order.items.length - 2} sản phẩm khác
-                    </p>
+                    ))}
+
+                  {order.items.length > 2 && (
+                    <div className="flex items-center justify-center py-1">
+                      <div className="h-[1px] flex-1 bg-gray-100"></div>
+                      <span className="px-3 text-[10px] text-gray-400 font-bold italic">
+                        +{order.items.length - 2} sản phẩm khác
+                      </span>
+                      <div className="h-[1px] flex-1 bg-gray-100"></div>
+                    </div>
                   )}
                 </div>
 
                 {/* Footer Actions */}
-                <div className="flex items-center justify-between pt-2 border-t border-gray-50">
-                  <div className="flex flex-col">
-                    <span className="text-[10px] text-gray-600 font-medium">
+                <div className="flex items-center justify-between pt-3 border-t border-gray-50">
+                  <div>
+                    <p className="text-[9px] text-gray-400 font-black uppercase tracking-widest mb-0.5">
                       Tổng thanh toán
-                    </span>
-                    <span className="text-sm font-bold text-orange-600">
-                      {_.get(order, "grandTotal", 0).toLocaleString("vi-VN")}₫
-                    </span>
+                    </p>
+                    <p className="text-base font-black text-orange-600 leading-none">
+                      {order.grandTotal?.toLocaleString("vi-VN")}₫
+                    </p>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2.5">
                     <button
                       onClick={() => onViewDetails(order)}
-                      className="p-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors"
+                      className="flex items-center justify-center w-9 h-9 bg-gray-50 text-gray-500 rounded-xl hover:bg-orange-50 hover:text-orange-600 border border-gray-100 transition-all duration-200"
+                      title="Xem chi tiết đơn hàng"
                     >
-                      <ExternalLink size={14} />
+                      <ExternalLink size={16} />
                     </button>
                     <button
                       onClick={() => onSendDirect(order)}
                       disabled={isSending}
-                      className="flex items-center gap-2 px-4 py-1.5 bg-orange-500 text-white rounded-lg text-xs font-bold shadow-md shadow-orange-200 hover:bg-orange-600 active:scale-95 transition-all disabled:bg-gray-300"
+                      className="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl text-xs font-black shadow-lg shadow-orange-200 hover:shadow-orange-300 hover:-translate-y-0.5 active:scale-95 transition-all duration-200 disabled:from-gray-300 disabled:to-gray-400 disabled:shadow-none disabled:translate-y-0"
                     >
                       {isSending ? (
-                        <Loader2 size={12} className="animate-spin" />
+                        <Loader2 size={14} className="animate-spin" />
                       ) : (
-                        <Send size={12} fill="currentColor" />
+                        <Send
+                          size={14}
+                          className="group-hover:translate-x-1 transition-transform"
+                        />
                       )}
-                      Gửi tin
+                      GỬI HỖ TRỢ
                     </button>
                   </div>
                 </div>

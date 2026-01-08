@@ -67,10 +67,7 @@ export const useCheckoutStore = create<CheckoutState>((set, get) => ({
     }
   },
 
-  setRequest: (nextRequest) => {
-    if (_.isEqual(get().request, nextRequest)) return;
-    set({ request: nextRequest });
-  },
+ setRequest: (nextRequest) => set({ request: nextRequest }),
 
   setAddressMasterData: (p, w) => {
     const { provincesData, allWardsData } = get();
@@ -148,5 +145,35 @@ export const useCheckoutStore = create<CheckoutState>((set, get) => ({
       .filter({ valid: true })
       .map("voucherCode")
       .value();
+  },
+
+  updateRequestFromPreview: (previewData: any) => {
+    const currentRequest = get().request;
+    const data = previewData?.data || previewData;
+
+    if (!currentRequest || !data) return;
+
+    const shopsFromBackend = _.get(data, "shops", []);
+    const backendGlobal = _.get(data, "summary.globalVouchers", []) || [];
+    const updatedShops = currentRequest.shops.map((s: any) => {
+      const freshShop = _.find(shopsFromBackend, { shopId: s.shopId });
+      const validVouchers = _.get(freshShop, "voucherResult.validVouchers", []);
+
+      return {
+        ...s,
+        vouchers: validVouchers,
+      };
+    });
+
+    const nextRequest = {
+      ...currentRequest,
+      shops: updatedShops,
+      globalVouchers:
+        backendGlobal.length > 0
+          ? backendGlobal
+          : currentRequest.globalVouchers,
+    };
+
+    set({ request: nextRequest });
   },
 }));

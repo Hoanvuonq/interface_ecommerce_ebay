@@ -4,7 +4,7 @@ export interface ProductPickerProps {
   products: any[];
   isLoading: boolean;
   searchText: string;
-  onSearchChange: (value: string) => void;
+  onSearchChange: (val: string) => void;
   onSendDirect: (product: any) => void;
   onViewDetails: (product: any) => void;
   isSending: boolean;

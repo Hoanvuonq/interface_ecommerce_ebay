@@ -1,29 +1,27 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import { ArrowBigLeft, ArrowLeft, CircleChevronLeft, X } from "lucide-react";
-import _ from "lodash";
-import { ConversationList } from "../ConversationList";
-import { ChatEmptyState } from "../ChatEmptyState";
-import { ChatHeader } from "../ChatHeader";
-import { ChatInputArea } from "../ChatInputArea";
-import { OrderPicker } from "../OrderPicker";
-import { ProductPicker } from "../ProductPicker";
-import { MessageList } from "../MessageList";
-import { DeleteMessageModal } from "../DeleteMessageModal";
-import { ChatLoginAlert } from "../ChatLoginAlert";
-import { useChatStore } from "../../_store/chatStore";
-import { useChatLogic } from "../../_hooks/chat/useChatLogic";
 import {
   useChatWebSocket,
   useWebSocketContext,
 } from "@/providers/WebSocketProvider";
 import { getStoredUserDetail } from "@/utils/jwt";
+import React, { useEffect, useRef, useState } from "react";
+import { useChatLogic } from "../../_hooks/chat/useChatLogic";
 import { isMessageDeleted } from "../../_services/chat-utils.service";
+import { useChatStore } from "../../_store/chatStore";
 import {
   CustomerShopChatProps,
   resolveOrderItemImageUrl,
 } from "../../_types/customerShopChat.type";
+import { ChatEmptyState } from "../ChatEmptyState";
+import { ChatHeader } from "../ChatHeader";
+import { ChatInputArea } from "../ChatInputArea";
+import { ChatLoginAlert } from "../ChatLoginAlert";
+import { ConversationList } from "../ConversationList";
+import { DeleteMessageModal } from "../DeleteMessageModal";
+import { MessageList } from "../MessageList";
+import { OrderPicker } from "../OrderPicker";
+import { ProductPicker } from "../ProductPicker";
 
 export const CustomerShopChat: React.FC<CustomerShopChatProps> = ({
   open,
@@ -176,7 +174,7 @@ export const CustomerShopChat: React.FC<CustomerShopChatProps> = ({
                   currentUsername={getStoredUserDetail()?.username}
                 />
                 {store.showOrderPicker && (
-                  <div className="absolute bottom-full left-0 right-0 z-20">
+                  <div className="absolute bottom-0 left-0 right-0 z-20">
                     <OrderPicker
                       orders={chatLogic.orders}
                       isLoading={chatLogic.loadingOrders}
@@ -201,7 +199,7 @@ export const CustomerShopChat: React.FC<CustomerShopChatProps> = ({
                   </div>
                 )}
                 {store.showProductPicker && (
-                  <div className="absolute bottom-full left-0 right-0 z-20">
+                  <div className="absolute bottom-0 left-0 right-0 z-20">
                     <ProductPicker
                       isVisible={store.showProductPicker}
                       onClose={() =>

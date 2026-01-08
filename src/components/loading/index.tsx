@@ -23,7 +23,7 @@ export const SectionLoading: React.FC<SectionLoadingProps> = ({
         className
       )}
     >
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-orange-500/5 rounded-full blur-[40px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-orange-500/5 rounded-full blur-2xl pointer-events-none" />
 
       <div className="relative z-10 flex flex-col items-center scale-75 md:scale-90">
         <div className="relative w-12 h-12 mb-4">

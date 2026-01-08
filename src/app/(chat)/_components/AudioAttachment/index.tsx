@@ -15,9 +15,6 @@ interface AudioAttachmentProps {
   attachment: MessageAttachmentResponse;
 }
 
-/**
- * AudioAttachment - Giao diện tin nhắn thoại với Waveform thuần không dùng Antd
- */
 export const AudioAttachment: React.FC<AudioAttachmentProps> = ({ attachment }) => {
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -29,7 +26,6 @@ export const AudioAttachment: React.FC<AudioAttachmentProps> = ({ attachment }) 
   const audioRef = useRef<HTMLAudioElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  // Sử dụng Lodash để lấy dữ liệu an toàn
   const fileUrl = _.get(attachment, "fileUrl", "");
   const fileName = _.get(attachment, "fileName", "Tin nhắn thoại");
   const initialDuration = _.get(attachment, "duration", 0);

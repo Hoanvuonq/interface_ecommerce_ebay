@@ -114,7 +114,7 @@ export const ProductReviews = () => {
               <CustomEmpty description="Sản phẩm chưa có nhận xét nào" />
               <ButtonField
                 type="login"
-                className="rounded-full px-10 mt-6 h-11 uppercase text-[11px] font-bold tracking-widest"
+                className="rounded-full w-50 px-10 mt-6 h-11 uppercase text-[11px] font-bold tracking-widest"
               >
                 Viết đánh giá
               </ButtonField>

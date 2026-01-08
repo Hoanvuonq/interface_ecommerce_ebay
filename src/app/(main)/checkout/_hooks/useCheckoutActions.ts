@@ -5,81 +5,92 @@ import { checkoutPreview as checkoutPreviewAction } from "@/store/theme/cartSlic
 import { useAppDispatch } from "@/store/store";
 import { orderService } from "@/services/orders/order.service";
 import { useToast } from "@/hooks/useToast";
-import {
-  preparePreviewPayload,
-  prepareOrderRequest,
-} from "../_utils/checkout.mapper";
+import { preparePreviewPayload, prepareOrderRequest } from "../_utils/checkout.mapper";
 
 export const useCheckoutActions = () => {
   const dispatch = useAppDispatch();
   const { success: toastSuccess, error: toastError } = useToast();
-  const {
-    request,
-    preview,
-    savedAddresses,
-    setPreview,
-    setRequest,
-    setLoading,
-  } = useCheckoutStore();
+  const { request, preview, savedAddresses, setPreview, setRequest, setLoading } = useCheckoutStore();
 
   const previewMutation = useMutation({
     mutationFn: async (updatedRequest: any) => {
-      const finalPayload = preparePreviewPayload(updatedRequest, preview);
+      const finalPayload = preparePreviewPayload(updatedRequest);
       return await dispatch(checkoutPreviewAction(finalPayload)).unwrap();
     },
     onMutate: () => setLoading(true),
-
+    
+    // --- LOGIC HỨNG & CẬP NHẬT STORE ---
     onSuccess: (result: any, variables: any) => {
-      setPreview(result);
-      const shopData = _.get(result, "data.shops", []);
+      const previewData = result?.data || result;
+      setPreview(previewData);
+
+      const shopDataFromBackend = _.get(previewData, "shops", []);
+      // Lấy danh sách mã sàn từ summary để phân loại
+      const backendSummaryGlobals = _.get(previewData, "summary.globalVouchers", []) || [];
 
       const updatedShops = variables.shops.map((s: any) => {
-        const freshShop = _.find(shopData, { shopId: s.shopId });
+        const freshShop = _.find(shopDataFromBackend, { shopId: s.shopId });
+        
+        // 1. Lấy danh sách voucher HỢP LỆ từ Server (đã được tính toán)
+        const validDetails = _.get(freshShop, "voucherResult.discountDetails", [])
+          .filter((d: any) => d.valid);
+        
+        const validCodes = validDetails.map((d: any) => d.voucherCode);
 
-        const services =
-          _.get(freshShop, "availableShippingOptions") ||
-          _.get(freshShop, "shipping.services") ||
-          [];
-
-        let finalServiceCode = s.serviceCode;
-        let finalFee = _.get(freshShop, "summary.shippingFee", s.shippingFee);
-
-        const isCurrentCodeValid = _.some(
-          services,
-          (srv) => Number(srv.serviceCode) === Number(finalServiceCode)
+        // 2. Tách voucher Sàn và Shop dựa trên response thực tế
+        const shopSpecificGlobals = validCodes.filter((c: string) => 
+           backendSummaryGlobals.includes(c) || 
+           validDetails.find((d: any) => d.voucherCode === c && d.voucherType === 'PLATFORM')
         );
 
-        if (!isCurrentCodeValid && services.length > 0) {
-          const sortedServices = _.sortBy(services, [(o) => Number(o.fee)]);
-          const cheapestService = sortedServices[0];
+        const shopSpecificVouchers = validCodes.filter((c: string) => 
+           !shopSpecificGlobals.includes(c)
+        );
 
-          if (cheapestService) {
-            finalServiceCode = cheapestService.serviceCode;
-            finalFee = cheapestService.fee;
-          }
-        } else if (isCurrentCodeValid) {
-          const currentService = _.find(
-            services,
-            (srv) => Number(srv.serviceCode) === Number(finalServiceCode)
-          );
-          if (currentService) {
-            finalFee = currentService.fee;
-          }
-        }
+        // 3. Logic ưu tiên:
+        // - Nếu user gửi lên (variables có key) -> GIỮ NGUYÊN (để tránh bị server override khi user muốn xóa).
+        // - Nếu Init (không có key trong variables) -> LẤY TỪ SERVER (Auto Recommend).
+        
+        const finalVouchers = (s.vouchers !== undefined) ? s.vouchers : shopSpecificVouchers;
+        const finalGlobalVouchers = (s.globalVouchers !== undefined) ? s.globalVouchers : shopSpecificGlobals;
+
+        // Cập nhật ServiceCode nếu Server tự đổi (ví dụ 400021 -> 400031)
+        const serverSelectedMethod = _.get(freshShop, "selectedShippingMethod");
+        const finalServiceCode = serverSelectedMethod ? Number(serverSelectedMethod) : s.serviceCode;
 
         return {
           ...s,
-          serviceCode: Number(finalServiceCode),
-          shippingFee: finalFee,
-          vouchers: _.get(freshShop, "voucherResult.validVouchers", s.vouchers),
+          serviceCode: finalServiceCode,
+          shippingFee: _.get(freshShop, "summary.shippingFee", s.shippingFee),
+          vouchers: finalVouchers,
+          globalVouchers: finalGlobalVouchers,
         };
       });
 
-      setRequest({ ...variables, shops: updatedShops });
+      setRequest({
+        ...variables,
+        shops: updatedShops,
+        globalVouchers: [], // Luôn để rỗng ở root
+      });
     },
-
     onSettled: () => setLoading(false),
   });
+
+  const updateShippingMethod = async (shopId: string, methodCode: string) => {
+    if (!request || !request.shops) return;
+    const updatedRequest = {
+      ...request,
+      shops: request.shops.map((s: any) =>
+        s.shopId === shopId ? { ...s, serviceCode: methodCode ? Number(methodCode) : null } : s
+      ),
+    };
+    try {
+      return await previewMutation.mutateAsync(updatedRequest);
+    } catch (error) { throw error; }
+  };
+
+  const confirmOrder = (note: string, method: string) =>
+    orderMutation.mutateAsync({ customerNote: note, paymentMethod: method });
 
   const orderMutation = useMutation({
     mutationFn: async ({
@@ -121,31 +132,10 @@ export const useCheckoutActions = () => {
     onSettled: () => setLoading(false),
   });
 
-  const updateShippingMethod = async (shopId: string, methodCode: string) => {
-  if (!request || !request.shops) return;
-
-  const updatedRequest = {
-    ...request,
-    shops: request.shops.map((s: any) =>
-      s.shopId === shopId 
-        ? { ...s, serviceCode: methodCode ? Number(methodCode) : null } 
-        : s
-    ),
-  };
-
-  try {
-    return await previewMutation.mutateAsync(updatedRequest);
-  } catch (error) {
-    console.error("Lỗi cập nhật phương thức vận chuyển:", error);
-    throw error; 
-  }
-};
-
   return {
     syncPreview: (req: any) => previewMutation.mutateAsync(req),
     updateShippingMethod,
-    confirmOrder: (note: string, method: string) =>
-      orderMutation.mutateAsync({ customerNote: note, paymentMethod: method }),
+    confirmOrder,
     isLoading: previewMutation.isPending || orderMutation.isPending,
   };
 };

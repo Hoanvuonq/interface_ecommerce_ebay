@@ -1,10 +1,10 @@
 interface ShippingOption {
   code: string;
-  serviceType: string;
-  displayName: string;
-  serviceCode: any;
-  fee: number;
   estimatedDeliveryTime?: string;
+  serviceCode: number | string;
+  fee: number;
+  displayName?: string;
+  serviceType?: string;
 }
 
 export interface ShopShippingSelectorProps {

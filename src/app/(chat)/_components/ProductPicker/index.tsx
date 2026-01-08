@@ -1,22 +1,13 @@
 "use client";
 
-import React from "react";
-import _ from "lodash";
-import { Search, Info, Send, X, Package } from "lucide-react";
 import { toPublicUrl } from "@/utils/storage/url";
-
-// Định nghĩa Props trực tiếp trong file hoặc import từ type chung
-export interface ProductPickerProps {
-  isVisible: boolean;
-  onClose: () => void;
-  products: any[];
-  isLoading: boolean;
-  searchText: string;
-  onSearchChange: (val: string) => void;
-  onSendDirect: (product: any) => void;
-  onViewDetails: (product: any) => void;
-  isSending: boolean;
-}
+import _ from "lodash";
+import { Package, Search, X, ShoppingBag } from "lucide-react";
+import React from "react";
+import Image from "next/image"; // Sử dụng Next.js Image
+import { ProductPickerProps } from "./type";
+import { cn } from "@/utils/cn";
+import { SectionLoading } from "@/components";
 
 export const ProductPicker: React.FC<ProductPickerProps> = ({
   isVisible,
@@ -32,122 +23,133 @@ export const ProductPicker: React.FC<ProductPickerProps> = ({
   if (!isVisible) return null;
 
   return (
-    <div className="bg-white border-t border-gray-200 shadow-2xl animate-in slide-in-from-bottom duration-300 rounded-t-2xl md:rounded-none">
-      {/* Header */}
-      <div className="px-4 py-3 border-b border-gray-100 bg-gradient-to-r from-blue-50/50 to-indigo-50/50">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2 text-blue-600 font-bold text-xs uppercase tracking-wider">
-            <Package size={16} />
-            Chọn sản phẩm
+    <div
+      className={cn(
+        "w-full bg-white/95 backdrop-blur-md border-t border-orange-100",
+        "shadow-[0_-15px_50px_rgba(0,0,0,0.1)] rounded-t-[2.5rem] overflow-hidden animate-in slide-in-from-bottom-10 duration-500 md:rounded-none"
+      )}
+    >
+      <div className="px-6 py-5 border-b border-orange-50 bg-linear-to-r from-orange-50/30 via-white to-amber-50/20">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-orange-500 rounded-2xl shadow-lg shadow-orange-200">
+              <ShoppingBag size={18} className="text-white" />
+            </div>
+            <div>
+              <h3 className="text-[15px] font-black text-gray-800 uppercase tracking-tight">
+                Kho sản phẩm
+              </h3>
+              <p className="text-[11px] text-orange-400 font-bold mt-0.5 uppercase tracking-widest">
+                Chọn để gửi hỗ trợ
+              </p>
+            </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1 hover:bg-white/80 rounded-full text-gray-600 hover:text-red-500 transition-colors"
+            className="p-2 hover:bg-orange-100/50 rounded-full text-gray-400 hover:text-orange-600 transition-all duration-300 cursor-pointer"
           >
-            <X size={18} />
+            <X size={22} />
           </button>
         </div>
 
-        {/* Search Bar */}
         <div className="relative group">
           <Search
-            size={16}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-600 group-focus-within:text-blue-500 transition-colors"
+            size={18}
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-orange-500 transition-colors"
           />
           <input
-            placeholder="Tìm theo tên sản phẩm..."
+            placeholder="Tìm theo tên hoặc mã sản phẩm..."
             value={searchText}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="w-full bg-white border border-gray-200 rounded-xl py-2 pl-10 pr-4 text-sm outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all placeholder:text-gray-600"
+            className="w-full bg-gray-50 border border-transparent rounded-2xl py-3 pl-12 pr-4 text-sm text-gray-700 outline-none focus:bg-white focus:border-orange-300 focus:ring-4 focus:ring-orange-500/5 transition-all duration-300 shadow-inner"
           />
         </div>
       </div>
 
-      {/* List */}
-      <div className="max-h-[320px] overflow-y-auto bg-gray-50/50 custom-scrollbar">
-        {isLoading ? (
-          <div className="flex flex-col items-center justify-center py-12 gap-3">
-            <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
-            <span className="text-xs text-gray-600 font-medium">
-              Đang tải dữ liệu...
-            </span>
-          </div>
-        ) : _.isEmpty(products) ? (
-          <div className="flex flex-col items-center justify-center py-12 text-gray-600">
-            <Package size={32} className="opacity-20 mb-2" />
-            <p className="text-xs">Không tìm thấy sản phẩm nào</p>
+      <div className="relative h-100 overflow-y-auto custom-scrollbar bg-white p-4">
+        {isLoading && (
+          <SectionLoading
+            isOverlay
+            message="Đang tìm..."
+            className="rounded-none"
+          />
+        )}
+
+        {_.isEmpty(products) && !isLoading ? (
+          <div className="h-full flex flex-col items-center justify-center text-gray-400 animate-in fade-in zoom-in duration-300">
+            <div className="p-6 bg-gray-50 rounded-full mb-4">
+              <Package size={48} className="opacity-10" />
+            </div>
+            <p className="text-[13px] font-bold text-gray-500 uppercase">
+              Không thấy sản phẩm
+            </p>
           </div>
         ) : (
-          <div className="divide-y divide-gray-100 bg-white">
+          <div
+            className={cn(
+              "grid grid-cols-1 gap-3 transition-opacity duration-300",
+              isLoading ? "opacity-30 grayscale-50" : "opacity-100"
+            )}
+          >
             {_.map(products, (product) => {
-              // Xử lý dữ liệu an toàn với Lodash
               const mediaList = _.get(product, "media", []);
               const imageObj =
                 _.find(mediaList, (m) => m.type === "IMAGE" && m.url) || {};
               const rawUrl =
                 imageObj.url || product.thumbnailUrl || product.imageUrl || "";
               const productImageUrl = toPublicUrl(rawUrl);
-
               const price =
                 _.get(product, "basePrice") || _.get(product, "price") || 0;
 
               return (
                 <div
                   key={product.id}
-                  className="p-3 flex gap-3 hover:bg-blue-50/30 transition-colors group"
+                  className="p-3 bg-white rounded-3xl border border-gray-100 flex gap-4 hover:border-orange-200 hover:shadow-xl hover:shadow-orange-500/5 transition-all duration-300 group"
                 >
-                  {/* Image */}
-                  <div className="w-16 h-16 rounded-lg border border-gray-100 overflow-hidden shrink-0 bg-gray-100">
-                    <img
+                  <div className="w-20 h-20 rounded-2xl border border-gray-50 overflow-hidden shrink-0 bg-gray-50 relative">
+                    <Image
                       src={productImageUrl || "/placeholder-product.png"}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       alt={product.name}
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src =
-                          "/placeholder-product.png";
-                      }}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-700"
+                      sizes="80px"
                     />
                   </div>
 
-                  {/* Content */}
-                  <div className="flex-1 min-w-0 flex flex-col justify-between py-0.5">
-                    <div>
-                      <h5
-                        className="text-sm font-semibold text-gray-800 truncate"
-                        title={product.name}
-                      >
-                        {product.name}
-                      </h5>
-                      <p className="text-xs text-gray-500 truncate mt-0.5">
-                        Mã SP: {product.sku || product.id?.substring(0, 8)}
-                      </p>
+                  <div className="flex-1 min-w-0 flex flex-col justify-center gap-1">
+                    <h5 className="text-[13px] font-bold text-gray-800 truncate group-hover:text-orange-600 transition-colors">
+                      {product.name}
+                    </h5>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[9px] font-black text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full uppercase tracking-tighter">
+                        ID:{" "}
+                        {product.sku ||
+                          product.id?.substring(0, 8).toUpperCase()}
+                      </span>
                     </div>
-                    <p className="text-sm font-bold text-blue-600">
-                      {price.toLocaleString("vi-VN")}₫
+                    <p className="text-sm font-black text-orange-600 tracking-tight">
+                      {price.toLocaleString("vi-VN")}
+                      <span className="text-[10px] ml-0.5 font-bold">₫</span>
                     </p>
                   </div>
 
-                  {/* Actions */}
-                  <div className="flex flex-col gap-1.5 justify-center shrink-0">
+                  <div className="flex flex-col gap-2 justify-center shrink-0">
                     <button
                       onClick={() => onSendDirect(product)}
                       disabled={isSending}
-                      className="flex items-center justify-center gap-1.5 px-3 py-1.5 bg-blue-600 text-white rounded-lg text-[10px] font-bold shadow-md shadow-blue-100 hover:bg-blue-700 active:scale-95 transition-all disabled:opacity-50 disabled:pointer-events-none"
+                      className="cursor-pointer flex items-center justify-center gap-2 px-4 py-2 bg-linear-to-br from-orange-500 to-orange-600 text-white rounded-2xl text-[11px] font-black shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 active:scale-90 transition-all duration-300 disabled:opacity-50"
                     >
                       {isSending ? (
                         <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                       ) : (
-                        <>
-                          Gửi <Send size={10} />
-                        </>
+                        "GỬI"
                       )}
                     </button>
-
                     <button
                       onClick={() => onViewDetails(product)}
-                      className="px-3 py-1.5 bg-white text-gray-600 border border-gray-200 rounded-lg text-[10px] font-bold hover:bg-gray-50 hover:border-gray-300 transition-all"
+                      className="cursor-pointer flex items-center justify-center gap-1.5 px-3 py-1.5 bg-gray-50 text-gray-500 border border-gray-100 rounded-2xl text-[10px] font-bold hover:bg-orange-50 hover:text-orange-600 hover:border-orange-200 transition-all duration-300"
                     >
-                      Chi tiết
+                      XEM
                     </button>
                   </div>
                 </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import _ from "lodash";
 import {
   Image as ImageIcon,
@@ -14,33 +14,12 @@ import {
   X,
 } from "lucide-react";
 import dynamic from "next/dynamic";
-import { ChatAttachment } from "../../_store/chatStore";
 import { cn } from "@/utils/cn";
 import { ButtonField } from "@/components";
 import Image from "next/image";
+import { ChatInputAreaProps } from "./type";
+import { useClickOutside } from "@/hooks/useClickOutside";
 const EmojiPicker = dynamic(() => import("emoji-picker-react"), { ssr: false });
-
-interface ChatInputAreaProps {
-  messageText: string;
-  setMessageText: (val: string) => void;
-  onSendMessage: () => void;
-  onAttachmentChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  attachments: ChatAttachment[];
-  onRemoveAttachment: (id: string) => void;
-  isUploading: boolean;
-  sendingMessage: boolean;
-  disabled: boolean;
-  showEmojiPicker: boolean;
-  setShowEmojiPicker: (val: boolean) => void;
-  onEmojiClick: (emojiData: any) => void;
-  toggleOrderPicker: () => void;
-  toggleProductPicker: () => void;
-  showQuickReplies?: boolean;
-  setShowQuickReplies?: (val: boolean) => void;
-  editingMessage: any;
-  replyingToMessage: any;
-  inputRef: React.RefObject<HTMLTextAreaElement>;
-}
 
 export const ChatInputArea: React.FC<ChatInputAreaProps> = ({
   messageText,
@@ -69,6 +48,10 @@ export const ChatInputArea: React.FC<ChatInputAreaProps> = ({
       onSendMessage();
     }
   };
+  const emojiPickerRef = useRef<HTMLDivElement>(null);
+  useClickOutside(emojiPickerRef, () => {
+    if (showEmojiPicker) setShowEmojiPicker(false);
+  });
 
   return (
     <div className="px-4 py-4 bg-white border-t border-gray-100 shrink-0 relative">
@@ -184,11 +167,15 @@ export const ChatInputArea: React.FC<ChatInputAreaProps> = ({
             >
               <Smile size={18} />
             </button>
-
             {showEmojiPicker && (
-              <div className="absolute bottom-full left-0 mb-4 z-50 shadow-2xl">
+              <div
+                ref={emojiPickerRef}
+                className="absolute bottom-full left-0 mb-4 z-50 shadow-2xl animate-in fade-in slide-in-from-bottom-2 duration-200"
+              >
                 <EmojiPicker
-                  onEmojiClick={onEmojiClick}
+                  onEmojiClick={(emojiData) => {
+                    onEmojiClick(emojiData);
+                  }}
                   autoFocusSearch={false}
                   lazyLoadEmojis
                 />
@@ -197,11 +184,10 @@ export const ChatInputArea: React.FC<ChatInputAreaProps> = ({
           </div>
         </div>
 
-       
-         <ButtonField
+        <ButtonField
           htmlType="submit"
           type="login"
-           onClick={onSendMessage}
+          onClick={onSendMessage}
           disabled={
             disabled || (!messageText.trim() && attachments.length === 0)
           }
@@ -209,13 +195,12 @@ export const ChatInputArea: React.FC<ChatInputAreaProps> = ({
         >
           <span className="flex items-center gap-2">
             {sendingMessage || isUploading ? (
-            <Loader2 size={20} className="animate-spin" />
-          ) : (
-            <Send size={20} fill="currentColor" className="ml-0.5" />
-          )}
+              <Loader2 size={20} className="animate-spin" />
+            ) : (
+              <Send size={20} fill="currentColor" className="ml-0.5" />
+            )}
           </span>
         </ButtonField>
-
       </div>
     </div>
   );
