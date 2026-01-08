@@ -3,7 +3,6 @@
 import { ProductCard } from "@/app/(main)/products/_components";
 import { ButtonField, SectionLoading } from "@/components";
 import { CustomProgressBar } from "@/components/CustomProgressBar";
-import ScrollReveal from "@/features/ScrollReveal";
 import { useWishlist } from "@/app/(main)/wishlist/_hooks/useWishlist";
 import { isAuthenticated } from "@/utils/local.storage";
 import { Flame } from "lucide-react";

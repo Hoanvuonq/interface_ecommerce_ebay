@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ApiResponse } from "@/api/_types/api.types";
 import axios, { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { isLocalhost } from "./env";
 import { handleApiError } from "./api.error.handler";
@@ -41,64 +40,64 @@ const processQueue = (error: any = null, token: string | null = null) => {
   failedQueue = [];
 };
 
-// --- HÀM LOGOUT CƯỠNG CHẾ (ĐÃ FIX UX) ---
+/**
+ * HÀM CHUYỂN HƯỚNG VỀ LOGIN
+ * Fix lỗi: Xử lý redirect chuẩn xác và lưu lại trang cũ để quay lại (callbackUrl)
+ */
 const forceLogout = (title: string, description: string) => {
   if (isLoggingOut) return;
   isLoggingOut = true;
-  
-  // Hủy các request đang chờ
+
+  // Hủy hàng đợi request
   processQueue(new Error("Session expired"));
 
-  // Bắn event để hiển thị thông báo lỗi
+  // Dispatch thông báo lỗi (cho Toast/Notification component lắng nghe)
   if (typeof window !== "undefined") {
-    window.dispatchEvent(new CustomEvent("axios-force-logout", {
-        detail: { title, description }
-    }));
-  }
+    window.dispatchEvent(
+      new CustomEvent("axios-force-logout", {
+        detail: { title, description },
+      })
+    );
 
-  // Xóa token
-  logout(); 
-  if (typeof window !== "undefined" && isLocalhost()) {
+    // Xóa Token trong LocalStorage (nếu ở Local) hoặc Cookies (qua hàm logout)
+    logout();
+    if (isLocalhost()) {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
-  }
-
-  // Chuyển hướng về Login sau 1s
-  setTimeout(() => {
-    if (typeof window !== "undefined") {
-        // Lấy đường dẫn hiện tại user đang đứng
-        const currentPath = window.location.pathname + window.location.search;
-        
-        // Nếu đang ở trang login rồi thì không cần redirect nữa
-        if (currentPath.startsWith("/login")) return;
-
-        // Redirect về login kèm theo ?callbackUrl=... để sau khi login xong quay lại đúng trang này
-        window.location.href = `/login?callbackUrl=${encodeURIComponent(currentPath)}`; 
     }
-  }, 1000);
-};
 
-// --- 3. HELPER REFRESH TOKEN ---
-const performRefreshToken = async () => {
-    const refreshTokenPayload = isLocalhost() ? localStorage.getItem("refreshToken") : null;
+    // Lấy URL hiện tại để quay lại sau khi login
+    const currentPath = window.location.pathname + window.location.search;
     
-    if (isLocalhost() && !refreshTokenPayload) {
-        throw new Error("No refresh token available");
+    // Nếu không phải đang ở trang login thì mới redirect
+    if (!currentPath.includes("/login")) {
+      const loginUrl = `/login?callbackUrl=${encodeURIComponent(currentPath)}`;
+      
+      // Chuyển hướng ngay lập tức hoặc sau 1 khoảng trễ ngắn để user kịp thấy thông báo
+      setTimeout(() => {
+        window.location.href = loginUrl;
+      }, 500);
     }
-
-    const response = await axios.post(
-        `${API_BASE_URL}/auth/refresh`,
-        { refreshToken: refreshTokenPayload },
-        { withCredentials: true }
-    );
-    return response.data;
+  }
 };
 
-// --- 4. REQUEST INTERCEPTOR ---
+const performRefreshToken = async () => {
+  const refreshTokenPayload = isLocalhost() ? localStorage.getItem("refreshToken") : null;
+
+  // Gọi API refresh bằng instance axios gốc (không dùng interceptor này để tránh loop)
+  const response = await axios.post(
+    `${API_BASE_URL}/auth/refresh`,
+    { refreshToken: refreshTokenPayload },
+    { withCredentials: true }
+  );
+  return response.data;
+};
+
+// --- REQUEST INTERCEPTOR ---
 instance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     if (isLoggingOut) {
-       return Promise.reject(new Error("Logging out...")); 
+      return Promise.reject(new Error("Session expired. Redirecting to login..."));
     }
 
     if (typeof window !== "undefined" && isLocalhost()) {
@@ -107,52 +106,32 @@ instance.interceptors.request.use(
         config.headers.Authorization = `Bearer ${token}`;
       }
     }
-
-    if (config.url?.includes("/homepage/banners/active/by-page")) {
-      if (config.url.includes("?") && config.params) {
-        config.params = undefined;
-      }
-    }
-
     return config;
   },
   (error) => Promise.reject(error)
 );
 
-// --- 5. RESPONSE INTERCEPTOR ---
+// --- RESPONSE INTERCEPTOR ---
 instance.interceptors.response.use(
   (response: AxiosResponse): any => {
-    if (response.config.responseType === "blob" || response.data instanceof Blob) {
-      return response.data;
-    }
     return response.data;
   },
   async (error: any) => {
     const originalRequest = error.config;
-
-    if (isLoggingOut) return Promise.reject(error);
-
-    // Xử lý lỗi Blob
-    if (error.config?.responseType === "blob" && error.response?.data instanceof Blob) {
-        try {
-            const text = await error.response.data.text();
-            const errorData = JSON.parse(text);
-            error.response.data = errorData;
-        } catch {}
-    }
+    if (!originalRequest || isLoggingOut) return Promise.reject(error);
 
     const status = error.response?.status;
-    const msg = error.response?.data?.message || "";
+    const errorData = error.response?.data;
 
-    // Nếu lỗi ngay tại API refresh token -> Logout ngay
+    // 1. Nếu lỗi tại chính API refresh token -> Logout ngay không bàn cãi
     if (originalRequest.url?.includes("/auth/refresh")) {
-        forceLogout("Phiên đăng nhập hết hạn", "Vui lòng đăng nhập lại (Refresh Failed).");
-        return Promise.reject(error);
+      forceLogout("Hết hạn phiên làm việc", "Vui lòng đăng nhập lại.");
+      return Promise.reject(error);
     }
 
-    // Logic Refresh Token khi gặp 401
+    // 2. Xử lý lỗi 401 (Unauthorized)
     if (status === 401 && !originalRequest._retry) {
-      
+      // Nếu đang trong quá trình refresh, đẩy request này vào hàng đợi
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({
@@ -172,48 +151,41 @@ instance.interceptors.response.use(
 
       try {
         const data: any = await performRefreshToken();
-        
-        const newAccessToken = data?.result?.accessToken || data?.data?.accessToken || data?.accessToken; 
+        const newAccessToken = data?.result?.accessToken || data?.data?.accessToken || data?.accessToken;
         const newRefreshToken = data?.result?.refreshToken || data?.data?.refreshToken;
 
+        if (!newAccessToken) throw new Error("Refresh failed");
+
         if (isLocalhost()) {
-            if (!newAccessToken) throw new Error("Không nhận được accessToken mới");
-            localStorage.setItem("accessToken", newAccessToken);
-            if (newRefreshToken) localStorage.setItem("refreshToken", newRefreshToken);
-            
-            instance.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
-            originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+          localStorage.setItem("accessToken", newAccessToken);
+          if (newRefreshToken) localStorage.setItem("refreshToken", newRefreshToken);
         }
 
-        if (typeof window !== "undefined") {
-          window.dispatchEvent(new Event("auth-token-refreshed"));
-        }
+        instance.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
 
         processQueue(null, newAccessToken);
         return instance(originalRequest);
-
       } catch (refreshError: any) {
         processQueue(refreshError, null);
-        
-        const errMsg = refreshError?.response?.data?.message || "";
-        
-        // Bắt lỗi cụ thể
-        if (refreshError?.response?.status === 401 || errMsg.includes("Token không hợp lệ")) {
-            forceLogout("Phiên đăng nhập hết hạn", "Token không hợp lệ. Vui lòng đăng nhập lại.");
-        } else {
-            forceLogout("Lỗi xác thực", "Không thể làm mới phiên.");
-        }
-
+        forceLogout("Phiên đăng nhập hết hạn", "Vui lòng đăng nhập lại để tiếp tục.");
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
       }
     }
 
-    // NẾU KHÔNG PHẢI LỖI 401 (VD: 404 Not Found, 500 Server Error)
-    // Code xử lý ở component sẽ nhận được error này
-    const apiError = handleApiError(error);
-    return Promise.reject(apiError);
+    const isAuthError = 
+        errorData?.errorCode === "TOKEN_INVALID" || 
+        errorData?.message?.includes("xác thực") ||
+        errorData?.message?.includes("unauthorized");
+
+    if (status === 403 && isAuthError) {
+        forceLogout("Lỗi xác thực", "Tài khoản của bạn không có quyền hoặc phiên đã lỗi.");
+        return Promise.reject(error);
+    }
+
+    return Promise.reject(handleApiError(error));
   }
 );
 
