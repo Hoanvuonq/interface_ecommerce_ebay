@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { PermissionEnum,RoleEnum } from "@/auth/_types/auth";
+import { PermissionEnum, RoleEnum } from "@/auth/_types/auth";
 /**
  * User Info Type từ localStorage
  * ✅ Dựa vào cấu trúc user info được lưu từ backend
@@ -21,11 +21,11 @@ type UserInfo = {
  */
 export const getUserInfo = (): UserInfo | null => {
   if (typeof window === "undefined") return null;
-  
+
   try {
     const userInfoStr = localStorage.getItem("users");
     if (!userInfoStr) return null;
-    
+
     const userInfo = JSON.parse(userInfoStr);
     return userInfo as UserInfo;
   } catch (error) {
@@ -37,7 +37,9 @@ export const getUserInfo = (): UserInfo | null => {
 /**
  * Convert string role sang RoleEnum với validation
  */
-export const toRoleEnum = (role: string | null | undefined): RoleEnum | null => {
+export const toRoleEnum = (
+  role: string | null | undefined
+): RoleEnum | null => {
   if (!role || typeof role !== "string") return null;
 
   try {
@@ -55,7 +57,9 @@ export const toRoleEnum = (role: string | null | undefined): RoleEnum | null => 
 /**
  * Convert string permission sang PermissionEnum với validation
  */
-const toPermissionEnum = (permission: string | PermissionEnum): PermissionEnum | null => {
+const toPermissionEnum = (
+  permission: string | PermissionEnum
+): PermissionEnum | null => {
   if (!permission) return null;
 
   // PermissionEnum là empty enum, nên có thể là bất kỳ string nào
@@ -161,30 +165,31 @@ export const hasPermission = (permission: PermissionEnum): boolean => {
 
 /**
  * Xác định redirect path dựa trên trang login hiện tại hoặc roles
- * 
+ *
  * Logic:
  * 1. Nếu đang ở /login → return "/" (BUYER)
  * 2. Nếu đang ở /shop/login → return "/shop"
  * 3. Nếu đang ở /employee/login → return "/employee"
  * 4. Nếu không match pathname → fallback về logic dựa trên roles
- * 
+ *
  * @param pathname - Optional pathname hiện tại, nếu không có sẽ tự động lấy từ window.location.pathname
  */
 export const getRedirectPath = (pathname?: string): string => {
   // Lấy pathname hiện tại nếu không được truyền vào
-  const currentPathname = pathname || (typeof window !== "undefined" ? window.location.pathname : "");
-  
+  const currentPathname =
+    pathname || (typeof window !== "undefined" ? window.location.pathname : "");
+
   // Kiểm tra pathname hiện tại để xác định redirect path
   if (currentPathname === "/login") {
     // Đang ở trang login BUYER → redirect về trang chủ
     return "/";
   }
-  
+
   if (currentPathname === "/shop/login") {
     // Đang ở trang login SHOP → redirect về /shop
     return "/shop";
   }
-  
+
   if (currentPathname === "/employee/login") {
     // Đang ở trang login EMPLOYEE → redirect về /employee
     return "/employee";
@@ -226,6 +231,10 @@ export const getRedirectPath = (pathname?: string): string => {
  * Lấy toàn bộ user detail từ localStorage
  */
 export const getStoredUserDetail = (): any | null => {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
   try {
     const userInfoStr = localStorage.getItem("users");
     if (!userInfoStr) return null;
@@ -235,7 +244,6 @@ export const getStoredUserDetail = (): any | null => {
     return null;
   }
 };
-
 /**
  * Cập nhật ảnh user trong localStorage
  */
@@ -250,4 +258,3 @@ export const updateUserImageInStorage = (imageUrl: string): void => {
     console.error("❌ Lỗi khi cập nhật ảnh trong localStorage:", error);
   }
 };
-
