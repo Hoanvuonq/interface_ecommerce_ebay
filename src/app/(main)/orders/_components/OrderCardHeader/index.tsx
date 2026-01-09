@@ -45,7 +45,7 @@ export const OrderCardHeader: React.FC<HeaderProps> = ({ shop, orderNumber }) =>
       <button className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-gray-600 bg-gray-50 hover:bg-orange-50 hover:text-orange-600 transition-all">
         <MessageCircle size={14} /> Chat
       </button>
-      <Link href={`/shops/${shop.link}`}>
+      <Link href={`public/shops/${shop.link}`}>
         <button className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-gray-600 bg-gray-50 hover:bg-orange-50 hover:text-orange-600 transition-all">
           <Store size={14} /> Xem shop
         </button>

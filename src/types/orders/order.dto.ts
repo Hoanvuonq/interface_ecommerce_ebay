@@ -1,5 +1,7 @@
 // ==================== ENUMS ====================
 
+import { ReturnOrderStatus, ReturnOrderType } from "./order.types";
+
 export enum OrderStatus {
   CREATED = "CREATED",
   PENDING_PAYMENT = "PENDING_PAYMENT",
@@ -66,6 +68,22 @@ export interface OrderItemResponse {
   lineTotal: number;
   fulfillmentStatus?: string;
   reviewed?: boolean;
+}
+
+export interface ReturnOrderResponse {
+    returnId: string;
+    orderId: string;
+    orderNumber: string;
+    type: ReturnOrderType;
+    status: ReturnOrderStatus;
+    reason: string;
+    description: string;
+    evidenceImages: string[];
+    requestedAmount: number;
+    refundedAmount?: number; 
+    rejectedReason?: string; 
+    createdAt: string;
+    updatedAt: string;
 }
 
 /**

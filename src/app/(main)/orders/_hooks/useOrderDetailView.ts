@@ -9,7 +9,6 @@ export const useOrderDetailView = (order: OrderResponse) => {
   const { success, warning, error, info } = useToast();
   const queryClient = useQueryClient();
 
-  // States
   const [refreshKey, setRefreshKey] = useState(0);
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<OrderItemResponse | null>(null);
@@ -58,26 +57,26 @@ export const useOrderDetailView = (order: OrderResponse) => {
   };
   
 
-  const handleCancelOrder = async () => {
-    if (!_.trim(cancelReason)) {
-      warning("Vui lòng nhập lý do hủy đơn hàng");
-      return;
-    }
+const handleCancelOrder = async (reason: string) => {
+  if (!_.trim(reason)) {
+    warning("Vui lòng nhập hoặc chọn lý do hủy đơn hàng");
+    return;
+  }
 
-    setCancelling(true);
-    try {
-      await orderService.cancelOrder(order.orderId, cancelReason.trim());
-      success("Hủy đơn hàng thành công");
-      setCancelModalVisible(false);
-      setCancelReason("");
-      
-      await handleRefresh(); 
-    } catch (err: any) {
-      error(_.get(err, "response.data.message", "Không thể hủy đơn hàng"));
-    } finally {
-      setCancelling(false);
-    }
-  };
+  setCancelling(true);
+  try {
+    // Truyền tham số 'reason' vào service
+    await orderService.cancelOrder(order.orderId, reason.trim());
+    success("Hủy đơn hàng thành công");
+    setCancelModalVisible(false);
+    
+    await handleRefresh(); 
+  } catch (err: any) {
+    error(_.get(err, "response.data.message", "Không thể hủy đơn hàng"));
+  } finally {
+    setCancelling(false);
+  }
+};
 
   return {
     state: {

@@ -1,105 +1,57 @@
 "use client";
 
-import { CustomBreadcrumb, CustomButton, SectionLoading } from "@/components";
-import PageContentTransition from "@/features/PageContentTransition";
-import { useOrders } from "@/hooks/useOrders";
-import { motion, Variants } from "framer-motion";
-import _ from "lodash";
-import { Inbox, Loader2, Search, ShoppingBag } from "lucide-react";
+import { SectionPageComponents } from "@/features/SectionPageComponents";
+import { AnimatePresence, motion } from "framer-motion";
+import { Inbox, Search, ShoppingBag, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import "react-loading-skeleton/dist/skeleton.css";
 import { OrderCard } from "../_components/OrderCard";
 import { OrderFilters } from "../_components/OrderFilters";
-import { SectionPageComponents } from "@/features/SectionPageComponents";
-
-export const OrdersScreen = () => {
+import { OrderSkeleton } from "../_components/OrderSkeleton";
+import { OrderProvider, useOrderContext } from "../_contexts/OrderContext";
+import { CustomButton } from "@/components";
+const OrdersContent = () => {
   const router = useRouter();
-  const { data: orders = [], isLoading: loading, refetch } = useOrders();
-  const [searchText, setSearchText] = useState("");
-  const [statusFilter, setStatusFilter] = useState<string>("ALL");
+  const { state, actions } = useOrderContext();
+  const {
+    orders,
+    statusFilter,
+    searchText,
+    isLoading,
+    isFetching,
+    isFetchingNextPage,
+    hasNextPage,
+    isPlaceholderData,
+    scrollRef,
+  } = state;
 
-  const filteredOrders = useMemo(() => {
-    let result = orders;
-
-    if (statusFilter && statusFilter !== "ALL") {
-      result = _.filter(result, (order) => order.status === statusFilter);
-    }
-
-    if (!_.isEmpty(searchText)) {
-      const query = _.toLower(searchText);
-      result = _.filter(
-        result,
-        (order) =>
-          _.includes(_.toLower(order.orderNumber), query) ||
-          _.some(order.items, (item) =>
-            _.includes(_.toLower(item.productName), query)
-          )
-      );
-    }
-
-    return result;
-  }, [orders, searchText, statusFilter]);
-
-  const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1 },
-    },
-  };
-
-  const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1] },
-    },
-  };
-  const breadcrumbData = [
-    { title: "Trang chủ", href: "/" },
-    { title: "Đơn hàng của tôi", href: "" },
-  ];
   return (
     <SectionPageComponents
-      loading={loading && !orders.length}
-      breadcrumbItems={breadcrumbData}
+      loading={false}
+      breadcrumbItems={[
+        { title: "Trang chủ", href: "/" },
+        { title: "Đơn hàng", href: "" },
+      ]}
     >
-      <div className="bg-white rounded-2xl shadow-custom border border-gray-100 overflow-hidden mt-2">
-        <div className="px-6 sm:px-8 py-6 border-b border-gray-100 bg-white">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600 shadow-sm">
-                <ShoppingBag size={18} />
-              </div>
-              <div className="flex flex-col gap-1">
-                <h1 className="text-xl font-bold text-gray-900">
-                  Đơn hàng của tôi
-                </h1>
-                <p className="text-xs text-gray-500 ">
-                  Quản lý và theo dõi đơn hàng của bạn
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-col md:flex-row gap-4 items-end md:items-center">
-            <OrderFilters
-              searchText={searchText}
-              statusFilter={statusFilter}
-              onSearchChange={setSearchText}
-              onStatusChange={setStatusFilter}
-              onRefresh={() => refetch()}
-            />
-          </div>
+      <div className="bg-white rounded-2xl shadow-custom border border-gray-100 mt-2">
+        <div className="px-6 py-6 border-b border-gray-100">
+          <OrderFilters />
         </div>
 
-        <div className="px-6  py-2 bg-gray-50 min-h-100">
-          {loading ? (
-            <SectionLoading message="Đang đồng bộ dữ liệu..." />
-          ) : _.isEmpty(filteredOrders) ? (
-            <div className="flex flex-col items-center justify-center py-24 px-4 bg-white rounded-[2.5rem] border-2 border-dashed border-gray-100 my-4 animate-in fade-in zoom-in duration-500">
+        <div
+          className={`px-4 sm:px-6 py-6 bg-gray-50/50 min-h-125 transition-opacity duration-300 ${
+            isPlaceholderData ? "opacity-60 pointer-events-none" : "opacity-100"
+          }`}
+        >
+          {isLoading || (isFetching && orders.length === 0) ? (
+            <div className="space-y-4">
+              <OrderSkeleton />
+              <OrderSkeleton />
+              <OrderSkeleton />
+            </div>
+          ) : orders.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-24 px-4 bg-gray-50 rounded-[2.5rem] border-2 border-dashed border-gray-200 my-4 animate-in fade-in zoom-in duration-500">
               <div className="relative mb-8">
                 <div className="w-24 h-24 bg-gray-50 rounded-3xl flex items-center justify-center shadow-inner">
                   <Inbox
@@ -141,25 +93,61 @@ export const OrdersScreen = () => {
               </Link>
             </div>
           ) : (
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              className="space-y-4"
-            >
-              {filteredOrders.map((order) => (
-                <motion.div key={order.orderId} variants={itemVariants}>
-                  <OrderCard
-                    order={order as any}
-                    onViewDetail={(id) => router.push(`/orders/${id}`)}
-                    onOrderCancelled={() => refetch()}
-                  />
-                </motion.div>
-              ))}
-            </motion.div>
+            <div className="space-y-4">
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                className="space-y-4"
+                layout
+              >
+                <AnimatePresence mode="popLayout">
+                  {orders.map((order, idx) => (
+                    <motion.div
+                      key={`${order.orderId}-${idx}`}
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.2 }}
+                      layout
+                    >
+                      <OrderCard
+                        order={order}
+                        onOrderCancelled={actions.handleRefresh}
+                        onViewDetail={(id) => router.push(`/orders/${id}`)}
+                      />
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </motion.div>
+
+              <div
+                ref={scrollRef}
+                className="flex flex-col items-center justify-center"
+              >
+                {isFetchingNextPage ? (
+                  <div className="w-full space-y-4">
+                    <OrderSkeleton />
+                  </div>
+                ) : !hasNextPage && orders.length > 0 ? (
+                  <Link href="/products">
+                    <span className="flex gap-2 text-md font-bold items-center text-(--color-mainColor)">
+                      <ShoppingCart size={24} />
+                      Tiếp tục mua sắm
+                    </span>
+                  </Link>
+                ) : (
+                  <div className="h-10" />
+                )}
+              </div>
+            </div>
           )}
         </div>
       </div>
     </SectionPageComponents>
   );
 };
+export const OrdersScreen = () => (
+  <OrderProvider>
+    <OrdersContent />
+  </OrderProvider>
+);

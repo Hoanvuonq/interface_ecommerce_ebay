@@ -1,25 +1,17 @@
 "use client";
 
-import React, { useState } from "react";
 import { useProductDetail } from "@/app/(main)/products/_context/products";
 import { ButtonField, CustomButton, CustomSpinner } from "@/components";
 import { CardComponents } from "@/components/card";
-import { CustomAvatar } from "@/components/customAvatar";
 import { CustomEmpty } from "@/components/CustomEmpty";
-import { CustomProgressBar } from "@/components/CustomProgressBar";
 import { CustomRate } from "@/components/rating";
 import { PortalModal } from "@/features/PortalModal";
 import {
-  CheckCircle,
-  Image as ImageIcon,
-  MessageSquareText,
-  Star,
-  User,
-  Video,
   ChevronDown,
+  Star
 } from "lucide-react";
 import Image from "next/image";
-import { cn } from "@/utils/cn";
+import { useState } from "react";
 import { ReviewItem } from "../ReviewItem";
 
 export const ProductReviews = () => {

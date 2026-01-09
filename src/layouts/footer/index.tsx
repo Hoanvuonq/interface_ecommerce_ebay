@@ -24,8 +24,6 @@ export const Footer: React.FC = () => {
   const [openSection, setOpenSection] = useState<string | null>(null);
   const toggleSection = (section: string) =>
     setOpenSection(openSection === section ? null : section);
-
-
   return (
     <footer className="text-white relative border-t border-white/10 background-main-gradient">
       <div className="absolute top-0 left-1/4 w-96 bg-blue-400/10 rounded-full blur-[100px] pointer-events-none" />

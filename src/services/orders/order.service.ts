@@ -4,11 +4,12 @@ import type {
   OrderCreateRequest,
   OrderResponse,
   BuyerAddress,
+  ReturnOrderRequest,
 } from "@/types/orders/order.types";
 import type { OrderCreationResponse } from "@/types/orders/order-creation.types";
 import type { ApiResponse } from "@/api/_types/api.types";
+import { ReturnOrderResponse } from "@/types/orders/order.dto";
 
-const ORDER_API_BASE = "/v1/admin/orders";
 const BUYER_API_BASE = "/v1/buyer/orders";
 
 const generateIdempotencyKey = () => {
@@ -18,11 +19,8 @@ const generateIdempotencyKey = () => {
   ) {
     try {
       return crypto.randomUUID();
-    } catch (e) {
-      // Fallback below
-    }
+    } catch (e) {}
   }
-
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
     const r = (Math.random() * 16) | 0;
     const v = c === "x" ? r : (r & 0x3) | 0x8;
@@ -33,12 +31,10 @@ const generateIdempotencyKey = () => {
 class OrderService {
   /**
    * Tạo order từ cart
-   * Returns OrderCreationResponse with list of orders and optional payment info
    */
   async createOrder(
     orderRequest: OrderCreateRequest
   ): Promise<OrderCreationResponse> {
-    console.log("🔍 Creating order with request:", orderRequest);
     const response: ApiResponse<OrderCreationResponse> = await request({
       url: BUYER_API_BASE,
       method: "POST",
@@ -62,12 +58,36 @@ class OrderService {
   }
 
   /**
-   * Lấy danh sách orders của buyer hiện tại
+   * Lấy số lượng đơn hàng theo trạng thái
    */
-  async getBuyerOrders(): Promise<OrderResponse[]> {
-    const response: ApiResponse<OrderResponse[]> = await request({
+  async getOrderCounts(): Promise<any> {
+    // FIX LỖI: Định nghĩa ApiResponse<any> cho biến response
+    const response: ApiResponse<any> = await request({
+      url: `${BUYER_API_BASE}/count-by-status`,
+      method: "GET",
+    });
+    return response.data;
+  }
+
+  /**
+   * Lấy danh sách orders của buyer (có lọc và phân trang)
+   */
+  async getBuyerOrders(
+    page = 0,
+    size = 10,
+    status?: string,
+    search?: string
+  ): Promise<any> {
+    // FIX LỖI: Định nghĩa ApiResponse<any> cho biến response
+    const response: ApiResponse<any> = await request({
       url: BUYER_API_BASE,
       method: "GET",
+      params: {
+        page,
+        size,
+        status,
+        search,
+      },
     });
     return response.data;
   }
@@ -100,10 +120,7 @@ class OrderService {
    */
   async getSavedAddresses(): Promise<BuyerAddress[]> {
     const buyerId = getUserId();
-    if (!buyerId) {
-      console.error("No buyerId found");
-      return [];
-    }
+    if (!buyerId) return [];
 
     const response: ApiResponse<BuyerAddress[]> = await request({
       url: `${BUYER_API_BASE}/${buyerId}/address`,
@@ -113,22 +130,9 @@ class OrderService {
   }
 
   /**
-   * Lấy địa chỉ mặc định
-   */
-  async getDefaultAddress(): Promise<BuyerAddress | null> {
-    try {
-      const addresses = await this.getSavedAddresses();
-      return addresses.find((addr) => addr.isDefault) || addresses[0] || null;
-    } catch (error) {
-      return null;
-    }
-  }
-
-  /**
    * Hủy order
    */
   async cancelOrder(orderId: string, reason: string): Promise<void> {
-    // Check lý do trước khi gửi
     if (!reason || reason.trim().length < 5) {
       throw new Error("Lý do hủy quá ngắn hoặc trống");
     }
@@ -140,7 +144,7 @@ class OrderService {
         data: { reason: reason.trim() },
       });
     } catch (error: any) {
-      console.error("❌ Backend error message:", error?.response?.data);
+      console.error("❌ Backend error:", error?.response?.data);
       throw error;
     }
   }
@@ -150,14 +154,27 @@ class OrderService {
    */
   async createAddress(address: Partial<BuyerAddress>): Promise<BuyerAddress> {
     const buyerId = getUserId();
-    if (!buyerId) {
-      throw new Error("User not authenticated");
-    }
+    if (!buyerId) throw new Error("User not authenticated");
 
     const response: ApiResponse<BuyerAddress> = await request({
       url: `${BUYER_API_BASE}/${buyerId}/address`,
       method: "POST",
       data: address,
+    });
+    return response.data;
+  }
+
+  /**
+   * Yêu Cầu Hoàn Trả hàng
+   */
+  async requestReturn(
+    orderId: string,
+    payload: ReturnOrderRequest
+  ): Promise<ReturnOrderResponse> {
+    const response: ApiResponse<ReturnOrderResponse> = await request({
+      url: `${BUYER_API_BASE}/${orderId}/return-request`,
+      method: "PUT",
+      data: payload,
     });
     return response.data;
   }

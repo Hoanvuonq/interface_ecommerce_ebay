@@ -16,6 +16,7 @@ export interface ReviewModalProps {
   onSuccess?: () => void;
   productId: string;
   productName: string;
+  productImage?: string;
   orderId: string;
   existingReview?: ReviewResponse | null;
 }

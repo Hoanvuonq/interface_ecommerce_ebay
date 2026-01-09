@@ -4,7 +4,7 @@ import { ToastProvider } from "@/hooks/ToastProvider";
 import ClientProviders from "@/providers/ClientProviders";
 import "./employee-layout.css";
 import "./globals.css";
-
+import "react-loading-skeleton/dist/skeleton.css";
 export default function RootLayout({
   children,
 }: {

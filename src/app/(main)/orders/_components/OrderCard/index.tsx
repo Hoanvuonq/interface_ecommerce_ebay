@@ -1,181 +1,321 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import React, { useMemo } from "react";
+import { formatPrice } from "@/hooks/useFormatPrice";
+import { cn } from "@/utils/cn";
 import _ from "lodash";
 import {
-  ShieldCheck,
-  ShoppingBag,
   ArrowRight,
   Package,
   Truck,
   Wallet,
+  Star,
+  Loader2,
+  RefreshCcw,
+  XCircle,
+  RotateCcw,
 } from "lucide-react";
-import { formatPrice } from "@/hooks/useFormatPrice";
+import Image from "next/image";
+import React, { useMemo, useState, useEffect } from "react";
 import { ORDER_STATUS_UI, PAYMENT_METHOD_LABELS } from "../../_constants/order";
 import { OrderCardProps, resolveOrderItemImageUrl } from "../../_types/order";
-import { useOrderActions } from "../../_hooks/useOrderActions";
-import { cn } from "@/utils/cn";
-import Image from "next/image";
-import Link from "next/link";
+import { ReviewModal } from "../ReviewModal";
+import { ReviewPreviewModal } from "../ReviewPreviewModal";
+import { getMyReviews } from "@/services/review/review.service";
+import { ReturnOrderModal } from "../ReturnOrderModal";
+import { useRouter } from "next/navigation";
+import { OrderCancelModal } from "../OrderCancelModal";
 
 export const OrderCard: React.FC<OrderCardProps> = ({
   order,
   onViewDetail,
   onOrderCancelled,
 }) => {
-  const { state } = useOrderActions(
-    order.orderId,
-    order.status,
-    onOrderCancelled
-  );
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+  const [isReturnOpen, setIsReturnOpen] = useState(false);
+  const [dbReview, setDbReview] = useState<any>(null);
+  const [loadingReview, setLoadingReview] = useState(false);
+  const router = useRouter();
+  useEffect(() => {
+    const fetchMyReview = async () => {
+      if (["DELIVERED", "COMPLETED"].includes(order.status)) {
+        try {
+          setLoadingReview(true);
+          const response = await getMyReviews(0, 50);
+          const foundReview = response.content?.find(
+            (r: any) => r.orderId === order.orderId
+          );
+          if (foundReview) setDbReview(foundReview);
+        } catch (error) {
+          console.error("Error fetching review:", error);
+        } finally {
+          setLoadingReview(false);
+        }
+      }
+    };
+    fetchMyReview();
+  }, [order.orderId, order.status]);
 
   const ui = useMemo(() => {
     const config = ORDER_STATUS_UI[order.status] || ORDER_STATUS_UI.CREATED;
-    const shopName = _.get(order, "shopInfo.shopName", "Cửa hàng");
-    const shopLogo = _.get(order, "shopInfo.logoUrl");
+    const firstItem = _.first(order.items);
+
+    const rawImageUrl = resolveOrderItemImageUrl(
+      firstItem?.imageBasePath,
+      firstItem?.imageExtension,
+      "_medium"
+    );
+    const productImageUrl =
+      rawImageUrl && rawImageUrl.trim() !== "" ? rawImageUrl : null;
+
+    const rawLogoUrl = _.get(order, "shopInfo.logoUrl");
+    const shopLogo = rawLogoUrl && rawLogoUrl.trim() !== "" ? rawLogoUrl : null;
 
     return {
       config,
-      shopName: _.truncate(shopName, { length: 25 }),
+      shopName: _.truncate(_.get(order, "shopInfo.shopName", "Cửa hàng"), {
+        length: 20,
+      }),
       shopLogo,
       itemCount: order.items.length,
-      firstItem: _.first(order.items),
+      firstItem,
+      productImageUrl,
       paymentLabel:
         PAYMENT_METHOD_LABELS[order.paymentMethod] || order.paymentMethod,
+      isReviewed: !!dbReview || !!order.reviewed,
+      canReview: ["DELIVERED", "COMPLETED"].includes(order.status),
+      canReorder: ["DELIVERED", "COMPLETED"].includes(order.status),
+      canReturn: [ "COMPLETED"].includes(order.status),
+      canCancel: ["PENDING_PAYMENT", "CREATED", "AWAITING_PAYMENT"].includes(
+        order.status
+      ),
     };
-  }, [order]);
+  }, [order, dbReview]);
 
+  const reviewDisplayData = useMemo(() => {
+    if (!dbReview) return null;
+    return {
+      rating: dbReview.rating,
+      comment: dbReview.comment || "Không có nhận xét.",
+      media:
+        dbReview.mediaAssets?.map(
+          (m: any) =>
+            m.url ||
+            `https://pub-5341c10461574a539df355b9fbe87197.r2.dev/${m.basePath}${m.extension}`
+        ) || [],
+      createdAt: dbReview.createdAt,
+    };
+  }, [dbReview]);
+
+  const handleReorder = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (ui.firstItem?.productId) {
+      router.push(`/products/${ui.firstItem.productId}`);
+    }
+  };
+  const handleCancelClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsCancelModalOpen(true);
+  };
+  const handleReturnClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsReturnOpen(true);
+  };
   return (
-    <article className="group relative bg-white border border-gray-100 rounded-4xl p-4 sm:p-5 hover:shadow-2xl hover:shadow-orange-500/10 transition-all duration-500 mb-3 overflow-hidden">
-      <div className="absolute left-0 top-0 bottom-0 w-1 transition-all duration-500 group-hover:w-1.5" />
-
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="relative w-10 h-10 shrink-0 rounded-2xl bg-gray-50 border border-gray-100 overflow-hidden flex items-center justify-center">
+    <article className="group relative bg-white border border-gray-100 rounded-2xl p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-300 mb-3 overflow-hidden">
+      <div className="flex items-center justify-between mb-3 pb-3 border-b border-gray-50">
+        <div className="flex items-center gap-2 min-w-0">
+          <div className="relative w-10 h-10 shrink-0 rounded-lg border border-gray-200 overflow-hidden flex items-center justify-center bg-gray-50 shadow-inner">
             {ui.shopLogo ? (
               <Image
                 src={ui.shopLogo}
                 alt={ui.shopName}
-                width={40}
-                height={40}
-                className="w-full h-full object-cover"
+                fill
+                sizes="40px"
+                className="object-cover"
               />
             ) : (
-              <Package size={18} className="text-gray-300" />
+              <Package size={16} className="text-gray-300" />
             )}
           </div>
           <div className="min-w-0">
-            <h4 className="text-[13px] sm:text-[14px] font-bold text-gray-800 leading-none uppercase truncate">
+            <h4 className="text-[14px] font-black text-gray-800 leading-none uppercase truncate">
               {ui.shopName}
             </h4>
-            <span className="text-[10px] text-gray-600 font-bold tracking-widest mt-1 block uppercase">
-              MÃ ĐƠN: #{order.orderNumber}
+            <span className="text-[11px] text-gray-700 font-bold mt-1 block uppercase">
+              #{order.orderNumber}
             </span>
           </div>
         </div>
 
         <div
           className={cn(
-            "px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider flex items-center gap-2 border shadow-sm",
+            "px-2 py-0.5 rounded-lg text-[10px] font-bold uppercase flex items-center gap-1.5 border shadow-xs",
             ui.config.bg,
             ui.config.text,
             ui.config.border
           )}
         >
-          {ui.config.icon}
-          <span>{ui.config.label}</span>
+          {ui.config.label}
         </div>
       </div>
 
-      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 pl-2">
-        <div className="flex -space-x-4 overflow-hidden shrink-0 p-2">
-          {_.take(order.items, 3).map((item, i) => {
-            const imgUrl = resolveOrderItemImageUrl(
-              item.imageBasePath,
-              item.imageExtension,
-              "_thumb"
-            );
-            return (
-              <div
-                key={i}
-                className="relative w-16 h-16 cursor-pointer rounded-2xl border-2 border-white bg-gray-50 overflow-hidden duration-300 shadow-custom transition-transform group-hover:translate-x-1"
-              >
-                {imgUrl ? (
-                  <Image
-                    src={imgUrl}
-                    alt="sản phẩm"
-                    fill
-                    className="w-full h-full object-contain"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-gray-300 bg-gray-100">
-                    <Package size={20} strokeWidth={1.5} />
-                  </div>
-                )}
-              </div>
-            );
-          })}
-          {ui.itemCount > 3 && (
-            <div className="w-14 h-14 rounded-2xl border-2 border-white bg-gray-800 flex items-center justify-center text-[10px] font-bold text-white shadow-md z-10">
-              +{ui.itemCount - 3}
+      {/* Main Content */}
+      <div className="flex items-start gap-3 sm:gap-4">
+        <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl border border-gray-100 overflow-hidden shrink-0 shadow-sm bg-white">
+          {ui.productImageUrl ? (
+            <Image
+              src={ui.productImageUrl}
+              alt={ui.firstItem?.productName || "Product"}
+              fill
+              sizes="(max-width: 640px) 56px, 64px"
+              priority={order.status === "DELIVERED"}
+              className="object-cover"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center bg-gray-50">
+              <Package size={20} className="text-gray-700" />
             </div>
           )}
         </div>
 
-        <div className="flex-1 min-w-0 w-full">
-          <Link
-            href={`/products/${ui.firstItem?.productId}`}
-            className="font-semibold text-gray-700 hover:text-orange-600 transition-colors block text-[12px] truncate pr-4"
-          >
+        <div className="flex-1 min-w-0">
+          <p className="font-bold text-gray-800 text-[13px] line-clamp-1 italic leading-snug">
             {ui.firstItem?.productName}
-          </Link>
+          </p>
 
-          <div className="flex flex-wrap items-center gap-3">
-            <div className="flex items-center gap-1.5 text-gray-600 bg-gray-50 px-2 py-0.5 rounded-lg border border-gray-100">
-              <Truck size={12} strokeWidth={2} />
-              <span className="text-[10px] font-bold uppercase tracking-tight">
-                Giao:{" "}
-                {order.shippingFee > 0
-                  ? formatPrice(order.shippingFee)
-                  : "Miễn phí"}
-              </span>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1.5">
+            <div className="flex items-center gap-1 text-emerald-600 font-bold text-[11px] uppercase">
+              <Truck size={12} strokeWidth={2.5} /> Freeship
             </div>
-
-            <div className="flex items-center gap-1.5 text-gray-500 bg-gray-50 px-2 py-0.5 rounded-lg border border-gray-200">
-              <Wallet size={12} strokeWidth={2} />
-              <span className="text-[10px] font-bold uppercase italic">
-                {ui.paymentLabel}
-              </span>
+            <div className="flex items-center gap-1 text-gray-500 font-bold text-[11px] uppercase">
+              <Wallet size={12} strokeWidth={2.5} /> {ui.paymentLabel}
             </div>
           </div>
         </div>
 
-        <div className="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto pt-3 sm:pt-0 border-t sm:border-t-0 border-gray-50">
-          <div className="flex flex-col items-start sm:items-end">
-            <span className="text-[9px] font-bold text-gray-600 uppercase tracking-widest">
-              Tổng thanh toán
+        {/* Price and Actions */}
+        <div className="flex flex-col items-end gap-2 shrink-0">
+          <div className="text-right">
+            <span className="text-[8px] font-bold text-gray-700 uppercase block">
+              Tạm tính
             </span>
-            <span className="text-2xl font-bold text-(--color-mainColor) tracking-tighter">
+            <span className="text-sm sm:text-lg font-black text-orange-600 leading-none">
               {formatPrice(order.grandTotal)}
             </span>
           </div>
 
-          <button
-            onClick={() => onViewDetail(order.orderId)}
-            className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl text-white flex items-center justify-center bg-(--color-mainColor) hover:scale-105 duration-300 transition-all active:scale-90 shadow-xl"
-          >
-            <ArrowRight size={22} strokeWidth={2.5} />
-          </button>
+          <div className="flex items-center gap-1.5">
+            {ui.canCancel && (
+              <button
+                onClick={handleCancelClick}
+                className="flex items-center gap-1.5 px-4 h-9 rounded-2xl text-[10px] font-black uppercase transition-all bg-white text-gray-500 border border-gray-200 hover:border-red-500 hover:text-red-600 active:scale-95 shadow-sm cursor-pointer"
+              >
+                <XCircle size={14} />
+                Hủy đơn
+              </button>
+            )}
+            {ui.canReview && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (ui.isReviewed) setIsPreviewModalOpen(true);
+                  else setIsReviewModalOpen(true);
+                }}
+                disabled={loadingReview}
+                className={cn(
+                  "flex items-center gap-1 px-3 h-8 rounded-xl text-[10px] font-black uppercase transition-all shadow-sm active:scale-95",
+                  ui.isReviewed
+                    ? "bg-white border border-emerald-100 hover:bg-emerald-100"
+                    : "bg-white text-gray-900 border border-gray-200 hover:border-orange-500 hover:text-orange-600"
+                )}
+              >
+                {loadingReview ? (
+                  <Loader2 className="w-3 h-3 animate-spin text-orange-500" />
+                ) : (
+                  <Star
+                    size={12}
+                    className={cn(
+                      ui.isReviewed
+                        ? "fill-emerald-500 text-emerald-500"
+                        : "fill-orange-400 text-orange-400"
+                    )}
+                  />
+                )}
+                {ui.isReviewed ? "Xem lại" : "Đánh giá"}
+              </button>
+            )}
+            {ui.canReturn && (
+              <button
+                onClick={handleReturnClick}
+                className="flex items-center gap-1.5 px-4 h-9 rounded-2xl text-[10px] font-black uppercase transition-all bg-white text-rose-500 border border-rose-100 hover:bg-rose-50 active:scale-95 shadow-sm"
+              >
+                <RotateCcw size={14} /> Trả hàng
+              </button>
+            )}
+            {ui.canReorder && (
+              <button
+                type="button"
+                onClick={handleReorder}
+                className="flex items-center gap-1 px-3 h-8 rounded-xl text-[10px] font-black uppercase bg-orange-600 text-white hover:bg-orange-700 transition-all shadow-sm active:scale-95"
+              >
+                <RefreshCcw size={12} strokeWidth={2.5} />
+                Mua lại
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() => onViewDetail(order.orderId)}
+              className="w-8 h-8 rounded-xl bg-gray-900 text-white flex items-center justify-center hover:bg-orange-600 transition-all shadow-lg active:scale-90"
+              aria-label="View Order Detail"
+            >
+              <ArrowRight size={16} strokeWidth={3} />
+            </button>
+          </div>
         </div>
       </div>
 
-      {order.status === "DELIVERED" && (
-        <div className="absolute top-0 right-0 overflow-hidden w-16 h-16 pointer-events-none rounded-tr-4xl">
-          <div className="absolute -top-1 -right-1 bg-emerald-500 text-white p-3 pt-4 pl-4 rounded-bl-full shadow-lg border-b border-l border-white/20">
-            <ShieldCheck size={16} strokeWidth={3} className="rotate-12" />
-          </div>
-        </div>
+      <OrderCancelModal
+        isOpen={isCancelModalOpen}
+        onClose={() => setIsCancelModalOpen(false)}
+        onConfirm={(reason) => {
+          console.log("Hủy đơn với lý do:", reason);
+          setIsCancelModalOpen(false);
+          onOrderCancelled?.();
+        }}
+        orderNumber={order.orderNumber}
+        isCancelling={false}
+      />
+      {isReviewModalOpen && ui.productImageUrl && (
+        <ReviewModal
+          open={isReviewModalOpen}
+          onCancel={() => setIsReviewModalOpen(false)}
+          onSuccess={() => {
+            setDbReview({ rating: 5, comment: "Đã đánh giá" });
+            setIsReviewModalOpen(false);
+            onOrderCancelled?.();
+          }}
+          productId={ui.firstItem?.productId || ""}
+          productName={ui.firstItem?.productName || ""}
+          productImage={ui.productImageUrl}
+          orderId={order.orderId}
+        />
+      )}
+      <ReturnOrderModal
+        isOpen={isReturnOpen}
+        onClose={() => setIsReturnOpen(false)}
+        order={order}
+      />
+      {isPreviewModalOpen && reviewDisplayData && ui.productImageUrl && (
+        <ReviewPreviewModal
+          open={isPreviewModalOpen}
+          onClose={() => setIsPreviewModalOpen(false)}
+          productName={ui.firstItem?.productName || ""}
+          productImage={ui.productImageUrl}
+          reviewData={reviewDisplayData}
+        />
       )}
     </article>
   );
