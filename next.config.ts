@@ -36,6 +36,22 @@ const nextConfig: NextConfig = {
         hostname: "*.r2.dev",
         pathname: "/**",
       },
+     {
+        protocol: "https",
+        hostname: "ui-avatars.com",
+      },
+      {
+        protocol: "https",
+        hostname: "down-vn.img.susercontent.com", // Domain ảnh thật từ Shopee (có trong mock data)
+      },
+      {
+        protocol: "https",
+        hostname: "dummyimage.com", // Domain ảnh placeholder
+      },
+      {
+        protocol: "https",
+        hostname: "**", // (Tùy chọn) Dùng dòng này nếu muốn chấp nhận mọi ảnh (chỉ dùng khi dev)
+      },
       {
         protocol: 'https',
         hostname: 'images.unsplash.com',

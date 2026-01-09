@@ -14,7 +14,7 @@ import { request } from "@/utils/axios.customize";
 import { ApiResponse } from "@/api/_types/api.types";
 import { FilterRequest } from "@/app/(chat)/_types/chat.dto";
 
-const API_ENDPOINT_SHOP = "v1/shops";
+const API_ENDPOINT_SHOP = "v1/public/shops";
 
 export async function createShop(
   payload: CreateShopRequest

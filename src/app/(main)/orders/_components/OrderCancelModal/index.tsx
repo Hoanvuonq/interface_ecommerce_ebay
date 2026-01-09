@@ -1,59 +1,76 @@
 "use client";
 
-import React from "react";
-import { AlertTriangle, Loader2 } from "lucide-react";
-import { PortalModal } from "@/features/PortalModal"; 
+import { PortalModal } from "@/features/PortalModal";
+import { cn } from "@/utils/cn";
+import { AlertCircle, Loader2, MessageSquare } from "lucide-react";
+import React, { useState } from "react";
 
 interface OrderCancelModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: () => void;
+  onConfirm: (reason: string) => void; 
   orderNumber: string;
-  cancelReason: string;
-  setCancelReason: (value: string) => void;
   isCancelling: boolean;
-  carrier?: string;
-  trackingNumber?: string | null;
 }
+
+const PREDEFINED_REASONS = [
+  "Tôi muốn cập nhật địa chỉ/số điện thoại nhận hàng",
+  "Tôi muốn thêm/thay đổi mã giảm giá",
+  "Tôi muốn thay đổi sản phẩm (kích thước, màu sắc, số lượng...)",
+  "Thủ tục thanh toán quá rắc rối",
+  "Tìm thấy chỗ mua khác tốt hơn (Rẻ hơn, uy tín hơn...)",
+  "Tôi không có nhu cầu mua nữa",
+  "Lý do khác",
+];
 
 export const OrderCancelModal: React.FC<OrderCancelModalProps> = ({
   isOpen,
   onClose,
   onConfirm,
   orderNumber,
-  cancelReason,
-  setCancelReason,
   isCancelling,
-  carrier,
-  trackingNumber,
 }) => {
+  const [selectedReason, setSelectedReason] = useState<string>("");
+  const [otherReason, setOtherReason] = useState<string>("");
+
+  const handleConfirm = () => {
+    const finalReason = selectedReason === "Lý do khác" ? otherReason : selectedReason;
+    onConfirm(finalReason);
+  };
+
+  const isButtonDisabled = isCancelling || !selectedReason || (selectedReason === "Lý do khác" && !otherReason.trim());
+
   const modalTitle = (
-    <div className="flex items-center gap-2 text-red-600">
-      <div className="p-2 bg-red-50 rounded-full">
-        <AlertTriangle size={20} />
+    <div className="flex items-center gap-3">
+      <div className="p-2.5 bg-orange-50 rounded-2xl text-orange-500 shadow-sm border border-orange-100">
+        <AlertCircle size={22} strokeWidth={2.5} />
       </div>
-      <span className="font-bold text-lg leading-none">Hủy đơn hàng</span>
+      <div>
+        <h3 className="text-lg font-black text-gray-800 tracking-tight leading-none">Hủy đơn hàng</h3>
+        <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1.5">Mã đơn: #{orderNumber}</p>
+      </div>
     </div>
   );
 
   const modalFooter = (
-    <div className="flex justify-end gap-3 w-full">
+    <div className="flex items-center justify-end gap-3 w-full border-t border-gray-50 pt-4 mt-2">
       <button
         type="button"
         onClick={onClose}
-        disabled={isCancelling}
-        className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 rounded-lg transition-colors disabled:opacity-50"
+        className="px-6 py-2.5 text-xs font-black uppercase tracking-widest text-gray-500 hover:text-gray-700 transition-colors"
       >
-        Đóng lại
+        Không phải bây giờ
       </button>
       <button
         type="button"
-        onClick={onConfirm}
-        disabled={isCancelling || !cancelReason.trim()}
-        className="flex items-center gap-2 px-4 py-2 text-sm font-bold text-white bg-red-600 hover:bg-red-700 rounded-lg shadow-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+        onClick={handleConfirm}
+        disabled={isButtonDisabled}
+        className={cn(
+          "flex items-center gap-2 px-8 py-2.5 text-xs font-black uppercase tracking-widest text-white rounded-xl shadow-lg transition-all active:scale-95 disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed",
+          "bg-orange-500 hover:bg-orange-600 shadow-orange-200"
+        )}
       >
-        {isCancelling && <Loader2 size={16} className="animate-spin" />}
-        Xác nhận hủy
+        {isCancelling ? <Loader2 size={16} className="animate-spin" /> : "Xác nhận hủy"}
       </button>
     </div>
   );
@@ -64,56 +81,74 @@ export const OrderCancelModal: React.FC<OrderCancelModalProps> = ({
       onClose={onClose}
       title={modalTitle}
       footer={modalFooter}
-      width="max-w-md"
+      width="max-w-lg"
       preventCloseOnClickOverlay={isCancelling}
     >
-      <div className="space-y-5 py-2 font-sans">
-        <div className="p-3 bg-gray-50 rounded-xl border border-gray-100">
-          <p className="text-sm text-gray-600 leading-relaxed">
-            Bạn có chắc chắn muốn hủy đơn hàng{" "}
-            <span className="font-bold text-gray-900 bg-white px-2 py-0.5 rounded border border-gray-200 shadow-sm">
-              #{orderNumber}
-            </span>
-            ?
-            <br />
-            <span className="mt-2 block">
-              Hành động này <span className="font-bold text-red-600 underline decoration-2 underline-offset-2">không thể hoàn tác</span>.
-            </span>
+      <div className="space-y-6 py-2 font-sans">
+        {/* Warning Banner */}
+        <div className="p-4 bg-orange-50/50 rounded-2xl border border-orange-100 flex gap-3">
+          <div className="w-1.5 h-auto bg-orange-400 rounded-full shrink-0" />
+          <p className="text-[13px] text-orange-800 leading-relaxed font-medium">
+            <span className="font-black uppercase text-[11px] block mb-1">Lưu ý quan trọng:</span>
+            Hành động này <span className="font-bold underline">không thể hoàn tác</span>. Bạn chỉ có thể cập nhật thông tin nhận hàng 1 lần duy nhất thay vì hủy đơn.
           </p>
         </div>
 
-        {carrier === "CONKIN" && trackingNumber && (
-          <div className="flex gap-3 p-3 bg-amber-50 border border-amber-100 rounded-xl text-sm text-amber-800 animate-in fade-in slide-in-from-top-1 duration-300">
-            <AlertTriangle size={18} className="shrink-0 mt-0.5 text-amber-600" />
-            <span className="font-medium">
-              Đơn hàng này sử dụng vận chuyển Conkin. Vận đơn Conkin cũng sẽ
-              được hủy tự động trên hệ thống.
-            </span>
-          </div>
-        )}
-
-        <div className="space-y-2">
-          <label className="block text-sm font-bold text-gray-700">
-            Lý do hủy đơn <span className="text-red-500">*</span>
-          </label>
-          <textarea
-            rows={4}
-            className="w-full px-4 py-3 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-4 focus:ring-red-500/10 focus:border-red-500 transition-all placeholder:text-gray-600 resize-none bg-gray-50 focus:bg-white"
-            placeholder="Vui lòng cho chúng tôi biết lý do tại sao bạn muốn hủy đơn hàng này..."
-            value={cancelReason}
-            onChange={(e) => setCancelReason(e.target.value)}
-            maxLength={500}
-            disabled={isCancelling}
-          />
-          <div className="flex justify-between items-center px-1">
-             <span className="text-[10px] text-gray-600 italic">
-               *Thông tin này giúp chúng tôi cải thiện dịch vụ
-             </span>
-            <span className={`text-xs font-bold ${cancelReason.length >= 500 ? 'text-red-500' : 'text-gray-600'}`}>
-              {cancelReason.length}/500
-            </span>
+        {/* Reasons List */}
+        <div className="space-y-3">
+          <label className="text-[11px] font-black text-gray-400 uppercase tracking-[0.2em] px-1">Vui lòng chọn lý do</label>
+          <div className="grid gap-2">
+            {PREDEFINED_REASONS.map((reason) => (
+              <label
+                key={reason}
+                className={cn(
+                  "flex items-center gap-3 p-4 rounded-2xl border transition-all cursor-pointer group",
+                  selectedReason === reason
+                    ? "bg-orange-50 border-orange-200 shadow-sm shadow-orange-100"
+                    : "bg-white border-gray-100 hover:border-orange-200"
+                )}
+              >
+                <div className={cn(
+                  "w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all",
+                  selectedReason === reason ? "border-orange-500 bg-orange-500" : "border-gray-200 group-hover:border-orange-300"
+                )}>
+                  {selectedReason === reason && <div className="w-2 h-2 bg-white rounded-full" />}
+                </div>
+                <input
+                  type="radio"
+                  name="cancelReason"
+                  className="hidden"
+                  value={reason}
+                  onChange={(e) => setSelectedReason(e.target.value)}
+                />
+                <span className={cn(
+                  "text-[13px] font-bold transition-colors",
+                  selectedReason === reason ? "text-orange-700" : "text-gray-600"
+                )}>
+                  {reason}
+                </span>
+              </label>
+            ))}
           </div>
         </div>
+
+        {/* Other Reason Input */}
+        {selectedReason === "Lý do khác" && (
+          <div className="space-y-2 animate-in fade-in zoom-in-95 duration-300">
+            <div className="flex items-center gap-2 px-1">
+              <MessageSquare size={14} className="text-orange-500" />
+              <label className="text-[11px] font-black text-gray-500 uppercase tracking-widest">Chi tiết lý do khác</label>
+            </div>
+            <textarea
+              rows={3}
+              className="w-full px-4 py-3 text-[13px] border border-gray-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all placeholder:text-gray-300 resize-none bg-gray-50/50 font-medium"
+              placeholder="Vui lòng cho chúng tôi biết thêm thông tin..."
+              value={otherReason}
+              onChange={(e) => setOtherReason(e.target.value)}
+              maxLength={200}
+            />
+          </div>
+        )}
       </div>
     </PortalModal>
   );

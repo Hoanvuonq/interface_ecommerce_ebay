@@ -20,7 +20,6 @@ export const ReviewItem: React.FC<ReviewItemProps> = ({
   return (
     <div className="py-8 first:pt-0 border-b border-slate-50 last:border-0 group transition-all duration-300">
       <div className="flex flex-col sm:flex-row gap-5 md:gap-7">
-        {/* Cột trái: Avatar */}
         <div className="flex items-center sm:items-start gap-3 shrink-0">
           <CustomAvatar
             size={42}
@@ -36,9 +35,7 @@ export const ReviewItem: React.FC<ReviewItemProps> = ({
           </div>
         </div>
 
-        {/* Cột phải: Nội dung */}
         <div className="flex-1 min-w-0">
-          {/* Header Review */}
           <div className="hidden sm:flex flex-wrap items-center justify-between gap-4 mb-3">
             <div className="space-y-1">
               <div className="flex items-center gap-2.5">

@@ -31,10 +31,10 @@ export const OrderHeader: React.FC<OrderHeaderProps> = ({ order, ui, actions }) 
             </div>
           </div>
           
-          <div className="flex items-center gap-3 text-[11px] text-gray-600">
+          <div className="flex items-center gap-3 text-[12px] text-gray-700">
             <button 
               onClick={actions.handleCopyOrderNumber}
-              className="hover:text-indigo-600 transition-colors flex items-center gap-1 font-mono"
+              className="hover:text-(--color-mainColor) transition-colors flex items-center gap-1"
             >
               #{order.orderNumber} <Copy size={10} />
             </button>
@@ -65,7 +65,7 @@ export const OrderHeader: React.FC<OrderHeaderProps> = ({ order, ui, actions }) 
         </div>
         {ui.canCancel && (
         <div className="border-t border-gray-50 flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2 text-[11px] text-gray-500 italic">
+          <div className="flex items-center gap-2 text-[11px] text-gray-900 italic">
             <div className="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse" />
             Vui lòng hoàn tất trước khi hết hạn
           </div>
