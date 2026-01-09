@@ -40,11 +40,7 @@ export function useLogin() {
       const res = await authService.login(payload);
       console.log("Login response:", res);
       
-      // Check if running on localhost to store tokens in localStorage
       if (typeof window !== "undefined" && isLocalhost() && res && res.success && res.data) {
-        // Assuming res.data contains the tokens or user info you want to store
-        // You might need to adjust what exactly is stored based on your API response structure
-        // For example, if res.data has accessToken and refreshToken:
         if (res.data.accessToken) {
             localStorage.setItem("accessToken", res.data.accessToken);
         }
@@ -52,7 +48,6 @@ export function useLogin() {
             localStorage.setItem("refreshToken", res.data.refreshToken);
         }
         
-        // Also store user info if needed
         localStorage.setItem("users", JSON.stringify(res.data));
       }
       
