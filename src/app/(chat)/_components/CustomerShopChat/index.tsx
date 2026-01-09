@@ -99,7 +99,6 @@ export const CustomerShopChat: React.FC<CustomerShopChatProps> = ({
       />
 
       <div className="relative w-full max-w-5xl h-full bg-white shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
-       
         <div className="flex h-full overflow-hidden">
           <ConversationList
             conversations={store.conversations}
@@ -185,11 +184,17 @@ export const CustomerShopChat: React.FC<CustomerShopChatProps> = ({
                       onClose={() =>
                         store.setUiState({ showOrderPicker: false })
                       }
-                      onSendDirect={(order) => {}}
+                      onSendDirect={(order) => {
+                        chatLogic.onSendOrderCard(
+                          order.orderId,
+                          `Tôi muốn hỏi về đơn hàng: ${order.orderNumber}`
+                        );
+                        store.setUiState({ showOrderPicker: false });
+                      }}
                       resolveOrderItemImageUrl={resolveOrderItemImageUrl}
                       isVisible={store.showOrderPicker}
                       onViewDetails={(order) => {}}
-                      isSending={false}
+                      isSending={chatLogic.isSending}
                       getStatusText={(order) =>
                         typeof order === "object" && "statusText" in order
                           ? (order as any).statusText || ""
@@ -211,7 +216,13 @@ export const CustomerShopChat: React.FC<CustomerShopChatProps> = ({
                       onSearchChange={(val) =>
                         store.setUiState({ productSearchText: val })
                       }
-                      onSendDirect={(prod) => {}}
+                      onSendDirect={(prod) => {
+                        chatLogic.onSendProductCard(
+                          prod.id,
+                          `Tôi muốn hỏi về sản phẩm: ${prod.name}`
+                        );
+                        store.setUiState({ showProductPicker: false });
+                      }}
                       isSending={chatLogic.isSending}
                       onViewDetails={(prod) => {
                         window.open(`/products/${prod.id}`, "_blank");

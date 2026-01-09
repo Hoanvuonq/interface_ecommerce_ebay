@@ -1,10 +1,9 @@
-// "use client";
+"use client";
 
-// import React from "react";
-// import OrderListFeature from "@/features/manager/order/OrderListFeature";
+import React from "react";
 
-// const EmployeeOrdersRoute: React.FC = () => {
-//   return <OrderListFeature />;
-// };
+const EmployeeOrdersRoute: React.FC = () => {
+  return <>aa</>;
+};
 
-// export default EmployeeOrdersRoute;
+export default EmployeeOrdersRoute;
