@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import _ from "lodash";
-import { Search, Store, User, Inbox, MessageSquare } from "lucide-react";
+import { Search, Store, User, Inbox, MessageSquare, X } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { vi } from "date-fns/locale";
 import { ConversationListProps } from "./type";
@@ -52,6 +52,7 @@ export const ConversationList: React.FC<ConversationListProps> = ({
   isMobileView,
   getShopAvatar,
   getShopName,
+  onClose
 }) => {
   const formatTimeFriendly = (date: string | Date) => {
     if (!date) return "";
@@ -73,14 +74,24 @@ export const ConversationList: React.FC<ConversationListProps> = ({
       )}
       style={{ height: height }}
     >
-      {/* Header Section */}
       <div className="p-5 pb-2 space-y-4 bg-white sticky top-0 z-10">
-        <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2.5">
-          <div className="p-2 bg-orange-50 rounded-xl text-orange-600">
-             <MessageSquare size={20} strokeWidth={2.5} />
-          </div>
-          Tin nhắn
-        </h3>
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2.5">
+            <div className="p-2 bg-orange-50 rounded-xl text-orange-600">
+              <MessageSquare size={20} strokeWidth={2.5} />
+            </div>
+            Tin nhắn
+          </h3>
+
+          {/* Nút Đóng - Chỉ hiện ở Mobile */}
+          <button
+            onClick={onClose}
+            className="md:hidden p-2 hover:bg-gray-100 rounded-full text-gray-500 transition-all active:scale-90"
+            aria-label="Close chat list"
+          >
+            <X size={22} />
+          </button>
+        </div>
 
         <div className="relative group">
           <Search
@@ -91,7 +102,7 @@ export const ConversationList: React.FC<ConversationListProps> = ({
             value={searchText}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Tìm kiếm shop..."
-            className="w-full bg-gray-100 border-transparent border focus:border-orange-200 rounded-xl py-2.5 pl-10 pr-4 text-sm focus:bg-white focus:ring-2 focus:ring-orange-100 transition-all outline-none placeholder:text-gray-600 font-medium"
+            className="w-full bg-gray-100 border-transparent border focus:border-orange-200 rounded-xl py-2.5 pl-10 pr-4 text-sm focus:bg-white focus:ring-2 focus:ring-orange-100 transition-all outline-none"
           />
         </div>
       </div>

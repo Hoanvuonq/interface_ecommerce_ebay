@@ -22,6 +22,7 @@ import { DeleteMessageModal } from "../DeleteMessageModal";
 import { MessageList } from "../MessageList";
 import { OrderPicker } from "../OrderPicker";
 import { ProductPicker } from "../ProductPicker";
+import { PortalModal } from "@/features/PortalModal"; // Giả định đường dẫn Portal của bạn
 
 export const CustomerShopChat: React.FC<CustomerShopChatProps> = ({
   open,
@@ -61,6 +62,22 @@ export const CustomerShopChat: React.FC<CustomerShopChatProps> = ({
     });
     return () => unsub();
   }, [open, wsConnected]);
+  useEffect(() => {
+    if (open) {
+      const user = getStoredUserDetail();
+      // 💡 Chỉ kết nối nếu có Token hợp lệ
+      if (user?.accessToken) {
+        connect();
+      } else {
+        console.warn(
+          "[Chat] No access token found, skipping WebSocket connection"
+        );
+      }
+    }
+    return () => {
+      if (open) disconnect();
+    };
+  }, [open]);
 
   useEffect(() => {
     if (open) {
@@ -93,6 +110,7 @@ export const CustomerShopChat: React.FC<CustomerShopChatProps> = ({
 
   return (
     <div className="fixed inset-0 z-1000 flex justify-end">
+      {/* Background Overlay */}
       <div
         className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity"
         onClick={onClose}
@@ -109,6 +127,7 @@ export const CustomerShopChat: React.FC<CustomerShopChatProps> = ({
               store.setUiState({ isMobileChatView: true });
             }}
             searchText={store.searchText}
+            onClose={onClose}
             onSearchChange={(val) => store.setUiState({ searchText: val })}
             height={height}
             isMobileView={store.isMobileChatView}
@@ -117,8 +136,8 @@ export const CustomerShopChat: React.FC<CustomerShopChatProps> = ({
           />
 
           <div
-            className={`flex-1 flex flex-col bg-gray-50 relative ${
-              store.isMobileChatView ? "block" : "hidden md:flex"
+            className={`flex-1 flex flex-col bg-gray-50 relative overflow-hidden ${
+              store.isMobileChatView ? "flex" : "hidden md:flex"
             }`}
           >
             {store.selectedConversation ? (
@@ -133,103 +152,101 @@ export const CustomerShopChat: React.FC<CustomerShopChatProps> = ({
                   getShopAvatar={chatLogic.getShopAvatar}
                   getShopName={chatLogic.getShopName}
                 />
+
                 {!currentUserId && <ChatLoginAlert />}
-                <MessageList
-                  messages={chatLogic.messages}
-                  currentUserId={currentUserId}
-                  isInitializing={chatLogic.isInitializing}
-                  isLoadingMore={chatLogic.isLoadingMore}
-                  hasMoreMessages={chatLogic.hasMoreMessages}
-                  typingUsers={chatLogic.typingUsers}
-                  activeConversationId={store.activeConversationId ?? null}
-                  latestMessageId={chatLogic.latestMessageId ?? null}
-                  messagesContainerRef={messagesContainerRef ?? null}
-                  messagesEndRef={messagesEndRef}
-                  onScroll={handleScroll}
-                  getMessageSender={(m) =>
-                    m.user?.userId === currentUserId ? "customer" : "shop"
-                  }
-                  getMessageSenderName={(m) => m.user?.username || "Shop"}
-                  getMessageSenderAvatar={(m) => m.user?.image}
-                  formatTime={(ts) => ts}
-                  isMessageDeleted={(m, username) =>
-                    isMessageDeleted(m as any, username)
-                  }
-                  getMessageMenuItems={(m, isMine) =>
-                    [
-                      {
-                        key: "reply",
-                        label: "Trả lời",
-                        onClick: () => store.setReplyingTo(m),
-                      },
-                      isMine && {
-                        key: "revoke",
-                        label: "Thu hồi",
-                        danger: true,
-                        onClick: () => setDeleteConfirmMsg(m),
-                      },
-                    ].filter(Boolean)
-                  }
-                  currentUsername={getStoredUserDetail()?.username}
-                />
-                {store.showOrderPicker && (
-                  <div className="absolute bottom-0 left-0 right-0 z-20">
-                    <OrderPicker
-                      orders={chatLogic.orders}
-                      isLoading={chatLogic.loadingOrders}
-                      searchText={store.orderSearchText}
-                      onSearchChange={(val) =>
-                        store.setUiState({ orderSearchText: val })
-                      }
-                      onClose={() =>
-                        store.setUiState({ showOrderPicker: false })
-                      }
-                      onSendDirect={(order) => {
-                        chatLogic.onSendOrderCard(
-                          order.orderId,
-                          `Tôi muốn hỏi về đơn hàng: ${order.orderNumber}`
-                        );
-                        store.setUiState({ showOrderPicker: false });
-                      }}
-                      resolveOrderItemImageUrl={resolveOrderItemImageUrl}
-                      isVisible={store.showOrderPicker}
-                      onViewDetails={(order) => {}}
-                      isSending={chatLogic.isSending}
-                      getStatusText={(order) =>
-                        typeof order === "object" && "statusText" in order
-                          ? (order as any).statusText || ""
-                          : ""
-                      }
-                    />
-                  </div>
-                )}
-                {store.showProductPicker && (
-                  <div className="absolute bottom-0 left-0 right-0 z-20">
-                    <ProductPicker
-                      isVisible={store.showProductPicker}
-                      onClose={() =>
-                        store.setUiState({ showProductPicker: false })
-                      }
-                      products={chatLogic.products}
-                      isLoading={chatLogic.loadingProducts}
-                      searchText={store.productSearchText}
-                      onSearchChange={(val) =>
-                        store.setUiState({ productSearchText: val })
-                      }
-                      onSendDirect={(prod) => {
-                        chatLogic.onSendProductCard(
-                          prod.id,
-                          `Tôi muốn hỏi về sản phẩm: ${prod.name}`
-                        );
-                        store.setUiState({ showProductPicker: false });
-                      }}
-                      isSending={chatLogic.isSending}
-                      onViewDetails={(prod) => {
-                        window.open(`/products/${prod.id}`, "_blank");
-                      }}
-                    />
-                  </div>
-                )}
+
+                <div className="flex-1 relative overflow-hidden flex flex-col min-h-0">
+                  <MessageList
+                    messages={chatLogic.messages}
+                    currentUserId={currentUserId}
+                    isInitializing={chatLogic.isInitializing}
+                    isLoadingMore={chatLogic.isLoadingMore}
+                    hasMoreMessages={chatLogic.hasMoreMessages}
+                    typingUsers={chatLogic.typingUsers}
+                    activeConversationId={store.activeConversationId ?? null}
+                    latestMessageId={chatLogic.latestMessageId ?? null}
+                    messagesContainerRef={messagesContainerRef ?? null}
+                    messagesEndRef={messagesEndRef}
+                    onScroll={handleScroll}
+                    getMessageSender={(m) =>
+                      m.user?.userId === currentUserId ? "customer" : "shop"
+                    }
+                    getMessageSenderName={(m) => m.user?.username || "Shop"}
+                    getMessageSenderAvatar={(m) => m.user?.image}
+                    formatTime={(ts) => ts}
+                    isMessageDeleted={(m, username) =>
+                      isMessageDeleted(m as any, username)
+                    }
+                    getMessageMenuItems={(m, isMine) =>
+                      [
+                        {
+                          key: "reply",
+                          label: "Trả lời",
+                          onClick: () => store.setReplyingTo(m),
+                        },
+                        isMine && {
+                          key: "revoke",
+                          label: "Thu hồi",
+                          danger: true,
+                          onClick: () => setDeleteConfirmMsg(m),
+                        },
+                      ].filter(Boolean)
+                    }
+                    currentUsername={getStoredUserDetail()?.username}
+                  />
+
+                  {/* Pickers trượt từ phải ra bằng ChatSideModal logic */}
+                  <OrderPicker
+                    isVisible={store.showOrderPicker}
+                    orders={chatLogic.orders}
+                    isLoading={chatLogic.loadingOrders}
+                    searchText={store.orderSearchText}
+                    onSearchChange={(val) =>
+                      store.setUiState({ orderSearchText: val })
+                    }
+                    onClose={() => store.setUiState({ showOrderPicker: false })}
+                    onSendDirect={(order) => {
+                      chatLogic.onSendOrderCard(
+                        order.orderId,
+                        `Tôi muốn hỏi về đơn hàng: ${order.orderNumber}`
+                      );
+                      store.setUiState({ showOrderPicker: false });
+                    }}
+                    resolveOrderItemImageUrl={resolveOrderItemImageUrl}
+                    onViewDetails={(order) => {}}
+                    isSending={chatLogic.isSending}
+                    getStatusText={(order) =>
+                      typeof order === "object" && "statusText" in order
+                        ? (order as any).statusText || ""
+                        : ""
+                    }
+                  />
+
+                  <ProductPicker
+                    isVisible={store.showProductPicker}
+                    products={chatLogic.products}
+                    isLoading={chatLogic.loadingProducts}
+                    searchText={store.productSearchText}
+                    onSearchChange={(val) =>
+                      store.setUiState({ productSearchText: val })
+                    }
+                    onClose={() =>
+                      store.setUiState({ showProductPicker: false })
+                    }
+                    onSendDirect={(prod) => {
+                      chatLogic.onSendProductCard(
+                        prod.id,
+                        `Tôi muốn hỏi về sản phẩm: ${prod.name}`
+                      );
+                      store.setUiState({ showProductPicker: false });
+                    }}
+                    isSending={chatLogic.isSending}
+                    onViewDetails={(prod) => {
+                      window.open(`/products/${prod.id}`, "_blank");
+                    }}
+                  />
+                </div>
+
                 <ChatInputArea
                   inputRef={inputRef}
                   messageText={store.messageText}
@@ -258,11 +275,13 @@ export const CustomerShopChat: React.FC<CustomerShopChatProps> = ({
                   toggleOrderPicker={() =>
                     store.setUiState({
                       showOrderPicker: !store.showOrderPicker,
+                      showProductPicker: false,
                     })
                   }
                   toggleProductPicker={() =>
                     store.setUiState({
                       showProductPicker: !store.showProductPicker,
+                      showOrderPicker: false,
                     })
                   }
                   disabled={!currentUserId}
@@ -281,14 +300,37 @@ export const CustomerShopChat: React.FC<CustomerShopChatProps> = ({
         </div>
       </div>
 
-      <DeleteMessageModal
+      {/* Delete Confirmation Portal */}
+      <PortalModal
         isOpen={!!deleteConfirmMsg}
-        onCancel={() => setDeleteConfirmMsg(null)}
-        onConfirm={() => {
-          if (deleteConfirmMsg) chatLogic.onRevokeMessage(deleteConfirmMsg.id);
-          setDeleteConfirmMsg(null);
-        }}
-      />
+        onClose={() => setDeleteConfirmMsg(null)}
+        title="Xác nhận thu hồi"
+        width="max-w-sm"
+      >
+        <div className="p-4 text-center">
+          <p className="text-gray-600 mb-6">
+            Bạn có chắc chắn muốn thu hồi tin nhắn này đối với mọi người không?
+          </p>
+          <div className="flex gap-3">
+            <button
+              className="flex-1 py-2 rounded-xl bg-gray-100 font-bold text-gray-500"
+              onClick={() => setDeleteConfirmMsg(null)}
+            >
+              Hủy
+            </button>
+            <button
+              className="flex-1 py-2 rounded-xl bg-orange-500 font-bold text-white shadow-lg shadow-orange-200"
+              onClick={() => {
+                if (deleteConfirmMsg)
+                  chatLogic.onRevokeMessage(deleteConfirmMsg.id);
+                setDeleteConfirmMsg(null);
+              }}
+            >
+              Thu hồi
+            </button>
+          </div>
+        </div>
+      </PortalModal>
     </div>
   );
 };
