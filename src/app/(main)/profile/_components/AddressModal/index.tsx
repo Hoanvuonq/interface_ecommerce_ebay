@@ -9,7 +9,7 @@ import { mapAddressToOldFormat } from "@/utils/address/ward-mapping.util";
 import { cn } from "@/utils/cn";
 import { menuAddressItems } from "../../_types/menu";
 import { PortalModal } from "@/features/PortalModal";
-import { SelectComponent } from "@/components/SelectComponent";
+import { SelectComponent } from "@/components/selectComponent";
 import { Button } from "@/components/button/button";
 import { ButtonField } from "@/components";
 import { useToast } from "@/hooks/useToast";

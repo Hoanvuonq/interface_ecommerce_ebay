@@ -4,7 +4,7 @@ import { useUpdateUserClient } from "@/auth/_hooks/useAuth";
 import authService from "@/auth/services/auth.service";
 import { ButtonField } from "@/components";
 import { Button } from "@/components/button/button";
-import PageContentTransition from "@/features/PageContentTransition";
+import { SectionPageComponents } from "@/features/SectionPageComponents";
 import { usePresignedUpload } from "@/hooks/usePresignedUpload";
 import { buyerService } from "@/services/buyer/buyer.service";
 import { BankAccountType } from "@/types/bank/bank-account.types";
@@ -19,6 +19,7 @@ import {
 } from "@/utils/jwt";
 import { toPublicUrl } from "@/utils/storage/url";
 import dayjs from "dayjs";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import {
   FaCamera,
@@ -36,7 +37,6 @@ import BankAccountManagement from "../BankAccount";
 import ChangePasswordFormCompact from "../ChangePassword";
 import InformationEditor from "../Information";
 import WalletPage from "../Wallet";
-import Image from "next/image";
 
 export default function ProfilePage() {
   const [user, setUser] = useState<any>(getStoredUserDetail());
@@ -180,6 +180,7 @@ export default function ProfilePage() {
       }
     }
   };
+ 
 
   const renderContent = () => {
     switch (activeTab) {
@@ -314,87 +315,87 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="h-full bg-white w-full all-center ">
-      <PageContentTransition>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          <div className="flex flex-col lg:flex-row gap-6">
-            <div className="w-full lg:w-64 shrink-0">
-              <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden sticky top-6">
-                <div className="p-5 border-b border-gray-100 flex items-center gap-3 bg-linear-to-b from-orange-50/20 to-white">
-                  <div className="w-10 h-10 rounded-full overflow-hidden border border-white ring-1 ring-orange-100 shadow-sm bg-white flex items-center justify-center shrink-0">
-                    {user?.image ? (
-                      <Image
-                        src={user.image}
-                        alt="User"
-                        height={40}
-                        width={40}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <FaUser className="text-gray-300 text-lg" />
-                    )}
-                  </div>
-                  <div className="overflow-hidden">
-                    <h3 className="font-semibold text-gray-900 truncate text-md">
-                      {editorData.fullName || user?.username}
-                    </h3>
-                    <p className="text-xs text-gray-500 truncate flex items-center gap-1 mt-0.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>{" "}
-                      Thành viên
-                    </p>
-                  </div>
-                </div>
-
-                <nav className="p-2 space-y-1">
-                  {menuItems.map((item) => (
-                    <button
-                      key={item.key}
-                      onClick={() => {
-                        if (!saving) setActiveTab(item.key);
-                      }}
-                      disabled={saving}
-                      className={cn(
-                        "w-full flex cursor-pointer items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 text-left group disabled:opacity-50",
-                        activeTab === item.key
-                          ? "text-orange-600 bg-orange-50"
-                          : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                      )}
-                    >
-                      <item.icon
-                        className={cn(
-                          "text-base transition-colors",
-                          activeTab === item.key
-                            ? "text-orange-500"
-                            : "text-gray-600 group-hover:text-gray-500"
-                        )}
-                      />
-                      {item.label}
-                      {activeTab === item.key && (
-                        <FaChevronRight className="ml-auto text-[10px] text-orange-400" />
-                      )}
-                    </button>
-                  ))}
-                </nav>
-              </div>
-            </div>
-
-            <div className="flex-1">
-              <div className="bg-white rounded-xl shadow-sm border border-gray-100 w-full p-6 min-h-125 flex flex-col">
-                {loading ? (
-                  <div className="h-full w-full flex-1 flex flex-col items-center justify-center text-gray-600 py-16">
-                    <FaSpinner className="animate-spin text-3xl mb-3 text-orange-500" />
-                    <span className="text-xs font-medium">
-                      Đang tải thông tin...
-                    </span>
-                  </div>
+    <SectionPageComponents
+      loading={loading}
+      loadingMessage="Đang tải thông tin hồ sơ..."
+      className="pt-10"
+    >
+      <div className="flex flex-col lg:flex-row gap-6">
+        <div className="w-full lg:w-64 shrink-0">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden sticky top-6">
+            <div className="p-5 border-b border-gray-100 flex items-center gap-3 bg-linear-to-b from-orange-50/20 to-white">
+              <div className="w-10 h-10 rounded-full overflow-hidden border border-white ring-1 ring-orange-100 shadow-sm bg-white flex items-center justify-center shrink-0">
+                {user?.image ? (
+                  <Image
+                    src={user.image}
+                    alt="User"
+                    height={40}
+                    width={40}
+                    className="w-full h-full object-cover"
+                  />
                 ) : (
-                  renderContent()
+                  <FaUser className="text-gray-300 text-lg" />
                 )}
               </div>
+              <div className="overflow-hidden">
+                <h3 className="font-semibold text-gray-900 truncate text-md">
+                  {editorData.fullName || user?.username}
+                </h3>
+                <p className="text-xs text-gray-500 truncate flex items-center gap-1 mt-0.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>{" "}
+                  Thành viên
+                </p>
+              </div>
             </div>
+
+            <nav className="p-2 space-y-1">
+              {menuItems.map((item) => (
+                <button
+                  key={item.key}
+                  onClick={() => {
+                    if (!saving) setActiveTab(item.key);
+                  }}
+                  disabled={saving}
+                  className={cn(
+                    "w-full flex cursor-pointer items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 text-left group disabled:opacity-50",
+                    activeTab === item.key
+                      ? "text-orange-600 bg-orange-50"
+                      : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                  )}
+                >
+                  <item.icon
+                    className={cn(
+                      "text-base transition-colors",
+                      activeTab === item.key
+                        ? "text-orange-500"
+                        : "text-gray-600 group-hover:text-gray-500"
+                    )}
+                  />
+                  {item.label}
+                  {activeTab === item.key && (
+                    <FaChevronRight className="ml-auto text-[10px] text-orange-400" />
+                  )}
+                </button>
+              ))}
+            </nav>
           </div>
         </div>
-      </PageContentTransition>
-    </div>
+
+        <div className="flex-1">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 w-full p-6 min-h-125 flex flex-col">
+            {loading ? (
+              <div className="h-full w-full flex-1 flex flex-col items-center justify-center text-gray-600 py-16">
+                <FaSpinner className="animate-spin text-3xl mb-3 text-orange-500" />
+                <span className="text-xs font-medium">
+                  Đang tải thông tin...
+                </span>
+              </div>
+            ) : (
+              renderContent()
+            )}
+          </div>
+        </div>
+      </div>
+    </SectionPageComponents>
   );
 }

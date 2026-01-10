@@ -2,7 +2,7 @@
 
 import { cn } from "@/utils/cn";
 import { useToast } from "@/hooks/useToast";
-import { IInputProps } from "../AddToCartButton/type";
+import { IInputProps } from "../../../AddToCartButton/type";
 
 export const CustomInputNumber: React.FC<IInputProps> = ({
   min = 1,
@@ -32,7 +32,6 @@ export const CustomInputNumber: React.FC<IInputProps> = ({
   };
 
   const handleBlur = () => {
-    // Khi thoát khỏi ô nhập, nếu trống hoặc nhỏ hơn min thì đưa về min
     if (value === null || value < min) {
       onChange(min);
     }

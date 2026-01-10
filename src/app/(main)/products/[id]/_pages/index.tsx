@@ -2,7 +2,7 @@
 
 import { CustomSpinner, ImageWithPreview } from "@/components";
 import { CardComponents } from "@/components/card";
-import { CustomVideoModal } from "@/components/CustomVideoModal";
+import { CustomVideoModal } from "@/components/custom/components/customVideoModal";
 import { formatCompactNumber } from "@/hooks/format";
 import { formatPriceFull } from "@/hooks/useFormatPrice";
 import type { PublicProductVariantDTO } from "@/types/product/public-product.dto";

@@ -19,25 +19,21 @@ export const useCheckoutActions = () => {
     },
     onMutate: () => setLoading(true),
     
-    // --- LOGIC HỨNG & CẬP NHẬT STORE ---
     onSuccess: (result: any, variables: any) => {
       const previewData = result?.data || result;
       setPreview(previewData);
 
       const shopDataFromBackend = _.get(previewData, "shops", []);
-      // Lấy danh sách mã sàn từ summary để phân loại
       const backendSummaryGlobals = _.get(previewData, "summary.globalVouchers", []) || [];
 
       const updatedShops = variables.shops.map((s: any) => {
         const freshShop = _.find(shopDataFromBackend, { shopId: s.shopId });
         
-        // 1. Lấy danh sách voucher HỢP LỆ từ Server (đã được tính toán)
         const validDetails = _.get(freshShop, "voucherResult.discountDetails", [])
           .filter((d: any) => d.valid);
         
         const validCodes = validDetails.map((d: any) => d.voucherCode);
 
-        // 2. Tách voucher Sàn và Shop dựa trên response thực tế
         const shopSpecificGlobals = validCodes.filter((c: string) => 
            backendSummaryGlobals.includes(c) || 
            validDetails.find((d: any) => d.voucherCode === c && d.voucherType === 'PLATFORM')
@@ -46,15 +42,10 @@ export const useCheckoutActions = () => {
         const shopSpecificVouchers = validCodes.filter((c: string) => 
            !shopSpecificGlobals.includes(c)
         );
-
-        // 3. Logic ưu tiên:
-        // - Nếu user gửi lên (variables có key) -> GIỮ NGUYÊN (để tránh bị server override khi user muốn xóa).
-        // - Nếu Init (không có key trong variables) -> LẤY TỪ SERVER (Auto Recommend).
         
         const finalVouchers = (s.vouchers !== undefined) ? s.vouchers : shopSpecificVouchers;
         const finalGlobalVouchers = (s.globalVouchers !== undefined) ? s.globalVouchers : shopSpecificGlobals;
 
-        // Cập nhật ServiceCode nếu Server tự đổi (ví dụ 400021 -> 400031)
         const serverSelectedMethod = _.get(freshShop, "selectedShippingMethod");
         const finalServiceCode = serverSelectedMethod ? Number(serverSelectedMethod) : s.serviceCode;
 
@@ -70,7 +61,7 @@ export const useCheckoutActions = () => {
       setRequest({
         ...variables,
         shops: updatedShops,
-        globalVouchers: [], // Luôn để rỗng ở root
+        globalVouchers: [],
       });
     },
     onSettled: () => setLoading(false),

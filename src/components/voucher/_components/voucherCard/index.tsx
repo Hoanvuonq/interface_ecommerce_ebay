@@ -27,17 +27,14 @@ export const VoucherCard: React.FC<VoucherCardProps> = ({
       onClick={() => canSelect && onSelect()}
       className={cn(
         "group relative flex border rounded-2xl transition-all duration-300 mb-4 cursor-pointer overflow-visible min-h-[110px]",
-        // Trạng thái được chọn
         isSelected
           ? isShipping 
             ? "border-emerald-500 bg-emerald-50/30 shadow-[0_10px_25px_-5px_rgba(16,185,129,0.15)] scale-[1.01] z-10"
             : "border-orange-500 bg-orange-50/30 shadow-[0_10px_25px_-5px_rgba(249,115,22,0.15)] scale-[1.01] z-10"
           : "border-gray-100 bg-white hover:border-gray-300 shadow-sm",
-        // Trạng thái không thể chọn
         !canSelect && "opacity-60 grayscale cursor-not-allowed border-dashed"
       )}
     >
-      {/* CỘT TRÁI - ICON */}
       <div
         className={cn(
           "w-24 shrink-0 flex flex-col items-center justify-center p-4 text-white rounded-l-[15px] relative transition-all duration-500",
@@ -56,11 +53,9 @@ export const VoucherCard: React.FC<VoucherCardProps> = ({
           {isShipping ? "FREESHIP" : "VOUCHER"}
         </span>
         
-        {/* Đường răng cưa phân cách */}
         <div className="absolute right-0 top-3 bottom-3 w-px border-r-2 border-dashed border-white/40" />
       </div>
 
-      {/* CỘT PHẢI - NỘI DUNG */}
       <div className="flex-1 p-4 flex flex-col justify-center min-w-0 relative">
         <div className="flex justify-between items-start gap-2">
           <div className="min-w-0">
@@ -82,7 +77,6 @@ export const VoucherCard: React.FC<VoucherCardProps> = ({
             </p>
           </div>
 
-          {/* CHECKBOX TRÒN */}
           <div
             className={cn(
               "w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 border-2 shrink-0",
@@ -104,7 +98,6 @@ export const VoucherCard: React.FC<VoucherCardProps> = ({
           </div>
         </div>
 
-        {/* Hạn sử dụng hoặc ghi chú thêm (Nếu có) */}
         {voucher.endDate && (
           <div className="mt-3 pt-2 border-t border-gray-50">
              <p className="text-[9px] text-gray-600 font-medium italic">
@@ -114,7 +107,6 @@ export const VoucherCard: React.FC<VoucherCardProps> = ({
         )}
       </div>
 
-      {/* HIỆU ỨNG KHOÉT CẠNH VÉ (TICKET NOTCH) */}
       <div className="absolute left-[90px] -top-2 w-4 h-4 bg-white border-b border-gray-100 rounded-full z-10" />
       <div className="absolute left-[90px] -bottom-2 w-4 h-4 bg-white border-t border-gray-100 rounded-full z-10" />
     </div>

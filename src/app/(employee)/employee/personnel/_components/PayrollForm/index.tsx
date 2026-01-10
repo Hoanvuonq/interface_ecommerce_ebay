@@ -18,7 +18,7 @@ import {
 import { PayrollResponse } from "../../_types/payroll.type";
 import { useCreatePayroll, useUpdatePayroll } from "../../_hooks/usePayroll";
 import { useCreateUploadImage } from "../../_hooks/useEmployee";
-import { FileUploadField } from "@/components/fileUploadField";
+import { FiedFileUpload } from "@/components";
 import { PortalModal } from "@/features/PortalModal";
 import { cn } from "@/utils/cn";
 import { useToast } from "@/hooks/useToast";
@@ -61,7 +61,6 @@ export default function PayrollForm({
     }
   });
 
-  // Theo dõi các giá trị để tính tổng lương gợi ý
   const watchedBase = watch("baseSalary") || 0;
   const watchedBonus = watch("bonus") || 0;
   const watchedDeduction = watch("deduction") || 0;
@@ -193,7 +192,7 @@ export default function PayrollForm({
                 name="attachmentFile"
                 control={control}
                 render={({ field }) => (
-                  <FileUploadField
+                  <FiedFileUpload
                     value={field.value}
                     onChange={field.onChange}
                     maxCount={1}

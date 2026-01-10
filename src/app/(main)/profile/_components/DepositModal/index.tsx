@@ -159,7 +159,7 @@ export const DepositModal: React.FC<DepositModalProps> = ({
           depositResponse ? "max-w-xl" : "max-w-md"
         }`}
       >
-        <div className="absolute top-0 left-0 w-full h-1.5 bg-linear-to-r from-orange-400 to-red-500"></div>
+        <div className="absolute top-0 left-0 w-full h-1.5 bg-linear-to-r from-orange-400 to-red-500"/>
 
         <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 bg-white">
           <h3 className="text-xl font-bold text-gray-800">
@@ -259,7 +259,11 @@ export const DepositModal: React.FC<DepositModalProps> = ({
                 </div>
 
                 <div className="flex gap-3 pt-2">
-                  <Button variant="edit" onClick={handleClose}>
+                  <Button
+                    variant="edit"
+                    onClick={handleClose}
+                    className="rounded-2xl"
+                  >
                     Hủy bỏ
                   </Button>
                   <ButtonField
@@ -267,7 +271,7 @@ export const DepositModal: React.FC<DepositModalProps> = ({
                     htmlType="submit"
                     type="login"
                     disabled={loading}
-                    className="flex w-40 items-center gap-2 px-5 py-2 rounded-lg text-sm font-semibold shadow-md shadow-orange-500/20 transition-all active:scale-95 border-0 h-auto"
+                    className="flex w-40 items-center gap-2 px-5 py-2 rounded-2xl text-sm font-semibold shadow-md shadow-orange-500/20 transition-all active:scale-95 border-0 h-auto"
                   >
                     <span className="flex items-center gap-2">
                       {loading ? (
@@ -325,13 +329,11 @@ export const DepositModal: React.FC<DepositModalProps> = ({
                   )}
                 </div>
 
-                {/* Right: Bank Info */}
                 <div className="space-y-4">
                   <div className="bg-gray-50 rounded-xl p-4 border border-gray-100 space-y-3">
                     <div className="flex justify-between items-center text-sm">
                       <span className="text-gray-500">Ngân hàng</span>
                       <span className="font-bold text-gray-800">MB Bank</span>
-                      {/* Nếu API trả về tên bank thì dùng depositResponse.bankName */}
                     </div>
                     <div className="flex justify-between items-center text-sm">
                       <span className="text-gray-500">Số tài khoản</span>
@@ -394,7 +396,6 @@ export const DepositModal: React.FC<DepositModalProps> = ({
                 </div>
               </div>
 
-              {/* Actions */}
               <div className="flex gap-3 pt-2">
                 <button
                   onClick={handleClose}

@@ -1,6 +1,6 @@
 "use client";
 
-import { CustomAvatar } from "@/components/customAvatar";
+import { CustomAvatar } from "@/components/custom/components/customAvatar";
 import { CustomRate } from "@/components/rating";
 import { CheckCircle, MessageSquareText, User } from "lucide-react";
 import Image from "next/image";

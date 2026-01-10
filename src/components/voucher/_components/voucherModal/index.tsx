@@ -15,36 +15,45 @@ export const VoucherModal: React.FC<VoucherModalProps> = (props) => {
   const { open, onClose, title, shopName, isPlatform, shopId } = props;
   const { preview, updateShopVouchers, request } = useCheckoutStore();
   const { syncPreview } = useCheckoutActions();
-  const { state, actions } = useVoucherModalLogic(props);
+  const { state, actions } = useVoucherModalLogic({
+    ...props,
+    previewData: preview,
+  });
+ const handleConfirmVouchers = async () => {
+  if (!request) return;
 
-  const handleConfirmVouchers = async () => {
-    if (!request) return;
+  const orderCode = state.selectedOrderVoucherId;
+  const shipCode = state.selectedShippingVoucherId;
+  const selectedCodes = [orderCode, shipCode].filter(Boolean) as string[];
 
-    const orderCode = state.selectedOrderVoucherId;
-    const shipCode = state.selectedShippingVoucherId;
-    const codes = [orderCode, shipCode].filter(Boolean) as string[];
+  const updatedRequest = _.cloneDeep(request);
+  const shopIndex = updatedRequest.shops.findIndex((s: any) => s.shopId === shopId);
 
-    const updatedRequest = _.cloneDeep(request);
+  if (shopIndex > -1) {
+    const shopsArray = preview?.data?.shops || preview?.shops || [];
+    const shopPreview = shopsArray.find((s: any) => s.shopId === shopId);
+    const details = shopPreview?.voucherResult?.discountDetails || [];
 
-    if (isPlatform) {
-      updatedRequest.globalVouchers = codes;
-    } else {
-      const shopIndex = updatedRequest.shops.findIndex(
-        (s: any) => s.shopId === shopId
-      );
-      if (shopIndex > -1) {
-        updatedRequest.shops[shopIndex].vouchers = codes;
-      }
-    }
-
-    console.log(
-      "Payload gửi lên Server:",
-      JSON.stringify(updatedRequest, null, 2)
+    // Phân loại: Mã nào của Sàn (PLATFORM) thì vào globalVouchers của shop
+    const shopOnlyVouchers = selectedCodes.filter(c => 
+      details.find((d: any) => d.voucherCode === c && d.voucherType === 'SHOP')
+    );
+    
+    const platformVouchersForShop = selectedCodes.filter(c => 
+      details.find((d: any) => d.voucherCode === c && d.voucherType === 'PLATFORM')
     );
 
-    onClose();
-    await syncPreview(updatedRequest);
-  };
+    if (isPlatform) {
+       updatedRequest.globalVouchers = selectedCodes; // Mã sàn dùng chung
+    } else {
+       updatedRequest.shops[shopIndex].vouchers = shopOnlyVouchers;
+       updatedRequest.shops[shopIndex].globalVouchers = platformVouchersForShop;
+    }
+  }
+
+  onClose();
+  await syncPreview(updatedRequest);
+};
   return (
     <PortalModal
       isOpen={open}

@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { formatPrice } from "@/hooks/useFormatPrice";
-import { SelectComponent } from "@/components/SelectComponent";
+import { SelectComponent } from "@/components/selectComponent";
 import { ReturnOrderDetailsFormProps } from "./type";
 
 export const ReturnOrderDetailsForm: React.FC<ReturnOrderDetailsFormProps> = ({

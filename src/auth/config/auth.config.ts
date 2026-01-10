@@ -1,3 +1,6 @@
+// @/auth/auth.config.ts
+import { RoleEnum } from "@/auth/_types/auth";
+
 export const PUBLIC_ROUTES = new Set([
   "/",
   "/login",
@@ -22,12 +25,18 @@ export const PUBLIC_PREFIXES = [
   "/shop/",
   "/employee/login",
   "/auth/",
+  "/_next",
+  "/static",
+  "/favicon.ico",
+  "/seller/",
   "/products/",
   "/category/",
   "/wishlist/shared/",
   "/test-",
-  "/seller/",
-  "/_next",
-  "/static",
-  "/favicon.ico",
 ];
+
+export const ROUTE_PERMISSIONS: Record<string, RoleEnum[]> = {
+  "/manager": [RoleEnum.ADMIN],
+  "/employee": [RoleEnum.ADMIN, RoleEnum.SALE, RoleEnum.IT],
+  "/shop": [RoleEnum.SHOP],
+};

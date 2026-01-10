@@ -3,7 +3,7 @@
 import { cn } from "@/utils/cn";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { SelectComponent } from "@/components/SelectComponent";
+import { SelectComponent } from "@/components/selectComponent";
 
 interface SortBarProps {
   currentSort: string;

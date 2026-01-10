@@ -16,7 +16,7 @@ import {
 import { cn } from "@/utils/cn";
 import _ from "lodash";
 import { PortalModal } from "@/features/PortalModal";
-import { SelectComponent } from "@/components/SelectComponent";
+import { SelectComponent } from "@/components/selectComponent";
 import { Button } from "@/components/button/button";
 
 interface UserUpdateFormProps {

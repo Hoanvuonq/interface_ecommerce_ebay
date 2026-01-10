@@ -1,57 +1,54 @@
 "use client";
 
-import React, { useState, useRef } from "react";
-import { 
-  CloudUpload, 
-  FileText, 
-  X, 
-  Eye, 
-  Image as ImageIcon,
-  AlertCircle,
-  Loader2
-} from "lucide-react";
-import _ from "lodash";
-import { cn } from "@/utils/cn";
 import { useToast } from "@/hooks/useToast";
+import { cn } from "@/utils/cn";
+import { CloudUpload, Eye, FileText, X, Plus, Trash2 } from "lucide-react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 
-interface CustomFile extends File {
-  preview?: string;
+export interface CustomFile {
   id: string;
+  originFileObj?: File;
+  name: string;
+  type: string;
+  size: number;
+  preview?: string;
 }
 
-interface FileUploadFieldProps {
-  value?: any[]; 
-  onChange?: (files: any[]) => void;
+interface FiedFileUploadProps {
+  value?: CustomFile[];
+  onChange?: (files: CustomFile[]) => void;
   maxCount?: number;
   allowedTypes?: string[];
   maxSizeMB?: number;
   description?: string;
+  variant?: "list" | "grid";
 }
 
-export const FileUploadField: React.FC<FileUploadFieldProps> = ({
+export const FiedFileUpload: React.FC<FiedFileUploadProps> = ({
   value = [],
   onChange,
   maxCount = 1,
   allowedTypes = ["image/png", "image/jpeg", "image/jpg", "application/pdf"],
   maxSizeMB = 10,
-  description = "Hỗ trợ PDF hoặc hình ảnh (PNG, JPG, JPEG)",
+  description = "Hỗ trợ hình ảnh hoặc PDF",
+  variant = "list",
 }) => {
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { error: toastError } = useToast();
 
-  // Helper chuyển đổi sang base64 cho preview
-  const getBase64 = (file: File): Promise<string> =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = (error) => reject(error);
-    });
+  // Dọn dẹp bộ nhớ Blob URL
+  useEffect(() => {
+    return () => {
+      value.forEach((file) => {
+        if (file.preview?.startsWith("blob:")) URL.revokeObjectURL(file.preview);
+      });
+    };
+  }, [value]);
 
-  const validateFile = (file: File) => {
+  const validateFile = useCallback((file: File) => {
     if (!allowedTypes.includes(file.type)) {
-      toastError(`File ${file.name} không hợp lệ. ${description}`);
+      toastError(`File ${file.name} không hợp lệ. Định dạng cho phép: ${allowedTypes.join(", ")}`);
       return false;
     }
     if (file.size / 1024 / 1024 > maxSizeMB) {
@@ -59,123 +56,112 @@ export const FileUploadField: React.FC<FileUploadFieldProps> = ({
       return false;
     }
     return true;
-  };
+  }, [allowedTypes, maxSizeMB, toastError]);
 
   const handleFiles = async (newFiles: FileList | File[]) => {
-    const validFiles = _.filter(Array.from(newFiles), validateFile);
-    
-    const limitedFiles = _.take(validFiles, maxCount - value.length);
+    const fileArray = Array.from(newFiles);
+    const validFiles = fileArray
+      .filter(validateFile)
+      .slice(0, maxCount - value.length);
 
-    const processedFiles = await Promise.all(
-      limitedFiles.map(async (file) => {
-        const preview = file.type.startsWith("image/") ? await getBase64(file) : undefined;
-        return {
-          id: _.uniqueId("file_"),
-          originFileObj: file,
-          name: file.name,
-          type: file.type,
-          size: file.size,
-          preview,
-        };
-      })
-    );
+    const processedFiles: CustomFile[] = validFiles.map((file) => ({
+      id: crypto.randomUUID(),
+      originFileObj: file,
+      name: file.name,
+      type: file.type,
+      size: file.size,
+      preview: file.type.startsWith("image/") ? URL.createObjectURL(file) : undefined,
+    }));
 
-    onChange?.([...value, ...processedFiles]);
+    if (processedFiles.length > 0) {
+      onChange?.([...value, ...processedFiles]);
+    }
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   const removeFile = (id: string) => {
-    onChange?.(_.filter(value, (f) => f.id !== id));
+    const fileToRemove = value.find((f) => f.id === id);
+    if (fileToRemove?.preview) URL.revokeObjectURL(fileToRemove.preview);
+    onChange?.(value.filter((f) => f.id !== id));
   };
 
-  return (
-    <div className="space-y-4 w-full">
+  // --- RENDERING LOGIC ---
+
+  // Giao diện ô vuông (Grid) cho Hình ảnh
+  const renderGridView = () => (
+    <div className="flex flex-wrap gap-4">
+      {value.map((file) => (
+        <div key={file.id} className="group relative w-24 h-24 rounded-xl border border-gray-200 overflow-hidden bg-gray-50 flex items-center justify-center">
+          {file.preview ? (
+            <img src={file.preview} alt={file.name} className="w-full h-full object-cover" />
+          ) : (
+            <FileText className="text-blue-500" size={24} />
+          )}
+          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+            <button type="button" onClick={() => window.open(file.preview, "_blank")} className="text-white hover:text-blue-400 p-1">
+              <Eye size={18} />
+            </button>
+            <button type="button" onClick={() => removeFile(file.id)} className="text-white hover:text-red-400 p-1">
+              <Trash2 size={18} />
+            </button>
+          </div>
+        </div>
+      ))}
+      {value.length < maxCount && (
+        <div
+          onClick={() => fileInputRef.current?.click()}
+          className="w-24 h-24 rounded-xl border-2 border-dashed border-gray-300 hover:border-orange-500 bg-gray-50 hover:bg-orange-50 cursor-pointer flex flex-col items-center justify-center text-gray-500 hover:text-orange-500 transition-all"
+        >
+          <Plus size={24} />
+          <span className="text-[10px] font-bold uppercase mt-1">Tải lên</span>
+        </div>
+      )}
+    </div>
+  );
+
+  // Giao diện danh sách (List) cho Tài liệu
+  const renderListView = () => (
+    <div className="space-y-4">
       {value.length < maxCount && (
         <div
           onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
           onDragLeave={() => setIsDragging(false)}
-          onDrop={(e) => {
-            e.preventDefault();
-            setIsDragging(false);
-            handleFiles(e.dataTransfer.files);
-          }}
+          onDrop={(e) => { e.preventDefault(); setIsDragging(false); handleFiles(e.dataTransfer.files); }}
           onClick={() => fileInputRef.current?.click()}
           className={cn(
-            "relative cursor-pointer group flex flex-col items-center justify-center p-10 border-2 border-dashed rounded-[2rem] transition-all duration-300",
-            isDragging 
-              ? "border-orange-500 bg-orange-50/50" 
-              : "border-gray-200 bg-gray-50/50 hover:bg-white hover:border-orange-300 hover:shadow-xl hover:shadow-orange-500/5"
+            "cursor-pointer flex flex-col items-center justify-center p-8 border-2 border-dashed rounded-[2rem] transition-all",
+            isDragging ? "border-orange-500 bg-orange-50" : "border-gray-200 bg-gray-50 hover:bg-white hover:border-orange-300 shadow-sm"
           )}
         >
-          <input
-            type="file"
-            ref={fileInputRef}
-            className="hidden"
-            multiple={maxCount > 1}
-            accept={allowedTypes.join(",")}
-            onChange={(e) => e.target.files && handleFiles(e.target.files)}
-          />
-
-          <div className={cn(
-            "p-4 rounded-2xl mb-4 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6",
-            isDragging ? "bg-orange-500 text-white" : "bg-white text-gray-600 shadow-sm"
-          )}>
-            <CloudUpload size={32} />
-          </div>
-
-          <div className="text-center">
-            <p className="text-sm font-semibold text-gray-700 uppercase tracking-tighter italic">
-              Nhấp hoặc kéo file vào đây
-            </p>
-            <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest mt-1">
-              {description} • Tối đa {maxSizeMB}MB
-            </p>
-          </div>
+          <CloudUpload className={cn("mb-2 transition-colors", isDragging ? "text-orange-500" : "text-gray-400")} size={32} />
+          <p className="text-xs font-bold text-gray-700 uppercase italic">Kéo thả hoặc nhấp để tải file</p>
+          <p className="text-[10px] text-gray-500 uppercase mt-1">{description}</p>
         </div>
       )}
-
-      
-      <div className="grid grid-cols-1 gap-3">
+      <div className="grid grid-cols-1 gap-2">
         {value.map((file) => (
-          <div 
-            key={file.id} 
-            className="flex items-center gap-4 p-3 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-md transition-all group"
-          >
-            <div className="w-12 h-12 rounded-xl overflow-hidden bg-gray-50 flex items-center justify-center shrink-0 border border-gray-100">
-              {file.preview ? (
-                <img src={file.preview} alt="preview" className="w-full h-full object-cover" />
-              ) : (
-                <FileText className="text-blue-500" size={20} />
-              )}
+          <div key={file.id} className="flex items-center gap-4 p-3 bg-white border border-gray-100 rounded-2xl group hover:shadow-md transition-all">
+            <div className="w-10 h-10 rounded-lg overflow-hidden bg-gray-50 flex items-center justify-center border border-gray-100 shrink-0">
+              {file.preview ? <img src={file.preview} className="w-full h-full object-cover" /> : <FileText className="text-blue-500" size={20} />}
             </div>
-
             <div className="flex-1 min-w-0">
               <p className="text-xs font-bold text-gray-700 truncate">{file.name}</p>
-              <p className="text-[10px] font-bold text-gray-600 uppercase">
-                {(file.size / 1024).toFixed(0)} KB • {file.type?.split("/")[1]}
-              </p>
+              <p className="text-[9px] text-gray-500 uppercase">{(file.size / 1024).toFixed(0)} KB • {file.type.split("/")[1]}</p>
             </div>
-
             <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-              {file.preview && (
-                <button 
-                  type="button"
-                  onClick={() => window.open(file.preview, "_blank")}
-                  className="p-2 text-gray-600 hover:text-orange-500 transition-colors"
-                >
-                  <Eye size={16} />
-                </button>
-              )}
-              <button 
-                type="button"
-                onClick={() => removeFile(file.id)}
-                className="p-2 text-gray-600 hover:text-red-500 transition-colors"
-              >
-                <X size={16} />
-              </button>
+              <button type="button" onClick={() => window.open(file.preview, "_blank")} className="p-1.5 text-gray-400 hover:text-orange-500"><Eye size={16} /></button>
+              <button type="button" onClick={() => removeFile(file.id)} className="p-1.5 text-gray-400 hover:text-red-500"><X size={16} /></button>
             </div>
           </div>
         ))}
       </div>
+    </div>
+  );
+
+  return (
+    <div className="w-full">
+      <input type="file" ref={fileInputRef} className="hidden" multiple={maxCount > 1} accept={allowedTypes.join(",")} onChange={(e) => e.target.files && handleFiles(e.target.files)} />
+      {variant === "grid" ? renderGridView() : renderListView()}
     </div>
   );
 };

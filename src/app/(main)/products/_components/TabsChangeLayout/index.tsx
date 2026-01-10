@@ -3,7 +3,7 @@
 import { cn } from "@/utils/cn";
 import { LayoutGrid, List, ShoppingCart } from "lucide-react";
 import React from "react";
-import { SelectComponent } from "@/components/SelectComponent";
+import { SelectComponent } from "@/components/selectComponent";
 
 interface TabsChangeLayoutProps {
   total: number;

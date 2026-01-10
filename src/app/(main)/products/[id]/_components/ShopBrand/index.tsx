@@ -1,4 +1,4 @@
-import { CustomAvatar } from "@/components/customAvatar";
+import { CustomAvatar } from "@/components/custom/components/customAvatar";
 import { formatTimeSince } from "@/hooks/format";
 
 export const ShopBrand = ({ shop }: { shop: any }) => (

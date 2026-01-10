@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo } from "react";
 import bankAccountService from "@/services/bank/bank-account.service";
 import type { BankInfo } from "@/types/bank/bank-account.types";
-import { SelectComponent } from "@/components/SelectComponent";
+import { SelectComponent } from "@/components/selectComponent";
 
 interface BankSelectorProps {
   value?: string;

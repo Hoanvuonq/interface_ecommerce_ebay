@@ -1,6 +1,6 @@
 "use client";
 
-import { SelectComponent } from "@/components/SelectComponent";
+import { SelectComponent } from "@/components/selectComponent";
 import { cn } from "@/utils/cn";
 import { AlertTriangle, Ban, CheckCircle2, Loader2 } from "lucide-react";
 import { useEffect } from "react";

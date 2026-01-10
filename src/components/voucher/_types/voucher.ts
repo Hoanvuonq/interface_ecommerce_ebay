@@ -49,6 +49,7 @@ export interface PlatformVoucherRecommendationsData {
 export interface VoucherOption extends Omit<Voucher, "active"> {
   discountAmount: number;
   minOrderValue: number;
+  discountTarget?: "SHIP" | "ORDER" | "PRODUCT" | string;
   calculatedDiscount: number;
   voucherType?: "SHOP_ORDER" | "SHIPPING" | "PRODUCT" | "ORDER";
   discountMethod: "FIXED_AMOUNT" | "PERCENTAGE";

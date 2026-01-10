@@ -2,7 +2,7 @@
 import { ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import PrivateRoute from "@/auth/_components/PrivateRoute/PrivateRoute";
-import { PUBLIC_ROUTES, PUBLIC_PREFIXES } from "@/auth/_constants/auth";
+import { PUBLIC_ROUTES,PUBLIC_PREFIXES } from "@/auth/config/auth.config";
 
 const isPublicRoute = (pathname: string): boolean => {
   if (PUBLIC_ROUTES.has(pathname)) {
