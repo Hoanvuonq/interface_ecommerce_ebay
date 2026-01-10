@@ -4,9 +4,9 @@ export type {
   OrderResponse,
   OrderItemResponse,
   OrderListResponse,
-} from "../orders/order.dto";
-import type { OrderResponse } from "../orders/order.types";
-import { OrderStatus } from "../orders/order.dto";
+}  from "@/types/orders/order.dto";
+import type { OrderResponse } from "@/types/orders/order.types";
+import { OrderStatus } from "@/types/orders/order.dto";
 
 // ==================== SHOP-SPECIFIC REQUEST DTOs ====================
 

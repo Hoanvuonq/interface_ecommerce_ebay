@@ -168,7 +168,7 @@ export const ReturnOrderModal: React.FC<ReturnOrderModalProps> = ({
               <ArrowLeft size={20} strokeWidth={2.5} />
             </button>
           )}
-          <span className="text-sm font-black text-gray-800 uppercase tracking-tight">
+          <span className="text-sm font-bold text-gray-800 uppercase tracking-tight">
             {step === "SELECT_TYPE"
               ? "Phương thức hoàn trả"
               : "Chi tiết khiếu nại"}
@@ -250,7 +250,7 @@ export const ReturnOrderModal: React.FC<ReturnOrderModalProps> = ({
                       <item.icon size={22} strokeWidth={1.5} />
                     </div>
                     <div className="text-left">
-                      <h4 className="font-black text-gray-800 text-xs uppercase">
+                      <h4 className="font-bold text-gray-800 text-xs uppercase">
                         {item.label}
                       </h4>
                       <p className="text-[10px] text-gray-400 mt-0.5 italic">

@@ -15,12 +15,12 @@ export const ChartBox = ({
   >
     <div className="flex items-center gap-3 mb-1">
       <div className="p-2.5 bg-gray-50 rounded-2xl text-gray-600">{icon}</div>
-      <h3 className="text-xl font-semibold text-gray-800 uppercase tracking-tighter italic">
+      <h3 className="text-xl font-semibold text-gray-800 uppercase  italic">
         {title}
       </h3>
     </div>
     {subTitle && (
-      <p className="text-[10px] font-bold text-gray-600 uppercase tracking-[0.2em] ml-14">
+      <p className="text-[10px] font-bold text-gray-600 uppercase -tracking-tighter ml-14">
         {subTitle}
       </p>
     )}

@@ -70,7 +70,7 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
             <AlertCircle size={24} strokeWidth={2.5} />
           </div>
           <div className="flex-1 min-w-0">
-            <h4 className="text-[11px] font-black text-orange-600 uppercase tracking-[0.2em] mb-1">
+            <h4 className="text-[11px] font-bold text-orange-600 uppercase tracking-[0.2em] mb-1">
               Thông tin hủy đơn
             </h4>
             <div className="flex flex-wrap items-center gap-2">
@@ -81,7 +81,7 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
             </div>
           </div>
           <Link href={ui.reBuyUrl} className="shrink-0 w-full sm:w-auto">
-            <button className="w-full px-6 py-2.5 bg-white border border-orange-200 text-orange-600 text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-orange-600 hover:text-white transition-all shadow-sm active:scale-95">
+            <button className="w-full px-6 py-2.5 bg-white border border-orange-200 text-orange-600 text-[10px] font-bold uppercase tracking-widest rounded-xl hover:bg-orange-600 hover:text-white transition-all shadow-sm active:scale-95">
               Mua lại sản phẩm
             </button>
           </Link>
@@ -100,7 +100,7 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
           )}
 
           <div className="bg-white rounded-4xl border border-gray-100 px-6 py-6 shadow-sm">
-            <h3 className="text-xs font-black text-gray-900 flex items-center gap-3 mb-8 uppercase tracking-[0.2em]">
+            <h3 className="text-xs font-bold text-gray-900 flex items-center gap-3 mb-8 uppercase tracking-[0.2em]">
               <div className="p-2 bg-orange-50 rounded-xl text-orange-500">
                 <Truck size={18} />
               </div>
@@ -118,14 +118,14 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
 
           <div className="bg-white rounded-4xl border border-gray-100 overflow-hidden shadow-sm">
             <div className="px-6 py-5 bg-gray-50/30 border-b border-gray-100 flex justify-between items-center">
-              <h3 className="font-black text-gray-900 uppercase text-[10px] tracking-[0.2em] flex items-center gap-2">
+              <h3 className="font-bold text-gray-900 uppercase text-[10px] tracking-[0.2em] flex items-center gap-2">
                 <Package size={18} className="text-orange-500" />
                 Danh sách sản phẩm ({order.items.length})
               </h3>
               {order.shopInfo && (
                 <Link
                   href={`/shops/${order.shopInfo.shopId}`}
-                  className="text-[10px] font-black uppercase tracking-wider text-orange-600 flex items-center gap-1.5 hover:text-orange-700 transition-colors"
+                  className="text-[10px] font-bold uppercase tracking-wider text-orange-600 flex items-center gap-1.5 hover:text-orange-700 transition-colors"
                 >
                   <StoreIcon size={14} /> {order.shopInfo.shopName}
                 </Link>

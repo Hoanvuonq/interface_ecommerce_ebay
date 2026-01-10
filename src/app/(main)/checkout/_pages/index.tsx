@@ -84,7 +84,7 @@ export const CheckoutScreen = () => {
     >
       <div className="mt-8 mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-100 pb-6">
         <div>
-          <h1 className="text-5xl font-black tracking-tighter uppercase italic text-slate-900 leading-none">
+          <h1 className="text-5xl font-bold tracking-tighter uppercase italic text-slate-900 leading-none">
             Thanh <span className="text-orange-500">Toán</span>
           </h1>
           <p className="text-slate-400 text-sm font-medium mt-2">Vui lòng kiểm tra kỹ thông tin trước khi đặt hàng</p>

@@ -17,6 +17,7 @@ import React, {
 } from "react";
 import { toast } from "sonner";
 import { ProductCard } from "../ProductCard";
+import { batchCheckVariantsInWishlist } from "@/app/(main)/wishlist/_hooks/batchCheckVariantsInWishlist";
 
 const CustomLoadingSpinner: React.FC = () => (
   <div className="flex items-center justify-center py-12">
@@ -115,8 +116,10 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
             });
 
             if (variantIds.length > 0) {
-              const wishlistStatusMap = await checkVariantsInWishlist(
-                variantIds
+              const wishlistStatusMap = await batchCheckVariantsInWishlist(
+                checkVariantsInWishlist,
+                variantIds,
+                20
               );
               setWishlistMap((prev: Map<string, boolean>) => {
                 const newMap = new Map(prev);

@@ -12,7 +12,7 @@ import { cn } from "@/utils/cn";
 import { CountdownFlashSale } from "../CountdownFlashSale";
 import { useHomepageContext } from "../../_context/HomepageContext";
 import { SectionSreen } from "@/features/SectionSreen";
-
+import { batchCheckVariantsInWishlist } from "@/app/(main)/wishlist/_hooks/batchCheckVariantsInWishlist";
 export const FlashSaleSection: React.FC = () => {
   const { flashSale, isLoading: contextLoading } = useHomepageContext();
 
@@ -28,7 +28,11 @@ export const FlashSaleSection: React.FC = () => {
         .filter((id: string) => !!id);
 
       if (variantIds.length > 0) {
-        checkVariantsInWishlist(variantIds).then(setWishlistMap);
+        batchCheckVariantsInWishlist(
+          checkVariantsInWishlist,
+          variantIds,
+          20
+        ).then(setWishlistMap);
       }
     }
   }, [flashSale, checkVariantsInWishlist]);
@@ -52,7 +56,7 @@ export const FlashSaleSection: React.FC = () => {
   if (flashSale.length === 0) return null;
 
   return (
-    <SectionSreen  id="calatha-mall" animation="slideUp">
+    <SectionSreen id="calatha-mall" animation="slideUp">
       <CountdownFlashSale />
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 pt-3">

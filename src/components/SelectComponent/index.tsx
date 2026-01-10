@@ -49,7 +49,6 @@ export const SelectComponent = ({
       const dropdownMaxHeight = 280;
       const gap = 8;
       
-      // Kiểm tra không gian phía dưới
       const spaceBelow = viewportHeight - rect.bottom;
       const showAtTop = spaceBelow < dropdownMaxHeight && rect.top > dropdownMaxHeight;
 

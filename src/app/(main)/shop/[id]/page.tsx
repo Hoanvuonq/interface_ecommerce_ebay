@@ -11,7 +11,7 @@ import { ConversationType } from "@/app/(chat)/_types/chat.dto";
 import { useToast } from "@/hooks/useToast";
 import { CategoryService } from "@/services/categories/category.service";
 import { publicProductService } from "@/services/products/product.service";
-import { getShopDetail } from "@/services/shop/shop.service";
+import { getShopDetail } from "@/app/(main)/shop/_service/shop.service";
 import { getStoredUserDetail } from "@/utils/jwt";
 import { toPublicUrl } from "@/utils/storage/url";
 

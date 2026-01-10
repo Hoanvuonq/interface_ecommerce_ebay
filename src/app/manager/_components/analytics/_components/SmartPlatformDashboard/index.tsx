@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { usePlatformDashboard } from '@/hooks/analytics';
+import { usePlatformDashboard } from '@/app/manager/_components/analytics/_hooks';
 import { SmartHeroHeader } from '../SmartHeroHeader';
 import { SmartMetricsPanel } from '../SmartMetricsPanel';
 import { SmartComparisonChart } from '../SmartComparisonChart';

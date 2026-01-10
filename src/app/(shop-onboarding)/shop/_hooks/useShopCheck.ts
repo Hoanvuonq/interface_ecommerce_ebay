@@ -4,7 +4,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { isAuthenticated } from "@/utils/local.storage";
-import { getCurrentUserShopDetail } from "@/services/shop/shop.service";
+import { getCurrentUserShopDetail } from "@/app/(main)/shop/_service/shop.service";
 import _ from "lodash";
 
 export type ShopCheckStatus = "checking" | "no-shop" | "pending" | "needs-update" | "verified";

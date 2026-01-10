@@ -27,13 +27,11 @@ export const MessageList: React.FC<MessageListProps> = ({
   currentUsername,
 }) => {
   
-  // Logic 1: Tự động cuộn xuống cuối khi có tin nhắn mới hoặc đang gõ
   useEffect(() => {
     if (messagesEndRef?.current) {
-      // Sử dụng scrollIntoView với behavior smooth để tạo hiệu ứng mượt
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages, typingUsers]); // Chạy lại mỗi khi tin nhắn thay đổi hoặc có ai đó đang gõ
+  }, [messages, typingUsers]);
 
   if (isInitializing) {
     return (
@@ -60,15 +58,12 @@ export const MessageList: React.FC<MessageListProps> = ({
     <div
       ref={messagesContainerRef}
       onScroll={onScroll}
-      /* Ẩn thanh cuộn bằng CSS: scrollbar-hide (nếu dùng tailwind-scrollbar-hide) 
-         hoặc dùng style inline bên dưới */
       className="flex-1 overflow-y-auto p-4 bg-gray-50 space-y-6 custom-scrollbar-hidden"
       style={{
-        scrollbarWidth: 'none', // Cho Firefox
-        msOverflowStyle: 'none', // Cho IE/Edge
+        scrollbarWidth: 'none', 
+        msOverflowStyle: 'none', 
       }}
     >
-      {/* Ẩn scrollbar cho Chrome/Safari */}
       <style jsx>{`
         div::-webkit-scrollbar {
           display: none;
@@ -107,7 +102,6 @@ export const MessageList: React.FC<MessageListProps> = ({
         })}
       </div>
 
-      {/* Logic 2: Typing Indicator - Sửa lại để hiện ngay dưới tin nhắn cuối cùng */}
       {typingUsers && typingUsers.length > 0 && activeConversationId && (
         <div className="px-4 py-2 animate-in slide-in-from-bottom-2">
           <TypingIndicator
@@ -117,7 +111,6 @@ export const MessageList: React.FC<MessageListProps> = ({
         </div>
       )}
 
-      {/* Neo cuộn */}
       <div ref={messagesEndRef} className="h-4 w-full" />
     </div>
   );

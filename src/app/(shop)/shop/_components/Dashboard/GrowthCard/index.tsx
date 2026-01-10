@@ -10,13 +10,13 @@ export const GrowthCard = ({
   value: number;
   rate: number;
 }) => (
-  <div className="bg-white p-6 rounded-[2.2rem] border border-gray-100 shadow-sm flex flex-col justify-between relative overflow-hidden group">
+  <div className="bg-white shadow-custom p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col justify-between relative overflow-hidden group">
     <div className="relative z-10">
       <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-600 mb-2 group-hover:text-orange-500 transition-colors">
         {label}
       </p>
       <div className="flex items-baseline gap-2">
-        <span className="text-4xl font-semibold text-gray-900 tracking-tighter italic leading-none">
+        <span className="text-4xl font-semibold text-gray-700 italic leading-none">
           {value}
         </span>
         <div

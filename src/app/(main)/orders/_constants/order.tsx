@@ -33,7 +33,6 @@ export const ORDER_STATUS_UI: Record<
     strip: "#3B82F6",
   },
   PENDING_PAYMENT: {
-    // Đồng bộ key với STATUS_OPTIONS và MAP_COUNT_KEY
     label: "Chờ thanh toán",
     icon: <CreditCard size={14} />,
     bg: "bg-amber-50",
