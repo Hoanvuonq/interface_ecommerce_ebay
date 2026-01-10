@@ -30,8 +30,7 @@ export const OrderPicker: React.FC<OrderPickerProps> = (props) => {
       ) : (
         <div className="space-y-4 pb-10">
           {orders.map((order) => (
-            <div key={order.orderId} className="bg-white rounded-[2rem] border border-gray-100 p-5 shadow-sm hover:border-orange-500/30 transition-all duration-300">
-              {/* Header logic giữ nguyên */}
+            <div key={order.orderId} className="bg-white rounded-4xl border border-gray-100 p-5 shadow-sm hover:border-orange-500/30 transition-all duration-300">
               <div className="flex items-center justify-between mb-4">
                 <div className="px-3 py-1 bg-gray-50 rounded-full border border-gray-100 flex items-center gap-1.5">
                   <Hash size={10} className="text-gray-400" />
@@ -49,7 +48,6 @@ export const OrderPicker: React.FC<OrderPickerProps> = (props) => {
 
               <div className="space-y-2.5 mb-4">
                 {order.items?.slice(0, 2).map((item: any, idx: number) => {
-                  // FIX: Đóng gói object đúng cấu trúc cho helper
                   const itemImg = resolveMediaUrl({
                     basePath: item.imageBasePath,
                     extension: item.imageExtension,

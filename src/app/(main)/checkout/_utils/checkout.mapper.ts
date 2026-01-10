@@ -8,7 +8,6 @@ export const preparePreviewPayload = (
 
   return {
     addressId: raw.addressId,
-    // LUÔN LUÔN để globalVouchers ở root là mảng rỗng để tránh conflict
     globalVouchers: [], 
     shops: _.map(raw.shops, (shop) => {
       const shopPayload: any = {
@@ -18,8 +17,6 @@ export const preparePreviewPayload = (
         shippingFee: Number(shop.shippingFee || 0),
       };
 
-      // QUAN TRỌNG: Chỉ cần nó là mảng (dù rỗng hay có data) thì PHẢI GỬI ĐI.
-      // Điều này báo cho Server biết: "Tao muốn set voucher của shop này là []"
       if (Array.isArray(shop.vouchers)) {
         shopPayload.vouchers = shop.vouchers;
       }

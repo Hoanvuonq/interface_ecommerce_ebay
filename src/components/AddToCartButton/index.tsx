@@ -6,7 +6,7 @@ import { cn } from "@/utils/cn";
 import { Loader2, Minus, Plus, ShoppingCart } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { ButtonField } from "../buttonField";
-import { CustomInputNumber } from "../customInputNumber";
+import { CustomInputNumber } from "../custom/components/customInputNumber";
 import { IButtonProps } from "./type";
 import { useToast } from "@/hooks/useToast";
 

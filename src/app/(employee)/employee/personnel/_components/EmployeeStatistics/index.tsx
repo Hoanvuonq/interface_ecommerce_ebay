@@ -19,7 +19,7 @@ import {
 } from "recharts";
 import { useEmployeeStatistics } from "../../_hooks/useEmployeeStatistics";
 import { ChartWrapper } from "@/components/chart";
-import { TooltipComponents } from "@/components/customTooltip";
+import { TooltipComponents } from "@/components/custom/components/customTooltip";
 export default function EmployeeStatistics() {
   const [selectedYear] = useState(new Date().getFullYear());
   const [selectedMonth] = useState(new Date().getMonth() + 1);

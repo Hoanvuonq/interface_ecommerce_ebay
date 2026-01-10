@@ -1,6 +1,6 @@
 "use client";
 
-import { SelectComponent } from "@/components/SelectComponent";
+import { SelectComponent } from "@/components/selectComponent";
 import { PortalModal } from "@/features/PortalModal";
 import { cn } from "@/utils/cn";
 import { Info, Loader2 } from "lucide-react";

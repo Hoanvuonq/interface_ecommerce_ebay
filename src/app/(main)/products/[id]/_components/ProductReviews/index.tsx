@@ -3,7 +3,7 @@
 import { useProductDetail } from "@/app/(main)/products/_context/products";
 import { ButtonField, CustomButton, CustomSpinner } from "@/components";
 import { CardComponents } from "@/components/card";
-import { CustomEmpty } from "@/components/CustomEmpty";
+import { CustomEmpty } from "@/components/custom/components/customEmpty";
 import { CustomRate } from "@/components/rating";
 import { PortalModal } from "@/features/PortalModal";
 import {

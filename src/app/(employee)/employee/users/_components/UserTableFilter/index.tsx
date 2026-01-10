@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { SelectComponent } from "@/components/SelectComponent";
+import { SelectComponent } from "@/components/selectComponent";
 import { cn } from "@/utils/cn";
 import _ from "lodash";
 import { RotateCw, Search, XCircle } from "lucide-react";

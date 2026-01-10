@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import React, { useEffect, useMemo, useState } from "react";
 import { PRICE_PRESETS, ProductFilterValues, SORT_OPTIONS } from "./type";
-import { SelectComponent } from "@/components/SelectComponent";
+import { SelectComponent } from "@/components/selectComponent";
 import { Button } from "@/components/button/button";
 import { CustomButton } from "@/components";
 

@@ -1,4 +1,4 @@
-import { CustomProgressBar } from "@/components/CustomProgressBar";
+import { CustomProgressBar } from "@/components/custom/components/customProgressBar";
 import AnimatedBadge from "@/features/AnimatedBadge";
 import { cn } from "@/utils/cn";
 import React from "react";

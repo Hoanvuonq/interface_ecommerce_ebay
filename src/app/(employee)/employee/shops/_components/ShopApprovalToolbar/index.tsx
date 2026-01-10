@@ -4,7 +4,7 @@
 import React from "react";
 import { Search, RotateCw, Brush } from "lucide-react";
 import { ButtonField } from "@/components";
-import { SelectComponent } from "@/components/SelectComponent";
+import { SelectComponent } from "@/components/selectComponent";
 import { cn } from "@/utils/cn";
 import { Button } from "@/components/button/button";
 import { ShopApprovalToolbarProps } from "./type";

@@ -2,7 +2,7 @@
 
 import { StatCardComponents } from "@/components";
 import { ChartBox, GrowthCard } from "@/components/chart";
-import { SelectComponent } from "@/components/SelectComponent";
+import { SelectComponent } from "@/components/selectComponent";
 import { CalendarDays, RotateCw, TrendingUp, Trophy, UserPlus } from "lucide-react";
 import { useState } from "react";
 import {
@@ -14,7 +14,7 @@ import {
   XAxis, YAxis,
 } from "recharts";
 import { useEmployeeStatistics } from "../../_hooks/useEmployeeStatistics";
-import { TooltipComponents } from "@/components/customTooltip";
+import { TooltipComponents } from "@/components/custom/components/customTooltip";
 
 export default function EmployeeTimeStatistics() {
   const [selectedYear, setSelectedYear] = useState<number>(

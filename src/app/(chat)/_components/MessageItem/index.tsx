@@ -73,7 +73,6 @@ export const MessageItem = ({
           isMine ? "flex-row-reverse" : "flex-row"
         )}
       >
-        {/* Avatar Section */}
         <div className="shrink-0 mt-auto mb-1">
           <div className="w-9 h-9 rounded-full overflow-hidden border-2 border-white shadow-sm bg-gray-200 flex items-center justify-center relative">
             {avatar ? (
@@ -90,7 +89,6 @@ export const MessageItem = ({
           </div>
         </div>
 
-        {/* Message Body */}
         <div
           className={cn(
             "flex flex-col min-w-0",
@@ -109,7 +107,7 @@ export const MessageItem = ({
           >
             <div
               className={cn(
-                "relative px-4 py-3 rounded-2xl shadow-md text-[14px] break-words transition-all duration-200 leading-relaxed",
+                "relative px-4 py-3 rounded-2xl shadow-md text-[14px] wrap-break-words transition-all duration-200 leading-relaxed",
                 isMine
                   ? "bg-slate-800 text-white rounded-tr-none shadow-slate-200"
                   : "bg-white border border-gray-200 text-slate-900 rounded-tl-none shadow-gray-100",
@@ -117,7 +115,6 @@ export const MessageItem = ({
                   "opacity-50 bg-gray-50 border-dashed border-gray-300 text-gray-500 shadow-none"
               )}
             >
-              {/* Reply Section */}
               {message.replyToMessage && !isDeleted && (
                 <div
                   className={cn(
@@ -136,7 +133,7 @@ export const MessageItem = ({
                 </div>
               )}
 
-              {/* Main Content */}
+             
               {isDeleted ? (
                 <div className="flex items-center gap-2 italic text-xs py-1">
                   <RotateCcw size={13} className="opacity-70" />
@@ -148,7 +145,6 @@ export const MessageItem = ({
                 </div>
               )}
 
-              {/* Status & Time */}
               <div
                 className={cn(
                   "flex items-center justify-end gap-1.5 mt-2 text-[10px] font-bold select-none opacity-80",
@@ -176,7 +172,6 @@ export const MessageItem = ({
               </div>
             </div>
 
-            {/* Menu Action Button */}
             {!isDeleted && menuItems.length > 0 && (
               <div
                 className="relative opacity-0 group-hover/bubble:opacity-100 transition-opacity duration-200 shrink-0"
@@ -196,7 +191,7 @@ export const MessageItem = ({
                 {showMenu && (
                   <div
                     className={cn(
-                      "absolute bottom-full mb-3 z-[60] min-w-[160px] bg-white rounded-2xl shadow-2xl border border-gray-100 py-2 overflow-hidden animate-in fade-in zoom-in-95 duration-200",
+                      "absolute bottom-full mb-3 z-60 min-w-40 bg-white rounded-2xl shadow-2xl border border-gray-100 py-2 overflow-hidden animate-in fade-in zoom-in-95 duration-200",
                       isMine
                         ? "right-0 origin-bottom-right"
                         : "left-0 origin-bottom-left"

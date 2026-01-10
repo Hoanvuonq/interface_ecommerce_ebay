@@ -83,7 +83,6 @@ export const ConversationList: React.FC<ConversationListProps> = ({
             Tin nhắn
           </h3>
 
-          {/* Nút Đóng - Chỉ hiện ở Mobile */}
           <button
             onClick={onClose}
             className="md:hidden p-2 hover:bg-gray-100 rounded-full text-gray-500 transition-all active:scale-90"

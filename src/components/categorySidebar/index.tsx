@@ -4,12 +4,11 @@ import { CategoryService } from "@/services/categories/category.service";
 import type { CategoryResponse } from "@/types/categories/category.detail";
 import { LayoutGrid } from "lucide-react";
 import { useEffect, useState } from "react";
-import { CustomCollapseItem } from "../collapseItem"; // Component cũ dùng Link
+import { CustomCollapseItem } from "../collapseItem";
 import { SectionLoading } from "../loading";
 
 interface CategorySidebarProps {
   isShop?: boolean;
-  // Các props mới để phục vụ filter
   data?: CategoryResponse[];
   activeId?: string;
   onSelect?: (id?: string) => void;
@@ -21,11 +20,9 @@ export default function CategorySidebar({
   activeId, 
   onSelect 
 }: CategorySidebarProps) {
-  // State chỉ dùng cho Normal Mode (không phải shop)
   const [internalCategories, setInternalCategories] = useState<CategoryResponse[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // Chỉ fetch API nếu KHÔNG PHẢI là Shop (vì Shop đã truyền data vào rồi)
   useEffect(() => {
     if (isShop) return; 
 
@@ -49,7 +46,6 @@ export default function CategorySidebar({
     return <SectionLoading message="Đang tải danh mục..." />;
   }
 
-  // == RENDER HEADER ==
   const renderHeader = () => (
     <div className="p-5 border-b border-orange-50 flex items-center gap-3 bg-linear-to-r from-orange-50 to-amber-50">
       <div className="bg-[#ff8800] p-2 rounded-xl text-white shadow-lg shadow-orange-200">
@@ -88,7 +84,6 @@ export default function CategorySidebar({
               </button>
             </li>
 
-            {/* List danh mục từ props */}
             {data.length === 0 ? (
                <div className="py-4 text-center text-xs text-gray-600">Không có danh mục</div>
             ) : (

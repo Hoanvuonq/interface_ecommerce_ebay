@@ -26,7 +26,7 @@ import { cn } from "@/utils/cn";
 import { PRIORITY_TEXT } from "@/types/wishlist/wishlist.types";
 import { CustomButton } from "@/components/button";
 import { PortalModal } from "@/features/PortalModal";
-import { SelectComponent } from "@/components/SelectComponent";
+import { SelectComponent } from "@/components/selectComponent";
 import {
   AddToWishlistModalProps,
   WishlistFormData,
