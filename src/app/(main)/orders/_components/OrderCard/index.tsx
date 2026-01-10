@@ -24,15 +24,19 @@ import { getMyReviews } from "@/services/review/review.service";
 import { ReturnOrderModal } from "../ReturnOrderModal";
 import { useRouter } from "next/navigation";
 import { OrderCancelModal } from "../OrderCancelModal";
+import { useOrderDetailView } from "../../_hooks/useOrderDetailView";
 
 export const OrderCard: React.FC<OrderCardProps> = ({
   order,
   onViewDetail,
   onOrderCancelled,
 }) => {
+  const {
+    state: { cancelModalVisible, cancelReason, cancelling },
+    actions: { setCancelModalVisible, setCancelReason, handleCancelOrder },
+  } = useOrderDetailView(order);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
-  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [isReturnOpen, setIsReturnOpen] = useState(false);
   const [dbReview, setDbReview] = useState<any>(null);
   const [loadingReview, setLoadingReview] = useState(false);
@@ -86,7 +90,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
       isReviewed: !!dbReview || !!order.reviewed,
       canReview: ["DELIVERED", "COMPLETED"].includes(order.status),
       canReorder: ["DELIVERED", "COMPLETED"].includes(order.status),
-      canReturn: [ "COMPLETED"].includes(order.status),
+      canReturn: ["COMPLETED"].includes(order.status),
       canCancel: ["PENDING_PAYMENT", "CREATED", "AWAITING_PAYMENT"].includes(
         order.status
       ),
@@ -116,7 +120,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
   };
   const handleCancelClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsCancelModalOpen(true);
+    setCancelModalVisible(true);
   };
   const handleReturnClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -140,7 +144,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
             )}
           </div>
           <div className="min-w-0">
-            <h4 className="text-[14px] font-black text-gray-800 leading-none uppercase truncate">
+            <h4 className="text-[14px] font-bold text-gray-800 leading-none uppercase truncate">
               {ui.shopName}
             </h4>
             <span className="text-[11px] text-gray-700 font-bold mt-1 block uppercase">
@@ -201,7 +205,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
             <span className="text-[8px] font-bold text-gray-700 uppercase block">
               Tạm tính
             </span>
-            <span className="text-sm sm:text-lg font-black text-orange-600 leading-none">
+            <span className="text-sm sm:text-lg font-bold text-orange-600 leading-none">
               {formatPrice(order.grandTotal)}
             </span>
           </div>
@@ -210,7 +214,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
             {ui.canCancel && (
               <button
                 onClick={handleCancelClick}
-                className="flex items-center gap-1.5 px-4 h-9 rounded-2xl text-[10px] font-black uppercase transition-all bg-white text-gray-500 border border-gray-200 hover:border-red-500 hover:text-red-600 active:scale-95 shadow-sm cursor-pointer"
+                className="flex items-center gap-1.5 px-4 h-9 rounded-2xl text-[10px] font-bold uppercase transition-all bg-white text-gray-500 border border-gray-200 hover:border-red-500 hover:text-red-600 active:scale-95 shadow-sm cursor-pointer"
               >
                 <XCircle size={14} />
                 Hủy đơn
@@ -226,7 +230,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
                 }}
                 disabled={loadingReview}
                 className={cn(
-                  "flex items-center gap-1 px-3 h-8 rounded-xl text-[10px] font-black uppercase transition-all shadow-sm active:scale-95",
+                  "flex items-center gap-1 px-3 h-8 rounded-xl text-[10px] font-bold uppercase transition-all shadow-sm active:scale-95",
                   ui.isReviewed
                     ? "bg-white border border-emerald-100 hover:bg-emerald-100"
                     : "bg-white text-gray-900 border border-gray-200 hover:border-orange-500 hover:text-orange-600"
@@ -250,7 +254,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
             {ui.canReturn && (
               <button
                 onClick={handleReturnClick}
-                className="flex items-center gap-1.5 px-4 h-9 rounded-2xl text-[10px] font-black uppercase transition-all bg-white text-rose-500 border border-rose-100 hover:bg-rose-50 active:scale-95 shadow-sm"
+                className="flex items-center gap-1.5 px-4 h-9 rounded-2xl text-[10px] font-bold uppercase transition-all bg-white text-rose-500 border border-rose-100 hover:bg-rose-50 active:scale-95 shadow-sm"
               >
                 <RotateCcw size={14} /> Trả hàng
               </button>
@@ -259,7 +263,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
               <button
                 type="button"
                 onClick={handleReorder}
-                className="flex items-center gap-1 px-3 h-8 rounded-xl text-[10px] font-black uppercase bg-orange-600 text-white hover:bg-orange-700 transition-all shadow-sm active:scale-95"
+                className="flex items-center gap-1 px-3 h-8 rounded-xl text-[10px] font-bold uppercase bg-orange-600 text-white hover:bg-orange-700 transition-all shadow-sm active:scale-95"
               >
                 <RefreshCcw size={12} strokeWidth={2.5} />
                 Mua lại
@@ -278,15 +282,14 @@ export const OrderCard: React.FC<OrderCardProps> = ({
       </div>
 
       <OrderCancelModal
-        isOpen={isCancelModalOpen}
-        onClose={() => setIsCancelModalOpen(false)}
-        onConfirm={(reason) => {
-          console.log("Hủy đơn với lý do:", reason);
-          setIsCancelModalOpen(false);
+        isOpen={cancelModalVisible}
+        onClose={() => setCancelModalVisible(false)}
+        onConfirm={async (reason) => {
+          await handleCancelOrder(reason);
           onOrderCancelled?.();
         }}
         orderNumber={order.orderNumber}
-        isCancelling={false}
+        isCancelling={cancelling}
       />
       {isReviewModalOpen && ui.productImageUrl && (
         <ReviewModal

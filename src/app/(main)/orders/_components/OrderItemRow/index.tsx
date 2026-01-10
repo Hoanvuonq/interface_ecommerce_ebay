@@ -67,7 +67,7 @@ export const OrderItemRow = ({
 
       <div className="flex flex-row items-center  justify-between sm:justify-center gap-3 shrink-0 border-t sm:border-t-0 border-dashed border-gray-100 pt-3 sm:pt-0">
         <div className="flex flex-col sm:items-end">
-          <p className="text-lg sm:text-xl font-black text-orange-600 tracking-tight leading-none">
+          <p className="text-lg sm:text-xl font-bold text-orange-600 tracking-tight leading-none">
             {formatPrice(item.lineTotal)}
           </p>
         </div>

@@ -60,7 +60,7 @@ export const ConversationList: React.FC<ConversationListProps> = ({
       return formatDistanceToNow(new Date(date), {
         addSuffix: false,
         locale: vi,
-      }).replace("khoảng ", ""); // Rút gọn text
+      }).replace("khoảng ", ""); 
     } catch {
       return "";
     }
@@ -69,7 +69,7 @@ export const ConversationList: React.FC<ConversationListProps> = ({
   return (
     <div
       className={cn(
-        "w-full md:w-[340px] lg:w-[380px] border-r border-gray-100 flex flex-col bg-gray-50/50 transition-all h-full",
+        "w-full md:w-85 lg:w-95 border-r border-gray-100 flex flex-col bg-gray-50/50 transition-all h-full",
         isMobileView ? "hidden md:flex" : "flex"
       )}
       style={{ height: height }}
@@ -85,7 +85,7 @@ export const ConversationList: React.FC<ConversationListProps> = ({
 
           <button
             onClick={onClose}
-            className="md:hidden p-2 hover:bg-gray-100 rounded-full text-gray-500 transition-all active:scale-90"
+            className="lg:hidden p-2 hover:bg-gray-100 rounded-full text-gray-500 transition-all active:scale-90"
             aria-label="Close chat list"
           >
             <X size={22} />
@@ -106,7 +106,6 @@ export const ConversationList: React.FC<ConversationListProps> = ({
         </div>
       </div>
 
-      {/* List Section */}
       <div className="flex-1 overflow-y-auto custom-scrollbar px-3 pb-4 pt-2 space-y-1.5">
         {_.isEmpty(conversations) ? (
           <div className="flex flex-col items-center justify-center py-20 px-6 text-center">

@@ -59,7 +59,7 @@ export const ProductReviews = () => {
         <div className="bg-gray-50/80 rounded-2xl p-6 md:p-10 border border-gray-100 mb-10">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-center">
             <div className="md:col-span-4 flex flex-col items-center justify-center md:border-r border-gray-200">
-              <div className="text-7xl font-black text-(--color-mainColor)/80 tracking-tighter mb-2">
+              <div className="text-7xl font-bold text-(--color-mainColor)/80 tracking-tighter mb-2">
                 {Number(reviewSummary?.averageRating ?? 0).toFixed(1)}
               </div>
               <CustomRate

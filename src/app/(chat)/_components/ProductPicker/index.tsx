@@ -54,7 +54,7 @@ export const ProductPicker: React.FC<ProductPickerProps> = (props) => {
                 <div className="flex-1 min-w-0 flex flex-col justify-center">
                   <h5 className="text-[13px] font-bold text-gray-900 truncate">{product.name}</h5>
                   <p className="text-[10px] text-gray-400 font-medium mb-1 truncate uppercase">SKU: {product.sku || "N/A"}</p>
-                  <p className="text-sm font-black text-gray-900">
+                  <p className="text-sm font-bold text-gray-900">
                     {price.toLocaleString("vi-VN")}₫
                   </p>
                 </div>
@@ -63,7 +63,7 @@ export const ProductPicker: React.FC<ProductPickerProps> = (props) => {
                   <button
                     onClick={() => onSendDirect(product)}
                     disabled={isSending}
-                    className="h-9 px-5 bg-orange-600 text-white rounded-xl text-[11px] font-black transition-all flex items-center justify-center gap-2"
+                    className="h-9 px-5 bg-orange-600 text-white rounded-xl text-[11px] font-bold transition-all flex items-center justify-center gap-2"
                   >
                     <Send size={12} /> GỬI
                   </button>

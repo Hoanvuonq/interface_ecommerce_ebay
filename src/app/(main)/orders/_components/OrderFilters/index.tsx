@@ -46,7 +46,7 @@ export const OrderFilters = () => {
                 key={option.value}
                 onClick={() => actions.setStatusFilter(option.value)}
                 className={cn(
-                  "relative px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest",
+                  "relative px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest",
                   "transition-all duration-500 flex items-center gap-2 whitespace-nowrap overflow-hidden",
                   isSelected
                     ? "text-white shadow-lg shadow-orange-200"
@@ -64,7 +64,7 @@ export const OrderFilters = () => {
                 {countValue > 0 && (
                   <span
                     className={cn(
-                      "relative z-10 px-2 py-0.5 rounded-full text-[9px] font-black transition-colors min-w-4.5 text-center",
+                      "relative z-10 px-2 py-0.5 rounded-full text-[9px] font-bold transition-colors min-w-4.5 text-center",
                       isSelected
                         ? "bg-white text-orange-600"
                         : "bg-gray-200 text-gray-400"

@@ -210,7 +210,7 @@ export const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
                 value={formData.otpCode}
                 error={errors.otpCode}
                 placeholder="• • • • • •"
-                className="text-center text-xl tracking-[0.5em] font-black"
+                className="text-center text-xl tracking-[0.5em] font-bold"
                 onChange={(e) => setFormData({ ...formData, otpCode: e.target.value })}
               />
 

@@ -1,4 +1,4 @@
-import { Address } from "@/types/shop/shop.dto";
+import { Address } from "@/app/(main)/shop/_types/dto/shop.dto";
 
 export type VerifiedStatus = "PENDING" | "VERIFIED" | "REJECTED";
 

@@ -9,12 +9,13 @@ import {
   UpdateShopRequest,
   UpdateShopResponse,
   UpdateShopTaxRequest,
-} from "@/types/shop/shop.dto";
+} from "../_types/dto/shop.dto";
 import { request } from "@/utils/axios.customize";
 import { ApiResponse } from "@/api/_types/api.types";
 import { FilterRequest } from "@/app/(chat)/_types/chat.dto";
 
 const API_ENDPOINT_SHOP = "v1/public/shops";
+const API_GETSHOP = "v1/shops";
 
 export async function createShop(
   payload: CreateShopRequest
@@ -198,7 +199,7 @@ export async function getShopDetail(shopId: string): Promise<ApiResponse<any>> {
  */
 export async function getCurrentUserShopDetail(): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
-    url: `/${API_ENDPOINT_SHOP}/me/check`,
+    url: `/${API_GETSHOP}/me/check`,
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -219,7 +220,7 @@ export async function getAllShopAddresses(
 }
 
 export async function getProductsByShopId(
-  shopId: string, 
+  shopId: string,
   params: FilterRequest
 ): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
@@ -230,7 +231,7 @@ export async function getProductsByShopId(
 }
 
 export async function getOrdersByShopIdAndBuyerId(
-  shopId: string, 
+  shopId: string,
   buyerId: string,
   params: FilterRequest
 ): Promise<ApiResponse<any>> {

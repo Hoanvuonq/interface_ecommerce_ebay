@@ -50,7 +50,7 @@ useEffect(() => {
     >
       <div className="h-20 flex items-center px-4 mb-4 relative overflow-hidden">
         <Link href="/" className="flex items-center gap-3 w-full group">
-          <div className="w-10 h-10 shrink-0 bg-gradient-to-br from-orange-500 to-amber-500 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-orange-200 group-hover:rotate-6 transition-transform duration-300">
+          <div className="w-10 h-10 shrink-0 bg-linear-to-br from-orange-500 to-amber-500 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-orange-200 group-hover:rotate-6 transition-transform duration-300">
             <span className="text-xl font-semibold italic">C</span>
           </div>
           {!collapsed && (
@@ -73,7 +73,7 @@ useEffect(() => {
               key={item.key}
               item={item}
               collapsed={collapsed}
-              activeKey={selectedKey} // Key đang active từ URL
+              activeKey={selectedKey} 
               openKeys={openKeys}
               onToggle={handleToggle}
               isParentOfActive={parentKey === item.key}

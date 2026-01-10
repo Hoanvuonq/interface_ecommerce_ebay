@@ -1,3 +1,4 @@
 export * from "./components/ChartBox";
-export * from "./components/GrowthCard";
+export * from "../../app/(shop)/shop/_components/Dashboard/GrowthCard";
 export * from "./components/ChartWrapper";
+export * from "./components/RevenueLineChart";

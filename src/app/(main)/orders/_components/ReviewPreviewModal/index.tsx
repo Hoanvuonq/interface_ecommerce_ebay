@@ -49,7 +49,7 @@ export const ReviewPreviewModal: React.FC<ReviewPreviewModalProps> = ({
               <ShieldCheck size={22} strokeWidth={2.5} />
             </div>
             <div>
-              <h3 className="text-lg font-black text-gray-800 tracking-tight leading-none">
+              <h3 className="text-lg font-bold text-gray-800 tracking-tight leading-none">
                 Chi tiết đánh giá
               </h3>
               <p className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.15em] mt-1.5 flex items-center gap-1">
@@ -78,7 +78,7 @@ export const ReviewPreviewModal: React.FC<ReviewPreviewModalProps> = ({
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[10px] text-orange-500 font-black uppercase tracking-widest mb-1">
+              <p className="text-[10px] text-orange-500 font-bold uppercase tracking-widest mb-1">
                 Đã mua tại Calatha
               </p>
               <p className="text-sm font-bold text-gray-800 line-clamp-1 italic tracking-tight">
@@ -99,7 +99,7 @@ export const ReviewPreviewModal: React.FC<ReviewPreviewModalProps> = ({
             <div className="space-y-6">
               <div className="flex flex-col items-center justify-center p-6 bg-white rounded-[2rem] border border-orange-100/50 shadow-xl shadow-orange-500/5 relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-1 h-full bg-orange-500/20" />
-                <label className="text-[11px] font-black text-gray-400 uppercase tracking-[0.3em] mb-4">
+                <label className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.3em] mb-4">
                   Mức độ hài lòng
                 </label>
                 <CustomRate
@@ -108,7 +108,7 @@ export const ReviewPreviewModal: React.FC<ReviewPreviewModalProps> = ({
                   size={32}
                   className="gap-2"
                 />
-                <span className="mt-4 text-[13px] font-black text-orange-600 uppercase tracking-tighter">
+                <span className="mt-4 text-[13px] font-bold text-orange-600 uppercase tracking-tighter">
                   {reviewData.rating === 5
                     ? "Rất tuyệt vời"
                     : reviewData.rating === 4
@@ -121,7 +121,7 @@ export const ReviewPreviewModal: React.FC<ReviewPreviewModalProps> = ({
               <div className="px-1">
                 <div className="flex items-center gap-2 mb-3">
                   <div className="w-6 h-0.5 bg-orange-500 rounded-full" />
-                  <span className="text-[11px] font-black text-gray-500 uppercase tracking-widest">
+                  <span className="text-[11px] font-bold text-gray-500 uppercase tracking-widest">
                     Lời nhắn từ khách hàng
                   </span>
                 </div>
@@ -140,7 +140,7 @@ export const ReviewPreviewModal: React.FC<ReviewPreviewModalProps> = ({
           {/* Section 3: Media Gallery (Instagram Style) */}
           {reviewData.media && reviewData.media.length > 0 && (
             <div className="space-y-4 px-1">
-              <span className="text-[11px] font-black text-gray-500 uppercase tracking-widest block">
+              <span className="text-[11px] font-bold text-gray-500 uppercase tracking-widest block">
                 Ảnh & Video thực tế
               </span>
               <div className="flex flex-wrap gap-3">
