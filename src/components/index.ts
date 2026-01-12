@@ -27,7 +27,8 @@ export * from "./ProductGallery";
 export * from "./rating";
 export * from "./Search";
 export * from "./sectionHeader";
-export * from "./selectComponent";
+// Fix CI/CD build issue
+export { SelectComponent } from "./selectComponent";
 export * from "./selectField";
 export * from "./simpleModal";
 export * from "./statCardComponents";
@@ -35,4 +36,3 @@ export * from "./tags";
 export * from "./textAreaField";
 export * from "./themeSwitcher";
 export * from "./voucher";
-
