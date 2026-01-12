@@ -28,7 +28,7 @@ export * from "./rating";
 export * from "./Search";
 export * from "./sectionHeader";
 // Fix CI/CD build issue
-export { SelectComponent } from "./selectComponent";
+export { SelectComponent } from "./selectComponent/index";
 export * from "./selectField";
 export * from "./simpleModal";
 export * from "./statCardComponents";
