@@ -23,7 +23,7 @@ import {
 } from "../../_types/employee.type";
 import EmployeeDetail from "../EmployeeDetail";
 import EmployeeForm from "../EmployeeForm";
-import { SelectComponent } from "@/components/selectComponent";
+import { SelectComponent } from "@/components";
 import { StatCardComponents, DataTable } from "@/components";
 import { cn } from "@/utils/cn";
 import { Column } from "@/components/DataTable/type";

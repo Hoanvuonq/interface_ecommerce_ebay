@@ -1,7 +1,7 @@
 "use client";
 
 import { ButtonField } from "@/components";
-import { SelectComponent } from "@/components/selectComponent";
+import { SelectComponent } from "@/components";
 import { CategoryService } from "@/services/categories/category.service";
 import type { CategoryResponse } from "@/types/categories/category.detail";
 import { cn } from "@/utils/cn";

@@ -17,7 +17,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useAdminReview } from "../../_hooks/useAdminReview";
 import { ReviewResponse, ReviewStatus } from "../../_types/review.type";
 import { StatCardComponents } from "@/components";
-import { SelectComponent } from "@/components/selectComponent";
+import { SelectComponent } from "@/components";
 import { PortalModal } from "@/features/PortalModal";
 import ModerateReviewModal from "../ModerateReviewModal";
 import ReviewDetailModal from "../ReviewDetailModal";

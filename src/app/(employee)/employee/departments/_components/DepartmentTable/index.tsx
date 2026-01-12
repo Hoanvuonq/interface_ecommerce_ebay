@@ -11,7 +11,7 @@ import { Department } from "../../_types/department.type";
 import DepartmentDetail from "../DepartmentDetail";
 import DepartmentForm from "../DepartmentForm";
 import { DataTable, ActionBtn, StatCardComponents } from "@/components";
-import { SelectComponent } from "@/components/selectComponent";
+import { SelectComponent } from "@/components";
 import { Column } from "@/components/DataTable/type";
 import { cn } from "@/utils/cn";
 

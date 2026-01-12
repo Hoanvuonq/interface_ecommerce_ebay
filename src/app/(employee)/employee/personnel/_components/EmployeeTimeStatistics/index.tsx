@@ -2,7 +2,7 @@
 
 import { StatCardComponents } from "@/components";
 import { ChartBox, GrowthCard } from "@/components/chart";
-import { SelectComponent } from "@/components/selectComponent";
+import { SelectComponent } from "@/components";
 import { CalendarDays, RotateCw, TrendingUp, Trophy, UserPlus } from "lucide-react";
 import { useState } from "react";
 import {

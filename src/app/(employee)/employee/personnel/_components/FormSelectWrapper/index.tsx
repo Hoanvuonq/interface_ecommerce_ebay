@@ -1,4 +1,4 @@
-import { SelectComponent } from "@/components/selectComponent";
+import { SelectComponent } from "@/components";
 import { cn } from "@/utils/cn";
 import { Controller } from "react-hook-form";
 

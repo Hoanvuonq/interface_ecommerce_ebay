@@ -15,7 +15,7 @@ import { PayrollResponse } from "../../_types/payroll.type";
 import PayrollForm from "../PayrollForm";
 import PayrollDetail from "../PayrollDetail";
 import { StatCardComponents, DataTable, ActionBtn } from "@/components"; 
-import { SelectComponent } from "@/components/selectComponent";
+import { SelectComponent } from "@/components";
 import { cn } from "@/utils/cn";
 import { Column } from "@/components/DataTable/type";
 import { formatCurrency } from "@/hooks/format";
