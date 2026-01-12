@@ -150,7 +150,6 @@ console.log("Debug Selection:", {
         )}
       </div>
 
-      {/* FOOTER REVIEW - THAY ĐỔI THEO LỰA CHỌN TẠM THỜI */}
       <div className="flex-none p-4 bg-white/95 backdrop-blur-md border-t border-gray-100 flex items-center justify-between z-30 shadow-[0_-8px_20px_rgba(0,0,0,0.05)]">
         <div className="flex items-center gap-3">
           <div className={cn(
