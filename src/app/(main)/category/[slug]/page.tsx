@@ -15,6 +15,7 @@ import FeaturedShopsGrid from "./_components/FeaturedShopsGrid";
 import QuickAccessCards from "./_components/QuickAccessCards";
 import { cn } from "@/utils/cn";
 import SortBar from "./_components/SortSelect";
+import { EmptyProductState } from "../../products/_components/EmptyProductState";
 export const dynamic = "force-dynamic";
 
 export default async function CategoryScreen({
@@ -49,7 +50,6 @@ export default async function CategoryScreen({
   let totalPages = 1;
   let errorMessage: string | null = null;
 
-  // --- Logic Fetching (Giữ nguyên) ---
   try {
     const catsRes = await CategoryService.getAllParents();
     const list =
@@ -139,7 +139,7 @@ export default async function CategoryScreen({
 
               <div className="rounded-2xl bg-white shadow-sm border border-gray-100 overflow-hidden">
                 <div className="bg-gray-50 border-b border-gray-100 px-3 py-4 flex items-center gap-2.5">
-                  <Filter size={18} className="text-gray-700"/>
+                  <Filter size={18} className="text-gray-700" />
                   <h3 className="text-[14px] font-bold text-gray-900 uppercase tracking-tight">
                     Bộ lọc tìm kiếm
                   </h3>
@@ -166,20 +166,13 @@ export default async function CategoryScreen({
                   <p className="text-red-500 font-medium">{errorMessage}</p>
                 </div>
               ) : content.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-32 bg-white rounded-3xl border border-gray-100 shadow-sm">
-                  <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-4">
-                    <PackageSearch size={40} className="text-gray-300" />
-                  </div>
-                  <h3 className="text-gray-900 font-bold text-lg">
-                    Không có sản phẩm nào
-                  </h3>
-                  <p className="text-gray-500 text-sm mt-1">
-                    Hãy thử thay đổi bộ lọc hoặc danh mục khác nhé!
-                  </p>
-                </div>
+                <EmptyProductState
+                  message=" Không có sản phẩm nào trong danh mục này."
+                  link={`/`}
+                />
               ) : (
                 <>
-                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-5">
                     {content.map((p: any) => (
                       <div
                         key={p.id}
@@ -190,7 +183,6 @@ export default async function CategoryScreen({
                     ))}
                   </div>
 
-                  {/* Enhanced Pagination */}
                   {totalPages > 1 && (
                     <div className="flex items-center justify-center gap-4 mt-12 py-6">
                       <Link
@@ -235,15 +227,4 @@ export default async function CategoryScreen({
       </div>
     </section>
   );
-}
-
-// Sub-component cho icon Empty state (nếu chưa có)
-function PackageSearch({
-  size,
-  className,
-}: {
-  size: number;
-  className?: string;
-}) {
-  return <LayoutGrid size={size} className={className} />;
 }

@@ -1,6 +1,3 @@
-/**
- * Custom hook for wishlist operations
- */
 
 import { useToast } from "@/hooks/useToast";
 import { wishlistService } from "@/services/wishlist/wishlist.service";
@@ -35,13 +32,11 @@ export const useWishlist = () => {
         }
         return { success: true, data };
       } catch (err: any) {
-        // Extract error message từ nhiều nguồn khác nhau
         let errorMessage = "Có lỗi xảy ra. Vui lòng thử lại.";
 
         if (typeof err === "string") {
           errorMessage = err;
         } else if (err?.response?.data?.message) {
-          // Error từ API response
           errorMessage = err.response.data.message;
         } else if (err?.response?.data?.error) {
           errorMessage = err.response.data.error;

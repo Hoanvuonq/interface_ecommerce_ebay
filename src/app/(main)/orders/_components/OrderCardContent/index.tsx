@@ -2,8 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { Package, Truck } from "lucide-react";
 import { formatDate } from "@/hooks/format";
-import { resolveOrderItemImageUrl } from "../../_types/order";
-
+import { resolveOrderItemImageUrl } from "../../_constants/order.constants";
 interface ContentProps {
   status: { label: string; icon: React.ReactNode };
   trackingNumber?: string;

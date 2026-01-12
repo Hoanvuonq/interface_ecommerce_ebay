@@ -50,12 +50,17 @@ const instance = axios.create({
   withCredentials: true, // Vẫn giữ true để support cookie ở môi trường khác
 });
 
-// Danh sách các endpoint KHÔNG cần gửi access token
 const PUBLIC_ENDPOINTS = [
   "/auth/login",
   "/auth/register",
   "/auth/refresh",
-  // ... (giữ nguyên danh sách cũ)
+  "/auth/otp/verify",
+  "/auth/otp/resend",
+  "/auth/password/forgot",
+  "/auth/password/verify",
+  "/auth/password/reset",
+  "/users/exists/email",
+  "/users/exists/username",
   "/auth/logout",
 ];
 

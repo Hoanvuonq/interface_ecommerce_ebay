@@ -214,7 +214,7 @@ export const ReturnOrderModal: React.FC<ReturnOrderModalProps> = ({
       <div className="space-y-6 max-h-[70vh] overflow-y-auto custom-scrollbar px-1">
         {step === "SELECT_TYPE" && (
           <div className="space-y-4 animate-in fade-in zoom-in-95 duration-300">
-            <div className="bg-orange-50/60 border border-orange-100 rounded-[1.5rem] p-4 flex gap-4">
+            <div className="bg-orange-50/60 border border-orange-100 rounded-3xl p-4 flex gap-4">
               <Sparkles size={18} className="text-orange-500 shrink-0 mt-0.5" />
               <p className="text-[11px] text-orange-800 font-bold leading-relaxed">
                 Hệ thống xử lý yêu cầu dựa trên minh chứng thực tế. Vui lòng

@@ -3,12 +3,10 @@
 import { Package, StoreIcon, Truck, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import React, { useMemo } from "react";
-import { ORDER_STATUS_UI } from "../../_constants/order";
+import { ORDER_STATUS_UI } from "../../_constants/order.constants";
 import { useOrderDetailView } from "../../_hooks/useOrderDetailView";
-import {
-  resolveOrderItemImageUrl,
-} from "../../_types/order";
-import { PAYMENT_METHOD_LABELS } from "../../_constants/order";
+import { resolveOrderItemImageUrl } from "../../_constants/order.constants";
+import { PAYMENT_METHOD_LABELS } from "../../_constants/order.constants";
 import { OrderCancelModal } from "../OrderCancelModal";
 import { OrderHeader } from "../OrderDetailHeader";
 import { OrderExpirationTimer } from "../OrderExpirationTimer";
@@ -30,16 +28,16 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
   } = state;
 
   const ui = useMemo(() => {
-    const status = order.status;
+    const status = order.status as keyof typeof ORDER_STATUS_UI;
     const firstItem = order.items?.[0];
 
-    const statusInfo = ORDER_STATUS_UI[status] || ORDER_STATUS_UI.DEFAULT;
+    const statusInfo = ORDER_STATUS_UI[status];
 
     return {
       statusInfo,
       isDelivered: status === "COMPLETED" || status === "DELIVERED",
       isCancelled: status === "CANCELLED",
-      canCancel: ["CREATED", "PENDING_PAYMENT"].includes(status),
+      canCancel: ["CREATED", "AWAITING_PAYMENT"].includes(status),
       shippingFee: order.conkinShippingCost ?? order.shippingFee ?? 0,
       paymentLabel:
         PAYMENT_METHOD_LABELS[order.paymentMethod] || order.paymentMethod,

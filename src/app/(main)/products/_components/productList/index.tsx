@@ -27,6 +27,7 @@ import { cn } from "@/utils/cn";
 import { CustomButton } from "@/components/button";
 import { TabsChangeLayout } from "../TabsChangeLayout";
 import { useToast } from "@/hooks/useToast";
+import { EmptyProductState } from "../EmptyProductState";
 
 const CustomPagination: React.FC<{
   page: number;
@@ -182,24 +183,7 @@ const handleSort = (val: string) => {
             ))}
           </div>
         ) : products.length === 0 ? (
-          <div className="bg-white rounded-3xl p-20 text-center border-2 border-dashed border-gray-100">
-            <div className="bg-gray-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Search size={32} className="text-gray-300" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-800">
-              Không tìm thấy gì cả
-            </h3>
-            <p className="text-gray-500 mt-2">
-              Hãy thử thay đổi tiêu chí tìm kiếm của bạn
-            </p>
-            <CustomButton
-              variant="dark"
-              onClick={() => window.location.reload()}
-              className="mt-6"
-            >
-              Làm mới trang
-            </CustomButton>
-          </div>
+          <EmptyProductState message="" onReset={() => window.location.reload()} />
         ) : (
           <>
             <div

@@ -62,7 +62,7 @@ export const ReviewPreviewModal: React.FC<ReviewPreviewModalProps> = ({
         className="rounded-[2.5rem]"
       >
         <div className="space-y-8 py-2 font-sans px-1">
-          <div className="flex gap-4 p-4 bg-gray-50/40 rounded-[1.5rem] border border-gray-100 items-center transition-colors hover:bg-gray-50">
+          <div className="flex gap-4 p-4 bg-gray-50/40 rounded-3xl border border-gray-100 items-center transition-colors hover:bg-gray-50">
             <div className="w-16 h-16 bg-white rounded-2xl border border-gray-100 overflow-hidden shrink-0 relative shadow-sm">
               {productImage ? (
                 <Image
@@ -97,7 +97,12 @@ export const ReviewPreviewModal: React.FC<ReviewPreviewModalProps> = ({
             <MessageSquare className="absolute -top-4 -right-2 w-20 h-20 text-orange-50 opacity-[0.05] -rotate-12 pointer-events-none" />
 
             <div className="space-y-6">
-              <div className="flex flex-col items-center justify-center p-6 bg-white rounded-[2rem] border border-orange-100/50 shadow-xl shadow-orange-500/5 relative overflow-hidden">
+              <div
+                className={cn(
+                  "flex flex-col items-center justify-center p-6 bg-white rounded-4xl border ",
+                  "border-orange-100/50 shadow-xl shadow-orange-500/5 relative overflow-hidden"
+                )}
+              >
                 <div className="absolute top-0 left-0 w-1 h-full bg-orange-500/20" />
                 <label className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.3em] mb-4">
                   Mức độ hài lòng
@@ -126,7 +131,7 @@ export const ReviewPreviewModal: React.FC<ReviewPreviewModalProps> = ({
                   </span>
                 </div>
                 <div className="relative">
-                  <div className="p-6 bg-gray-50/80 border border-gray-100 rounded-[1.5rem] text-sm text-gray-700 leading-relaxed font-medium italic shadow-inner">
+                  <div className="p-6 bg-gray-50/80 border border-gray-100 rounded-3xl text-sm text-gray-700 leading-relaxed font-medium italic shadow-inner">
                     "
                     {reviewData.comment ||
                       "Khách hàng không để lại nhận xét bằng lời."}
@@ -147,7 +152,10 @@ export const ReviewPreviewModal: React.FC<ReviewPreviewModalProps> = ({
                 {reviewData.media.map((url, idx) => (
                   <div
                     key={idx}
-                    className="relative w-20 h-20 rounded-2xl border-2 border-white overflow-hidden bg-gray-100 cursor-pointer shadow-md hover:scale-105 transition-all active:scale-95 group/img"
+                    className={cn(
+                      "relative w-20 h-20 rounded-2xl border-2 border-white overflow-hidden bg-gray-100",
+                      "cursor-pointer shadow-md hover:scale-105 transition-all active:scale-95 group/img"
+                    )}
                     onClick={() => setSelectedFullImage(url)}
                   >
                     <Image
