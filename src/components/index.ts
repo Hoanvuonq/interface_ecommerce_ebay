@@ -27,8 +27,8 @@ export * from "./ProductGallery";
 export * from "./rating";
 export * from "./Search";
 export * from "./sectionHeader";
-// Fix CI/CD build issue
-export { SelectComponent } from "./selectComponent/index";
+// Use direct file export to bypass folder resolution issues
+export * from "./selectComponent";
 export * from "./selectField";
 export * from "./simpleModal";
 export * from "./statCardComponents";
