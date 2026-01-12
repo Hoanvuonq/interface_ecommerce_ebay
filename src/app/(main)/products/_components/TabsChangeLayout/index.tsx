@@ -41,9 +41,6 @@ export const TabsChangeLayout: React.FC<TabsChangeLayoutProps> = ({
 
       <div className="flex items-center gap-3 ml-auto">
         <div className="hidden md:flex items-center gap-2">
-          <span className="text-[10px] font-bold text-gray-600 uppercase tracking-widest">
-            Sắp xếp
-          </span>
           <div className="w-45">
             <SelectComponent
               value={sortValue ?? ""}

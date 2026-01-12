@@ -13,7 +13,6 @@ import { cn } from "@/utils/cn";
 import { PublicProductListItemDTO } from "@/types/product/public-product.dto";
 
 import { useHomepageContext } from "../../_context/HomepageContext";
-import useWishlistStatus from "../../_hooks/useWishlistStatus";
 import { ProductSectionProps } from "./type";
 
 export const ProductSection: React.FC<ProductSectionProps> = ({
@@ -29,7 +28,7 @@ export const ProductSection: React.FC<ProductSectionProps> = ({
   viewAllHref = "/products",
   sidebar,
 }) => {
-  const { featured, flashSale, isLoading } = useHomepageContext();
+  const { featured, flashSale, isLoading, wishlistMap } = useHomepageContext();
 
   const rawProducts = useMemo(() => {
     const data = type === "featured" ? featured : flashSale;
@@ -39,8 +38,6 @@ export const ProductSection: React.FC<ProductSectionProps> = ({
   const [currentPage, setCurrentPage] = useState(0);
   const colsPerRow = columns.desktop || 6;
   const pageSize = colsPerRow * rows;
-
-  const { wishlistMap } = useWishlistStatus(rawProducts);
 
   const config = {
     featured: { title: "NỔI BẬT", badgeType: "featured" as const },

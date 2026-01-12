@@ -78,7 +78,6 @@ class OrderService {
     status?: string,
     search?: string
   ): Promise<any> {
-    // FIX LỖI: Định nghĩa ApiResponse<any> cho biến response
     const response: ApiResponse<any> = await request({
       url: BUYER_API_BASE,
       method: "GET",

@@ -2,15 +2,15 @@
 
 import { ProductCard } from "@/app/(main)/products/_components";
 import { SectionLoading } from "@/components";
+import { SectionSreen } from "@/features/SectionSreen";
 import { cn } from "@/utils/cn";
 import { AnimatePresence, motion } from "framer-motion";
 import _ from "lodash";
-import { ArrowRight, Flame, Loader2, Sparkles, Star, Plus } from "lucide-react";
+import { ArrowRight, Flame, Plus, Sparkles, Star } from "lucide-react";
 import Link from "next/link";
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useInfiniteProducts } from "../../_hooks/useHomePageData";
-import useWishlistStatus from "../../_hooks/useWishlistStatus";
-import { SectionSreen } from "@/features/SectionSreen";
+import { useHomepageContext } from "../../_context/HomepageContext"; // Sử dụng context
 
 export const ProductShowcase = ({
   title = "GỢI Ý HÔM NAY",
@@ -38,7 +38,7 @@ export const ProductShowcase = ({
     return _.take(list, 11); 
   }, [activeTab, saleList, newList]);
 
-  const { wishlistMap } = useWishlistStatus(displayProducts);
+  const { wishlistMap } = useHomepageContext(); // Lấy từ context
 
   const tabConfigs = [
     { id: "all", label: "Gợi ý", icon: Star },

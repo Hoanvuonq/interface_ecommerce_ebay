@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { formatPrice } from "@/hooks/useFormatPrice";
-import { resolveOrderItemImageUrl } from "../../_types/order";
+import { resolveOrderItemImageUrl } from "../../_constants/order.constants";
 import { Package, Star, Tag } from "lucide-react";
 import NextLink from "next/link";
 import { cn } from "@/utils/cn";

@@ -11,6 +11,7 @@ import { OrderFilters } from "../_components/OrderFilters";
 import { OrderSkeleton } from "../_components/OrderSkeleton";
 import { OrderProvider, useOrderContext } from "../_contexts/OrderContext";
 import { CustomButton } from "@/components";
+import { EmptyProductState } from "../../products/_components/EmptyProductState";
 const OrdersContent = () => {
   const router = useRouter();
   const { state, actions } = useOrderContext();
@@ -51,47 +52,10 @@ const OrdersContent = () => {
               <OrderSkeleton />
             </div>
           ) : orders.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-24 px-4 bg-gray-50 rounded-[2.5rem] border-2 border-dashed border-gray-200 my-4 animate-in fade-in zoom-in duration-500">
-              <div className="relative mb-8">
-                <div className="w-24 h-24 bg-gray-50 rounded-3xl flex items-center justify-center shadow-inner">
-                  <Inbox
-                    size={48}
-                    strokeWidth={1.5}
-                    className="text-gray-300"
-                  />
-                </div>
-                <div className="absolute -top-2 -right-2 w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center border-4 border-white shadow-sm">
-                  <Search
-                    size={14}
-                    className="text-orange-600"
-                    strokeWidth={3}
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2 text-center max-w-xs mb-5">
-                <p className="text-[11px] font-bold text-gray-600 uppercase tracking-wider leading-relaxed">
-                  Chúng tôi không tìm thấy bất kỳ đơn hàng nào khớp với yêu cầu
-                  của bạn.
-                </p>
-              </div>
-
-              <Link href="/products">
-                <CustomButton
-                  variant="dark"
-                  className="h-14 px-6 rounded-full shadow-[0_20px_40px_rgba(0,0,0,0.1)] hover:shadow-orange-200/50 transition-all duration-300 group"
-                  icon={
-                    <div className="bg-orange-500 p-1.5 rounded-lg group-hover:rotate-12 transition-transform">
-                      <ShoppingBag size={18} className="text-white" />
-                    </div>
-                  }
-                >
-                  <span className="font-bold uppercase tracking-widest text-xs ml-2">
-                    Bắt đầu mua sắm ngay
-                  </span>
-                </CustomButton>
-              </Link>
-            </div>
+            <EmptyProductState
+              message="Chúng tôi không tìm thấy bất kỳ đơn hàng nào khớp với yêu cầu của bạn."
+              onReset={() => window.location.reload()}
+            />
           ) : (
             <div className="space-y-4">
               <motion.div

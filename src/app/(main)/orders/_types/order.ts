@@ -1,49 +1,76 @@
-import { OrderResponse } from "@/types/orders/order.types";
-import { resolveVariantImageUrl } from "@/utils/products/media.helpers";
+import { OrderResponse } from "@/types/orders/order.dto";
 
-export const PRIMARY_COLOR = "#f97316";
+// ==========================================
+// 1. ENUMS (Chuyển Enum về đây để dùng chung)
+// ==========================================
 
-export const STATUS_OPTIONS = [
-  { label: "Tất cả", value: "ALL" },
-  { label: "Chờ thanh toán", value: "AWAITING_PAYMENT" },
-  { label: "Chờ xác nhận", value: "CREATED" },
-  { label: "Đang xử lý", value: "FULFILLING" },
-  { label: "Đang giao", value: "SHIPPED" },
-  { label: "Thành công", value: "COMPLETED" },
-  { label: "Trả hàng", value: "RETURNED" }, 
-  { label: "Đã hủy", value: "CANCELLED" },
-];
+// Enum cho các NHÓM TRẠNG THÁI (Dùng cho Tabs Filter)
+export enum OrderGroupStatus {
+  ALL = 'ALL',
+  PENDING = 'PENDING',
+  PROCESSING = 'PROCESSING',
+  SHIPPING = 'SHIPPING',
+  COMPLETED = 'COMPLETED',
+  RETURN_REFUND = 'RETURN_REFUND',
+  CANCELLED = 'CANCELLED',
+}
 
-export const MAP_COUNT_KEY: Record<string, keyof OrderCountResponse> = {
-  ALL: "total", 
+// Enum cho TRẠNG THÁI CHI TIẾT (Dùng cho từng đơn hàng)
+export enum OrderStatus {
+  // PENDING GROUP
+  CREATED = 'CREATED',
+  AWAITING_PAYMENT = 'AWAITING_PAYMENT',
+  PAID = 'PAID',
 
-  /// check 
-  AWAITING_PAYMENT: "awaitingPayment",
-  CREATED: "total",
-  FULFILLING: "processing",
-  SHIPPED: "shipping",
-  DELIVERED: "delivered",
-  COMPLETED: "completed",
-  RETURNED: "returning",
-  CANCELLED: "cancelled",
-};
+  // PROCESSING GROUP
+  FULFILLING = 'FULFILLING',
+  READY_FOR_PICKUP = 'READY_FOR_PICKUP',
+
+  // SHIPPING GROUP
+  SHIPPED = 'SHIPPED',
+  OUT_FOR_DELIVERY = 'OUT_FOR_DELIVERY',
+
+  // COMPLETED GROUP
+  DELIVERED = 'DELIVERED',
+  COMPLETED = 'COMPLETED',
+
+  // CANCELLED GROUP
+  CANCELLED = 'CANCELLED',
+  
+  // RETURN/REFUND GROUP
+  REJECTED = 'REJECTED',
+  RETURN_REQUESTED = 'RETURN_REQUESTED',
+  RETURN_APPROVED = 'RETURN_APPROVED',
+  RETURNING = 'RETURNING',
+  RETURNED = 'RETURNED',
+  RETURN_DISPUTED = 'RETURN_DISPUTED',
+  RETURN_REJECTED = 'RETURN_REJECTED',
+  REFUND_PENDING = 'REFUND_PENDING',
+  REFUNDED = 'REFUNDED',
+  DELIVERY_FAILED = 'DELIVERY_FAILED',
+  RETURNING_TO_SENDER = 'RETURNING_TO_SENDER',
+  RETURNED_TO_SENDER = 'RETURNED_TO_SENDER',
+}
+
+// ==========================================
+// 2. INTERFACES
+// ==========================================
 
 export interface OrderCountResponse {
-  awaitingPayment: number;
+  pending: number;
   processing: number;
   shipping: number;
-  delivered: number;
   completed: number;
-  returning: number;
+  returnRefund: number;
   cancelled: number;
   total: number;
 }
 
 export interface OrderFiltersProps {
   searchText: string;
-  statusFilter: string;
+  statusFilter: OrderGroupStatus; // Dùng Enum chuẩn
   onSearchChange: (value: string) => void;
-  onStatusChange: (value: string) => void;
+  onStatusChange: (value: OrderGroupStatus) => void; // Dùng Enum chuẩn
 }
 
 export interface OrderDetailViewProps {
@@ -55,18 +82,3 @@ export interface OrderCardProps {
   onViewDetail: (orderId: string) => void;
   onOrderCancelled?: () => void;
 }
-
-export const resolveOrderItemImageUrl = (
-  basePath: string | null | undefined,
-  extension: string | null | undefined,
-  size: "_thumb" | "_medium" | "_large" | "_orig" = "_thumb"
-): string => {
-  if (basePath && extension) {
-    const variant = {
-      imageBasePath: basePath,
-      imageExtension: extension.startsWith(".") ? extension : `.${extension}`,
-    };
-    return resolveVariantImageUrl(variant, size);
-  }
-  return "";
-};
