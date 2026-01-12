@@ -28,7 +28,7 @@ export * from "./rating";
 export * from "./Search";
 export * from "./sectionHeader";
 // Use direct file export to bypass folder resolution issues
-export * from "./selectComponent";
+export * from "./SelectComponent";
 export * from "./selectField";
 export * from "./simpleModal";
 export * from "./statCardComponents";
