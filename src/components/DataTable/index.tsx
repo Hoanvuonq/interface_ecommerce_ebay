@@ -59,16 +59,16 @@ export const DataTable = <T,>({
         </div>
       )}
 
-      <div className="bg-white border border-gray-100 rounded-4xl shadow-[0_8px_30px_rgb(0,0,0,0.02)] overflow-hidden flex flex-col">
+      <div className="bg-white border border-gray-100 rounded-4xl shadow-custom overflow-hidden flex flex-col">
         <div className="overflow-x-auto custom-scrollbar">
           <table className="min-w-full border-collapse">
-            <thead className="bg-gray-50/50 border-b border-gray-100">
+            <thead className="bg-gray-100 rounded-t-4xl  border-b border-gray-100">
               <tr>
                 {columns.map((col, idx) => (
                   <th
                     key={idx}
                     className={cn(
-                      "px-6 py-4 text-[10px] font-semibold uppercase text-gray-600 tracking-[0.2em] whitespace-nowrap",
+                      "px-6 py-4 text-[12px] font-semibold uppercase text-gray-700  whitespace-nowrap",
                       col.align === "center" ? "text-center" : col.align === "right" ? "text-right" : "text-left",
                       col.headerClassName
                     )}
@@ -86,7 +86,7 @@ export const DataTable = <T,>({
                     <td colSpan={columns.length} className="py-20 text-center">
                       <div className="flex flex-col items-center gap-3">
                         <div className="p-3 bg-orange-50 rounded-2xl">
-                          <FiLoader className="w-6 h-6 text-orange-500 animate-spin" />
+                          <FiLoader className="w-6 h-6 text-(--color-mainColor) animate-spin" />
                         </div>
                         <span className="text-[10px] font-semibold uppercase tracking-widest text-gray-300">Đang đồng bộ...</span>
                       </div>
@@ -147,7 +147,7 @@ export const DataTable = <T,>({
             <button
               onClick={() => onPageChange(page - 1)}
               disabled={page === 0 || loading}
-              className="p-2 rounded-xl border border-gray-100 text-gray-600 hover:bg-gray-50 hover:text-orange-500 disabled:opacity-30 transition-all active:scale-90"
+              className="p-2 rounded-xl border border-gray-100 text-gray-600 hover:bg-gray-50 hover:text-(--color-mainColor) disabled:opacity-30 transition-all active:scale-90"
             >
               <FiChevronLeft size={20} />
             </button>
@@ -159,7 +159,7 @@ export const DataTable = <T,>({
             <button
               onClick={() => onPageChange(page + 1)}
               disabled={page >= totalPages - 1 || loading}
-              className="p-2 rounded-xl border border-gray-100 text-gray-600 hover:bg-gray-50 hover:text-orange-500 disabled:opacity-30 transition-all active:scale-90"
+              className="p-2 rounded-xl border border-gray-100 text-gray-600 hover:bg-gray-50 hover:text-(--color-mainColor) disabled:opacity-30 transition-all active:scale-90"
             >
               <FiChevronRight size={20} />
             </button>

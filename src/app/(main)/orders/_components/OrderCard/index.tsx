@@ -1,7 +1,8 @@
 "use client";
 
-import { formatPrice } from "@/hooks/useFormatPrice";
-import { cn } from "@/utils/cn";
+import React, { useMemo, useState, useEffect } from "react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 import _ from "lodash";
 import {
   ArrowRight,
@@ -14,32 +15,54 @@ import {
   XCircle,
   RotateCcw,
 } from "lucide-react";
-import Image from "next/image";
-import React, { useMemo, useState, useEffect } from "react";
-import { ORDER_STATUS_UI, PAYMENT_METHOD_LABELS } from "../../_constants/order";
-import { OrderCardProps, resolveOrderItemImageUrl } from "../../_types/order";
+
+// --- Utils & Hooks ---
+import { formatPrice } from "@/hooks/useFormatPrice";
+import { cn } from "@/utils/cn";
+import { useOrderDetailView } from "../../_hooks/useOrderDetailView";
+import { getMyReviews } from "@/services/review/review.service";
+
+// --- Components ---
 import { ReviewModal } from "../ReviewModal";
 import { ReviewPreviewModal } from "../ReviewPreviewModal";
-import { getMyReviews } from "@/services/review/review.service";
 import { ReturnOrderModal } from "../ReturnOrderModal";
-import { useRouter } from "next/navigation";
 import { OrderCancelModal } from "../OrderCancelModal";
+import { OrderCardProps, OrderStatus } from "../../_types/order";
+import {
+  getOrderStatusConfig, // ✅ Dùng hàm helper an toàn
+  PAYMENT_METHOD_LABELS,
+  resolveOrderItemImageUrl,
+} from "../../_constants/order.constants";
+import type { OrderResponse } from "@/types/orders/order.types";
 
 export const OrderCard: React.FC<OrderCardProps> = ({
-  order,
+  order: orderProp,
   onViewDetail,
   onOrderCancelled,
 }) => {
+  const order = orderProp as OrderResponse;
+  const router = useRouter();
+
+  // Logic Modal & Reviews
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
-  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [isReturnOpen, setIsReturnOpen] = useState(false);
   const [dbReview, setDbReview] = useState<any>(null);
   const [loadingReview, setLoadingReview] = useState(false);
-  const router = useRouter();
+
+  // Hook xử lý hủy đơn (Giả định hook này đã có sẵn)
+  const {
+    state: { cancelModalVisible, cancelling },
+    actions: { setCancelModalVisible, handleCancelOrder },
+  } = useOrderDetailView(order);
+
+  // --- 1. Fetch Review ---
   useEffect(() => {
     const fetchMyReview = async () => {
-      if (["DELIVERED", "COMPLETED"].includes(order.status)) {
+      // Dùng Enum thay vì string cứng
+      const ALLOWED_STATUSES = [OrderStatus.DELIVERED, OrderStatus.COMPLETED];
+
+      if (ALLOWED_STATUSES.includes(order.status as OrderStatus)) {
         try {
           setLoadingReview(true);
           const response = await getMyReviews(0, 50);
@@ -57,8 +80,11 @@ export const OrderCard: React.FC<OrderCardProps> = ({
     fetchMyReview();
   }, [order.orderId, order.status]);
 
+  // --- 2. UI Computation (Memoized) ---
   const ui = useMemo(() => {
-    const config = ORDER_STATUS_UI[order.status] || ORDER_STATUS_UI.CREATED;
+    // ✅ FIX: Dùng hàm helper để lấy config màu sắc an toàn
+    const config = getOrderStatusConfig(order.status);
+
     const firstItem = _.first(order.items);
 
     const rawImageUrl = resolveOrderItemImageUrl(
@@ -66,11 +92,15 @@ export const OrderCard: React.FC<OrderCardProps> = ({
       firstItem?.imageExtension,
       "_medium"
     );
+
     const productImageUrl =
       rawImageUrl && rawImageUrl.trim() !== "" ? rawImageUrl : null;
 
     const rawLogoUrl = _.get(order, "shopInfo.logoUrl");
     const shopLogo = rawLogoUrl && rawLogoUrl.trim() !== "" ? rawLogoUrl : null;
+
+    // Ép kiểu status để so sánh Enum
+    const status = order.status as OrderStatus;
 
     return {
       config,
@@ -84,15 +114,22 @@ export const OrderCard: React.FC<OrderCardProps> = ({
       paymentLabel:
         PAYMENT_METHOD_LABELS[order.paymentMethod] || order.paymentMethod,
       isReviewed: !!dbReview || !!order.reviewed,
-      canReview: ["DELIVERED", "COMPLETED"].includes(order.status),
-      canReorder: ["DELIVERED", "COMPLETED"].includes(order.status),
-      canReturn: [ "COMPLETED"].includes(order.status),
-      canCancel: ["PENDING_PAYMENT", "CREATED", "AWAITING_PAYMENT"].includes(
-        order.status
+
+      // ✅ FIX: Dùng Enum cho các điều kiện logic
+      canReview: [OrderStatus.DELIVERED, OrderStatus.COMPLETED].includes(
+        status
+      ),
+      canReorder: [OrderStatus.DELIVERED, OrderStatus.COMPLETED].includes(
+        status
+      ),
+      canReturn: [OrderStatus.COMPLETED].includes(status), // Có thể thêm logic 7 ngày đổi trả ở đây
+      canCancel: [OrderStatus.AWAITING_PAYMENT, OrderStatus.CREATED].includes(
+        status
       ),
     };
   }, [order, dbReview]);
 
+  // --- 3. Review Data Format ---
   const reviewDisplayData = useMemo(() => {
     if (!dbReview) return null;
     return {
@@ -108,22 +145,27 @@ export const OrderCard: React.FC<OrderCardProps> = ({
     };
   }, [dbReview]);
 
+  // --- 4. Handlers ---
   const handleReorder = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (ui.firstItem?.productId) {
       router.push(`/products/${ui.firstItem.productId}`);
     }
   };
+
   const handleCancelClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsCancelModalOpen(true);
+    setCancelModalVisible(true);
   };
+
   const handleReturnClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsReturnOpen(true);
   };
+
   return (
     <article className="group relative bg-white border border-gray-100 rounded-2xl p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-300 mb-3 overflow-hidden">
+      {/* Header: Shop Info & Status Badge */}
       <div className="flex items-center justify-between mb-3 pb-3 border-b border-gray-50">
         <div className="flex items-center gap-2 min-w-0">
           <div className="relative w-10 h-10 shrink-0 rounded-lg border border-gray-200 overflow-hidden flex items-center justify-center bg-gray-50 shadow-inner">
@@ -140,7 +182,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
             )}
           </div>
           <div className="min-w-0">
-            <h4 className="text-[14px] font-black text-gray-800 leading-none uppercase truncate">
+            <h4 className="text-[14px] font-bold text-gray-800 leading-none uppercase truncate">
               {ui.shopName}
             </h4>
             <span className="text-[11px] text-gray-700 font-bold mt-1 block uppercase">
@@ -149,6 +191,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
           </div>
         </div>
 
+        {/* Status Badge from UI Config */}
         <div
           className={cn(
             "px-2 py-0.5 rounded-lg text-[10px] font-bold uppercase flex items-center gap-1.5 border shadow-xs",
@@ -157,11 +200,12 @@ export const OrderCard: React.FC<OrderCardProps> = ({
             ui.config.border
           )}
         >
+          {ui.config.icon} {/* Thêm Icon vào badge cho đẹp */}
           {ui.config.label}
         </div>
       </div>
 
-      {/* Main Content */}
+      {/* Main Content: Image & Info */}
       <div className="flex items-start gap-3 sm:gap-4">
         <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl border border-gray-100 overflow-hidden shrink-0 shadow-sm bg-white">
           {ui.productImageUrl ? (
@@ -170,7 +214,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
               alt={ui.firstItem?.productName || "Product"}
               fill
               sizes="(max-width: 640px) 56px, 64px"
-              priority={order.status === "DELIVERED"}
+              priority={order.status === OrderStatus.DELIVERED}
               className="object-cover"
             />
           ) : (
@@ -201,7 +245,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
             <span className="text-[8px] font-bold text-gray-700 uppercase block">
               Tạm tính
             </span>
-            <span className="text-sm sm:text-lg font-black text-orange-600 leading-none">
+            <span className="text-sm sm:text-lg font-bold text-orange-600 leading-none">
               {formatPrice(order.grandTotal)}
             </span>
           </div>
@@ -210,12 +254,13 @@ export const OrderCard: React.FC<OrderCardProps> = ({
             {ui.canCancel && (
               <button
                 onClick={handleCancelClick}
-                className="flex items-center gap-1.5 px-4 h-9 rounded-2xl text-[10px] font-black uppercase transition-all bg-white text-gray-500 border border-gray-200 hover:border-red-500 hover:text-red-600 active:scale-95 shadow-sm cursor-pointer"
+                className="flex items-center gap-1.5 px-4 h-9 rounded-2xl text-[10px] font-bold uppercase transition-all bg-white text-gray-500 border border-gray-200 hover:border-red-500 hover:text-red-600 active:scale-95 shadow-sm cursor-pointer"
               >
                 <XCircle size={14} />
                 Hủy đơn
               </button>
             )}
+
             {ui.canReview && (
               <button
                 type="button"
@@ -226,7 +271,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
                 }}
                 disabled={loadingReview}
                 className={cn(
-                  "flex items-center gap-1 px-3 h-8 rounded-xl text-[10px] font-black uppercase transition-all shadow-sm active:scale-95",
+                  "flex items-center gap-1 px-3 h-8 rounded-xl text-[10px] font-bold uppercase transition-all shadow-sm active:scale-95",
                   ui.isReviewed
                     ? "bg-white border border-emerald-100 hover:bg-emerald-100"
                     : "bg-white text-gray-900 border border-gray-200 hover:border-orange-500 hover:text-orange-600"
@@ -247,24 +292,27 @@ export const OrderCard: React.FC<OrderCardProps> = ({
                 {ui.isReviewed ? "Xem lại" : "Đánh giá"}
               </button>
             )}
+
             {ui.canReturn && (
               <button
                 onClick={handleReturnClick}
-                className="flex items-center gap-1.5 px-4 h-9 rounded-2xl text-[10px] font-black uppercase transition-all bg-white text-rose-500 border border-rose-100 hover:bg-rose-50 active:scale-95 shadow-sm"
+                className="flex items-center gap-1.5 px-4 h-9 rounded-2xl text-[10px] font-bold uppercase transition-all bg-white text-rose-500 border border-rose-100 hover:bg-rose-50 active:scale-95 shadow-sm"
               >
                 <RotateCcw size={14} /> Trả hàng
               </button>
             )}
+
             {ui.canReorder && (
               <button
                 type="button"
                 onClick={handleReorder}
-                className="flex items-center gap-1 px-3 h-8 rounded-xl text-[10px] font-black uppercase bg-orange-600 text-white hover:bg-orange-700 transition-all shadow-sm active:scale-95"
+                className="flex items-center gap-1 px-3 h-8 rounded-xl text-[10px] font-bold uppercase bg-orange-600 text-white hover:bg-orange-700 transition-all shadow-sm active:scale-95"
               >
                 <RefreshCcw size={12} strokeWidth={2.5} />
                 Mua lại
               </button>
             )}
+
             <button
               type="button"
               onClick={() => onViewDetail(order.orderId)}
@@ -277,17 +325,18 @@ export const OrderCard: React.FC<OrderCardProps> = ({
         </div>
       </div>
 
+      {/* --- MODALS --- */}
       <OrderCancelModal
-        isOpen={isCancelModalOpen}
-        onClose={() => setIsCancelModalOpen(false)}
-        onConfirm={(reason) => {
-          console.log("Hủy đơn với lý do:", reason);
-          setIsCancelModalOpen(false);
+        isOpen={cancelModalVisible}
+        onClose={() => setCancelModalVisible(false)}
+        onConfirm={async (reason) => {
+          await handleCancelOrder(reason);
           onOrderCancelled?.();
         }}
         orderNumber={order.orderNumber}
-        isCancelling={false}
+        isCancelling={cancelling}
       />
+
       {isReviewModalOpen && ui.productImageUrl && (
         <ReviewModal
           open={isReviewModalOpen}
@@ -295,7 +344,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
           onSuccess={() => {
             setDbReview({ rating: 5, comment: "Đã đánh giá" });
             setIsReviewModalOpen(false);
-            onOrderCancelled?.();
+            onOrderCancelled?.(); // Reload list nếu cần
           }}
           productId={ui.firstItem?.productId || ""}
           productName={ui.firstItem?.productName || ""}
@@ -303,11 +352,13 @@ export const OrderCard: React.FC<OrderCardProps> = ({
           orderId={order.orderId}
         />
       )}
+
       <ReturnOrderModal
         isOpen={isReturnOpen}
         onClose={() => setIsReturnOpen(false)}
         order={order}
       />
+
       {isPreviewModalOpen && reviewDisplayData && ui.productImageUrl && (
         <ReviewPreviewModal
           open={isPreviewModalOpen}

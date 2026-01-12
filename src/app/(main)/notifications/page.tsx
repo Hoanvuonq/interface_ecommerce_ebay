@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
-import { NotificationSreen } from "./_pages";
+import { NotificationScreen } from "./_pages";
 
 const Notification: React.FC = () => {
-  return <NotificationSreen />;
+  return <NotificationScreen />;
 };
 
 export default Notification;

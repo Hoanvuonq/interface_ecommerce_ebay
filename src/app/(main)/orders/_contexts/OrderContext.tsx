@@ -110,12 +110,15 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
     gcTime: 0,
   });
 
-  const orders = useMemo(
-    () => data?.pages.flatMap((p) => p.content || []) || [],
-    [data]
-  );
+  const orders = useMemo(() => {
+    const allOrders = data?.pages.flatMap((p) => p.content || []) || [];
+    return allOrders.sort((a, b) => {
+      const dateA = new Date(a.createdAt).getTime();
+      const dateB = new Date(b.createdAt).getTime();
+      return dateB - dateA; 
+    });
+  }, [data]);
 
-  // Infinite scroll observer with debounce
   const { ref: scrollRef, inView } = useInView({
     threshold: 0.1,
     rootMargin: "300px",

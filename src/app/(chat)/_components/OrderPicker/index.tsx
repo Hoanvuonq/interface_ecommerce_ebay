@@ -34,10 +34,10 @@ export const OrderPicker: React.FC<OrderPickerProps> = (props) => {
               <div className="flex items-center justify-between mb-4">
                 <div className="px-3 py-1 bg-gray-50 rounded-full border border-gray-100 flex items-center gap-1.5">
                   <Hash size={10} className="text-gray-400" />
-                  <span className="text-[11px] font-black text-gray-700 tracking-tighter">{order.orderNumber}</span>
+                  <span className="text-[11px] font-bold text-gray-700 tracking-tighter">{order.orderNumber}</span>
                 </div>
                 <span className={cn(
-                    "text-[9px] font-black px-3 py-1 rounded-full uppercase border shadow-xs",
+                    "text-[9px] font-bold px-3 py-1 rounded-full uppercase border shadow-xs",
                     ["DELIVERED", "COMPLETED"].includes(order.status) 
                       ? "bg-emerald-50 text-emerald-600 border-emerald-100" 
                       : "bg-orange-50 text-orange-600 border-orange-100"
@@ -78,7 +78,7 @@ export const OrderPicker: React.FC<OrderPickerProps> = (props) => {
               </div>
 
               <div className="flex items-center justify-between pt-3 border-t border-gray-50">
-                <p className="text-[13px] font-black text-orange-600 leading-none">{formatPrice(order.grandTotal)}</p>
+                <p className="text-[13px] font-bold text-orange-600 leading-none">{formatPrice(order.grandTotal)}</p>
                 <div className="flex gap-2">
                   <button onClick={() => onViewDetails(order)} className="w-9 h-9 flex items-center justify-center bg-gray-50 text-gray-400 rounded-xl hover:bg-orange-50 hover:text-orange-500 transition-colors">
                     <ExternalLink size={16} />
@@ -86,7 +86,7 @@ export const OrderPicker: React.FC<OrderPickerProps> = (props) => {
                   <button
                     onClick={() => onSendDirect(order)}
                     disabled={isSending}
-                    className="flex items-center gap-2 px-5 h-9 bg-orange-500 hover:bg-orange-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 disabled:bg-gray-200"
+                    className="flex items-center gap-2 px-5 h-9 bg-orange-500 hover:bg-orange-600 text-white rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all active:scale-95 disabled:bg-gray-200"
                   >
                     <Send size={12} /> GỬI
                   </button>

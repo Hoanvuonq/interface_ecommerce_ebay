@@ -3,35 +3,16 @@
 import { ProductCard } from "@/app/(main)/products/_components";
 import { ButtonField, SectionLoading } from "@/components";
 import { CustomProgressBar } from "@/components/custom/components/customProgressBar";
-import { useWishlist } from "@/app/(main)/wishlist/_hooks/useWishlist";
-import { isAuthenticated } from "@/utils/local.storage";
 import { Flame } from "lucide-react";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { cn } from "@/utils/cn";
 import { CountdownFlashSale } from "../CountdownFlashSale";
 import { useHomepageContext } from "../../_context/HomepageContext";
 import { SectionSreen } from "@/features/SectionSreen";
 
 export const FlashSaleSection: React.FC = () => {
-  const { flashSale, isLoading: contextLoading } = useHomepageContext();
-
-  const [wishlistMap, setWishlistMap] = useState<Map<string, boolean>>(
-    new Map()
-  );
-  const { checkVariantsInWishlist } = useWishlist();
-
-  useEffect(() => {
-    if (isAuthenticated() && flashSale.length > 0) {
-      const variantIds = flashSale
-        .map((p: any) => p.variants?.[0]?.id)
-        .filter((id: string) => !!id);
-
-      if (variantIds.length > 0) {
-        checkVariantsInWishlist(variantIds).then(setWishlistMap);
-      }
-    }
-  }, [flashSale, checkVariantsInWishlist]);
+  const { flashSale, isLoading: contextLoading, wishlistMap } = useHomepageContext();
 
   const calculateDiscount = (price: number, salePrice: number) => {
     if (!price || !salePrice || price <= salePrice) return 0;
@@ -52,7 +33,7 @@ export const FlashSaleSection: React.FC = () => {
   if (flashSale.length === 0) return null;
 
   return (
-    <SectionSreen  id="calatha-mall" animation="slideUp">
+    <SectionSreen id="calatha-mall" animation="slideUp">
       <CountdownFlashSale />
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 pt-3">

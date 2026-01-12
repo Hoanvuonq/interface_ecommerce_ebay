@@ -520,13 +520,17 @@ export const userProductService = {
    * Get all products of current user
    * GET /api/v1/user/products
    */
-  getAll(page = 0, size = 20) {
+getAllProducts(page = 0, size = 20) {
     return request<ApiResponseDTO<PageDTO<UserProductDTO>>>({
-      method: "GET",
-      url: `/${API_ENDPOINT_USER_PRODUCTS}`,
-      params: { page, size },
+      method: "POST",
+      url: `/${API_ENDPOINT_USER_PRODUCTS}/search`,
+      
+      data: {
+        page: page,
+        size: size
+      }
     });
-  },
+},
 
   /**
    * Get user's products by status

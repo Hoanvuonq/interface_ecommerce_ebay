@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { formatPrice } from "@/hooks/useFormatPrice";
-import { resolveOrderItemImageUrl } from "../../_types/order";
+import { resolveOrderItemImageUrl } from "../../_constants/order.constants";
 import { Package, Star, Tag } from "lucide-react";
 import NextLink from "next/link";
 import { cn } from "@/utils/cn";
@@ -67,7 +67,7 @@ export const OrderItemRow = ({
 
       <div className="flex flex-row items-center  justify-between sm:justify-center gap-3 shrink-0 border-t sm:border-t-0 border-dashed border-gray-100 pt-3 sm:pt-0">
         <div className="flex flex-col sm:items-end">
-          <p className="text-lg sm:text-xl font-black text-orange-600 tracking-tight leading-none">
+          <p className="text-lg sm:text-xl font-bold text-orange-600 tracking-tight leading-none">
             {formatPrice(item.lineTotal)}
           </p>
         </div>

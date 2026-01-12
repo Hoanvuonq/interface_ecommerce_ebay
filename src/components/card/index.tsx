@@ -17,7 +17,7 @@ export const CardComponents: React.FC<CardComponentsProps> = ({
   ...rest
 }) => {
   const baseClasses = cn(
-    "bg-white rounded-xl shadow-lg border border-gray-100 transition-shadow duration-300",
+    "bg-white rounded-4xl shadow-custom border border-gray-100 transition-shadow duration-300",
     className
   );
 

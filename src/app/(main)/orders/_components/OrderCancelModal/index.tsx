@@ -46,7 +46,7 @@ export const OrderCancelModal: React.FC<OrderCancelModalProps> = ({
         <AlertCircle size={22} strokeWidth={2.5} />
       </div>
       <div>
-        <h3 className="text-lg font-black text-gray-800 tracking-tight leading-none">Hủy đơn hàng</h3>
+        <h3 className="text-lg font-bold text-gray-800 tracking-tight leading-none">Hủy đơn hàng</h3>
         <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1.5">Mã đơn: #{orderNumber}</p>
       </div>
     </div>
@@ -57,7 +57,7 @@ export const OrderCancelModal: React.FC<OrderCancelModalProps> = ({
       <button
         type="button"
         onClick={onClose}
-        className="px-6 py-2.5 text-xs font-black uppercase tracking-widest text-gray-500 hover:text-gray-700 transition-colors"
+        className="px-6 py-2.5 text-xs font-bold uppercase tracking-widest text-gray-500 hover:text-gray-700 transition-colors"
       >
         Không phải bây giờ
       </button>
@@ -66,7 +66,7 @@ export const OrderCancelModal: React.FC<OrderCancelModalProps> = ({
         onClick={handleConfirm}
         disabled={isButtonDisabled}
         className={cn(
-          "flex items-center gap-2 px-8 py-2.5 text-xs font-black uppercase tracking-widest text-white rounded-xl shadow-lg transition-all active:scale-95 disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed",
+          "flex items-center gap-2 px-8 py-2.5 text-xs font-bold uppercase tracking-widest text-white rounded-xl shadow-lg transition-all active:scale-95 disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed",
           "bg-orange-500 hover:bg-orange-600 shadow-orange-200"
         )}
       >
@@ -89,14 +89,14 @@ export const OrderCancelModal: React.FC<OrderCancelModalProps> = ({
         <div className="p-4 bg-orange-50/50 rounded-2xl border border-orange-100 flex gap-3">
           <div className="w-1.5 h-auto bg-orange-400 rounded-full shrink-0" />
           <p className="text-[13px] text-orange-800 leading-relaxed font-medium">
-            <span className="font-black uppercase text-[11px] block mb-1">Lưu ý quan trọng:</span>
+            <span className="font-bold uppercase text-[11px] block mb-1">Lưu ý quan trọng:</span>
             Hành động này <span className="font-bold underline">không thể hoàn tác</span>. Bạn chỉ có thể cập nhật thông tin nhận hàng 1 lần duy nhất thay vì hủy đơn.
           </p>
         </div>
 
         {/* Reasons List */}
         <div className="space-y-3">
-          <label className="text-[11px] font-black text-gray-400 uppercase tracking-[0.2em] px-1">Vui lòng chọn lý do</label>
+          <label className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.2em] px-1">Vui lòng chọn lý do</label>
           <div className="grid gap-2">
             {PREDEFINED_REASONS.map((reason) => (
               <label
@@ -137,7 +137,7 @@ export const OrderCancelModal: React.FC<OrderCancelModalProps> = ({
           <div className="space-y-2 animate-in fade-in zoom-in-95 duration-300">
             <div className="flex items-center gap-2 px-1">
               <MessageSquare size={14} className="text-orange-500" />
-              <label className="text-[11px] font-black text-gray-500 uppercase tracking-widest">Chi tiết lý do khác</label>
+              <label className="text-[11px] font-bold text-gray-500 uppercase tracking-widest">Chi tiết lý do khác</label>
             </div>
             <textarea
               rows={3}

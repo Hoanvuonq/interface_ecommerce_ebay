@@ -1,7 +1,7 @@
 "use client";
 
-import { SectionSreen } from "@/features/SectionSreen";
 import { SectionLoading } from "@/components";
+import { SectionSreen } from "@/features/SectionSreen";
 import { cn } from "@/utils/cn";
 import {
   resolveMediaUrl as resolveMediaUrlHelper,
@@ -19,8 +19,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo } from "react";
-import { useHomepageData } from "../../_hooks/useHomePageData";
-import useWishlistStatus from "../../_hooks/useWishlistStatus";
+import { useHomepageContext } from "../../_context/HomepageContext";
 
 const getProductImageUrl = (product: any) => {
   const media = product?.media || [];
@@ -80,15 +79,13 @@ const BrandCard = ({ product, isWishlisted }: { product: any; isWishlisted: bool
 };
 
 export const CalathaMallSection = () => {
-  const { flashSale, saleProducts, isLoading, isInitialLoading } = useHomepageData("vi");
+  const { flashSale, saleProducts, isLoading, isInitialLoading, wishlistMap } = useHomepageContext();
 
   const displayProducts = useMemo(() => {
     const rawList = Array.isArray(flashSale) && flashSale.length > 0 ? flashSale : saleProducts;
     const finalArray = Array.isArray(rawList) ? rawList : rawList?.content || [];
     return finalArray.slice(0, 7);
   }, [flashSale, saleProducts]);
-
-  const { wishlistMap } = useWishlistStatus(displayProducts);
 
   if (isLoading || isInitialLoading) return <SectionLoading />;
   if (!displayProducts.length) return null;

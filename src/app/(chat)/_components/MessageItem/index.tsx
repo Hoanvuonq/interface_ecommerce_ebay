@@ -95,7 +95,7 @@ export const MessageItem = ({
             isMine ? "items-end" : "items-start"
           )}
         >
-          <span className="text-[11px] font-black text-gray-500 mb-1 px-1 uppercase tracking-wider select-none">
+          <span className="text-[11px] font-bold text-gray-500 mb-1 px-1 uppercase tracking-wider select-none">
             {senderName}
           </span>
 
@@ -124,7 +124,7 @@ export const MessageItem = ({
                       : "border-slate-300 bg-slate-50 text-slate-600"
                   )}
                 >
-                  <span className="font-black block text-[9px] uppercase mb-0.5 opacity-70 tracking-tight">
+                  <span className="font-bold block text-[9px] uppercase mb-0.5 opacity-70 tracking-tight">
                     Đang trả lời
                   </span>
                   <p className="line-clamp-1 italic">
@@ -165,7 +165,7 @@ export const MessageItem = ({
                   </span>
                 )}
                 {message.isEdited && !isDeleted && (
-                  <span className="text-[9px] font-black uppercase ml-1 px-1.5 py-0.5 rounded-md bg-black/20 text-white/90">
+                  <span className="text-[9px] font-bold uppercase ml-1 px-1.5 py-0.5 rounded-md bg-black/20 text-white/90">
                     Đã sửa
                   </span>
                 )}
@@ -206,7 +206,7 @@ export const MessageItem = ({
                           setShowMenu(false);
                         }}
                         className={cn(
-                          "w-full text-left px-4 py-2.5 text-[12px] font-black flex items-center gap-3 hover:bg-orange-50 transition-colors uppercase tracking-wide",
+                          "w-full text-left px-4 py-2.5 text-[12px] font-bold flex items-center gap-3 hover:bg-orange-50 transition-colors uppercase tracking-wide",
                           item.danger
                             ? "text-red-500 hover:bg-red-50"
                             : "text-slate-700 hover:text-orange-600"

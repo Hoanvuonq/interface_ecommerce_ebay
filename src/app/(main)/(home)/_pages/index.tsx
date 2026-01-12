@@ -5,7 +5,6 @@ import { HomepageProvider } from "@/app/(main)/(home)/_context/HomepageContext";
 import BannerSidebar from "../_components/BannerSidebar";
 import { CategoriesSection } from "../_components/CategoriesSection";
 import { FlashSaleSection } from "../_components/FlashSale";
-import NewsletterSignup from "../_components/NewsletterSignup";
 import { ProductShowcase } from "../_components/ProductShowcase";
 import { CalathaMallSection } from "../_components/CalathaMallSection";
 

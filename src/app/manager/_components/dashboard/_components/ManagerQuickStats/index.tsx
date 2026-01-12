@@ -1,6 +1,6 @@
 'use client';
 
-import { usePlatformDashboard } from '@/hooks/analytics';
+import { usePlatformDashboard } from '@/app/manager/_components/analytics/_hooks';
 import {
     AlertCircle,
     ArrowRight,

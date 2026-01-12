@@ -14,7 +14,7 @@ export const CustomBreadcrumb: React.FC<BreadcrumbProps> = ({ items }) => {
     <nav className="flex items-center pb-2" aria-label="Breadcrumb">
       <ol 
         role="list" 
-        className="flex items-center p-2 bg-white/50 backdrop-blur-md rounded-2xl border uppercase border-gray-100 shadow-sm transition-all duration-300 hover:shadow-md"
+        className="flex items-center p-2 bg-white/50 backdrop-blur-md rounded-2xl border uppercase border-gray-100 transition-all duration-300 shadow-custom"
       >
         <li className="flex items-center">
           <Link

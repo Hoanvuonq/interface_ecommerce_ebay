@@ -64,7 +64,7 @@ export const PickupModal: React.FC<PickupModalProps> = ({
                   <div className="p-2 bg-orange-500 rounded-2xl text-white shadow-lg shadow-orange-100">
                     <Icon size={18} />
                   </div>
-                  <h3 className="text-[15px] font-black text-gray-800 uppercase tracking-tight">{title}</h3>
+                  <h3 className="text-[15px] font-bold text-gray-800 uppercase tracking-tight">{title}</h3>
                 </div>
                 <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full text-gray-400 transition-colors">
                   <X size={20} />
@@ -86,7 +86,7 @@ export const PickupModal: React.FC<PickupModalProps> = ({
               {isLoading ? (
                 <div className="flex flex-col items-center justify-center py-20 gap-3">
                   <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
-                  <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Đang tải dữ liệu...</span>
+                  <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Đang tải dữ liệu...</span>
                 </div>
               ) : children}
             </div>

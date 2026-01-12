@@ -18,7 +18,8 @@ export const SelectComponent = ({
 }: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
-  const [dropdownStyle, setDropdownStyle] = useState<React.CSSProperties | null>(null);
+  const [dropdownStyle, setDropdownStyle] =
+    useState<React.CSSProperties | null>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const filteredOptions = options.filter((opt) =>
@@ -48,13 +49,13 @@ export const SelectComponent = ({
       const viewportHeight = window.innerHeight;
       const dropdownMaxHeight = 280;
       const gap = 8;
-      
-      // Kiểm tra không gian phía dưới
+
       const spaceBelow = viewportHeight - rect.bottom;
-      const showAtTop = spaceBelow < dropdownMaxHeight && rect.top > dropdownMaxHeight;
+      const showAtTop =
+        spaceBelow < dropdownMaxHeight && rect.top > dropdownMaxHeight;
 
       const style: React.CSSProperties = {
-        position: 'fixed',
+        position: "fixed",
         left: rect.left,
         width: rect.width,
         zIndex: 9999,
@@ -89,7 +90,10 @@ export const SelectComponent = ({
     }
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as Node;
-      if (!wrapperRef.current?.contains(target) && !document.getElementById("select-dropdown-portal")?.contains(target)) {
+      if (
+        !wrapperRef.current?.contains(target) &&
+        !document.getElementById("select-dropdown-portal")?.contains(target)
+      ) {
         setIsOpen(false);
       }
     };
@@ -116,78 +120,96 @@ export const SelectComponent = ({
         <div
           className={cn(
             "w-full h-12 px-5 bg-gray-50/50 border border-gray-200 rounded-2xl flex items-center justify-between cursor-pointer transition-all select-none shadow-sm",
-            disabled ? "opacity-50 cursor-not-allowed bg-gray-100" : "hover:border-orange-400 hover:bg-white",
+            disabled
+              ? "opacity-50 cursor-not-allowed bg-gray-100"
+              : "hover:border-orange-400 hover:bg-white",
             isOpen && "border-orange-500 ring-4 ring-orange-500/10 bg-white"
           )}
           onClick={() => !disabled && setIsOpen(!isOpen)}
         >
-          <span className={cn(
-            "text-sm font-semibold truncate",
-            (!value || (Array.isArray(value) && value.length === 0)) ? "text-gray-300" : "text-gray-700"
-          )}>
+          <span
+            className={cn(
+              "text-xs font-semibold truncate",
+              !value || (Array.isArray(value) && value.length === 0)
+                ? "text-gray-400"
+                : "text-gray-700"
+            )}
+          >
             {getDisplayLabel()}
           </span>
-          <FaChevronDown className={cn(
-            "text-[10px] text-gray-600 transition-transform duration-300",
-            isOpen && "rotate-180 text-orange-500"
-          )} />
+          <FaChevronDown
+            className={cn(
+              "text-[10px] text-gray-600 transition-transform duration-300",
+              isOpen && "rotate-180 text-orange-500"
+            )}
+          />
         </div>
       </div>
 
-      {isOpen && typeof document !== "undefined" && createPortal(
-        <div
-          id="select-dropdown-portal"
-          className={cn(
-            "bg-white border border-gray-100 rounded-2xl shadow-2xl flex flex-col overflow-hidden",
-            "animate-in fade-in zoom-in-95 duration-200 ease-out"
-          )}
-          style={dropdownStyle!}
-        >
-          <div className="p-3 border-b border-gray-50">
-            <div className="relative">
-              <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 text-xs" />
-              <input
-                autoFocus
-                className="w-full pl-10 pr-4 h-10 text-sm bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-orange-300 focus:bg-white transition-all font-medium text-gray-600"
-                placeholder="Tìm kiếm..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </div>
-          </div>
-
-          <div className="overflow-y-auto max-h-55 p-2 custom-scrollbar">
-            {filteredOptions.length > 0 ? (
-              filteredOptions.map((opt) => {
-                const isSelected = isMulti
-                  ? Array.isArray(value) && value.includes(opt.value)
-                  : value === opt.value;
-
-                return (
-                  <div
-                    key={opt.value}
-                    className={cn(
-                      "px-4 py-3 text-sm cursor-pointer rounded-xl transition-all flex items-center justify-between mb-1 group",
-                      isSelected
-                        ? "bg-orange-50 text-orange-600 font-bold"
-                        : "text-gray-600 hover:bg-gray-50 hover:text-orange-500"
-                    )}
-                    onClick={() => handleSelect(opt.value)}
-                  >
-                    <span className="truncate">{opt.label}</span>
-                    {isSelected && <FaCheck className="text-orange-500 animate-in zoom-in duration-200" size={12} />}
-                  </div>
-                );
-              })
-            ) : (
-              <div className="py-8 text-center flex flex-col items-center justify-center">
-                <span className="text-sm font-medium text-gray-600">Không tìm thấy kết quả</span>
-              </div>
+      {isOpen &&
+        dropdownStyle &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div
+            id="select-dropdown-portal"
+            className={cn(
+              "bg-white border border-gray-100 rounded-2xl shadow-2xl flex flex-col overflow-hidden",
+              "animate-in fade-in zoom-in-95 duration-200 ease-out"
             )}
-          </div>
-        </div>,
-        document.body
-      )}
+            style={dropdownStyle}
+          >
+            <div className="p-3 border-b border-gray-50">
+              <div className="relative">
+                <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 text-xs" />
+                <input
+                  autoFocus
+                  className="w-full pl-10 pr-4 h-10 text-sm bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-orange-300 focus:bg-white transition-all font-medium text-gray-600"
+                  placeholder="Tìm kiếm..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="overflow-y-auto max-h-55 p-2 custom-scrollbar">
+              {filteredOptions.length > 0 ? (
+                filteredOptions.map((opt) => {
+                  const isSelected = isMulti
+                    ? Array.isArray(value) && value.includes(opt.value)
+                    : value === opt.value;
+
+                  return (
+                    <div
+                      key={opt.value}
+                      className={cn(
+                        "px-4 py-3 text-sm cursor-pointer rounded-xl transition-all flex items-center justify-between mb-1 group",
+                        isSelected
+                          ? "bg-orange-50 text-orange-600 font-bold"
+                          : "text-gray-600 hover:bg-gray-50 hover:text-orange-500"
+                      )}
+                      onClick={() => handleSelect(opt.value)}
+                    >
+                      <span className="truncate">{opt.label}</span>
+                      {isSelected && (
+                        <FaCheck
+                          className="text-orange-500 animate-in zoom-in duration-200"
+                          size={12}
+                        />
+                      )}
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="py-8 text-center flex flex-col items-center justify-center">
+                  <span className="text-sm font-medium text-gray-600">
+                    Không tìm thấy kết quả
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>,
+          document.body
+        )}
     </>
   );
 };
