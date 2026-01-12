@@ -27,6 +27,7 @@ export * from "./ProductGallery";
 export * from "./rating";
 export * from "./Search";
 export * from "./sectionHeader";
+export * from "./selectComponent";
 export * from "./selectField";
 export * from "./simpleModal";
 export * from "./statCardComponents";
@@ -34,4 +35,4 @@ export * from "./tags";
 export * from "./textAreaField";
 export * from "./themeSwitcher";
 export * from "./voucher";
-export { SelectComponent } from "./selectComponent";
+
