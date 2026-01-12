@@ -1,4 +1,3 @@
-// Direct export file to bypass folder resolution issues
 "use client";
 
 import { cn } from "@/utils/cn";
@@ -6,20 +5,21 @@ import { useIsomorphicLayoutEffect } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { FaChevronDown, FaSearch, FaCheck } from "react-icons/fa";
+import { useLayoutEffect } from "react";
 
-interface SelectOption {
+export interface Option {
   label: string;
   value: string;
 }
 
 export interface SelectProps {
-  options: SelectOption[];
-  value?: string | string[];
-  onChange: (value: string | string[]) => void;
+  options: Option[];
+  value?: string | string[]; // Có thể là 1 string hoặc mảng string
+  onChange: (value: any) => void;
   placeholder?: string;
   disabled?: boolean;
   className?: string;
-  isMulti?: boolean;
+  isMulti?: boolean; // Thêm prop để phân biệt chọn 1 hay nhiều
 }
 
 export const SelectComponent = ({
