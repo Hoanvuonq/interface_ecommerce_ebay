@@ -3,6 +3,7 @@ import { devtools } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 import { CategorySummaryResponse } from "@/types/categories/category.summary";
 import { UploadFile } from '@/app/(main)/orders/_types/review';
+import { CategoryResponse } from "@/types/categories/category.detail";
 
 // --- Types ---
 export type OptionConfig = {
@@ -40,18 +41,35 @@ interface ProductState {
   categoryId: string;
   categoryPath: string;
   categoryTree: CategorySummaryResponse[];
+  categories: CategoryResponse[];
+  categoriesLoading: boolean;
+  loadingCategoryTree: boolean;
+  categoryModalOpen: boolean;
+  categorySearchText: string;
   selectedLevel1: CategorySummaryResponse | null;
   selectedLevel2: CategorySummaryResponse | null;
   selectedLevel3: CategorySummaryResponse | null;
   selectedLevel4: CategorySummaryResponse | null;
+  secondLevelCategories: CategorySummaryResponse[];
+  thirdLevelCategories: CategorySummaryResponse[];
+  fourthLevelCategories: CategorySummaryResponse[];
   
   // Media
   fileList: UploadFile[];
   videoList: UploadFile[];
+  uploading: boolean;
+  uploadingVideo: boolean;
+
+  // Options
+  optionGroups: OptionConfig[];
+  addOptionModalOpen: boolean;
+  newOptionName: string;
 
   // Variants
-  optionGroups: OptionConfig[];
   variants: VariantData[];
+
+  // Form state
+  hasUnsavedChanges: boolean;
 }
 
 interface ProductActions {
@@ -59,17 +77,30 @@ interface ProductActions {
   setActiveTab: (tab: string) => void;
   setBasicInfo: (field: keyof Pick<ProductState, 'name' | 'description' | 'basePrice' | 'active'>, value: any) => void;
   
-  // Category
+  // Category actions
   setCategoryTree: (tree: CategorySummaryResponse[]) => void;
+  setCategories: (categories: CategoryResponse[]) => void;
+  setCategoriesLoading: (loading: boolean) => void;
+  setLoadingCategoryTree: (loading: boolean) => void;
+  setCategoryModalOpen: (open: boolean) => void;
+  setCategorySearchText: (text: string) => void;
   selectCategoryLevel: (level: 1 | 2 | 3 | 4, category: CategorySummaryResponse | null) => void;
   confirmCategorySelection: () => void;
   setCategoryId: (id: string, path: string) => void;
+  setSecondLevelCategories: (categories: CategorySummaryResponse[]) => void;
+  setThirdLevelCategories: (categories: CategorySummaryResponse[]) => void;
+  setFourthLevelCategories: (categories: CategorySummaryResponse[]) => void;
 
-  // Media
+  // Media actions
   setFileList: (files: UploadFile[] | ((prev: UploadFile[]) => UploadFile[])) => void;
   setVideoList: (videos: UploadFile[] | ((prev: UploadFile[]) => UploadFile[])) => void;
+  setUploading: (uploading: boolean) => void;
+  setUploadingVideo: (uploading: boolean) => void;
 
-  // Options
+  // Options actions
+  setOptionGroups: (groups: OptionConfig[]) => void;
+  setAddOptionModalOpen: (open: boolean) => void;
+  setNewOptionName: (name: string) => void;
   addOptionGroup: (name: string) => void;
   removeOptionGroup: (index: number) => void;
   updateOptionGroupName: (index: number, name: string) => void;
@@ -77,11 +108,14 @@ interface ProductActions {
   removeOptionValue: (groupIndex: number, valueIndex: number) => void;
   updateOptionValue: (groupIndex: number, valueIndex: number, value: string) => void;
 
-  // Variants
+  // Variants actions
   setVariants: (variants: VariantData[]) => void;
   updateVariant: (index: number, field: keyof VariantData, value: any) => void;
   updateAllVariants: (field: keyof VariantData, value: any) => void;
   regenerateVariants: () => void;
+  
+  // Form state
+  setHasUnsavedChanges: (hasChanges: boolean) => void;
   
   reset: () => void; // Clean up store
 }
@@ -115,14 +149,27 @@ const initialState: ProductState = {
   categoryId: "",
   categoryPath: "",
   categoryTree: [],
+  categories: [],
+  categoriesLoading: false,
+  loadingCategoryTree: false,
+  categoryModalOpen: false,
+  categorySearchText: "",
   selectedLevel1: null,
   selectedLevel2: null,
   selectedLevel3: null,
   selectedLevel4: null,
+  secondLevelCategories: [],
+  thirdLevelCategories: [],
+  fourthLevelCategories: [],
   fileList: [],
   videoList: [],
+  uploading: false,
+  uploadingVideo: false,
   optionGroups: [],
+  addOptionModalOpen: false,
+  newOptionName: "",
   variants: [],
+  hasUnsavedChanges: false,
 };
 
 export const useProductStore = create<ProductState & ProductActions>()(
@@ -135,7 +182,6 @@ export const useProductStore = create<ProductState & ProductActions>()(
 
       setBasicInfo: (field, value) => set((state) => {
         state[field] = value as never;
-        // Nếu thay đổi giá gốc và chưa có variants phức tạp, update luôn giá variants
         if (field === 'basePrice' && state.optionGroups.length === 0 && state.variants.length === 1) {
              state.variants[0].price = value;
              state.variants[0].corePrice = value;
@@ -144,13 +190,37 @@ export const useProductStore = create<ProductState & ProductActions>()(
 
       // --- Category ---
       setCategoryTree: (tree) => set({ categoryTree: tree }),
+      setCategories: (categories) => set({ categories }),
+      setCategoriesLoading: (loading) => set({ categoriesLoading: loading }),
+      setLoadingCategoryTree: (loading) => set({ loadingCategoryTree: loading }),
+      setCategoryModalOpen: (open) => set({ categoryModalOpen: open }),
+      setCategorySearchText: (text) => set({ categorySearchText: text }),
       setCategoryId: (id, path) => set({ categoryId: id, categoryPath: path }),
+      setSecondLevelCategories: (categories) => set({ secondLevelCategories: categories }),
+      setThirdLevelCategories: (categories) => set({ thirdLevelCategories: categories }),
+      setFourthLevelCategories: (categories) => set({ fourthLevelCategories: categories }),
+      
       selectCategoryLevel: (level, category) => set((state) => {
-        if (level === 1) { state.selectedLevel1 = category; state.selectedLevel2 = null; state.selectedLevel3 = null; state.selectedLevel4 = null; }
-        else if (level === 2) { state.selectedLevel2 = category; state.selectedLevel3 = null; state.selectedLevel4 = null; }
-        else if (level === 3) { state.selectedLevel3 = category; state.selectedLevel4 = null; }
-        else if (level === 4) { state.selectedLevel4 = category; }
+        if (level === 1) { 
+          state.selectedLevel1 = category; 
+          state.selectedLevel2 = null; 
+          state.selectedLevel3 = null; 
+          state.selectedLevel4 = null; 
+        }
+        else if (level === 2) { 
+          state.selectedLevel2 = category; 
+          state.selectedLevel3 = null; 
+          state.selectedLevel4 = null; 
+        }
+        else if (level === 3) { 
+          state.selectedLevel3 = category; 
+          state.selectedLevel4 = null; 
+        }
+        else if (level === 4) { 
+          state.selectedLevel4 = category; 
+        }
       }),
+      
       confirmCategorySelection: () => set((state) => {
         const cat = state.selectedLevel4 || state.selectedLevel3 || state.selectedLevel2 || state.selectedLevel1;
         if (cat) {
@@ -169,8 +239,14 @@ export const useProductStore = create<ProductState & ProductActions>()(
         const newVideos = typeof videos === 'function' ? videos(state.videoList) : videos;
         state.videoList = newVideos as any;
       }),
+      setUploading: (uploading) => set({ uploading }),
+      setUploadingVideo: (uploading) => set({ uploadingVideo: uploading }),
 
       // --- Options ---
+      setOptionGroups: (groups) => set({ optionGroups: groups }),
+      setAddOptionModalOpen: (open) => set({ addOptionModalOpen: open }),
+      setNewOptionName: (name) => set({ newOptionName: name }),
+      
       addOptionGroup: (name) => set((state) => {
          state.optionGroups.push({ id: `opt-${Date.now()}`, name, values: [""] });
          get().regenerateVariants();
@@ -181,7 +257,6 @@ export const useProductStore = create<ProductState & ProductActions>()(
       }),
       updateOptionGroupName: (index, name) => set((state) => {
          state.optionGroups[index].name = name;
-         // Tên nhóm không ảnh hưởng cấu trúc variants nên ko cần regenerate, chỉ cần UI update
       }),
       addOptionValue: (groupIndex) => set((state) => {
          const group = state.optionGroups[groupIndex];
@@ -240,6 +315,9 @@ export const useProductStore = create<ProductState & ProductActions>()(
          });
          state.variants = newVariants;
       }),
+
+      // Form state
+      setHasUnsavedChanges: (hasChanges) => set({ hasUnsavedChanges: hasChanges }),
 
       reset: () => set(initialState),
     }))

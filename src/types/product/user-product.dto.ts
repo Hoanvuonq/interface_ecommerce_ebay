@@ -47,7 +47,7 @@ export interface CreateUserProductBulkDTO {
     name: string;
     // slug is auto-generated from name by backend
     description?: string;
-
+    basePrice?: number; // Add this field
     categoryId: string;
     active: boolean;
     variants?: CreateUserProductVariantDTO[];
@@ -56,7 +56,6 @@ export interface CreateUserProductBulkDTO {
     saveAsDraft?: boolean; // true = DRAFT status, false = PENDING status
     replaceAllEntities?: boolean; // true = replace all variants/media/options on update
 }
-
 // ================== NEW: Detailed types matching BE response ==================
 export interface UserProductVariantOptionValueDTO {
     id: string;
@@ -166,7 +165,7 @@ export interface UpdateUserProductBulkDTO {
     name: string;
     // slug is auto-generated from name by backend
     description?: string;
-
+    basePrice?: number; // Add this field
     categoryId: string;
     active: boolean;
     variants?: CreateUserProductVariantDTO[];
