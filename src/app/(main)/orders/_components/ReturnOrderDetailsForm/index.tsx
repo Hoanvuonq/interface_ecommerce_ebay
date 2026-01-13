@@ -31,7 +31,7 @@ export const ReturnOrderDetailsForm: React.FC<ReturnOrderDetailsFormProps> = ({
 }) => {
   return (
     <div className="space-y-7 animate-in fade-in slide-in-from-bottom-4  duration-500 pb-4">
-      <div className="bg-gray-50/80 backdrop-blur-md border border-white rounded-[2rem] p-4 flex items-center gap-4 shadow-sm group">
+      <div className="bg-gray-50/80 backdrop-blur-md border border-white rounded-4xl p-4 flex items-center gap-4 shadow-sm group">
         <div className="relative w-16 h-16 rounded-2xl overflow-hidden  shadow-inner bg-white shrink-0 ring-1 ring-black/5">
           {productImage ? (
             <Image

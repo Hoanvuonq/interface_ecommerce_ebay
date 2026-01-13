@@ -67,7 +67,7 @@ export const ProductDescription = ({
           <div className="absolute bottom-5 right-5 flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white shadow-sm border border-orange-100">
             <span
               className={cn(
-                "text-[11px] font-black tabular-nums",
+                "text-[11px] font-bold tabular-nums",
                 value.length >= maxLength ? "text-red-500" : "text-orange-600"
               )}
             >
@@ -93,7 +93,7 @@ export const ProductDescription = ({
           <Info size={20} strokeWidth={2.5} />
         </div>
         <div className="space-y-1">
-          <h4 className="text-[11px] font-black text-orange-700 uppercase tracking-widest">
+          <h4 className="text-[11px] font-bold text-orange-700 uppercase tracking-widest">
             Mẹo viết mô tả thu hút
           </h4>
           <p className="text-xs text-orange-900/70 leading-relaxed font-semibold">

@@ -6,12 +6,16 @@ import React, {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { useParams } from "next/navigation";
 import { useToast } from "@/hooks/useToast";
 import { createConversation } from "@/app/(chat)/_services";
-import { publicProductService } from "@/services/products/product.service";
+import {
+  publicProductService,
+  userProductService,
+} from "@/services/products/product.service";
 import { getProductReviewComments } from "@/services/review/review.service";
 import { ConversationType } from "@/app/(chat)/_types/chat.dto";
 import { getStoredUserDetail } from "@/utils/jwt";
@@ -48,7 +52,11 @@ interface ProductDetailContextType {
   reviewsLoading: boolean;
   reviewHasMore: boolean;
   loadMoreReviews: () => Promise<void>;
-  fetchProductReviews: (productId: string, page?: number, reset?: boolean) => Promise<void>;
+  fetchProductReviews: (
+    productId: string,
+    page?: number,
+    reset?: boolean
+  ) => Promise<void>;
   creatingShopChat: boolean;
   handleOpenShopChat: () => Promise<void>;
   galleryImages: { key: string; thumb: string; preview: string }[];
@@ -72,166 +80,152 @@ const ProductDetailContext = createContext<
   ProductDetailContextType | undefined
 >(undefined);
 
-// --- HÀM TÍNH GIÁ VOUCHER (Tách ra để dùng lại) ---
 const calculatePriceWithVoucher = (price: number, voucher: any) => {
   if (!voucher) return price;
-
   let discount = 0;
   if (voucher.discountType === "PERCENTAGE") {
     discount = (price * (voucher.discountValue || 0)) / 100;
-    if (voucher.maxDiscount && voucher.maxDiscount > 0) {
+    if (voucher.maxDiscount && voucher.maxDiscount > 0)
       discount = Math.min(discount, voucher.maxDiscount);
-    }
   } else {
     discount = voucher.discountAmount || 0;
   }
-
   return Math.max(0, price - discount);
 };
 
 export const ProductDetailProvider = ({
   children,
+  productId: propProductId,
+  mode = "public",
 }: {
   children: React.ReactNode;
+  productId?: string;
+  mode?: "public" | "admin";
 }) => {
   const params = useParams() as { id: string };
   const { warning, error: toastError } = useToast();
 
-  // State
+  const isInitialMount = useRef(true);
+  const targetId = propProductId || params.id;
+
   const [product, setProduct] = useState<PublicProductDetailDTO | null>(null);
   const [featured, setFeatured] = useState<PublicProductListItemDTO[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedVariant, setSelectedVariant] =
     useState<PublicProductVariantDTO | null>(null);
-
-  // Review State
   const [productReviews, setProductReviews] = useState<ReviewResponse[]>([]);
   const [reviewPage, setReviewPage] = useState(0);
   const [reviewHasMore, setReviewHasMore] = useState(false);
   const [reviewsLoading, setReviewsLoading] = useState(false);
-
-  // Chat & UI State
   const [creatingShopChat, setCreatingShopChat] = useState(false);
   const [activeThumbnail, setActiveThumbnail] = useState<string | null>(null);
 
-  // 1. Identify if ID is slug or UUID/ID
   const isSlug = useMemo(() => {
-    const id = params.id;
-    if (!id) return false;
+    if (mode === "admin" || !targetId) return false;
     const uuidPattern =
       /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-    if (uuidPattern.test(id)) return false;
-    if (/^\d+$/.test(id)) return false;
-    return /[a-zA-Z-]/.test(id);
-  }, [params.id]);
+    return (
+      !uuidPattern.test(targetId) &&
+      !/^\d+$/.test(targetId) &&
+      /[a-zA-Z-]/.test(targetId)
+    );
+  }, [targetId, mode]);
 
-  // 2. Fetch Data
   const fetchData = useCallback(async () => {
+    if (!targetId) return;
     try {
-      setLoading(true);
-      const res = isSlug
-        ? await publicProductService.getBySlug(params.id)
-        : await publicProductService.getById(params.id);
+      if (isInitialMount.current) setLoading(true);
 
-      const data = "data" in res ? (res as any).data : res;
-      setProduct(data);
-
-      // --- LOGIC CHỌN BIẾN THỂ GIÁ TỐT NHẤT ---
-      if (data?.variants && data.variants.length > 0) {
-        const bestVoucher = data.bestShopVoucher ?? data.bestPlatformVoucher;
-
-        const bestVariant = data.variants.reduce((prev: any, curr: any) => {
-          const prevPrice = prev.price ?? 0;
-          const currPrice = curr.price ?? 0;
-
-          const prevFinal =
-            prev.priceAfterDiscount ??
-            calculatePriceWithVoucher(prevPrice, bestVoucher);
-          const currFinal =
-            curr.priceAfterDiscount ??
-            calculatePriceWithVoucher(currPrice, bestVoucher);
-
-          return currFinal < prevFinal ? curr : prev;
-        });
-
-        setSelectedVariant(bestVariant);
+      let res;
+      if (mode === "admin") {
+        res = await userProductService.getById(targetId);
       } else {
-        setSelectedVariant(null);
+        res = isSlug
+          ? await publicProductService.getBySlug(targetId)
+          : await publicProductService.getById(targetId);
       }
 
-      if (data?.id) {
-        const [rev, featRes] = await Promise.all([
+      const data = res?.data || res;
+      setProduct(data);
+
+      // FIX: Chỉ setSelectedVariant lần đầu tiên khi data trả về
+      if (data?.variants?.length > 0 && isInitialMount.current) {
+        const bestVoucher = data.bestShopVoucher ?? data.bestPlatformVoucher;
+        const bestVariant = data.variants.reduce((prev: any, curr: any) => {
+          const prevFinal =
+            prev.priceAfterDiscount ??
+            calculatePriceWithVoucher(prev.price || 0, bestVoucher);
+          const currFinal =
+            curr.priceAfterDiscount ??
+            calculatePriceWithVoucher(curr.price || 0, bestVoucher);
+          return currFinal < prevFinal ? curr : prev;
+        });
+        setSelectedVariant(bestVariant);
+      }
+
+      if (data?.id && isInitialMount.current) {
+        const [revRes, featRes] = await Promise.all([
           getProductReviewComments(data.id, { page: 0, size: 3 }),
           publicProductService.getFeatured(0, 6),
         ]);
-
-        setProductReviews(rev.content || []);
-        setReviewHasMore(!rev.last);
-
-        const featList = featRes?.data?.content || [];
-        setFeatured(featList.filter((p: any) => p.id !== data.id));
+        if (revRes) {
+          setProductReviews(revRes.content || []);
+          setReviewHasMore(!revRes.last);
+        }
+        if (featRes?.data?.content) {
+          setFeatured(
+            featRes.data.content.filter((p: any) => p.id !== data.id)
+          );
+        }
       }
+      isInitialMount.current = false;
     } catch (e) {
-      console.error("Failed to fetch product data", e);
+      console.error("Fetch error:", e);
     } finally {
       setLoading(false);
     }
-  }, [params.id, isSlug]);
+    // QUAN TRỌNG: Loại bỏ setSelectedVariant khỏi deps để tránh loop
+  }, [targetId, isSlug, mode]);
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
-  // 3. Review Functions
-  const loadMoreReviews = async (): Promise<void> => {
+  const fetchProductReviews = useCallback(
+    async (productId: string, page = 0, reset = false) => {
+      if (!productId) return;
+      setReviewsLoading(true);
+      try {
+        const res = await getProductReviewComments(productId, {
+          page,
+          size: 3,
+        });
+        const content = res?.content ?? [];
+        setProductReviews((prev) => {
+          if (reset) return content;
+          const existingIds = new Set(prev.map((item) => item.id));
+          return [
+            ...prev,
+            ...content.filter((item) => !existingIds.has(item.id)),
+          ];
+        });
+        setReviewPage(res?.page ?? page);
+        setReviewHasMore(!res?.last);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setReviewsLoading(false);
+      }
+    },
+    []
+  );
+
+  const loadMoreReviews = useCallback(async () => {
     if (!product?.id || reviewsLoading) return;
-    const nextPage = reviewPage + 1;
-    setReviewsLoading(true);
-    try {
-      const res = await getProductReviewComments(product.id, {
-        page: nextPage,
-        size: 3,
-      });
-      setProductReviews((prev) => [...prev, ...res.content]);
-      setReviewPage(nextPage);
-      setReviewHasMore(!res.last);
-    } finally {
-      setReviewsLoading(false);
-    }
-  };
+    await fetchProductReviews(product.id, reviewPage + 1);
+  }, [product?.id, reviewsLoading, reviewPage, fetchProductReviews]);
 
-  const fetchProductReviews = async (
-    productId: string,
-    page = 0,
-    reset = false
-  ) => {
-    if (!productId) return;
-    setReviewsLoading(true);
-    try {
-      const res = await getProductReviewComments(productId, {
-        page,
-        size: 3, // Khớp với size bạn test
-      });
-
-      const content = res?.content ?? [];
-
-      setProductReviews((prev) => {
-        if (reset) return content;
-        const existingIds = new Set(prev.map((item) => item.id));
-        const merged = content.filter((item) => !existingIds.has(item.id));
-        return [...prev, ...merged];
-      });
-
-      setReviewPage(res?.page ?? page);
-      setReviewHasMore(!res?.last);
-    } catch (error) {
-      console.error("Failed to load product reviews:", error);
-    } finally {
-      setReviewsLoading(false);
-    }
-  };
-  // 4. Shop Chat Logic
-  const handleOpenShopChat = async (): Promise<void> => {
+  const handleOpenShopChat = useCallback(async () => {
     const userDetail = getStoredUserDetail();
     if (!userDetail?.userId) {
       warning("Vui lòng đăng nhập để chat với Shop");
@@ -242,7 +236,6 @@ export const ProductDetailProvider = ({
       toastError("Không xác định được Shop");
       return;
     }
-
     setCreatingShopChat(true);
     try {
       const response = await createConversation({
@@ -250,29 +243,22 @@ export const ProductDetailProvider = ({
         participantIds: [shopUserId],
         name: product?.shop?.shopName,
       });
-      if (!response?.success) {
+      if (!response?.success)
         toastError(response?.message || "Lỗi khởi tạo chat");
-      }
     } catch (error) {
       toastError("Không thể kết nối server chat");
     } finally {
       setCreatingShopChat(false);
     }
-  };
+  }, [product, warning, toastError]);
 
-  // 5. Price Info
   const priceInfo = useMemo(() => {
     const vPrice = selectedVariant?.price ?? product?.priceMin ?? 0;
     const bestVoucher =
       product?.bestShopVoucher ?? product?.bestPlatformVoucher;
-
-    let pAfterVoucher: number | null =
-      (selectedVariant as any)?.priceAfterDiscount ?? null;
-
-    if (pAfterVoucher === null && bestVoucher) {
+    let pAfterVoucher = (selectedVariant as any)?.priceAfterDiscount ?? null;
+    if (pAfterVoucher === null && bestVoucher)
       pAfterVoucher = calculatePriceWithVoucher(vPrice, bestVoucher);
-    }
-
     const pPrice = pAfterVoucher ?? vPrice;
     const cPrice =
       pAfterVoucher && pAfterVoucher < vPrice
@@ -295,44 +281,36 @@ export const ProductDetailProvider = ({
     };
   }, [selectedVariant, product]);
 
-  // 6. Gallery Logic
   const galleryImages = useMemo(() => {
     if (!product) return [];
-
     const items: { key: string; thumb: string; preview: string }[] = [];
     const seenUrls = new Set<string>();
-
     const addImage = (key: string, thumb: string, preview: string) => {
       if (!seenUrls.has(preview)) {
         seenUrls.add(preview);
         items.push({ key, thumb, preview });
       }
     };
-
     product.media
       ?.filter((m) => m.type === "IMAGE")
       .forEach((m) => {
         const url = resolveMediaUrlHelper(m as any, "_large");
-        if (url) {
+        if (url)
           addImage(
             `media-${m.id}`,
             resolveMediaUrlHelper(m as any, "_thumb") || url,
             url
           );
-        }
       });
-
     product.variants?.forEach((v) => {
       const url = resolveVariantImageUrlHelper(v as any, "_large");
-      if (url) {
+      if (url)
         addImage(
           `variant-${v.id}`,
           resolveVariantImageUrlHelper(v as any, "_thumb") || url,
           url
         );
-      }
     });
-
     return items;
   }, [product]);
 
@@ -343,33 +321,49 @@ export const ProductDetailProvider = ({
     return galleryImages[0]?.preview || PLACEHOLDER_IMAGE;
   }, [activeThumbnail, selectedVariant, galleryImages]);
 
-  useEffect(() => {
-    setActiveThumbnail(null);
-  }, [selectedVariant]);
-
-  const value = {
-    product,
-    loading,
-    featured,
-    selectedVariant,
-    setSelectedVariant,
-    productReviews,
-    reviewSummary: product?.reviewStatistics || null,
-    reviewsLoading,
-    reviewHasMore,
-    loadMoreReviews,
-    fetchProductReviews, // Added to context value
-    creatingShopChat,
-    handleOpenShopChat,
-    activeThumbnail,
-    setActiveThumbnail,
-    galleryImages,
-    primaryImage,
-    priceInfo,
-    soldCount: (product as any)?.soldCount ?? (product as any)?.totalSold ?? 0,
-    followerCount: (product?.shop as any)?.followerCount ?? 0,
-    bestPlatformVoucher: product?.bestPlatformVoucher,
-  };
+  const value = useMemo(
+    () => ({
+      product,
+      loading,
+      featured,
+      selectedVariant,
+      setSelectedVariant,
+      productReviews,
+      reviewSummary: product?.reviewStatistics || null,
+      reviewsLoading,
+      reviewHasMore,
+      loadMoreReviews,
+      fetchProductReviews,
+      creatingShopChat,
+      handleOpenShopChat,
+      activeThumbnail,
+      setActiveThumbnail,
+      galleryImages,
+      primaryImage,
+      priceInfo,
+      soldCount:
+        (product as any)?.soldCount ?? (product as any)?.totalSold ?? 0,
+      followerCount: (product?.shop as any)?.followerCount ?? 0,
+      bestPlatformVoucher: product?.bestPlatformVoucher,
+    }),
+    [
+      product,
+      loading,
+      featured,
+      selectedVariant,
+      productReviews,
+      reviewsLoading,
+      reviewHasMore,
+      loadMoreReviews,
+      fetchProductReviews,
+      creatingShopChat,
+      handleOpenShopChat,
+      activeThumbnail,
+      galleryImages,
+      primaryImage,
+      priceInfo,
+    ]
+  );
 
   return (
     <ProductDetailContext.Provider value={value}>

@@ -1,25 +1,16 @@
 import {
-  Home,
   BarChart3,
+  Database,
   Globe,
+  Headset,
+  Home,
+  Megaphone,
+  Settings,
   ShoppingBag,
   ShoppingCart,
   Ticket,
-  Megaphone,
-  Headset,
-  Wallet,
-  Database,
-  Settings,
   UserCircle,
-  Banknote,
-  LayoutDashboard,
-  Truck,
-  MessageSquare,
-  Star,
-  ShieldAlert,
-  CreditCard,
-  KeyRound,
-  FileText
+  Wallet
 } from "lucide-react";
 
 export const SHOP_SIDEBAR_ITEMS = [
@@ -125,7 +116,12 @@ export const SHOP_SIDEBAR_ITEMS = [
       {
         key: "finance-wallet",
         label: "Wallet",
-        href: "/shop/wallet",
+        href: "/shop/finance/wallet",
+      },
+      {
+        key: "finance-fees",
+        label: "Báo cáo phí",
+        href: "/shop/finance/fees",
       },
       {
         key: "finance-revenue",
@@ -198,7 +194,7 @@ export const SHOP_ROUTE_MAPPINGS = [
   { prefix: "/shop/products", key: "list-products", parent: "products" },
   { prefix: "/shop/orders/handover", key: "orders-handover", parent: "orders" },
   { prefix: "/shop/orders/address", key: "orders-address", parent: "orders" },
-  { prefix: "/shop/wallet", key: "finance-wallet", parent: "finance" },
+  { prefix: "/shop/finance/wallet", key: "finance-wallet", parent: "finance" },
   { prefix: "/shop/orders", key: "orders-all", parent: "orders" },
   { prefix: "/shop/marketing/promotion", key: "marketing-promotion", parent: "marketing" },
   { prefix: "/shop/marketing/coupon", key: "marketing-coupon", parent: "marketing" },
@@ -207,6 +203,7 @@ export const SHOP_ROUTE_MAPPINGS = [
   { prefix: "/shop/reviews", key: "cskh-review", parent: "cskh" },
   { prefix: "/shop/finance/revenue", key: "finance-revenue", parent: "finance" },
   { prefix: "/shop/finance/bank", key: "finance-bank", parent: "finance" },
+  { prefix: "/shop/finance/fees", key: "finance-fees", parent: "finance" },
   { prefix: "/shop/profile", key: "shop-profile", parent: "shop-management" },
   { prefix: "/shop/decorate", key: "shop-decorate", parent: "shop-management" },
   { prefix: "/shop/setup", key: "shop-setup", parent: "shop-management" },

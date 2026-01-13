@@ -52,7 +52,7 @@ export const AddOptionGroupModal: React.FC<AddOptionGroupModalProps> = ({
         onClick={handleSubmit}
         disabled={!name.trim()}
         className={cn(
-          "flex items-center gap-2 px-8 py-2.5 rounded-2xl text-sm font-black text-white transition-all active:scale-95 shadow-lg",
+          "flex items-center gap-2 px-8 py-2.5 rounded-2xl text-sm font-bold text-white transition-all active:scale-95 shadow-lg",
           !name.trim()
             ? "bg-gray-200 cursor-not-allowed shadow-none text-gray-400"
             : "bg-orange-500 hover:bg-orange-600 shadow-orange-500/30"
@@ -73,7 +73,7 @@ export const AddOptionGroupModal: React.FC<AddOptionGroupModalProps> = ({
           <div className="p-2 bg-orange-100 rounded-xl">
             <Grid2X2Plus size={22} className="text-orange-600" strokeWidth={2.5} />
           </div>
-          <span className="text-gray-800 font-black text-xl tracking-tight">Thêm nhóm phân loại</span>
+          <span className="text-gray-800 font-bold text-xl tracking-tight">Thêm nhóm phân loại</span>
         </div>
       }
       footer={footerContent}
@@ -84,14 +84,14 @@ export const AddOptionGroupModal: React.FC<AddOptionGroupModalProps> = ({
         <div className="flex gap-3 p-4 bg-orange-50/50 rounded-2xl border border-orange-100/50">
           <Lightbulb size={18} className="text-orange-600 shrink-0 mt-0.5" />
           <div className="text-xs font-semibold text-orange-800 leading-relaxed">
-            <span className="font-black uppercase tracking-wider text-[10px] block mb-0.5">Gợi ý</span>
+            <span className="font-bold uppercase tracking-wider text-[10px] block mb-0.5">Gợi ý</span>
             Màu sắc, Kích thước, Dung lượng, Chất liệu hoặc Loại bề mặt...
           </div>
         </div>
 
         {/* Custom Input Field */}
         <div className="space-y-2">
-          <label className="text-[11px] font-black text-gray-500 uppercase tracking-widest ml-1">
+          <label className="text-[11px] font-bold text-gray-500 uppercase tracking-widest ml-1">
             Tên nhóm phân loại
           </label>
           <div className="relative group">
@@ -114,7 +114,7 @@ export const AddOptionGroupModal: React.FC<AddOptionGroupModalProps> = ({
               )}
             />
             
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-black tabular-nums text-gray-300 group-focus-within:text-orange-400">
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-bold tabular-nums text-gray-300 group-focus-within:text-orange-400">
               {name.length}/50
             </div>
           </div>
@@ -123,7 +123,7 @@ export const AddOptionGroupModal: React.FC<AddOptionGroupModalProps> = ({
         {/* Existing Groups Tags */}
         {existingGroups.length > 0 && (
           <div className="space-y-3 animate-in fade-in slide-in-from-bottom-2 duration-500">
-            <div className="text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1">
+            <div className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">
               Các nhóm đã có
             </div>
             <div className="flex flex-wrap gap-2">

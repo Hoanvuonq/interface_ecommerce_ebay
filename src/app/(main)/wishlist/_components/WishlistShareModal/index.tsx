@@ -106,7 +106,7 @@ export default function WishlistShareModal({
         >
             <div className="space-y-8">
                 {!shareToken ? (
-                    <div className="py-10 text-center space-y-4 bg-gray-50 rounded-[2rem] border border-dashed border-gray-200">
+                    <div className="py-10 text-center space-y-4 bg-gray-50 rounded-4xl border border-dashed border-gray-200">
                         <ShieldAlert size={48} strokeWidth={1.5} className="mx-auto text-gray-300" />
                         <p className="text-gray-500 font-medium leading-relaxed px-6">
                             Wishlist này đang ở chế độ riêng tư. <br />
@@ -149,7 +149,7 @@ export default function WishlistShareModal({
                             </div>
 
                             {/* QR Area */}
-                            <div className="flex flex-col items-center gap-3 p-5 bg-gray-50 rounded-[2rem] border border-gray-100 shadow-inner">
+                            <div className="flex flex-col items-center gap-3 p-5 bg-gray-50 rounded-4xl border border-gray-100 shadow-inner">
                                 <div className="bg-white p-3 rounded-2xl shadow-sm ring-1 ring-gray-100">
                                     <QRCode value={shareUrl} size={100} />
                                 </div>

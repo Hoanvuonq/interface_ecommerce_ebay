@@ -1071,7 +1071,6 @@ export default function ShopProductAddStepsFormScreen() {
     );
   };
 
-  // Create a watch-like function for form fields
   const watchedValues = formFields;
   const firstVariant = variants[0] || {};
   const previewImage = fileList.find((f) => f.status === "done")?.url;
@@ -1203,14 +1202,10 @@ export default function ShopProductAddStepsFormScreen() {
             name: name,
             values: [""],
           };
-
           const updatedGroups = [...optionGroups, newGroup];
           setOptionGroups(updatedGroups);
-
           addOptionGroup(name);
-
           regenerateVariantsFromOptions(updatedGroups);
-
           setAddOptionModalOpen(false);
           toastSuccess(`Đã thêm nhóm: ${name}`);
         }}

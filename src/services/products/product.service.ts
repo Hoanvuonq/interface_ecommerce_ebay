@@ -3,7 +3,8 @@ import { ApiResponseDTO, PageDTO, PageableDTO } from "@/types/pagination.dto";
 import {
   PublicProductDetailDTO,
   PublicProductListItemDTO,
-PublicProductSearchQueryDTO } from "@/types/product/public-product.dto";
+  PublicProductSearchQueryDTO,
+} from "@/types/product/public-product.dto";
 import {
   ProductVariantDTO,
   SyncProductVariantsDTO,
@@ -431,9 +432,9 @@ export const adminProductService = {
     size?: number;
   }) {
     return request<PageDTO<AdminProductListItemDTO>>({
-      method: "GET",
+      method: "POST",
       url: `/${API_ENDPOINT_ADMIN_PRODUCTS}/search`,
-      params,
+      data: params,
     });
   },
 
@@ -456,7 +457,7 @@ export const adminProductService = {
   getStatistics() {
     return request<AdminProductStatisticsDTO>({
       method: "GET",
-      url: `/${API_ENDPOINT_ADMIN_PRODUCTS}/statistics`,
+      url: `/${API_ENDPOINT_ADMIN_PRODUCTS}/counts`,
     });
   },
 
@@ -520,30 +521,30 @@ export const userProductService = {
    * Get all products of current user
    * GET /api/v1/user/products
    */
-getAllProducts(page = 0, size = 20) {
+  getAllProducts(page = 0, size = 20) {
     return request<ApiResponseDTO<PageDTO<UserProductDTO>>>({
-      method: "POST",
+      method: "GET",
       url: `/${API_ENDPOINT_USER_PRODUCTS}/search`,
-      
+
       data: {
         page: page,
-        size: size
-      }
+        size: size,
+      },
     });
-},
+  },
 
   /**
    * Get user's products by status
    * GET /api/v1/user/products/status/{status}
    */
-  getByStatus(
+  getByStatusAdmin(
     status: "DRAFT" | "PENDING" | "APPROVED" | "REJECTED",
     page = 0,
     size = 20
   ) {
     return request<ApiResponseDTO<PageDTO<UserProductDTO>>>({
       method: "GET",
-      url: `/${API_ENDPOINT_USER_PRODUCTS}/status/${status}`,
+      url: `/${API_ENDPOINT_ADMIN_PRODUCTS}/status/${status}`,
       params: { page, size },
     });
   },
@@ -651,13 +652,13 @@ getAllProducts(page = 0, size = 20) {
   },
 
   /**
-   * Get product statistics for current user
-   * GET /api/v1/user/products/statistics
+   * Get product counts for current user
+   * GET /api/v1/user/products/counts
    */
   getStatistics() {
     return request<UserProductStatisticsDTO>({
       method: "GET",
-      url: `/${API_ENDPOINT_USER_PRODUCTS}/statistics`,
+      url: `/${API_ENDPOINT_USER_PRODUCTS}/counts`,
     });
   },
 

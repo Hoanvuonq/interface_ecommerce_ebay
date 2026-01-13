@@ -1,0 +1,274 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
+
+import { useState } from "react";
+import {
+  Eye,
+  EyeOff,
+  FileText,
+  History,
+  Info,
+  Loader2,
+  ShieldCheck,
+  Clock as ClockIcon, // Alias để tránh trùng tên nếu cần
+} from "lucide-react";
+import { StepTaxInfo } from "../StepTaxInfo";
+import { useUpdateShopTax } from "../../_hooks/useShop";
+import { getStoredUserDetail } from "@/utils/jwt";
+import { getShopDetail } from "@/app/(main)/shop/_service/shop.service";
+import dayjs from "dayjs";
+import { PortalModal } from "@/features/PortalModal";
+import { Button } from "@/components/button/button";
+import { useToast } from "@/hooks/useToast";
+import { cn } from "@/utils/cn";
+import { statusTagMap, StatusType } from "../../../_utils/status"; // Đảm bảo import StatusType
+import { ButtonField } from "@/components";
+
+export default function TaxInfo({
+  shop,
+  setShop,
+}: {
+  shop: any;
+  setShop: any;
+}) {
+  const [showSensitive, setShowSensitive] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
+
+  const [formData, setFormData] = useState<any>({});
+
+  const tax = shop?.taxInfo;
+  const { handleUpdateShopTax, loading: updating } = useUpdateShopTax();
+  const users = getStoredUserDetail();
+  const { success: toastSuccess, error: toastError } = useToast();
+  console.log(">>> CHECK TAX DATA:", tax);
+  console.log(">>> REGISTERED ADDRESS:", tax?.registeredAddress);
+
+  const currentStatusKey = (tax?.verifiedStatus as StatusType) || "PENDING";
+  const statusTag = statusTagMap[currentStatusKey] || statusTagMap["PENDING"];
+
+  const handleEdit = () => {
+    const addr = tax?.registeredAddress; //
+    const handleEdit = () => {
+      const addr = tax?.registeredAddress; //
+      setFormData({
+        businessType: tax?.type?.toLowerCase() || "household", //
+        provinceName: addr?.provinceName || "",
+        provinceCode: addr?.provinceCode || "",
+        districtName: addr?.districtName || "", //
+        districtCode: addr?.districtCode || "",
+        wardName: addr?.wardName || "",
+        wardCode: addr?.wardCode || "",
+        addressDetail: addr?.detail || "", //
+        email: tax?.email || "",
+        taxId: tax?.taxIdentificationNumber || "", //
+      });
+      setOpenModal(true);
+    };
+  };
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!formData.email || !formData.taxId || !formData.addressDetail) {
+      toastError("Vui lòng điền đầy đủ các thông tin bắt buộc");
+      return;
+    }
+
+    try {
+      const payload = {
+        type: formData.businessType?.toUpperCase(),
+        registeredAddress: {
+          countryCode: "Vietnam",
+          countryName: "Vietnam",
+          provinceCode: formData.provinceCode,
+          provinceName: formData.provinceName,
+          districtCode: formData.districtCode, //
+          districtName: formData.districtName,
+          wardCode: formData.wardCode,
+          wardName: formData.wardName,
+          detail: formData.addressDetail,
+          // Giữ các field Old nếu backend yêu cầu
+          provinceNameOld: formData.provinceName,
+          wardNameOld: formData.wardName,
+        },
+        email: formData.email,
+        taxIdentificationNumber: formData.taxId,
+      };
+
+      const res = await handleUpdateShopTax(users.shopId, tax.taxId, payload);
+      if (res) {
+        const shopRes = await getShopDetail(users.shopId);
+        if (shopRes) setShop(shopRes.data);
+        toastSuccess("Cập nhật thông tin thuế thành công!");
+        setOpenModal(false);
+      }
+    } catch (err: any) {
+      toastError(err?.message || "Cập nhật thông tin thuế thất bại!");
+    }
+  };
+
+  const typeNames: Record<string, string> = {
+    PERSONAL: "Cá nhân",
+    COMPANY: "Doanh nghiệp",
+    HOUSEHOLD: "Hộ kinh doanh",
+  };
+
+  return (
+    <>
+      <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-custom overflow-hidden mt-6 transition-all">
+        {/* Header Section */}
+        <div className="px-8 py-6 border-b border-gray-50 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gray-50/30">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-orange-500 rounded-2xl text-white shadow-lg shadow-orange-100">
+              <ShieldCheck size={22} />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h2 className="text-lg font-bold text-gray-900 uppercase tracking-tight">
+                  Thông tin Thuế
+                </h2>
+                {/* Hiển thị Tag trạng thái đã fix lỗi type */}
+                {statusTag}
+              </div>
+              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-0.5">
+                Xác thực pháp lý cửa hàng
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <Button
+              variant="edit"
+              onClick={() => setShowHistory(!showHistory)}
+              className="px-6 rounded-xl text-[10px] font-black uppercase tracking-widest"
+            >
+              <History size={14} className="mr-2" />
+              {showHistory ? "Ẩn lịch sử" : "Lịch sử"}
+            </Button>
+            <ButtonField
+              type="login"
+              onClick={handleEdit}
+              className="px-8 w-40 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-orange-500/20 border-0 transition-all active:scale-95"
+            >
+              Chỉnh sửa
+            </ButtonField>
+          </div>
+        </div>
+
+        <div className="p-8 space-y-6">
+          <div className="bg-blue-50/50 border border-blue-100 p-5 rounded-3xl flex items-start gap-4">
+            <Info className="text-blue-500 shrink-0 mt-1" size={20} />
+            <div className="text-[11px] font-medium text-blue-800 leading-relaxed uppercase tracking-tight">
+              Người bán chỉ được cập nhật thông tin một lần cách nhau 30 ngày.
+              Mọi thông tin phải chính xác để phục vụ khấu trừ thuế và xuất hóa
+              đơn.
+            </div>
+          </div>
+
+          {showHistory && tax?.lastModifiedDate && (
+            <div className="flex items-center gap-2 px-4 py-2 bg-gray-50 rounded-xl w-fit text-[11px] font-bold text-gray-500 italic animate-in fade-in slide-in-from-top-2">
+              <ClockIcon size={12} />
+              Cập nhật cuối:{" "}
+              {dayjs(tax.lastModifiedDate).format("DD/MM/YYYY HH:mm")}
+            </div>
+          )}
+
+          {/* Table Data Section */}
+          <div className="relative group">
+            <button
+              onClick={() => setShowSensitive(!showSensitive)}
+              className="absolute -top-10 right-0 flex items-center gap-2 text-[10px] font-black uppercase text-orange-600 hover:text-orange-700 transition-colors"
+            >
+              {showSensitive ? <EyeOff size={14} /> : <Eye size={14} />}
+              {showSensitive ? "Ẩn thông tin" : "Xem thông tin bảo mật"}
+            </button>
+
+            <div className="grid grid-cols-1 gap-1 border border-gray-100 rounded-[2rem] overflow-hidden shadow-inner bg-gray-50/50">
+              {[
+                {
+                  label: "Loại hình kinh doanh",
+                  value: typeNames[tax?.type] || "Không xác định",
+                },
+                {
+                  label: "Địa chỉ đăng ký",
+                  value: showSensitive
+                    ? `${tax?.registeredAddress?.detail}, ${tax?.registeredAddress?.wardName}, ${tax?.registeredAddress?.districtName}, ${tax?.registeredAddress?.provinceName}`
+                    : "••••••••••••••••••••••••",
+                  isMasked: !showSensitive,
+                },
+                { label: "Email nhận hóa đơn", value: tax?.email },
+                {
+                  label: "Mã số thuế",
+                  value: showSensitive
+                    ? tax?.taxIdentificationNumber
+                    : "••••••••••••",
+                  isMasked: !showSensitive,
+                },
+              ].map((item, idx) => (
+                <div
+                  key={idx}
+                  className="grid grid-cols-1 md:grid-cols-[280px_1fr] bg-white p-5 group/row hover:bg-gray-50 transition-colors"
+                >
+                  <span className="text-[11px] font-black uppercase tracking-[0.2em] text-gray-400 self-center">
+                    {item.label}
+                  </span>
+                  <span
+                    className={cn(
+                      "text-sm font-bold text-gray-800",
+                      item.isMasked && "tracking-[0.3em] text-gray-300"
+                    )}
+                  >
+                    {item.value || "Chưa cập nhật"}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <PortalModal
+        isOpen={openModal}
+        onClose={() => !updating && setOpenModal(false)}
+        title={
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-orange-100 rounded-xl text-orange-600">
+              <FileText size={18} />
+            </div>
+            <span className="font-bold text-gray-800 uppercase text-sm tracking-tight">
+              Cập nhật Thông tin Thuế
+            </span>
+          </div>
+        }
+        width="max-w-3xl"
+        className="rounded-[3rem]"
+      >
+        <form onSubmit={handleSave} className="space-y-8 py-2">
+          <div className="max-h-[70vh] overflow-y-auto custom-scrollbar px-1">
+            <StepTaxInfo formData={formData} setFormData={setFormData} />
+          </div>
+
+          <div className="flex items-center justify-end gap-3 pt-6 border-t border-gray-100">
+            <Button
+              variant="edit"
+              type="button"
+              disabled={updating}
+              onClick={() => setOpenModal(false)}
+              className="px-8 rounded-xl font-bold uppercase text-[10px] tracking-widest"
+            >
+              Hủy bỏ
+            </Button>
+            <ButtonField
+              type="login"
+              htmlType="submit"
+              disabled={updating}
+              className="px-10 rounded-xl font-bold uppercase text-[10px] tracking-widest shadow-xl shadow-orange-500/20 border-0 flex items-center gap-2 transition-all active:scale-95"
+            >
+              {updating && <Loader2 size={14} className="animate-spin" />}
+              Lưu thay đổi
+            </ButtonField>
+          </div>
+        </form>
+      </PortalModal>
+    </>
+  );
+}

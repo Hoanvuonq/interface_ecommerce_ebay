@@ -108,30 +108,30 @@ export const ProductVariantsTable: React.FC<ProductVariantsTableProps> = ({
       <table className="w-full text-sm text-left border-collapse">
         <thead>
           <tr className="bg-gray-50/80 border-b border-gray-100">
-            <th className="px-4 py-4 text-center text-[10px] font-black text-gray-400 uppercase tracking-widest w-12">
+            <th className="px-4 py-4 text-center text-[10px] font-bold text-gray-400 uppercase tracking-widest w-12">
               #
             </th>
             {optionNames.map((name, idx) => (
               <th
                 key={idx}
-                className="px-4 py-4 text-[11px] font-black text-gray-600 uppercase tracking-widest min-w-[120px]"
+                className="px-4 py-4 text-[11px] font-bold text-gray-600 uppercase tracking-widest min-w-[120px]"
               >
                 {name}
               </th>
             ))}
-            <th className="px-4 py-4 text-[11px] font-black text-orange-600 uppercase tracking-widest min-w-[150px]">
+            <th className="px-4 py-4 text-[11px] font-bold text-orange-600 uppercase tracking-widest min-w-[150px]">
               SKU
             </th>
-            <th className="px-4 py-4 text-[11px] font-black text-gray-600 uppercase tracking-widest min-w-[130px] text-right">
+            <th className="px-4 py-4 text-[11px] font-bold text-gray-600 uppercase tracking-widest min-w-[130px] text-right">
               Giá gốc
             </th>
-            <th className="px-4 py-4 text-[11px] font-black text-gray-600 uppercase tracking-widest min-w-[130px] text-right">
+            <th className="px-4 py-4 text-[11px] font-bold text-gray-600 uppercase tracking-widest min-w-[130px] text-right">
               Giá bán
             </th>
-            <th className="px-4 py-4 text-[11px] font-black text-gray-600 uppercase tracking-widest min-w-[110px] text-right">
+            <th className="px-4 py-4 text-[11px] font-bold text-gray-600 uppercase tracking-widest min-w-[110px] text-right">
               Kho hàng
             </th>
-            <th className="px-2 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest text-center w-[280px]">
+            <th className="px-2 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest text-center w-[280px]">
               Kích thước (D x R x C) & Nặng
             </th>
           </tr>
@@ -144,7 +144,7 @@ export const ProductVariantsTable: React.FC<ProductVariantsTableProps> = ({
               <Zap className="w-4 h-4 mx-auto text-orange-400 fill-orange-400" />
             </td>
             <td colSpan={optionNames.length} className="px-4 py-4">
-              <span className="text-[10px] font-black text-orange-600 uppercase tracking-widest">
+              <span className="text-[10px] font-bold text-orange-600 uppercase tracking-widest">
                 Áp dụng nhanh cho tất cả
               </span>
             </td>
@@ -293,7 +293,7 @@ export const ProductVariantsTable: React.FC<ProductVariantsTableProps> = ({
                               ) : (
                                 <div className="text-center">
                                   <ImageIcon className="w-6 h-6 text-gray-200 mx-auto" />
-                                  <span className="text-[9px] font-black text-gray-300 uppercase mt-1 block">
+                                  <span className="text-[9px] font-bold text-gray-300 uppercase mt-1 block">
                                     Thêm ảnh
                                   </span>
                                 </div>

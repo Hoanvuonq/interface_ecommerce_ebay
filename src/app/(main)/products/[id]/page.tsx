@@ -4,7 +4,7 @@ import { ProductDetailProvider } from "../_context/products";
 import {ProductDetailPage} from "./_pages";
 const ProductsId: React.FC = () => {
   return (
-    <ProductDetailProvider>
+   <ProductDetailProvider mode="public">
       <ProductDetailPage />
     </ProductDetailProvider>
   );

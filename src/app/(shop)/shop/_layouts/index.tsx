@@ -11,7 +11,7 @@ export function BaseShopLayout({ children }: { children: React.ReactNode }) {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <div className="flex min-h-screen bg-linear-to-br from-blue-50 via-white to-blue-100">
+  <div className="flex min-h-screen bg-[#f5f7ff]">
       <ShopSidebar collapsed={collapsed} setCollapsed={setCollapsed} />
       <div
         className={cn(

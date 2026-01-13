@@ -14,12 +14,12 @@ export interface Option {
 
 export interface SelectProps {
   options: Option[];
-  value?: string | string[]; // Có thể là 1 string hoặc mảng string
+  value?: string | string[]; 
   onChange: (value: any) => void;
   placeholder?: string;
   disabled?: boolean;
   className?: string;
-  isMulti?: boolean; // Thêm prop để phân biệt chọn 1 hay nhiều
+  isMulti?: boolean; 
 }
 
 export const SelectComponent = ({

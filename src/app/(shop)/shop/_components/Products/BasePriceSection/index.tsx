@@ -55,12 +55,12 @@ export const BasePriceSection = ({
             placeholder="0"
             className={cn(
               "w-full h-14 pl-5 pr-12 bg-gray-50/50 border rounded-2xl outline-none transition-all duration-300",
-              "text-lg font-black text-gray-700 placeholder:text-gray-300 placeholder:font-normal",
+              "text-lg font-bold text-gray-700 placeholder:text-gray-300 placeholder:font-normal",
               "hover:border-orange-200 focus:bg-white focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10",
               error ? "border-red-300 bg-red-50/50 focus:border-red-500 focus:ring-red-500/10" : "border-gray-200"
             )}
           />
-          <div className="absolute right-5 top-1/2 -translate-y-1/2 text-orange-600 font-black text-lg select-none">
+          <div className="absolute right-5 top-1/2 -translate-y-1/2 text-orange-600 font-bold text-lg select-none">
             ₫
           </div>
         </div>
@@ -78,7 +78,7 @@ export const BasePriceSection = ({
           <Info size={20} strokeWidth={2.5} />
         </div>
         <div className="space-y-1">
-          <h4 className="text-[11px] font-black text-orange-700 uppercase tracking-widest">
+          <h4 className="text-[11px] font-bold text-orange-700 uppercase tracking-widest">
             Mẹo đặt giá
           </h4>
           <p className="text-xs text-orange-900/70 leading-relaxed font-semibold">

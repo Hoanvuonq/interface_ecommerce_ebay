@@ -3,12 +3,12 @@
 import { formatCurrency, formatNumber } from "@/utils/analytics/formatters";
 import { cn } from "@/utils/cn";
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
-import React from "react";
+import React, { memo } from "react"; // Sử dụng memo
 import Skeleton from "react-loading-skeleton";
 import { SmartKPICardProps } from "./type";
 
-
-export function SmartKPICard({
+// Khai báo component chính
+function SmartKPICardComponent({
   title,
   value,
   growth,
@@ -48,12 +48,12 @@ export function SmartKPICard({
     },
   };
 
-  const theme = themes[colorTheme];
+  const theme = themes[colorTheme] || themes.blue;
   const isPositive = growth !== undefined && growth >= 0;
 
   if (loading) {
     return (
-      <div className="bg-white p-6 rounded-[2.2rem] border border-gray-100 shadow-sm h-35 shadow-custom flex flex-col justify-between">
+      <div className="bg-gray-100 p-6 rounded-[2.2rem] border border-gray-100 shadow-custom h-35 flex flex-col justify-between overflow-hidden">
         <div className="flex items-center gap-3">
           <Skeleton circle width={32} height={32} />
           <Skeleton width={100} height={14} />
@@ -81,7 +81,6 @@ export function SmartKPICard({
       />
 
       <div className="relative z-10 flex flex-col h-full justify-between">
-        {/* Header: Icon + Title */}
         <div className="flex items-center gap-3 mb-4">
           <div
             className={cn(
@@ -90,7 +89,6 @@ export function SmartKPICard({
               theme.text
             )}
           >
-            {/* Nếu icon là một component từ lucide, nó sẽ render đẹp ở đây */}
             {icon}
           </div>
           <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 group-hover:text-gray-600 transition-colors">
@@ -98,10 +96,9 @@ export function SmartKPICard({
           </span>
         </div>
 
-        {/* Bottom: Value + Growth */}
         <div className="flex items-end justify-between">
           <div className="flex items-baseline gap-1">
-            <span className="text-3xl font-semibold text-gray-900 tracking-tighter italic leading-none">
+            <span className="text-3xl font-semibold text-gray-900 tracking-tighter italic leading-none tabular-nums">
               {formattedValue}
             </span>
             {suffix && (
@@ -114,7 +111,7 @@ export function SmartKPICard({
           {growth !== undefined && (
             <div
               className={cn(
-                "flex items-center text-[10px] font-bold px-2.5 py-1 rounded-lg border transition-all duration-500",
+                "flex items-center text-[10px] font-bold px-2.5 py-1 rounded-lg border transition-all duration-500 tabular-nums",
                 isPositive
                   ? "bg-emerald-50 text-emerald-600 border-emerald-100 group-hover:bg-emerald-500 group-hover:text-white"
                   : "bg-red-50 text-red-600 border-red-100 group-hover:bg-red-500 group-hover:text-white"
@@ -140,3 +137,5 @@ export function SmartKPICard({
     </div>
   );
 }
+
+export const SmartKPICard = memo(SmartKPICardComponent);

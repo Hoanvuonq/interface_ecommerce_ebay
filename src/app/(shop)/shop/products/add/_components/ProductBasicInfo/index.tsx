@@ -215,7 +215,7 @@ export const ProductBasicTabs: React.FC<ProductBasicTabsProps> = ({
 
                   {/* Badge Ảnh chính */}
                   {index === 0 && (
-                    <div className="absolute top-2 left-2 px-2 py-0.5 bg-orange-500 text-[9px] text-white font-black rounded-md shadow-lg">
+                    <div className="absolute top-2 left-2 px-2 py-0.5 bg-orange-500 text-[9px] text-white font-bold rounded-md shadow-lg">
                       ẢNH CHÍNH
                     </div>
                   )}

@@ -56,7 +56,7 @@ export const ProductClassificationSection = ({
           <button
             type="button"
             onClick={onAddGroup}
-            className="flex items-center gap-2 px-5 py-2.5 bg-orange-50 text-orange-600 rounded-xl text-[11px] font-black uppercase tracking-wider hover:bg-orange-600 hover:text-white transition-all duration-300 shadow-sm"
+            className="flex items-center gap-2 px-5 py-2.5 bg-orange-50 text-orange-600 rounded-xl text-[11px] font-bold uppercase tracking-wider hover:bg-orange-600 hover:text-white transition-all duration-300 shadow-sm"
           >
             <Plus size={16} strokeWidth={3} /> Thêm nhóm
           </button>
@@ -100,7 +100,7 @@ export const ProductClassificationSection = ({
               <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
                 {/* Tên nhóm */}
                 <div className="md:col-span-4 space-y-3">
-                  <label className="text-[11px] font-black text-gray-500 uppercase tracking-widest ml-1">
+                  <label className="text-[11px] font-bold text-gray-500 uppercase tracking-widest ml-1">
                     Nhóm phân loại {groupIdx + 1}
                   </label>
                   <input
@@ -116,7 +116,7 @@ export const ProductClassificationSection = ({
 
                 {/* Giá trị tùy chọn */}
                 <div className="md:col-span-8 space-y-3">
-                  <label className="text-[11px] font-black text-gray-500 uppercase tracking-widest ml-1">
+                  <label className="text-[11px] font-bold text-gray-500 uppercase tracking-widest ml-1">
                     Các giá trị phân loại
                   </label>
                   <div className="flex flex-wrap gap-3">
@@ -155,7 +155,7 @@ export const ProductClassificationSection = ({
                     <button
                       type="button"
                       onClick={() => onAddValue(groupIdx)}
-                      className="flex items-center gap-1.5 px-4 py-2.5 bg-white border-2 border-dashed border-orange-200 rounded-xl text-[11px] font-black text-orange-600 hover:bg-orange-50 hover:border-orange-500 transition-all shadow-sm"
+                      className="flex items-center gap-1.5 px-4 py-2.5 bg-white border-2 border-dashed border-orange-200 rounded-xl text-[11px] font-bold text-orange-600 hover:bg-orange-50 hover:border-orange-500 transition-all shadow-sm"
                     >
                       <Plus size={14} strokeWidth={3} /> THÊM
                     </button>
@@ -172,7 +172,7 @@ export const ProductClassificationSection = ({
           <Plus size={20} className="rotate-45" />
         </div>
         <div className="space-y-1">
-          <h4 className="text-[11px] font-black text-orange-700 uppercase tracking-widest">
+          <h4 className="text-[11px] font-bold text-orange-700 uppercase tracking-widest">
             Lưu ý khi phân loại
           </h4>
           <p className="text-xs text-orange-900/70 leading-relaxed font-semibold">

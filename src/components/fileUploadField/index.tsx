@@ -129,7 +129,7 @@ export const FiedFileUpload: React.FC<FiedFileUploadProps> = ({
           onDrop={(e) => { e.preventDefault(); setIsDragging(false); handleFiles(e.dataTransfer.files); }}
           onClick={() => fileInputRef.current?.click()}
           className={cn(
-            "cursor-pointer flex flex-col items-center justify-center p-8 border-2 border-dashed rounded-[2rem] transition-all",
+            "cursor-pointer flex flex-col items-center justify-center p-8 border-2 border-dashed rounded-4xl transition-all",
             isDragging ? "border-orange-500 bg-orange-50" : "border-gray-200 bg-gray-50 hover:bg-white hover:border-orange-300 shadow-sm"
           )}
         >

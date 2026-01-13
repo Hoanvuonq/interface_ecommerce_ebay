@@ -9,12 +9,24 @@ export interface AdminProductListItemDTO {
     id: string;
     name: string;
     slug: string;
+    description?: string;
     basePrice: number;
     active: boolean;
     approvalStatus: AdminApprovalStatus;
+    approvedBy?: string;
+    approvedAt?: string;
     category: AdminProductCategoryDTO;
+    shop?: any;
+    variants?: any[];
+    media?: any[];
+    options?: any[];
+    totalReviews?: number;
+    averageRating?: number;
+    shippingRestrictions?: any;
     createdBy?: string;
     createdDate: string;
+    lastModifiedBy?: string;
+    lastModifiedDate?: string;
     version: number;
 }
 

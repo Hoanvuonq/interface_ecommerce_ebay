@@ -102,7 +102,7 @@ export default function PublicWishlistClient({ shareToken }: Props) {
             <div className="flex flex-col md:flex-row gap-8 items-start md:items-center relative z-10">
               <div className="shrink-0">
                 {getCoverImageUrl(wishlist) ? (
-                  <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-[2rem] overflow-hidden border-4 border-white shadow-xl rotate-3 hover:rotate-0 transition-transform duration-500">
+                  <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-4xl overflow-hidden border-4 border-white shadow-xl rotate-3 hover:rotate-0 transition-transform duration-500">
                     <Image
                       src={getCoverImageUrl(wishlist)!}
                       alt={wishlist.name}
@@ -111,7 +111,7 @@ export default function PublicWishlistClient({ shareToken }: Props) {
                     />
                   </div>
                 ) : (
-                  <div className="w-32 h-32 md:w-40 md:h-40 bg-linear-to-br from-orange-500 to-rose-500 rounded-[2rem] flex items-center justify-center shadow-xl shadow-orange-100 rotate-3">
+                  <div className="w-32 h-32 md:w-40 md:h-40 bg-linear-to-br from-orange-500 to-rose-500 rounded-4xl flex items-center justify-center shadow-xl shadow-orange-100 rotate-3">
                     <Heart className="text-white w-16 h-16" strokeWidth={1.5} />
                   </div>
                 )}

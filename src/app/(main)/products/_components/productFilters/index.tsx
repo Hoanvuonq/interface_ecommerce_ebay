@@ -278,7 +278,7 @@ export default function ProductFilters({
                   type="secondary"
                   size="large"
                   onClick={clearAllFilters}
-                  className="rounded-xl! w-auto px-6! h-10! text-[11px] font-bold uppercase tracking-wider bg-white! border-gray-200! text-gray-600! hover:bg-gray-50! hover:text-gray-900!"
+                  className="rounded-xl! w-auto px-6! h-10! text-[11px] font-bold uppercase  bg-white! border-gray-200! text-gray-600! hover:bg-gray-50! hover:text-gray-900!"
                 >
                   <span className="flex items-center gap-2">
                     <RotateCcw size={14} className="mr-2" />
@@ -290,7 +290,7 @@ export default function ProductFilters({
                   type="login"
                   size="large"
                   onClick={onSearch}
-                  className="rounded-xl! w-auto px-6! h-10! text-[11px] font-bold uppercase tracking-wider shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 hover:-translate-y-0.5 transition-all"
+                  className="rounded-xl! w-auto px-6! h-10! text-[11px] font-bold uppercase  shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 hover:-translate-y-0.5 transition-all"
                 >
                   <span className="flex items-center gap-2">
                     <Search size={16} className="mr-2" strokeWidth={2.5} />

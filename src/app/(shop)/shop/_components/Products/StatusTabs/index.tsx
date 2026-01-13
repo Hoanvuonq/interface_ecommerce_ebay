@@ -90,7 +90,6 @@ export const StatusTabs = ({
               />
               <span>{tab.label}</span>
 
-              {/* Badge số lượng */}
               <span
                 className={cn(
                   "ml-1 px-2 py-0.5 rounded-md text-[10px] tabular-nums font-bold transition-colors",

@@ -57,11 +57,10 @@ export async function updateCompleteShop(
 }
 
 export async function updateShop(
-  shopId: string,
   payload: UpdateShopRequest
 ): Promise<ApiResponse<UpdateShopResponse>> {
   return request<ApiResponse<UpdateShopResponse>>({
-    url: `/${API_ENDPOINT_SHOP}/${shopId}`,
+    url: `/${API_GETSHOP}`,
     method: "PUT",
     data: payload,
     headers: {
@@ -169,6 +168,7 @@ export async function getShopTaxInfo(
     },
   });
 }
+
 
 export async function getShopLegalInfo(
   shopId: string,

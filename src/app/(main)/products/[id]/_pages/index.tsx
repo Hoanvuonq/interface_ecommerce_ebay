@@ -22,6 +22,11 @@ import { ProductReviews } from "../_components/ProductReviews";
 import Image from "next/image";
 import { SectionPageComponents } from "@/features/SectionPageComponents";
 import { PortalModal } from "@/features/PortalModal";
+
+interface ProductDetailPageProps {
+  productId?: string;
+  isPreview?: boolean;
+}
 const RelatedProducts = dynamic(
   () =>
     import("../../_components/RelatedProducts").then(
@@ -69,7 +74,7 @@ const resolveReviewMediaUrl = (media?: ReviewMediaResponse) => {
   return toPublicUrl(raw || "");
 };
 
-export const ProductDetailPage = () => {
+export const ProductDetailPage = ({ productId, isPreview = false }: ProductDetailPageProps) => {
   const {
     product,
     loading,
@@ -358,6 +363,13 @@ export const ProductDetailPage = () => {
       breadcrumbItems={breadcrumbItems}
       className="space-y-3"
     >
+      {isPreview && (
+        <div className="bg-amber-50 border border-amber-200 p-4 rounded-2xl mb-4">
+          <p className="text-amber-800 font-bold text-xs uppercase tracking-widest">
+             👁️ Chế độ xem trước (Sản phẩm: {product?.approvalStatus})
+          </p>
+        </div>
+      )}
       {product && (
         <>
           <CardComponents className="overflow-visible pt-2 shadow-custom transition-shadow">

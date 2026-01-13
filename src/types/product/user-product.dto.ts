@@ -212,15 +212,14 @@ export interface ProductBulkResponseDTO {
 
 // Statistics DTO
 export interface UserProductStatisticsDTO {
-    totalProducts: number;
-    draftProducts: number;
-    pendingProducts: number;
-    approvedProducts: number;
-    rejectedProducts: number;
-    activeProducts: number;
-    inactiveProducts: number;
+  totalProducts: number;    // Map từ "ALL"
+  draftProducts: number;    // Map từ "DRAFT"
+  pendingProducts: number;  // Map từ "PENDING"
+  approvedProducts: number; // Map từ "APPROVED"
+  rejectedProducts: number; // Map từ "REJECTED"
+  activeProducts: number;   // Map từ "ACTIVE"
+  inactiveProducts: number; // Map từ "INACTIVE"
 }
-
 // Search Query DTO
 export interface UserProductSearchQueryDTO {
     keyword?: string;

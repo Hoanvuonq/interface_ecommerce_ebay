@@ -37,11 +37,11 @@ export const ProductDetailsTabs: React.FC = () => {
           <Info size={20} strokeWidth={2.5} />
         </div>
         <div className="space-y-1 pt-0.5">
-          <h4 className="text-[11px] font-black text-orange-700 uppercase tracking-widest">
+          <h4 className="text-[11px] font-bold text-orange-700 uppercase tracking-widest">
             Thông tin chuyển đổi
           </h4>
           <p className="text-xs text-orange-900/70 leading-relaxed font-semibold">
-            Lưu ý: Tính năng <span className="text-orange-600 font-black">Phân loại sản phẩm</span> đã được di chuyển sang tab <span className="underline decoration-orange-300 underline-offset-4 text-orange-600">Bán hàng</span> để bạn dễ dàng quản lý cùng lúc với giá và kho hàng.
+            Lưu ý: Tính năng <span className="text-orange-600 font-bold">Phân loại sản phẩm</span> đã được di chuyển sang tab <span className="underline decoration-orange-300 underline-offset-4 text-orange-600">Bán hàng</span> để bạn dễ dàng quản lý cùng lúc với giá và kho hàng.
           </p>
         </div>
       </div>

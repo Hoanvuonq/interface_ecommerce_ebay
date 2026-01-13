@@ -29,7 +29,7 @@ export const ProductVariantsSection = ({
         </div>
         
         {hasOptions && (
-          <div className="flex items-center gap-1.5 px-4 py-2 bg-orange-50 text-orange-600 rounded-xl text-[10px] font-black uppercase tracking-wider shadow-sm">
+          <div className="flex items-center gap-1.5 px-4 py-2 bg-orange-50 text-orange-600 rounded-xl text-[10px] font-bold uppercase tracking-wider shadow-sm">
             <Sparkles size={14} className="animate-pulse" /> Tự động tạo
           </div>
         )}
