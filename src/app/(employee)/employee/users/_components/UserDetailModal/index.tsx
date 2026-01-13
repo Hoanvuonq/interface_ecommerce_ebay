@@ -163,7 +163,7 @@ export default function UserDetailModal({
           </p>
         </div>
       ) : error ? (
-        <div className="p-8 bg-rose-50 border border-rose-100 rounded-[2rem] text-rose-600 text-center">
+        <div className="p-8 bg-rose-50 border border-rose-100 rounded-4xl text-rose-600 text-center">
           <p className="font-semibold uppercase text-xs tracking-widest mb-2">
             Đã xảy ra lỗi
           </p>
@@ -250,7 +250,7 @@ export default function UserDetailModal({
                   Cấu hình bảo mật
                 </h3>
               </div>
-              <div className="grid grid-cols-2 gap-4 bg-orange-50/50 p-4 rounded-[2rem] border border-orange-100">
+              <div className="grid grid-cols-2 gap-4 bg-orange-50/50 p-4 rounded-4xl border border-orange-100">
                 <DetailField
                   label="Đã xóa"
                   value={user.deleted || user.isDeleted ? "Có" : "Không"}
@@ -278,17 +278,16 @@ export default function UserDetailModal({
               </div>
             </div>
 
-            {/* Violation/Lock Info */}
             <div className="space-y-4">
               <div className="flex items-center gap-2 px-4">
                 <div className="w-1.5 h-6 bg-rose-500 rounded-full" />
-                <h3 className="font-semibold text-gray-800 tracking-tight uppercase text-xs text-rose-600">
+                <h3 className="font-semibold tracking-tight uppercase text-xs text-rose-600">
                   Lịch sử vi phạm
                 </h3>
               </div>
               <div
                 className={cn(
-                  "p-5 h-full rounded-[2rem] border transition-all duration-300",
+                  "p-5 h-full rounded-4xl border transition-all duration-300",
                   user.lockedAt
                     ? "bg-rose-50 border-rose-100"
                     : "bg-gray-50 border-gray-100 opacity-60"
@@ -326,11 +325,9 @@ export default function UserDetailModal({
             </div>
           </div>
 
-          {/* Section 3: Entity Details (Buyer, Shop, Employee) */}
           <div className="space-y-8">
-            {/* Buyer Block */}
             {(userHasRole(user, "BUYER") || user.buyer) && (
-              <div className="p-1 rounded-[2.5rem] bg-gradient-to-r from-blue-500 to-indigo-600 shadow-xl shadow-blue-200/50">
+              <div className="p-1 rounded-[2.5rem] bg-linear-to-r from-blue-500 to-indigo-600 shadow-xl shadow-blue-200/50">
                 <div className="bg-white rounded-[2.4rem] p-6 space-y-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -370,7 +367,7 @@ export default function UserDetailModal({
 
             {/* Shop Block */}
             {(userHasRole(user, "SHOP") || user.shop) && (
-              <div className="p-1 rounded-[2.5rem] bg-gradient-to-r from-emerald-500 to-teal-600 shadow-xl shadow-emerald-200/50">
+              <div className="p-1 rounded-[2.5rem] bg-linear-to-r from-emerald-500 to-teal-600 shadow-xl shadow-emerald-200/50">
                 <div className="bg-white rounded-[2.4rem] p-6 space-y-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -413,7 +410,7 @@ export default function UserDetailModal({
 
             {/* Employee Block */}
             {(userHasAnyRole(user, employeeRoles) || user.employee) && (
-              <div className="p-1 rounded-[2.5rem] bg-gradient-to-r from-purple-500 to-violet-600 shadow-xl shadow-purple-200/50">
+              <div className="p-1 rounded-[2.5rem] bg-linear-to-r from-purple-500 to-violet-600 shadow-xl shadow-purple-200/50">
                 <div className="bg-white rounded-[2.4rem] p-6 space-y-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">

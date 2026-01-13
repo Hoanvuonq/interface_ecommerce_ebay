@@ -1,19 +1,36 @@
 // ==================== ENUMS ====================
 
 import { ReturnOrderStatus, ReturnOrderType } from "./order.types";
-
 export enum OrderStatus {
-  CREATED = "CREATED",
-  PENDING_PAYMENT = "PENDING_PAYMENT",
-  PAID = "PAID",
-  FULFILLING = "FULFILLING",
-  SHIPPED = "SHIPPED",
-  OUT_FOR_DELIVERY = "OUT_FOR_DELIVERY",
-  DELIVERED = "DELIVERED",
-  CANCELLED = "CANCELLED",
-  REFUNDING = "REFUNDING",
-  REFUNDED = "REFUNDED",
+  CREATED = "CREATED",                      // Đơn hàng mới (COD)
+  AWAITING_PAYMENT = "AWAITING_PAYMENT",    // Chờ buyer thanh toán (online)
+  PAID = "PAID",                            // Buyer đã thanh toán
+  FULFILLING = "FULFILLING",                // Shop đang đóng gói
+  READY_FOR_PICKUP = "READY_FOR_PICKUP",    // Shop đã đóng gói, chờ shipper lấy
+  SHIPPED = "SHIPPED",                      // Shipper đã lấy hàng, đang giao
+  OUT_FOR_DELIVERY = "OUT_FOR_DELIVERY",    // Đang giao cho khách
+  DELIVERED = "DELIVERED",                  // Giao thành công
+  CANCELLED = "CANCELLED",                  // Đã hủy
+  REFUNDING = "REFUNDING",                  // Đang hoàn tiền
+  REFUNDED = "REFUNDED",                    // Đã hoàn tiền
 }
+
+// Bản dịch trạng thái đơn hàng cho UI (giữ nguyên giá trị backend)
+export const ORDER_STATUS_TEXT: Record<OrderStatus, string> = {
+  [OrderStatus.CREATED]: "Đã tạo",
+  [OrderStatus.AWAITING_PAYMENT]: "Chờ thanh toán",
+  [OrderStatus.PAID]: "Đã thanh toán",
+  [OrderStatus.FULFILLING]: "Đang chuẩn bị",
+  [OrderStatus.READY_FOR_PICKUP]: "Chờ lấy hàng",
+  [OrderStatus.SHIPPED]: "Đang giao",
+  [OrderStatus.OUT_FOR_DELIVERY]: "Đang vận chuyển",
+  [OrderStatus.DELIVERED]: "Đã giao",
+  [OrderStatus.CANCELLED]: "Đã hủy",
+  [OrderStatus.REFUNDING]: "Đang hoàn tiền",
+  [OrderStatus.REFUNDED]: "Đã hoàn tiền",
+};
+
+// =======
 
 // ==================== REQUEST DTOs ====================
 

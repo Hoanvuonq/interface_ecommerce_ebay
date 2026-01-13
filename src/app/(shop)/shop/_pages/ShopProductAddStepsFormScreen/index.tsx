@@ -2,9 +2,11 @@
 
 import { CategoryService } from "@/app/(main)/category/_service/category.service";
 import { UploadFile } from "@/app/(main)/orders/_types/review";
+import { ButtonField, CustomVideoModal } from "@/components";
+import { Button } from "@/components/button/button";
 import { usePresignedUpload } from "@/hooks/usePresignedUpload";
+import { useToast } from "@/hooks/useToast";
 import { userProductService } from "@/services/products/product.service";
-import { storageService } from "@/services/storage/storage.service";
 import { CategoryResponse } from "@/types/categories/category.detail";
 import { CategorySummaryResponse } from "@/types/categories/category.summary";
 import type {
@@ -12,54 +14,27 @@ import type {
   CreateUserProductOptionDTO,
 } from "@/types/product/user-product.dto";
 import { UploadContext } from "@/types/storage/storage.types";
-import { safeApiCall } from "@/utils/api.helpers";
-import { toPublicUrl } from "@/utils/storage/url";
-import {
-  LayoutGrid,
-  Grid2X2Plus,
-  Check,
-  Copy,
-  Trash2,
-  Info,
-  X,
-  MinusCircle,
-  Image as ImageIcon,
-  PlayCircle,
-  Plus,
-  ChevronRight,
-  Save,
-  Search,
-  ShoppingCart,
-  ShoppingBag,
-  Tags,
-  UploadCloud,
-} from "lucide-react";
+import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import SparkMD5 from "spark-md5";
-import { BasePriceSection } from "../../_components/Products/BasePriceSection";
-import { ProductClassificationSection } from "../../_components/Products/ProductClassificationSection";
-import { ProductDescription } from "../../_components/Products/ProductDescription";
-import { ProductVariantsSection } from "../../_components/Products/ProductVariantsSection";
-import { SectionPageComponents } from "@/features/SectionPageComponents";
-import { ProductVariantsTable } from "../../_components/Products/ProductVariantsTable";
 import {
   AddOptionGroupModal,
   CategorySelectionModal,
 } from "../../_components/Modal";
-import { useProductStore } from "../../_store/product.store";
+import { BasePriceSection } from "../../_components/Products/BasePriceSection";
+import { ProductClassificationSection } from "../../_components/Products/ProductClassificationSection";
+import { ProductDescription } from "../../_components/Products/ProductDescription";
 import { ProductPreviewSidebar } from "../../_components/Products/ProductPreviewSidebar";
+import { ProductVariantsSection } from "../../_components/Products/ProductVariantsSection";
+import { ProductVariantsTable } from "../../_components/Products/ProductVariantsTable";
+import { useProductStore } from "../../_store/product.store";
 import {
   ProductBasicTabs,
   ProductDetailsTabs,
-  ProductShippingTabs,
   ProductFormTabs,
+  ProductShippingTabs,
+  TabType,
 } from "../../products/add/_components";
-import { ButtonField } from "@/components";
-import { Button } from "@/components/button/button";
-import { TabType } from "../../products/add/_components";
-import { useToast } from "@/hooks/useToast";
-import { CustomVideoModal } from "@/components";
 
 type OptionConfig = {
   id: string;
@@ -96,7 +71,7 @@ export default function ShopProductAddStepsFormScreen() {
     error: toastError,
     warning: toastWarning,
   } = useToast();
-  
+
   // Replace Form.useForm() with custom form state
   const [formFields, setFormFields] = useState({
     name: "",
@@ -126,7 +101,9 @@ export default function ShopProductAddStepsFormScreen() {
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
   const [selectedCategoryPath, setSelectedCategoryPath] = useState<string>("");
-  const [categoryTree, setCategoryTree] = useState<CategorySummaryResponse[]>([]);
+  const [categoryTree, setCategoryTree] = useState<CategorySummaryResponse[]>(
+    []
+  );
   const [secondLevelCategories, setSecondLevelCategories] = useState<
     CategorySummaryResponse[]
   >([]);
@@ -177,25 +154,25 @@ export default function ShopProductAddStepsFormScreen() {
   const getFieldsValue = () => formFields;
 
   const setFieldValue = (field: string, value: any) => {
-    setFormFields(prev => ({ ...prev, [field]: value }));
+    setFormFields((prev) => ({ ...prev, [field]: value }));
   };
 
   const setFieldsValue = (values: Partial<typeof formFields>) => {
-    setFormFields(prev => ({ ...prev, ...values }));
+    setFormFields((prev) => ({ ...prev, ...values }));
   };
 
   const validateFields = async () => {
     // Basic validation - you can expand this
     const errors: string[] = [];
-    
+
     if (!formFields.name?.trim()) {
       errors.push("Tên sản phẩm không được để trống");
     }
-    
+
     if (!formFields.categoryId) {
       errors.push("Vui lòng chọn danh mục sản phẩm");
     }
-    
+
     if (formFields.basePrice <= 0) {
       errors.push("Giá sản phẩm phải lớn hơn 0");
     }
@@ -246,7 +223,8 @@ export default function ShopProductAddStepsFormScreen() {
       }))
       .filter((group) => group.name && group.values.length > 0);
 
-    const existingVariants = baseVariants || getFieldValue("variants") || variants;
+    const existingVariants =
+      baseVariants || getFieldValue("variants") || variants;
 
     if (normalizedGroups.length === 0) {
       if (!Array.isArray(existingVariants) || existingVariants.length === 0) {
@@ -254,10 +232,11 @@ export default function ShopProductAddStepsFormScreen() {
         setVariants([defaultVariant]);
         setFieldValue("variants", [defaultVariant]);
       } else if (
-        Array.isArray(existingVariants) && (
-          existingVariants.length > 1 ||
-          (Array.isArray(existingVariants[0]?.optionValueNames) ? existingVariants[0].optionValueNames.length : 0) > 0
-        )
+        Array.isArray(existingVariants) &&
+        (existingVariants.length > 1 ||
+          (Array.isArray(existingVariants[0]?.optionValueNames)
+            ? existingVariants[0].optionValueNames.length
+            : 0) > 0)
       ) {
         const singleVariant = {
           ...existingVariants[0],
@@ -279,12 +258,16 @@ export default function ShopProductAddStepsFormScreen() {
     }
 
     const newVariants = combinations.map((combo) => {
-      const existingMatch = Array.isArray(existingVariants) ? existingVariants.find(
-        (variant: any) =>
-          Array.isArray(variant.optionValueNames) &&
-          variant.optionValueNames.length === combo.length &&
-          combo.every((value, idx) => variant.optionValueNames[idx] === value)
-      ) : undefined;
+      const existingMatch = Array.isArray(existingVariants)
+        ? existingVariants.find(
+            (variant: any) =>
+              Array.isArray(variant.optionValueNames) &&
+              variant.optionValueNames.length === combo.length &&
+              combo.every(
+                (value, idx) => variant.optionValueNames[idx] === value
+              )
+          )
+        : undefined;
 
       if (existingMatch) {
         return existingMatch;
@@ -679,7 +662,10 @@ export default function ShopProductAddStepsFormScreen() {
 
       const flatCategories = flattenCategories(categoriesData);
       setCategories(flatCategories);
-      console.log("✅ Loaded categories with hierarchy:", flatCategories.length);
+      console.log(
+        "✅ Loaded categories with hierarchy:",
+        flatCategories.length
+      );
     } catch (err: any) {
       console.error("Failed to fetch categories:", err);
       toastError(err?.response?.data?.message || "Không thể tải danh mục");
@@ -717,12 +703,17 @@ export default function ShopProductAddStepsFormScreen() {
           (option): option is CreateUserProductOptionDTO => option !== null
         );
 
-      const variantsToUse = variants.length > 0 ? variants : values.variants || [];
+      const variantsToUse =
+        variants.length > 0 ? variants : values.variants || [];
 
-      console.log("📊 Building payload - Variants from state:", variants.length);
+      console.log(
+        "📊 Building payload - Variants from state:",
+        variants.length
+      );
       console.log("📊 Building payload - Options:", optionsForAPI.length);
 
-      const variantsToSubmit = variants.length > 0 ? variants : values.variants || [];
+      const variantsToSubmit =
+        variants.length > 0 ? variants : values.variants || [];
       const structuralErrors = validateVariantStructure(variantsToSubmit);
       if (structuralErrors.length > 0) {
         showVariantErrors(structuralErrors);
@@ -811,7 +802,9 @@ export default function ShopProductAddStepsFormScreen() {
       }
 
       // Show success message
-      toastSuccess(`✅ Tạo sản phẩm thành công! "${productName}" - Đang chuyển hướng...`);
+      toastSuccess(
+        `✅ Tạo sản phẩm thành công! "${productName}" - Đang chuyển hướng...`
+      );
 
       // Redirect after delay
       setTimeout(() => {
@@ -970,7 +963,20 @@ export default function ShopProductAddStepsFormScreen() {
 
   const renderDetailsTab = () => <ProductDetailsTabs />;
 
-  const renderDescriptionTab = () => <ProductDescription />;
+  const renderDescriptionTab = () => {
+    const { description, setBasicInfo } = useProductStore();
+
+    return (
+      <ProductDescription
+        value={description}
+        onChange={(val) => {
+          setBasicInfo("description", val);
+          form.setFieldValue("description", val);
+        }}
+        // error={form.getFieldError('description')} // Nếu bạn có validator
+      />
+    );
+  };
 
   const renderSalesTab = () => {
     const handleUpdateVariants = (newVariants: any[]) => {
@@ -1073,19 +1079,17 @@ export default function ShopProductAddStepsFormScreen() {
     (acc, curr) => acc + (curr.stockQuantity || 0),
     0
   );
-  const breadcrumbData = [
-    { title: "Trang chủ", href: "/" },
-    { title: "Giỏ hàng", href: "/cart" },
-    { title: "Thanh toán", href: "/checkout" },
-  ];
 
   return (
-    <SectionPageComponents loading={loading} breadcrumbItems={breadcrumbData}>
-      <div className="flex justify-between items-center mt-4">
-        <h2 className="mb-0!">Thêm sản phẩm mới</h2>
-        <div className="flex gap-3 pt-2">
+    <div className="min-h-screen shadow-custom rounded-3xl bg-gray-50 p-4 md:p-6 space-y-6">
+      <div className="flex justify-between items-center py-3 w-full">
+        <h1 className="text-3xl font-semibold text-gray-900 italic uppercase">
+          Thêm sản phẩm mới
+        </h1>
+        <div className="flex  gap-3 pt-2">
           <Button
             variant="edit"
+            className="w-50! h-10!"
             onClick={() => {
               const currentData = getFieldsValue();
               setFormData((prev) => ({
@@ -1102,6 +1106,7 @@ export default function ShopProductAddStepsFormScreen() {
           </Button>
           <ButtonField
             form="product-form"
+            className="w-50! h-10!"
             htmlType="submit"
             type="login"
             onClick={handleSubmit}
@@ -1119,7 +1124,10 @@ export default function ShopProductAddStepsFormScreen() {
           handleSubmit();
         }}
       >
-        <div className="flex gap-6 items-start" style={{ position: "relative" }}>
+        <div
+          className="flex gap-6 items-start"
+          style={{ position: "relative" }}
+        >
           <div className="flex-1 w-full lg:w-[65%] min-w-0">
             <ProductFormTabs activeTab={activeTab} setActiveTab={setActiveTab}>
               <div className={activeTab === "basic" ? "block" : "hidden"}>
@@ -1152,10 +1160,9 @@ export default function ShopProductAddStepsFormScreen() {
         </div>
       </form>
 
-      {/* Custom Media Modals */}
       {mediaModal?.type === "image" && (
         <div
-          className="fixed inset-0 bg-black/90 z-[9999] flex justify-center items-center p-4 animate-in fade-in duration-200"
+          className="fixed inset-0 bg-black/90 z-9999 flex justify-center items-center p-4 animate-in fade-in duration-200"
           onClick={() => setMediaModal(null)}
         >
           <div className="relative max-w-7xl max-h-[90vh] w-full flex flex-col">
@@ -1191,8 +1198,21 @@ export default function ShopProductAddStepsFormScreen() {
         isOpen={addOptionModalOpen}
         onClose={() => setAddOptionModalOpen(false)}
         onConfirm={(name) => {
+          const newGroup: OptionConfig = {
+            id: `group-${Date.now()}`,
+            name: name,
+            values: [""],
+          };
+
+          const updatedGroups = [...optionGroups, newGroup];
+          setOptionGroups(updatedGroups);
+
           addOptionGroup(name);
+
+          regenerateVariantsFromOptions(updatedGroups);
+
           setAddOptionModalOpen(false);
+          toastSuccess(`Đã thêm nhóm: ${name}`);
         }}
         existingGroups={optionNames}
       />
@@ -1212,6 +1232,6 @@ export default function ShopProductAddStepsFormScreen() {
         onSelectLevel3={handleSelectLevel3}
         onSelectLevel4={setSelectedLevel4}
       />
-    </SectionPageComponents>
+    </div>
   );
 }

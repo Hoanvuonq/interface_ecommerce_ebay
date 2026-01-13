@@ -2,14 +2,24 @@
 
 // ==================== ENUMS ====================
 
+
+export enum VoucherScope {
+  SHOP_ORDER = "SHOP_ORDER",
+  PRODUCT = "PRODUCT",
+  SHIPPING = "SHIPPING", // Platform only
+}
+
 /**
- * Phương thức giảm giá
+ * Phương thức giảm giá (discountType trong backend)
  */
-export enum DiscountMethod {
+export enum DiscountType {
   FIXED_AMOUNT = "FIXED_AMOUNT", // Giảm giá cố định
   PERCENTAGE = "PERCENTAGE", // Giảm theo phần trăm
 }
-
+/**
+ * Phương thức giảm giá
+ */
+export const DiscountMethod = DiscountType;
 /**
  * Loại người tạo voucher
  */
@@ -82,7 +92,7 @@ export interface VoucherTemplate {
   code: string;
   name: string;
   description?: string;
-  discountMethod: DiscountMethod;
+  discountMethod: DiscountType;
   discountValue: number;
   minOrderAmount?: number;
   maxDiscount?: number;
@@ -115,7 +125,7 @@ export interface CreateShopVoucherRequest {
   code: string; // 6-64 ký tự
   name: string; // max 200
   description?: string; // max 1000
-  discountMethod: DiscountMethod;
+  discountMethod: DiscountType;
   discountValue: number;
   minOrderAmount?: number;
   maxDiscount?: number;
@@ -136,7 +146,7 @@ export interface CreateShopVoucherResponse {
   code: string;
   name: string;
   description?: string;
-  discountMethod: DiscountMethod;
+  discountMethod: DiscountType;
   discountValue: number;
   minOrderAmount?: number;
   maxDiscount?: number;

@@ -23,11 +23,11 @@ export const ProductPreviewSidebar: React.FC<ProductPreviewSidebarProps> = ({
     : "0 ₫";
 
   return (
-    <div className="sticky top-[100px] w-full bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+    <div className="sticky top-25 w-full bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
       {/* Header */}
       <div className="px-5 py-4 border-b border-gray-100 bg-gray-50/50">
         <h3 className="text-base font-bold text-gray-800 flex items-center gap-2">
-          <ImageIcon size={18} className="text-blue-500" />
+          <ImageIcon size={18} className="text-(--color-mainColor)" />
           Xem trước sản phẩm
         </h3>
       </div>

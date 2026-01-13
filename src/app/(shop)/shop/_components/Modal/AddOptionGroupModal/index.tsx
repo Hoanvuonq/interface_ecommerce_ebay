@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Grid2X2Plus, Tag as TagIcon, Check } from "lucide-react";
+import { Grid2X2Plus, Tag as TagIcon, Check, Lightbulb } from "lucide-react";
 import { PortalModal } from "@/features/PortalModal";
+import { cn } from "@/utils/cn";
 
 interface AddOptionGroupModalProps {
   isOpen: boolean;
@@ -43,23 +44,22 @@ export const AddOptionGroupModal: React.FC<AddOptionGroupModalProps> = ({
     <div className="flex items-center gap-3 w-full justify-end py-2">
       <button
         onClick={onClose}
-        className="px-5 py-2.5 rounded-xl text-sm font-semibold text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-all active:scale-95"
+        className="px-6 py-2.5 rounded-2xl text-sm font-bold text-gray-500 hover:bg-gray-100 hover:text-gray-800 transition-all active:scale-95"
       >
         Hủy bỏ
       </button>
       <button
         onClick={handleSubmit}
         disabled={!name.trim()}
-        className={`
-          flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold text-white shadow-lg shadow-blue-500/30 transition-all active:scale-95
-          ${!name.trim() 
-            ? "bg-gray-300 cursor-not-allowed shadow-none" 
-            : "bg-linear-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600"
-          }
-        `}
+        className={cn(
+          "flex items-center gap-2 px-8 py-2.5 rounded-2xl text-sm font-black text-white transition-all active:scale-95 shadow-lg",
+          !name.trim()
+            ? "bg-gray-200 cursor-not-allowed shadow-none text-gray-400"
+            : "bg-orange-500 hover:bg-orange-600 shadow-orange-500/30"
+        )}
       >
-        <Check size={16} strokeWidth={3} />
-        Thêm mới
+        <Check size={18} strokeWidth={3} />
+        THÊM MỚI
       </button>
     </div>
   );
@@ -69,60 +69,71 @@ export const AddOptionGroupModal: React.FC<AddOptionGroupModalProps> = ({
       isOpen={isOpen}
       onClose={onClose}
       title={
-        <div className="flex items-center gap-2 text-blue-600">
-          <div className="p-1.5 bg-blue-50 rounded-lg">
-            <Grid2X2Plus size={20} strokeWidth={2.5} />
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-orange-100 rounded-xl">
+            <Grid2X2Plus size={22} className="text-orange-600" strokeWidth={2.5} />
           </div>
-          <span className="text-gray-800 font-bold text-lg">Thêm nhóm phân loại</span>
+          <span className="text-gray-800 font-black text-xl tracking-tight">Thêm nhóm phân loại</span>
         </div>
       }
       footer={footerContent}
       width="max-w-md"
     >
-      <div className="flex flex-col gap-5 pt-2">
-        {/* Suggestion Text */}
-        <div className="text-sm text-gray-500 bg-gray-50 p-3 rounded-lg border border-gray-100">
-          <span className="font-semibold text-gray-700">Gợi ý: </span>
-          Màu sắc, Kích thước, Dung lượng, Chất liệu...
-        </div>
-
-        {/* Input Field Custom */}
-        <div className="relative group">
-          <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5 px-2 py-1 bg-blue-50 rounded-md border border-blue-100">
-            <TagIcon size={12} className="text-blue-600" />
-            <span className="text-xs font-bold text-blue-700 uppercase tracking-wide">Tên nhóm</span>
+      <div className="flex flex-col gap-6 pt-4">
+        {/* Suggestion Box */}
+        <div className="flex gap-3 p-4 bg-orange-50/50 rounded-2xl border border-orange-100/50">
+          <Lightbulb size={18} className="text-orange-600 shrink-0 mt-0.5" />
+          <div className="text-xs font-semibold text-orange-800 leading-relaxed">
+            <span className="font-black uppercase tracking-wider text-[10px] block mb-0.5">Gợi ý</span>
+            Màu sắc, Kích thước, Dung lượng, Chất liệu hoặc Loại bề mặt...
           </div>
-          
-          <input
-            ref={inputRef}
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            onKeyDown={handleKeyDown}
-            maxLength={50}
-            placeholder="Nhập tên..."
-            className="w-full pl-28 pr-12 py-3.5 bg-white border-2 border-gray-200 rounded-xl text-sm font-semibold text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-50 transition-all"
-          />
-          
-          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-medium text-gray-400 group-focus-within:text-blue-500 transition-colors">
-            {name.length}/50
-          </span>
         </div>
 
-        {/* Existing Groups List */}
+        {/* Custom Input Field */}
+        <div className="space-y-2">
+          <label className="text-[11px] font-black text-gray-500 uppercase tracking-widest ml-1">
+            Tên nhóm phân loại
+          </label>
+          <div className="relative group">
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-orange-500 transition-colors">
+              <TagIcon size={18} />
+            </div>
+            
+            <input
+              ref={inputRef}
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              onKeyDown={handleKeyDown}
+              maxLength={50}
+              placeholder="Nhập tên (VD: Kích cỡ)..."
+              className={cn(
+                "w-full pl-12 pr-16 py-4 bg-gray-50/50 border-2 border-gray-100 rounded-2xl text-base font-bold text-gray-800 outline-none transition-all",
+                "placeholder:text-gray-300 placeholder:font-normal",
+                "focus:bg-white focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 hover:border-gray-200"
+              )}
+            />
+            
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-black tabular-nums text-gray-300 group-focus-within:text-orange-400">
+              {name.length}/50
+            </div>
+          </div>
+        </div>
+
+        {/* Existing Groups Tags */}
         {existingGroups.length > 0 && (
-          <div className="mt-1 animate-in fade-in slide-in-from-bottom-2 duration-300">
-            <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2.5 ml-1">
-              Các nhóm hiện có
+          <div className="space-y-3 animate-in fade-in slide-in-from-bottom-2 duration-500">
+            <div className="text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1">
+              Các nhóm đã có
             </div>
             <div className="flex flex-wrap gap-2">
               {existingGroups.map((g, idx) => (
-                <span 
+                <div 
                   key={idx} 
-                  className="inline-flex items-center px-3 py-1.5 rounded-full bg-white border border-gray-200 text-xs font-semibold text-gray-600 shadow-sm select-none"
+                  className="px-4 py-2 rounded-xl bg-white border border-gray-100 text-xs font-bold text-gray-600 shadow-sm hover:border-orange-200 hover:text-orange-600 transition-all cursor-default"
                 >
                   {g}
-                </span>
+                </div>
               ))}
             </div>
           </div>

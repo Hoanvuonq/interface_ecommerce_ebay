@@ -18,72 +18,86 @@ export const ProductDescription = ({
 }: ProductDescriptionProps) => {
   const maxLength = 5000;
 
+  // Đảm bảo textarea luôn nhận giá trị chuỗi, tránh bị undefined gây lỗi không nhập được
+  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (onChange) {
+      onChange(e.target.value);
+    }
+  };
+
   return (
     <div
       className={cn(
-        "p-6 bg-white rounded-4xl border border-gray-100 shadow-sm space-y-6",
+        "p-8 bg-white rounded-4xl border border-orange-100/50 shadow-sm space-y-6",
         className
       )}
     >
-      <div className="space-y-1">
-        <h3 className="text-lg font-black text-gray-900 tracking-tight">
-          Mô tả sản phẩm
-        </h3>
-        <p className="text-xs font-medium text-gray-500">
-          Nhập mô tả chi tiết để khách hàng hiểu rõ hơn về sản phẩm của bạn.
-        </p>
+      <div className="flex items-center gap-3">
+        <div className="p-2 bg-orange-100 rounded-xl">
+           <Info className="w-5 h-5 text-orange-600" />
+        </div>
+        <div className="space-y-0.5">
+          <h3 className="text-lg font-bold text-gray-800 tracking-tight">
+            Mô tả sản phẩm
+          </h3>
+          <p className="text-xs font-medium text-gray-400">
+            Cung cấp thông tin chi tiết nhất về sản phẩm của bạn.
+          </p>
+        </div>
       </div>
 
       <div className="space-y-2">
         <div className="relative group">
           <textarea
             value={value}
-            onChange={(e) => onChange?.(e.target.value)}
-            rows={8}
+            onChange={handleTextChange} // Sử dụng handler đã fix
+            rows={10}
             maxLength={maxLength}
             placeholder="Ví dụ: Áo thun chất liệu cotton 100%, co giãn 4 chiều, thấm hút mồ hôi tốt..."
             className={cn(
-              "w-full p-5 text-sm font-medium text-gray-700 bg-gray-50/50 border rounded-2xl outline-none transition-all duration-200 resize-y min-h-50",
-              "placeholder:text-gray-400 placeholder:font-normal",
+              "w-full p-6 text-sm font-semibold text-gray-700 bg-gray-50/50 border rounded-3xl outline-none transition-all duration-300 resize-none min-h-[300px]",
+              "placeholder:text-gray-300 placeholder:font-normal",
               error
-                ? "border-red-200 bg-red-50/30 focus:border-red-500 focus:ring-4 focus:ring-red-100"
-                : "border-gray-200 hover:border-gray-300 focus:bg-white focus:border-orange-500 focus:ring-4 focus:ring-orange-50"
+                ? "border-red-300 bg-red-50/30 focus:border-red-500 focus:ring-4 focus:ring-red-500/10"
+                : "border-gray-200 hover:border-orange-200 focus:bg-white focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
             )}
           />
           
-          <div className="absolute bottom-4 right-4 flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/80 backdrop-blur-sm border border-gray-100 shadow-sm">
+          {/* Character Counter Design */}
+          <div className="absolute bottom-5 right-5 flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white shadow-sm border border-orange-100">
             <span
               className={cn(
-                "text-[10px] font-bold tabular-nums",
-                value.length >= maxLength ? "text-red-500" : "text-gray-500"
+                "text-[11px] font-black tabular-nums",
+                value.length >= maxLength ? "text-red-500" : "text-orange-600"
               )}
             >
-              {value.length}
+              {value.length.toLocaleString()}
             </span>
-            <span className="text-[10px] text-gray-300">/</span>
-            <span className="text-[10px] text-gray-400 font-medium">
-              {maxLength}
+            <span className="text-[11px] text-gray-300">/</span>
+            <span className="text-[11px] text-gray-400 font-bold">
+              {maxLength.toLocaleString()}
             </span>
           </div>
         </div>
         
         {error && (
-          <p className="text-xs text-red-500 font-bold ml-1 animate-in slide-in-from-top-1">
+          <p className="text-[11px] text-red-500 font-bold ml-2 animate-in fade-in slide-in-from-top-1">
             {error}
           </p>
         )}
       </div>
 
-      <div className="flex gap-4 p-4 bg-sky-50/60 border border-sky-100 rounded-2xl">
-        <div className="shrink-0 w-8 h-8 flex items-center justify-center bg-sky-100 rounded-full text-sky-600">
-          <Info size={16} strokeWidth={2.5} />
+      {/* Suggestion Box */}
+      <div className="flex gap-4 p-5 bg-orange-50/50 border border-orange-100 rounded-3xl">
+        <div className="shrink-0 w-10 h-10 flex items-center justify-center bg-white rounded-2xl shadow-sm text-orange-600">
+          <Info size={20} strokeWidth={2.5} />
         </div>
-        <div className="space-y-1 pt-0.5">
-          <h4 className="text-xs font-black text-sky-700 uppercase tracking-wide">
-            Gợi ý nội dung
+        <div className="space-y-1">
+          <h4 className="text-[11px] font-black text-orange-700 uppercase tracking-widest">
+            Mẹo viết mô tả thu hút
           </h4>
-          <p className="text-xs text-sky-600/90 leading-relaxed font-medium">
-            Mô tả nên bao gồm: đặc điểm nổi bật, thông số kỹ thuật, hướng dẫn sử dụng và bảo quản để tăng tỷ lệ chuyển đổi.
+          <p className="text-xs text-orange-900/70 leading-relaxed font-semibold">
+            Hãy tập trung vào lợi ích khách hàng nhận được, thông số kỹ thuật rõ ràng và hướng dẫn bảo quản để tăng uy tín cho Shop.
           </p>
         </div>
       </div>

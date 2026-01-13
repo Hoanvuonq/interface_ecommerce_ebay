@@ -1,8 +1,19 @@
 "use client";
-import React from 'react';
-import { useProductStore } from '@/app/(shop)/shop/_store/product.store';
-import { Check, Trash2, PlayCircle, Image as ImageIcon, Info } from 'lucide-react';
-
+import React from "react";
+import { useProductStore } from "@/app/(shop)/shop/_store/product.store";
+import {
+  Check,
+  Trash2,
+  PlayCircle,
+  Image as ImageIcon,
+  Info,
+  Pencil,
+  Plus,
+  Loader2,
+} from "lucide-react";
+import { cn } from "@/utils/cn";
+import { FormInput } from "@/components";
+import { useToast } from "@/hooks/useToast";
 interface ProductBasicTabsProps {
   form: any;
   onOpenCategoryModal: () => void;
@@ -27,359 +38,313 @@ export const ProductBasicTabs: React.FC<ProductBasicTabsProps> = ({
     fileList,
     videoList,
     uploading,
-    uploadingVideo,
     setBasicInfo,
     setFileList,
-    setVideoList
+    setVideoList,
   } = useProductStore();
-
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const { error: toastError, warning: toastWarning } = useToast();
+  const handleNameChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const value = e.target.value;
-    setBasicInfo('name', value);
-    form.setFieldValue('name', value);
+    setBasicInfo("name", value);
+    form.setFieldValue("name", value);
   };
 
   const handleActiveChange = (checked: boolean) => {
-    setBasicInfo('active', checked);
-    form.setFieldValue('active', checked);
+    setBasicInfo("active", checked);
+    form.setFieldValue("active", checked);
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (files) {
-      for (const file of Array.from(files)) {
-        // Validate file type
-        const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
-        const fileExtension = file.name.split('.').pop()?.toLowerCase();
-        const allowedExtensions = ['png', 'jpg', 'jpeg'];
+    if (!files) return;
 
-        const isValidType = allowedTypes.includes(file.type) || 
-          (fileExtension && allowedExtensions.includes(fileExtension));
+    const MAX_SIZE_MB = 2;
+    const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
 
-        if (!isValidType) {
-          alert('Chỉ được upload file hình ảnh định dạng PNG, JPG hoặc JPEG!');
-          continue;
-        }
-
-        const isLt2M = file.size / 1024 / 1024 < 2;
-        if (!isLt2M) {
-          alert('Kích thước file không được vượt quá 2MB!');
-          continue;
-        }
-
-        await onUploadImage(file);
+    for (const file of Array.from(files)) {
+      if (!file.type.startsWith("image/")) {
+        toastWarning(`File ${file.name} không phải là hình ảnh!`);
+        continue;
       }
+
+      if (file.size > MAX_SIZE_BYTES) {
+        toastError(
+          `Ảnh "${file.name}" quá lớn (${(file.size / 1024 / 1024).toFixed(
+            2
+          )}MB). Vui lòng chọn ảnh dưới ${MAX_SIZE_MB}MB.`
+        );
+        continue;
+      }
+
+      await onUploadImage(file);
     }
-    e.target.value = ''; // Reset input
+
+    e.target.value = ""; // Reset input để có thể chọn lại cùng 1 file nếu cần
   };
 
   const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
       for (const file of Array.from(files)) {
-        const isVideo = file.type.startsWith('video/');
-        if (!isVideo) {
-          alert('Chỉ được upload file video!');
-          continue;
-        }
-
-        const fileSizeMB = file.size / 1024 / 1024;
-        const isLt30M = fileSizeMB <= 30;
-        if (!isLt30M) {
-          alert('Kích thước file video không được vượt quá 30MB!');
-          continue;
-        }
-
+        if (!file.type.startsWith("video/")) continue;
         await onUploadVideo(file);
       }
     }
-    e.target.value = ''; // Reset input
-  };
-
-  const handleRemoveImage = (fileUid: string) => {
-    setFileList(prev => prev.filter(item => item.uid !== fileUid));
-  };
-
-  const handleRemoveVideo = (fileUid: string) => {
-    setVideoList(prev => prev.filter(item => item.uid !== fileUid));
-  };
-
-  const handleSetPrimaryImage = (index: number) => {
-    if (index !== 0) {
-      setFileList(prev => {
-        const newFileList = [...prev];
-        const [movedFile] = newFileList.splice(index, 1);
-        newFileList.unshift(movedFile);
-        return newFileList;
-      });
-    }
+    e.target.value = "";
   };
 
   return (
-    <div className="space-y-6 w-full">
-      {/* Hidden form fields for form validation */}
-      <div className="hidden">
-        <input type="hidden" name="variants" />
-        <input type="hidden" name="options" />
-      </div>
+    <div className="space-y-8 w-full animate-in fade-in duration-500">
+      {/* CARD 1: THÔNG TIN CƠ BẢN */}
+      <div className="bg-white rounded-4xl p-8 shadow-custom border border-orange-50">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="p-2 bg-orange-100 rounded-xl">
+            <Info className="w-5 h-5 text-orange-600" />
+          </div>
+          <h3 className="text-lg font-bold text-gray-800">Thông tin cơ bản</h3>
+        </div>
 
-      {/* Card 1: Basic Information */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h3 className="text-lg font-semibold text-gray-800 mb-4">
-          Thông tin cơ bản
-        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <FormInput
+            label="Tên sản phẩm"
+            required
+            value={name}
+            onChange={handleNameChange}
+            placeholder="Ví dụ: Giày Sneaker Nam Cao Cấp"
+            maxLength={120}
+          />
 
-        {/* Product Name */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Tên sản phẩm <span className="text-red-500">*</span>
-          </label>
-          <div className="relative">
-            <input
-              type="text"
-              value={name}
-              onChange={handleNameChange}
-              placeholder="Nhập tên sản phẩm"
-              maxLength={120}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-            />
-            <div className="absolute right-3 top-3 text-sm text-gray-500">
-              {name.length}/120
+          <div className="space-y-2">
+            <label className="text-[12px] font-bold text-gray-600 ml-1 flex items-center gap-1">
+              Ngành hàng <span className="text-red-500">*</span>
+            </label>
+            <div
+              onClick={onOpenCategoryModal}
+              className="h-12 w-full px-5 bg-gray-50/50 border border-gray-200 rounded-2xl flex items-center justify-between cursor-pointer hover:border-orange-500 transition-all group shadow-sm"
+            >
+              <span
+                className={cn(
+                  "text-sm font-semibold",
+                  categoryPath ? "text-gray-700" : "text-gray-500 font-normal"
+                )}
+              >
+                {categoryPath || "Chọn ngành hàng sản phẩm"}
+              </span>
+              <Pencil className="w-4 h-4 text-gray-400 group-hover:text-orange-500" />
             </div>
           </div>
-        </div>
 
-        {/* Category */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Ngành hàng <span className="text-red-500">*</span>
-          </label>
-          <div 
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition-colors flex items-center justify-between bg-white"
-            onClick={onOpenCategoryModal}
-          >
-            <span className={categoryPath ? "text-gray-900" : "text-gray-500"}>
-              {categoryPath || "Chọn ngành hàng"}
-            </span>
-            <span className="text-gray-400 text-base">✏️</span>
-          </div>
-        </div>
-
-        {/* Status Toggle */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Trạng thái
-          </label>
-          <div className="flex items-center">
+          <div className="md:col-span-2 flex items-center gap-4 p-4 bg-orange-50/30 rounded-2xl border border-orange-100/50">
+            <label className="text-sm font-bold text-gray-700">
+              Trạng thái:
+            </label>
             <button
               type="button"
               onClick={() => handleActiveChange(!active)}
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                active ? 'bg-blue-600' : 'bg-gray-200'
-              }`}
+              className={cn(
+                "relative inline-flex h-7 w-12 items-center rounded-full transition-all duration-300",
+                active ? "bg-orange-500 shadow-md" : "bg-gray-300"
+              )}
             >
               <span
-                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                  active ? 'translate-x-6' : 'translate-x-1'
-                }`}
+                className={cn(
+                  "inline-block h-5 w-5 transform rounded-full bg-white transition-transform duration-300 shadow-sm",
+                  active ? "translate-x-6" : "translate-x-1"
+                )}
               />
             </button>
-            <span className="ml-3 text-sm text-gray-700">
-              {active ? 'Hoạt động' : 'Tạm dừng'}
+            <span
+              className={cn(
+                "text-sm font-bold",
+                active ? "text-orange-600" : "text-gray-500"
+              )}
+            >
+              {active ? "Đang kinh doanh" : "Tạm ẩn"}
             </span>
           </div>
         </div>
       </div>
 
-      {/* Card 2: Product Images */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h3 className="text-lg font-semibold text-gray-800 mb-4">
-          Hình ảnh sản phẩm <span className="text-red-500">*</span>
-        </h3>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* CARD 2: HÌNH ẢNH SẢN PHẨM */}
+        <div className="lg:col-span-2 bg-white rounded-4xl p-8 shadow-custom border border-orange-50">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-orange-100 rounded-xl">
+                <ImageIcon className="w-5 h-5 text-orange-600" />
+              </div>
+              <h3 className="text-lg font-bold text-gray-800">
+                Hình ảnh sản phẩm
+              </h3>
+            </div>
+            <span className="text-[10px] font-bold text-orange-600 bg-orange-50 px-3 py-1 rounded-full uppercase tracking-wider">
+              {fileList.length} / 9 Ảnh
+            </span>
+          </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-4">
-          {fileList.map((file, index) => (
-            <div key={file.uid} className="relative group">
-              <div className="relative aspect-square rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
-                <img
-                  src={file.url}
-                  alt={file.name}
-                  className="w-full h-full object-cover cursor-pointer hover:scale-105 transition-transform"
-                  style={{
-                    filter: (file as any).processing ? 'grayscale(40%)' : undefined,
-                    opacity: (file as any).processing ? 0.85 : 1,
-                  }}
-                  onClick={() => onShowImageModal(file)}
-                />
-                
-                {/* Processing overlay */}
-                {(file as any).processing && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-70">
-                    <div className="flex items-center gap-2 px-3 py-2 bg-white rounded-lg border border-gray-200 shadow-sm">
-                      <div className="animate-spin w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full"></div>
-                      <span className="text-xs text-gray-600">Đang xử lý...</span>
-                    </div>
-                  </div>
-                )}
-
-                {/* Primary image badge */}
-                {index === 0 && !(file as any).processing && (
-                  <div className="absolute top-2 left-2 px-2 py-1 bg-green-500 text-white text-xs font-bold rounded">
-                    Ảnh chính
-                  </div>
-                )}
-
-                {/* Delete button */}
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleRemoveImage(file.uid);
-                  }}
-                  disabled={(file as any).processing}
-                  className="absolute top-2 right-2 p-1.5 bg-white bg-opacity-90 hover:bg-red-100 rounded-full transition-colors shadow-sm"
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            {/* --- LIST PREVIEW ẢNH --- */}
+            {fileList.map((file, index) => (
+              <div key={file.uid} className="relative group">
+                <div
+                  className={cn(
+                    "relative aspect-square rounded-2xl overflow-hidden border-2 transition-all duration-300 shadow-sm",
+                    index === 0
+                      ? "border-orange-500 ring-4 ring-orange-500/10"
+                      : "border-gray-100 hover:border-orange-200"
+                  )}
                 >
-                  <Trash2 className="w-4 h-4 text-red-500" />
-                </button>
-              </div>
+                  <img
+                    src={file.url}
+                    alt={file.name}
+                    className={cn(
+                      "w-full h-full object-cover cursor-pointer hover:scale-105 transition-transform duration-500",
+                      file.processing && "opacity-50 blur-[2px]"
+                    )}
+                    onClick={() => onShowImageModal(file)}
+                  />
 
-              {/* Set primary button */}
-              <button
-                type="button"
-                onClick={() => handleSetPrimaryImage(index)}
-                disabled={(file as any).processing}
-                className={`mt-2 w-full px-2 py-1.5 text-xs rounded transition-colors flex items-center justify-center gap-1 ${
-                  index === 0 
-                    ? 'bg-blue-600 text-white' 
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
+                  {/* Overlay Đang tải */}
+                  {file.processing && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-white/40">
+                      <Loader2 className="w-6 h-6 text-orange-500 animate-spin" />
+                    </div>
+                  )}
+
+                  {/* Badge Ảnh chính */}
+                  {index === 0 && (
+                    <div className="absolute top-2 left-2 px-2 py-0.5 bg-orange-500 text-[9px] text-white font-black rounded-md shadow-lg">
+                      ẢNH CHÍNH
+                    </div>
+                  )}
+
+                  {/* Nút Xóa */}
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setFileList(fileList.filter((f) => f.uid !== file.uid))
+                    }
+                    className="absolute top-2 right-2 p-1.5 bg-white/90 hover:bg-red-500 hover:text-white text-red-500 rounded-xl transition-all opacity-0 group-hover:opacity-100 shadow-sm"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+
+                {index !== 0 && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const newFiles = [...fileList];
+                      const [item] = newFiles.splice(index, 1);
+                      newFiles.unshift(item);
+                      setFileList(newFiles);
+                    }}
+                    className="mt-2 w-full py-1.5 text-[10px] font-bold text-orange-600 bg-orange-50 hover:bg-orange-100 rounded-xl transition-colors"
+                  >
+                    LÀM ẢNH CHÍNH
+                  </button>
+                )}
+              </div>
+            ))}
+
+            {fileList.length < 9 && (
+              <label
+                className={cn(
+                  "aspect-square border-2 border-dashed border-orange-200 rounded-2xl flex flex-col items-center justify-center hover:bg-orange-50 hover:border-orange-400 transition-all cursor-pointer group relative overflow-hidden",
+                  uploading && "pointer-events-none opacity-60"
+                )}
               >
-                <Check className="w-3 h-3" />
-                {index === 0 ? 'Ảnh chính' : 'Đặt làm chính'}
-              </button>
-            </div>
-          ))}
+                <input
+                  type="file"
+                  multiple
+                  accept="image/png,image/jpeg,image/webp"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                />
+                <div className="p-3 bg-orange-100 rounded-full group-hover:scale-110 transition-transform duration-300">
+                  <Plus className="w-6 h-6 text-orange-600" />
+                </div>
+                <span className="mt-2 text-[11px] font-bold text-orange-600">
+                  THÊM ẢNH
+                </span>
 
-          {/* Upload button */}
-          {fileList.length < 9 && (
-            <div className="relative">
-              <input
-                type="file"
-                multiple
-                accept="image/png,image/jpeg,image/jpg"
-                onChange={handleImageUpload}
-                disabled={uploading}
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-              />
-              <div className="aspect-square border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center hover:border-blue-400 hover:bg-blue-50 transition-colors cursor-pointer p-4">
-                <ImageIcon className="w-8 h-8 text-blue-500 mb-2" />
-                <div className="text-blue-600 font-medium text-sm text-center">
-                  Kéo thả hoặc click
-                </div>
-                <div className="text-gray-500 text-xs text-center mt-1">
-                  {fileList.length}/9 ảnh
-                </div>
-                <div className="text-gray-400 text-xs text-center">
-                  PNG, JPG • Max 2MB
-                </div>
-              </div>
-            </div>
-          )}
+                <span className="text-[9px] text-gray-400 font-medium mt-1">
+                  Tối đa 2MB mỗi ảnh
+                </span>
+              </label>
+            )}
+          </div>
         </div>
-      </div>
 
-      {/* Card 3: Product Videos */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h3 className="text-lg font-semibold text-gray-800 mb-4">
-          Video sản phẩm
-        </h3>
-        <p className="text-sm text-gray-600 mb-4">
-          Video giúp khách hàng hiểu rõ hơn về sản phẩm của bạn
-        </p>
+        {/* CARD 3: VIDEO */}
+        <div className="bg-white rounded-4xl p-8 shadow-custom border border-orange-50">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-2 bg-orange-100 rounded-xl">
+              <PlayCircle className="w-5 h-5 text-orange-600" />
+            </div>
+            <h3 className="text-lg font-bold text-gray-800">Video</h3>
+          </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-4">
-          {videoList.map((file, index) => (
-            <div key={file.uid} className="relative group">
-              <div className="relative aspect-square rounded-lg overflow-hidden border border-gray-200 bg-black">
+          <div className="space-y-4">
+            {videoList.map((file) => (
+              <div
+                key={file.uid}
+                className="relative aspect-video rounded-2xl overflow-hidden border border-gray-100 bg-black group shadow-sm"
+              >
                 <video
                   src={file.url}
-                  className="w-full h-full object-cover cursor-pointer"
-                  style={{
-                    filter: (file as any).processing ? 'grayscale(40%)' : undefined,
-                    opacity: (file as any).processing ? 0.85 : 1,
-                  }}
-                  onClick={() => onShowVideoModal(file)}
+                  className="w-full h-full object-cover opacity-70"
                 />
-                
-                {/* Processing overlay */}
-                {(file as any).processing && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="flex items-center gap-2 px-3 py-2 bg-white rounded-lg shadow-sm">
-                      <div className="animate-spin w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full"></div>
-                      <span className="text-xs text-gray-600">Đang xử lý...</span>
-                    </div>
-                  </div>
-                )}
-
-                {/* Play icon */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <PlayCircle className="w-8 h-8 text-white opacity-80" />
+                <div
+                  className="absolute inset-0 flex items-center justify-center cursor-pointer group-hover:bg-black/20 transition-all"
+                  onClick={() => onShowVideoModal(file)}
+                >
+                  {file.processing ? (
+                    <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
+                  ) : (
+                    <PlayCircle className="w-10 h-10 text-white drop-shadow-lg opacity-80 group-hover:opacity-100 transition-opacity" />
+                  )}
                 </div>
-
-                {/* Delete button */}
                 <button
                   type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleRemoveVideo(file.uid);
-                  }}
-                  disabled={(file as any).processing}
-                  className="absolute top-2 right-2 p-1.5 bg-white bg-opacity-90 hover:bg-red-100 rounded-full transition-colors shadow-sm"
+                  onClick={() =>
+                    setVideoList(videoList.filter((v) => v.uid !== file.uid))
+                  }
+                  className="absolute top-3 right-3 p-2 bg-white/90 hover:bg-red-500 hover:text-white text-red-500 rounded-xl transition-all opacity-0 group-hover:opacity-100 shadow-sm"
                 >
-                  <Trash2 className="w-4 h-4 text-red-500" />
+                  <Trash2 className="w-4 h-4" />
                 </button>
               </div>
+            ))}
 
-              <div className="mt-2 text-xs text-gray-600 truncate px-1">
-                {file.name}
-              </div>
-            </div>
-          ))}
-
-          {/* Video upload button */}
-          {videoList.length < 3 && (
-            <div className="relative">
-              <input
-                type="file"
-                accept="video/*"
-                onChange={handleVideoUpload}
-                disabled={uploadingVideo}
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-              />
-              <div className="aspect-square border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center hover:border-blue-400 hover:bg-blue-50 transition-colors cursor-pointer p-4">
-                <PlayCircle className="w-8 h-8 text-blue-500 mb-2" />
-                <div className="text-blue-600 font-medium text-sm">
-                  Thêm video
+            {videoList.length < 3 && (
+              <label className="w-full aspect-video border-2 border-dashed border-orange-200 rounded-2xl flex flex-col items-center justify-center hover:bg-orange-50 hover:border-orange-400 transition-all cursor-pointer group">
+                <input
+                  type="file"
+                  accept="video/*"
+                  onChange={handleVideoUpload}
+                  className="hidden"
+                />
+                <div className="p-3 bg-orange-100 rounded-full group-hover:rotate-90 transition-transform duration-500">
+                  <Plus className="w-6 h-6 text-orange-600" />
                 </div>
-                <div className="text-gray-400 text-xs text-center mt-1">
-                  MP4 • Max 30MB
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+                <span className="mt-2 text-xs font-bold text-orange-600">
+                  THÊM VIDEO
+                </span>
+                <span className="text-[10px] text-gray-400 mt-1">
+                  Tối đa 30MB • MP4
+                </span>
+              </label>
+            )}
 
-        {/* Video requirements info */}
-        <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-          <div className="flex items-start gap-3">
-            <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-            <div>
-              <h4 className="text-sm font-medium text-blue-800 mb-2">Yêu cầu video:</h4>
-              <ul className="text-sm text-blue-700 space-y-1">
-                <li>• Kích thước tối đa: 30MB</li>
-                <li>• Định dạng: MP4</li>
-                <li>• Lưu ý: sản phẩm có thể hiển thị trong khi video đang được xử lý</li>
-              </ul>
+            <div className="p-4 bg-orange-50/50 rounded-2xl border border-orange-100/50 flex gap-3">
+              <Info className="w-4 h-4 text-orange-600 shrink-0 mt-0.5" />
+              <p className="text-[11px] text-orange-800 leading-relaxed font-medium">
+                Video giúp khách hàng có cái nhìn thực tế hơn. Nên quay sản phẩm
+                ở điều kiện ánh sáng tốt.
+              </p>
             </div>
           </div>
         </div>

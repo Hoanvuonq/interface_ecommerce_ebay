@@ -8,6 +8,8 @@ export interface UploadFile {
   thumbUrl?: string;
   originFileObj?: File;
   type?: string;
+  processing?: boolean; 
+  assetId?: string;      
 }
 
 export interface ReviewModalProps {
