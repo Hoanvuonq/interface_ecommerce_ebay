@@ -120,7 +120,7 @@ export const MessageItem = ({
                   className={cn(
                     "mb-2 pl-3 border-l-4 text-[12px] py-1.5 px-3 rounded-r-lg transition-opacity",
                     isMine
-                      ? "border-orange-400 bg-white/10 text-gray-200"
+                      ? "border-gray-400 bg-white/10 text-gray-200"
                       : "border-slate-300 bg-slate-50 text-slate-600"
                   )}
                 >
@@ -182,7 +182,7 @@ export const MessageItem = ({
                   className={cn(
                     "p-2 rounded-full hover:bg-white hover:shadow-md text-gray-400 transition-all border border-transparent",
                     showMenu &&
-                      "bg-white shadow-md text-orange-500 border-orange-100 opacity-100"
+                      "bg-white shadow-md text-orange-500 border-gray-100 opacity-100"
                   )}
                 >
                   <MoreHorizontal size={18} />

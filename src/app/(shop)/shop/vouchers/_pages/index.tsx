@@ -132,7 +132,7 @@ export const ShopVouchersScreen: React.FC = () => {
 
         <div className="flex items-center gap-4">
            <MiniStat label="Đang chạy" value={counts.activeVouchers} icon={<Activity size={14} className="text-emerald-500" />} />
-           <div className="h-8 w-[1px] bg-gray-200" />
+           <div className="h-8 w-px bg-gray-200" />
            <MiniStat label="Từ Platform" value={counts.platformAvailable} icon={<Zap size={14} className="text-orange-500" />} />
         </div>
       </div>
@@ -166,7 +166,7 @@ export const ShopVouchersScreen: React.FC = () => {
 
             {activeTab === "platform-market" && (
               <div className="space-y-6">
-                <div className="bg-emerald-50 border border-emerald-100 rounded-[2rem] p-6 flex items-start gap-4 shadow-sm">
+                <div className="bg-emerald-50 border border-emerald-100 rounded-4xl p-6 flex items-start gap-4 shadow-sm">
                   <div className="p-3 bg-white rounded-2xl text-emerald-500 shadow-sm border border-emerald-50">
                     <Gift size={24} />
                   </div>
@@ -219,7 +219,7 @@ const SummaryCard = ({ label, value, icon, color }: any) => {
 
   return (
     <div className={cn(
-      "p-6 rounded-[2.5rem] border bg-gradient-to-br shadow-sm group hover:shadow-md transition-all duration-300",
+      "p-6 rounded-[2.5rem] border bg-linear-to-br shadow-sm group hover:shadow-md transition-all duration-300",
       colors[color]
     )}>
       <div className="flex justify-between items-start mb-4">

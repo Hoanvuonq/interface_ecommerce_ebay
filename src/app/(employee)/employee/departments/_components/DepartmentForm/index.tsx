@@ -100,7 +100,7 @@ export default function DepartmentForm({
                 placeholder="Mô tả chức năng, nhiệm vụ của phòng ban..."
                 className={cn(
                   "w-full px-4 py-3 text-sm rounded-xl border transition-all duration-200 outline-none min-h-30",
-                  "bg-white border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/5",
+                  "bg-white border-gray-200 focus:border-gray-500 focus:ring-4 focus:ring-orange-500/5",
                   errors.description && "border-red-500 focus:border-red-500"
                 )}
               />

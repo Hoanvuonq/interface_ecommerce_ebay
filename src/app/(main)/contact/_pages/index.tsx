@@ -78,7 +78,7 @@ export const ContactSreen = () => {
 
           {/* Cột phải: Hồ sơ & Kết nối */}
           <div className="lg:col-span-4 space-y-6">
-            <div className="bg-linear-to-br from-white to-orange-50/30 border border-orange-100 p-8 rounded-3xl relative overflow-hidden">
+            <div className="bg-linear-to-br from-white to-orange-50/30 border border-gray-100 p-8 rounded-3xl relative overflow-hidden">
               <div className="absolute top-0 right-0 w-40 h-40 bg-orange-500/5 rounded-full blur-3xl -mr-10 -mt-10" />
 
               <h3 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">
@@ -96,7 +96,7 @@ export const ContactSreen = () => {
                   </p>
                 </div>
 
-                <div className="pt-6 border-t border-dashed border-orange-200/50 flex items-center justify-between">
+                <div className="pt-6 border-t border-dashed border-gray-200/50 flex items-center justify-between">
                   <div>
                     <p className="text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">
                       Mã số thuế
@@ -105,7 +105,7 @@ export const ContactSreen = () => {
                       {contactInfo.taxCode}
                     </p>
                   </div>
-                  <div className="w-10 h-10 rounded-full bg-white border border-orange-100 flex items-center justify-center text-orange-400 shadow-sm">
+                  <div className="w-10 h-10 rounded-full bg-white border border-gray-100 flex items-center justify-center text-orange-400 shadow-sm">
                     <CreditCard size={20} />
                   </div>
                 </div>

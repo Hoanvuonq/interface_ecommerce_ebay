@@ -28,7 +28,6 @@ export const useOrderDetail = (orderId: string) => {
 
 export const useInfiniteOrders = (status: string, search: string) => {
   return useInfiniteQuery({
-    // CỰC KỲ QUAN TRỌNG: queryKey phải chứa status và search
     queryKey: ["orders", "infinite", status, search], 
     queryFn: async ({ pageParam = 0 }) => {
       const response = await orderService.getBuyerOrders(
@@ -41,10 +40,8 @@ export const useInfiniteOrders = (status: string, search: string) => {
     },
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
-      // Dừng lại nếu hasNext = false (Ví dụ trang 8/8)
       return lastPage.hasNext ? lastPage.nextPage : undefined;
     },
-    // Fix lỗi nháy: Giữ dữ liệu cũ trong lúc fetch dữ liệu mới
     placeholderData: (previousData) => previousData, 
     staleTime: 0, // Force lấy mới khi đổi tab
     gcTime: 0,    // Xóa cache cũ ngay lập tức để tránh trắng màn hình

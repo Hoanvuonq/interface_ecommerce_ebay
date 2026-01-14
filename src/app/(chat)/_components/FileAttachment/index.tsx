@@ -54,7 +54,7 @@ export const FileAttachment: React.FC<FileAttachmentProps> = ({
         return { Icon: FileSpreadsheet, iconClass: "text-green-500", color: "bg-green-50", border: "border-green-100" };
       case "ppt":
       case "pptx":
-        return { Icon: FilePieChart, iconClass: "text-orange-500", color: "bg-orange-50", border: "border-orange-100" };
+        return { Icon: FilePieChart, iconClass: "text-orange-500", color: "bg-orange-50", border: "border-gray-100" };
       case "zip":
       case "rar":
       case "7z":

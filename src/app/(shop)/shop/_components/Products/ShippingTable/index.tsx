@@ -17,10 +17,10 @@ interface ShippingTableProps {
 
 export const ShippingTable: React.FC<ShippingTableProps> = ({ variants, optionNames, onUpdateVariant }) => {
   return (
-    <div className="overflow-x-auto rounded-xl border border-orange-200 shadow-lg">
+    <div className="overflow-x-auto rounded-xl border border-gray-200 shadow-lg">
       <table className="w-full border-collapse bg-white text-left text-sm">
         <thead>
-          <tr className="bg-gradient-to-r from-orange-50 to-amber-50 border-b-2 border-orange-200">
+          <tr className="bg-gradient-to-r from-orange-50 to-amber-50 border-b-2 border-gray-200">
             <th className="px-4 py-4 font-semibold text-gray-600 text-center w-12">#</th>
             {optionNames.length > 0 ? (
               optionNames.map((name, idx) => (
@@ -84,7 +84,7 @@ export const ShippingTable: React.FC<ShippingTableProps> = ({ variants, optionNa
                 <div className="relative">
                   <input
                     type="number"
-                    className="w-full h-10 pl-3 pr-8 rounded-lg border border-orange-200 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all bg-white"
+                    className="w-full h-10 pl-3 pr-8 rounded-lg border border-gray-200 focus:ring-2 focus:ring-orange-500 focus:border-gray-500 outline-none transition-all bg-white"
                     placeholder="0"
                     value={variant.weightGrams ?? ""}
                     onChange={(e) => onUpdateVariant(index, "weightGrams", parseFloat(e.target.value) || 0)}
@@ -101,7 +101,7 @@ export const ShippingTable: React.FC<ShippingTableProps> = ({ variants, optionNa
                   <div className="relative">
                     <input
                       type="number"
-                      className="w-20 h-10 px-2 rounded-lg border border-orange-200 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none text-center transition-all bg-white"
+                      className="w-20 h-10 px-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-orange-500 focus:border-gray-500 outline-none text-center transition-all bg-white"
                       placeholder="0"
                       value={variant.lengthCm ?? ""}
                       onChange={(e) => onUpdateVariant(index, "lengthCm", parseFloat(e.target.value) || 0)}
@@ -114,7 +114,7 @@ export const ShippingTable: React.FC<ShippingTableProps> = ({ variants, optionNa
                   <div className="relative">
                     <input
                       type="number"
-                      className="w-20 h-10 px-2 rounded-lg border border-orange-200 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none text-center transition-all bg-white"
+                      className="w-20 h-10 px-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-orange-500 focus:border-gray-500 outline-none text-center transition-all bg-white"
                       placeholder="0"
                       value={variant.widthCm ?? ""}
                       onChange={(e) => onUpdateVariant(index, "widthCm", parseFloat(e.target.value) || 0)}
@@ -127,7 +127,7 @@ export const ShippingTable: React.FC<ShippingTableProps> = ({ variants, optionNa
                   <div className="relative">
                     <input
                       type="number"
-                      className="w-20 h-10 px-2 rounded-lg border border-orange-200 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none text-center transition-all bg-white"
+                      className="w-20 h-10 px-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-orange-500 focus:border-gray-500 outline-none text-center transition-all bg-white"
                       placeholder="0"
                       value={variant.heightCm ?? ""}
                       onChange={(e) => onUpdateVariant(index, "heightCm", parseFloat(e.target.value) || 0)}

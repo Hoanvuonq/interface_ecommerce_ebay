@@ -41,7 +41,7 @@ const BrandCard = ({ product, isWishlisted }: { product: any; isWishlisted: bool
   return (
     <motion.div
       whileHover={{ y: -5 }}
-      className="flex flex-col items-center bg-white dark:bg-gray-900 p-3 sm:p-4 rounded-2xl border border-gray-100 dark:border-gray-800 hover:border-orange-400 hover:shadow-xl transition-all cursor-pointer group h-full relative"
+      className="flex flex-col items-center bg-white dark:bg-gray-900 p-3 sm:p-4 rounded-2xl border border-gray-100 dark:border-gray-800 hover:border-gray-400 hover:shadow-xl transition-all cursor-pointer group h-full relative"
     >
       <div className="absolute top-2 right-2 z-10">
         <Heart

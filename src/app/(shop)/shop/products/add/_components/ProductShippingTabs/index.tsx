@@ -42,7 +42,7 @@ export const ProductShippingTabs: React.FC<ProductShippingTabsProps> = ({
 
       {/* Content Section */}
       {variants.length === 0 ? (
-        <div className="flex items-center gap-4 p-6 bg-gradient-to-r from-orange-50 to-orange-100 border border-orange-200 rounded-xl">
+        <div className="flex items-center gap-4 p-6 bg-gradient-to-r from-orange-50 to-orange-100 border border-gray-200 rounded-xl">
           <div className="p-2 bg-orange-200 rounded-full">
             <AlertTriangle className="w-5 h-5 text-orange-600" />
           </div>
@@ -68,7 +68,7 @@ export const ProductShippingTabs: React.FC<ProductShippingTabsProps> = ({
       )}
 
       {/* Info Section */}
-      <div className="p-5 bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-200 rounded-xl">
+      <div className="p-5 bg-gradient-to-r from-orange-50 to-amber-50 border border-gray-200 rounded-xl">
         <div className="flex items-start gap-3">
           <Info className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
           <div>

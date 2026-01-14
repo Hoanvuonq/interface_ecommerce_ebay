@@ -93,7 +93,7 @@ export const OrderExpirationTimer: React.FC<OrderExpirationTimerProps> = ({
     }
 
     return (
-        <div className="mb-4 bg-orange-50 border border-orange-200 rounded-lg p-4">
+        <div className="mb-4 bg-orange-50 border border-gray-200 rounded-lg p-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-start gap-3">
                     <div className="p-2 bg-orange-100 text-orange-600 rounded-full shrink-0">

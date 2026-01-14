@@ -144,7 +144,7 @@ export default function ShopPage() {
   if (loading)
     return (
       <div className="h-screen flex items-center justify-center bg-orange-50">
-        <div className="w-10 h-10 border-4 border-orange-400 border-t-transparent rounded-full animate-spin" />
+        <div className="w-10 h-10 border-4 border-gray-400 border-t-transparent rounded-full animate-spin" />
       </div>
     );
 

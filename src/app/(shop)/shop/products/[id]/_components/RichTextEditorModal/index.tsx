@@ -183,8 +183,8 @@ export function RichTextEditorModal({
         ) : (
           <div className="space-y-6">
             {/* Banner hướng dẫn */}
-            <div className="flex gap-4 p-4 bg-orange-50/50 border border-orange-100 rounded-3xl">
-              <div className="shrink-0 w-9 h-9 flex items-center justify-center bg-white rounded-xl shadow-sm text-orange-600 border border-orange-50">
+            <div className="flex gap-4 p-4 bg-orange-50/50 border border-gray-100 rounded-3xl">
+              <div className="shrink-0 w-9 h-9 flex items-center justify-center bg-white rounded-xl shadow-sm text-orange-600 border border-gray-50">
                 <Lightbulb size={18} />
               </div>
               <div className="space-y-0.5">

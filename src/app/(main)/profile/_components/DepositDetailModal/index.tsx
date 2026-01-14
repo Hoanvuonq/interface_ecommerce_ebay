@@ -178,7 +178,7 @@ export const DepositDetailModal: React.FC<DepositDetailModalProps> = ({
 
                   {canRetryPayment() && depositDetail ? (
                     <div className="w-full mt-2 flex flex-col items-center">
-                      <div className="bg-orange-50 border border-orange-100 rounded-lg p-3 mb-3 text-left w-full">
+                      <div className="bg-orange-50 border border-gray-100 rounded-lg p-3 mb-3 text-left w-full">
                         <div className="flex items-start gap-2">
                           <FiAlertTriangle className="text-orange-500 mt-0.5 shrink-0" />
                           <div>

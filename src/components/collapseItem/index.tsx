@@ -65,7 +65,7 @@ export const CustomCollapseItem: React.FC<Props> = ({
         </Link>
       </summary>
 
-      <div className="pl-4 mt-1 space-y-1 border-l-2 border-orange-100 ml-5 animate-in fade-in slide-in-from-top-1">
+      <div className="pl-4 mt-1 space-y-1 border-l-2 border-gray-100 ml-5 animate-in fade-in slide-in-from-top-1">
         {category.children?.map((ch) => (
           <Link 
             key={ch.id} 

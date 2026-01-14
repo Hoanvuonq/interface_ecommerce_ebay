@@ -105,7 +105,7 @@ export default function ShopVerificationGuard({
   if (isError) {
     return (
       <div className="min-h-screen flex items-center justify-center p-6 bg-orange-50/20">
-        <div className="max-w-md w-full bg-white rounded-4xl p-10 shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-orange-100 text-center relative overflow-hidden">
+        <div className="max-w-md w-full bg-white rounded-4xl p-10 shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-gray-100 text-center relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-1 bg-red-400" />
 
           <div className="w-20 h-20 bg-red-50 rounded-3xl flex items-center justify-center text-red-500 mx-auto mb-6 rotate-3">

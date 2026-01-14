@@ -91,7 +91,7 @@ export const ProductDetailHeader = ({
             <div className="flex items-center gap-2">
               <button
                 onClick={onOpenMedia}
-                className="flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-200 text-gray-600 hover:border-orange-300 hover:text-orange-600 rounded-xl transition-all font-bold text-[11px] uppercase tracking-wider shadow-sm active:scale-95 whitespace-nowrap"
+                className="flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-200 text-gray-600 hover:border-gray-300 hover:text-orange-600 rounded-xl transition-all font-bold text-[11px] uppercase tracking-wider shadow-sm active:scale-95 whitespace-nowrap"
               >
                 <ImageIcon size={16} />
                 Media

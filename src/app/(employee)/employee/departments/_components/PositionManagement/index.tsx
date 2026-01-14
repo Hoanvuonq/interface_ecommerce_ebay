@@ -197,7 +197,7 @@ export default function PositionManagement({
         width="max-w-lg"
       >
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div className="p-4 bg-orange-50 border border-orange-100 rounded-2xl flex gap-3 items-start">
+          <div className="p-4 bg-orange-50 border border-gray-100 rounded-2xl flex gap-3 items-start">
             <Info className="text-orange-500 shrink-0 mt-0.5" size={16} />
             <p className="text-[11px] text-orange-700 font-medium leading-relaxed">
               Chức vụ sẽ được thêm trực tiếp vào hệ thống quản lý của phòng ban
@@ -222,7 +222,7 @@ export default function PositionManagement({
               <textarea
                 className={cn(
                   "w-full p-4 rounded-2xl border bg-white outline-none transition-all text-sm font-medium min-h-25",
-                  "border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/5"
+                  "border-gray-200 focus:border-gray-500 focus:ring-4 focus:ring-orange-500/5"
                 )}
                 placeholder="Mô tả quyền hạn và trách nhiệm..."
                 {...register("description")}

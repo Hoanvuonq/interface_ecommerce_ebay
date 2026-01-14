@@ -3,9 +3,9 @@
 
 import { SectionLoading } from "@/components";
 import { useToast } from "@/hooks/useToast";
-import { FileText, ShieldCheck, Store, AlertCircle } from "lucide-react";
+import { FileText, ShieldCheck, Store, AlertCircle, MapPin } from "lucide-react";
 import { useEffect, useState, useMemo } from "react";
-import { BasicInfo, LegalInfo, TaxInfo } from "../_components";
+import { BasicInfo, LegalInfo, TaxInfo, AddressInfo } from "../_components";
 import { useGetShopInfo } from "../_hooks/useShop";
 import { getStoredUserDetail } from "@/utils/jwt";
 import {
@@ -13,7 +13,7 @@ import {
   StatusTabItem,
 } from "../../vouchers/_components/StatusTabsVoucher";
 
-type TabKey = "basic" | "tax" | "legal";
+type TabKey = "basic" | "tax" | "legal" | "address";
 
 export default function ShopProfileScreen() {
   const [shop, setShop] = useState<any>(null);
@@ -24,20 +24,20 @@ export default function ShopProfileScreen() {
   const { error: toastError } = useToast();
 
   useEffect(() => {
-    (async () => {
-      try {
-        const res = await handleGetShopInfo(users?.shopId);
-        if (res) setShop(res.data);
-      } catch (err: any) {
-        console.error("Error loading shop info:", err);
-        const errorMessage =
-          err?.message ||
-          toastError ||
-          "Không thể tải thông tin shop. Vui lòng thử lại!";
-        toastError("Không thể tải thông tin shop. Vui lòng thử lại!");
+  (async () => {
+    try {
+      const res = await handleGetShopInfo(users?.shopId);
+      if (res) {
+        setShop(res.data);
       }
-    })();
-  }, []);
+    } catch (err: any) {
+      console.error("Error loading shop info:", err);
+      toastError("Không thể tải thông tin shop. Vui lòng thử lại!");
+    } finally {
+      setIsInitialized(true);
+    }
+  })();
+}, []);
 
   const DataMissingPlaceholder = ({
     title,
@@ -63,6 +63,7 @@ export default function ShopProfileScreen() {
 
   const shopTabs: StatusTabItem[] = [
     { id: "basic", label: "Thông tin cơ bản", icon: <Store size={16} /> },
+    { id: "address", label: "Địa chỉ", icon: <MapPin size={16} /> },
     { id: "tax", label: "Thông tin Thuế", icon: <FileText size={16} /> },
     {
       id: "legal",
@@ -77,6 +78,15 @@ export default function ShopProfileScreen() {
     switch (activeTab) {
       case "basic":
         return <BasicInfo shop={shop} setShop={setShop} />;
+      case "address":
+        return shop.address?.addressId ? (
+          <AddressInfo shop={shop} setShop={setShop} />
+        ) : (
+          <DataMissingPlaceholder
+            title="Chưa cập nhật địa chỉ"
+            desc="Vui lòng cập nhật địa chỉ giao hàng để hoàn tất hồ sơ."
+          />
+        );
       case "tax":
         return shop.taxInfo && Object.keys(shop.taxInfo).length > 0 ? (
           <TaxInfo shop={shop} setShop={setShop} />
@@ -124,7 +134,7 @@ export default function ShopProfileScreen() {
         />
       </div>
 
-      <div className="min-h-[500px] transition-all duration-300">
+      <div className="min-h-125 transition-all duration-300">
         {renderTabContent}
       </div>
     </div>

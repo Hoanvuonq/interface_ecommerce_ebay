@@ -42,7 +42,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
             setFilters((p) => ({ ...p, keyword: e.target.value }))
           }
           onKeyDown={(e) => e.key === "Enter" && onSearch()}
-          className="w-full h-12 pl-12 pr-4 bg-white border border-gray-200 rounded-2xl text-sm font-bold text-gray-700 outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all shadow-sm placeholder:font-normal placeholder:text-gray-400"
+          className="w-full h-12 pl-12 pr-4 bg-white border border-gray-200 rounded-2xl text-sm font-bold text-gray-700 outline-none focus:border-gray-500 focus:ring-4 focus:ring-orange-500/10 transition-all shadow-sm placeholder:font-normal placeholder:text-gray-400"
         />
       </div>
 
@@ -58,7 +58,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                 minPrice: e.target.value ? Number(e.target.value) : null,
               }))
             }
-            className="w-full h-12 px-4 bg-white border border-gray-200 rounded-2xl text-sm font-bold outline-none focus:border-orange-500 transition-all placeholder:font-normal"
+            className="w-full h-12 px-4 bg-white border border-gray-200 rounded-2xl text-sm font-bold outline-none focus:border-gray-500 transition-all placeholder:font-normal"
           />
         </div>
         <div className="relative w-1/2">
@@ -72,7 +72,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                 maxPrice: e.target.value ? Number(e.target.value) : null,
               }))
             }
-            className="w-full h-12 px-4 bg-white border border-gray-200 rounded-2xl text-sm font-bold outline-none focus:border-orange-500 transition-all placeholder:font-normal"
+            className="w-full h-12 px-4 bg-white border border-gray-200 rounded-2xl text-sm font-bold outline-none focus:border-gray-500 transition-all placeholder:font-normal"
           />
         </div>
       </div>

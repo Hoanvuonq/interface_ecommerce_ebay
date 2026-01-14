@@ -66,7 +66,7 @@ const getRoleColor = (role: string): string => {
   if (roleUpper === "SHOP") return "bg-blue-100 text-blue-600 border-blue-200";
   if (roleUpper === "BUYER")
     return "bg-emerald-100 text-emerald-600 border-emerald-200";
-  return "bg-orange-100 text-orange-600 border-orange-200";
+  return "bg-orange-100 text-orange-600 border-gray-200";
 };
 
 const DetailField = ({
@@ -82,7 +82,7 @@ const DetailField = ({
 }) => (
   <div
     className={cn(
-      "p-4 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-md hover:border-orange-200 transition-all duration-300",
+      "p-4 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-md hover:border-gray-200 transition-all duration-300",
       className
     )}
   >
@@ -250,7 +250,7 @@ export default function UserDetailModal({
                   Cấu hình bảo mật
                 </h3>
               </div>
-              <div className="grid grid-cols-2 gap-4 bg-orange-50/50 p-4 rounded-4xl border border-orange-100">
+              <div className="grid grid-cols-2 gap-4 bg-orange-50/50 p-4 rounded-4xl border border-gray-100">
                 <DetailField
                   label="Đã xóa"
                   value={user.deleted || user.isDeleted ? "Có" : "Không"}
@@ -499,7 +499,7 @@ export default function UserDetailModal({
                 {user.userPermissions?.map((perm: any) => (
                   <span
                     key={perm.permissionId}
-                    className="px-4 py-1.5 bg-orange-500/10 text-orange-400 border border-orange-500/20 rounded-xl text-[10px] font-semibold transition-all hover:scale-105 cursor-default uppercase tracking-wider"
+                    className="px-4 py-1.5 bg-orange-500/10 text-orange-400 border border-gray-500/20 rounded-xl text-[10px] font-semibold transition-all hover:scale-105 cursor-default uppercase tracking-wider"
                   >
                     {perm.permissionName} (Custom)
                   </span>

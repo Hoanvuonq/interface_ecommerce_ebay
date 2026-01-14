@@ -43,9 +43,9 @@ export const ProductFormTabs: React.FC<ProductFormTabsProps> = ({
   ];
 
   return (
-    <div className={cn("flex flex-col w-full", className)}>
+    <div className={cn("flex flex-col  w-full", className)}>
       <div className="w-full overflow-x-auto no-scrollbar pb-4">
-        <div className="inline-flex bg-gray-50/50 p-1.5 rounded-2xl border border-orange-100/50 gap-1 relative">
+        <div className="inline-flex bg-white p-1.5 rounded-2xl border border-gray-100 gap-1 relative">
           {tabs.map((tab) => {
             const isActive = activeTab === tab.key;
             const isDisabled = tab.disabled;
@@ -66,7 +66,7 @@ export const ProductFormTabs: React.FC<ProductFormTabsProps> = ({
                 {isActive && (
                   <motion.div
                     layoutId="activeTabBackground"
-                    className="absolute inset-0 bg-white rounded-xl shadow-sm border border-orange-100/50"
+                    className="absolute inset-0 bg-white rounded-xl shadow-sm border border-gray-200/50"
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
                 )}
@@ -83,7 +83,7 @@ export const ProductFormTabs: React.FC<ProductFormTabsProps> = ({
                 {isActive && (
                   <motion.div
                     layoutId="activeTabUnderline"
-                    className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-6 h-1 bg-orange-500 rounded-full z-20"
+                    className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-16 h-1 bg-orange-500 rounded-full z-20"
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
                 )}
@@ -93,7 +93,7 @@ export const ProductFormTabs: React.FC<ProductFormTabsProps> = ({
         </div>
       </div>
 
-      <div className="bg-white rounded-4xl shadow-custom min-h-100 overflow-hidden relative">
+      <div className="overflow-hidden relative">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}

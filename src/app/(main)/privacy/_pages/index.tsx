@@ -80,7 +80,7 @@ export const PrivacyPolicyScreen = () => {
                 <p>
                   1.2. <strong>"Dữ Liệu Cá Nhân"</strong> là thông tin về một cá nhân có thể xác định được danh tính như tên, số căn cước, thông tin liên hệ...
                 </p>
-                <div className="bg-orange-50 border-l-4 border-orange-500 p-4 my-6 rounded-r-xl">
+                <div className="bg-orange-50 border-l-4 border-gray-500 p-4 my-6 rounded-r-xl">
                   <p className="text-orange-900 font-medium m-0">
                     Bằng việc sử dụng dịch vụ, bạn đồng ý với các chính sách này. Nếu không đồng ý, vui lòng ngừng truy cập nền tảng.
                   </p>

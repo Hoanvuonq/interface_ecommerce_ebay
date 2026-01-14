@@ -30,7 +30,7 @@ export const OrderPicker: React.FC<OrderPickerProps> = (props) => {
       ) : (
         <div className="space-y-4 pb-10">
           {orders.map((order) => (
-            <div key={order.orderId} className="bg-white rounded-4xl border border-gray-100 p-5 shadow-sm hover:border-orange-500/30 transition-all duration-300">
+            <div key={order.orderId} className="bg-white rounded-4xl border border-gray-100 p-5 shadow-sm hover:border-gray-500/30 transition-all duration-300">
               <div className="flex items-center justify-between mb-4">
                 <div className="px-3 py-1 bg-gray-50 rounded-full border border-gray-100 flex items-center gap-1.5">
                   <Hash size={10} className="text-gray-400" />
@@ -40,7 +40,7 @@ export const OrderPicker: React.FC<OrderPickerProps> = (props) => {
                     "text-[9px] font-bold px-3 py-1 rounded-full uppercase border shadow-xs",
                     ["DELIVERED", "COMPLETED"].includes(order.status) 
                       ? "bg-emerald-50 text-emerald-600 border-emerald-100" 
-                      : "bg-orange-50 text-orange-600 border-orange-100"
+                      : "bg-orange-50 text-orange-600 border-gray-100"
                 )}>
                   {getStatusText(order.status)}
                 </span>

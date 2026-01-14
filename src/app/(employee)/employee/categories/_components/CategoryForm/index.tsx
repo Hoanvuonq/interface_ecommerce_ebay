@@ -109,7 +109,7 @@ export default function CategoryForm({
             "w-full h-11 px-4 rounded-xl border bg-white outline-none transition-all text-sm shadow-sm",
             errors.name 
               ? "border-red-500 focus:ring-4 focus:ring-red-50" 
-              : "border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-50"
+              : "border-gray-200 focus:border-gray-500 focus:ring-4 focus:ring-orange-50"
           )}
           placeholder="Nhập tên danh mục..."
           disabled={isSubmitting}
@@ -142,7 +142,7 @@ export default function CategoryForm({
         <textarea
           {...register("description", { maxLength: 5000 })}
           rows={3}
-          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-50 outline-none transition-all text-sm resize-none shadow-sm"
+          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-gray-500 focus:ring-4 focus:ring-orange-50 outline-none transition-all text-sm resize-none shadow-sm"
           placeholder="Nhập mô tả chi tiết..."
           disabled={isSubmitting}
         />

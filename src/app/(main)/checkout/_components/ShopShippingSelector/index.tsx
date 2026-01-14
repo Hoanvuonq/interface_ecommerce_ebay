@@ -53,7 +53,7 @@ export const ShopShippingSelector: React.FC<ShopShippingSelectorProps> = ({
                   className={cn(
                     "relative py-2 px-3 rounded-xl cursor-pointer transition-all duration-200 flex flex-col gap-2 group border",
                     isSelected
-                      ? "border-orange-500 bg-white shadow-sm ring-1 ring-orange-500/10"
+                      ? "border-gray-500 bg-white shadow-sm ring-1 ring-orange-500/10"
                       : "border-slate-100 bg-white/40 hover:bg-white hover:border-slate-200"
                   )}
                 >

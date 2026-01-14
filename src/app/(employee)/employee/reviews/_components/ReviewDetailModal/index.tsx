@@ -36,7 +36,7 @@ export default function ReviewDetailModal({
 
   const getStatusStyle = (status: ReviewStatus) => {
     const configs = {
-      [ReviewStatus.PENDING]: "bg-orange-50 text-orange-600 border-orange-100",
+      [ReviewStatus.PENDING]: "bg-orange-50 text-orange-600 border-gray-100",
       [ReviewStatus.APPROVED]: "bg-emerald-50 text-emerald-600 border-emerald-100",
       [ReviewStatus.REJECTED]: "bg-red-50 text-red-600 border-red-100",
       [ReviewStatus.FLAGGED]: "bg-amber-50 text-amber-600 border-amber-100",
@@ -149,7 +149,7 @@ export default function ReviewDetailModal({
             <label className="text-[10px] font-semibold uppercase tracking-widest text-gray-600 flex items-center gap-2">
               <MessageSquare size={14} /> Phản hồi từ người bán
             </label>
-            <div className="bg-orange-50/30 border-l-4 border-orange-400 p-4 rounded-r-xl text-sm text-gray-700 leading-relaxed">
+            <div className="bg-orange-50/30 border-l-4 border-gray-400 p-4 rounded-r-xl text-sm text-gray-700 leading-relaxed">
               {review.sellerResponse}
             </div>
           </div>

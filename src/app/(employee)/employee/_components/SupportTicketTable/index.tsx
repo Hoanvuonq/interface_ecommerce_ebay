@@ -87,7 +87,7 @@ export const SupportTicketTable: React.FC<SupportTicketTableProps> = ({
                   <button
                     className={cn(
                       "text-[11px] font-semibold uppercase text-orange-600 hover:text-white hover:bg-orange-600",
-                      "px-4 py-2 rounded-xl transition-all border border-orange-100 hover:border-orange-600 hover:shadow-lg hover:shadow-orange-200"
+                      "px-4 py-2 rounded-xl transition-all border border-gray-100 hover:border-gray-600 hover:shadow-lg hover:shadow-orange-200"
                     )}
                   >
                     Xử lý

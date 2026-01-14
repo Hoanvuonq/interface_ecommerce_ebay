@@ -14,7 +14,7 @@ export default function AboutScreen() {
         </div>
         
         <div className="relative z-10 max-w-6xl mx-auto px-4 text-center">
-          <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-orange-50 border border-orange-100 text-orange-600 text-[10px] font-semibold uppercase tracking-[0.2em] mb-8">
+          <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-orange-50 border border-gray-100 text-orange-600 text-[10px] font-semibold uppercase tracking-[0.2em] mb-8">
             Our Identity
           </div>
           <h1 className="text-5xl md:text-7xl font-semibold text-gray-900 mb-8 tracking-tighter leading-[1.1]">
@@ -43,8 +43,8 @@ export default function AboutScreen() {
               </div>
             </div>
             <div className="lg:col-span-5 text-center">
-              <div className="bg-linear-to-br from-orange-50 to-rose-50 p-10 rounded-[35px] border border-orange-100/50 relative group transition-all">
-                  <div className="w-24 h-24 bg-white rounded-3xl flex items-center justify-center mx-auto shadow-xl border border-orange-50 mb-6 group-hover:scale-110 transition-transform duration-500">
+              <div className="bg-linear-to-br from-orange-50 to-rose-50 p-10 rounded-[35px] border border-gray-100/50 relative group transition-all">
+                  <div className="w-24 h-24 bg-white rounded-3xl flex items-center justify-center mx-auto shadow-xl border border-gray-50 mb-6 group-hover:scale-110 transition-transform duration-500">
                     <Rocket className="w-12 h-12 text-orange-500" strokeWidth={2.5} />
                   </div>
                   <h3 className="text-xl font-semibold text-gray-800 mb-3">Đổi mới & Sáng tạo</h3>
@@ -58,7 +58,7 @@ export default function AboutScreen() {
           <StatCard icon={Store} title="Shop đối tác" value="10,000+" colorClass="text-blue-600" bgColorClass="bg-blue-50" borderColorClass="border-blue-500" />
           <StatCard icon={Users} title="Khách hàng" value="1.5M+" colorClass="text-emerald-600" bgColorClass="bg-emerald-50" borderColorClass="border-emerald-500" />
           <StatCard icon={Trophy} title="Sản phẩm" value="5M+" colorClass="text-purple-600" bgColorClass="bg-purple-50" borderColorClass="border-purple-500" />
-          <StatCard icon={Globe} title="Tỉnh thành" value="63/63" colorClass="text-orange-600" bgColorClass="bg-orange-50" borderColorClass="border-orange-500" />
+          <StatCard icon={Globe} title="Tỉnh thành" value="63/63" colorClass="text-orange-600" bgColorClass="bg-orange-50" borderColorClass="border-gray-500" />
         </div>
 
         <div className="bg-white rounded-[40px] shadow-[0_20px_60px_rgba(0,0,0,0.03)] border border-gray-100 p-8 md:p-14 mb-20 relative overflow-hidden">
@@ -82,8 +82,8 @@ export default function AboutScreen() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
-          <div className="bg-white p-12 rounded-[40px] border border-gray-100 shadow-sm hover:shadow-2xl hover:border-orange-200 transition-all duration-500 group">
-            <div className="w-14 h-14 bg-orange-50 rounded-2xl flex items-center justify-center mb-8 border border-orange-100 group-hover:bg-orange-500 group-hover:text-white transition-all duration-500">
+          <div className="bg-white p-12 rounded-[40px] border border-gray-100 shadow-sm hover:shadow-2xl hover:border-gray-200 transition-all duration-500 group">
+            <div className="w-14 h-14 bg-orange-50 rounded-2xl flex items-center justify-center mb-8 border border-gray-100 group-hover:bg-orange-500 group-hover:text-white transition-all duration-500">
               <ShieldCheck className="w-7 h-7" />
             </div>
             <h3 className="text-2xl font-semibold text-gray-900 mb-5 tracking-tight">Sứ mệnh</h3>

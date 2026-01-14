@@ -253,7 +253,7 @@ export default function ReviewManagement() {
             >
               Trước
             </button>
-            <div className="flex items-center px-4 text-xs font-semibold text-orange-500 bg-white rounded-xl shadow-sm border border-orange-100">
+            <div className="flex items-center px-4 text-xs font-semibold text-orange-500 bg-white rounded-xl shadow-sm border border-gray-100">
               {queryParams.page + 1} / {Math.ceil(pagination.total / queryParams.size) || 1}
             </div>
             <button

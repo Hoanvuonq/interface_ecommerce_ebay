@@ -173,7 +173,7 @@ export default function NotificationList({ recipientRole }: Props) {
               animate={{ opacity: 1, scale: 1 }}
               className="flex flex-col items-center justify-center py-40"
             >
-              <div className="w-20 h-20 bg-orange-50 rounded-[2.2rem] flex items-center justify-center mb-6 border border-orange-100 shadow-inner">
+              <div className="w-20 h-20 bg-orange-50 rounded-[2.2rem] flex items-center justify-center mb-6 border border-gray-100 shadow-inner">
                 <Inbox size={36} className="text-orange-300" />
               </div>
               <p className="text-[12px] font-bold uppercase tracking-[0.25em] text-gray-500 italic">
@@ -193,7 +193,7 @@ export default function NotificationList({ recipientRole }: Props) {
                   className={cn(
                     "group relative flex items-center gap-4 p-4 rounded-[1.8rem] border transition-all duration-500 cursor-pointer h-23",
                     item.readStatus === "UNREAD"
-                      ? "bg-white border-orange-300 shadow-[0_10px_35px_rgba(249,115,22,0.1)] ring-1 ring-orange-100"
+                      ? "bg-white border-gray-300 shadow-[0_10px_35px_rgba(249,115,22,0.1)] ring-1 ring-orange-100"
                       : "bg-white border-gray-100 hover:border-gray-300 hover:bg-gray-50/40"
                   )}
                 >

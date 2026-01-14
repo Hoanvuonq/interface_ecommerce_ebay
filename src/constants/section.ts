@@ -110,7 +110,7 @@ export const GRADIENT_PRESETS = [
         bgColor: "bg-orange-600",
         textColor: "text-orange-900",
         textColorSecondary: "text-orange-800",
-        borderColor: "border-orange-400/30",
+        borderColor: "border-gray-400/30",
         badgeColor: "bg-orange-600",
         shadowColor: "bg-orange-400/20",
         shadowColor2: "bg-orange-500/15",

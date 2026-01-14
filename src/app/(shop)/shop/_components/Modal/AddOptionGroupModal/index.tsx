@@ -81,7 +81,7 @@ export const AddOptionGroupModal: React.FC<AddOptionGroupModalProps> = ({
     >
       <div className="flex flex-col gap-6 pt-4">
         {/* Suggestion Box */}
-        <div className="flex gap-3 p-4 bg-orange-50/50 rounded-2xl border border-orange-100/50">
+        <div className="flex gap-3 p-4 bg-orange-50/50 rounded-2xl border border-gray-100/50">
           <Lightbulb size={18} className="text-orange-600 shrink-0 mt-0.5" />
           <div className="text-xs font-semibold text-orange-800 leading-relaxed">
             <span className="font-bold uppercase tracking-wider text-[10px] block mb-0.5">Gợi ý</span>
@@ -110,7 +110,7 @@ export const AddOptionGroupModal: React.FC<AddOptionGroupModalProps> = ({
               className={cn(
                 "w-full pl-12 pr-16 py-4 bg-gray-50/50 border-2 border-gray-100 rounded-2xl text-base font-bold text-gray-800 outline-none transition-all",
                 "placeholder:text-gray-300 placeholder:font-normal",
-                "focus:bg-white focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 hover:border-gray-200"
+                "focus:bg-white focus:border-gray-500 focus:ring-4 focus:ring-orange-500/10 hover:border-gray-200"
               )}
             />
             
@@ -130,7 +130,7 @@ export const AddOptionGroupModal: React.FC<AddOptionGroupModalProps> = ({
               {existingGroups.map((g, idx) => (
                 <div 
                   key={idx} 
-                  className="px-4 py-2 rounded-xl bg-white border border-gray-100 text-xs font-bold text-gray-600 shadow-sm hover:border-orange-200 hover:text-orange-600 transition-all cursor-default"
+                  className="px-4 py-2 rounded-xl bg-white border border-gray-100 text-xs font-bold text-gray-600 shadow-sm hover:border-gray-200 hover:text-orange-600 transition-all cursor-default"
                 >
                   {g}
                 </div>

@@ -210,7 +210,7 @@ export default function UserUpdateForm({
             </div>
 
             {/* --- Section 2: Interactive Update Fields --- */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 rounded-4xl bg-orange-50/30 border border-orange-100/50">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 rounded-4xl bg-orange-50/30 border border-gray-100/50">
               {/* Select Trạng thái mới */}
               <div className="space-y-2">
                 <label className="block text-[11px] font-semibold uppercase tracking-widest text-gray-700 ml-1">

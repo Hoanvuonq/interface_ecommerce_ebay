@@ -137,8 +137,8 @@ export const SelectComponent = ({
             "w-full h-12 px-5 bg-gray-50/50 border border-gray-200 rounded-2xl flex items-center justify-between cursor-pointer transition-all select-none shadow-sm",
             disabled
               ? "opacity-50 cursor-not-allowed bg-gray-100"
-              : "hover:border-orange-400 hover:bg-white",
-            isOpen && "border-orange-500 ring-4 ring-orange-500/10 bg-white"
+              : "hover:border-gray-400 hover:bg-white",
+            isOpen && "border-gray-500 ring-4 ring-orange-500/10 bg-white"
           )}
           onClick={() => !disabled && setIsOpen(!isOpen)}
         >
@@ -178,7 +178,7 @@ export const SelectComponent = ({
                 <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 text-xs" />
                 <input
                   autoFocus
-                  className="w-full pl-10 pr-4 h-10 text-sm bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-orange-300 focus:bg-white transition-all font-medium text-gray-600"
+                  className="w-full pl-10 pr-4 h-10 text-sm bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-gray-300 focus:bg-white transition-all font-medium text-gray-600"
                   placeholder="Tìm kiếm..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}

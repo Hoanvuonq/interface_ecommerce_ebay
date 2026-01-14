@@ -151,7 +151,7 @@ export default function PublicWishlistClient({ shareToken }: Props) {
                 </div>
 
                 {wishlist.description && (
-                  <p className="text-gray-500 text-lg font-light leading-relaxed border-l-4 border-orange-500 pl-6 py-2">
+                  <p className="text-gray-500 text-lg font-light leading-relaxed border-l-4 border-gray-500 pl-6 py-2">
                     {wishlist.description}
                   </p>
                 )}

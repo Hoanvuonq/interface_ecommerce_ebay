@@ -43,7 +43,7 @@ useEffect(() => {
     <aside
       className={cn(
         "flex flex-col bg-white h-screen sticky top-0 transition-all duration-500 ease-in-out z-50",
-        "border-r border-orange-50 shadow-[4px_0_24px_rgba(0,0,0,0.02)]",
+        "border-r border-gray-50 shadow-[4px_0_24px_rgba(0,0,0,0.02)]",
         collapsed ? "w-20" : "w-64",
         className
       )}

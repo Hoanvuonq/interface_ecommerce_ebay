@@ -12,6 +12,7 @@ import {
   UserCircle,
   Wallet
 } from "lucide-react";
+import Link from "next/link";
 
 export const SHOP_SIDEBAR_ITEMS = [
   {
@@ -89,6 +90,12 @@ export const SHOP_SIDEBAR_ITEMS = [
         label: "Mã giảm giá của shop",
         href: "/shop/marketing/coupon",
       },
+      {
+        key: "marketing-loyalty",
+        label: "Điểm thưởng",
+        href: "/shop/marketing/loyalty",
+      },
+     
     ],
   },
   {
@@ -198,6 +205,7 @@ export const SHOP_ROUTE_MAPPINGS = [
   { prefix: "/shop/orders", key: "orders-all", parent: "orders" },
   { prefix: "/shop/marketing/promotion", key: "marketing-promotion", parent: "marketing" },
   { prefix: "/shop/marketing/coupon", key: "marketing-coupon", parent: "marketing" },
+  { prefix: "/shop/marketing/loyalty", selectedKey: "marketing-loyalty", openKey: "marketing" },
   { prefix: "/shop/vouchers", key: "vouchers" },
   { prefix: "/shop/cskh/chat", key: "cskh-chat", parent: "cskh" },
   { prefix: "/shop/reviews", key: "cskh-review", parent: "cskh" },

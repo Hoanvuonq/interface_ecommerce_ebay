@@ -63,7 +63,7 @@ export const getVariantColumns = (optionNames: string[]): Column<any>[] => [
           optionNames.map((name) => (
             <span
               key={name}
-              className="inline-flex items-center gap-1.5 px-3 py-1 bg-orange-50/50 border border-orange-100 rounded-xl text-[11px] font-semibold text-orange-700 uppercase tracking-tight"
+              className="inline-flex items-center gap-1.5 px-3 py-1 bg-orange-50/50 border border-gray-100 rounded-xl text-[11px] font-semibold text-orange-700 uppercase tracking-tight"
             >
               <Tag size={10} />
               {name}: <span className="text-gray-900">{item.optionValues[name] || "—"}</span>

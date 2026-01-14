@@ -29,7 +29,7 @@ export const OrderCardContent: React.FC<ContentProps> = ({
     onClick={onViewDetail}
   >
     <div className="flex flex-wrap items-center gap-3">
-      <span className="flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] font-bold border border-orange-100 bg-orange-50 text-orange-700 shadow-sm">
+      <span className="flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] font-bold border border-gray-100 bg-orange-50 text-orange-700 shadow-sm">
         {status.icon} {status.label}
       </span>
       {trackingNumber && (

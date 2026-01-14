@@ -93,7 +93,7 @@ export const OrderTrackingTimeline: React.FC<OrderTrackingTimelineProps> = ({ tr
                 </div>
             ) : (
                 <div className="space-y-6">
-                    <div className="relative pl-6 border-l-2 border-orange-100 ml-2 space-y-8 py-2">
+                    <div className="relative pl-6 border-l-2 border-gray-100 ml-2 space-y-8 py-2">
                         {visibleStatuses.map((status, index) => {
                             const info = getStatusInfo(status.name);
                             const isFirst = index === 0;

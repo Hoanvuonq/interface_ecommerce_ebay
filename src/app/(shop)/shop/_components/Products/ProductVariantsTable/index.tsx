@@ -1,16 +1,9 @@
 "use client";
-import React, { useMemo, useRef } from "react";
-import {
-  Edit,
-  Image as ImageIcon,
-  Plus,
-  Trash2,
-  UploadCloud,
-  Copy,
-  Zap,
-} from "lucide-react";
 import { cn } from "@/utils/cn";
-
+import { Edit, Image as ImageIcon, Plus, Zap } from "lucide-react";
+import React, { useMemo, useRef, useCallback } from "react";
+import { DataTable } from "@/components";
+import { Column } from "@/components/DataTable/type";
 const parseNumber = (value: string) => {
   return parseFloat(value.replace(/,/g, "")) || 0;
 };
@@ -45,518 +38,238 @@ export const ProductVariantsTable: React.FC<ProductVariantsTableProps> = ({
 }) => {
   const fileInputRefs = useRef<{ [key: number]: HTMLInputElement | null }>({});
 
-  const { sortedVariants, groups } = useMemo(() => {
-    const hasOptions = optionNames.length > 0;
-    if (!hasOptions) return { sortedVariants: variants, groups: [] };
+  const handleInputChange = useCallback(
+    (index: number, field: keyof Variant, value: any) => {
+      const newVariants = [...variants];
+      newVariants[index] = { ...newVariants[index], [field]: value };
+      onUpdateVariants(newVariants);
+    },
+    [variants, onUpdateVariants]
+  );
 
-    const sorted = [...variants].sort((a, b) => {
-      const av = (a.optionValueNames?.[0] || "").toString().toLowerCase();
-      const bv = (b.optionValueNames?.[0] || "").toString().toLowerCase();
-      return av.localeCompare(bv);
-    });
-
-    const groupsArr: {
-      label: string;
-      items: { variant: Variant; originalIndex: number }[];
-    }[] = [];
-    sorted.forEach((v) => {
-      const originalIndex = variants.findIndex((item) => item === v);
-      const label = (v.optionValueNames?.[0] || "Khác").toString().trim();
-      const found = groupsArr.find((g) => g.label === label);
-      if (found) found.items.push({ variant: v, originalIndex });
-      else groupsArr.push({ label, items: [{ variant: v, originalIndex }] });
-    });
-
-    return { sortedVariants: sorted, groups: groupsArr };
-  }, [variants, optionNames]);
-
-  const handleInputChange = (
-    index: number,
-    field: keyof Variant,
-    value: any
-  ) => {
-    const newVariants = [...variants];
-    newVariants[index] = { ...newVariants[index], [field]: value };
-    onUpdateVariants(newVariants);
-  };
-
-  const handleBulkUpdate = (field: keyof Variant, value: any) => {
-    if (!value && value !== 0) return;
-    const newVariants = variants.map((v) => ({ ...v, [field]: value }));
-    onUpdateVariants(newVariants);
-  };
-
-  if (variants.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center py-20 bg-orange-50/20">
-        <div className="p-4 bg-white rounded-3xl shadow-sm mb-4">
-          <Plus className="w-10 h-10 text-orange-200" />
-        </div>
-        <p className="text-gray-500 font-bold">Chưa có biến thể nào</p>
-        <p className="text-gray-400 text-sm">
-          Vui lòng thêm phân loại để hệ thống tạo danh sách.
-        </p>
-      </div>
-    );
-  }
+  const handleBulkUpdate = useCallback(
+    (field: keyof Variant, value: any) => {
+      if (!value && value !== 0) return;
+      const newVariants = variants.map((v) => ({ ...v, [field]: value }));
+      onUpdateVariants(newVariants);
+    },
+    [variants, onUpdateVariants]
+  );
 
   const inputClass =
-    "w-full px-3 py-2 text-xs font-semibold border border-gray-100 rounded-xl focus:outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all bg-white";
+    "w-full px-2 py-1.5 text-[11px] font-bold border border-slate-100 rounded-lg focus:outline-none focus:border-orange-400 focus:bg-white transition-all bg-slate-50/50 text-slate-700 placeholder:text-slate-300";
+
+  const groupMetadata = useMemo(() => {
+    const firstOptionMap = new Map<string, number>();
+    return variants.map((v, idx) => {
+      const firstVal = v.optionValueNames?.[0] || "Default";
+      if (!firstOptionMap.has(firstVal)) {
+        const count = variants.filter(
+          (item) => (item.optionValueNames?.[0] || "Default") === firstVal
+        ).length;
+        firstOptionMap.set(firstVal, count);
+        return { isFirst: true, count, label: firstVal };
+      }
+      return { isFirst: false, count: 0, label: firstVal };
+    });
+  }, [variants]);
+
+  const columns: Column<Variant>[] = useMemo(() => {
+    const cols: Column<Variant>[] = [];
+
+    cols.push({
+      header: optionNames[0] || "Phân loại",
+      className: "w-44 !p-0", // p-0 để xử lý border nội bộ
+      render: (item, idx) => {
+        const meta = groupMetadata[idx];
+        if (!meta.isFirst)
+          return <div className="h-full border-l border-slate-50" />;
+
+        return (
+          <div className="p-4 flex flex-col gap-3 sticky top-0 bg-white/50 backdrop-blur-sm h-full border-r border-slate-50">
+            <span className="text-xs font-black text-slate-800 uppercase leading-tight">
+              {meta.label}
+            </span>
+            <div
+              onClick={() => fileInputRefs.current[idx]?.click()}
+              className="w-16 h-16 relative rounded-2xl cursor-pointer border-2 border-dashed border-slate-200 hover:border-orange-400 hover:bg-orange-50 transition-all flex flex-col items-center justify-center overflow-hidden group/img bg-slate-50"
+            >
+              {item.imageUrl ? (
+                <>
+                  <img
+                    src={item.imageUrl}
+                    alt="V"
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover/img:opacity-100 flex items-center justify-center transition-opacity">
+                    <Edit size={14} className="text-white" />
+                  </div>
+                </>
+              ) : (
+                <ImageIcon size={18} className="text-slate-300" />
+              )}
+              {item.imageProcessing && (
+                <div className="absolute inset-0 bg-white/80 flex items-center justify-center">
+                  <div className="w-4 h-4 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
+                </div>
+              )}
+            </div>
+            <input
+              type="file"
+              className="hidden"
+              accept="image/*"
+              ref={(el) => {
+                if (el) fileInputRefs.current[idx] = el;
+              }}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) onUploadImage(file, idx);
+                e.target.value = "";
+              }}
+            />
+          </div>
+        );
+      },
+    });
+
+    // 2. Các phân loại phụ
+    optionNames.slice(1).forEach((name, i) => {
+      cols.push({
+        header: name,
+        className: "w-32",
+        render: (item) => (
+          <span className="text-[11px] font-bold text-slate-500">
+            {item.optionValueNames?.[i + 1] || "-"}
+          </span>
+        ),
+      });
+    });
+
+    // 3. Cột Mã SKU
+    cols.push({
+      header: "Mã SKU",
+      className: "w-40",
+      render: (item, idx) => (
+        <input
+          value={item.sku}
+          onChange={() => {}}
+          onBlur={(e) => handleInputChange(idx, "sku", e.target.value)}
+          className={inputClass}
+          placeholder="SKU..."
+        />
+      ),
+    });
+
+    // 4. Cột Giá & Kho
+    const fields: { key: keyof Variant; label: string; color?: string }[] = [
+      { key: "corePrice", label: "Giá Gốc" },
+      { key: "price", label: "Giá Bán", color: "text-slate-900" },
+      { key: "stockQuantity", label: "Kho" },
+    ];
+
+    fields.forEach((f) => {
+      cols.push({
+        header: f.label,
+        align: "right",
+        className: "w-32",
+        render: (item, idx) => (
+          <input
+            type="number"
+            value={item[f.key]}
+            onChange={(e) =>
+              handleInputChange(idx, f.key, parseNumber(e.target.value))
+            }
+            className={cn(inputClass, "text-right font-black", f.color)}
+          />
+        ),
+      });
+    });
+
+    // 5. Cột Logistics
+    cols.push({
+      header: "Logistics (D-R-C-G)",
+      align: "center",
+      className: "w-52",
+      render: (item, idx) => (
+        <div className="flex gap-1 p-1 bg-slate-100/30 rounded-lg border border-slate-50">
+          {["lengthCm", "widthCm", "heightCm", "weightGrams"].map((f, i) => (
+            <input
+              key={f}
+              type="number"
+              value={item[f] || ""}
+              onChange={(e) =>
+                handleInputChange(idx, f as any, parseNumber(e.target.value))
+              }
+              className="w-full h-7 text-center text-[9px] font-bold bg-white border border-slate-100 rounded focus:outline-none focus:border-orange-300"
+              placeholder={["D", "R", "C", "G"][i]}
+            />
+          ))}
+        </div>
+      ),
+    });
+
+    return cols;
+  }, [optionNames, variants, groupMetadata]);
 
   return (
-    <div className="w-full overflow-x-auto no-scrollbar">
-      <table className="w-full text-sm text-left border-collapse">
-        <thead>
-          <tr className="bg-gray-50/80 border-b border-gray-100">
-            <th className="px-4 py-4 text-center text-[10px] font-bold text-gray-400 uppercase tracking-widest w-12">
-              #
-            </th>
-            {optionNames.map((name, idx) => (
-              <th
-                key={idx}
-                className="px-4 py-4 text-[11px] font-bold text-gray-600 uppercase tracking-widest min-w-[120px]"
-              >
-                {name}
-              </th>
-            ))}
-            <th className="px-4 py-4 text-[11px] font-bold text-orange-600 uppercase tracking-widest min-w-[150px]">
-              SKU
-            </th>
-            <th className="px-4 py-4 text-[11px] font-bold text-gray-600 uppercase tracking-widest min-w-[130px] text-right">
-              Giá gốc
-            </th>
-            <th className="px-4 py-4 text-[11px] font-bold text-gray-600 uppercase tracking-widest min-w-[130px] text-right">
-              Giá bán
-            </th>
-            <th className="px-4 py-4 text-[11px] font-bold text-gray-600 uppercase tracking-widest min-w-[110px] text-right">
-              Kho hàng
-            </th>
-            <th className="px-2 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest text-center w-[280px]">
-              Kích thước (D x R x C) & Nặng
-            </th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {/* --- Bulk Actions Row --- */}
-          <tr className="bg-orange-50/50 border-b border-orange-100/50 group">
-            <td className="px-2 py-4 text-center">
-              <Zap className="w-4 h-4 mx-auto text-orange-400 fill-orange-400" />
-            </td>
-            <td colSpan={optionNames.length} className="px-4 py-4">
-              <span className="text-[10px] font-bold text-orange-600 uppercase tracking-widest">
-                Áp dụng nhanh cho tất cả
-              </span>
-            </td>
-            <td className="p-2">
+    <div className="w-full">
+      <DataTable
+        data={variants}
+        columns={columns}
+        loading={false}
+        totalElements={variants.length}
+        page={0}
+        size={variants.length}
+        onPageChange={() => {}}
+        rowKey={(item) => `variant-${item.sku || Math.random()}`}
+        emptyMessage="Vui lòng thêm phân loại để tạo danh sách biến thể"
+        headerContent={
+          <div className="flex items-center gap-4 bg-orange-50/40 p-4 rounded-t-[1.8rem] border border-orange-100 w-full ">
+            <div className="p-2 bg-orange-500 rounded-xl text-white shadow-lg shadow-orange-200">
+              <Zap size={18} fill="currentColor" />
+            </div>
+            <div className="flex-1">
+              <h4 className="text-[11px] font-black text-orange-600 uppercase tracking-widest leading-none">
+                Thiết lập nhanh cho tất cả
+              </h4>
+              <p className="text-[10px] text-orange-400 font-medium italic mt-1">
+                Dữ liệu sẽ được áp dụng cho toàn bộ biến thể hiện có
+              </p>
+            </div>
+            <div className="flex gap-2 max-w-2xl overflow-x-auto no-scrollbar py-1">
               <input
-                placeholder="SKU chung..."
-                className={cn(
-                  inputClass,
-                  "placeholder:text-orange-200 border-orange-100"
-                )}
+                placeholder="SKU..."
+                className="w-28 h-9 px-3 text-[10px] font-bold rounded-xl border-orange-200 focus:border-orange-500 outline-none"
                 onBlur={(e) => handleBulkUpdate("sku", e.target.value)}
               />
-            </td>
-            <td className="p-2">
               <input
                 type="number"
-                placeholder="0"
-                className={cn(
-                  inputClass,
-                  "text-right placeholder:text-orange-200 border-orange-100"
-                )}
+                placeholder="Giá gốc"
+                className="w-24 h-9 px-3 text-[10px] font-bold rounded-xl border-orange-200 focus:border-orange-500 outline-none"
                 onBlur={(e) =>
                   handleBulkUpdate("corePrice", parseNumber(e.target.value))
                 }
               />
-            </td>
-            <td className="p-2">
               <input
                 type="number"
-                placeholder="0"
-                className={cn(
-                  inputClass,
-                  "text-right placeholder:text-orange-200 border-orange-100"
-                )}
+                placeholder="Giá bán"
+                className="w-24 h-9 px-3 text-[10px] font-bold rounded-xl border-orange-200 focus:border-orange-500 outline-none"
                 onBlur={(e) =>
                   handleBulkUpdate("price", parseNumber(e.target.value))
                 }
               />
-            </td>
-            <td className="p-2">
               <input
                 type="number"
-                placeholder="0"
-                className={cn(
-                  inputClass,
-                  "text-right placeholder:text-orange-200 border-orange-100"
-                )}
+                placeholder="Kho"
+                className="w-20 h-9 px-3 text-[10px] font-bold rounded-xl border-orange-200 focus:border-orange-500 outline-none"
                 onBlur={(e) =>
                   handleBulkUpdate("stockQuantity", parseNumber(e.target.value))
                 }
               />
-            </td>
-            <td className="p-2">
-              <div className="flex gap-1">
-                <input
-                  type="number"
-                  placeholder="D"
-                  className={cn(
-                    inputClass,
-                    "text-center px-1 border-orange-100"
-                  )}
-                  onBlur={(e) =>
-                    handleBulkUpdate("lengthCm", parseNumber(e.target.value))
-                  }
-                />
-                <input
-                  type="number"
-                  placeholder="R"
-                  className={cn(
-                    inputClass,
-                    "text-center px-1 border-orange-100"
-                  )}
-                  onBlur={(e) =>
-                    handleBulkUpdate("widthCm", parseNumber(e.target.value))
-                  }
-                />
-                <input
-                  type="number"
-                  placeholder="C"
-                  className={cn(
-                    inputClass,
-                    "text-center px-1 border-orange-100"
-                  )}
-                  onBlur={(e) =>
-                    handleBulkUpdate("heightCm", parseNumber(e.target.value))
-                  }
-                />
-                <input
-                  type="number"
-                  placeholder="G"
-                  className={cn(
-                    inputClass,
-                    "text-center px-1 border-orange-100"
-                  )}
-                  onBlur={(e) =>
-                    handleBulkUpdate("weightGrams", parseNumber(e.target.value))
-                  }
-                />
-              </div>
-            </td>
-          </tr>
-
-          {/* --- Data Rows --- */}
-          {optionNames.length > 0
-            ? groups.flatMap((group, gIdx) =>
-                group.items.map((item, idxInGroup) => {
-                  const variant = item.variant;
-                  const idx = item.originalIndex;
-                  const isFirstInGroup = idxInGroup === 0;
-
-                  return (
-                    <tr
-                      key={`${group.label}-${idx}`}
-                      className="hover:bg-orange-50/20 border-b border-gray-50 last:border-0 transition-colors"
-                    >
-                      <td className="px-2 py-4 text-center text-[10px] font-bold text-gray-300">
-                        {idx + 1}
-                      </td>
-
-                      {isFirstInGroup && (
-                        <td
-                          rowSpan={group.items.length}
-                          className="px-4 py-4 bg-white align-top border-r border-gray-50"
-                        >
-                          <div className="flex flex-col gap-3">
-                            <span className="text-sm font-bold text-gray-700">
-                              {group.label}
-                            </span>
-                            <div
-                              onClick={() =>
-                                fileInputRefs.current[idx]?.click()
-                              }
-                              className="w-20 h-20 relative border-2 border-dashed border-gray-100 rounded-2xl cursor-pointer hover:border-orange-500 hover:bg-orange-50 transition-all flex flex-col items-center justify-center group/img overflow-hidden shadow-sm"
-                            >
-                              {variant.imageUrl ? (
-                                <>
-                                  <img
-                                    src={variant.imageUrl}
-                                    alt="V"
-                                    className="w-full h-full object-cover"
-                                  />
-                                  <div className="absolute inset-0 bg-orange-600/60 hidden group-hover/img:flex items-center justify-center transition-all">
-                                    <Edit className="w-5 h-5 text-white" />
-                                  </div>
-                                </>
-                              ) : (
-                                <div className="text-center">
-                                  <ImageIcon className="w-6 h-6 text-gray-200 mx-auto" />
-                                  <span className="text-[9px] font-bold text-gray-300 uppercase mt-1 block">
-                                    Thêm ảnh
-                                  </span>
-                                </div>
-                              )}
-                              {variant.imageProcessing && (
-                                <div className="absolute inset-0 bg-white/90 flex items-center justify-center">
-                                  <div className="w-5 h-5 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
-                                </div>
-                              )}
-                            </div>
-                            <input
-                              type="file"
-                              className="hidden"
-                              accept="image/*"
-                              ref={(el) => {
-                                fileInputRefs.current[idx] = el;
-                              }}
-                              onChange={(e) => {
-                                const file = e.target.files?.[0];
-                                if (file) onUploadImage(file, idx);
-                                e.target.value = "";
-                              }}
-                            />
-                          </div>
-                        </td>
-                      )}
-
-                      {optionNames.slice(1).map((_, optIdx) => (
-                        <td
-                          key={optIdx}
-                          className="px-4 py-4 text-sm font-semibold text-gray-500"
-                        >
-                          {variant.optionValueNames?.[optIdx + 1] || "-"}
-                        </td>
-                      ))}
-
-                      <td className="p-2">
-                        <input
-                          value={variant.sku}
-                          onChange={(e) =>
-                            handleInputChange(idx, "sku", e.target.value)
-                          }
-                          className={inputClass}
-                          placeholder="SKU"
-                        />
-                      </td>
-                      <td className="p-2">
-                        <input
-                          type="number"
-                          value={variant.corePrice}
-                          onChange={(e) =>
-                            handleInputChange(
-                              idx,
-                              "corePrice",
-                              parseNumber(e.target.value)
-                            )
-                          }
-                          className={cn(inputClass, "text-right")}
-                        />
-                      </td>
-                      <td className="p-2">
-                        <input
-                          type="number"
-                          value={variant.price}
-                          onChange={(e) =>
-                            handleInputChange(
-                              idx,
-                              "price",
-                              parseNumber(e.target.value)
-                            )
-                          }
-                          className={cn(inputClass, "text-right")}
-                        />
-                      </td>
-                      <td className="p-2">
-                        <input
-                          type="number"
-                          value={variant.stockQuantity}
-                          onChange={(e) =>
-                            handleInputChange(
-                              idx,
-                              "stockQuantity",
-                              parseNumber(e.target.value)
-                            )
-                          }
-                          className={cn(inputClass, "text-right")}
-                        />
-                      </td>
-                      <td className="p-2">
-                        <div className="flex gap-1">
-                          <input
-                            type="number"
-                            value={variant.lengthCm || ""}
-                            onChange={(e) =>
-                              handleInputChange(
-                                idx,
-                                "lengthCm",
-                                parseNumber(e.target.value)
-                              )
-                            }
-                            className={cn(inputClass, "text-center px-1")}
-                            placeholder="D"
-                          />
-                          <input
-                            type="number"
-                            value={variant.widthCm || ""}
-                            onChange={(e) =>
-                              handleInputChange(
-                                idx,
-                                "widthCm",
-                                parseNumber(e.target.value)
-                              )
-                            }
-                            className={cn(inputClass, "text-center px-1")}
-                            placeholder="R"
-                          />
-                          <input
-                            type="number"
-                            value={variant.heightCm || ""}
-                            onChange={(e) =>
-                              handleInputChange(
-                                idx,
-                                "heightCm",
-                                parseNumber(e.target.value)
-                              )
-                            }
-                            className={cn(inputClass, "text-center px-1")}
-                            placeholder="C"
-                          />
-                          <input
-                            type="number"
-                            value={variant.weightGrams || ""}
-                            onChange={(e) =>
-                              handleInputChange(
-                                idx,
-                                "weightGrams",
-                                parseNumber(e.target.value)
-                              )
-                            }
-                            className={cn(inputClass, "text-center px-1")}
-                            placeholder="G"
-                          />
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })
-              )
-            : variants.map((variant, idx) => (
-                <tr
-                  key={idx}
-                  className="hover:bg-orange-50/20 border-b border-gray-50 last:border-0 transition-colors"
-                >
-                  <td className="px-2 py-4 text-center text-[10px] font-bold text-gray-300">
-                    {idx + 1}
-                  </td>
-                  <td className="p-2">
-                    <input
-                      value={variant.sku}
-                      onChange={(e) =>
-                        handleInputChange(idx, "sku", e.target.value)
-                      }
-                      className={inputClass}
-                    />
-                  </td>
-                  <td className="p-2">
-                    <input
-                      type="number"
-                      value={variant.corePrice}
-                      onChange={(e) =>
-                        handleInputChange(
-                          idx,
-                          "corePrice",
-                          parseNumber(e.target.value)
-                        )
-                      }
-                      className={cn(inputClass, "text-right")}
-                    />
-                  </td>
-                  <td className="p-2">
-                    <input
-                      type="number"
-                      value={variant.price}
-                      onChange={(e) =>
-                        handleInputChange(
-                          idx,
-                          "price",
-                          parseNumber(e.target.value)
-                        )
-                      }
-                      className={cn(inputClass, "text-right")}
-                    />
-                  </td>
-                  <td className="p-2">
-                    <input
-                      type="number"
-                      value={variant.stockQuantity}
-                      onChange={(e) =>
-                        handleInputChange(
-                          idx,
-                          "stockQuantity",
-                          parseNumber(e.target.value)
-                        )
-                      }
-                      className={cn(inputClass, "text-right")}
-                    />
-                  </td>
-                  <td className="p-2">
-                    <div className="flex gap-1">
-                      <input
-                        type="number"
-                        value={variant.lengthCm || ""}
-                        onChange={(e) =>
-                          handleInputChange(
-                            idx,
-                            "lengthCm",
-                            parseNumber(e.target.value)
-                          )
-                        }
-                        className={cn(inputClass, "text-center px-1")}
-                      />
-                      <input
-                        type="number"
-                        value={variant.widthCm || ""}
-                        onChange={(e) =>
-                          handleInputChange(
-                            idx,
-                            "widthCm",
-                            parseNumber(e.target.value)
-                          )
-                        }
-                        className={cn(inputClass, "text-center px-1")}
-                      />
-                      <input
-                        type="number"
-                        value={variant.heightCm || ""}
-                        onChange={(e) =>
-                          handleInputChange(
-                            idx,
-                            "heightCm",
-                            parseNumber(e.target.value)
-                          )
-                        }
-                        className={cn(inputClass, "text-center px-1")}
-                      />
-                      <input
-                        type="number"
-                        value={variant.weightGrams || ""}
-                        onChange={(e) =>
-                          handleInputChange(
-                            idx,
-                            "weightGrams",
-                            parseNumber(e.target.value)
-                          )
-                        }
-                        className={cn(inputClass, "text-center px-1")}
-                      />
-                    </div>
-                  </td>
-                </tr>
-              ))}
-        </tbody>
-      </table>
+            </div>
+          </div>
+        }
+      />
     </div>
   );
 };

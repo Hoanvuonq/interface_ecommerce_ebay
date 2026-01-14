@@ -79,7 +79,7 @@ export default function CategorySidebar({
   }
 
   const renderHeader = () => (
-    <div className="p-5 border-b border-orange-50 flex items-center gap-3 bg-linear-to-r from-orange-50 to-amber-50">
+    <div className="p-5 border-b border-gray-50 flex items-center gap-3 bg-linear-to-r from-orange-50 to-amber-50">
       <div className="bg-[#ff8800] p-2 rounded-xl text-white shadow-lg shadow-orange-200">
         <LayoutGrid className="w-5 h-5" />
       </div>

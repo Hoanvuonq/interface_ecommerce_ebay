@@ -50,7 +50,7 @@ export const Promotion: React.FC = () => {
                   "w-14 h-14 rounded-2xl border-2 border-dashed flex items-center justify-center transition-all duration-500",
                   isExpanded 
                     ? "bg-red-50 border-red-400 rotate-180 shadow-[0_0_15px_rgba(239,68,68,0.2)]" 
-                    : "bg-white border-red-300 hover:border-orange-400 shadow-sm"
+                    : "bg-white border-red-300 hover:border-gray-400 shadow-sm"
                 )}>
                   {isExpanded ? (
                     <ChevronUp className="text-red-500 w-6 h-6 stroke-[3px]" />

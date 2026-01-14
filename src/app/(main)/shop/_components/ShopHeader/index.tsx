@@ -34,7 +34,7 @@ export const ShopHeader = ({ shop, isFollowing, onFollow, onChat, totalProducts 
             <div className="flex-1 mb-2">
                <div className="flex items-center gap-3 mb-2">
                   <h1 className="text-2xl md:text-4xl font-bold drop-shadow-md tracking-tight">{shop.shopName}</h1>
-                  <span className="bg-orange-500/90 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider border border-orange-400 flex items-center gap-1 backdrop-blur-sm">
+                  <span className="bg-orange-500/90 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider border border-gray-400 flex items-center gap-1 backdrop-blur-sm">
                      <Verified size={12} fill="currentColor" /> Official
                   </span>
                </div>

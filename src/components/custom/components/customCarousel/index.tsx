@@ -88,7 +88,7 @@ export const CustomCarousel: React.FC<CustomCarouselProps> = ({
               className={cn(
                 "h-2 transition-all duration-300 rounded-full border-2",
                 index === currentIndex
-                  ? "w-8 bg-orange-500 border-orange-500"
+                  ? "w-8 bg-orange-500 border-gray-500"
                   : "w-2 bg-white/50 border-white/80"
               )}
             />

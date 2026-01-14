@@ -23,7 +23,7 @@ export default function HomeShopLayout({
   return (
     <div className="animate-in slide-in-from-bottom duration-500 space-y-10 mb-10">
       
-      <div className="bg-white p-6 rounded-3xl border border-orange-100 shadow-sm relative overflow-hidden">
+      <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm relative overflow-hidden">
         <div className="absolute top-0 right-0 p-2 opacity-5 pointer-events-none">
           <TicketPercent size={150} className="text-(--color-mainColor)" />
         </div>

@@ -36,7 +36,7 @@ export function SmartMetricsPanel({
   }
 
   return (
-    <div className="bg-white p-8 rounded-[3rem] border border-gray-100 shadow-sm hover:shadow-[0_20px_50px_rgba(0,0,0,0.04)] transition-all h-full relative overflow-hidden">
+    <div className="bg-white p-8 rounded-[3rem] border border-gray-100 shadow-custom transition-all h-full relative overflow-hidden">
       <div className="mb-8 flex flex-col gap-1">
         <h3 className="text-xl font-semibold text-gray-800 uppercase tracking-tighter italic flex items-center gap-3">
           <div className="w-1.5 h-6 bg-orange-500 rounded-full" />

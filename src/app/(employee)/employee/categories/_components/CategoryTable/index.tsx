@@ -215,7 +215,7 @@ export default function CategoryTable() {
             <input
               type="text"
               placeholder="Tìm tên danh mục..."
-              className="w-full pl-11 pr-4 py-2.5 bg-gray-50 border-transparent rounded-xl focus:bg-white focus:ring-4 focus:ring-orange-500/5 focus:border-orange-500/20 outline-none transition-all text-sm font-medium"
+              className="w-full pl-11 pr-4 py-2.5 bg-gray-50 border-transparent rounded-xl focus:bg-white focus:ring-4 focus:ring-orange-500/5 focus:border-gray-500/20 outline-none transition-all text-sm font-medium"
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
             />

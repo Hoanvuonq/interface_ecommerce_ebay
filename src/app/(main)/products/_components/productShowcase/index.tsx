@@ -313,7 +313,7 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
                   type="default"
                   loading={loadingMore}
                   onClick={handleLoadMore}
-                  className="px-8 h-12 border-2 border-orange-500 text-orange-600 hover:bg-orange-50 rounded-lg font-semibold"
+                  className="px-8 h-12 border-2 border-gray-500 text-orange-600 hover:bg-orange-50 rounded-lg font-semibold"
                 >
                   {loadingMore ? "Đang tải..." : "Xem thêm sản phẩm"}
                 </CustomButton>

@@ -1,15 +1,24 @@
 import { ReviewResponse } from "@/types/reviews/review.types";
 
-export interface UploadFile {
+export type UploadFileStatus = "error" | "done" | "uploading" | "removed";
+
+export interface UploadFile<T = any> {
   uid: string;
+  size?: number;
   name: string;
-  status?: "uploading" | "done" | "error";
+  fileName?: string;
+  lastModified?: number;
   url?: string;
+  status?: UploadFileStatus;
+  percent?: number;
   thumbUrl?: string;
   originFileObj?: File;
+  response?: T;
+  error?: any;
   type?: string;
-  processing?: boolean; 
-  assetId?: string;      
+
+  processing?: boolean;
+  assetId?: string;
 }
 
 export interface ReviewModalProps {

@@ -152,7 +152,7 @@ export default function ShopVoucherList() {
               "px-3 py-1 rounded-xl text-xs font-bold uppercase tracking-tight shadow-sm border",
               item.discountMethod === "FIXED_AMOUNT"
                 ? "bg-emerald-50 text-emerald-700 border-emerald-100"
-                : "bg-orange-50 text-orange-700 border-orange-100"
+                : "bg-orange-50 text-orange-700 border-gray-100"
             )}
           >
             {item.discountMethod === "FIXED_AMOUNT"
@@ -216,7 +216,7 @@ export default function ShopVoucherList() {
                     setSelectedVoucher(item);
                     setEditModalOpen(true);
                   }}
-                  className="p-2 hover:bg-orange-50 rounded-xl transition-all text-gray-400 hover:text-orange-600 border border-transparent hover:border-orange-100"
+                  className="p-2 hover:bg-orange-50 rounded-xl transition-all text-gray-400 hover:text-orange-600 border border-transparent hover:border-gray-100"
                 >
                   <Edit3 size={18} />
                 </button>

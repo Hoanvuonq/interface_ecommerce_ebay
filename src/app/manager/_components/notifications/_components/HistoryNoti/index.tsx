@@ -65,7 +65,7 @@ export default function NotificationHistoryTable() {
                             placeholder="Tìm tiêu đề..."
                             value={searchText}
                             onChange={(e) => setSearchText(e.target.value)}
-                            className="pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-2xl text-sm outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/5 transition-all w-64 font-medium"
+                            className="pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-2xl text-sm outline-none focus:border-gray-500 focus:ring-4 focus:ring-orange-500/5 transition-all w-64 font-medium"
                         />
                     </div>
 
@@ -73,7 +73,7 @@ export default function NotificationHistoryTable() {
                     <select 
                         value={audienceFilter}
                         onChange={(e) => setAudienceFilter(e.target.value)}
-                        className="px-4 py-2.5 bg-white border border-gray-200 rounded-2xl text-sm font-bold text-gray-600 outline-none focus:border-orange-500 transition-all appearance-none cursor-pointer min-w-[140px]"
+                        className="px-4 py-2.5 bg-white border border-gray-200 rounded-2xl text-sm font-bold text-gray-600 outline-none focus:border-gray-500 transition-all appearance-none cursor-pointer min-w-[140px]"
                     >
                         <option value="">Mọi đối tượng</option>
                         <option value="ALL_BUYERS">Buyers</option>
@@ -165,7 +165,7 @@ export default function NotificationHistoryTable() {
                 <button 
                     disabled={page === 0}
                     onClick={() => setPage(p => p - 1)}
-                    className="p-2.5 rounded-2xl border border-gray-200 hover:bg-orange-50 hover:border-orange-200 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
+                    className="p-2.5 rounded-2xl border border-gray-200 hover:bg-orange-50 hover:border-gray-200 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
                 >
                     <Filter className="rotate-90" size={16} />
                 </button>
@@ -175,7 +175,7 @@ export default function NotificationHistoryTable() {
                 <button 
                     disabled={(page + 1) * 10 >= totalElements}
                     onClick={() => setPage(p => p + 1)}
-                    className="p-2.5 rounded-2xl border border-gray-200 hover:bg-orange-50 hover:border-orange-200 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
+                    className="p-2.5 rounded-2xl border border-gray-200 hover:bg-orange-50 hover:border-gray-200 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
                 >
                     <Filter className="-rotate-90" size={16} />
                 </button>

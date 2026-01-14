@@ -112,7 +112,7 @@ export const ORDER_STATUS_UI: Record<OrderStatus, StatusUIConfig> = {
     icon: <PackageCheck size={14} />,
     bg: "bg-orange-50",
     text: "text-orange-600",
-    border: "border-orange-100",
+    border: "border-gray-100",
     strip: "#FB923C",
   },
   [OrderStatus.READY_FOR_PICKUP]: {
@@ -120,7 +120,7 @@ export const ORDER_STATUS_UI: Record<OrderStatus, StatusUIConfig> = {
     icon: <PackageCheck size={14} />,
     bg: "bg-orange-100",
     text: "text-orange-700",
-    border: "border-orange-200",
+    border: "border-gray-200",
     strip: "#EA580C",
   },
 
@@ -256,7 +256,7 @@ export const ORDER_STATUS_UI: Record<OrderStatus, StatusUIConfig> = {
     icon: <ArrowLeftRight size={14} />,
     bg: "bg-orange-50",
     text: "text-orange-600",
-    border: "border-orange-200",
+    border: "border-gray-200",
     strip: "#F97316",
   },
   [OrderStatus.RETURNED_TO_SENDER]: {
@@ -264,7 +264,7 @@ export const ORDER_STATUS_UI: Record<OrderStatus, StatusUIConfig> = {
     icon: <PackageCheck size={14} />,
     bg: "bg-orange-100",
     text: "text-orange-800",
-    border: "border-orange-300",
+    border: "border-gray-300",
     strip: "#C2410C",
   },
 };

@@ -43,7 +43,7 @@ export const FloatingChatButtons: React.FC = () => {
       >
         <div className="relative flex items-center group">
           <div 
-            className={`absolute right-full mr-3 px-3 py-1.5 bg-white/90 backdrop-blur-md border border-orange-100 text-orange-600 text-xs font-bold rounded-xl shadow-sm whitespace-nowrap transition-all duration-300 origin-right ${
+            className={`absolute right-full mr-3 px-3 py-1.5 bg-white/90 backdrop-blur-md border border-gray-100 text-orange-600 text-xs font-bold rounded-xl shadow-sm whitespace-nowrap transition-all duration-300 origin-right ${
               isHovered === 'shop' ? 'opacity-100 scale-100 translate-x-0' : 'opacity-0 scale-90 translate-x-2 pointer-events-none'
             }`}
           >

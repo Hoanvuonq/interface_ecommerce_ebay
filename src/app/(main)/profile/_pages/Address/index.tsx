@@ -145,7 +145,7 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
                 "group bg-white border rounded-2xl py-4 px-6 hover:shadow-md transition-all duration-300 relative",
                 addr.isDefault 
                   ? "border-(--color-mainColor) ring-1 ring-(--color-mainColor)/10" 
-                  : "border-gray-200 hover:border-orange-200"
+                  : "border-gray-200 hover:border-gray-200"
               )}
             >
               <div className="flex justify-between items-start">

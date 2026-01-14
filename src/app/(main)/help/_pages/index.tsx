@@ -36,7 +36,7 @@ export default function HelpScreen() {
               <input 
                 type="text"
                 placeholder="Tìm câu hỏi hoặc từ khóa..."
-                className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-orange-500/5 focus:bg-white focus:border-orange-500 transition-all text-sm"
+                className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-orange-500/5 focus:bg-white focus:border-gray-500 transition-all text-sm"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -52,7 +52,7 @@ export default function HelpScreen() {
               </h3>
               <div className="grid grid-cols-2 lg:grid-cols-1 gap-3">
                 {categories.map((cat, idx) => (
-                  <div key={idx} className="p-4 bg-white border border-gray-100 rounded-2xl hover:border-orange-200 transition-all group shadow-sm">
+                  <div key={idx} className="p-4 bg-white border border-gray-100 rounded-2xl hover:border-gray-200 transition-all group shadow-sm">
                     <cat.icon size={20} className="text-gray-600 group-hover:text-orange-600 mb-2" />
                     <h4 className="text-xs font-bold text-gray-800 mb-1">{cat.title}</h4>
                     <p className="text-[10px] text-gray-500 font-light leading-snug">{cat.description}</p>

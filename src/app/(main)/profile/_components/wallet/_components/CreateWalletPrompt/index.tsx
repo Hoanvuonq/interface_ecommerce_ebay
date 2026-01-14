@@ -114,7 +114,7 @@ export const CreateWalletPrompt: React.FC<CreateWalletPromptProps> = ({
               </h3>
             </div>
 
-            <div className="bg-orange-50/50 border border-orange-100 rounded-xl p-4 mb-6 flex gap-3 items-start">
+            <div className="bg-orange-50/50 border border-gray-100 rounded-xl p-4 mb-6 flex gap-3 items-start">
               <ShieldCheck className="w-5 h-5 text-orange-600 shrink-0 mt-0.5" />
               <p className="text-xs text-orange-800 font-medium leading-relaxed">
                 Mật khẩu này dùng để xác thực khi <strong>rút tiền</strong> và{" "}

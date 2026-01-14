@@ -36,7 +36,7 @@ export const ProductSidebar = ({
             <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1 mb-2 block">
               Danh mục
             </label>
-            <div className="flex items-center gap-3 p-3 bg-gray-50/50 border border-gray-100 rounded-2xl group-hover:bg-white group-hover:border-orange-200 transition-all duration-300">
+            <div className="flex items-center gap-3 p-3 bg-gray-50/50 border border-gray-100 rounded-2xl group-hover:bg-white group-hover:border-gray-200 transition-all duration-300">
               <Tag size={16} className="text-orange-500" />
               <span className="text-sm font-semibold text-gray-700">
                 {product.category?.name || "Chưa phân loại"}
@@ -48,7 +48,7 @@ export const ProductSidebar = ({
             <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1 mb-2 block">
               Cửa hàng sở hữu
             </label>
-            <div className="flex items-center gap-4 p-3.5 bg-orange-50/30 border border-orange-100/50 rounded-2xl group-hover:bg-white group-hover:border-orange-200 transition-all duration-300">
+            <div className="flex items-center gap-4 p-3.5 bg-orange-50/30 border border-gray-100/50 rounded-2xl group-hover:bg-white group-hover:border-gray-200 transition-all duration-300">
               <div className="w-11 h-11 bg-white rounded-xl flex items-center justify-center shadow-sm text-orange-500 shrink-0">
                 <Building2 size={22} strokeWidth={2} />
               </div>

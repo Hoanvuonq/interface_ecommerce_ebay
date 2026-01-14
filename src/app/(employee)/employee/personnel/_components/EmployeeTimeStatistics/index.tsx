@@ -209,7 +209,7 @@ export default function EmployeeTimeStatistics() {
                 {chartData?.top5Days.map((item: any, idx: number) => (
                   <div
                     key={idx}
-                    className="bg-gray-50/50 p-5 rounded-4xl border border-gray-100 relative overflow-hidden group hover:border-orange-200 transition-all"
+                    className="bg-gray-50/50 p-5 rounded-4xl border border-gray-100 relative overflow-hidden group hover:border-gray-200 transition-all"
                   >
                     <span className="absolute -right-2 -bottom-2 text-5xl opacity-[0.03] font-semibold italic group-hover:opacity-10 transition-opacity">
                       #{idx + 1}

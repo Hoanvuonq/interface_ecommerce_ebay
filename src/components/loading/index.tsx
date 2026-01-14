@@ -30,7 +30,7 @@ export const SectionLoading: React.FC<SectionLoadingProps> = ({
           <motion.div
             animate={{ rotate: 360 }}
             transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
-            className="absolute inset-0 border-t-2 border-r-2 border-orange-500 border-l-transparent border-b-transparent rounded-full"
+            className="absolute inset-0 border-t-2 border-r-2 border-gray-500 border-l-transparent border-b-transparent rounded-full"
           />
           <motion.div
             animate={{ rotate: -360 }}

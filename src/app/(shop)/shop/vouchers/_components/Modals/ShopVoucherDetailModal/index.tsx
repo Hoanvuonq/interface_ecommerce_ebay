@@ -222,7 +222,7 @@ export default function ShopVoucherDetailModal({
                 </div>
 
                 {/* Scope Info */}
-                <div className="bg-orange-50/50 rounded-[2rem] border border-orange-100 p-6 space-y-4">
+                <div className="bg-orange-50/50 rounded-[2rem] border border-gray-100 p-6 space-y-4">
                    <div className="text-[10px] font-bold text-orange-600 uppercase tracking-widest flex items-center gap-2">
                      <CheckCircle2 size={14} /> Phạm vi áp dụng
                    </div>
@@ -262,7 +262,7 @@ const InfoItem = ({ icon, label, value }: { icon: any, label: string, value: str
 );
 
 const ScopeTag = ({ label, active }: { label: string, active: boolean }) => (
-  <div className="flex items-center justify-between px-4 py-2 bg-white rounded-xl border border-orange-100/50 shadow-sm">
+  <div className="flex items-center justify-between px-4 py-2 bg-white rounded-xl border border-gray-100/50 shadow-sm">
     <span className="text-[10px] font-bold text-gray-500 uppercase">{label}</span>
     <span className={cn(
       "text-[9px] font-bold uppercase px-2 py-0.5 rounded-md",

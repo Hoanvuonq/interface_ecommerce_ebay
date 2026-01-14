@@ -176,7 +176,7 @@ export const DepositModal: React.FC<DepositModalProps> = ({
         <div className="p-6 overflow-y-auto max-h-[80vh]">
           {!depositResponse ? (
             <div className="space-y-6">
-              <div className="bg-orange-50 border border-orange-100 rounded-xl p-4 flex gap-3 shadow-sm">
+              <div className="bg-orange-50 border border-gray-100 rounded-xl p-4 flex gap-3 shadow-sm">
                 <div className="p-2 bg-white rounded-full text-orange-500 shadow-sm shrink-0 h-fit">
                   <FiInfo size={18} />
                 </div>
@@ -210,7 +210,7 @@ export const DepositModal: React.FC<DepositModalProps> = ({
                       className={`w-full pl-4 pr-12 py-3 bg-gray-50 border rounded-xl text-lg font-bold text-gray-900 placeholder-gray-300 focus:outline-none focus:ring-2 focus:bg-white transition-all ${
                         errors.amount
                           ? "border-red-300 focus:border-red-500 focus:ring-red-100"
-                          : "border-gray-200 focus:border-orange-500 focus:ring-orange-100 group-hover:border-orange-300"
+                          : "border-gray-200 focus:border-gray-500 focus:ring-orange-100 group-hover:border-gray-300"
                       }`}
                     />
                     <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 font-medium text-sm">
@@ -244,7 +244,7 @@ export const DepositModal: React.FC<DepositModalProps> = ({
                       className={`w-full px-4 py-3 bg-gray-50 border rounded-xl text-sm font-medium text-gray-900 focus:outline-none focus:ring-2 focus:bg-white transition-all ${
                         errors.description
                           ? "border-red-300 focus:border-red-500 focus:ring-red-100"
-                          : "border-gray-200 focus:border-orange-500 focus:ring-orange-100 hover:border-orange-300"
+                          : "border-gray-200 focus:border-gray-500 focus:ring-orange-100 hover:border-gray-300"
                       }`}
                     />
                     <span className="absolute right-3 bottom-3 text-[10px] text-gray-600 font-medium bg-gray-100 px-1.5 py-0.5 rounded">

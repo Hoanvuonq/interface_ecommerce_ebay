@@ -64,7 +64,7 @@ export const OrderFeeCard: React.FC<OrderFeeCardProps> = ({
 
   if (error) {
     return (
-      <div className="bg-orange-50 border border-orange-100 rounded-3xl p-4 flex items-center gap-3 text-orange-600">
+      <div className="bg-orange-50 border border-gray-100 rounded-3xl p-4 flex items-center gap-3 text-orange-600">
         <FiAlertCircle size={20} />
         <span className="text-sm font-medium">{error}</span>
       </div>
@@ -90,7 +90,7 @@ export const OrderFeeCard: React.FC<OrderFeeCardProps> = ({
       align: "center",
       render: (record) => (
         <span className={cn(
-          "px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-tighter",
+          "px-3 py-1 rounded-lg text-[10px] font-bold uppercase tracking-tighter",
           record.chargedTo === "SHOP" ? "bg-orange-100 text-orange-600" : "bg-blue-100 text-blue-600"
         )}>
           {record.chargedTo === "SHOP" ? "Shop chịu" : "Sàn chịu"}
@@ -171,7 +171,7 @@ export const OrderFeeCard: React.FC<OrderFeeCardProps> = ({
 
             {/* List phí sàn */}
             <div className="space-y-2">
-              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest flex items-center gap-2">
+              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
                 <FiTag /> Phí khấu trừ sàn
               </p>
               <div className="space-y-1.5">
@@ -194,10 +194,10 @@ export const OrderFeeCard: React.FC<OrderFeeCardProps> = ({
             <div className="bg-green-50 rounded-3xl p-4 border border-green-100 shadow-inner">
               <div className="flex justify-between items-center">
                 <div className="space-y-0.5">
-                  <p className="text-[10px] font-black text-green-700 uppercase tracking-widest italic">Shop thực nhận</p>
+                  <p className="text-[10px] font-bold text-green-700 uppercase tracking-widest italic">Shop thực nhận</p>
                   <p className="text-[9px] text-green-600/70 font-bold uppercase">(Sau khi trừ phí sàn)</p>
                 </div>
-                <div className="text-right font-black text-xl text-green-600 tracking-tighter">
+                <div className="text-right font-bold text-xl text-green-600 tracking-tighter">
                   {formatCurrency(data.shopNetRevenue)}
                 </div>
               </div>
@@ -210,7 +210,7 @@ export const OrderFeeCard: React.FC<OrderFeeCardProps> = ({
               </div>
               <Link
                 href="/shop/finance/fees"
-                className="text-blue-500 text-[10px] font-black uppercase flex items-center gap-1 hover:text-blue-600 transition-all active:scale-95 group"
+                className="text-blue-500 text-[10px] font-bold uppercase flex items-center gap-1 hover:text-blue-600 transition-all active:scale-95 group"
               >
                 Chi tiết báo cáo <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
               </Link>
@@ -226,16 +226,16 @@ export const OrderFeeCard: React.FC<OrderFeeCardProps> = ({
       {/* Tóm tắt 3 cột */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="bg-white p-6 rounded-4xl border border-gray-100 shadow-custom text-center space-y-1">
-          <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Tổng đơn hàng</p>
-          <p className="text-2xl font-black text-blue-600 tracking-tighter">{formatCurrency(data.orderTotal)}</p>
+          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">Tổng đơn hàng</p>
+          <p className="text-2xl font-bold text-blue-600 tracking-tighter">{formatCurrency(data.orderTotal)}</p>
         </div>
         <div className="bg-white p-6 rounded-4xl border border-gray-100 shadow-custom text-center space-y-1">
-          <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Khấu trừ phí</p>
-          <p className="text-2xl font-black text-red-500 tracking-tighter">-{formatCurrency(data.totalFees)}</p>
+          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">Khấu trừ phí</p>
+          <p className="text-2xl font-bold text-red-500 tracking-tighter">-{formatCurrency(data.totalFees)}</p>
         </div>
         <div className="bg-white p-6 rounded-4xl border border-gray-100 shadow-custom text-center space-y-1 ring-2 ring-green-100">
-          <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Shop thực nhận</p>
-          <p className="text-2xl font-black text-green-600 tracking-tighter">{formatCurrency(data.shopNetRevenue)}</p>
+          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">Shop thực nhận</p>
+          <p className="text-2xl font-bold text-green-600 tracking-tighter">{formatCurrency(data.shopNetRevenue)}</p>
         </div>
       </div>
 
@@ -245,7 +245,7 @@ export const OrderFeeCard: React.FC<OrderFeeCardProps> = ({
           headerContent={
             <div className="flex items-center gap-2 px-2">
               <div className="w-1.5 h-6 bg-orange-500 rounded-full" />
-              <h3 className="font-black text-sm text-gray-800 uppercase tracking-tight">Phí cố định đơn hàng</h3>
+              <h3 className="font-bold text-sm text-gray-800 uppercase tracking-tight">Phí cố định đơn hàng</h3>
             </div>
           }
           columns={orderFeeColumns}
@@ -264,7 +264,7 @@ export const OrderFeeCard: React.FC<OrderFeeCardProps> = ({
           headerContent={
             <div className="flex items-center gap-2 px-2">
               <div className="w-1.5 h-6 bg-blue-500 rounded-full" />
-              <h3 className="font-black text-sm text-gray-800 uppercase tracking-tight">Hoa hồng sản phẩm</h3>
+              <h3 className="font-bold text-sm text-gray-800 uppercase tracking-tight">Hoa hồng sản phẩm</h3>
             </div>
           }
           columns={itemFeeColumns}

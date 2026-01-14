@@ -122,7 +122,7 @@ export const TaxInfo = ({
             </button>
             <button 
               onClick={handleEdit}
-              className="px-8 py-2.5 bg-gray-900 text-white rounded-xl text-[11px] font-black uppercase tracking-widest shadow-xl shadow-gray-200 hover:bg-gray-800 transition-all active:scale-95"
+              className="px-8 py-2.5 bg-gray-900 text-white rounded-xl text-[11px] font-bold uppercase tracking-widest shadow-xl shadow-gray-200 hover:bg-gray-800 transition-all active:scale-95"
             >
               Chỉnh sửa
             </button>
@@ -150,7 +150,7 @@ export const TaxInfo = ({
           <div className="relative group">
             <button 
               onClick={() => setShowSensitive(!showSensitive)}
-              className="absolute -top-10 right-0 flex items-center gap-2 text-[10px] font-black uppercase text-orange-600 hover:text-orange-700 transition-colors"
+              className="absolute -top-10 right-0 flex items-center gap-2 text-[10px] font-bold uppercase text-orange-600 hover:text-orange-700 transition-colors"
             >
               {showSensitive ? <EyeOff size={14} /> : <Eye size={14} />}
               {showSensitive ? "Ẩn thông tin" : "Xem thông tin bảo mật"}
@@ -172,7 +172,7 @@ export const TaxInfo = ({
                 },
               ].map((item, idx) => (
                 <div key={idx} className="grid grid-cols-1 md:grid-cols-[280px_1fr] bg-white p-5 group/row hover:bg-gray-50 transition-colors">
-                  <span className="text-[11px] font-black uppercase tracking-[0.2em] text-gray-400 self-center">{item.label}</span>
+                  <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-400 self-center">{item.label}</span>
                   <span className={cn(
                     "text-sm font-bold text-gray-800",
                     item.isMasked && "tracking-[0.3em] text-gray-300"

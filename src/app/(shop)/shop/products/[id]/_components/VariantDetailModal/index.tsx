@@ -100,7 +100,7 @@ export const VariantDetailModal = ({
               )}
             </div>
             <div className="flex flex-col gap-2">
-              <label className="px-5 py-2 bg-white border border-gray-200 rounded-xl text-xs font-bold text-gray-700 cursor-pointer hover:border-orange-300 hover:text-orange-600 transition-all shadow-sm">
+              <label className="px-5 py-2 bg-white border border-gray-200 rounded-xl text-xs font-bold text-gray-700 cursor-pointer hover:border-gray-300 hover:text-orange-600 transition-all shadow-sm">
                 <input type="file" className="hidden" accept="image/*" onChange={(e) => onImageUpload(e.target.files?.[0] || null)} />
                 {imageUploading ? "Đang tải lên..." : "Thay đổi hình ảnh"}
               </label>
@@ -121,7 +121,7 @@ export const VariantDetailModal = ({
               type="text"
               value={values.sku}
               onChange={(e) => onFieldChange("sku", e.target.value)}
-              className="w-full px-4 py-3 bg-gray-50 border-transparent rounded-2xl focus:bg-white focus:border-orange-500 focus:ring-4 focus:ring-orange-50 outline-none font-bold text-gray-700 transition-all border"
+              className="w-full px-4 py-3 bg-gray-50 border-transparent rounded-2xl focus:bg-white focus:border-gray-500 focus:ring-4 focus:ring-orange-50 outline-none font-bold text-gray-700 transition-all border"
               placeholder="VD: NEM-CS-01"
             />
           </div>
@@ -131,7 +131,7 @@ export const VariantDetailModal = ({
               type="number"
               value={values.stockQuantity}
               onChange={(e) => onFieldChange("stockQuantity", Number(e.target.value))}
-              className="w-full px-4 py-3 bg-gray-50 border-transparent rounded-2xl focus:bg-white focus:border-orange-500 outline-none font-bold text-gray-700 border"
+              className="w-full px-4 py-3 bg-gray-50 border-transparent rounded-2xl focus:bg-white focus:border-gray-500 outline-none font-bold text-gray-700 border"
             />
           </div>
         </div>
@@ -143,7 +143,7 @@ export const VariantDetailModal = ({
               type="number"
               value={values.corePrice}
               onChange={(e) => onFieldChange("corePrice", Number(e.target.value))}
-              className="w-full px-4 py-3 bg-gray-50 border-transparent rounded-2xl focus:bg-white focus:border-orange-500 outline-none font-bold text-gray-400 border"
+              className="w-full px-4 py-3 bg-gray-50 border-transparent rounded-2xl focus:bg-white focus:border-gray-500 outline-none font-bold text-gray-400 border"
             />
           </div>
           <div className="space-y-2">
@@ -152,7 +152,7 @@ export const VariantDetailModal = ({
               type="number"
               value={values.price}
               onChange={(e) => onFieldChange("price", Number(e.target.value))}
-              className="w-full px-4 py-3 bg-orange-50/30 border-orange-100 rounded-2xl focus:bg-white focus:border-orange-500 outline-none font-bold text-orange-600 border"
+              className="w-full px-4 py-3 bg-orange-50/30 border-gray-100 rounded-2xl focus:bg-white focus:border-gray-500 outline-none font-bold text-orange-600 border"
             />
           </div>
         </div>
@@ -169,7 +169,7 @@ export const VariantDetailModal = ({
                   type="number"
                   value={(values as any)[field]}
                   onChange={(e) => onFieldChange(field as any, Number(e.target.value))}
-                  className="w-full px-3 py-2.5 bg-white border border-gray-200 rounded-xl text-center font-bold text-sm outline-none focus:border-orange-300"
+                  className="w-full px-3 py-2.5 bg-white border border-gray-200 rounded-xl text-center font-bold text-sm outline-none focus:border-gray-300"
                   placeholder={field === "lengthCm" ? "Dài" : field === "widthCm" ? "Rộng" : "Cao"}
                 />
               </div>
@@ -180,7 +180,7 @@ export const VariantDetailModal = ({
               type="number"
               value={values.weightGrams}
               onChange={(e) => onFieldChange("weightGrams", Number(e.target.value))}
-              className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl font-bold text-sm outline-none focus:border-orange-300"
+              className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl font-bold text-sm outline-none focus:border-gray-300"
               placeholder="Trọng lượng (gram)"
             />
             <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-bold text-gray-400 uppercase">Gram</span>
@@ -201,7 +201,7 @@ export const VariantDetailModal = ({
                     type="text"
                     value={values.optionValues[option.name] || ""}
                     onChange={(e) => onOptionChange(option.name, e.target.value)}
-                    className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl font-bold text-sm outline-none focus:border-orange-300"
+                    className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl font-bold text-sm outline-none focus:border-gray-300"
                     placeholder="VD: Trắng, XL..."
                   />
                 </div>

@@ -35,8 +35,7 @@ export const ProductClassificationSection = ({
   maxGroups = 2,
 }: ProductClassificationSectionProps) => {
   return (
-    <div className="p-8 bg-white rounded-4xl border border-orange-100/50 shadow-sm space-y-8 animate-in fade-in duration-500">
-      {/* Header Section */}
+    <div className="p-8 bg-white rounded-4xl border border-gray-100/50 shadow-sm space-y-8 animate-in fade-in duration-500">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="p-2.5 bg-orange-100 rounded-2xl">
@@ -65,7 +64,7 @@ export const ProductClassificationSection = ({
 
       {/* Content Area */}
       {optionGroups.length === 0 ? (
-        <div className="p-12 text-center bg-orange-50/30 rounded-3xl border-2 border-dashed border-orange-100 flex flex-col items-center">
+        <div className="p-12 text-center bg-orange-50/30 rounded-3xl border-2 border-dashed border-gray-100 flex flex-col items-center">
           <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-4 shadow-sm">
             <Layers className="w-8 h-8 text-orange-200" />
           </div>
@@ -75,7 +74,7 @@ export const ProductClassificationSection = ({
           <button
             type="button"
             onClick={onAddGroup}
-            className="px-6 py-2.5 bg-white border border-orange-200 text-orange-600 rounded-2xl text-xs font-bold hover:bg-orange-50 hover:border-orange-500 transition-all shadow-sm"
+            className="px-6 py-2.5 bg-white border border-gray-200 text-orange-600 rounded-2xl text-xs font-bold hover:bg-orange-50 hover:border-gray-500 transition-all shadow-sm"
           >
             + Bắt đầu thêm phân loại ngay
           </button>
@@ -85,7 +84,7 @@ export const ProductClassificationSection = ({
           {optionGroups.map((group, groupIdx) => (
             <div
               key={group.id}
-              className="p-6 bg-gray-50/50 rounded-3xl border border-gray-100 relative group/panel transition-all duration-300 hover:border-orange-200 hover:bg-white hover:shadow-xl hover:shadow-orange-500/5"
+              className="p-6 bg-gray-50/50 rounded-3xl border border-gray-100 relative group/panel transition-all duration-300 hover:border-gray-200 hover:bg-white hover:shadow-xl hover:shadow-orange-500/5"
             >
               {/* Nút xóa nhóm */}
               <button
@@ -110,7 +109,7 @@ export const ProductClassificationSection = ({
                       onUpdateGroupName(groupIdx, e.target.value)
                     }
                     placeholder="VD: Màu sắc"
-                    className="w-full px-5 py-3 bg-white border border-gray-200 rounded-2xl text-sm font-bold text-gray-700 outline-none transition-all focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
+                    className="w-full px-5 py-3 bg-white border border-gray-200 rounded-2xl text-sm font-bold text-gray-700 outline-none transition-all focus:border-gray-500 focus:ring-4 focus:ring-orange-500/10"
                   />
                 </div>
 
@@ -139,7 +138,7 @@ export const ProductClassificationSection = ({
                             }
                           }}
                           placeholder="Giá trị..."
-                          className="w-36 px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-semibold text-gray-600 outline-none transition-all focus:border-orange-400 focus:ring-4 focus:ring-orange-400/5 hover:border-orange-200 shadow-sm"
+                          className="w-36 px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-semibold text-gray-600 outline-none transition-all focus:border-gray-400 focus:ring-4 focus:ring-orange-400/5 hover:border-gray-200 shadow-sm"
                         />
                         <button
                           type="button"
@@ -155,7 +154,7 @@ export const ProductClassificationSection = ({
                     <button
                       type="button"
                       onClick={() => onAddValue(groupIdx)}
-                      className="flex items-center gap-1.5 px-4 py-2.5 bg-white border-2 border-dashed border-orange-200 rounded-xl text-[11px] font-bold text-orange-600 hover:bg-orange-50 hover:border-orange-500 transition-all shadow-sm"
+                      className="flex items-center gap-1.5 px-4 py-2.5 bg-white border-2 border-dashed border-gray-200 rounded-xl text-[11px] font-bold text-orange-600 hover:bg-orange-50 hover:border-gray-500 transition-all shadow-sm"
                     >
                       <Plus size={14} strokeWidth={3} /> THÊM
                     </button>
@@ -167,7 +166,7 @@ export const ProductClassificationSection = ({
         </div>
       )}
 
-      <div className="flex gap-4 p-5 bg-orange-50/50 border border-orange-100 rounded-3xl">
+      <div className="flex gap-4 p-5 bg-orange-50/50 border border-gray-100 rounded-3xl">
         <div className="shrink-0 w-10 h-10 flex items-center justify-center bg-white rounded-2xl shadow-sm text-orange-600">
           <Plus size={20} className="rotate-45" />
         </div>

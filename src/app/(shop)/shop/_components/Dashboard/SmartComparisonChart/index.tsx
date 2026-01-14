@@ -51,8 +51,7 @@ export function SmartComparisonChart({
   }
 
   return (
-    <div className="bg-white p-10 rounded-[3rem] border border-gray-100 relative overflow-hidden transition-all hover:shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
-      {/* Header đồng bộ với phong cách ChartWrapper */}
+    <div className="bg-white p-10 rounded-[3rem] border border-gray-100 relative overflow-hidden transition-all shadow-custom">
       <div className="mb-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div className="flex flex-col gap-1">
           <h3 className="text-2xl font-semibold text-gray-800 uppercase tracking-tighter italic flex items-center gap-3">
@@ -82,7 +81,7 @@ export function SmartComparisonChart({
       </div>
 
       {/* Vùng biểu đồ */}
-      <div className="w-full h-[350px]">
+      <div className="w-full h-87.5">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={chartData}

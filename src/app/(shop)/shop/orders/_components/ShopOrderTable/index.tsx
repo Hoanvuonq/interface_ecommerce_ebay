@@ -76,7 +76,7 @@ export default function ShopOrderTable() {
     return (
       <span
         className={cn(
-          "px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tight border shadow-sm",
+          "px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-tight border shadow-sm",
           configs[status]
         )}
       >
@@ -142,7 +142,7 @@ export default function ShopOrderTable() {
                 {first?.productName || "—"}
               </span>
               {record.items && record.items.length > 1 && (
-                <span className="text-[10px] font-black text-blue-500 uppercase tracking-tighter">
+                <span className="text-[10px] font-bold text-blue-500 uppercase tracking-tighter">
                   +{record.items.length - 1} sản phẩm khác
                 </span>
               )}
@@ -154,7 +154,7 @@ export default function ShopOrderTable() {
     {
       header: "Mã đơn hàng",
       render: (record) => (
-        <span className="font-black text-gray-900 tracking-tighter italic text-xs uppercase">
+        <span className="font-bold text-gray-900 tracking-tighter italic text-xs uppercase">
           {record.orderNumber}
         </span>
       ),
@@ -165,9 +165,9 @@ export default function ShopOrderTable() {
       render: (record) => (
         <span
           className={cn(
-            "px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm border",
+            "px-3 py-1 rounded-lg text-[10px] font-bold uppercase tracking-widest shadow-sm border",
             record.paymentMethod === "COD"
-              ? "bg-orange-50 text-orange-600 border-orange-100"
+              ? "bg-orange-50 text-orange-600 border-gray-100"
               : "bg-blue-50 text-blue-600 border-blue-100"
           )}
         >
@@ -179,7 +179,7 @@ export default function ShopOrderTable() {
       header: "Tổng tiền",
       align: "right",
       render: (record) => (
-        <span className="font-black text-blue-600 text-sm italic">
+        <span className="font-bold text-blue-600 text-sm italic">
           {new Intl.NumberFormat("vi-VN").format(record.grandTotal)} ₫
         </span>
       ),
@@ -306,8 +306,8 @@ export default function ShopOrderTable() {
 
   return (
     <div className="min-h-screen p-4 md:p-8 space-y-10 animate-in fade-in duration-500">
-      <div className="flex flex-col gap-1 px-2 border-l-4 border-orange-500 pl-6">
-        <h1 className="text-3xl font-black text-gray-900 italic uppercase tracking-tighter">
+      <div className="flex flex-col gap-1 px-2 border-l-4 border-gray-500 pl-6">
+        <h1 className="text-3xl font-bold text-gray-900 italic uppercase tracking-tighter">
           Quản lý đơn hàng
         </h1>
         <p className="text-sm text-gray-500 font-medium italic">

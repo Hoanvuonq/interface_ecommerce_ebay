@@ -19,7 +19,7 @@ export const BasePriceSection = ({
   return (
     <div
       className={cn(
-        "p-8 bg-white rounded-4xl border border-orange-100/50 shadow-sm space-y-6",
+        "p-8 bg-white rounded-4xl border border-gray-100/50 shadow-sm space-y-6",
         className
       )}
     >
@@ -56,7 +56,7 @@ export const BasePriceSection = ({
             className={cn(
               "w-full h-14 pl-5 pr-12 bg-gray-50/50 border rounded-2xl outline-none transition-all duration-300",
               "text-lg font-bold text-gray-700 placeholder:text-gray-300 placeholder:font-normal",
-              "hover:border-orange-200 focus:bg-white focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10",
+              "hover:border-gray-200 focus:bg-white focus:border-gray-500 focus:ring-4 focus:ring-orange-500/10",
               error ? "border-red-300 bg-red-50/50 focus:border-red-500 focus:ring-red-500/10" : "border-gray-200"
             )}
           />
@@ -73,7 +73,7 @@ export const BasePriceSection = ({
       </div>
 
       {/* Box mẹo vặt */}
-      <div className="flex gap-4 p-5 bg-orange-50/50 border border-orange-100 rounded-3xl">
+      <div className="flex gap-4 p-5 bg-orange-50/50 border border-gray-100 rounded-3xl">
         <div className="shrink-0 w-10 h-10 flex items-center justify-center bg-white rounded-2xl shadow-sm text-orange-600">
           <Info size={20} strokeWidth={2.5} />
         </div>

@@ -37,7 +37,7 @@ export const NotificationScreen = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-6 md:py-10">
-      <div className="bg-white rounded-[2.5rem] border border-orange-100/50 shadow-[0_20px_50px_rgba(0,0,0,0.04)] overflow-hidden">
+      <div className="bg-white rounded-[2.5rem] border border-gray-100/50 shadow-[0_20px_50px_rgba(0,0,0,0.04)] overflow-hidden">
         <div className="flex flex-col lg:flex-row items-center justify-between border-b border-gray-50 px-6 py-2 gap-4">
           <div className="flex items-center gap-3 shrink-0">
             <div className="p-2 bg-(--color-mainColor) rounded-xl shadow-md shadow-orange-100">
@@ -70,7 +70,7 @@ export const NotificationScreen = () => {
                   {isActive && (
                     <motion.div
                       layoutId="activeTabInside"
-                      className="absolute inset-0 bg-white rounded-xl shadow-sm border border-orange-100/30"
+                      className="absolute inset-0 bg-white rounded-xl shadow-sm border border-gray-100/30"
                       transition={{
                         type: "spring",
                         bounce: 0.2,
@@ -96,7 +96,7 @@ export const NotificationScreen = () => {
             })}
           </div>
 
-          <button className="hidden lg:flex p-2 rounded-xl bg-gray-50 text-gray-400 hover:text-(--color-mainColor) border border-transparent hover:border-orange-100 transition-all">
+          <button className="hidden lg:flex p-2 rounded-xl bg-gray-50 text-gray-400 hover:text-(--color-mainColor) border border-transparent hover:border-gray-100 transition-all">
             <Settings2 size={16} />
           </button>
         </div>

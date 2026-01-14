@@ -173,7 +173,7 @@ const ContentTable: React.FC<ContentTableProps> = ({
           <button
             onClick={handleExportExcel}
             disabled={exportLoading}
-            className="flex items-center gap-2 px-6 py-3 bg-white border-2 border-gray-100 hover:border-orange-500 text-gray-700 hover:text-orange-600 rounded-2xl font-semibold text-[10px] uppercase tracking-widest transition-all shadow-sm active:scale-95 disabled:opacity-50"
+            className="flex items-center gap-2 px-6 py-3 bg-white border-2 border-gray-100 hover:border-gray-500 text-gray-700 hover:text-orange-600 rounded-2xl font-semibold text-[10px] uppercase tracking-widest transition-all shadow-sm active:scale-95 disabled:opacity-50"
           >
             {exportLoading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -215,7 +215,7 @@ const ContentTable: React.FC<ContentTableProps> = ({
                   className="group hover:bg-orange-50/20 transition-colors"
                 >
                   <td className="px-8 py-5">
-                    <div className="w-14 h-14 rounded-2xl border-2 border-gray-100 overflow-hidden bg-gray-50 flex items-center justify-center group-hover:border-orange-200 transition-all shadow-sm">
+                    <div className="w-14 h-14 rounded-2xl border-2 border-gray-100 overflow-hidden bg-gray-50 flex items-center justify-center group-hover:border-gray-200 transition-all shadow-sm">
                       {category.imageBasePath ? (
                         <img
                           src={toPublicUrl(
@@ -298,7 +298,7 @@ const ContentTable: React.FC<ContentTableProps> = ({
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className="p-2.5 rounded-xl bg-white border border-gray-100 hover:border-orange-500 disabled:opacity-30 transition-all shadow-sm"
+              className="p-2.5 rounded-xl bg-white border border-gray-100 hover:border-gray-500 disabled:opacity-30 transition-all shadow-sm"
             >
               <ChevronLeft size={20} />
             </button>
@@ -328,7 +328,7 @@ const ContentTable: React.FC<ContentTableProps> = ({
             <button
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className="p-2.5 rounded-xl bg-white border border-gray-100 hover:border-orange-500 disabled:opacity-30 transition-all shadow-sm"
+              className="p-2.5 rounded-xl bg-white border border-gray-100 hover:border-gray-500 disabled:opacity-30 transition-all shadow-sm"
             >
               <ChevronRight size={20} />
             </button>

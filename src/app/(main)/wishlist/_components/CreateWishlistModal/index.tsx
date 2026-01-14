@@ -152,7 +152,7 @@ export default function CreateWishlistModal({
                 {/* Image Upload Area */}
                 <div className="space-y-3">
                     <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-600 ml-1">Ảnh bìa (Tùy chọn)</label>
-                    <div className="relative group aspect-21/9 rounded-3xl border-2 border-dashed border-gray-200 bg-gray-50 overflow-hidden flex items-center justify-center transition-all hover:border-orange-300">
+                    <div className="relative group aspect-21/9 rounded-3xl border-2 border-dashed border-gray-200 bg-gray-50 overflow-hidden flex items-center justify-center transition-all hover:border-gray-300">
                         {previewImage ? (
                             <>
                                 <img src={previewImage} alt="Preview" className="w-full h-full object-cover" />
@@ -186,7 +186,7 @@ export default function CreateWishlistModal({
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         placeholder="Ví dụ: Đồ Decor nhà mới..."
-                        className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-bold text-gray-700 placeholder:text-gray-300 shadow-inner"
+                        className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:border-gray-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-bold text-gray-700 placeholder:text-gray-300 shadow-inner"
                     />
                 </div>
 
@@ -198,7 +198,7 @@ export default function CreateWishlistModal({
                         onChange={(e) => setDescription(e.target.value)}
                         rows={3}
                         placeholder="Ghi chú về danh sách này..."
-                        className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-medium text-gray-600 resize-none placeholder:text-gray-300 shadow-inner"
+                        className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:border-gray-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-medium text-gray-600 resize-none placeholder:text-gray-300 shadow-inner"
                     />
                 </div>
 
@@ -229,7 +229,7 @@ const ToggleOption = ({ active, onClick, icon, label, description }: any) => (
         onClick={onClick}
         className={cn(
             "flex items-center gap-4 p-4 rounded-[1.8rem] border cursor-pointer transition-all",
-            active ? "bg-orange-50 border-orange-100 ring-1 ring-orange-200 shadow-sm" : "bg-gray-50 border-gray-200 hover:border-gray-300"
+            active ? "bg-orange-50 border-gray-100 ring-1 ring-orange-200 shadow-sm" : "bg-gray-50 border-gray-200 hover:border-gray-300"
         )}
     >
         <div className={cn(
@@ -246,7 +246,7 @@ const ToggleOption = ({ active, onClick, icon, label, description }: any) => (
         </div>
         <div className={cn(
             "w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all",
-            active ? "bg-orange-500 border-orange-500" : "border-gray-300 bg-white"
+            active ? "bg-orange-500 border-gray-500" : "border-gray-300 bg-white"
         )}>
             {active && <Check size={12} className="text-white" strokeWidth={4} />}
         </div>

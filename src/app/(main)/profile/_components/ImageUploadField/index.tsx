@@ -147,7 +147,7 @@ export const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
         <div
           onClick={() => fileInputRef.current?.click()}
           className={cn(
-            "w-24 h-24 rounded-xl border-2 border-dashed border-gray-300 hover:border-orange-500 bg-gray-50 hover:bg-orange-50 ",
+            "w-24 h-24 rounded-xl border-2 border-dashed border-gray-300 hover:border-gray-500 bg-gray-50 hover:bg-orange-50 ",
             "cursor-pointer flex flex-col items-center justify-center text-gray-600 hover:text-orange-500 transition-all duration-200"
           )}
         >

@@ -59,7 +59,7 @@ export const getProductColumns = (
       const thumbUrl = getProductThumbUrl(record);
       return (
         <div className="flex items-center gap-4 py-1">
-          <div className="w-14 h-14 rounded-2xl overflow-hidden border border-orange-100 bg-orange-50/30 shrink-0 relative shadow-sm">
+          <div className="w-14 h-14 rounded-2xl overflow-hidden border border-gray-100 bg-orange-50/30 shrink-0 relative shadow-sm">
             {thumbUrl ? (
               <Image
                 src={thumbUrl}
@@ -198,7 +198,7 @@ export const getProductColumns = (
         {record.approvalStatus === "DRAFT" && (
           <ActionBtn
             icon={<Send size={16} />}
-            color="text-orange-500 bg-orange-50 border-orange-100 hover:bg-orange-500 hover:text-white"
+            color="text-orange-500 bg-orange-50 border-gray-100 hover:bg-orange-500 hover:text-white"
             onClick={() =>
               handleAction(
                 () =>

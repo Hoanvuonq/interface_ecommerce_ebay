@@ -244,8 +244,8 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
                   className={cn(
                     "group relative p-2 rounded-2xl border transition-all cursor-pointer bg-white overflow-hidden text-left",
                     isSelected
-                      ? "border-orange-500 bg-orange-50/10 ring-2 ring-orange-500/20 shadow-md"
-                      : "border-gray-100 hover:border-orange-200 hover:shadow-sm"
+                      ? "border-gray-500 bg-orange-50/10 ring-2 ring-orange-500/20 shadow-md"
+                      : "border-gray-100 hover:border-gray-200 hover:shadow-sm"
                   )}
                 >
                   <div className="aspect-square rounded-xl overflow-hidden bg-gray-50 mb-2 relative">
@@ -307,7 +307,7 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
                 <button
                   type="button"
                   onClick={() => setShowCreateForm(true)}
-                  className="aspect-square h-11 flex items-center justify-center bg-white border border-dashed border-orange-300 text-orange-500 rounded-xl hover:bg-orange-50 hover:border-orange-500 transition-all active:scale-95 shadow-sm"
+                  className="aspect-square h-11 flex items-center justify-center bg-white border border-dashed border-gray-300 text-orange-500 rounded-xl hover:bg-orange-50 hover:border-gray-500 transition-all active:scale-95 shadow-sm"
                   title="Tạo danh sách mới"
                 >
                   <Plus size={24} />
@@ -331,7 +331,7 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
 
               <div className="flex gap-4">
                 {/* Upload Ảnh Bìa */}
-                <label className="shrink-0 w-20 h-20 rounded-2xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center bg-white cursor-pointer hover:border-orange-500 hover:bg-orange-50/30 transition-all group relative overflow-hidden">
+                <label className="shrink-0 w-20 h-20 rounded-2xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center bg-white cursor-pointer hover:border-gray-500 hover:bg-orange-50/30 transition-all group relative overflow-hidden">
                   {previewImage ? (
                     <Image
                       src={previewImage}
@@ -364,7 +364,7 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
                 <div className="flex-1 space-y-2">
                   <input
                     placeholder="Tên danh sách mới..."
-                    className="w-full bg-white border border-gray-200 p-3 rounded-xl text-sm font-bold outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-100 placeholder:font-normal"
+                    className="w-full bg-white border border-gray-200 p-3 rounded-xl text-sm font-bold outline-none focus:border-gray-500 focus:ring-2 focus:ring-orange-100 placeholder:font-normal"
                     value={formData.newWishlistName}
                     onChange={(e) =>
                       setFormData({
@@ -397,7 +397,7 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
             <input
               type="number"
               min={1}
-              className="w-full h-11 px-3 bg-white border border-gray-200 rounded-xl outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-100 text-sm font-bold text-center transition-all"
+              className="w-full h-11 px-3 bg-white border border-gray-200 rounded-xl outline-none focus:border-gray-500 focus:ring-2 focus:ring-orange-100 text-sm font-bold text-center transition-all"
               value={formData.quantity}
               onChange={(e) =>
                 setFormData({
@@ -420,7 +420,7 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
           </div>
         </div>
 
-        <details className="group border border-gray-100 rounded-2xl overflow-hidden bg-white shadow-sm transition-all open:ring-2 open:ring-orange-50 open:border-orange-200">
+        <details className="group border border-gray-100 rounded-2xl overflow-hidden bg-white shadow-sm transition-all open:ring-2 open:ring-orange-50 open:border-gray-200">
           <summary className="p-4 cursor-pointer list-none flex justify-between items-center bg-gray-50/50 hover:bg-gray-50 transition-colors">
             <div className="flex items-center gap-2">
               <div className="bg-white p-1 rounded-md shadow-sm text-orange-500">

@@ -57,8 +57,8 @@ export default function SortBar({ currentSort, currentPage, totalPages }: SortBa
               className={cn(
                 "px-5 py-2 text-[13px] rounded-xl border transition-all duration-200 font-medium",
                 currentSort === btn.value
-                  ? "bg-orange-500 text-white border-orange-500 shadow-md shadow-orange-100"
-                  : "bg-white border-gray-200 text-gray-700 hover:border-orange-500 hover:text-orange-600"
+                  ? "bg-orange-500 text-white border-gray-500 shadow-md shadow-orange-100"
+                  : "bg-white border-gray-200 text-gray-700 hover:border-gray-500 hover:text-orange-600"
               )}
             >
               {btn.label}

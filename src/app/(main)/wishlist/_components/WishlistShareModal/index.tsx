@@ -118,7 +118,7 @@ export default function WishlistShareModal({
                         {/* URL Input Area */}
                         <div className="space-y-3">
                             <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-600 ml-1">Liên kết chia sẻ</label>
-                            <div className="flex p-1.5 bg-gray-50 border border-gray-200 rounded-2xl focus-within:border-orange-500 focus-within:ring-4 focus-within:ring-orange-500/10 transition-all shadow-inner">
+                            <div className="flex p-1.5 bg-gray-50 border border-gray-200 rounded-2xl focus-within:border-gray-500 focus-within:ring-4 focus-within:ring-orange-500/10 transition-all shadow-inner">
                                 <input 
                                     readOnly 
                                     value={shareUrl}
@@ -175,7 +175,7 @@ export default function WishlistShareModal({
                                         }
                                     }
                                 }}
-                                className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl border-2 border-dashed border-gray-200 text-gray-600 hover:border-orange-200 hover:text-orange-500 transition-all font-semibold text-[10px] uppercase tracking-widest active:scale-98"
+                                className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl border-2 border-dashed border-gray-200 text-gray-600 hover:border-gray-200 hover:text-orange-500 transition-all font-semibold text-[10px] uppercase tracking-widest active:scale-98"
                             >
                                 <RefreshCcw size={14} className={isRegenerating ? 'animate-spin' : ''} />
                                 Regenerate Public Link

@@ -36,3 +36,4 @@ export * from "./tags";
 export * from "./textAreaField";
 export * from "./themeSwitcher";
 export * from "./voucher";
+export * from "./imagePreviewModal";

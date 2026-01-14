@@ -4,7 +4,7 @@ export const ChartWrapper = ({ title, sub, children, className }: any) => (
   <div
     className={cn(
       "bg-white p-10 rounded-[3rem] border border-gray-100 relative overflow-hidden ",
-      "transition-all hover:shadow-[0_20px_50px_rgba(0,0,0,0.04)]",
+      "transition-all shadow-custom",
       "before:absolute before:top-0 before:left-0 before:w-full before:h-1.5 before:bg-gray-50",
       className
     )}

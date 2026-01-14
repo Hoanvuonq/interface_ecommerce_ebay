@@ -140,7 +140,7 @@ const WalletPage: React.FC<WalletPageProps> = ({
     return (
       <div className="flex items-center justify-center min-h-100">
         <div className="relative">
-          <div className="w-12 h-12 border-4 border-orange-200 rounded-full animate-spin border-t-orange-500"></div>
+          <div className="w-12 h-12 border-4 border-gray-200 rounded-full animate-spin border-t-orange-500"></div>
         </div>
       </div>
     );
@@ -222,7 +222,7 @@ const WalletPage: React.FC<WalletPageProps> = ({
           />
         )}
 
-        <div className="mt-6 bg-orange-50/50 border border-orange-100 rounded-xl p-4 flex gap-3 items-start text-sm text-orange-800">
+        <div className="mt-6 bg-orange-50/50 border border-gray-100 rounded-xl p-4 flex gap-3 items-start text-sm text-orange-800">
           <FiAlertCircle className="w-5 h-5 shrink-0 mt-0.5 text-(--color-mainColor)" />
           <div className="space-y-1">
             <p className="font-semibold text-orange-700">Thông tin quan trọng:</p>

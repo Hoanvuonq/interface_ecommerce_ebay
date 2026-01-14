@@ -7,7 +7,7 @@ import { DATA_DASHBOARD } from "../../../_constants/dashboard";
 
 export default function ShopDashboardForm() {
   return (
-    <div className="min-h-screen shadow-custom rounded-3xl bg-gray-50 p-4 md:p-6 space-y-6">
+    <div className="min-h-screen space-y-4">
       <div className="flex justify-between items-end">
         <div>
           <h1 className="text-4xl font-semibold text-gray-900 italic uppercase">
@@ -51,7 +51,7 @@ export default function ShopDashboardForm() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="bg-white p-8 rounded-[3rem] border border-gray-100 shadow-sm">
+        <div className="bg-white p-8 rounded-[3rem] border border-gray-100 shadow-custom">
           <div className="flex items-center gap-3 mb-8">
             <div className="p-2.5 bg-gray-50 rounded-2xl">
               <Package size={20} />
@@ -88,7 +88,7 @@ export default function ShopDashboardForm() {
         </div>
 
         <div className="space-y-8">
-          <div className="bg-orange-50/50 p-8 rounded-[2.5rem] border border-orange-100">
+          <div className="bg-orange-50/50 p-8 rounded-[2.5rem] border border-gray-100 shadow-custom">
             <div className="flex items-center gap-3 mb-6 text-(--color-mainColor)">
               <AlertTriangle size={20} />
               <h2 className="text-lg font-bold uppercase italic tracking-tighter">
@@ -99,7 +99,7 @@ export default function ShopDashboardForm() {
               {DATA_DASHBOARD.products.lowStock.map((item, idx) => (
                 <div
                   key={idx}
-                  className="flex justify-between items-center bg-white p-4 rounded-2xl border border-orange-100 shadow-sm"
+                  className="flex justify-between items-center bg-white p-4 rounded-2xl border border-gray-100 shadow-sm"
                 >
                   <span className="text-sm font-bold text-gray-700 italic">
                     {item.name}

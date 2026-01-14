@@ -117,8 +117,8 @@ export const SelectField = ({
             "w-full h-11 px-4 border border-gray-200 rounded-xl bg-white text-gray-900 flex items-center justify-between cursor-pointer transition-all select-none font-medium",
             disabled
               ? "bg-gray-50 text-gray-600 cursor-not-allowed ring-0 shadow-none border-gray-200"
-              : "hover:border-orange-500 focus:border-orange-500 shadow-sm",
-            isOpen && !disabled ? "border-orange-500 ring-2 ring-orange-100" : "",
+              : "hover:border-gray-500 focus:border-gray-500 shadow-sm",
+            isOpen && !disabled ? "border-gray-500 ring-2 ring-orange-100" : "",
             errorMessage ? "border-red-500 ring-red-100 focus:border-red-500" : "",
             
             selectClassName,

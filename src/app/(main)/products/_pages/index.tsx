@@ -123,8 +123,8 @@ export const ProductScreen = () => {
                     className={cn(
                       "text-xs px-3 py-1.5 cursor-pointer rounded-full transition-all border",
                       filters.keyword === tag
-                        ? "bg-orange-500 text-white border-orange-500"
-                        : "bg-white text-gray-700 border-gray-200 hover:border-orange-300 hover:text-orange-600"
+                        ? "bg-orange-500 text-white border-gray-500"
+                        : "bg-white text-gray-700 border-gray-200 hover:border-gray-300 hover:text-orange-600"
                     )}
                     onClick={() => handleTagClick(tag)}
                   >
@@ -155,7 +155,7 @@ export const ProductScreen = () => {
         <div className="lg:col-span-3 xl:col-span-4 space-y-6">
           {showMobileFilters && (
             <div className="lg:hidden animate-in slide-in-from-top-4 duration-300">
-              <CardComponents className="p-4 mb-4 border-orange-100 bg-orange-50/30">
+              <CardComponents className="p-4 mb-4 border-gray-100 bg-orange-50/30">
                 <CategorySidebar />
                 <div className="mt-6 pt-6 border-t border-gray-200">
                   <PriceRange filters={filters} setFilters={setFilters} />
@@ -173,7 +173,7 @@ export const ProductScreen = () => {
                   className={cn(
                     "flex-1 cursor-pointer flex items-center justify-center gap-2 py-3 px-4 text-sm font-bold transition-all min-w-max",
                     activeTab === item.key
-                      ? "text-orange-600 border-b-2 border-orange-600 bg-orange-50/50"
+                      ? "text-orange-600 border-b-2 border-gray-600 bg-orange-50/50"
                       : "text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:bg-gray-50"
                   )}
                 >

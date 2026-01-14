@@ -151,7 +151,7 @@ export const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
         ].map((item) => (
           <div key={item.step} className="flex flex-col items-center gap-2">
             <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold border-2 transition-all ${
-              currentStep >= item.step ? "bg-orange-500 border-orange-500 text-white" : "bg-white border-gray-300 text-gray-600"
+              currentStep >= item.step ? "bg-orange-500 border-gray-500 text-white" : "bg-white border-gray-300 text-gray-600"
             }`}>
               {currentStep > item.step ? <FiCheck /> : item.step + 1}
             </div>
@@ -178,7 +178,7 @@ export const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
         <div className="mt-4 min-h-75">
           {currentStep === 0 ? (
             <div className="space-y-6">
-              <div className="bg-orange-50 border border-orange-100 rounded-2xl p-5 flex gap-4 items-start shadow-sm">
+              <div className="bg-orange-50 border border-gray-100 rounded-2xl p-5 flex gap-4 items-start shadow-sm">
                 <div className="bg-white p-2.5 rounded-xl text-orange-500 shrink-0 shadow-sm">
                   <FiMail size={24} />
                 </div>

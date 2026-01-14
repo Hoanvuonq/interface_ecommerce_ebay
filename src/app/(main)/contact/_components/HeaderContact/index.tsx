@@ -13,7 +13,7 @@ export const HeaderContact = () => {
       <div className="max-w-7xl mx-auto px-4 relative z-10">
         <div className="flex flex-col md:flex-row items-center justify-between gap-10">
           <div className="max-w-2xl text-center md:text-left space-y-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-50 border border-orange-100 text-orange-600 text-xs font-bold uppercase tracking-wider shadow-sm">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-50 border border-gray-100 text-orange-600 text-xs font-bold uppercase tracking-wider shadow-sm">
               <Sparkles size={12} className="fill-orange-600" />
               <span>Kết nối toàn cầu</span>
             </div>

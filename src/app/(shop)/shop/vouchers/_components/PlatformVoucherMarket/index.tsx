@@ -232,7 +232,7 @@ const VoucherCard = ({ voucher, onBuy }: { voucher: VoucherTemplate; onBuy: () =
         <div className="space-y-2 px-1">
           <h3 className="font-bold text-gray-900 uppercase text-sm leading-tight line-clamp-2 min-h-[2.5rem]">{voucher.name}</h3>
           <div className="flex items-center gap-2">
-            <div className="px-2 py-1 bg-orange-50 rounded-lg border border-orange-100">
+            <div className="px-2 py-1 bg-orange-50 rounded-lg border border-gray-100">
                <span className="text-[10px] font-mono font-bold text-orange-600 tracking-widest">{voucher.code}</span>
             </div>
             {daysLeft <= 7 && <span className="text-[9px] font-bold text-rose-500 bg-rose-50 px-2 py-1 rounded-lg uppercase">Hot</span>}

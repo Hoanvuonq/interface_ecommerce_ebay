@@ -20,7 +20,7 @@ export const OrderItemRow = ({
 
   return (
     <div className="p-4 sm:p-5 flex flex-col sm:flex-row gap-4 sm:items-center hover:bg-gray-50/50 transition-all duration-300 group border-b border-gray-50 last:border-0">
-      <div className="relative w-20 h-20 sm:w-20 sm:h-20 rounded-2xl overflow-hidden border border-gray-100 shrink-0 bg-white shadow-sm flex items-center justify-center transition-all duration-500 group-hover:shadow-orange-100 group-hover:border-orange-100">
+      <div className="relative w-20 h-20 sm:w-20 sm:h-20 rounded-2xl overflow-hidden border border-gray-100 shrink-0 bg-white shadow-sm flex items-center justify-center transition-all duration-500 group-hover:shadow-orange-100 group-hover:border-gray-100">
         {imageUrl ? (
           <Image
             src={imageUrl}
@@ -83,7 +83,7 @@ export const OrderItemRow = ({
               "flex items-center gap-2 p-2 rounded-xl text-[10px] font-bold uppercase transition-all shadow-sm active:scale-95",
               isReviewed
                 ? "bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed"
-                : "bg-white text-orange-600 border border-orange-200 hover:bg-orange-600 hover:text-white hover:border-orange-600 hover:shadow-orange-200"
+                : "bg-white text-orange-600 border border-gray-200 hover:bg-orange-600 hover:text-white hover:border-gray-600 hover:shadow-orange-200"
             )}
           >
             <Star

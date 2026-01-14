@@ -96,7 +96,7 @@ export default function ModerateReviewModal({
               "w-full px-4 py-3 rounded-2xl border bg-gray-50/50 outline-none transition-all text-sm font-medium resize-none shadow-inner",
               errors.rejectionReason
                 ? "border-red-400 focus:ring-4 focus:ring-red-50"
-                : "border-gray-200 focus:border-orange-500 focus:bg-white focus:ring-4 focus:ring-orange-50"
+                : "border-gray-200 focus:border-gray-500 focus:bg-white focus:ring-4 focus:ring-orange-50"
             )}
             placeholder="Nhập lý do cụ thể (Spam, ngôn từ thiếu văn hóa, ảnh không liên quan...)"
           />

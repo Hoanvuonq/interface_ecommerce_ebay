@@ -93,7 +93,7 @@ export function DashboardSkeleton() {
             ))}
           </div>
         </div>
-        <div className="bg-orange-50/50 p-8 rounded-[2.5rem] border border-orange-100">
+        <div className="bg-orange-50/50 p-8 rounded-[2.5rem] border border-gray-100">
           <Skeleton height={30} width="50%" className="mb-6" />
           <div className="space-y-4">
             {[1, 2].map((i) => (

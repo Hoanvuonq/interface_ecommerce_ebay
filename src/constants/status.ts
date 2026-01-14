@@ -58,7 +58,7 @@ export const getStatusInfo = (status: string) => {
           text: "Đã đóng băng",
           color: "text-orange-600",
           bg: "bg-orange-100",
-          border: "border-orange-200",
+          border: "border-gray-200",
           icon: "bg-orange-500",
         };
       case "CLOSED":

@@ -112,13 +112,13 @@ export function SimilarProducts({ productId }: SimilarProductsProps) {
               className={cn(
                 "group flex items-center gap-2 px-10 py-3 bg-white border-2 border-gray-100 rounded-2xl",
                 "text-sm font-bold text-gray-600 transition-all duration-300",
-                "hover:border-orange-500 hover:text-orange-500 hover:shadow-lg hover:shadow-orange-100",
+                "hover:border-gray-500 hover:text-orange-500 hover:shadow-lg hover:shadow-orange-100",
                 "active:scale-95 disabled:opacity-50"
               )}
             >
               {loading ? (
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
+                  <div className="w-4 h-4 border-2 border-gray-500 border-t-transparent rounded-full animate-spin" />
                   <span>ĐANG TẢI...</span>
                 </div>
               ) : (

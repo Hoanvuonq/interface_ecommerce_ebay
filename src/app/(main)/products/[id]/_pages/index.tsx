@@ -393,8 +393,8 @@ export const ProductDetailPage = ({ productId, isPreview = false }: ProductDetai
                         className={cn(
                           "relative aspect-square w-full rounded-lg overflow-hidden border-2 transition-all cursor-pointer bg-gray-50",
                           primaryImage === img.preview
-                            ? "border-orange-500 scale-105 shadow-md z-10"
-                            : "border-gray-200 hover:border-orange-300"
+                            ? "border-gray-500 scale-105 shadow-md z-10"
+                            : "border-gray-200 hover:border-gray-300"
                         )}
                         onClick={() => {
                           setActiveThumbnail(img.preview);

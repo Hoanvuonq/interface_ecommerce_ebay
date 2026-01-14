@@ -9,7 +9,7 @@ export const ChartBox = ({
 }: any) => (
   <div
     className={cn(
-      "bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.02)]",
+      "bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-custom",
       className
     )}
   >

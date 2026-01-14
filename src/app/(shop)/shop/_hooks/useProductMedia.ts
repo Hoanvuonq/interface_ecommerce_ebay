@@ -4,6 +4,7 @@ import { useProductStore } from '../_store/product.store';
 import { usePresignedUpload } from "@/hooks/usePresignedUpload";
 import { UploadContext } from "@/types/storage/storage.types";
 import { useToast } from '@/hooks/useToast';
+
 export const useProductMedia = () => {
   const {success, warning, error} = useToast();
   const { setFileList, setVideoList } = useProductStore();
@@ -12,7 +13,6 @@ export const useProductMedia = () => {
   const [uploading, setUploading] = useState(false);
   const [uploadingVideo, setUploadingVideo] = useState(false);
 
-  // --- Image Handlers ---
   const handleImageUpload = async (options: any) => {
     const { file, onSuccess, onError } = options;
     try {
@@ -20,7 +20,6 @@ export const useProductMedia = () => {
       const localUrl = URL.createObjectURL(file as File);
       const tempUid = (file as any).uid;
 
-      // Add local preview with loading state
       setFileList((prev) => [
         ...prev,
         { ...file, url: localUrl, status: "uploading", uid: tempUid, processing: true } as any,
@@ -29,7 +28,6 @@ export const useProductMedia = () => {
       const res = await uploadPresigned(file as File, UploadContext.PRODUCT_IMAGE);
       if (!res.finalUrl) throw new Error("Upload failed");
 
-      // Update with real URL
       setFileList((prev) =>
         prev.map((f) => f.uid === tempUid 
           ? { ...f, url: res.finalUrl, status: "done", processing: false, assetId: res.assetId } as any 

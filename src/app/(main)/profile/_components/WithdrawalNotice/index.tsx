@@ -243,7 +243,7 @@ export const WithdrawalNotice: React.FC<WithdrawalNoticeProps> = ({
          </div>
 
          {/* Additional Notes */}
-         <div className="bg-orange-50/50 border border-orange-100 rounded-2xl p-6">
+         <div className="bg-orange-50/50 border border-gray-100 rounded-2xl p-6">
             <h3 className="text-base font-bold text-orange-900 mb-4 flex items-center gap-2">
                 <FiAlertCircle className="w-5 h-5 text-orange-600" />
                 Lưu ý quan trọng

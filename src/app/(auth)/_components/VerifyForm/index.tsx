@@ -161,7 +161,7 @@ export function VerifyForm({ email, type, mode = "REGISTRATION", onSuccess }: Ve
                     ? "Tài khoản chưa kích hoạt. Mã xác thực đã gửi đến:" 
                     : "Mã xác thực 6 số đã được gửi đến:"}
               </Text>
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-orange-50 dark:bg-orange-900/20 border border-orange-100 dark:border-orange-800/50 rounded-full">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-orange-50 dark:bg-orange-900/20 border border-gray-100 dark:border-gray-800/50 rounded-full">
                 <MdEmail className="text-orange-500 text-sm" />
                 <Text className="text-sm font-semibold text-orange-700 dark:text-orange-300">
                   {email}
@@ -185,10 +185,10 @@ export function VerifyForm({ email, type, mode = "REGISTRATION", onSuccess }: Ve
                         onFocus={e => e.target.select()}
                         className={cn(
                             "w-10 h-12 sm:w-12 sm:h-14 text-center text-xl font-bold rounded-xl border-2 transition-all duration-200 outline-none",
-                            "focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 focus:-translate-y-1",
+                            "focus:border-gray-500 focus:ring-4 focus:ring-orange-500/10 focus:-translate-y-1",
                             "bg-gray-50 border-gray-200 text-gray-800",
                             "dark:bg-gray-700/50 dark:border-gray-600 dark:text-gray-100",
-                            data ? "border-orange-500/50 dark:border-orange-500/50 bg-white dark:bg-gray-700 shadow-sm" : ""
+                            data ? "border-gray-500/50 dark:border-gray-500/50 bg-white dark:bg-gray-700 shadow-sm" : ""
                         )}
                     />
                 ))}

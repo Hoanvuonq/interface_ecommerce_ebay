@@ -188,7 +188,7 @@ export default async function CategoryScreen({
                       <Link
                         href={makeQuery({ page: Math.max(page - 1, 0) })}
                         className={cn(
-                          "flex items-center gap-2 rounded-2xl bg-white border border-gray-200 px-6 py-3 font-bold text-gray-700 shadow-sm transition-all hover:border-orange-500 hover:text-orange-600",
+                          "flex items-center gap-2 rounded-2xl bg-white border border-gray-200 px-6 py-3 font-bold text-gray-700 shadow-sm transition-all hover:border-gray-500 hover:text-orange-600",
                           !canPrev &&
                             "pointer-events-none opacity-40 bg-gray-50"
                         )}
@@ -210,7 +210,7 @@ export default async function CategoryScreen({
                           page: Math.min(page + 1, totalPages - 1),
                         })}
                         className={cn(
-                          "flex items-center gap-2 rounded-2xl bg-white border border-gray-200 px-6 py-3 font-bold text-gray-700 shadow-sm transition-all hover:border-orange-500 hover:text-orange-600",
+                          "flex items-center gap-2 rounded-2xl bg-white border border-gray-200 px-6 py-3 font-bold text-gray-700 shadow-sm transition-all hover:border-gray-500 hover:text-orange-600",
                           !canNext &&
                             "pointer-events-none opacity-40 bg-gray-50"
                         )}

@@ -125,8 +125,8 @@ const AddressModal: React.FC<AddressModalProps> = ({
                   onClick={() => !isUpdating && setSelectedId(addr.addressId)}
                   className={`p-4 rounded-2xl border-2 cursor-pointer transition-all ${
                     selectedId === addr.addressId
-                      ? "border-orange-500 bg-orange-50/30 ring-4 ring-orange-50"
-                      : "border-gray-100 bg-white hover:border-orange-200"
+                      ? "border-gray-500 bg-orange-50/30 ring-4 ring-orange-50"
+                      : "border-gray-100 bg-white hover:border-gray-200"
                   } ${isUpdating ? "opacity-50 cursor-not-allowed" : ""}`}
                 >
                   <div className="w-full flex justify-between items-center">

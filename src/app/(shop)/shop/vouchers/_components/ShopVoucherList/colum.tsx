@@ -38,7 +38,7 @@ export const getVoucherColumns = (actions: {
     render: (item: VoucherTemplate) => (
       <span className={cn(
         "px-3 py-1 rounded-xl text-xs font-bold uppercase tracking-tight shadow-sm border",
-        item.discountMethod === "FIXED_AMOUNT" ? "bg-emerald-50 text-emerald-700 border-emerald-100" : "bg-orange-50 text-orange-700 border-orange-100"
+        item.discountMethod === "FIXED_AMOUNT" ? "bg-emerald-50 text-emerald-700 border-emerald-100" : "bg-orange-50 text-orange-700 border-gray-100"
       )}>
         {item.discountMethod === "FIXED_AMOUNT" ? formatCurrency(item.discountValue) : `${item.discountValue}%`}
       </span>

@@ -138,7 +138,7 @@ export default function EmployeeDetail({
                 <p className="text-[10px] font-semibold text-gray-600 uppercase tracking-widest ml-1">Trạng thái làm việc</p>
                 <span className={cn(
                   "inline-block px-4 py-1.5 rounded-xl text-xs font-bold border",
-                  employee.status === "ACTIVE" ? "bg-blue-50 text-blue-700 border-blue-100" : "bg-orange-50 text-orange-700 border-orange-100"
+                  employee.status === "ACTIVE" ? "bg-blue-50 text-blue-700 border-blue-100" : "bg-orange-50 text-orange-700 border-gray-100"
                 )}>
                   {statusLabelMap[employee.status]}
                 </span>
@@ -167,7 +167,7 @@ const DetailBox = ({ icon, label, value, isFullWidth = false }: { icon: React.Re
     <p className="text-[10px] font-semibold text-gray-600 uppercase tracking-[0.2em] ml-1 flex items-center gap-1">
       {icon} {label}
     </p>
-    <div className="px-4 py-3 rounded-2xl bg-white border border-gray-100 shadow-sm transition-all hover:border-orange-200 group">
+    <div className="px-4 py-3 rounded-2xl bg-white border border-gray-100 shadow-sm transition-all hover:border-gray-200 group">
       <span className="text-sm font-bold text-gray-700 leading-none group-hover:text-gray-900">
         {value || "—"}
       </span>

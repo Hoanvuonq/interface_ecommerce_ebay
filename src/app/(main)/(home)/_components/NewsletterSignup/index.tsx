@@ -72,7 +72,7 @@ const NewsletterSignup: React.FC = () => {
 
 
 const Badge = ({ label, icon }: { label: string; icon: React.ReactNode }) => (
-  <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-100/50 border border-orange-200 rounded-full">
+  <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-100/50 border border-gray-200 rounded-full">
     <span className="text-orange-600">{icon}</span>
     <span className="text-[10px] font-semibold uppercase tracking-widest text-orange-600">{label}</span>
   </div>
@@ -114,7 +114,7 @@ const SubscribeForm = ({ email, loading, onChange, onSubmit }: any) => (
         value={email}
         onChange={(e) => onChange(e.target.value)}
         disabled={loading}
-        className="w-full bg-white border border-gray-200 rounded-2xl py-5 pl-14 pr-5 text-gray-900 outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/5 transition-all font-medium shadow-sm"
+        className="w-full bg-white border border-gray-200 rounded-2xl py-5 pl-14 pr-5 text-gray-900 outline-none focus:border-gray-500 focus:ring-4 focus:ring-orange-500/5 transition-all font-medium shadow-sm"
         required
       />
     </div>

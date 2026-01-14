@@ -73,7 +73,7 @@ export const OrderSuccessModal: React.FC<OrderSuccessModalProps> = ({
         </div>
         
         <div className="mt-6 animate-in fade-in zoom-in-90 duration-1000 delay-500 fill-mode-both">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 rounded-full text-[9px] font-bold uppercase tracking-widest text-gray-600 border border-gray-100 hover:bg-white hover:border-orange-200 transition-colors cursor-default">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 rounded-full text-[9px] font-bold uppercase tracking-widest text-gray-600 border border-gray-100 hover:bg-white hover:border-gray-200 transition-colors cursor-default">
              <span className="animate-bounce">🎉</span> Welcome to the community
           </div>
         </div>

@@ -196,7 +196,7 @@ export default function EditWishlistItemModal({
                                 setDesiredPrice(val ? parseInt(val) : "");
                             }}
                             placeholder="Nhập giá bạn muốn chờ đợi..."
-                            className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-semibold text-orange-600 placeholder:text-gray-300 shadow-inner"
+                            className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:border-gray-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-semibold text-orange-600 placeholder:text-gray-300 shadow-inner"
                         />
                         <span className="absolute right-5 top-1/2 -translate-y-1/2 font-semibold text-gray-300 group-focus-within:text-orange-300">₫</span>
                     </div>
@@ -210,7 +210,7 @@ export default function EditWishlistItemModal({
                         onChange={(e) => setNotes(e.target.value)}
                         rows={3}
                         placeholder="Lưu ý về size, màu sắc hoặc thời điểm mua..."
-                        className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-medium text-gray-600 resize-none placeholder:text-gray-300 shadow-inner"
+                        className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:border-gray-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-medium text-gray-600 resize-none placeholder:text-gray-300 shadow-inner"
                     />
                 </div>
             </div>

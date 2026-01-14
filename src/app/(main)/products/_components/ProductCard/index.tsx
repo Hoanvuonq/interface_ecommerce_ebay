@@ -168,7 +168,7 @@ export const ProductCard = ({
       <Link
         href={`/products/${product.slug || product.id}`}
         className={cn(
-          "group relative flex bg-white rounded-2xl border border-gray-100 hover:border-orange-200 hover:shadow-xl  hover:shadow-orange-500/10 transition-all duration-500 overflow-hidden",
+          "group relative flex bg-white rounded-2xl border border-gray-100 hover:border-gray-200 hover:shadow-xl  hover:shadow-orange-500/10 transition-all duration-500 overflow-hidden",
           isList ? "flex-row h-40 md:h-44" : "flex-col h-full"
         )}
       >
@@ -257,7 +257,7 @@ export const ProductCard = ({
         >
           <div className="flex justify-between items-start mb-1">
             <div className="flex items-center gap-1.5 overflow-hidden">
-              <span className="bg-orange-50 text-(--color-mainColor) text-[8px] font-semibold px-1.5 py-0.5 rounded border border-orange-100 uppercase shrink-0 tracking-tighter">
+              <span className="bg-orange-50 text-(--color-mainColor) text-[8px] font-semibold px-1.5 py-0.5 rounded border border-gray-100 uppercase shrink-0 tracking-tighter">
                 Mall
               </span>
               <span className="text-[10px] text-gray-600 font-bold uppercase tracking-tight truncate">

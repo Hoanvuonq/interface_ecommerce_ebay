@@ -24,9 +24,9 @@ const CheckoutStepper: React.FC<CheckoutStepperProps> = ({ currentStep }) => {
                   className={`flex items-center justify-center w-10 h-10 rounded-full transition-all duration-500 border-2 
                     ${
                       isActive
-                        ? "bg-orange-500 border-orange-500 text-white shadow-lg shadow-orange-200 scale-110"
+                        ? "bg-orange-500 border-gray-500 text-white shadow-lg shadow-orange-200 scale-110"
                         : isCompleted
-                        ? "bg-white border-orange-500 text-orange-500"
+                        ? "bg-white border-gray-500 text-orange-500"
                         : "bg-white border-gray-200 text-gray-300"
                     }
                   `}

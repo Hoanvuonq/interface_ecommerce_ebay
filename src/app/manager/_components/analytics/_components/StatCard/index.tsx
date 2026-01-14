@@ -2,7 +2,7 @@ import { cn } from "@/utils/cn";
 
 export const StatCard = ({ label, value, icon, color }: { label: string, value: string, icon: React.ReactNode, color: string }) => {
     const colorMap: any = {
-        orange: "text-orange-600 bg-orange-50 border-orange-100",
+        orange: "text-orange-600 bg-orange-50 border-gray-100",
         red: "text-red-600 bg-red-50 border-red-100",
         emerald: "text-emerald-600 bg-emerald-50 border-emerald-100"
     };

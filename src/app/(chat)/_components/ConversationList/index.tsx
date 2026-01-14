@@ -101,7 +101,7 @@ export const ConversationList: React.FC<ConversationListProps> = ({
             value={searchText}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Tìm kiếm shop..."
-            className="w-full bg-gray-100 border-transparent border focus:border-orange-200 rounded-xl py-2.5 pl-10 pr-4 text-sm focus:bg-white focus:ring-2 focus:ring-orange-100 transition-all outline-none"
+            className="w-full bg-gray-100 border-transparent border focus:border-gray-200 rounded-xl py-2.5 pl-10 pr-4 text-sm focus:bg-white focus:ring-2 focus:ring-orange-100 transition-all outline-none"
           />
         </div>
       </div>
@@ -136,7 +136,7 @@ export const ConversationList: React.FC<ConversationListProps> = ({
                 className={cn(
                   "group relative flex items-start gap-3.5 p-3 rounded-2xl cursor-pointer transition-all duration-200 border",
                   isActive
-                    ? "bg-white border-orange-200 shadow-sm shadow-orange-100 ring-1 ring-orange-100"
+                    ? "bg-white border-gray-200 shadow-sm shadow-orange-100 ring-1 ring-orange-100"
                     : "bg-transparent border-transparent hover:bg-white hover:border-gray-100 hover:shadow-sm"
                 )}
               >

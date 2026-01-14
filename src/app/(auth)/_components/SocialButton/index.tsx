@@ -24,7 +24,7 @@ export const SocialButton: React.FC<SocialButtonProps> = ({
       loading={loading}
       className={cn(
         "h-12 rounded-xl border-2 border-gray-200 dark:border-gray-700",
-        "hover:border-orange-500 dark:hover:border-orange-500 hover:shadow-md",
+        "hover:border-gray-500 dark:hover:border-gray-500 hover:shadow-md",
         "transition-all duration-300 font-medium text-base bg-white",
         "dark:bg-gray-700/50 dark:text-gray-200"
       )}

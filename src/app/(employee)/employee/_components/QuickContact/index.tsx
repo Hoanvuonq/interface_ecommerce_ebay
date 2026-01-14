@@ -18,7 +18,7 @@ export const QuickContact = () => {
         <ContactItem
           title="Quản lý trực tiếp"
           value={{ phone: "0123-456-789", email: "manager@company.com" }}
-          colorClass="bg-orange-50/30 border-orange-100/50"
+          colorClass="bg-orange-50/30 border-gray-100/50"
           icon={Users}
         />
         <ContactItem

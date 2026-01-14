@@ -27,7 +27,7 @@ export const StatusTabsVoucher = ({
   return (
     <LayoutGroup id="voucher-tabs">
       <div className={cn("w-full overflow-x-auto no-scrollbar", className)}>
-        <div className="inline-flex bg-gray-100 p-1.5 rounded-2xl border border-gray-100 gap-1">
+        <div className="inline-flex bg-gray-100 p-1 rounded-2xl border border-gray-100 gap-1">
           {tabs.map((tab) => {
             const isActive = current === tab.id;
 
@@ -36,7 +36,7 @@ export const StatusTabsVoucher = ({
                 key={tab.id}
                 onClick={() => onChange(tab.id)}
                 className={cn(
-                  "relative flex items-center gap-2.5 px-6 py-3 rounded-full text-[11px] font-bold uppercase tracking-widest transition-colors duration-300 whitespace-nowrap select-none group",
+                  "relative flex items-center gap-2 px-5 py-3 rounded-full text-[11px] font-bold uppercase tracking-widest transition-colors duration-300 whitespace-nowrap select-none group",
                   isActive
                     ? "text-gray-900"
                     : "text-gray-500 hover:text-gray-900"

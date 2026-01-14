@@ -59,7 +59,7 @@ export const ShopCard: React.FC<{ shop: Shop; color: string; isMobile?: boolean 
                 </div>
 
                 {shop.verified && (
-                    <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 z-20 flex items-center gap-0.5 rounded-full bg-white px-1.5 py-0.5 shadow-md border border-orange-100">
+                    <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 z-20 flex items-center gap-0.5 rounded-full bg-white px-1.5 py-0.5 shadow-md border border-gray-100">
                         <CheckCircle className="h-3 w-3 text-orange-500 fill-orange-500" />
                         {!isMobile && <span className="text-[7px] font-semibold text-orange-600 uppercase">Mall</span>}
                     </div>

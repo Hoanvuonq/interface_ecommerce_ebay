@@ -10,7 +10,7 @@ export const StatCard = ({ item }: { item: any }) => {
     <div
       className={cn(
         "group bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.02)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.06)]",
-        "border border-gray-100 hover:border-orange-100 transition-all duration-500 relative overflow-hidden flex flex-col justify-between min-h-47.5"
+        "border border-gray-100 hover:border-gray-100 transition-all duration-500 relative overflow-hidden flex flex-col justify-between min-h-47.5"
       )}
     >
       <div

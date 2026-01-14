@@ -37,7 +37,7 @@ export const NotificationList = ({ notifications, onRead, getIcon }: any) => {
               className={cn(
                 "shrink-0 w-11 h-11 rounded-2xl flex items-center justify-center border transition-all duration-300",
                 isUnread
-                  ? "bg-orange-100 border-orange-200 shadow-sm"
+                  ? "bg-orange-100 border-gray-200 shadow-sm"
                   : "bg-gray-100 border-gray-200"
               )}
             >

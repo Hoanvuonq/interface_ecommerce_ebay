@@ -1,6 +1,7 @@
 "use client";
 import { cn } from "@/utils/cn";
 import { X } from "lucide-react";
+import Image from "next/image";
 
 export const ImageWithPreview: React.FC<any> = ({
   src,
@@ -15,15 +16,15 @@ export const ImageWithPreview: React.FC<any> = ({
 }) => {
   return (
     <>
-      <img
+      <Image
         src={src || fallback}
         alt={alt}
         className={cn("object-cover cursor-zoom-in", className)}
+        fill
         onError={onError}
         onClick={onClick}
         {...rest}
       />
-
       {showModal && (
         <div
           className="fixed inset-0 z-9999 flex items-center justify-center bg-black/90 p-4 animate-in fade-in duration-200"

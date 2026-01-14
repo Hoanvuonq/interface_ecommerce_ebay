@@ -44,7 +44,7 @@ export const CategoryItem: React.FC<CategoryItemProps> = ({
         className={cn(
           "relative w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center overflow-hidden rounded-2xl",
           "border border-gray-100 shadow-sm bg-white group-hover/item:-translate-y-1",
-          "group-hover/item:border-orange-200 group-hover/item:shadow-lg group-hover/item:shadow-orange-500/10 transition-all duration-300"
+          "group-hover/item:border-gray-200 group-hover/item:shadow-lg group-hover/item:shadow-orange-500/10 transition-all duration-300"
         )}
       >
         <div className="w-full h-full p-1 flex items-center justify-center transition-transform duration-500 group-hover/item:scale-110">

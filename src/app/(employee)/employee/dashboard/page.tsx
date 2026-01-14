@@ -35,7 +35,7 @@ export default function EmployeeDashboardScreen() {
       <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
           <div className="flex items-center gap-2 mb-2.5">
-            <span className="px-3 py-1 rounded-full bg-orange-100 text-orange-700 text-[10px] font-semibold uppercase tracking-widest border border-orange-200">
+            <span className="px-3 py-1 rounded-full bg-orange-100 text-orange-700 text-[10px] font-semibold uppercase tracking-widest border border-gray-200">
               Employee Hub
             </span>
             <span className="text-gray-300 text-xs">•</span>

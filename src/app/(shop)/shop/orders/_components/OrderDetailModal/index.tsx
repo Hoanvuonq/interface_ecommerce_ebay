@@ -62,7 +62,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
     {
       header: "Số lượng",
       align: "center",
-      render: (record) => <span className="font-black text-gray-700">x{record.quantity}</span>,
+      render: (record) => <span className="font-bold text-gray-700">x{record.quantity}</span>,
     },
     {
       header: "Đơn giá",
@@ -72,7 +72,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
     {
       header: "Thành tiền",
       align: "right",
-      render: (record) => <span className="font-black text-orange-600">{formatCurrency(record.lineTotal)}</span>,
+      render: (record) => <span className="font-bold text-orange-600">{formatCurrency(record.lineTotal)}</span>,
     },
   ];
 
@@ -83,7 +83,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
       title={
         <div className="flex items-center gap-2">
           <FiPackage className="text-orange-500" />
-          <span>Chi tiết đơn hàng: <span className="text-orange-600 font-black tracking-tight">{order.orderNumber}</span></span>
+          <span>Chi tiết đơn hàng: <span className="text-orange-600 font-bold tracking-tight">{order.orderNumber}</span></span>
         </div>
       }
       width="max-w-5xl"
@@ -99,7 +99,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
       <div className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="bg-gray-50/50 rounded-3xl p-5 border border-gray-100 space-y-4">
-            <h4 className="text-[11px] font-black uppercase text-gray-400 tracking-widest flex items-center gap-2">
+            <h4 className="text-[11px] font-bold uppercase text-gray-400 tracking-widest flex items-center gap-2">
               <FiUser /> Thông tin chung
             </h4>
             <div className="space-y-2">
@@ -119,14 +119,14 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
           </div>
 
           {/* Box 2: Tài chính */}
-          <div className="bg-orange-50/30 rounded-3xl p-5 border border-orange-100/50 space-y-4">
-            <h4 className="text-[11px] font-black uppercase text-orange-400 tracking-widest flex items-center gap-2">
+          <div className="bg-orange-50/30 rounded-3xl p-5 border border-gray-100/50 space-y-4">
+            <h4 className="text-[11px] font-bold uppercase text-orange-400 tracking-widest flex items-center gap-2">
               <FiCreditCard /> Thanh toán
             </h4>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-500">Phương thức:</span>
-                <span className="font-black text-gray-800 uppercase">{order.paymentMethod || "N/A"}</span>
+                <span className="font-bold text-gray-800 uppercase">{order.paymentMethod || "N/A"}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-500">Tạm tính sản phẩm:</span>
@@ -136,9 +136,9 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                 <span>Tổng giảm giá:</span>
                 <span className="font-bold">-{formatCurrency(order.subtotal - order.grandTotal)}</span>
               </div>
-              <div className="flex justify-between pt-2 border-t border-orange-100 text-lg">
+              <div className="flex justify-between pt-2 border-t border-gray-100 text-lg">
                 <span className="font-bold text-gray-800">Tổng cộng:</span>
-                <span className="font-black text-blue-600">{formatCurrency(order.grandTotal)}</span>
+                <span className="font-bold text-blue-600">{formatCurrency(order.grandTotal)}</span>
               </div>
             </div>
           </div>
@@ -148,13 +148,13 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
            {/* Box 3: Vận chuyển */}
            <div className="bg-blue-50/30 rounded-3xl p-5 border border-blue-100/50 space-y-4">
-            <h4 className="text-[11px] font-black uppercase text-blue-400 tracking-widest flex items-center gap-2">
+            <h4 className="text-[11px] font-bold uppercase text-blue-400 tracking-widest flex items-center gap-2">
               <FiTruck /> Vận chuyển
             </h4>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-500">Đơn vị:</span>
-                <span className="px-2 py-0.5 bg-white border border-blue-100 rounded-lg text-[10px] font-black text-blue-600 uppercase italic">
+                <span className="px-2 py-0.5 bg-white border border-blue-100 rounded-lg text-[10px] font-bold text-blue-600 uppercase italic">
                   {(order as any).carrier || "Chưa xác định"}
                 </span>
               </div>
@@ -167,7 +167,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
 
           {/* Box 4: Ghi chú */}
           <div className="bg-gray-50 rounded-3xl p-5 border border-gray-100 flex flex-col justify-center">
-            <h4 className="text-[11px] font-black uppercase text-gray-400 tracking-widest flex items-center gap-2 mb-2">
+            <h4 className="text-[11px] font-bold uppercase text-gray-400 tracking-widest flex items-center gap-2 mb-2">
               <FiMapPin /> Ghi chú từ khách
             </h4>
             <p className="text-sm text-gray-600 italic">
@@ -178,7 +178,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
 
         {/* Danh sách sản phẩm */}
         <div className="space-y-3">
-          <h4 className="text-[11px] font-black uppercase text-gray-400 tracking-widest ml-1">Sản phẩm trong đơn</h4>
+          <h4 className="text-[11px] font-bold uppercase text-gray-400 tracking-widest ml-1">Sản phẩm trong đơn</h4>
           <DataTable
             columns={productColumns}
             data={order.items || []}

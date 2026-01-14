@@ -184,7 +184,7 @@ export const ProductMediaModal = ({
       width="max-w-4xl"
       title={
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-orange-100 rounded-xl text-orange-600 shadow-sm border border-orange-200">
+          <div className="p-2 bg-orange-100 rounded-xl text-orange-600 shadow-sm border border-gray-200">
             <ImageIcon size={20} strokeWidth={2.5} />
           </div>
           <div>

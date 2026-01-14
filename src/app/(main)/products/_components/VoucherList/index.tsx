@@ -155,7 +155,7 @@ export function VoucherList({ product }: VoucherListProps) {
             key={voucher.id}
             className={cn(
                 "flex items-center gap-3 rounded-lg border border-gray-200 transition-colors cursor-pointer p-2 sm:p-3",
-                isModal ? "hover:border-blue-400" : "hover:border-orange-400"
+                isModal ? "hover:border-blue-400" : "hover:border-gray-400"
             )}
         >
             <CustomTag
@@ -218,7 +218,7 @@ export function VoucherList({ product }: VoucherListProps) {
                                 type="default"
                                 size="small"
                                 onClick={() => setExpanded(true)}
-                                className="w-full mt-2 text-orange-600 hover:text-orange-700 font-semibold border-orange-300 hover:border-orange-400 rounded-xl"
+                                className="w-full mt-2 text-orange-600 hover:text-orange-700 font-semibold border-gray-300 hover:border-gray-400 rounded-xl"
                             >
                                 Xem thêm ({allVouchers.length - 4} voucher)
                             </CustomButton>

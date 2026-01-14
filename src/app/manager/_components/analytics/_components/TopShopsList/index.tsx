@@ -16,7 +16,7 @@ export function TopShopsList({ shops, loading = false }: TopShopsListProps) {
         switch (rank) {
             case 1: return "bg-amber-50 text-amber-600 border-amber-200";
             case 2: return "bg-gray-50 text-gray-500 border-gray-200";
-            case 3: return "bg-orange-50 text-orange-600 border-orange-200";
+            case 3: return "bg-orange-50 text-orange-600 border-gray-200";
             default: return "bg-gray-50 text-gray-600 border-gray-100";
         }
     };

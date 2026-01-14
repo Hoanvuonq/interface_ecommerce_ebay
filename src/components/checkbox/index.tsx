@@ -41,9 +41,9 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
               "w-5 h-5",
               sizeClassName,
               checked 
-                ? "bg-orange-500 border-orange-500 shadow-sm shadow-orange-200" 
+                ? "bg-orange-500 border-gray-500 shadow-sm shadow-orange-200" 
                 : "bg-white border-slate-200",
-              "group-hover:border-orange-400",
+              "group-hover:border-gray-400",
               className
             )}
           >

@@ -57,7 +57,7 @@ export const StatCardComponents: React.FC<StatCardProps> = ({
         "bg-white border border-gray-100 relative overflow-hidden flex flex-col justify-between transition-all duration-300",
         "shadow-[0_2px_15px_-3px_rgba(0,0,0,0.02),0_4px_6px_-2px_rgba(0,0,0,0.02)]", 
         "hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.05),0_10px_10px_-5px_rgba(0,0,0,0.02)]",
-        "hover:border-orange-100",
+        "hover:border-gray-100",
         config.container,
         className
       )}

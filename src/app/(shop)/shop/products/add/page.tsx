@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ProductProvider } from "../../_context";
 import ShopProductAddStepsFormScreen from "../../_pages/ShopProductAddStepsFormScreen";
 
 export const metadata: Metadata = {
@@ -7,5 +8,9 @@ export const metadata: Metadata = {
 };
 
 export default function ShopProducts() {
-  return <ShopProductAddStepsFormScreen />;
+  return (
+    <ProductProvider>
+      <ShopProductAddStepsFormScreen />
+    </ProductProvider>
+  );
 }

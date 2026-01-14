@@ -17,7 +17,7 @@ export const CountdownFlashSale = () => {
       <div
         className={cn(
           "relative w-full max-w-2xl group overflow-hidden rounded-xl",
-          "bg-white border border-orange-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]",
+          "bg-white border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]",
           "hover:shadow-[0_8px_30px_rgb(251,146,60,0.15)] transition-all duration-300"
         )}
       >

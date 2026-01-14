@@ -36,7 +36,7 @@ export const ProductGallery = ({ product, galleryImages }: any) => {
                 key={img.key}
                 className={cn(
                   "h-20 w-full rounded-lg overflow-hidden border-2 transition-all cursor-pointer",
-                  isSelected ? "border-orange-500 scale-95" : "border-gray-200 hover:border-orange-300"
+                  isSelected ? "border-gray-500 scale-95" : "border-gray-200 hover:border-gray-300"
                 )}
                 onClick={() => setActiveImg(img.url)}
               >

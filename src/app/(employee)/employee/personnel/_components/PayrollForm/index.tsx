@@ -155,7 +155,7 @@ export default function PayrollForm({
           </div>
 
           {/* Suggested Total Alert */}
-          <div className="flex items-center justify-between p-4 bg-orange-50 border border-orange-100 rounded-2xl border-dashed">
+          <div className="flex items-center justify-between p-4 bg-orange-50 border border-gray-100 rounded-2xl border-dashed">
             <div className="flex items-center gap-2 text-orange-700">
               <Info size={16} />
               <span className="text-[10px] font-semibold uppercase tracking-widest">Gợi ý thực lĩnh:</span>
@@ -241,7 +241,7 @@ const InputField = React.forwardRef(({ label, icon, error, className, ...props }
       ref={ref}
       className={cn(
         "w-full h-12 px-4 rounded-2xl border bg-white outline-none transition-all text-sm font-bold",
-        "border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/5",
+        "border-gray-200 focus:border-gray-500 focus:ring-4 focus:ring-orange-500/5",
         props.disabled && "bg-gray-50 text-gray-600 border-gray-100 cursor-not-allowed",
         className
       )}

@@ -5,7 +5,7 @@ import { cn } from "@/utils/cn";
 
 export const ProductDetailsTabs: React.FC = () => {
   return (
-    <div className="bg-white rounded-4xl p-8 shadow-sm border border-orange-100/50 animate-in fade-in duration-500">
+    <div className="bg-white rounded-4xl p-8 shadow-sm border border-gray-100/50 animate-in fade-in duration-500">
       {/* Tiêu đề & Icon */}
       <div className="flex items-center gap-3 mb-6">
         <div className="p-2.5 bg-orange-100 rounded-2xl">
@@ -32,7 +32,7 @@ export const ProductDetailsTabs: React.FC = () => {
       </div>
       
       {/* Box Thông báo trượt tab */}
-      <div className="p-5 bg-orange-50/50 border border-orange-100 rounded-3xl flex gap-4">
+      <div className="p-5 bg-orange-50/50 border border-gray-100 rounded-3xl flex gap-4">
         <div className="shrink-0 w-10 h-10 flex items-center justify-center bg-white rounded-2xl shadow-sm text-orange-600">
           <Info size={20} strokeWidth={2.5} />
         </div>

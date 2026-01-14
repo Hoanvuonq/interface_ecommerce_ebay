@@ -44,7 +44,7 @@ export function SmartHeroHeader({
     const revenueValue = formatCurrency(revenue).replace(' ₫', '').replace('₫', '');
 
     return (
-        <div className="relative overflow-hidden rounded-4xl shadow-2xl border border-orange-400/20 group">
+        <div className="relative overflow-hidden rounded-4xl shadow-2xl border border-gray-400/20 group">
             <div className="absolute inset-0 bg-linear-to-br from-[#EE4D2D] via-[#f53d2d] to-[#ff6433]" />
 
             <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-white opacity-10 blur-3xl group-hover:opacity-20 transition-opacity duration-700" />

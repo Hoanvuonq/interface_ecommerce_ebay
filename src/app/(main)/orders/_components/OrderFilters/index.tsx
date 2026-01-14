@@ -28,7 +28,7 @@ export const OrderFilters = () => {
           placeholder="Mã đơn hàng, tên sản phẩm..."
           value={searchText}
           onChange={(e) => actions.onSearchChange(e.target.value)}
-          className="w-full h-12 pl-14 pr-12 rounded-full border-2 border-gray-100 bg-white text-sm font-semibold placeholder:text-gray-400 focus:outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-50 transition-all duration-300"
+          className="w-full h-12 pl-14 pr-12 rounded-full border-2 border-gray-100 bg-white text-sm font-semibold placeholder:text-gray-400 focus:outline-none focus:border-gray-500 focus:ring-4 focus:ring-orange-50 transition-all duration-300"
         />
         {!_.isEmpty(searchText) && (
           <button

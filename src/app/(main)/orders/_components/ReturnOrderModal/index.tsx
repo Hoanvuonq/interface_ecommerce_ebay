@@ -214,7 +214,7 @@ export const ReturnOrderModal: React.FC<ReturnOrderModalProps> = ({
       <div className="space-y-6 max-h-[70vh] overflow-y-auto custom-scrollbar px-1">
         {step === "SELECT_TYPE" && (
           <div className="space-y-4 animate-in fade-in zoom-in-95 duration-300">
-            <div className="bg-orange-50/60 border border-orange-100 rounded-3xl p-4 flex gap-4">
+            <div className="bg-orange-50/60 border border-gray-100 rounded-3xl p-4 flex gap-4">
               <Sparkles size={18} className="text-orange-500 shrink-0 mt-0.5" />
               <p className="text-[11px] text-orange-800 font-bold leading-relaxed">
                 Hệ thống xử lý yêu cầu dựa trên minh chứng thực tế. Vui lòng
@@ -243,10 +243,10 @@ export const ReturnOrderModal: React.FC<ReturnOrderModalProps> = ({
                     setReturnType(item.type as ReturnType);
                     setStep("FILL_DETAILS");
                   }}
-                  className="w-full flex items-center justify-between p-5 rounded-[1.8rem] border-2 border-transparent bg-gray-50/50 hover:bg-white hover:border-orange-200 transition-all group shadow-sm"
+                  className="w-full flex items-center justify-between p-5 rounded-[1.8rem] border-2 border-transparent bg-gray-50/50 hover:bg-white hover:border-gray-200 transition-all group shadow-sm"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-orange-500 shadow-sm border border-orange-50 group-hover:scale-110 transition-transform">
+                    <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-orange-500 shadow-sm border border-gray-50 group-hover:scale-110 transition-transform">
                       <item.icon size={22} strokeWidth={1.5} />
                     </div>
                     <div className="text-left">

@@ -16,16 +16,26 @@ import { UploadContext } from "@/types/storage/storage.types";
 
 const API_ENDPOINT_STORAGE = "v1/storage";
 
+// =========================
+// Helper Functions
+// =========================
 
+/**
+ * Generate UUID for Idempotency-Key header
+ * NOTE: crypto.randomUUID() only works on HTTPS or localhost
+ * For HTTP connections, we use a fallback UUID v4 generator
+ */
 const generateIdempotencyKey = (): string => {
+  // Check if crypto.randomUUID is available (HTTPS/localhost only)
   if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
     try {
       return crypto.randomUUID();
     } catch (e) {
-      
+      // Fallback below
     }
   }
 
+  // Fallback for HTTP connections - Generate UUID v4 manually
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     const r = Math.random() * 16 | 0;
     const v = c === 'x' ? r : (r & 0x3 | 0x8);
@@ -33,11 +43,16 @@ const generateIdempotencyKey = (): string => {
   });
 };
 
+// =========================
+// DTOs
+// =========================
+
 export interface PresignUploadRequest {
   context: UploadContext | string;
   extension: string; // "jpg", "png", "mp4", etc. (không có dấu chấm)
   fileSizeBytes: number;
   md5?: string; // MD5 hash (32 hex characters)
+  isPrivate?: boolean; // true = upload to private bucket
 }
 
 export interface PresignedUploadResponse {
@@ -97,10 +112,30 @@ export const storageService = {
    * // Trigger post-processing
    * await storageService.preCheckImages({ assetIds: [assetId] });
    */
-  presignUpload(payload: PresignUploadRequest) {
+  /**
+   * Generate presigned URL for PUBLIC bucket upload.
+   * Use for: logos, banners, product images, avatars, etc.
+   */
+  presignUpload(payload: Omit<PresignUploadRequest, 'isPrivate'>) {
     return request<ApiResponse<PresignedUploadResponse>>({
       method: "POST",
       url: `/${API_ENDPOINT_STORAGE}/presign-upload`,
+      data: payload,
+      headers: {
+        'Idempotency-Key': generateIdempotencyKey(),
+      },
+    });
+  },
+
+  /**
+   * Generate presigned URL for PRIVATE bucket upload.
+   * Use for: CMND/CCCD images, sensitive documents, personal identification.
+   * Files uploaded here require signed URLs to access.
+   */
+  presignUploadPrivate(payload: Omit<PresignUploadRequest, 'isPrivate'>) {
+    return request<ApiResponse<PresignedUploadResponse>>({
+      method: "POST",
+      url: `/${API_ENDPOINT_STORAGE}/presign-upload-private`,
       data: payload,
       headers: {
         'Idempotency-Key': generateIdempotencyKey(),
@@ -137,6 +172,35 @@ export const storageService = {
       method: "POST",
       url: `/${API_ENDPOINT_STORAGE}/pre-check-videos`,
       data: payload,
+    });
+  },
+
+  /**
+   * Confirm private upload completion.
+   * Mark assets as UPLOADED without image processing (no _orig, _thumb variants).
+   * Use this after successfully uploading to private bucket.
+   */
+  confirmPrivateUpload(payload: PreCheckImagesRequest) {
+    return request<ApiResponse<void>>({
+      method: "POST",
+      url: `/${API_ENDPOINT_STORAGE}/confirm-private-upload`,
+      data: payload,
+    });
+  },
+
+  /**
+   * Get presigned URL for viewing a private file.
+   * Private files (CMND/CCCD, sensitive documents) cannot be accessed directly.
+   * This returns a short-lived signed URL (default 5 minutes).
+   * 
+   * @param assetId - The asset ID to get URL for
+   * @param expirySeconds - URL expiry time (default: 300 = 5 minutes)
+   */
+  getPrivateUrl(assetId: string, expirySeconds: number = 300) {
+    return request<ApiResponse<{ url: string }>>({
+      method: "GET",
+      url: `/${API_ENDPOINT_STORAGE}/private-url/${assetId}`,
+      params: { expirySeconds },
     });
   },
 

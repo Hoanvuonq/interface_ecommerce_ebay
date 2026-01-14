@@ -82,7 +82,7 @@ export const ReviewItem: React.FC<ReviewItemProps> = ({
           )}
 
           {review.sellerResponse && (
-            <div className="mt-3 pl-4 border-l-2 border-orange-200">
+            <div className="mt-3 pl-4 border-l-2 border-gray-200">
               <div className="flex items-center gap-1.5 mb-1">
                 <MessageSquareText size={12} className="text-orange-500" />
                 <span className="text-[11px] font-semibold text-slate-800 uppercase tracking-wider">

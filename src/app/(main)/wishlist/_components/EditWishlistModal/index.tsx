@@ -174,7 +174,7 @@ export default function EditWishlistModal({
           <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-600 ml-1">
             Ảnh bìa danh mục
           </label>
-          <div className="relative group aspect-21/9 rounded-3xl border-2 border-dashed border-gray-200 bg-gray-50 overflow-hidden flex items-center justify-center transition-all hover:border-orange-300 shadow-inner">
+          <div className="relative group aspect-21/9 rounded-3xl border-2 border-dashed border-gray-200 bg-gray-50 overflow-hidden flex items-center justify-center transition-all hover:border-gray-300 shadow-inner">
             {previewImage ? (
               <>
                 <img

@@ -73,7 +73,7 @@ export const ReturnOrderDetailsForm: React.FC<ReturnOrderDetailsFormProps> = ({
           value={reason}
           onChange={(val) => setReason(val)}
           placeholder="Vui lòng chọn lý do cụ thể..."
-          className="w-full h-12 rounded-2xl border-gray-100 bg-white shadow-sm hover:border-orange-300 transition-colors"
+          className="w-full h-12 rounded-2xl border-gray-100 bg-white shadow-sm hover:border-gray-300 transition-colors"
         />
       </div>
 
@@ -92,7 +92,7 @@ export const ReturnOrderDetailsForm: React.FC<ReturnOrderDetailsFormProps> = ({
                 className={cn(
                   "cursor-pointer flex items-center gap-4 p-4 rounded-2xl border-2 transition-all duration-300",
                   isSelected
-                    ? "border-orange-500 bg-orange-50/30 shadow-md"
+                    ? "border-gray-500 bg-orange-50/30 shadow-md"
                     : "border-gray-50 bg-gray-50/50 hover:bg-white hover:border-gray-200"
                 )}
               >
@@ -125,7 +125,7 @@ export const ReturnOrderDetailsForm: React.FC<ReturnOrderDetailsFormProps> = ({
                   className={cn(
                     "w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all",
                     isSelected
-                      ? "border-orange-500 bg-orange-500"
+                      ? "border-gray-500 bg-orange-500"
                       : "border-gray-300"
                   )}
                 >
@@ -154,7 +154,7 @@ export const ReturnOrderDetailsForm: React.FC<ReturnOrderDetailsFormProps> = ({
         </div>
 
         <div className="grid grid-cols-4 gap-3">
-          <label className="aspect-square border-2 border-dashed border-gray-200 bg-gray-50/50 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:bg-white hover:border-orange-400 hover:text-orange-500 transition-all text-gray-400">
+          <label className="aspect-square border-2 border-dashed border-gray-200 bg-gray-50/50 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:bg-white hover:border-gray-400 hover:text-orange-500 transition-all text-gray-400">
             <Camera size={22} strokeWidth={1.5} />
             <span className="text-[9px] font-bold mt-1.5 uppercase">
               Tải ảnh
@@ -196,7 +196,7 @@ export const ReturnOrderDetailsForm: React.FC<ReturnOrderDetailsFormProps> = ({
           Mô tả chi tiết
         </label>
         <textarea
-          className="w-full rounded-2xl border border-gray-100 bg-white p-4 text-xs font-medium text-gray-700 placeholder:text-gray-300 focus:border-orange-400 focus:ring-4 focus:ring-orange-50/50 outline-none transition-all min-h-[100px] shadow-sm"
+          className="w-full rounded-2xl border border-gray-100 bg-white p-4 text-xs font-medium text-gray-700 placeholder:text-gray-300 focus:border-gray-400 focus:ring-4 focus:ring-orange-50/50 outline-none transition-all min-h-[100px] shadow-sm"
           placeholder="Vui lòng cho chúng tôi biết thêm chi tiết về vấn đề này..."
           value={description}
           onChange={(e) => setDescription(e.target.value)}

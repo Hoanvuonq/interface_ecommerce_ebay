@@ -135,7 +135,7 @@ export default function ShopVoucherEditModal({
                 name="code"
                 value={formData.code || ""}
                 onChange={handleInputChange}
-                className="w-full px-5 py-3 rounded-2xl border border-gray-100 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 outline-none transition-all font-mono font-bold uppercase"
+                className="w-full px-5 py-3 rounded-2xl border border-gray-100 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-orange-500/10 focus:border-gray-500 outline-none transition-all font-mono font-bold uppercase"
                 placeholder="VD: GIAM20K"
                 required
               />
@@ -146,7 +146,7 @@ export default function ShopVoucherEditModal({
                 name="name"
                 value={formData.name || ""}
                 onChange={handleInputChange}
-                className="w-full px-5 py-3 rounded-2xl border border-gray-100 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 outline-none transition-all font-bold"
+                className="w-full px-5 py-3 rounded-2xl border border-gray-100 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-orange-500/10 focus:border-gray-500 outline-none transition-all font-bold"
                 placeholder="VD: Tri ân khách hàng"
                 required
               />
@@ -159,18 +159,18 @@ export default function ShopVoucherEditModal({
               value={formData.description || ""}
               onChange={handleInputChange}
               rows={2}
-              className="w-full px-5 py-3 rounded-2xl border border-gray-100 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 outline-none transition-all text-sm font-medium"
+              className="w-full px-5 py-3 rounded-2xl border border-gray-100 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-orange-500/10 focus:border-gray-500 outline-none transition-all text-sm font-medium"
             />
           </div>
         </section>
 
         {/* Section: Discount Config */}
-        <section className="p-6 bg-orange-50/30 rounded-[2rem] border border-orange-100/50 space-y-6">
+        <section className="p-6 bg-orange-50/30 rounded-[2rem] border border-gray-100/50 space-y-6">
           <div className="flex items-center gap-2 text-[10px] font-bold text-orange-600 uppercase tracking-widest">
             <DollarSign size={14} /> Cấu hình giảm giá
           </div>
           
-          <div className="flex p-1 bg-white rounded-2xl border border-orange-100 w-fit">
+          <div className="flex p-1 bg-white rounded-2xl border border-gray-100 w-fit">
             {[
               { id: DiscountMethod.FIXED_AMOUNT, label: "Số tiền cố định" },
               { id: DiscountMethod.PERCENTAGE, label: "Phần trăm (%)" }
@@ -199,7 +199,7 @@ export default function ShopVoucherEditModal({
                 name="discountValue"
                 value={formData.discountValue || 0}
                 onChange={handleInputChange}
-                className="w-full px-5 py-3 rounded-2xl border border-white bg-white shadow-sm focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 outline-none transition-all font-bold text-orange-600"
+                className="w-full px-5 py-3 rounded-2xl border border-white bg-white shadow-sm focus:ring-4 focus:ring-orange-500/10 focus:border-gray-500 outline-none transition-all font-bold text-orange-600"
               />
             </div>
             <div className="space-y-1.5">
@@ -209,7 +209,7 @@ export default function ShopVoucherEditModal({
                 name="minOrderAmount"
                 value={formData.minOrderAmount || 0}
                 onChange={handleInputChange}
-                className="w-full px-5 py-3 rounded-2xl border border-white bg-white shadow-sm focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 outline-none transition-all font-bold"
+                className="w-full px-5 py-3 rounded-2xl border border-white bg-white shadow-sm focus:ring-4 focus:ring-orange-500/10 focus:border-gray-500 outline-none transition-all font-bold"
               />
             </div>
             {formData.discountMethod === DiscountMethod.PERCENTAGE && (
@@ -220,7 +220,7 @@ export default function ShopVoucherEditModal({
                   name="maxDiscount"
                   value={formData.maxDiscount || 0}
                   onChange={handleInputChange}
-                  className="w-full px-5 py-3 rounded-2xl border border-white bg-white shadow-sm focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 outline-none transition-all font-bold"
+                  className="w-full px-5 py-3 rounded-2xl border border-white bg-white shadow-sm focus:ring-4 focus:ring-orange-500/10 focus:border-gray-500 outline-none transition-all font-bold"
                 />
               </div>
             )}
@@ -294,7 +294,7 @@ export default function ShopVoucherEditModal({
                     className={cn(
                       "flex-1 py-3 px-4 rounded-2xl border text-[10px] font-bold uppercase tracking-widest transition-all",
                       formData.applyToAllProducts === opt.id 
-                        ? "bg-white border-orange-500 text-orange-600 shadow-sm ring-1 ring-orange-500" 
+                        ? "bg-white border-gray-500 text-orange-600 shadow-sm ring-1 ring-orange-500" 
                         : "bg-gray-50 border-gray-100 text-gray-400 hover:border-gray-200"
                     )}
                   >

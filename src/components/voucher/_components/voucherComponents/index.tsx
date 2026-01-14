@@ -117,7 +117,7 @@ export const VoucherComponents: React.FC<VoucherInputProps> = (props) => {
           <button
             type="button"
             onClick={() => actions.setModalOpen(true)}
-            className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl text-gray-500 hover:border-orange-300 hover:text-orange-600 hover:bg-white transition-all group active:scale-[0.98]"
+            className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl text-gray-500 hover:border-gray-300 hover:text-orange-600 hover:bg-white transition-all group active:scale-[0.98]"
           >
             <div className="flex items-center gap-3 font-bold uppercase tracking-widest">
               <div className="w-8 h-8 rounded-xl bg-white flex items-center justify-center shadow-sm group-hover:scale-110 group-hover:bg-orange-50 transition-all">
@@ -163,7 +163,7 @@ export const VoucherComponents: React.FC<VoucherInputProps> = (props) => {
           <input
             type="text"
             placeholder="NHẬP MÃ GIẢM GIÁ..."
-            className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl font-bold text-[11px] uppercase tracking-wider focus:border-orange-500 focus:ring-4 focus:ring-orange-50 outline-none transition-all placeholder:text-gray-300"
+            className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl font-bold text-[11px] uppercase tracking-wider focus:border-gray-500 focus:ring-4 focus:ring-orange-50 outline-none transition-all placeholder:text-gray-300"
             value={state.voucherCode}
             onChange={(e) =>
               actions.setVoucherCode(e.target.value.toUpperCase())

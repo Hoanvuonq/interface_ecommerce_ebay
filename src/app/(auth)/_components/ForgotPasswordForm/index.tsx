@@ -281,7 +281,7 @@ export default function ForgotPasswordForm() {
                     errorMessage={errors.email}
                     ref={identifierRef}
                   />
-                  <div className="flex gap-3 p-4 bg-orange-50 dark:bg-orange-900/20 rounded-2xl border border-orange-100 dark:border-orange-800/50">
+                  <div className="flex gap-3 p-4 bg-orange-50 dark:bg-orange-900/20 rounded-2xl border border-gray-100 dark:border-gray-800/50">
                     <MdEmail className="text-(--color-mainColor) text-xl shrink-0" />
                     <p className="text-xs text-(--color-mainColor) leading-relaxed font-medium">
                       Mã OTP sẽ được gửi vào email của bạn để xác thực quyền sở
@@ -293,7 +293,7 @@ export default function ForgotPasswordForm() {
 
               {step === 2 && (
                 <div className="space-y-6">
-                  <div className="text-center bg-orange-50 dark:bg-orange-900/10 py-3 rounded-2xl border border-orange-100 dark:border-orange-800/50">
+                  <div className="text-center bg-orange-50 dark:bg-orange-900/10 py-3 rounded-2xl border border-gray-100 dark:border-gray-800/50">
                     <span className="text-[10px] text-(--color-mainColor) font-bold block mb-1 uppercase tracking-widest">
                       Email nhận mã
                     </span>
@@ -318,11 +318,11 @@ export default function ForgotPasswordForm() {
                         onFocus={(e) => e.target.select()}
                         className={cn(
                           "w-10 h-12 sm:w-12 sm:h-14 text-center text-xl font-bold rounded-xl border-2 transition-all duration-200 outline-none",
-                          "focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 focus:-translate-y-1",
+                          "focus:border-gray-500 focus:ring-4 focus:ring-orange-500/10 focus:-translate-y-1",
                           "bg-gray-50 border-gray-200 text-gray-800",
                           "dark:bg-gray-700/50 dark:border-gray-600 dark:text-gray-100",
                           data
-                            ? "border-orange-500 bg-white dark:bg-gray-700 shadow-sm"
+                            ? "border-gray-500 bg-white dark:bg-gray-700 shadow-sm"
                             : ""
                         )}
                       />

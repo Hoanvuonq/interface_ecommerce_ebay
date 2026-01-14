@@ -110,7 +110,7 @@ export const FiedFileUpload: React.FC<FiedFileUploadProps> = ({
       {value.length < maxCount && (
         <div
           onClick={() => fileInputRef.current?.click()}
-          className="w-24 h-24 rounded-xl border-2 border-dashed border-gray-300 hover:border-orange-500 bg-gray-50 hover:bg-orange-50 cursor-pointer flex flex-col items-center justify-center text-gray-500 hover:text-orange-500 transition-all"
+          className="w-24 h-24 rounded-xl border-2 border-dashed border-gray-300 hover:border-gray-500 bg-gray-50 hover:bg-orange-50 cursor-pointer flex flex-col items-center justify-center text-gray-500 hover:text-orange-500 transition-all"
         >
           <Plus size={24} />
           <span className="text-[10px] font-bold uppercase mt-1">Tải lên</span>
@@ -130,7 +130,7 @@ export const FiedFileUpload: React.FC<FiedFileUploadProps> = ({
           onClick={() => fileInputRef.current?.click()}
           className={cn(
             "cursor-pointer flex flex-col items-center justify-center p-8 border-2 border-dashed rounded-4xl transition-all",
-            isDragging ? "border-orange-500 bg-orange-50" : "border-gray-200 bg-gray-50 hover:bg-white hover:border-orange-300 shadow-sm"
+            isDragging ? "border-gray-500 bg-orange-50" : "border-gray-200 bg-gray-50 hover:bg-white hover:border-gray-300 shadow-sm"
           )}
         >
           <CloudUpload className={cn("mb-2 transition-colors", isDragging ? "text-orange-500" : "text-gray-400")} size={32} />

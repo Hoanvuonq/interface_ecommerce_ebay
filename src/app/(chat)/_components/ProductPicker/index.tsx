@@ -35,7 +35,7 @@ export const ProductPicker: React.FC<ProductPickerProps> = (props) => {
             const price = product.basePrice || product.price || 0;
 
             return (
-              <div key={product.id} className="p-3 bg-white border border-gray-100 rounded-3xl flex gap-4 hover:border-orange-500 transition-all group shadow-sm">
+              <div key={product.id} className="p-3 bg-white border border-gray-100 rounded-3xl flex gap-4 hover:border-gray-500 transition-all group shadow-sm">
                 <div className="w-20 h-20 rounded-2xl overflow-hidden shrink-0 bg-gray-50 relative flex items-center justify-center border border-gray-100">
                   {imgUrl ? (
                     <Image 

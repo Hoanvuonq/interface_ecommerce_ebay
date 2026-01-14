@@ -23,8 +23,7 @@ export const ProductPreviewSidebar: React.FC<ProductPreviewSidebarProps> = ({
     : "0 ₫";
 
   return (
-    <div className="sticky top-25 w-full bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-      {/* Header */}
+    <div className="sticky top-25 w-full bg-white rounded-4xl border border-gray-200 shadow-custom overflow-hidden">
       <div className="px-5 py-4 border-b border-gray-100 bg-gray-50/50">
         <h3 className="text-base font-bold text-gray-800 flex items-center gap-2">
           <ImageIcon size={18} className="text-(--color-mainColor)" />
@@ -33,7 +32,6 @@ export const ProductPreviewSidebar: React.FC<ProductPreviewSidebarProps> = ({
       </div>
 
       <div className="p-5 flex flex-col gap-5">
-        {/* Product Image */}
         <div className="aspect-square w-full rounded-xl overflow-hidden bg-gray-50 border border-gray-100 flex items-center justify-center relative group">
           {previewImage ? (
             <img
@@ -49,9 +47,7 @@ export const ProductPreviewSidebar: React.FC<ProductPreviewSidebarProps> = ({
           )}
         </div>
 
-        {/* Product Info */}
         <div className="space-y-4">
-          {/* Name */}
           <div>
             <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider block mb-1">
               Tên sản phẩm

@@ -48,7 +48,7 @@ export function SmartHeroHeader({
       <div className="relative p-8 md:p-10 text-gray-800">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-12">
           <div className="flex items-center gap-4">
-            <div className="p-3 bg-orange-50 rounded-2xl border border-orange-100 shadow-sm">
+            <div className="p-3 bg-orange-50 rounded-2xl border border-gray-100 shadow-sm">
               <Clock className="w-6 h-6 text-(--color-mainColor)" />
             </div>
             <div>
@@ -65,7 +65,7 @@ export function SmartHeroHeader({
           </div>
 
           <div className="flex items-center gap-2 bg-gray-50 p-2 rounded-2xl border border-gray-200 self-start">
-            <div className="relative flex items-center bg-white rounded-xl px-3 border border-gray-100 hover:border-orange-200 transition-colors shadow-xs">
+            <div className="relative flex items-center bg-white rounded-xl px-3 border border-gray-100 hover:border-gray-200 transition-colors shadow-xs">
               <Calendar className="w-4 h-4 text-gray-400 mr-2" />
               <input
                 type="date"

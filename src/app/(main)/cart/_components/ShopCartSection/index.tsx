@@ -132,7 +132,7 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
 
       <div className="bg-gray-50/30 border-t border-gray-100 mt-auto">
         {shop.discount > 0 && (
-          <div className="px-5 py-2 flex justify-between items-center bg-orange-50/30 border-b border-orange-100/30">
+          <div className="px-5 py-2 flex justify-between items-center bg-orange-50/30 border-b border-gray-100/30">
             <div className="flex items-center gap-2 text-orange-600">
               <TagIcon size={12} className="fill-orange-50" />
               <span className="text-[10px] font-bold uppercase tracking-tight">

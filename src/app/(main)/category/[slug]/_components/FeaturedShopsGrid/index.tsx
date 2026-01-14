@@ -22,7 +22,7 @@ export default function FeaturedShopsGrid({
   return (
     <div
       className={cn(
-        "mb-8 overflow-hidden rounded-3xl bg-white border border-orange-100/50 shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-500",
+        "mb-8 overflow-hidden rounded-3xl bg-white border border-gray-100/50 shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-500",
         className
       )}
     >

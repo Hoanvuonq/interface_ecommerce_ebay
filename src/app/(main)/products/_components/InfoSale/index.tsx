@@ -34,9 +34,9 @@ const InfoSale: React.FC<InfoSaleProps> = ({ discountInfo, formatPrice }) => {
                             <Ticket className="w-3 h-3" />
                             Voucher áp dụng
                         </div>
-                        <div className="bg-orange-50 border border-orange-100 rounded-lg p-3 relative overflow-hidden">
-                            <div className="absolute -left-1.5 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full border-r border-orange-100" />
-                            <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full border-l border-orange-100" />
+                        <div className="bg-orange-50 border border-gray-100 rounded-lg p-3 relative overflow-hidden">
+                            <div className="absolute -left-1.5 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full border-r border-gray-100" />
+                            <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full border-l border-gray-100" />
                             
                             <div className="font-extrabold text-orange-700 text-sm leading-tight">
                                 {discountInfo.voucherName}

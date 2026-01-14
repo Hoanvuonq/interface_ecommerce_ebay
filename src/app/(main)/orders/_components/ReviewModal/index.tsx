@@ -118,7 +118,7 @@ export const ReviewModal: React.FC<ReviewModalProps> = (props) => {
           </div>
         </div>
 
-        <div className="flex flex-col items-center py-6 bg-white rounded-3xl border border-orange-50 shadow-sm shadow-orange-100/30">
+        <div className="flex flex-col items-center py-6 bg-white rounded-3xl border border-gray-50 shadow-sm shadow-orange-100/30">
           <label className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-4">
             Chất lượng sản phẩm
           </label>
@@ -229,7 +229,7 @@ export const ReviewModal: React.FC<ReviewModalProps> = (props) => {
               {fileList.length < 7 && (
                 <button
                   onClick={() => fileInputRef.current?.click()}
-                  className="aspect-square rounded-2xl border-2 border-dashed border-gray-200 hover:border-orange-400 hover:bg-orange-50 transition-all flex flex-col items-center justify-center text-gray-400 hover:text-orange-500 gap-1.5"
+                  className="aspect-square rounded-2xl border-2 border-dashed border-gray-200 hover:border-gray-400 hover:bg-orange-50 transition-all flex flex-col items-center justify-center text-gray-400 hover:text-orange-500 gap-1.5"
                 >
                   <UploadCloud size={24} strokeWidth={1.5} />
                   <span className="text-[9px] font-bold uppercase">Thêm</span>

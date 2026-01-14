@@ -60,7 +60,7 @@ export const ImageAttachment: React.FC<ImageAttachmentProps> = ({
   return (
     <div className="relative mt-2 w-fit group">
       <div 
-        className="relative overflow-hidden rounded-2xl border border-orange-100 bg-white shadow-sm transition-all duration-300 hover:shadow-md active:scale-[0.98]"
+        className="relative overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-all duration-300 hover:shadow-md active:scale-[0.98]"
         style={{ width: maxWidth, height: maxHeight }}
       >
         {loading && !error && (

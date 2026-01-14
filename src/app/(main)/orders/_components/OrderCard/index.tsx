@@ -283,7 +283,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
                   "flex items-center gap-1 px-3 h-8 rounded-xl text-[10px] font-bold uppercase transition-all shadow-sm active:scale-95",
                   ui.isReviewed
                     ? "bg-white border border-emerald-100 hover:bg-emerald-100"
-                    : "bg-white text-gray-900 border border-gray-200 hover:border-orange-500 hover:text-orange-600"
+                    : "bg-white text-gray-900 border border-gray-200 hover:border-gray-500 hover:text-orange-600"
                 )}
               >
                 {loadingReview ? (

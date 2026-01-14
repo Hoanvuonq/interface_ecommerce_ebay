@@ -26,7 +26,7 @@ export const ButtonField: FC<ButtonFieldProps> = ({
   
   const colorClasses: Record<string, string> = {
     primary: "bg-pink-600 hover:bg-pink-700 text-white border-pink-600",
-    secondary: "bg-gray-200 hover:bg-orange-50 text-gray-800 border-orange-300",
+    secondary: "bg-gray-200 hover:bg-orange-50 text-gray-800 border-gray-300",
     danger: "bg-red-600 hover:bg-red-700 text-white border-red-600",
     text: "bg-transparent hover:bg-gray-100 text-pink-600 border-transparent",
     

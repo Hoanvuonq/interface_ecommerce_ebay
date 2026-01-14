@@ -49,7 +49,7 @@ export function MenuBar({ editor, onImageUpload }: { editor: any; onImageUpload?
   }, [editor]);
 
   return (
-    <div className="flex flex-wrap items-center gap-1 p-2 border-b border-orange-50 bg-white sticky top-0 z-10">
+    <div className="flex flex-wrap items-center gap-1 p-2 border-b border-gray-50 bg-white sticky top-0 z-10">
       <MenuButton onClick={() => editor.chain().focus().undo().run()} disabled={!editor.can().undo()} title="Hoàn tác">
         <Undo size={18} />
       </MenuButton>
@@ -129,7 +129,7 @@ const ResizableImageComponent = ({ node, updateAttributes }: any) => {
         src={node.attrs.src}
         alt={node.attrs.alt}
         style={{ width: node.attrs.width || "auto", height: "auto" }}
-        className="rounded-2xl border-2 border-transparent group-hover:border-orange-400 transition-all"
+        className="rounded-2xl border-2 border-transparent group-hover:border-gray-400 transition-all"
       />
       <div
         onMouseDown={handleResize}
@@ -176,7 +176,7 @@ export function TipTapEditor({ content, onChange, placeholder = "Nhập mô tả
   });
 
   return (
-    <div className="group border border-gray-200 rounded-4xl overflow-hidden bg-white focus-within:border-orange-400 focus-within:ring-4 focus-within:ring-orange-50 transition-all duration-300 shadow-sm">
+    <div className="group border border-gray-200 rounded-4xl overflow-hidden bg-white focus-within:border-gray-400 focus-within:ring-4 focus-within:ring-orange-50 transition-all duration-300 shadow-sm">
       <MenuBar editor={editor} onImageUpload={onImageUpload} />
       <EditorContent editor={editor} />
       

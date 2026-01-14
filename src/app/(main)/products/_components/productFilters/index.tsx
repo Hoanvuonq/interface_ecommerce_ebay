@@ -111,7 +111,7 @@ export default function ProductFilters({
           </div>
         </div>
 
-        <div className="w-9 h-9 rounded-full border border-gray-100 flex items-center justify-center group-hover:border-orange-200 group-hover:bg-orange-50 transition-all">
+        <div className="w-9 h-9 rounded-full border border-gray-100 flex items-center justify-center group-hover:border-gray-200 group-hover:bg-orange-50 transition-all">
           <motion.div
             animate={{ rotate: isFilterVisible ? 180 : 0 }}
             transition={{ duration: 0.3 }}
@@ -145,7 +145,7 @@ export default function ProductFilters({
                       size={16}
                     />
                     <input
-                      className="w-full pl-11 pr-4 h-12 text-sm font-medium bg-gray-50 border border-transparent rounded-2xl outline-none focus:bg-white focus:border-orange-200 focus:ring-4 focus:ring-orange-50 transition-all placeholder:text-gray-400 text-gray-700"
+                      className="w-full pl-11 pr-4 h-12 text-sm font-medium bg-gray-50 border border-transparent rounded-2xl outline-none focus:bg-white focus:border-gray-200 focus:ring-4 focus:ring-orange-50 transition-all placeholder:text-gray-400 text-gray-700"
                       placeholder="Tìm kiếm sản phẩm..."
                       value={value.keyword || ""}
                       onChange={(e) =>
@@ -169,7 +169,7 @@ export default function ProductFilters({
                     onChange={(val: any) =>
                       handleFilterChange({ categoryId: val || undefined })
                     }
-                    className="h-12! rounded-2xl! bg-gray-50! border-transparent! focus:bg-white! focus:border-orange-200! font-medium! text-sm!"
+                    className="h-12! rounded-2xl! bg-gray-50! border-transparent! focus:bg-white! focus:border-gray-200! font-medium! text-sm!"
                   />
                 </div>
 
@@ -184,7 +184,7 @@ export default function ProductFilters({
                     onChange={(val: any) =>
                       handleFilterChange({ sort: val || undefined })
                     }
-                    className="h-12! rounded-2xl! bg-gray-50! border-transparent! focus:bg-white! focus:border-orange-200! font-medium! text-sm!"
+                    className="h-12! rounded-2xl! bg-gray-50! border-transparent! focus:bg-white! focus:border-gray-200! font-medium! text-sm!"
                   />
                 </div>
               </div>
@@ -223,7 +223,7 @@ export default function ProductFilters({
                   />
 
                   <div
-                    className="absolute h-5 w-5 bg-white border-[3px] border-orange-500 rounded-full shadow-md pointer-events-none transition-all duration-75 ease-out z-20 group-hover:scale-110 group-active:scale-95"
+                    className="absolute h-5 w-5 bg-white border-[3px] border-gray-500 rounded-full shadow-md pointer-events-none transition-all duration-75 ease-out z-20 group-hover:scale-110 group-active:scale-95"
                     style={{
                       left: `calc(${sliderPercentage}% - 10px)`,
                     }}
@@ -250,7 +250,7 @@ export default function ProductFilters({
                             "relative px-5 py-2.5 rounded-xl text-[11px] font-bold uppercase tracking-wide transition-colors whitespace-nowrap shrink-0 z-20 snap-start",
                             isActive
                               ? "text-white"
-                              : "text-gray-500 hover:text-orange-600 bg-white border border-gray-100 hover:border-orange-200"
+                              : "text-gray-500 hover:text-orange-600 bg-white border border-gray-100 hover:border-gray-200"
                           )}
                         >
                           {isActive && (

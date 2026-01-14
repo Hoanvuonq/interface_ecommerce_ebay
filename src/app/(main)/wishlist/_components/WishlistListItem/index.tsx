@@ -78,8 +78,8 @@ export const WishlistListItem = memo<WishlistListItemProps>(
         className={cn(
           "group relative cursor-pointer rounded-2xl border p-3 transition-all duration-300",
           isSelected
-            ? "border-orange-500 bg-white shadow-xl shadow-orange-500/10 ring-1 ring-orange-500/20"
-            : "border-gray-100 bg-white hover:border-orange-200 hover:shadow-lg hover:shadow-gray-200/50"
+            ? "border-gray-500 bg-white shadow-xl shadow-orange-500/10 ring-1 ring-orange-500/20"
+            : "border-gray-100 bg-white hover:border-gray-200 hover:shadow-lg hover:shadow-gray-200/50"
         )}
       >
         <div className="flex items-center gap-4">

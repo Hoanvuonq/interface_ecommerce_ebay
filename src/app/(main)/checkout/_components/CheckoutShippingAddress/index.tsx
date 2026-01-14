@@ -64,7 +64,7 @@ export const CheckoutShippingAddress: React.FC<ShippingAddressCardProps> = ({
               type="button"
               variant="outline"
               onClick={onOpenModal}
-              className="rounded-lg border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-orange-500 hover:border-orange-200 font-bold text-xs h-9! px-4 transition-all"
+              className="rounded-lg border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-orange-500 hover:border-gray-200 font-bold text-xs h-9! px-4 transition-all"
             >
               <div className="flex items-center gap-2">
                 <MapPinPen size={14} />

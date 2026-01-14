@@ -30,7 +30,7 @@ export const VoucherCard: React.FC<VoucherCardProps> = ({
         isSelected
           ? isShipping 
             ? "border-emerald-500 bg-emerald-50/30 shadow-[0_10px_25px_-5px_rgba(16,185,129,0.15)] scale-[1.01] z-10"
-            : "border-orange-500 bg-orange-50/30 shadow-[0_10px_25px_-5px_rgba(249,115,22,0.15)] scale-[1.01] z-10"
+            : "border-gray-500 bg-orange-50/30 shadow-[0_10px_25px_-5px_rgba(249,115,22,0.15)] scale-[1.01] z-10"
           : "border-gray-100 bg-white hover:border-gray-300 shadow-sm",
         !canSelect && "opacity-60 grayscale cursor-not-allowed border-dashed"
       )}
@@ -83,7 +83,7 @@ export const VoucherCard: React.FC<VoucherCardProps> = ({
               isSelected
                 ? isShipping 
                   ? "bg-emerald-500 border-emerald-500" 
-                  : "bg-orange-500 border-orange-500"
+                  : "bg-orange-500 border-gray-500"
                 : "bg-white border-gray-200"
             )}
           >

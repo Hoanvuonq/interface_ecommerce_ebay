@@ -113,7 +113,7 @@ export const VariantManagementModal = (props: VariantManagementModalProps) => {
                    <input
                     value={row.sku}
                     onChange={(e) => onFieldChange(row.rowKey, "sku")(e.target.value)}
-                    className="w-full px-3 py-2 bg-gray-50 border border-transparent rounded-xl focus:bg-white focus:border-orange-300 outline-none font-bold text-gray-700 transition-all shadow-inner"
+                    className="w-full px-3 py-2 bg-gray-50 border border-transparent rounded-xl focus:bg-white focus:border-gray-300 outline-none font-bold text-gray-700 transition-all shadow-inner"
                     placeholder="Mã SKU..."
                    />
                 </td>
@@ -123,7 +123,7 @@ export const VariantManagementModal = (props: VariantManagementModalProps) => {
                       type="number"
                       value={row.price}
                       onChange={(e) => onFieldChange(row.rowKey, "price")(e.target.value)}
-                      className="w-full pl-3 pr-8 py-2 bg-orange-50/30 border border-transparent rounded-xl focus:bg-white focus:border-orange-300 outline-none font-bold text-orange-600 transition-all"
+                      className="w-full pl-3 pr-8 py-2 bg-orange-50/30 border border-transparent rounded-xl focus:bg-white focus:border-gray-300 outline-none font-bold text-orange-600 transition-all"
                     />
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-orange-400">₫</span>
                    </div>
@@ -133,7 +133,7 @@ export const VariantManagementModal = (props: VariantManagementModalProps) => {
                     type="number"
                     value={row.stockQuantity}
                     onChange={(e) => onFieldChange(row.rowKey, "stockQuantity")(e.target.value)}
-                    className="w-16 text-center py-2 border-b-2 border-gray-100 focus:border-orange-500 outline-none font-bold text-gray-700"
+                    className="w-16 text-center py-2 border-b-2 border-gray-100 focus:border-gray-500 outline-none font-bold text-gray-700"
                   />
                 </td>
                 <td className="px-4 py-4">
@@ -144,7 +144,7 @@ export const VariantManagementModal = (props: VariantManagementModalProps) => {
                           <input 
                             value={row.optionValues[name] || ""}
                             onChange={(e) => onOptionChange(row.rowKey, name, e.target.value)}
-                            className="px-2 py-1.5 bg-gray-50 border border-gray-100 rounded-lg text-xs font-bold focus:border-orange-200 outline-none"
+                            className="px-2 py-1.5 bg-gray-50 border border-gray-100 rounded-lg text-xs font-bold focus:border-gray-200 outline-none"
                             placeholder="..."
                           />
                         </div>

@@ -39,7 +39,7 @@ export const HeaderCart: React.FC<HeaderCartProps> = ({
       <button
         onClick={onRefresh}
         disabled={loading}
-        className="flex items-center justify-center gap-2 px-6 py-2.5 cursor-pointer rounded-xl border border-orange-300 text-orange-600 hover:bg-orange-50 transition-all font-bold text-sm active:scale-95 disabled:opacity-50"
+        className="flex items-center justify-center gap-2 px-6 py-2.5 cursor-pointer rounded-xl border border-gray-300 text-orange-600 hover:bg-orange-50 transition-all font-bold text-sm active:scale-95 disabled:opacity-50"
       >
         <RefreshCw
           size={16}

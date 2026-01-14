@@ -42,7 +42,7 @@ export const OrderCancelModal: React.FC<OrderCancelModalProps> = ({
 
   const modalTitle = (
     <div className="flex items-center gap-3">
-      <div className="p-2.5 bg-orange-50 rounded-2xl text-orange-500 shadow-sm border border-orange-100">
+      <div className="p-2.5 bg-orange-50 rounded-2xl text-orange-500 shadow-sm border border-gray-100">
         <AlertCircle size={22} strokeWidth={2.5} />
       </div>
       <div>
@@ -86,7 +86,7 @@ export const OrderCancelModal: React.FC<OrderCancelModalProps> = ({
     >
       <div className="space-y-6 py-2 font-sans">
         {/* Warning Banner */}
-        <div className="p-4 bg-orange-50/50 rounded-2xl border border-orange-100 flex gap-3">
+        <div className="p-4 bg-orange-50/50 rounded-2xl border border-gray-100 flex gap-3">
           <div className="w-1.5 h-auto bg-orange-400 rounded-full shrink-0" />
           <p className="text-[13px] text-orange-800 leading-relaxed font-medium">
             <span className="font-bold uppercase text-[11px] block mb-1">Lưu ý quan trọng:</span>
@@ -104,13 +104,13 @@ export const OrderCancelModal: React.FC<OrderCancelModalProps> = ({
                 className={cn(
                   "flex items-center gap-3 p-4 rounded-2xl border transition-all cursor-pointer group",
                   selectedReason === reason
-                    ? "bg-orange-50 border-orange-200 shadow-sm shadow-orange-100"
-                    : "bg-white border-gray-100 hover:border-orange-200"
+                    ? "bg-orange-50 border-gray-200 shadow-sm shadow-orange-100"
+                    : "bg-white border-gray-100 hover:border-gray-200"
                 )}
               >
                 <div className={cn(
                   "w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all",
-                  selectedReason === reason ? "border-orange-500 bg-orange-500" : "border-gray-200 group-hover:border-orange-300"
+                  selectedReason === reason ? "border-gray-500 bg-orange-500" : "border-gray-200 group-hover:border-gray-300"
                 )}>
                   {selectedReason === reason && <div className="w-2 h-2 bg-white rounded-full" />}
                 </div>
@@ -141,7 +141,7 @@ export const OrderCancelModal: React.FC<OrderCancelModalProps> = ({
             </div>
             <textarea
               rows={3}
-              className="w-full px-4 py-3 text-[13px] border border-gray-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all placeholder:text-gray-300 resize-none bg-gray-50/50 font-medium"
+              className="w-full px-4 py-3 text-[13px] border border-gray-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-gray-500 transition-all placeholder:text-gray-300 resize-none bg-gray-50/50 font-medium"
               placeholder="Vui lòng cho chúng tôi biết thêm thông tin..."
               value={otherReason}
               onChange={(e) => setOtherReason(e.target.value)}

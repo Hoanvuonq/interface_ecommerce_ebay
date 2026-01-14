@@ -12,7 +12,7 @@ export const CustomTabs: React.FC<any> = ({ activeKey, onChange, items, classNam
                             "py-2 px-4 text-base font-semibold border-b-2 transition-colors duration-200",
                             "focus:outline-none",
                             item.key === activeKey
-                                ? "border-orange-500 text-orange-600"
+                                ? "border-gray-500 text-orange-600"
                                 : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
                         )}
                     >

@@ -141,11 +141,11 @@ export default function ChangePasswordFormCompact() {
             onChange={handleChange}
             errorMessage={errors.oldPassword}
             ref={oldPasswordRef}
-            inputClassName="bg-white border-gray-200 focus:border-orange-500 focus:ring-orange-200"
+            inputClassName="bg-white border-gray-200 focus:border-gray-500 focus:ring-orange-200"
           />
         </div>
 
-        <div className="p-5 bg-linear-to-br from-orange-50 to-white dark:from-orange-900/10 dark:to-gray-800 rounded-xl border border-orange-100 dark:border-orange-900/30 shadow-sm">
+        <div className="p-5 bg-linear-to-br from-orange-50 to-white dark:from-orange-900/10 dark:to-gray-800 rounded-xl border border-gray-100 dark:border-gray-900/30 shadow-sm">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0 mb-6">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-orange-100 dark:bg-orange-900/50 rounded-lg shadow-inner">
@@ -165,7 +165,7 @@ export default function ChangePasswordFormCompact() {
               <button
                 type="button"
                 onClick={handleGeneratePassword}
-                className="flex items-center gap-1.5 px-3 py-2 bg-white dark:bg-gray-700 border border-orange-200 dark:border-orange-800 text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-900/20 text-xs font-semibold rounded-lg transition-all shadow-sm active:scale-95"
+                className="flex items-center gap-1.5 px-3 py-2 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-800 text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-900/20 text-xs font-semibold rounded-lg transition-all shadow-sm active:scale-95"
                 title="Tạo mật khẩu ngẫu nhiên an toàn"
               >
                 <FaRandom /> Tạo tự động
@@ -190,7 +190,7 @@ export default function ChangePasswordFormCompact() {
               value={formData.newPassword}
               onChange={handleChange}
               errorMessage={errors.newPassword}
-              inputClassName="bg-white dark:bg-gray-800 border-gray-200 focus:border-orange-500 focus:ring-orange-200"
+              inputClassName="bg-white dark:bg-gray-800 border-gray-200 focus:border-gray-500 focus:ring-orange-200"
             />
 
             <InputField
@@ -201,7 +201,7 @@ export default function ChangePasswordFormCompact() {
               value={formData.confirmPassword}
               onChange={handleChange}
               errorMessage={errors.confirmPassword}
-              inputClassName="bg-white dark:bg-gray-800 border-gray-200 focus:border-orange-500 focus:ring-orange-200"
+              inputClassName="bg-white dark:bg-gray-800 border-gray-200 focus:border-gray-500 focus:ring-orange-200"
             />
           </div>
         </div>

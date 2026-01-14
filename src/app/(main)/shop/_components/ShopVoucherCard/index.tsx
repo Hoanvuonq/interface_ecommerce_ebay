@@ -48,8 +48,8 @@ export const ShopVoucherCard = ({
   };
 
   return (
-    <div className="relative flex w-77.5 h-28 bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-orange-100/60 group shrink-0">
-      <div className="w-28 bg-orange-50 flex flex-col items-center justify-center border-r border-dashed border-orange-200/50 relative p-2 text-center">
+    <div className="relative flex w-77.5 h-28 bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100/60 group shrink-0">
+      <div className="w-28 bg-orange-50 flex flex-col items-center justify-center border-r border-dashed border-gray-200/50 relative p-2 text-center">
         <span className="text-[10px] font-semibold text-(--color-mainColor) uppercase tracking-widest">
           Giảm
         </span>
@@ -60,13 +60,13 @@ export const ShopVoucherCard = ({
           Shop Voucher
         </span>
 
-        <div className="absolute -top-2 -right-2 w-4 h-4 bg-neutral-50 border border-orange-100/60 rounded-full z-10" />
-        <div className="absolute -bottom-2 -right-2 w-4 h-4 bg-neutral-50 border border-orange-100/60 rounded-full z-10" />
+        <div className="absolute -top-2 -right-2 w-4 h-4 bg-neutral-50 border border-gray-100/60 rounded-full z-10" />
+        <div className="absolute -bottom-2 -right-2 w-4 h-4 bg-neutral-50 border border-gray-100/60 rounded-full z-10" />
       </div>
 
       <div className="flex-1 p-3 flex flex-col justify-between bg-white relative">
-        <div className="absolute -top-2 -left-2 w-4 h-4 bg-neutral-50 border-b border-r border-orange-100/60 rounded-full z-10" />
-        <div className="absolute -bottom-2 -left-2 w-4 h-4 bg-neutral-50 border-t border-r border-orange-100/60 rounded-full z-10" />
+        <div className="absolute -top-2 -left-2 w-4 h-4 bg-neutral-50 border-b border-r border-gray-100/60 rounded-full z-10" />
+        <div className="absolute -bottom-2 -left-2 w-4 h-4 bg-neutral-50 border-t border-r border-gray-100/60 rounded-full z-10" />
 
         <div className="space-y-1 pr-1">
           <h3 className="text-sm font-bold text-gray-700 leading-snug line-clamp-1">
@@ -85,7 +85,7 @@ export const ShopVoucherCard = ({
 
         <div className="flex items-center justify-between mt-auto pt-1 gap-2">
           <div className="flex-1 min-w-0">
-            <div className="text-[10px] font-bold text-(--color-mainColor)/80 bg-orange-50 px-2 py-1 rounded border border-orange-100 truncate tracking-wider w-fit max-w-full">
+            <div className="text-[10px] font-bold text-(--color-mainColor)/80 bg-orange-50 px-2 py-1 rounded border border-gray-100 truncate tracking-wider w-fit max-w-full">
               #{code}
             </div>
           </div>
@@ -98,7 +98,7 @@ export const ShopVoucherCard = ({
               flex items-center justify-center shrink-0 w-22.5
               ${
                 isSaved
-                  ? "bg-orange-50 text-(--color-mainColor) border border-orange-200 hover:bg-orange-100" 
+                  ? "bg-orange-50 text-(--color-mainColor) border border-gray-200 hover:bg-orange-100" 
                   : "bg-orange-500 text-white hover:bg-orange-600 shadow-orange-200 shadow-sm"
               }
             `}

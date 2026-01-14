@@ -43,7 +43,7 @@ export default function ShopCheckPage() {
         {/* --- CASE 1: CHƯA CÓ SHOP --- */}
         {status === "no-shop" && (
           <div className="bg-white rounded-[32px] shadow-2xl shadow-orange-100/50 p-8 md:p-10 border border-white/60 backdrop-blur-sm text-center animate-in fade-in zoom-in duration-500">
-            <div className="w-24 h-24 bg-gradient-to-br from-orange-50 to-amber-50 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-inner border border-orange-100/50 relative group">
+            <div className="w-24 h-24 bg-gradient-to-br from-orange-50 to-amber-50 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-inner border border-gray-100/50 relative group">
               <div className="absolute inset-0 bg-orange-200/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <Store className="w-12 h-12 text-orange-600 relative z-10" strokeWidth={1.5} />
             </div>
@@ -76,7 +76,7 @@ export default function ShopCheckPage() {
         {/* --- CASE 2: ĐANG CHỜ DUYỆT --- */}
         {status === "pending" && (
           <div className="bg-white rounded-[32px] shadow-2xl shadow-orange-100/50 p-8 md:p-10 border border-white/60 backdrop-blur-sm text-center animate-in fade-in zoom-in duration-500">
-            <div className="w-24 h-24 bg-gradient-to-br from-yellow-50 to-orange-50 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-inner border border-orange-100/50 relative">
+            <div className="w-24 h-24 bg-gradient-to-br from-yellow-50 to-orange-50 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-inner border border-gray-100/50 relative">
               <div className="absolute inset-0 bg-orange-100/40 rounded-3xl animate-pulse" />
               <Clock className="w-12 h-12 text-orange-500 relative z-10" strokeWidth={1.5} />
             </div>
@@ -84,13 +84,13 @@ export default function ShopCheckPage() {
             <h1 className="text-2xl font-bold text-slate-900 mb-3 tracking-tight">
               Đang chờ phê duyệt
             </h1>
-            <p className="text-slate-500 leading-relaxed mb-8 text-sm md:text-base bg-orange-50/50 p-4 rounded-2xl border border-orange-100/50">
+            <p className="text-slate-500 leading-relaxed mb-8 text-sm md:text-base bg-orange-50/50 p-4 rounded-2xl border border-gray-100/50">
               {verificationInfo?.message ||
                 "Hồ sơ của bạn đang được đội ngũ admin xem xét. Quá trình này thường mất từ 1-2 ngày làm việc. Vui lòng kiểm tra lại sau."}
             </p>
 
             <Link href="/" className="block">
-                <button className="w-full py-4 bg-white border border-slate-200 text-slate-600 hover:text-orange-600 hover:border-orange-200 hover:bg-orange-50/30 rounded-2xl font-semibold transition-all flex items-center justify-center gap-2 group shadow-sm hover:shadow-md">
+                <button className="w-full py-4 bg-white border border-slate-200 text-slate-600 hover:text-orange-600 hover:border-gray-200 hover:bg-orange-50/30 rounded-2xl font-semibold transition-all flex items-center justify-center gap-2 group shadow-sm hover:shadow-md">
                   <Home size={18} className="text-slate-400 group-hover:text-orange-500 transition-colors" /> 
                   Về trang chủ
                 </button>

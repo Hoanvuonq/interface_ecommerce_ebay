@@ -122,7 +122,7 @@ export const ProductShowcase = ({
           >
             <Link
               href="/products"
-              className="group h-full flex flex-col items-center justify-center p-6 bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl hover:bg-orange-50 hover:border-orange-200 transition-all duration-300"
+              className="group h-full flex flex-col items-center justify-center p-6 bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl hover:bg-orange-50 hover:border-gray-200 transition-all duration-300"
             >
               <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm group-hover:scale-110 group-hover:bg-orange-500 group-hover:text-white transition-all duration-300">
                 <ArrowRight size={20} />

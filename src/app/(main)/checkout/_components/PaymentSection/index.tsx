@@ -31,7 +31,7 @@ export const PaymentSection = ({ selectedMethod, onChange }: PaymentSectionProps
               className={cn(
                 "relative flex items-center justify-between p-3 rounded-xl border-2 transition-all duration-200 cursor-pointer",
                 isSelected
-                  ? "border-orange-500 bg-orange-50/50"
+                  ? "border-gray-500 bg-orange-50/50"
                   : "border-gray-100 hover:border-gray-200 bg-white"
               )}
             >
@@ -39,7 +39,7 @@ export const PaymentSection = ({ selectedMethod, onChange }: PaymentSectionProps
                 <div
                   className={cn(
                     "w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors",
-                    isSelected ? "border-orange-500 bg-orange-500" : "border-gray-300"
+                    isSelected ? "border-gray-500 bg-orange-500" : "border-gray-300"
                   )}
                 >
                   {isSelected && <div className="w-2 h-2 bg-white rounded-full" />}

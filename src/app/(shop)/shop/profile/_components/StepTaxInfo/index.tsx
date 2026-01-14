@@ -51,7 +51,7 @@ export function StepTaxInfo({ formData, setFormData }: any) {
       
       {/* 01. Loại hình kinh doanh */}
       <div className="space-y-4">
-        <div className="flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.2em] text-gray-400">
+        <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-400">
           <Briefcase size={14} /> 01. Hình thức pháp lý
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -79,7 +79,7 @@ export function StepTaxInfo({ formData, setFormData }: any) {
 
       {/* 02. Địa chỉ kinh doanh */}
       <div className="space-y-6">
-        <div className="flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.2em] text-gray-400">
+        <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-400">
           <MapPin size={14} /> 02. Địa chỉ đăng ký
         </div>
 
@@ -87,7 +87,7 @@ export function StepTaxInfo({ formData, setFormData }: any) {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Quốc gia (Fixed) */}
             <div className="space-y-2">
-              <label className="text-[11px] font-black uppercase text-gray-500 ml-1">Quốc gia</label>
+              <label className="text-[11px] font-bold uppercase text-gray-500 ml-1">Quốc gia</label>
               <div className="h-12 px-5 flex items-center bg-gray-100/50 border border-gray-200 rounded-2xl text-sm font-bold text-gray-700">
                 <Globe size={14} className="mr-2 text-gray-400" /> Việt Nam
               </div>
@@ -95,10 +95,10 @@ export function StepTaxInfo({ formData, setFormData }: any) {
 
             {/* Tỉnh/Thành phố */}
             <div className="space-y-2">
-              <label className="text-[11px] font-black uppercase text-gray-500 ml-1">Tỉnh / Thành phố</label>
+              <label className="text-[11px] font-bold uppercase text-gray-500 ml-1">Tỉnh / Thành phố</label>
               <div className="relative">
                 <select
-                  className="w-full h-12 px-5 bg-gray-50/50 border border-gray-200 rounded-2xl text-sm font-bold text-gray-700 outline-none focus:border-orange-500 appearance-none transition-all"
+                  className="w-full h-12 px-5 bg-gray-50/50 border border-gray-200 rounded-2xl text-sm font-bold text-gray-700 outline-none focus:border-gray-500 appearance-none transition-all"
                   value={formData.provinceName || ""}
                   onChange={(e) => {
                     const selected = provinces.find(p => p.fullName === e.target.value);
@@ -125,11 +125,11 @@ export function StepTaxInfo({ formData, setFormData }: any) {
 
             {/* Phường/Xã */}
             <div className="space-y-2">
-              <label className="text-[11px] font-black uppercase text-gray-500 ml-1">Phường / Xã</label>
+              <label className="text-[11px] font-bold uppercase text-gray-500 ml-1">Phường / Xã</label>
               <div className="relative">
                 <select
                   disabled={!selectedProvinceCode}
-                  className="w-full h-12 px-5 bg-gray-50/50 border border-gray-200 rounded-2xl text-sm font-bold text-gray-700 outline-none focus:border-orange-500 appearance-none disabled:opacity-50 transition-all"
+                  className="w-full h-12 px-5 bg-gray-50/50 border border-gray-200 rounded-2xl text-sm font-bold text-gray-700 outline-none focus:border-gray-500 appearance-none disabled:opacity-50 transition-all"
                   value={formData.wardName || ""}
                   onChange={(e) => {
                     const selected = wards.find(w => w.fullName === e.target.value);
@@ -174,7 +174,7 @@ export function StepTaxInfo({ formData, setFormData }: any) {
 
       {/* 03. Liên hệ & Thuế */}
       <div className="space-y-6">
-        <div className="flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.2em] text-gray-400">
+        <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-400">
           <Hash size={14} /> 03. Liên hệ & Mã số thuế
         </div>
 

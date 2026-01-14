@@ -79,7 +79,7 @@ export const SidebarItem = ({
       )}
 
       {!collapsed && hasChildren && isOpen && (
-        <div className="mt-1 ml-6 pl-4 border-l-2 border-orange-100 space-y-1 animate-in slide-in-from-top-2 duration-300">
+        <div className="mt-1 ml-6 pl-4 border-l-2 border-gray-100 space-y-1 animate-in slide-in-from-top-2 duration-300">
           {item.children?.map((child) => {
             const isChildActive = activeKey === child.key;
             return (

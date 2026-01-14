@@ -45,7 +45,7 @@ export const OrderSideInfo: React.FC<OrderSideInfoProps> = ({
             <span className="text-gray-900">{formatPrice(shippingFee)}</span>
           </div>
           {order.totalDiscount > 0 && (
-            <div className="flex justify-between text-sm text-orange-600 bg-orange-50/50 px-3 py-2 rounded-xl border border-orange-100">
+            <div className="flex justify-between text-sm text-orange-600 bg-orange-50/50 px-3 py-2 rounded-xl border border-gray-100">
               <span className="font-bold">Giảm giá</span>
               <span className="font-semibold">
                 -{formatPrice(order.totalDiscount)}
@@ -80,7 +80,7 @@ export const OrderSideInfo: React.FC<OrderSideInfoProps> = ({
         </header>
         <div className="p-6 space-y-5">
           <div className="flex items-start gap-4">
-            <div className="bg-orange-50 rounded-2xl p-3 shrink-0 shadow-sm border border-orange-100">
+            <div className="bg-orange-50 rounded-2xl p-3 shrink-0 shadow-sm border border-gray-100">
               <MapPinIcon size={20} className="text-orange-500" />
             </div>
             <div className="min-w-0">

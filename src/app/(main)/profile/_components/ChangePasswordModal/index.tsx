@@ -157,7 +157,7 @@ export const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
       className="border-t-4 border-t-orange-500" 
     >
       <div className="space-y-6">
-        <div className="p-4 rounded-xl border bg-orange-50 border-orange-100 text-orange-800 flex gap-3 shadow-inner-sm">
+        <div className="p-4 rounded-xl border bg-orange-50 border-gray-100 text-orange-800 flex gap-3 shadow-inner-sm">
           <FiAlertCircle className="w-5 h-5 shrink-0 mt-0.5 text-orange-600" />
           <div className="text-sm leading-relaxed">
             <span className="font-bold block mb-1 uppercase tracking-wider text-[10px]">

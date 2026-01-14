@@ -59,7 +59,7 @@ export const PayOSCheckoutModal: React.FC<PayOSCheckoutModalProps> = ({
               className={`font-mono font-bold text-lg px-3 py-1 rounded-lg ${
                 remainingSeconds && remainingSeconds < 60
                   ? "bg-red-100 text-red-600 animate-pulse"
-                  : "bg-white text-orange-600 border border-orange-100"
+                  : "bg-white text-orange-600 border border-gray-100"
               }`}
             >
               {formatRemain(remainingSeconds)}
@@ -83,7 +83,7 @@ export const PayOSCheckoutModal: React.FC<PayOSCheckoutModalProps> = ({
       ) : (
         <div className="py-20 flex flex-col items-center justify-center gap-6">
           <div className="relative">
-            <div className="w-16 h-16 border-4 border-orange-100 border-t-orange-500 rounded-full animate-spin" />
+            <div className="w-16 h-16 border-4 border-gray-100 border-t-orange-500 rounded-full animate-spin" />
             <Loader2 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-orange-500" size={24} />
           </div>
           <div className="text-center space-y-2">

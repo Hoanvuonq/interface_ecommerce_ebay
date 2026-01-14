@@ -45,7 +45,7 @@ export const ReviewPreviewModal: React.FC<ReviewPreviewModalProps> = ({
         onClose={onClose}
         title={
           <div className="flex items-center gap-3">
-            <div className="p-2.5 bg-orange-50 rounded-2xl text-orange-500 shadow-sm border border-orange-100/50">
+            <div className="p-2.5 bg-orange-50 rounded-2xl text-orange-500 shadow-sm border border-gray-100/50">
               <ShieldCheck size={22} strokeWidth={2.5} />
             </div>
             <div>
@@ -100,7 +100,7 @@ export const ReviewPreviewModal: React.FC<ReviewPreviewModalProps> = ({
               <div
                 className={cn(
                   "flex flex-col items-center justify-center p-6 bg-white rounded-4xl border ",
-                  "border-orange-100/50 shadow-xl shadow-orange-500/5 relative overflow-hidden"
+                  "border-gray-100/50 shadow-xl shadow-orange-500/5 relative overflow-hidden"
                 )}
               >
                 <div className="absolute top-0 left-0 w-1 h-full bg-orange-500/20" />

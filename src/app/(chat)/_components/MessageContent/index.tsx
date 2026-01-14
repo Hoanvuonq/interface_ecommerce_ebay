@@ -167,7 +167,7 @@ export const MessageContent: React.FC<MessageContentProps> = ({ message }) => {
             order.orderId && router.push(`/orders/${order.orderId}`)
           }
         >
-          <div className="px-3 py-2 bg-orange-50/50 border-b border-orange-100/30">
+          <div className="px-3 py-2 bg-orange-50/50 border-b border-gray-100/30">
             {order.shopName && (
               <div className="flex items-center gap-2 mb-1">
                 {shopLogoUrl ? (

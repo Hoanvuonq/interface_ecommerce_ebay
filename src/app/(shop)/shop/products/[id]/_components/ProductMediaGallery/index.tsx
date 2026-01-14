@@ -27,7 +27,7 @@ export const ProductMediaGallery = ({
       </div>
       <button
         onClick={onManage}
-        className="p-2 bg-white border border-gray-200 text-gray-600 rounded-xl hover:bg-orange-50 hover:text-orange-600 hover:border-orange-200 transition-all shadow-sm"
+        className="p-2 bg-white border border-gray-200 text-gray-600 rounded-xl hover:bg-orange-50 hover:text-orange-600 hover:border-gray-200 transition-all shadow-sm"
       >
         <Edit3 size={18} />
       </button>

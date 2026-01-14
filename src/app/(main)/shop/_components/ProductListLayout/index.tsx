@@ -155,7 +155,7 @@ export default function ProductListLayout({
           <button
             disabled={currentPage >= Math.ceil(totalProducts / pageSize) - 1}
             onClick={() => onPageChange(currentPage + 1)}
-            className="w-9 h-9 rounded-lg bg-white border border-gray-100 flex items-center justify-center text-gray-600 hover:text-(--color-mainColor) hover:border-orange-200 transition-all disabled:opacity-30 disabled:pointer-events-none"
+            className="w-9 h-9 rounded-lg bg-white border border-gray-100 flex items-center justify-center text-gray-600 hover:text-(--color-mainColor) hover:border-gray-200 transition-all disabled:opacity-30 disabled:pointer-events-none"
           >
             <ChevronRight size={18} />
           </button>

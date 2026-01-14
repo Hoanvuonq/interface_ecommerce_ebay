@@ -58,7 +58,7 @@ export const CreateBankAccountModal = ({
     >
       <div className="py-2">
         <form id="bankForm" onSubmit={handleSubmit} className="space-y-5">
-          <div className="bg-orange-50 border border-orange-100 rounded-lg p-4 flex items-start gap-3">
+          <div className="bg-orange-50 border border-gray-100 rounded-lg p-4 flex items-start gap-3">
             <span className="text-xl">💡</span>
             <p className="text-sm text-orange-800 leading-relaxed">
               Tài khoản được đặt làm <strong>mặc định</strong> sẽ được ưu tiên

@@ -13,7 +13,7 @@ export const InfoItem = ({
 }) => (
   <div
     className={cn(
-      "p-6 bg-white rounded-3xl border border-gray-100 hover:border-orange-200 hover:shadow-lg hover:shadow-orange-500/5 transition-all duration-300 group",
+      "p-6 bg-white rounded-3xl border border-gray-100 hover:border-gray-200 hover:shadow-lg hover:shadow-orange-500/5 transition-all duration-300 group",
       className
     )}
   >

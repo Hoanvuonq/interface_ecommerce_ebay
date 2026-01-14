@@ -44,7 +44,7 @@ export default function NotificationsPage() {
                 <div className="max-w-7xl mx-auto px-6 relative z-10">
                     <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
                         <div className="space-y-4">
-                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-50 border border-orange-100 text-orange-600 text-[10px] font-semibold uppercase tracking-[0.2em]">
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-50 border border-gray-100 text-orange-600 text-[10px] font-semibold uppercase tracking-[0.2em]">
                                 Communication Hub
                             </div>
                             <div className="flex items-center gap-4">
