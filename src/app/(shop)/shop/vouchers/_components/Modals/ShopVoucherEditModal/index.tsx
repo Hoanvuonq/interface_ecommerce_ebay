@@ -165,7 +165,7 @@ export default function ShopVoucherEditModal({
         </section>
 
         {/* Section: Discount Config */}
-        <section className="p-6 bg-orange-50/30 rounded-[2rem] border border-gray-100/50 space-y-6">
+        <section className="p-6 bg-orange-50/30 rounded-4xl border border-gray-100/50 space-y-6">
           <div className="flex items-center gap-2 text-[10px] font-bold text-orange-600 uppercase tracking-widest">
             <DollarSign size={14} /> Cấu hình giảm giá
           </div>

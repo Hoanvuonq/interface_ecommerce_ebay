@@ -1,20 +1,18 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
-import {
-  Settings,
-  Gift,
-  Trophy,
-  Info,
-  ChevronRight,
-  ShieldCheck,
-  Zap,
-} from "lucide-react";
-import ShopLoyaltyPolicyCard from "../../loyalty/_components/ShopLoyaltyPolicyCard";
-import ProductPromotionList from "../../loyalty/_components/ProductPromotionList";
-import { ShopLoyaltyStatisticsCard } from "../../loyalty/_components";
-import type { LoyaltyPolicyResponse } from "../../loyalty/_types/loyalty.types";
 import { cn } from "@/utils/cn";
+import {
+    Gift,
+    Info,
+    Settings,
+    ShieldCheck,
+    Trophy
+} from "lucide-react";
+import React, { useCallback, useState } from "react";
+import { ShopLoyaltyStatisticsCard } from "../../loyalty/_components";
+import ProductPromotionList from "../../loyalty/_components/ProductPromotionList";
+import ShopLoyaltyPolicyCard from "../../loyalty/_components/ShopLoyaltyPolicyCard";
+import type { LoyaltyPolicyResponse } from "../../loyalty/_types/loyalty.types";
 
 export const ShopLoyaltyScreen: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"policy" | "products">("policy");
@@ -32,7 +30,7 @@ export const ShopLoyaltyScreen: React.FC = () => {
   return (
     <div className="min-h-screen space-y-6 animate-in fade-in duration-500 pb-10">
       {/* Page Header - Tinh gọn & Hiện đại */}
-      <div className="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-sm">
+      <div className="bg-white rounded-4xl p-8 border border-slate-100 shadow-sm">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center gap-4">
             <div className="p-4 bg-orange-500 rounded-3xl text-white shadow-lg shadow-orange-200">
@@ -57,14 +55,11 @@ export const ShopLoyaltyScreen: React.FC = () => {
         </div>
       </div>
 
-      {/* Statistics Card Section */}
       <div className="w-full">
         <ShopLoyaltyStatisticsCard />
       </div>
 
-      {/* Main Content Tabs Layout */}
-      <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden min-h-[600px]">
-        {/* Custom Tab Header */}
+      <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden min-h-150">
         <div className="flex border-b border-slate-50 px-8 pt-6">
           <div className="flex gap-8">
             <button
@@ -105,9 +100,7 @@ export const ShopLoyaltyScreen: React.FC = () => {
           </div>
         </div>
 
-        {/* Tab Content Body */}
         <div className="p-8">
-          {/* Info Banner mượt mà hơn */}
           <div className={cn(
             "mb-8 p-5 rounded-3xl border flex items-start gap-4 transition-colors",
             activeTab === "policy" ? "bg-orange-50/40 border-orange-100" : "bg-blue-50/40 border-blue-100"

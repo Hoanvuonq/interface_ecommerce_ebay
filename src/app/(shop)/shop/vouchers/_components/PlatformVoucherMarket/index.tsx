@@ -215,7 +215,7 @@ const VoucherCard = ({ voucher, onBuy }: { voucher: VoucherTemplate; onBuy: () =
       <div className="space-y-4">
         {/* Discount Badge */}
         <div className={cn(
-          "w-full p-6 rounded-[2rem] text-center relative overflow-hidden",
+          "w-full p-6 rounded-4xl text-center relative overflow-hidden",
           voucher.discountMethod === DiscountMethod.PERCENTAGE 
             ? "bg-gradient-to-br from-orange-400 to-rose-500 text-white shadow-lg shadow-orange-500/20" 
             : "bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-500/20"

@@ -1,4 +1,4 @@
-import type { ReviewStatisticsResponse } from "../reviews/review.types";
+import type { ReviewStatisticsResponse } from "../../app/(shop)/shop/reviews/_types/review.types";
 
 export interface PublicCategoryDTO {
   id: string;

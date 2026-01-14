@@ -154,7 +154,7 @@ export default function ShopVoucherDetailModal({
             {/* Template Info Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="md:col-span-2 space-y-6">
-                <div className="bg-white rounded-[2rem] border border-gray-100 p-6 shadow-sm space-y-4">
+                <div className="bg-white rounded-4xl border border-gray-100 p-6 shadow-sm space-y-4">
                   <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">
                     <Info size={14} /> Thông tin Template
                   </div>
@@ -222,7 +222,7 @@ export default function ShopVoucherDetailModal({
                 </div>
 
                 {/* Scope Info */}
-                <div className="bg-orange-50/50 rounded-[2rem] border border-gray-100 p-6 space-y-4">
+                <div className="bg-orange-50/50 rounded-4xl border border-gray-100 p-6 space-y-4">
                    <div className="text-[10px] font-bold text-orange-600 uppercase tracking-widest flex items-center gap-2">
                      <CheckCircle2 size={14} /> Phạm vi áp dụng
                    </div>

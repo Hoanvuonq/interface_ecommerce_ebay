@@ -85,7 +85,7 @@ export default function ShopVoucherPurchaseModal({
         </div>
 
         {/* Voucher Detail Summary */}
-        <div className="bg-white rounded-[2rem] border border-gray-100 p-6 shadow-sm space-y-5">
+        <div className="bg-white rounded-4xl border border-gray-100 p-6 shadow-sm space-y-5">
            <div className="flex justify-between items-start">
               <div className="space-y-2">
                 <span className="px-3 py-1 bg-orange-100 text-orange-700 rounded-xl font-mono font-bold text-xs tracking-widest uppercase">

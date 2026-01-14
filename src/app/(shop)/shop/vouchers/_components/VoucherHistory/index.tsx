@@ -232,7 +232,7 @@ const VoucherHistory: React.FC<VoucherHistoryProps> = ({ onCountUpdate }) => {
 
             <div className="p-8 space-y-8">
               {/* Transaction Highlight */}
-              <div className="bg-white rounded-[2rem] border border-gray-100 p-6 shadow-sm flex items-center justify-between">
+              <div className="bg-white rounded-4xl border border-gray-100 p-6 shadow-sm flex items-center justify-between">
                  <div>
                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Mã tham chiếu</p>
                    <p className="font-mono text-lg font-bold text-gray-900 tabular-nums uppercase">{selectedTransaction.id}</p>

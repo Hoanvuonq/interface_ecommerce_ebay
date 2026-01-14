@@ -105,7 +105,7 @@ export function StepLegalInfo({ formData, setFormData, errors }: any) {
               <label className="text-[11px] font-bold uppercase text-gray-500 ml-1 flex items-center gap-2">
                 Ảnh chụp giấy tờ <span className="text-red-500">*</span>
               </label>
-              <div className="p-6 bg-gray-50/50 border-2 border-dashed border-gray-200 rounded-[2rem] transition-colors hover:border-gray-200">
+              <div className="p-6 bg-gray-50/50 border-2 border-dashed border-gray-200 rounded-4xl transition-colors hover:border-gray-200">
                 <ImageUploadField
                   value={formData.idImages || []}
                   onChange={(val) => updateField("idImages", val)}
@@ -117,7 +117,7 @@ export function StepLegalInfo({ formData, setFormData, errors }: any) {
               {errors?.idImages && <p className="text-[10px] font-bold text-red-500 ml-1">{errors.idImages}</p>}
             </div>
 
-            <div className="bg-orange-50/50 p-6 rounded-[2rem] border border-gray-100 space-y-3">
+            <div className="bg-orange-50/50 p-6 rounded-4xl border border-gray-100 space-y-3">
               <div className="flex items-center gap-2 text-orange-600 font-bold text-[10px] uppercase tracking-wider">
                 <Info size={14} /> Hướng dẫn
               </div>
@@ -135,7 +135,7 @@ export function StepLegalInfo({ formData, setFormData, errors }: any) {
               <label className="text-[11px] font-bold uppercase text-gray-500 ml-1 flex items-center gap-2">
                 Ảnh sinh trắc học khuôn mặt <span className="text-red-500">*</span>
               </label>
-              <div className="p-6 bg-gray-50/50 border-2 border-dashed border-gray-200 rounded-[2rem] transition-colors hover:border-gray-200">
+              <div className="p-6 bg-gray-50/50 border-2 border-dashed border-gray-200 rounded-4xl transition-colors hover:border-gray-200">
                 <ImageUploadField
                   value={formData.faceImages || []}
                   onChange={(val) => updateField("faceImages", val)}
@@ -147,7 +147,7 @@ export function StepLegalInfo({ formData, setFormData, errors }: any) {
               {errors?.faceImages && <p className="text-[10px] font-bold text-red-500 ml-1">{errors.faceImages}</p>}
             </div>
 
-            <div className="bg-blue-50/50 p-6 rounded-[2rem] border border-blue-100 space-y-3">
+            <div className="bg-blue-50/50 p-6 rounded-4xl border border-blue-100 space-y-3">
               <div className="flex items-center gap-2 text-blue-600 font-bold text-[10px] uppercase tracking-wider">
                 <Info size={14} /> Hướng dẫn
               </div>

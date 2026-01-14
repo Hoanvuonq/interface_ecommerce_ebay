@@ -211,7 +211,7 @@ const StatCard = ({ label, value, trend, isUp, icon, color, isCurrency = true }:
   };
 
   return (
-    <div className={cn("p-6 rounded-[2rem] border bg-gradient-to-br shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1", colors[color])}>
+    <div className={cn("p-6 rounded-4xl border bg-gradient-to-br shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1", colors[color])}>
       <div className="flex justify-between items-start mb-4">
         <div className="p-3 bg-white rounded-2xl shadow-sm border border-white/50">{icon}</div>
         <div className={cn(

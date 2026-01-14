@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ReviewType } from "@/types/reviews/review.types";
+import { ReviewType } from "@/app/(shop)/shop/reviews/_types/review.types";
 import { useCreateReview, useUpdateReview } from "@/hooks/useReview";
 import { usePresignedUpload } from "@/hooks/usePresignedUpload";
 import { UploadContext } from "@/types/storage/storage.types";
