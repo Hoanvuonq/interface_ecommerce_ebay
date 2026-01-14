@@ -22,6 +22,7 @@ import PurchasedVoucherList from "../_components/PurchasedVoucherList";
 import { searchVoucherTemplates } from "@/app/(main)/shop/_service/shop.voucher.service";
 import { cn } from "@/utils/cn";
 import { StatusTabsVoucher } from "../_components/StatusTabsVoucher";
+import { useVoucherStore } from "../_store/voucherStore";
 
 interface TabCounts {
   myVouchers: number;
@@ -41,20 +42,49 @@ export const ShopVouchersScreen: React.FC = () => {
     transactions: 0,
   });
   const [loading, setLoading] = useState(true);
-
-  const fetchCounts = useCallback(async () => {
+  
+  const { getCache, setCache, isCacheFresh } = useVoucherStore();
+  // Fetch counts with cache
+  const fetchCounts = async () => {
     setLoading(true);
     try {
-      const [shopRes, activeRes, platformRes] = await Promise.all([
-        searchVoucherTemplates({ scope: "shop", page: 0, size: 1 }),
+      // Check cache first (5 min TTL)
+      const shopCacheKey = "shop_0_1";
+      const platformCacheKey = "platform_0_1";
+      
+      if (isCacheFresh(shopCacheKey) && isCacheFresh(platformCacheKey)) {
+        const shopData = getCache(shopCacheKey);
+        const platformData = getCache(platformCacheKey);
+        
+        if (shopData && platformData) {
+          setCounts(prev => ({
+            ...prev,
+            myVouchers: shopData.totalElements || 0,
+            activeVouchers: shopData.totalElements || 0,
+            platformAvailable: platformData.totalElements || 0,
+          }));
+          setLoading(false);
+          return;
+        }
+      }
+      
+      // If cache expired or missing, fetch from API
+      const [shopRes, platformRes] = await Promise.all([
         searchVoucherTemplates({ scope: "shop", page: 0, size: 1 }),
         searchVoucherTemplates({ scope: "platform", page: 0, size: 1 }),
       ]);
 
+      if (shopRes?.data) {
+        setCache(shopCacheKey, shopRes.data);
+      }
+      if (platformRes?.data) {
+        setCache(platformCacheKey, platformRes.data);
+      }
+
       setCounts(prev => ({
         ...prev,
         myVouchers: shopRes.data?.totalElements || 0,
-        activeVouchers: activeRes.data?.totalElements || 0,
+        activeVouchers: shopRes.data?.totalElements || 0,
         platformAvailable: platformRes.data?.totalElements || 0,
       }));
     } catch (err) {
@@ -62,11 +92,12 @@ export const ShopVouchersScreen: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  };
 
+  // Call on mount only
   useEffect(() => {
     fetchCounts();
-  }, [fetchCounts]);
+  }, []);
 
   const handleTransactionCountUpdate = useCallback((count: number) => {
     setCounts((prev) => ({ ...prev, transactions: count }));

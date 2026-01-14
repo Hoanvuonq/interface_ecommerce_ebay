@@ -28,6 +28,7 @@ import {
   duplicateVoucher,
 } from "@/app/(main)/shop/_service/shop.voucher.service";
 import { ApiResponse } from "@/api/_types/api.types";
+import { useVoucherStore } from "../_store/voucherStore";
 
 // ==================== CREATE SHOP VOUCHER ====================
 
@@ -180,25 +181,42 @@ export function useGetVoucherInfo() {
 // ==================== SEARCH VOUCHER TEMPLATES ====================
 
 /**
- * Hook: Tìm kiếm voucher templates (manual mode)
+ * Hook: Tìm kiếm voucher templates (with caching)
  */
 export function useSearchVoucherTemplates() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { getCache, setCache, setLoading: setStoreLoading, isCacheFresh } = useVoucherStore();
 
   const searchTemplates = async (
     params: SearchVoucherTemplatesRequest
   ): Promise<ApiResponse<any> | null> => {
+    // Create cache key from params
+    const cacheKey = `${params.scope || "all"}_${params.page || 0}_${params.size || 10}`;
+    
+    // Check if cache is fresh (within 5 minutes)
+    if (isCacheFresh(cacheKey)) {
+      const cachedData = getCache(cacheKey);
+      if (cachedData) {
+        return { code: 1000, data: cachedData, success: true } as any;
+      }
+    }
+    
     setLoading(true);
+    setStoreLoading(cacheKey, true);
     setError(null);
     try {
       const res = await searchVoucherTemplates(params);
+      if (res?.code === 1000 && res.data) {
+        setCache(cacheKey, res.data);
+      }
       return res;
     } catch (err: any) {
       setError(err?.message || "Không thể tìm kiếm voucher");
       return null;
     } finally {
       setLoading(false);
+      setStoreLoading(cacheKey, false);
     }
   };
 

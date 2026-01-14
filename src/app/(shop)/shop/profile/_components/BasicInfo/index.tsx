@@ -24,13 +24,13 @@ import { useUpdateShop } from "../../_hooks/useShop";
 import Image from "next/image";
 import { cn } from "@/utils/cn";
 
-export default function BasicInfo({
+export const BasicInfo =({
   shop,
   setShop,
 }: {
   shop: any;
   setShop: any;
-}) {
+}) =>{
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: "",

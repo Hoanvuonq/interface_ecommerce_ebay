@@ -36,6 +36,10 @@ export const useCheckoutInitialization = (initialPreview: any) => {
 
       const initPayload = {
         addressId: defaultAddr.addressId,
+        shippingAddress: {
+          addressId: defaultAddr.addressId,
+          addressChanged: false,
+        },
         globalVouchers: [],
         shops: initialPreview?.shops?.map((s: any) => ({
           shopId: s.shopId,

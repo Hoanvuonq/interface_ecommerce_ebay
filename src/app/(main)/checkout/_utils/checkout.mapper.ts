@@ -8,6 +8,12 @@ export const preparePreviewPayload = (
 
   return {
     addressId: raw.addressId,
+    shippingAddress: {
+      addressId: raw.addressId,
+      addressChanged: true,
+      country: raw.country || "VN", 
+      taxFee: raw.taxFee || raw.taxAddress || "", 
+    },
     globalVouchers: [], 
     shops: _.map(raw.shops, (shop) => {
       const shopPayload: any = {

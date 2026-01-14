@@ -29,6 +29,7 @@ interface PlatformVoucherMarketProps {
 export const PlatformVoucherMarket: React.FC<PlatformVoucherMarketProps> = ({
   onPurchaseSuccess,
 }) => {
+  // Disable auto-fetch, manually control when to fetch
   const { data: recommendedVouchers, loading, refetch } = useGetRecommendedPlatformVouchers();
   const { handlePurchase, loading: purchasing, error: purchaseError } = usePurchaseVoucher();
   
@@ -37,6 +38,13 @@ export const PlatformVoucherMarket: React.FC<PlatformVoucherMarketProps> = ({
   const [searchKeyword, setSearchKeyword] = useState("");
   const [filterType, setFilterType] = useState<string>("all");
   const [activeTab, setActiveTab] = useState("recommended");
+
+  // Fetch only when component mounts OR tab changes to "platform-market"
+  React.useEffect(() => {
+    if (recommendedVouchers.length === 0) {
+      refetch();
+    }
+  }, []);
 
   const filteredVouchers = useMemo(() => {
     if (!recommendedVouchers) return [];

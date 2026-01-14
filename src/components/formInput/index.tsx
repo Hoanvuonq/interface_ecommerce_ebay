@@ -48,7 +48,7 @@ export const FormInput = React.forwardRef<
         {label && (
           <label
             htmlFor={id}
-            className="text-[12px] font-bold  text-gray-600 ml-1 flex items-center gap-1"
+            className="text-[12px] font-bold  text-gray-700 ml-1 flex items-center gap-1"
           >
             {label}
             {required && <span className="text-red-500 text-sm">*</span>}

@@ -3,114 +3,128 @@
 
 import { SectionLoading } from "@/components";
 import { useToast } from "@/hooks/useToast";
-import { cn } from "@/utils/cn";
-import { getStoredUserDetail } from "@/utils/jwt";
 import { FileText, ShieldCheck, Store, AlertCircle } from "lucide-react";
 import { useEffect, useState, useMemo } from "react";
-import BasicInfo from "../_components/BasicInfo";
-import LegalInfo from "../_components/LegalInfo";
-import TaxInfo from "../_components/TaxInfo";
+import { BasicInfo, LegalInfo, TaxInfo } from "../_components";
 import { useGetShopInfo } from "../_hooks/useShop";
+import { getStoredUserDetail } from "@/utils/jwt";
+import {
+  StatusTabsVoucher,
+  StatusTabItem,
+} from "../../vouchers/_components/StatusTabsVoucher";
 
 type TabKey = "basic" | "tax" | "legal";
 
 export default function ShopProfileScreen() {
   const [shop, setShop] = useState<any>(null);
-  const [activeTab, setActiveTab] = useState<TabKey>("basic");
   const { handleGetShopInfo, loading } = useGetShopInfo();
+  const [activeTab, setActiveTab] = useState<TabKey>("basic");
+  const [isInitialized, setIsInitialized] = useState(false);
   const users = getStoredUserDetail();
   const { error: toastError } = useToast();
 
   useEffect(() => {
-  const fetchShop = async () => {
-    try {
-      if (users?.shopId) {
-        // TRUYỀN THAM SỐ: Sửa lỗi TS2554
-        const res = await handleGetShopInfo(users.shopId); 
-        
-        // KIỂM TRA LOG: Nếu log này không có taxInfo, hãy báo Backend check lại quyền của Token
-        console.log(">>> Full Data check:", res?.data); 
-
-        if (res && res.data) {
-          setShop(res.data);
-        }
+    (async () => {
+      try {
+        const res = await handleGetShopInfo(users?.shopId);
+        if (res) setShop(res.data);
+      } catch (err: any) {
+        console.error("Error loading shop info:", err);
+        const errorMessage =
+          err?.message ||
+          toastError ||
+          "Không thể tải thông tin shop. Vui lòng thử lại!";
+        toastError("Không thể tải thông tin shop. Vui lòng thử lại!");
       }
-    } catch (err: any) {
-      toastError("Lỗi tải profile nội bộ của shop");
-    }
-  };
-  fetchShop();
-}, [users?.shopId]);
+    })();
+  }, []);
 
-  // Component hiển thị thông báo lỗi khi thiếu dữ liệu nhạy cảm (Tax/Legal)
-  const DataMissingPlaceholder = () => (
-    <div className="flex flex-col items-center justify-center p-20 bg-gray-50/50 rounded-[3rem] border border-dashed border-gray-200 mt-4">
-      <AlertCircle className="text-orange-400 mb-4" size={48} strokeWidth={1.5} />
-      <h3 className="text-lg font-bold text-gray-800 uppercase tracking-tight">Dữ liệu không khả dụng</h3>
+  const DataMissingPlaceholder = ({
+    title,
+    desc,
+  }: {
+    title: string;
+    desc: string;
+  }) => (
+    <div className="flex flex-col items-center justify-center p-20 bg-gray-50/50 rounded-[3rem] border border-gray-200 mt-4 animate-in zoom-in duration-300">
+      <AlertCircle
+        className="text-orange-400 mb-4"
+        size={48}
+        strokeWidth={1.5}
+      />
+      <h3 className="text-lg font-bold text-gray-800 uppercase tracking-tight">
+        {title}
+      </h3>
       <p className="text-sm text-gray-500 text-center max-w-md mt-2 leading-relaxed">
-        Hệ thống không tìm thấy thông tin xác thực. <br/> 
-        Vui lòng đảm bảo bạn đang dùng <b>API Nội bộ</b> thay vì API Công khai.
+        {desc}
       </p>
     </div>
   );
 
-  // Render Content dựa trên Active Tab và Shop Data
+  const shopTabs: StatusTabItem[] = [
+    { id: "basic", label: "Thông tin cơ bản", icon: <Store size={16} /> },
+    { id: "tax", label: "Thông tin Thuế", icon: <FileText size={16} /> },
+    {
+      id: "legal",
+      label: "Thông tin Định Danh",
+      icon: <ShieldCheck size={16} />,
+    },
+  ];
+
   const renderTabContent = useMemo(() => {
-    if (!shop) return null;
+    if (!isInitialized || !shop) return null;
 
     switch (activeTab) {
       case "basic":
         return <BasicInfo shop={shop} setShop={setShop} />;
       case "tax":
-        // Nếu API không trả về taxInfo, hiện placeholder báo lỗi thay vì crash
-        return shop.taxInfo ? <TaxInfo shop={shop} setShop={setShop} /> : <DataMissingPlaceholder />;
+        return shop.taxInfo && Object.keys(shop.taxInfo).length > 0 ? (
+          <TaxInfo shop={shop} setShop={setShop} />
+        ) : (
+          <DataMissingPlaceholder
+            title="Chưa cập nhật thông tin thuế"
+            desc="Vui lòng cập nhật mã số thuế và địa chỉ kinh doanh để hoàn tất hồ sơ."
+          />
+        );
       case "legal":
-        // Tương tự cho LegalInfo
-        return shop.legalInfo ? <LegalInfo shop={shop} setShop={setShop} /> : <DataMissingPlaceholder />;
+        return shop.legalInfo && Object.keys(shop.legalInfo).length > 0 ? (
+          <LegalInfo shop={shop} setShop={setShop} />
+        ) : (
+          <DataMissingPlaceholder
+            title="Chưa xác thực định danh"
+            desc="Bạn cần cung cấp CCCD/Hộ chiếu để định danh chủ sở hữu cửa hàng."
+          />
+        );
       default:
         return null;
     }
-  }, [activeTab, shop]);
+  }, [activeTab, shop, isInitialized]);
 
-  if (loading || !shop) {
+  if (loading && !isInitialized) {
     return <SectionLoading message="Đang kết nối dữ liệu cửa hàng..." />;
   }
 
-  const tabs = [
-    { key: "basic", label: "Thông tin cơ bản", icon: Store },
-    { key: "tax", label: "Thông tin Thuế", icon: FileText },
-    { key: "legal", label: "Thông tin Định Danh", icon: ShieldCheck },
-  ];
+  if (isInitialized && !shop) {
+    return (
+      <DataMissingPlaceholder
+        title="Không tìm thấy Shop"
+        desc="Không thể tìm thấy thông tin cửa hàng liên kết với tài khoản này."
+      />
+    );
+  }
 
   return (
     <div className="max-w-8xl mx-auto space-y-6 animate-in fade-in duration-500">
-      {/* Custom Navigation Tabs */}
-      <div className="flex items-center justify-between border-b border-gray-100 pb-2">
-        <div className="flex gap-2 p-1.5 bg-gray-100/80 rounded-[2rem] border border-gray-100 w-fit overflow-x-auto no-scrollbar shadow-inner">
-          {tabs.map((tab) => {
-            const Icon = tab.icon;
-            const isActive = activeTab === tab.key;
-            return (
-              <button
-                key={tab.key}
-                onClick={() => setActiveTab(tab.key as TabKey)}
-                className={cn(
-                  "flex items-center gap-2.5 px-7 py-3 rounded-[1.2rem] text-xs font-black uppercase tracking-widest transition-all duration-300 whitespace-nowrap",
-                  isActive
-                    ? "bg-white text-gray-900 shadow-xl shadow-gray-200/50 ring-1 ring-black/5 scale-[1.05]"
-                    : "text-gray-400 hover:text-gray-600 hover:bg-gray-200/50"
-                )}
-              >
-                <Icon size={16} className={isActive ? "text-orange-500" : "text-gray-400"} />
-                {tab.label}
-              </button>
-            );
-          })}
-        </div>
+      <div className="flex items-center justify-between border-b border-gray-100 pb-4 overflow-x-auto no-scrollbar">
+        <StatusTabsVoucher
+          tabs={shopTabs}
+          current={activeTab}
+          onChange={(id) => setActiveTab(id as TabKey)}
+          className="w-fit"
+        />
       </div>
 
-      {/* Main Content Area */}
-      <div className="min-h-[500px] transition-all">
+      <div className="min-h-[500px] transition-all duration-300">
         {renderTabContent}
       </div>
     </div>

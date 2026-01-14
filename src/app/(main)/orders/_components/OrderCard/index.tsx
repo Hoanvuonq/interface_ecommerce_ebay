@@ -163,6 +163,13 @@ export const OrderCard: React.FC<OrderCardProps> = ({
     setIsReturnOpen(true);
   };
 
+  const handleProductNameClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (ui.firstItem?.productId) {
+      router.push(`/products/${ui.firstItem.productId}`);
+    }
+  };
+
   return (
     <article className="group relative bg-white border border-gray-100 rounded-2xl p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-300 mb-3 overflow-hidden">
       {/* Header: Shop Info & Status Badge */}
@@ -225,9 +232,12 @@ export const OrderCard: React.FC<OrderCardProps> = ({
         </div>
 
         <div className="flex-1 min-w-0">
-          <p className="font-bold text-gray-800 text-[13px] line-clamp-1 italic leading-snug">
+          <button
+            onClick={handleProductNameClick}
+            className="font-bold text-gray-800 text-[13px] line-clamp-1 italic leading-snug hover:text-orange-600 transition-colors text-left w-full"
+          >
             {ui.firstItem?.productName}
-          </p>
+          </button>
 
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1.5">
             <div className="flex items-center gap-1 text-emerald-600 font-bold text-[11px] uppercase">
@@ -239,7 +249,6 @@ export const OrderCard: React.FC<OrderCardProps> = ({
           </div>
         </div>
 
-        {/* Price and Actions */}
         <div className="flex flex-col items-end gap-2 shrink-0">
           <div className="text-right">
             <span className="text-[8px] font-bold text-gray-700 uppercase block">

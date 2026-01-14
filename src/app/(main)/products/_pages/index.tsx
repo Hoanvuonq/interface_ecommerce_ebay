@@ -20,7 +20,6 @@ import ProductFilters from "../_components/productFilters";
 import { ProductFilterValues } from "../_components/productFilters/type";
 import ProductList from "../_components/productList";
 
-// Dynamic import Sidebar để tối ưu performance
 const CategorySidebar = dynamic(() => import("@/components/categorySidebar"), {
   ssr: false,
   loading: () => <div className="h-64 bg-gray-100 rounded-2xl animate-pulse" />,
@@ -31,18 +30,14 @@ type TabView = "all" | "featured" | "new";
 export const ProductScreen = () => {
   const searchParams = useSearchParams();
   
-  // State quản lý filter và UI
   const [filters, setFilters] = useState<ProductFilterValues>({});
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [activeTab, setActiveTab] = useState<TabView>("all");
   
-  // State quản lý Loading toàn trang
   const [isPageLoading, setIsPageLoading] = useState(true);
 
-  // Effect: Đồng bộ URL params vào State và tắt Loading
   useEffect(() => {
     const initData = async () => {
-      // Giả lập delay nhỏ hoặc đợi logic xử lý params để tránh hydration mismatch
       const keyword = searchParams.get("keyword") || undefined;
       const categoryId = searchParams.get("categoryId") || undefined;
 
@@ -52,7 +47,6 @@ export const ProductScreen = () => {
         categoryId: categoryId || prev.categoryId,
       }));
 
-      // Tắt loading sau khi đã đồng bộ xong dữ liệu khởi tạo
       setIsPageLoading(false);
     };
 

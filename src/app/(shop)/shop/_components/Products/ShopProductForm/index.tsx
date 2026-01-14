@@ -13,16 +13,19 @@ import {
   CheckCircle2,
   Clock,
   LayoutGrid,
+  PackageCheck,
   PlayCircle,
   Plus,
   RefreshCcw,
   ShoppingBag,
+  Truck,
+  XCircle,
 } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { SmartKPICard } from "../../Dashboard";
 import { FilterState, ProductFilters } from "../ProductFilters";
-import { StatusTabs } from "../StatusTabs";
+import { StatusTabItem, StatusTabs } from "../StatusTabs";
 import { getProductColumns } from "./columns";
 
 type StatusType = "DRAFT" | "PENDING" | "APPROVED" | "REJECTED";
@@ -39,6 +42,7 @@ export const ShopProductForm = () => {
     "ALL"
   );
   const [isSearchMode, setIsSearchMode] = useState(false);
+  const [currentOrderTab, setOrderTab] = useState<OrderStatus>("SHIPPING");
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 20,
@@ -265,6 +269,13 @@ export const ShopProductForm = () => {
     ],
     [statistics, statisticsLoading]
   );
+  type OrderStatus = "SHIPPING" | "COMPLETED" | "CANCELLED";
+
+const orderTabs: StatusTabItem<OrderStatus>[] = [
+  { key: "SHIPPING", label: "Đang giao", icon: Truck, count: 5 },
+  { key: "COMPLETED", label: "Hoàn thành", icon: PackageCheck, count: 120 },
+  { key: "CANCELLED", label: "Đã hủy", icon: XCircle, count: 2 },
+];
 
   const columns = getProductColumns(handleAction, userProductService);
 
@@ -339,9 +350,9 @@ export const ShopProductForm = () => {
           />
 
           <StatusTabs
-            current={selectedStatus}
-            onChange={handleTabChange}
-            statistics={statistics}
+            tabs={orderTabs}
+            current={currentOrderTab}
+            onChange={setOrderTab}
           />
         </div>
         <div
