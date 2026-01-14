@@ -1,4 +1,4 @@
-import { ReviewResponse } from "@/types/reviews/review.types";
+import { ReviewResponse } from "@/app/(shop)/shop/reviews/_types/review.types";
 
 export type UploadFileStatus = "error" | "done" | "uploading" | "removed";
 

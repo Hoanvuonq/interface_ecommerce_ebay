@@ -190,7 +190,7 @@ const ProductPromotionList: React.FC<ProductPromotionListProps> = ({ onCountUpda
   return (
     <div className="space-y-6">
       {/* Header Content */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-4xl border border-slate-100 shadow-sm">
         <div className="flex items-center gap-4">
           <div className="p-3 bg-orange-50 rounded-2xl text-orange-500 shadow-sm"><Gift size={24} /></div>
           <div>

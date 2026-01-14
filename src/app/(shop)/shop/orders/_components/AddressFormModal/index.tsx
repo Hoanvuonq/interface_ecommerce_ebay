@@ -204,7 +204,7 @@ export const AddressFormModal = ({
         />
 
         {/* Cài đặt mặc định */}
-        <div className="bg-gray-50/80 p-5 rounded-[2rem] border border-gray-100 space-y-4 shadow-inner">
+        <div className="bg-gray-50/80 p-5 rounded-4xl border border-gray-100 space-y-4 shadow-inner">
           <p className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2">
             Cài đặt mặc định
           </p>

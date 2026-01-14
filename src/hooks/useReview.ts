@@ -22,7 +22,7 @@ import type {
   ReviewListResponse,
   ReviewStatisticsResponse,
   ReviewType,
-} from "@/types/reviews/review.types";
+} from "@/app/(shop)/shop/reviews/_types/review.types";
 
 /**
  * Hook to create a review

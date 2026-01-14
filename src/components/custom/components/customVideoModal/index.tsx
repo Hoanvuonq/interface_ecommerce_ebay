@@ -46,7 +46,7 @@ export const CustomVideoModal: React.FC<CustomVideoModalProps> = ({
             src={videoUrl}
             controls
             autoPlay
-            className="w-full h-auto max-h-[70vh] rounded-[2rem] shadow-inner"
+            className="w-full h-auto max-h-[70vh] rounded-4xl shadow-inner"
           >
             Trình duyệt của bạn không hỗ trợ xem video.
           </video>

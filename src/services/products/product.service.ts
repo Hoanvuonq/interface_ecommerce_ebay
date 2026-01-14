@@ -1,16 +1,22 @@
 import { request } from "@/utils/axios.customize";
-import { ApiResponseDTO, PageDTO, PageableDTO } from "@/types/pagination.dto";
+import {
+  ApiResponseDTO,
+  PageDTO,
+  PageableDTO,
+} from "@/types/product/pagination.dto";
+import { ApiResponse } from "@/api/_types/api.types";
 import {
   PublicProductDetailDTO,
   PublicProductListItemDTO,
   PublicProductSearchQueryDTO,
 } from "@/types/product/public-product.dto";
 import {
+  CreateProductVariantDTO,
   ProductVariantDTO,
   SyncProductVariantsDTO,
   UpdateProductVariantDTO,
   UpsertProductVariantsDTO,
-} from "@/types/product/product-variant.dto";
+}  from "@/types/product/product-variant.dto";
 import {
   CreateProductOptionDTO,
   ProductOptionDTO,
@@ -30,7 +36,7 @@ import {
   AdminToggleActiveRequestDTO,
   AdminToggleActiveResponseDTO,
   AdminApprovalStatsDTO,
-} from "@/types/product/admin-product.dto";
+}  from "@/types/product/admin-product.dto";
 import {
   CreateUserProductBulkDTO,
   UpdateUserProductDTO,
@@ -47,6 +53,10 @@ const withIfMatch = (version?: number) =>
     ? { headers: { "If-Match": String(version) } }
     : undefined;
 
+// =========================
+// Public Product APIs
+// Base on BE: /api/v1/public/products (axios baseURL already includes /api/v1)
+// =========================
 const API_ENDPOINT_PUBLIC_PRODUCTS = "v1/public/products";
 
 export const publicProductService = {
@@ -432,9 +442,9 @@ export const adminProductService = {
     size?: number;
   }) {
     return request<PageDTO<AdminProductListItemDTO>>({
-      method: "POST",
+      method: "GET",
       url: `/${API_ENDPOINT_ADMIN_PRODUCTS}/search`,
-      data: params,
+      params,
     });
   },
 
@@ -457,7 +467,7 @@ export const adminProductService = {
   getStatistics() {
     return request<AdminProductStatisticsDTO>({
       method: "GET",
-      url: `/${API_ENDPOINT_ADMIN_PRODUCTS}/counts`,
+      url: `/${API_ENDPOINT_ADMIN_PRODUCTS}/statistics`,
     });
   },
 
@@ -519,17 +529,13 @@ export const userProductService = {
 
   /**
    * Get all products of current user
-   * GET /api/v1/user/products
+   * POST /api/v1/user/products/search (Backend uses POST for search)
    */
-  getAllProducts(page = 0, size = 20) {
+  getAll(page = 0, size = 20) {
     return request<ApiResponseDTO<PageDTO<UserProductDTO>>>({
-      method: "GET",
+      method: "POST",
       url: `/${API_ENDPOINT_USER_PRODUCTS}/search`,
-
-      data: {
-        page: page,
-        size: size,
-      },
+      data: { page, size },
     });
   },
 
@@ -537,14 +543,14 @@ export const userProductService = {
    * Get user's products by status
    * GET /api/v1/user/products/status/{status}
    */
-  getByStatusAdmin(
+  getByStatus(
     status: "DRAFT" | "PENDING" | "APPROVED" | "REJECTED",
     page = 0,
     size = 20
   ) {
     return request<ApiResponseDTO<PageDTO<UserProductDTO>>>({
       method: "GET",
-      url: `/${API_ENDPOINT_ADMIN_PRODUCTS}/status/${status}`,
+      url: `/${API_ENDPOINT_USER_PRODUCTS}/status/${status}`,
       params: { page, size },
     });
   },
@@ -652,13 +658,13 @@ export const userProductService = {
   },
 
   /**
-   * Get product counts for current user
-   * GET /api/v1/user/products/counts
+   * Get product statistics for current user
+   * GET /api/v1/user/products/statistics
    */
   getStatistics() {
     return request<UserProductStatisticsDTO>({
       method: "GET",
-      url: `/${API_ENDPOINT_USER_PRODUCTS}/counts`,
+      url: `/${API_ENDPOINT_USER_PRODUCTS}/statistics`,
     });
   },
 

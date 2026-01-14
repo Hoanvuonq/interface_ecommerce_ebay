@@ -160,7 +160,7 @@ export const ProductImageCard: React.FC<ProductImageCardProps> = ({
             <div
               key={file.uid}
               className={cn(
-                "relative group rounded-[2rem] overflow-hidden border-2 transition-all duration-500 bg-slate-50",
+                "relative group rounded-4xl overflow-hidden border-2 transition-all duration-500 bg-slate-50",
                 index === 0
                   ? "border-orange-500 ring-8 ring-orange-50 shadow-xl scale-[1.02]"
                   : "border-slate-100 hover:border-orange-200"

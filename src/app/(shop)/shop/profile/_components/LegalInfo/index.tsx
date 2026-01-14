@@ -96,7 +96,7 @@ export const LegalInfo = ({ shop, setShop }: { shop: any; setShop: any }) => {
               { label: "Ảnh chân dung", url: legal?.faceImagePreviewUrl },
             ].map((img, i) => (
               <div key={i} className="space-y-3 group">
-                <div className="aspect-video relative bg-gray-100 rounded-[2rem] border-2 border-dashed border-gray-200 overflow-hidden flex items-center justify-center transition-all group-hover:border-blue-200 group-hover:bg-blue-50/30">
+                <div className="aspect-video relative bg-gray-100 rounded-4xl border-2 border-dashed border-gray-200 overflow-hidden flex items-center justify-center transition-all group-hover:border-blue-200 group-hover:bg-blue-50/30">
                   {img.url ? (
                     <Image
                       src={img.url}

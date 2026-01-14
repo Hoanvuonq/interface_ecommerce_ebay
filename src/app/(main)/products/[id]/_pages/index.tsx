@@ -6,7 +6,7 @@ import { CustomVideoModal } from "@/components/custom/components/customVideoModa
 import { formatCompactNumber } from "@/hooks/format";
 import { formatPriceFull } from "@/hooks/useFormatPrice";
 import type { PublicProductVariantDTO } from "@/types/product/public-product.dto";
-import type { ReviewMediaResponse } from "@/types/reviews/review.types";
+import type { ReviewMediaResponse } from "@/app/(shop)/shop/reviews/_types/review.types";
 import { cn } from "@/utils/cn";
 import { toPublicUrl } from "@/utils/storage/url";
 import { PlayCircle } from "lucide-react";

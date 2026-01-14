@@ -33,7 +33,7 @@ import type {
 import type {
   ReviewResponse,
   ReviewStatisticsResponse,
-} from "@/types/reviews/review.types";
+} from "@/app/(shop)/shop/reviews/_types/review.types";
 
 const PLACEHOLDER_IMAGE =
   "data:image/svg+xml;utf8," +
