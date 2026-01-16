@@ -97,7 +97,7 @@ export default function ProductListForReviews({
       header: "Giá niêm yết",
       className: "w-40",
       render: (record) => (
-        <span className="font-black text-slate-700 tracking-tight">
+        <span className="font-bold text-slate-700 tracking-tight">
           {new Intl.NumberFormat("vi-VN", {
             style: "currency",
             currency: "VND",
@@ -111,7 +111,7 @@ export default function ProductListForReviews({
       render: (record) => (
         <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-100 w-fit">
           <CheckCircle2 size={12} strokeWidth={3} />
-          <span className="text-[10px] font-black uppercase tracking-wider">
+          <span className="text-[10px] font-bold uppercase tracking-wider">
             Đã duyệt
           </span>
         </div>
@@ -124,7 +124,7 @@ export default function ProductListForReviews({
       render: (record) => (
         <button
           onClick={() => onSelectProduct(record.id)}
-          className="group flex items-center gap-2 px-5 py-2.5 bg-orange-500 hover:bg-orange-600 text-white text-[11px] font-black uppercase tracking-widest rounded-xl shadow-lg shadow-orange-200 transition-all active:scale-95"
+          className="group flex items-center gap-2 px-5 py-2.5 bg-orange-500 hover:bg-orange-600 text-white text-[11px] font-bold uppercase tracking-widest rounded-xl shadow-lg shadow-orange-200 transition-all active:scale-95"
         >
           <Eye size={14} strokeWidth={2.5} />
           Xem Review
@@ -152,7 +152,7 @@ export default function ProductListForReviews({
             <ShoppingBag size={28} />
           </div>
           <div>
-            <h2 className="text-xl font-black text-slate-800 tracking-tight leading-none">
+            <h2 className="text-xl font-bold text-slate-800 tracking-tight leading-none">
               Quản lý Đánh giá
             </h2>
             <p className="text-sm text-slate-400 font-medium mt-2 italic">

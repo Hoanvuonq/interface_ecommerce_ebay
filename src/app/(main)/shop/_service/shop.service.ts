@@ -14,7 +14,7 @@ import { request } from "@/utils/axios.customize";
 import { ApiResponse } from "@/api/_types/api.types";
 import { FilterRequest } from "@/app/(chat)/_types/chat.dto";
 
-// const API_GETSHOP = "v1/public/shops";
+const API_GETSHOP_USER = "v1/public/shops";
 const API_GETSHOP = "v1/shops";
 
 export async function createShop(
@@ -185,7 +185,7 @@ export async function getShopLegalInfo(
 
 export async function getShopDetail(shopId: string): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
-    url: `/${API_GETSHOP}/${shopId}`,
+    url: `/${API_GETSHOP_USER}/${shopId}`,
     method: "GET",
     headers: {
       "Content-Type": "application/json",

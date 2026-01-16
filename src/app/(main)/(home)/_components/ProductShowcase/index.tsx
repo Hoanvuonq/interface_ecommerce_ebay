@@ -10,7 +10,7 @@ import { ArrowRight, Flame, Plus, Sparkles, Star } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useInfiniteProducts } from "../../_hooks/useHomePageData";
-import { useHomepageContext } from "../../_context/HomepageContext"; // Sử dụng context
+import { useHomepageContext } from "../../_context/HomepageContext";
 
 export const ProductShowcase = ({
   title = "GỢI Ý HÔM NAY",
@@ -51,13 +51,13 @@ export const ProductShowcase = ({
   return (
     <SectionSreen id="calatha-mall" animation="slideUp">
       <div className="flex flex-col items-center text-center mb-4">
-        <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-gray-800 uppercase italic">
+        <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-white uppercase italic">
           {title}
         </h2>
-        <p className="text-late-600 font-medium tracking-widest text-[11px] uppercase">
+        <p className="text-white/80 font-medium tracking-widest text-[11px] uppercase">
           {subtitle}
         </p>
-        <div className="w-8 h-1 bg-orange-500/80 rounded-full mt-1" />
+        <div className="w-8 h-1 bg-red-500/80 rounded-full mt-1" />
       </div>
 
       <div className="flex justify-center mb-6">
@@ -78,7 +78,7 @@ export const ProductShowcase = ({
                 {IsActive && (
                   <motion.div
                     layoutId="active-pill"
-                    className="absolute inset-0 bg-orange-500 rounded-full shadow-sm"
+                    className="absolute inset-0 bg-red-500 rounded-full shadow-sm"
                     transition={{
                       type: "spring",
                       bounce: 0.1,
@@ -122,12 +122,12 @@ export const ProductShowcase = ({
           >
             <Link
               href="/products"
-              className="group h-full flex flex-col items-center justify-center p-6 bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl hover:bg-orange-50 hover:border-gray-200 transition-all duration-300"
+              className="group h-full flex flex-col items-center justify-center p-6 bg-red-50 border-2 border-dashed border-red-200 rounded-2xl hover:bg-red-50 hover:border-red-200 transition-all duration-300"
             >
-              <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm group-hover:scale-110 group-hover:bg-orange-500 group-hover:text-white transition-all duration-300">
+              <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm group-hover:scale-110 group-hover:bg-red-500 group-hover:text-white transition-all duration-300">
                 <ArrowRight size={20} />
               </div>
-              <span className="mt-4 text-[11px] font-bold uppercase tracking-widest text-gray-500 group-hover:text-orange-600">
+              <span className="mt-4 text-[12px] font-bold uppercase  text-red-500 group-hover:text-red-600">
                 Xem tất cả
               </span>
               <div className="mt-1 flex items-center gap-1 text-[9px] text-gray-600 font-medium">

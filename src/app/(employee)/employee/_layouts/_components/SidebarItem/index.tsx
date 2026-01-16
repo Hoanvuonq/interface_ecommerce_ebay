@@ -3,6 +3,7 @@
 import { cn } from "@/utils/cn";
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
+import { useRef } from "react";
 import { SidebarItemProps } from "./type";
 
 export const SidebarItem = ({
@@ -17,15 +18,45 @@ export const SidebarItem = ({
   const isOpen = openKeys.includes(item.key);
   const hasChildren = item.children && item.children.length > 0;
   const highlightParent = isParentOfActive && !collapsed;
+  const iconRef = useRef<HTMLSpanElement>(null);
 
   if (item.type === "divider") {
     return <div className="h-px bg-gray-100 my-3 mx-4" />;
   }
 
+  const iconWithTooltip = (
+    <span
+      ref={iconRef}
+      className={cn(
+        "shrink-0 transition-transform duration-300 group-hover:scale-110 relative flex items-center justify-center",
+        isActive || highlightParent
+          ? "text-(--color-mainColor)"
+          : "text-gray-600 group-hover:text-orange-500"
+      )}
+    >
+      {item.icon}
+
+      {collapsed && (
+        <div
+          className={cn(
+            "absolute left-full top-1/2 -translate-y-1/2 ml-4 px-3",
+            "py-2 rounded-lg bg-red-700 text-white text-[11px] font-bold opacity-0",
+            "group-hover:opacity-100 group-hover:translate-x-1 pointer-events-none",
+            "whitespace-nowrap z-100 transition-all duration-300 shadow-xl shadow-black/20"
+          )}
+        >
+          <div className="absolute right-full top-1/2 -translate-y-1/2 border-8 border-transparent border-r-red-700" />
+
+          {item.label}
+        </div>
+      )}
+    </span>
+  );
+
   const content = (
     <div
       className={cn(
-        "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 cursor-pointer group select-none relative",
+        "flex items-center gap-3 p-4 rounded-xl transition-all duration-200 cursor-pointer group select-none relative",
         isActive
           ? "bg-orange-50 text-(--color-mainColor) font-semibold shadow-[inset_4px_0_0_0_#f97316]"
           : highlightParent
@@ -35,18 +66,7 @@ export const SidebarItem = ({
       )}
       onClick={() => hasChildren && onToggle(item.key)}
     >
-      <span
-        className={cn(
-          "shrink-0 transition-transform duration-300 group-hover:scale-110 relative z-10",
-          isActive
-            ? "text-(--color-mainColor)"
-            : highlightParent
-            ? "text-(--color-mainColor)"
-            : "text-gray-600 group-hover:text-orange-500"
-        )}
-      >
-        {item.icon}
-      </span>
+      {iconWithTooltip}
 
       {!collapsed && (
         <span className="flex-1 text-[13px] font-bold tracking-wide relative z-10 truncate">
@@ -71,7 +91,7 @@ export const SidebarItem = ({
   );
 
   return (
-    <div className="mb-1.5 px-2">
+    <div className="mb-1.5 px-1">
       {item.href && !hasChildren ? (
         <Link href={item.href}>{content}</Link>
       ) : (
@@ -96,7 +116,9 @@ export const SidebarItem = ({
                 {child.icon && (
                   <span
                     className={
-                      isChildActive ? "text-(--color-mainColor)" : "text-gray-600"
+                      isChildActive
+                        ? "text-(--color-mainColor)"
+                        : "text-gray-600"
                     }
                   >
                     {child.icon}

@@ -139,7 +139,7 @@ export const publicProductService = {
     });
   },
 
-  getNew(page = 0, size = 20) {
+  getNewProducts(page = 0, size = 20) {
     return request<ApiResponseDTO<PageDTO<PublicProductListItemDTO>>>({
       method: "GET",
       url: `/${API_ENDPOINT_PUBLIC_PRODUCTS}/new`,
@@ -160,7 +160,7 @@ export const publicProductService = {
 // Variants APIs (auth required)
 // Base on BE: /api/v1/products/{productId}/variants → with axios baseURL, prefix is /products
 // =========================
-const API_ENDPOINT_PRODUCTS = "v1/products";
+const API_ENDPOINT_PRODUCTS = "v1/public/products";
 export const productVariantService = {
   list(productId: string, pageable?: Partial<PageableDTO>) {
     return request<ApiResponseDTO<PageDTO<ProductVariantDTO>>>({
@@ -467,7 +467,7 @@ export const adminProductService = {
   getStatistics() {
     return request<AdminProductStatisticsDTO>({
       method: "GET",
-      url: `/${API_ENDPOINT_ADMIN_PRODUCTS}/statistics`,
+      url: `/${API_ENDPOINT_ADMIN_PRODUCTS}/counts`,
     });
   },
 
@@ -531,11 +531,10 @@ export const userProductService = {
    * Get all products of current user
    * POST /api/v1/user/products/search (Backend uses POST for search)
    */
-  getAll(page = 0, size = 20) {
+  getAllProducts(page = 0, size = 20) {
     return request<ApiResponseDTO<PageDTO<UserProductDTO>>>({
-      method: "POST",
+      method: "GET",
       url: `/${API_ENDPOINT_USER_PRODUCTS}/search`,
-      data: { page, size },
     });
   },
 
@@ -664,7 +663,7 @@ export const userProductService = {
   getStatistics() {
     return request<UserProductStatisticsDTO>({
       method: "GET",
-      url: `/${API_ENDPOINT_USER_PRODUCTS}/statistics`,
+      url: `/${API_ENDPOINT_USER_PRODUCTS}/counts`,
     });
   },
 

@@ -14,11 +14,11 @@
   --color-primary: #2f5aff;
   --color-secondary: #4f7aff;
   --color-accent: #ff7a00;
-  --color-mainColor: #f05e0a;
+  --color-mainColor: #c90808;
   --color-bg-soft: #f5f7ff;
   --color-border-soft: #e6e9ff;
-  --color-gradient-1: #6cd6ff;
-  --color-gradient-2: #a0cdf0;
+  --color-gradient-1: #8b0000;
+  --color-gradient-2: #d64545;
   --background: var(--color-bg-soft);
   --foreground: #111827;
   --primary-color: var(--color-primary);
@@ -81,10 +81,13 @@ body {
 }
 
 .background-main-gradient {
-  background: linear-gradient(135deg, #1c73ca 0%, #0a4da2 50%, #0842b4 100%);
+ background: linear-gradient(90deg, #810610 0%, #a52121 100%);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
   width: 100%;
-  border: none;
+  border-bottom: none;
 }
+
 
 .hero-carousel .custom-dots li button {
   width: 14px !important;
@@ -148,6 +151,10 @@ body {
   scrollbar-width: none;
 }
 
+.accent-gradient {
+  background: linear-gradient(to bottom right, var(--color-gradient-1), #b12934, var(--color-gradient-2));
+}
+
 @layer base {
 
   body {
@@ -187,8 +194,13 @@ body {
 }
 
 @keyframes loading-flow {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 .animate-loading-flow {
@@ -216,10 +228,11 @@ body {
 }
 
 @layer utilities {
+
   body::-webkit-scrollbar,
   .custom-scrollbar::-webkit-scrollbar {
-    width: 10px; 
-    height: 10px; 
+    width: 10px;
+    height: 10px;
   }
 
   body::-webkit-scrollbar-track,
@@ -229,10 +242,10 @@ body {
 
   body::-webkit-scrollbar-thumb,
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background-color: #af5e07; 
+    background-color: #af5e07;
     border-radius: 99px;
-    
-    border: 3px solid transparent; 
+
+    border: 3px solid transparent;
     background-clip: content-box;
   }
 

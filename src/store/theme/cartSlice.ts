@@ -34,7 +34,7 @@ const initialState: CartState = {
   checkoutError: null,
 };
 
-const { success, error, warning } = useToast();
+const { success, error } = useToast();
 
 const mergeSelectionState = (
   incomingCart: CartDto | any,

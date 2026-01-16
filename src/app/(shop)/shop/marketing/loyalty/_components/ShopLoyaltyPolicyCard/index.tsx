@@ -135,7 +135,7 @@ const ShopLoyaltyPolicyCard: React.FC<ShopLoyaltyPolicyCardProps> = ({
         <button
           onClick={() => setIsEditing(true)}
           className={cn(
-            "px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white font-black text-xs",
+            "px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs",
             "uppercase tracking-widest rounded-2xl shadow-lg shadow-orange-200 transition-all active:scale-95"
           )}
         >
@@ -167,7 +167,7 @@ const ShopLoyaltyPolicyCard: React.FC<ShopLoyaltyPolicyCardProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Rule Type */}
             <div className="space-y-3">
-              <label className="text-[11px] font-black uppercase tracking-widest text-slate-400 ml-1">
+              <label className="text-[11px] font-bold uppercase tracking-widest text-slate-400 ml-1">
                 Loại quy tắc
               </label>
               <div className="grid grid-cols-2 gap-2 p-1.5 bg-slate-100 rounded-2xl">
@@ -196,7 +196,7 @@ const ShopLoyaltyPolicyCard: React.FC<ShopLoyaltyPolicyCardProps> = ({
 
             {/* Rule Value */}
             <div className="space-y-3">
-              <label className="text-[11px] font-black uppercase tracking-widest text-slate-400 ml-1">
+              <label className="text-[11px] font-bold uppercase tracking-widest text-slate-400 ml-1">
                 Giá trị tích lũy
               </label>
               <div className="relative">
@@ -220,7 +220,7 @@ const ShopLoyaltyPolicyCard: React.FC<ShopLoyaltyPolicyCardProps> = ({
 
             {/* Expiry Days */}
             <div className="space-y-3">
-              <label className="text-[11px] font-black uppercase tracking-widest text-slate-400 ml-1 flex items-center gap-2">
+              <label className="text-[11px] font-bold uppercase tracking-widest text-slate-400 ml-1 flex items-center gap-2">
                 <Calendar size={12} /> Thời hạn sử dụng điểm
               </label>
               <div className="relative">
@@ -243,7 +243,7 @@ const ShopLoyaltyPolicyCard: React.FC<ShopLoyaltyPolicyCardProps> = ({
 
             {/* Max Discount */}
             <div className="space-y-3">
-              <label className="text-[11px] font-black uppercase tracking-widest text-slate-400 ml-1">
+              <label className="text-[11px] font-bold uppercase tracking-widest text-slate-400 ml-1">
                 % Giảm tối đa / đơn
               </label>
               <input
@@ -272,7 +272,7 @@ const ShopLoyaltyPolicyCard: React.FC<ShopLoyaltyPolicyCardProps> = ({
             <button
               type="submit"
               disabled={saving}
-              className="px-10 py-3 bg-slate-900 hover:bg-black text-white font-black text-xs uppercase tracking-widest rounded-2xl shadow-xl shadow-slate-200 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-2"
+              className="px-10 py-3 bg-slate-900 hover:bg-black text-white font-bold text-xs uppercase tracking-widest rounded-2xl shadow-xl shadow-slate-200 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-2"
             >
               {saving ? (
                 <Loader2 size={16} className="animate-spin" />
@@ -302,12 +302,12 @@ const ShopLoyaltyPolicyCard: React.FC<ShopLoyaltyPolicyCardProps> = ({
           </div>
           <div>
             <div className="flex items-center gap-3">
-              <h2 className="text-xl font-black text-slate-800 tracking-tight">
+              <h2 className="text-xl font-bold text-slate-800 tracking-tight">
                 Chính sách Điểm thưởng
               </h2>
               <span
                 className={cn(
-                  "px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border",
+                  "px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border",
                   policy.enabled
                     ? "bg-emerald-50 text-emerald-600 border-emerald-100"
                     : "bg-slate-100 text-slate-400 border-slate-200"
@@ -324,7 +324,7 @@ const ShopLoyaltyPolicyCard: React.FC<ShopLoyaltyPolicyCardProps> = ({
 
         <div className="flex items-center gap-3 self-end md:self-center">
           <div className="flex items-center gap-3 bg-white px-4 py-2 rounded-2xl border border-slate-100 shadow-sm">
-            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
               Trạng thái
             </span>
             <button
@@ -344,7 +344,7 @@ const ShopLoyaltyPolicyCard: React.FC<ShopLoyaltyPolicyCardProps> = ({
           </div>
           <button
             onClick={() => setIsEditing(true)}
-            className="flex items-center gap-2 px-6 py-3 bg-slate-900 hover:bg-black text-white text-[11px] font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-slate-200 transition-all active:scale-95"
+            className="flex items-center gap-2 px-6 py-3 bg-slate-900 hover:bg-black text-white text-[11px] font-bold uppercase tracking-widest rounded-2xl shadow-xl shadow-slate-200 transition-all active:scale-95"
           >
             <Edit2 size={14} /> Chỉnh sửa
           </button>
@@ -362,12 +362,12 @@ const ShopLoyaltyPolicyCard: React.FC<ShopLoyaltyPolicyCardProps> = ({
               ) : (
                 <Percent size={18} />
               )}
-              <span className="text-[10px] font-black uppercase tracking-[0.2em]">
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em]">
                 Quy tắc tích lũy
               </span>
             </div>
             <div className="flex items-baseline gap-1">
-              <span className="text-3xl font-black text-slate-800">
+              <span className="text-3xl font-bold text-slate-800">
                 {policy.ruleValue}
               </span>
               <span className="text-sm font-bold text-slate-400 uppercase">
@@ -383,12 +383,12 @@ const ShopLoyaltyPolicyCard: React.FC<ShopLoyaltyPolicyCardProps> = ({
           <div className="p-6 bg-slate-50/50 rounded-3xl border border-slate-100 group hover:border-orange-200 transition-colors">
             <div className="flex items-center gap-3 text-slate-400 mb-3 group-hover:text-orange-500 transition-colors">
               <Calendar size={18} />
-              <span className="text-[10px] font-black uppercase tracking-[0.2em]">
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em]">
                 Hiệu lực điểm
               </span>
             </div>
             <div className="flex items-baseline gap-1">
-              <span className="text-3xl font-black text-slate-800">
+              <span className="text-3xl font-bold text-slate-800">
                 {policy.expiryDays}
               </span>
               <span className="text-sm font-bold text-slate-400 uppercase">
@@ -404,12 +404,12 @@ const ShopLoyaltyPolicyCard: React.FC<ShopLoyaltyPolicyCardProps> = ({
           <div className="p-6 bg-slate-50/50 rounded-3xl border border-slate-100 group hover:border-orange-200 transition-colors">
             <div className="flex items-center gap-3 text-slate-400 mb-3 group-hover:text-orange-500 transition-colors">
               <ShieldCheck size={18} />
-              <span className="text-[10px] font-black uppercase tracking-[0.2em]">
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em]">
                 Giới hạn dùng
               </span>
             </div>
             <div className="flex items-baseline gap-1">
-              <span className="text-3xl font-black text-slate-800">
+              <span className="text-3xl font-bold text-slate-800">
                 {policy.maxDiscountPercent || 100}
               </span>
               <span className="text-sm font-bold text-slate-400 uppercase">

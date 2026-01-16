@@ -28,8 +28,17 @@ import { FilterState, ProductFilters } from "../ProductFilters";
 import { StatusTabItem, StatusTabs } from "../StatusTabs";
 import { getProductColumns } from "./columns";
 
-type StatusType = "DRAFT" | "PENDING" | "APPROVED" | "REJECTED";
+type StatusType =
+  | "DRAFT"
+  | "PENDING"
+  | "APPROVED"
+  | "REJECTED"
+  | "ACTIVE"
+  | "INACTIVE";
 
+interface UserProductWithShop extends UserProductDTO {
+  shopName?: string;
+}
 export const ShopProductForm = () => {
   const [products, setProducts] = useState<UserProductDTO[]>([]);
   const { success, error } = useToast();
@@ -42,7 +51,7 @@ export const ShopProductForm = () => {
     "ALL"
   );
   const [isSearchMode, setIsSearchMode] = useState(false);
-  const [currentOrderTab, setOrderTab] = useState<OrderStatus>("SHIPPING");
+
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 20,
@@ -54,14 +63,18 @@ export const ShopProductForm = () => {
     maxPrice: null,
     categoryId: undefined,
   });
+  const shopDisplayName = useMemo(() => {
+    if (products.length > 0) {
+      return (products[0] as UserProductWithShop).shopName;
+    }
+    return "Cửa hàng của bạn";
+  }, [products]);
 
   const fetchStatistics = async () => {
     try {
       setStatisticsLoading(true);
-
       const response: any = await userProductService.getStatistics();
-      const countData = response?.data?.countByStatus || [];
-
+      const countData = response.data?.countByStatus || [];
       const statsMap = countData.reduce((acc: any, item: any) => {
         acc[item.status] = item.count;
         return acc;
@@ -79,7 +92,6 @@ export const ShopProductForm = () => {
 
       setStatistics(mappedStats);
     } catch (err: any) {
-      console.error("Lỗi lấy thống kê:", err);
       setStatistics({
         totalProducts: 0,
         draftProducts: 0,
@@ -97,22 +109,21 @@ export const ShopProductForm = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      let response =
-        selectedStatus === "ALL"
-          ? await userProductService.getAllProducts(
-              pagination.current - 1,
-              pagination.pageSize
-            )
-          : await userProductService.getByStatusAdmin(
-              selectedStatus,
-              pagination.current - 1,
-              pagination.pageSize
-            );
-      const validProducts = (response?.data?.content || []).filter(
-        (item: UserProductDTO | null): item is UserProductDTO => item !== null
+      const response = await userProductService.getAllProducts(
+        pagination.current - 1,
+        pagination.pageSize
       );
-      setProducts(validProducts);
-      console.log("Valid products:", validProducts.length, validProducts);
+
+      const mappedProducts: UserProductWithShop[] = (
+        response?.data?.content || []
+      )
+        .filter((item: any) => item !== null)
+        .map((item: any) => ({
+          ...item,
+          shopName: item.shop?.shopName || "N/A",
+        }));
+
+      setProducts(mappedProducts);
       setPagination((prev) => ({
         ...prev,
         total: response?.data?.totalElements ?? 0,
@@ -169,7 +180,6 @@ export const ShopProductForm = () => {
     },
     [filters, selectedStatus, pagination.pageSize]
   );
-  const debouncedSearchRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const hasFilters =
@@ -237,9 +247,10 @@ export const ShopProductForm = () => {
   };
   const filteredProducts = useMemo(() => {
     if (selectedStatus === "ALL") return products;
+    if (selectedStatus === "ACTIVE") return products.filter((p) => p.active);
+    if (selectedStatus === "INACTIVE") return products.filter((p) => !p.active);
     return products.filter((p) => p.approvalStatus === selectedStatus);
   }, [products, selectedStatus]);
-
   const kpiCards = useMemo(
     () => [
       {
@@ -269,29 +280,72 @@ export const ShopProductForm = () => {
     ],
     [statistics, statisticsLoading]
   );
-  type OrderStatus = "SHIPPING" | "COMPLETED" | "CANCELLED";
 
-const orderTabs: StatusTabItem<OrderStatus>[] = [
-  { key: "SHIPPING", label: "Đang giao", icon: Truck, count: 5 },
-  { key: "COMPLETED", label: "Hoàn thành", icon: PackageCheck, count: 120 },
-  { key: "CANCELLED", label: "Đã hủy", icon: XCircle, count: 2 },
-];
+  const productStatusTabs: StatusTabItem<StatusType | "ALL">[] = [
+    {
+      key: "ALL",
+      label: "Tất cả",
+      icon: LayoutGrid,
+      count: products.length,
+    },
+    {
+      key: "DRAFT",
+      label: "Nháp",
+      icon: Clock,
+      count: products.filter((p) => p.approvalStatus === "DRAFT").length,
+    },
+    {
+      key: "PENDING",
+      label: "Chờ duyệt",
+      icon: Clock,
+      count: products.filter((p) => p.approvalStatus === "PENDING").length,
+    },
+    {
+      key: "APPROVED",
+      label: "Đã duyệt",
+      icon: CheckCircle2,
+      count: products.filter((p) => p.approvalStatus === "APPROVED").length,
+    },
+    {
+      key: "REJECTED",
+      label: "Từ chối",
+      icon: XCircle,
+      count: products.filter((p) => p.approvalStatus === "REJECTED").length,
+    },
+    {
+      key: "ACTIVE",
+      label: "Đang bán",
+      icon: PlayCircle,
+      count: products.filter((p) => p.active).length,
+    },
+    {
+      key: "INACTIVE",
+      label: "Ngừng bán",
+      icon: PackageCheck,
+      count: products.filter((p) => !p.active).length,
+    },
+  ];
 
   const columns = getProductColumns(handleAction, userProductService);
-
+  useEffect(() => {
+    fetchStatistics();
+  }, []);
   return (
-    <div className="p-1 min-h-screen space-y-6">
+    <div className="p-1 min-h-screen space-y-4">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-gray-50 ">
         <div className="space-y-1">
           <div className="flex items-center gap-3 text-orange-500">
             <div className="p-3 bg-orange-500 rounded-2xl shadow-lg shadow-orange-200 text-white">
               <ShoppingBag size={28} strokeWidth={2.5} />
             </div>
-            <h1 className="text-4xl font-bold text-gray-900 italic uppercase tracking-tighter">
-              Quản Lý Sản phẩm
+            <h1 className="flex gap-2 items-center">
+              <span className="text-3xl font-bold text-gray-900">Quản Lý Sản phẩm</span>
+              <span className="text-4xl font-bold italic uppercase">
+                {shopDisplayName}
+              </span>
             </h1>
           </div>
-          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em] ml-16">
+          <p className="text-[12px] font-bold text-gray-700 uppercase ml-16">
             Danh sách sản phẩm của bạn
           </p>
         </div>
@@ -350,9 +404,9 @@ const orderTabs: StatusTabItem<OrderStatus>[] = [
           />
 
           <StatusTabs
-            tabs={orderTabs}
-            current={currentOrderTab}
-            onChange={setOrderTab}
+            tabs={productStatusTabs}
+            current={selectedStatus}
+            onChange={setSelectedStatus}
           />
         </div>
         <div

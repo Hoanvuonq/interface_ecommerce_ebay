@@ -46,7 +46,7 @@ export const useHomepageData = (locale: string = "vi") => {
       },
       {
         queryKey: ["homepage", "new", locale],
-        queryFn: () => publicProductService.getNew(0, 12),
+        queryFn: () => publicProductService.getNewProducts(0, 12),
         staleTime: 1000 * 60 * 5,
       },
     ],
@@ -96,7 +96,7 @@ export const useInfiniteProducts = (type: "sale" | "new") => {
     queryFn: ({ pageParam = 0 }) =>
       type === "sale"
         ? publicProductService.getSale(pageParam, 12)
-        : publicProductService.getNew(pageParam, 12),
+        : publicProductService.getNewProducts(pageParam, 12),
     getNextPageParam: (lastPage: any) => {
       const pageData = lastPage?.data?.data || lastPage?.data;
       if (pageData && typeof pageData.number === "number") {

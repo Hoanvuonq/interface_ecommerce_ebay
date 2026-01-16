@@ -42,7 +42,7 @@ export const LanguageSwitcher = () => {
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
           "flex items-center gap-1.5 px-4 py-1.5 rounded-full text-gray-800 transition-colors focus:outline-none",
-          "bg-white hover:bg-gray-50 shadow-inner cursor-pointer"
+          "bg-white hover:bg-gray-50 shadow-custom cursor-pointer"
         )}
         aria-expanded={isOpen}
         aria-label={`Ngôn ngữ hiện tại: ${currentLang?.label}`}
@@ -56,7 +56,7 @@ export const LanguageSwitcher = () => {
         <div 
           className={cn(
             "absolute right-0 top-full mt-1 w-28 bg-white text-gray-800 rounded-lg shadow-xl overflow-hidden z-20",
-            "before:content-[''] before:absolute before:top-[-8px] before:right-3 before:w-0 before:h-0 before:border-x-8 before:border-x-transparent before:border-b-8 before:border-b-white"
+            "before:content-[''] before:absolute before:top-2 before:right-3 before:w-0 before:h-0 before:border-x-8 before:border-x-transparent before:border-b-8 before:border-b-white"
           )}
         >
           {locales.map((lang) => (

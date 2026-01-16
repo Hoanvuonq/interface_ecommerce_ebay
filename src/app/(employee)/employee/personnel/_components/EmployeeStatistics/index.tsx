@@ -19,7 +19,7 @@ import {
 } from "recharts";
 import { useEmployeeStatistics } from "../../_hooks/useEmployeeStatistics";
 import { ChartWrapper } from "@/components/chart";
-import { TooltipComponents } from "@/components/custom/components/customTooltip";
+import { CustomTooltip } from "@/components";
 export default function EmployeeStatistics() {
   const [selectedYear] = useState(new Date().getFullYear());
   const [selectedMonth] = useState(new Date().getMonth() + 1);
@@ -104,7 +104,7 @@ export default function EmployeeStatistics() {
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
-                <RechartsTooltip content={<TooltipComponents />} />
+                <RechartsTooltip content={<CustomTooltip />} />
                 <Legend
                   verticalAlign="bottom"
                   iconType="circle"
@@ -149,7 +149,7 @@ export default function EmployeeStatistics() {
                 />
                 <RechartsTooltip
                   cursor={{ fill: "#f8fafc" }}
-                  content={<TooltipComponents />}
+                  content={<CustomTooltip />}
                 />
                 <Bar dataKey="value" radius={[10, 10, 0, 0]} barSize={45}>
                   {chartData?.workType.map((entry: any, index: number) => (
@@ -185,7 +185,7 @@ export default function EmployeeStatistics() {
                   tick={{ fontSize: 10, fill: "#94a3b8" }}
                 />
                 <RechartsTooltip
-                  content={<TooltipComponents unit="Nhân viên" />}
+                  content={<CustomTooltip label="Nhân viên" />}
                 />
                 <Bar
                   dataKey="value"

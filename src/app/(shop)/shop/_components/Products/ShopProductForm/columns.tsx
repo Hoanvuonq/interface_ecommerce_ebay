@@ -1,7 +1,12 @@
 "use client";
 
+import { ActionBtn } from "@/components";
 import { Column } from "@/components/DataTable/type";
 import { UserProductDTO } from "@/types/product/user-product.dto";
+import { cn } from "@/utils/cn";
+import {
+  resolveMediaUrl
+} from "@/utils/products/media.helpers";
 import {
   CheckCircle2,
   Clock,
@@ -12,24 +17,17 @@ import {
   Send,
   ShoppingBag,
   StopCircle,
+  Store,
   Tags,
   Trash2,
   XCircle,
-  Store,
 } from "lucide-react";
-import Link from "next/link";
 import Image from "next/image";
-import { cn } from "@/utils/cn";
-import { ActionBtn } from "@/components";
-import {
-  resolveMediaUrl,
-  resolveVariantImageUrl,
-} from "@/utils/products/media.helpers";
+import Link from "next/link";
 
 type StatusType = "DRAFT" | "PENDING" | "APPROVED" | "REJECTED";
 
 const getProductThumbUrl = (record: any): string => {
-  // Ưu tiên ảnh primary trong mảng media
   const primaryMedia =
     record.media?.find((m: any) => m.isPrimary) || record.media?.[0];
   if (primaryMedia) {
@@ -37,7 +35,6 @@ const getProductThumbUrl = (record: any): string => {
     if (url) return url;
   }
 
-  // Nếu không có media, tìm trong variants
   const firstVariantWithImg = record.variants?.find((v: any) => v.imageUrl);
   if (firstVariantWithImg) {
     return firstVariantWithImg.imageUrl;
@@ -96,16 +93,32 @@ export const getProductColumns = (
     },
   },
   {
-    header: "Cửa hàng",
-    render: (record: any) => (
-      <div className="flex items-center gap-2 text-gray-600 font-bold text-xs">
-        <Store size={14} className="text-gray-400" />
-        <span className="truncate max-w-30">
-          {record.shop?.shopName || "Hệ thống"}
+  header: "Đã bán / Kho",
+  align: "center",
+  render: (record: any) => {
+    let totalStock = 0;
+    let totalQuantity = 0;
+    if (Array.isArray(record.variants)) {
+      record.variants.forEach((variant: any) => {
+        const stock = variant.inventory?.stock ?? 0;
+        const quantity = variant.inventory?.quantity ?? 0;
+        totalStock += stock;
+        totalQuantity += quantity;
+      });
+    }
+    const totalSold = totalQuantity - totalStock;
+    return (
+      <div className="flex flex-col items-center font-bold text-xs">
+        <span>
+          <span className="text-orange-500">{totalSold < 0 ? 0 : totalSold}</span>
+          <span className="mx-1 text-gray-400">/</span>
+          <span className="text-blue-600">{totalQuantity}</span>
         </span>
+        <span className="text-[10px] text-gray-400 font-normal">Đã bán / Nhập kho</span>
       </div>
-    ),
+    );
   },
+},
   {
     header: "Giá niêm yết",
     align: "right",

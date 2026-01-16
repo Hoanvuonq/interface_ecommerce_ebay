@@ -14,12 +14,10 @@ import {
 } from "../../_hooks";
 import { useProductContext } from "../../_context";
 
-// Hooks from project
 import { usePresignedUpload } from "@/hooks/usePresignedUpload";
 import { useToast } from "@/hooks/useToast";
 import { useProductStore } from "../../_store/product.store";
 
-// Components
 import { ButtonField, CustomVideoModal, ImagePreviewModal } from "@/components";
 import { Button } from "@/components/button/button";
 import {
@@ -456,7 +454,6 @@ export default function ShopProductAddStepsFormScreen() {
         onRemoveValue={handleRemoveOptionValue}
         onUpdateValue={handleOptionValueChange}
       />
-
     </div>
   );
 
@@ -546,7 +543,8 @@ export default function ShopProductAddStepsFormScreen() {
 
           <div className="w-full lg:w-[30%] lg:min-w-[320px]">
             <ProductPreviewSidebar
-              previewImage={previewImage}
+              fileList={fileList}
+              videoList={videoList}
               name={formFields.name}
               basePrice={formFields.basePrice}
               description={formFields.description}

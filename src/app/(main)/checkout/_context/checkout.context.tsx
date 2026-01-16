@@ -20,9 +20,9 @@ export const CheckoutProvider = ({ children, initialPreview }: any) => {
         }
       });
       store.setAddressMasterData(pList, wList);
-      
+
       if (initialPreview) store.setPreview(initialPreview);
-      
+
       hasLoadedData.current = true;
     }
   }, [initialPreview]);

@@ -23,7 +23,7 @@ export const SectionSreen = ({
 
     if (isWhite) return "bg-white";
 
-    return "bg-linear-to-br from-(--color-gradient-1) via-white to-(--color-gradient-2)";
+    return "accent-gradient";
   };
 
   return (

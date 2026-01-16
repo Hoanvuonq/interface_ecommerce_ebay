@@ -114,7 +114,7 @@ export const ProductBasicTabs: React.FC<ProductBasicTabsProps> = ({
                   type="button"
                   onClick={() => handleActiveChange(!active)}
                   className={cn(
-                    "relative inline-flex h-6 w-12 items-center rounded-full transition-all duration-300 ease-in-out flex-shrink-0",
+                    "relative inline-flex h-6 w-12 items-center rounded-full transition-all duration-300 ease-in-out shrink-0",
                     active 
                       ? "bg-linear-to-r from-orange-400 to-orange-500 shadow-md shadow-orange-200" 
                       : "bg-gray-300"

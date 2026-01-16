@@ -1,12 +1,15 @@
-import { IntroBanner } from "@/app/(main)/(home)/_components/IntroBanner";
-import { ProductSection } from "@/app/(main)/(home)/_components/ProductSection";
-import { Promotion } from "@/app/(main)/(home)/_components/Promotion";
 import { HomepageProvider } from "@/app/(main)/(home)/_context/HomepageContext";
-import BannerSidebar from "../_components/BannerSidebar";
-import { CategoriesSection } from "../_components/CategoriesSection";
-import { FlashSaleSection } from "../_components/FlashSale";
-import { ProductShowcase } from "../_components/ProductShowcase";
-import { CalathaMallSection } from "../_components/CalathaMallSection";
+import {
+  ProductShowcase,
+  CalathaMallSection,
+  FlashSaleSection,
+  CategoriesSection,
+  Promotion,
+  ProductSection,
+  IntroBanner,
+  BannerSidebar,
+} from "../_components";
+import { ProductShowcaseTest } from "../_components/ProductShowcaseTest";
 
 export const HomeScreen = () => {
   return (
@@ -23,6 +26,7 @@ export const HomeScreen = () => {
         sidebar={<BannerSidebar />}
       />
       <ProductShowcase />
+      <ProductShowcaseTest/>
       <CalathaMallSection />
     </HomepageProvider>
   );

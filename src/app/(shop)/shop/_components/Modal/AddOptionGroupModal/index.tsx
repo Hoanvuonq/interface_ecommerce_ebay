@@ -1,9 +1,16 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Grid2X2Plus, Tag as TagIcon, Check, Lightbulb } from "lucide-react";
+import {
+  Grid2X2Plus,
+  Tag as TagIcon,
+  Check,
+  Lightbulb,
+  Sparkles,
+} from "lucide-react";
 import { PortalModal } from "@/features/PortalModal";
 import { cn } from "@/utils/cn";
+import { CustomButtonActions, FormInput } from "@/components";
 
 interface AddOptionGroupModalProps {
   isOpen: boolean;
@@ -24,7 +31,7 @@ export const AddOptionGroupModal: React.FC<AddOptionGroupModalProps> = ({
   useEffect(() => {
     if (isOpen) {
       setName("");
-      setTimeout(() => inputRef.current?.focus(), 100);
+      setTimeout(() => inputRef.current?.focus(), 150);
     }
   }, [isOpen]);
 
@@ -35,33 +42,20 @@ export const AddOptionGroupModal: React.FC<AddOptionGroupModalProps> = ({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      handleSubmit();
-    }
+    if (e.key === "Enter") handleSubmit();
   };
 
   const footerContent = (
-    <div className="flex items-center gap-3 w-full justify-end py-2">
-      <button
-        onClick={onClose}
-        className="px-6 py-2.5 rounded-2xl text-sm font-bold text-gray-500 hover:bg-gray-100 hover:text-gray-800 transition-all active:scale-95"
-      >
-        Hủy bỏ
-      </button>
-      <button
-        onClick={handleSubmit}
-        disabled={!name.trim()}
-        className={cn(
-          "flex items-center gap-2 px-8 py-2.5 rounded-2xl text-sm font-bold text-white transition-all active:scale-95 shadow-lg",
-          !name.trim()
-            ? "bg-gray-200 cursor-not-allowed shadow-none text-gray-400"
-            : "bg-orange-500 hover:bg-orange-600 shadow-orange-500/30"
-        )}
-      >
-        <Check size={18} strokeWidth={3} />
-        THÊM MỚI
-      </button>
-    </div>
+    <CustomButtonActions
+      isDisabled={!name.trim()}
+      cancelText="Hủy bỏ"
+      submitText="Thêm mới"
+      submitIcon={Check}
+      onCancel={onClose}
+      onSubmit={handleSubmit}
+      containerClassName="w-full flex gap-3 border-t-0"
+      className="w-34! h-12 rounded-4xl"
+    />
   );
 
   return (
@@ -69,68 +63,104 @@ export const AddOptionGroupModal: React.FC<AddOptionGroupModalProps> = ({
       isOpen={isOpen}
       onClose={onClose}
       title={
-        <div className="flex items-center gap-3">
-          <div className="p-2 bg-orange-100 rounded-xl">
-            <Grid2X2Plus size={22} className="text-orange-600" strokeWidth={2.5} />
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 flex items-center justify-center bg-linear-to-br from-orange-50 to-orange-100 rounded-2xl border border-orange-200/50 shadow-inner">
+            <Grid2X2Plus
+              size={24}
+              className="text-orange-600"
+              strokeWidth={2}
+            />
           </div>
-          <span className="text-gray-800 font-bold text-xl tracking-tight">Thêm nhóm phân loại</span>
+          <div className="flex flex-col">
+            <span className="text-gray-900 font-extrabold text-xl  leading-none">
+              Thêm phân loại
+            </span>
+            <span className="text-[10px] text-gray-400 uppercase font-bold  mt-1">
+              Thiết lập thuộc tính sản phẩm
+            </span>
+          </div>
         </div>
       }
       footer={footerContent}
-      width="max-w-md"
+      width="max-w-lg"
     >
-      <div className="flex flex-col gap-6 pt-4">
-        {/* Suggestion Box */}
-        <div className="flex gap-3 p-4 bg-orange-50/50 rounded-2xl border border-gray-100/50">
-          <Lightbulb size={18} className="text-orange-600 shrink-0 mt-0.5" />
-          <div className="text-xs font-semibold text-orange-800 leading-relaxed">
-            <span className="font-bold uppercase tracking-wider text-[10px] block mb-0.5">Gợi ý</span>
-            Màu sắc, Kích thước, Dung lượng, Chất liệu hoặc Loại bề mặt...
+      <div className="flex flex-col gap-8 pt-6 pb-2">
+        <div className="relative group overflow-hidden">
+          <div className="absolute inset-0 bg-linear-to-r from-orange-500/5 to-pink-500/5 opacity-100 group-hover:opacity-150 transition-opacity" />
+          <div className="relative flex gap-4 p-5 rounded-2xl border border-orange-100/50">
+            <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center shrink-0">
+              <Lightbulb size={16} className="text-orange-600" />
+            </div>
+            <div className="flex flex-col gap-1">
+              <div className="flex items-center gap-2">
+                <span className="font-bold uppercase text-[10px] text-orange-600">
+                  Gợi ý phổ biến
+                </span>
+                <Sparkles size={10} className="text-orange-400 animate-pulse" />
+              </div>
+              <p className="text-[13px] font-medium text-gray-600 leading-relaxed">
+                Màu sắc, Kích thước, Dung lượng, Chất liệu...
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* Custom Input Field */}
-        <div className="space-y-2">
-          <label className="text-[11px] font-bold text-gray-500 uppercase tracking-widest ml-1">
-            Tên nhóm phân loại
-          </label>
+        <div className="space-y-3">
+          {/* Phần Label và Counter giữ bên ngoài để linh hoạt */}
+          <div className="flex justify-between items-end px-1">
+            <label className="text-[11px] font-semibold text-gray-400 uppercase ">
+              Tên nhóm phân loại
+            </label>
+            <span
+              className={cn(
+                "text-[10px] font-bold tabular-nums transition-colors",
+                name.length >= 45 ? "text-red-500" : "text-gray-300"
+              )}
+            >
+              {name.length}/50
+            </span>
+          </div>
+
           <div className="relative group">
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-orange-500 transition-colors">
+            {/* Icon bên trái - Tận dụng tính chất absolute của nó */}
+            <div
+              className={cn(
+                "absolute left-5 top-1/2 -translate-y-1/2 z-10 transition-all duration-300 pointer-events-none",
+                name ? "text-orange-500 scale-110" : "text-gray-300"
+              )}
+            >
               <TagIcon size={18} />
             </div>
-            
-            <input
+
+            <FormInput
               ref={inputRef}
-              type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               onKeyDown={handleKeyDown}
               maxLength={50}
-              placeholder="Nhập tên (VD: Kích cỡ)..."
-              className={cn(
-                "w-full pl-12 pr-16 py-4 bg-gray-50/50 border-2 border-gray-100 rounded-2xl text-base font-bold text-gray-800 outline-none transition-all",
-                "placeholder:text-gray-300 placeholder:font-normal",
-                "focus:bg-white focus:border-gray-500 focus:ring-4 focus:ring-orange-500/10 hover:border-gray-200"
-              )}
+              placeholder="VD: Kích cỡ, Màu sắc..."
+              className="pl-14 pr-6 py-6"
+              containerClassName="space-y-0"
             />
-            
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-bold tabular-nums text-gray-300 group-focus-within:text-orange-400">
-              {name.length}/50
-            </div>
           </div>
         </div>
 
         {/* Existing Groups Tags */}
         {existingGroups.length > 0 && (
-          <div className="space-y-3 animate-in fade-in slide-in-from-bottom-2 duration-500">
-            <div className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">
-              Các nhóm đã có
+          <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <div className="flex items-center gap-2 px-1">
+              <div className="h-px flex-1 bg-gray-100" />
+              <span className="text-[10px] font-bold text-gray-300 uppercase whitespace-nowrap">
+                Đã sử dụng
+              </span>
+              <div className="h-px flex-1 bg-gray-100" />
             </div>
-            <div className="flex flex-wrap gap-2">
+
+            <div className="flex flex-wrap gap-2 px-1">
               {existingGroups.map((g, idx) => (
-                <div 
-                  key={idx} 
-                  className="px-4 py-2 rounded-xl bg-white border border-gray-100 text-xs font-bold text-gray-600 shadow-sm hover:border-gray-200 hover:text-orange-600 transition-all cursor-default"
+                <div
+                  key={idx}
+                  className="px-4 py-2 rounded-xl bg-white border border-gray-200 text-[12px] font-bold text-gray-500 shadow-sm hover:border-orange-200 hover:text-orange-600 hover:bg-orange-50/30 transition-all cursor-default select-none"
                 >
                   {g}
                 </div>

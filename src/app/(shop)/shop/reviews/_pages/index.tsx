@@ -1,26 +1,17 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import {
-  Card,
-  Tabs,
-  Table,
-  Space,
-  Button,
-  Tag,
-  Tooltip,
-  Select,
-  Input,
-} from "antd";
-import {
-  StarOutlined,
-  MessageOutlined,
-  EyeOutlined,
-  ReloadOutlined,
-  ShopOutlined,
-  AppstoreOutlined,
-} from "@ant-design/icons";
-import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
+import React, { useState, useEffect, useCallback } from "react";
+import { 
+  Star, 
+  MessageSquare, 
+  Eye, 
+  RefreshCw, 
+  Store, 
+  Package, 
+  Search,
+  Calendar,
+  ChevronLeft
+} from "lucide-react";
 import { useGetReviews, useGetReviewStatistics } from "../_hooks/useShopReview";
 import {
   ReviewResponse,
@@ -32,324 +23,247 @@ import ReviewResponseModal from "../_components/ReviewResponseModal";
 import ProductReviewsSection from "../_components/ProductReviewsSection";
 import ProductListForReviews from "../_components/ProductListForReviews";
 import { getStoredUserDetail } from "@/utils/jwt";
-const { Option } = Select;
-const { Search } = Input;
+import { DataTable } from "@/components";
+import { Column } from "@/components/DataTable/type";
+import { cn } from "@/utils/cn";
 
-export default function ShopReviewsScreen() {
-  const getReviews = useGetReviews();
-  const getStatistics = useGetReviewStatistics();
+// export default function ShopReviewsScreen() {
+//   const getReviews = useGetReviews();
+//   const getStatistics = useGetReviewStatistics();
 
-  const [activeTab, setActiveTab] = useState<"products" | "shop">("products");
-  const [selectedProductId, setSelectedProductId] = useState<string | null>(
-    null
-  );
-  const [selectedReviewId, setSelectedReviewId] = useState<string | null>(null);
-  const [responseModalOpen, setResponseModalOpen] = useState(false);
-  const [pagination, setPagination] = useState({
-    current: 1,
-    pageSize: 10,
-    total: 0,
-  });
-  const user = getStoredUserDetail();
-  const shopId = user?.shopId;
+//   const [activeTab, setActiveTab] = useState<"products" | "shop">("products");
+//   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
+//   const [selectedReviewId, setSelectedReviewId] = useState<string | null>(null);
+//   const [responseModalOpen, setResponseModalOpen] = useState(false);
+//   const [pagination, setPagination] = useState({
+//     current: 0, // DataTable sử dụng index 0
+//     pageSize: 10,
+//     total: 0,
+//   });
 
-  // Local state for data
-  const [reviewsData, setReviewsData] = useState<ReviewPageDto | null>(null);
-  const [statisticsData, setStatisticsData] =
-    useState<ReviewStatisticsResponse | null>(null);
+//   const user = getStoredUserDetail();
+//   const shopId = user?.shopId;
 
-  // Fetch shop reviews statistics
-  useEffect(() => {
-    const fetchStatistics = async () => {
-      if (activeTab === "shop") {
-        const res = await getStatistics.handleGetReviewStatistics(
-          "SHOP",
-          shopId
-        );
-        if (res && res.data) {
-          setStatisticsData(res.data);
-        }
-      }
-    };
-    fetchStatistics();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeTab]);
+//   const [reviewsData, setReviewsData] = useState<ReviewPageDto | null>(null);
+//   const [statisticsData, setStatisticsData] = useState<ReviewStatisticsResponse | null>(null);
 
-  // Table columns for reviews list
-  const columns: ColumnsType<ReviewResponse> = [
-    {
-      title: "STT",
-      key: "index",
-      width: 60,
-      align: "center",
-      render: (_: unknown, __: unknown, index: number) => (
-        <span className="text-gray-500">
-          {(pagination.current - 1) * pagination.pageSize + index + 1}
-        </span>
-      ),
-    },
-    {
-      title: "Người đánh giá",
-      key: "user",
-      width: 180,
-      render: (_: unknown, record: ReviewResponse) => (
-        <div className="flex items-center gap-2">
-          <span>{record.username || record.buyerName}</span>
-          {record.verifiedPurchase && <Tag color="green">Đã mua</Tag>}
-        </div>
-      ),
-    },
-    {
-      title: "Rating",
-      key: "rating",
-      width: 120,
-      align: "center",
-      render: (_: unknown, record: ReviewResponse) => (
-        <div className="flex items-center gap-1">
-          <StarOutlined className="text-yellow-400" />
-          <span className="font-semibold">{record.rating}</span>
-        </div>
-      ),
-    },
-    {
-      title: "Nội dung",
-      key: "comment",
-      ellipsis: true,
-      render: (_: unknown, record: ReviewResponse) => (
-        <Tooltip title={record.comment}>
-          <span className="text-gray-700">
-            {record.comment || "Không có bình luận"}
-          </span>
-        </Tooltip>
-      ),
-    },
-    {
-      title: "Phản hồi",
-      key: "response",
-      width: 100,
-      align: "center",
-      render: (_: unknown, record: ReviewResponse) => (
-        <Tag color={record.hasResponse ? "green" : "default"}>
-          {record.hasResponse ? "Đã trả lời" : "Chưa trả lời"}
-        </Tag>
-      ),
-    },
-    {
-      title: "Ngày tạo",
-      key: "createdDate",
-      width: 150,
-      render: (_: unknown, record: ReviewResponse) =>
-        new Date(record.createdDate).toLocaleDateString("vi-VN"),
-    },
-    {
-      title: "Hành động",
-      key: "actions",
-      width: 120,
-      fixed: "right",
-      render: (_: unknown, record: ReviewResponse) => (
-        <Space size="small">
-          <Tooltip title="Xem chi tiết">
-            <Button
-              type="text"
-              size="small"
-              icon={<EyeOutlined />}
-              onClick={() => {
-                if (record.reviewType === "PRODUCT") {
-                  setSelectedProductId(record.reviewableId);
-                }
-              }}
-            />
-          </Tooltip>
-          {!record.hasResponse && (
-            <Tooltip title="Trả lời">
-              <Button
-                type="text"
-                size="small"
-                icon={<MessageOutlined />}
-                onClick={() => {
-                  setSelectedReviewId(record.id);
-                  setResponseModalOpen(true);
-                }}
-              />
-            </Tooltip>
-          )}
-        </Space>
-      ),
-    },
-  ];
+//   const fetchShopData = useCallback(async () => {
+//     if (activeTab === "shop" && shopId) {
+//       // Fetch Statistics
+//       const statsRes = await getStatistics.handleGetReviewStatistics("SHOP", shopId);
+//       if (statsRes && statsRes.data) setStatisticsData(statsRes.data);
 
-  const handleTableChange = (newPagination: TablePaginationConfig) => {
-    setPagination({
-      current: newPagination.current || 1,
-      pageSize: newPagination.pageSize || 10,
-      total: pagination.total,
-    });
-  };
+//       // Fetch Reviews List
+//       const reviewsRes = await getReviews.handleGetReviews("SHOP", shopId, {
+//         page: pagination.current,
+//         size: pagination.pageSize,
+//       });
+//       if (reviewsRes && reviewsRes.data) {
+//         setReviewsData(reviewsRes.data);
+//         setPagination(prev => ({ ...prev, total: reviewsRes.data.totalElements }));
+//       }
+//     }
+//   }, [activeTab, shopId, pagination.current, pagination.pageSize]);
 
-  const handleResponseSuccess = async () => {
-    // Refresh reviews
-    if (activeTab === "shop") {
-      const reviewsRes = await getReviews.handleGetReviews("SHOP", shopId, {
-        page: pagination.current - 1,
-        size: pagination.pageSize,
-      });
-      if (reviewsRes && reviewsRes.data) {
-        setReviewsData(reviewsRes.data);
-        setPagination((prev) => ({
-          ...prev,
-          total: reviewsRes.data.totalElements,
-        }));
-      }
-    }
-    const statsRes = await getStatistics.handleGetReviewStatistics(
-      activeTab === "shop" ? "SHOP" : "PRODUCT",
-      selectedProductId || ""
-    );
-    if (statsRes && statsRes.data) {
-      setStatisticsData(statsRes.data);
-    }
-  };
+//   useEffect(() => {
+//     fetchShopData();
+//   }, [fetchShopData]);
 
-  return (
-    <div style={{ padding: "24px" }}>
-      {/* Simple Header */}
-      <div style={{ marginBottom: 24 }}>
-        <h1 style={{ fontSize: 24, fontWeight: 600, margin: 0 }}>
-          Quản lý Reviews
-        </h1>
-      </div>
+//   const columns: Column<ReviewResponse>[] = [
+//     {
+//       header: "Người đánh giá",
+//       className: "w-64",
+//       render: (record) => (
+//         <div className="flex flex-col gap-1">
+//           <div className="flex items-center gap-2">
+//             <span className="font-bold text-slate-700">{record.username || record.buyerName}</span>
+//             {record.verifiedPurchase && (
+//               <span className="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-600 text-[9px] font-black uppercase border border-emerald-100">
+//                 Đã mua
+//               </span>
+//             )}
+//           </div>
+//           <span className="text-[10px] text-slate-400 font-medium italic">ID: {record.id.slice(0, 8)}...</span>
+//         </div>
+//       ),
+//     },
+//     {
+//       header: "Đánh giá",
+//       align: "center",
+//       className: "w-32",
+//       render: (record) => (
+//         <div className="flex items-center justify-center gap-1.5 bg-slate-50 py-1.5 px-3 rounded-xl border border-slate-100">
+//           <Star size={14} className="text-orange-400 fill-orange-400" />
+//           <span className="font-black text-slate-700">{record.rating}</span>
+//         </div>
+//       ),
+//     },
+//     {
+//       header: "Nội dung phản hồi",
+//       render: (record) => (
+//         <div className="max-w-md">
+//           <p className="text-sm text-slate-600 leading-relaxed line-clamp-2 italic">
+//             "{record.comment || "Không có nội dung bình luận"}"
+//           </p>
+//         </div>
+//       ),
+//     },
+//     {
+//       header: "Trạng thái",
+//       align: "center",
+//       className: "w-40",
+//       render: (record) => (
+//         <span className={cn(
+//           "px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border",
+//           record.hasResponse 
+//             ? "bg-emerald-50 text-emerald-600 border-emerald-100" 
+//             : "bg-slate-100 text-slate-400 border-slate-200"
+//         )}>
+//           {record.hasResponse ? "Đã phản hồi" : "Chưa trả lời"}
+//         </span>
+//       ),
+//     },
+//     {
+//       header: "Thời gian",
+//       className: "w-40",
+//       render: (record) => (
+//         <div className="flex items-center gap-2 text-slate-400">
+//           <Calendar size={14} />
+//           <span className="text-xs font-bold">{new Date(record.createdDate).toLocaleDateString("vi-VN")}</span>
+//         </div>
+//       ),
+//     },
+//     {
+//       header: "Hành động",
+//       align: "right",
+//       className: "w-32",
+//       render: (record) => (
+//         <div className="flex items-center justify-end gap-2">
+//           <button 
+//             onClick={() => record.reviewType === "PRODUCT" && setSelectedProductId(record.reviewableId)}
+//             className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all"
+//             title="Xem chi tiết"
+//           >
+//             <Eye size={18} />
+//           </button>
+//           {!record.hasResponse && (
+//             <button 
+//               onClick={() => { setSelectedReviewId(record.id); setResponseModalOpen(true); }}
+//               className="p-2 text-slate-400 hover:text-orange-600 hover:bg-orange-50 rounded-xl transition-all"
+//               title="Gửi phản hồi"
+//             >
+//               <MessageSquare size={18} />
+//             </button>
+//           )}
+//         </div>
+//       ),
+//     },
+//   ];
 
-      {/* Simple Tabs */}
-      <Card style={{ marginBottom: 24 }}>
-        <Tabs
-          activeKey={activeTab}
-          onChange={(key) => setActiveTab(key as "products" | "shop")}
-          items={[
-            {
-              key: "products",
-              label: (
-                <span>
-                  <AppstoreOutlined /> Reviews Sản phẩm
-                </span>
-              ),
-            },
-            {
-              key: "shop",
-              label: (
-                <span>
-                  <ShopOutlined /> Reviews Shop
-                </span>
-              ),
-            },
-          ]}
-        />
-      </Card>
+//   return (
+//     <div className="min-h-screen space-y-6 animate-in fade-in duration-500 pb-10">
+//       {/* Header Profile Section */}
+//       <div className="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
+//         <div className="flex items-center gap-5">
+//           <div className="p-4 bg-orange-500 rounded-3xl text-white shadow-lg shadow-orange-200">
+//             <MessageSquare size={32} strokeWidth={2.5} />
+//           </div>
+//           <div>
+//             <h1 className="text-2xl font-black text-slate-800 tracking-tight leading-none">
+//               Trung tâm Đánh giá
+//             </h1>
+//             <p className="text-sm text-slate-400 font-medium mt-2 italic">
+//               Quản lý và tương tác với ý kiến từ khách hàng
+//             </p>
+//           </div>
+//         </div>
 
-      {/* Content based on tab */}
-      {activeTab === "products" ? (
-        <div>
-          {selectedProductId ? (
-            <div>
-              <Button
-                onClick={() => setSelectedProductId(null)}
-                style={{ marginBottom: 16 }}
-              >
-                ← Quay lại danh sách sản phẩm
-              </Button>
-              <ProductReviewsSection productId={selectedProductId} />
-            </div>
-          ) : (
-            <ProductListForReviews onSelectProduct={setSelectedProductId} />
-          )}
-        </div>
-      ) : (
-        <div>
-          {/* Shop Reviews Statistics */}
-          <ReviewStatistics
-            statistics={statisticsData}
-            loading={getStatistics.loading}
-          />
+//         {/* Tab Switcher (Custom UI) */}
+//         <div className="flex p-1.5 bg-slate-100 rounded-2xl w-fit">
+//           <button 
+//             onClick={() => setActiveTab("products")}
+//             className={cn(
+//               "px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center gap-2",
+//               activeTab === "products" ? "bg-white text-orange-600 shadow-sm" : "text-slate-400 hover:text-slate-600"
+//             )}
+//           >
+//             <Package size={14} /> Sản phẩm
+//           </button>
+//           <button 
+//             onClick={() => setActiveTab("shop")}
+//             className={cn(
+//               "px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center gap-2",
+//               activeTab === "shop" ? "bg-white text-orange-600 shadow-sm" : "text-slate-400 hover:text-slate-600"
+//             )}
+//           >
+//             <Store size={14} /> Cửa hàng
+//           </button>
+//         </div>
+//       </div>
 
-          {/* Filters & Table */}
-          <Card>
-            <div style={{ marginBottom: 16 }}>
-              <Space>
-                <Search
-                  placeholder="Tìm theo Tên Sản Phẩm, Mã Đơn Hàng, Tên đăng nhập người mua"
-                  allowClear
-                  style={{ width: 400 }}
-                />
-                <Select
-                  placeholder="Chọn thời gian"
-                  allowClear
-                  style={{ width: 150 }}
-                >
-                  <Option value="7days">7 ngày</Option>
-                  <Option value="30days">30 ngày</Option>
-                  <Option value="90days">90 ngày</Option>
-                </Select>
-                <Button
-                  icon={<ReloadOutlined />}
-                  onClick={async () => {
-                    const reviewsRes = await getReviews.handleGetReviews(
-                      "SHOP",
-                      shopId,
-                      {
-                        page: pagination.current - 1,
-                        size: pagination.pageSize,
-                      }
-                    );
-                    if (reviewsRes && reviewsRes.data) {
-                      setReviewsData(reviewsRes.data);
-                      setPagination((prev) => ({
-                        ...prev,
-                        total: reviewsRes.data.totalElements,
-                      }));
-                    }
-                    const statsRes =
-                      await getStatistics.handleGetReviewStatistics(
-                        "SHOP",
-                        shopId
-                      );
-                    if (statsRes && statsRes.data) {
-                      setStatisticsData(statsRes.data);
-                    }
-                  }}
-                  loading={getReviews.loading || getStatistics.loading}
-                >
-                  Đặt lại
-                </Button>
-              </Space>
-            </div>
+//       {/* Content Area */}
+//       <div className="space-y-6">
+//         {activeTab === "products" ? (
+//           <div className="animate-in slide-in-from-bottom-2 duration-500">
+//             {selectedProductId ? (
+//               <div className="space-y-4">
+//                 <button 
+//                   onClick={() => setSelectedProductId(null)}
+//                   className="flex items-center gap-2 px-5 py-2.5 bg-white text-slate-600 rounded-2xl border border-slate-100 text-xs font-black uppercase tracking-widest hover:bg-slate-50 transition-all shadow-sm active:scale-95"
+//                 >
+//                   <ChevronLeft size={16} /> Quay lại danh sách
+//                 </button>
+//                 {/* <ProductReviewsSection productId={selectedProductId} /> */}
+//               </div>
+//             ) : (
+//               <ProductListForReviews onSelectProduct={setSelectedProductId} />
+//             )}
+//           </div>
+//         ) : (
+//           <div className="space-y-6 animate-in slide-in-from-bottom-2 duration-500">
+//             <ReviewStatistics statistics={statisticsData} loading={getStatistics.loading} />
+            
+//             <DataTable
+//               data={reviewsData?.content || []}
+//               columns={columns}
+//               loading={getReviews.loading}
+//               totalElements={pagination.total}
+//               page={pagination.current}
+//               size={pagination.pageSize}
+//               onPageChange={(p) => setPagination(prev => ({ ...prev, current: p }))}
+//               rowKey="id"
+//               headerContent={
+//                 <div className="flex flex-wrap items-center gap-4 w-full">
+//                   <div className="relative group flex-1 max-w-md">
+//                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-orange-500 transition-colors" size={18} />
+//                     <input 
+//                       placeholder="Tìm theo tên người mua, nội dung..."
+//                       className="w-full pl-11 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-bold focus:outline-none focus:border-orange-500 transition-all"
+//                     />
+//                   </div>
+//                   <button 
+//                     onClick={fetchShopData}
+//                     className="p-3 bg-white border border-slate-200 text-slate-500 rounded-2xl hover:bg-slate-50 transition-all active:scale-90"
+//                   >
+//                     <RefreshCw size={20} className={cn(getReviews.loading && "animate-spin")} />
+//                   </button>
+//                 </div>
+//               }
+//             />
+//           </div>
+//         )}
+//       </div>
 
-            <Table
-              columns={columns}
-              dataSource={reviewsData?.content || []}
-              rowKey="id"
-              loading={getReviews.loading}
-              pagination={{
-                current: pagination.current,
-                pageSize: pagination.pageSize,
-                total: pagination.total,
-                showSizeChanger: true,
-                showTotal: (total: any) => `Tổng ${total} reviews`,
-              }}
-              onChange={handleTableChange}
-            />
-          </Card>
-        </div>
-      )}
+//       <ReviewResponseModal
+//         open={responseModalOpen}
+//         reviewId={selectedReviewId}
+//         onClose={() => { setResponseModalOpen(false); setSelectedReviewId(null); }}
+//         onSuccess={fetchShopData}
+//       />
+//     </div>
+//   );
+// }
 
-      {/* Response Modal */}
-      <ReviewResponseModal
-        open={responseModalOpen}
-        reviewId={selectedReviewId}
-        onClose={() => {
-          setResponseModalOpen(false);
-          setSelectedReviewId(null);
-        }}
-        onSuccess={handleResponseSuccess}
-      />
-    </div>
-  );
+export default function ShopReviewsScreen () {
+  return <div>ShopReviewsScreen</div>;
 }

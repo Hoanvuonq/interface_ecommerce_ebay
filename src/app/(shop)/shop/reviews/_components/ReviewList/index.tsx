@@ -56,7 +56,7 @@ export default function ReviewList({
         <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-sm mb-6 ring-8 ring-slate-50">
           <Inbox size={40} className="text-slate-200" strokeWidth={1.5} />
         </div>
-        <h3 className="text-lg font-black text-slate-800 uppercase tracking-widest mb-2">
+        <h3 className="text-lg font-bold text-slate-800 uppercase tracking-widest mb-2">
           Trống
         </h3>
         <p className="text-slate-400 text-sm font-medium">
@@ -97,7 +97,7 @@ export default function ReviewList({
       {/* Pagination Custom chuyên nghiệp */}
       {pagination && onPageChange && totalPages > 1 && (
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-slate-100">
-          <div className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
+          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">
             Hiển thị{" "}
             <span className="text-slate-900">
               {(pagination.current - 1) * pagination.pageSize + 1} -{" "}
@@ -136,7 +136,7 @@ export default function ReviewList({
                       key={pageNum}
                       onClick={() => onPageChange(pageNum, pagination.pageSize)}
                       className={cn(
-                        "w-10 h-10 rounded-xl text-[11px] font-black transition-all",
+                        "w-10 h-10 rounded-xl text-[11px] font-bold transition-all",
                         pagination.current === pageNum
                           ? "bg-orange-500 text-white shadow-lg shadow-orange-200 scale-105"
                           : "text-slate-400 hover:bg-slate-100 hover:text-slate-600"

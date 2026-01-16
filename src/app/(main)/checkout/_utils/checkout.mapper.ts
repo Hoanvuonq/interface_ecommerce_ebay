@@ -15,6 +15,7 @@ export const preparePreviewPayload = (
       taxFee: raw.taxFee || raw.taxAddress || "", 
     },
     globalVouchers: [], 
+    promotion: raw.promotion || [],
     shops: _.map(raw.shops, (shop) => {
       const shopPayload: any = {
         shopId: shop.shopId,

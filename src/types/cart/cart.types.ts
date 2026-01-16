@@ -14,11 +14,18 @@ export interface CartDto {
   version: number;
   shops: ShopDto[];
   shopCount: number;
-
-  /** Warnings about cart changes (stock adjustments, removed items, price changes) */
   warnings?: string[];
-  /** True if cart was modified during validation */
   hasChanges?: boolean;
+}
+
+export interface CartItemPromotion {
+  promotionId: string;
+  campaignId: string;
+  campaignName: string;
+  campaignType: "FLASH_SALE" | "DISCOUNT" | string;
+  originalPrice: number;
+  salePrice: number;
+  discountPercent: number;
 }
 
 export interface ShopDto {
@@ -59,7 +66,7 @@ export interface CartItemDto {
   totalPrice: number;
   imageBasePath?: string | null;
   imageExtension?: string | null;
-  thumbnailUrl?: string; 
+  thumbnailUrl?: string;
   sku?: string;
   variantAttributes?: string;
   shopId?: string;
@@ -68,7 +75,9 @@ export interface CartItemDto {
   selectedForCheckout?: boolean;
   stock?: number;
   attributes?: Record<string, string>;
-
+  promotion: CartItemPromotion | null;
+  priceBeforeDiscount?: number;
+  priceAtAddTime?: number;
   availableStock?: number;
   stockStatus?: StockStatus;
   stockMessage?: string;
@@ -90,7 +99,7 @@ export interface SelectItemsRequest {
 }
 
 export interface CartUpdateRequest {
-  actionType: 1 | 2 | 3; // 1=select all, 2=update items, 3=deselect all
+  actionType: 1 | 2 | 3;
   itemUpdates?: ItemUpdate[];
 }
 
@@ -113,8 +122,12 @@ export interface OrderPreviewRequest {
     | "CONKIN"
     | "SUPERSHIP";
   shippingAddress?: ShippingAddressInfo;
+  usingSavedAddress?: boolean;
+  allDiscountCodes?: string[];
+  effectiveAddressId?: string;
   loyaltyPoints?: number;
   paymentMethod?: string;
+  promotion: CartItemPromotion | null;
 }
 
 export interface ShopSelection {
@@ -139,8 +152,9 @@ export interface ShippingAddressInfo {
   addressChanged?: boolean;
   country?: string;
   taxFee?: string;
-  recipientName?: string; // ✅ Thêm trường này
-  phoneNumber?: string; // ✅ Thêm trường này    state?: string;
+  recipientName?: string;
+  phoneNumber?: string;
+  state?: string;
   city?: string;
   postalCode?: string;
   addressLine1?: string;
@@ -157,14 +171,14 @@ export interface OrderPreviewResponse {
   totalQuantity: number;
   subtotal: number;
   totalDiscount: number;
-
-  shippingDiscount?: number; // Giảm giá vận chuyển (SHIPPING scope)
-  productDiscount?: number; // Giảm giá sản phẩm (PRODUCT scope)
+  shippingDiscount?: number;
+  productDiscount?: number;
   totalShippingFee: number;
   totalTaxAmount: number;
   grandTotal: number;
   globalVouchers?: VoucherInfo[];
   appliedCoupons?: CouponInfo[];
+  promotion: CartItemPromotion | null;
   voucherApplication?: VoucherApplicationResponse;
   loyaltyPointsInfo?: LoyaltyPointsInfo;
   isValid: boolean;

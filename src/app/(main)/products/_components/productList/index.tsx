@@ -105,7 +105,7 @@ export default function ProductList({
           );
           break;
         case "new":
-          res = await publicProductService.getNew(params.page, params.size);
+          res = await publicProductService.getNewProducts(params.page, params.size);
           break;
         case "promoted":
           res = await publicProductService.getPromoted(

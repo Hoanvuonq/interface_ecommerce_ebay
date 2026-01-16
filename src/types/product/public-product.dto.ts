@@ -4,6 +4,12 @@ export interface PublicCategoryDTO {
   id: string;
   name: string;
   slug: string;
+  description: string;
+  active: boolean;
+  imageBasePath: string;
+  imageExtension: string;
+  parent: string;
+  children: string[];
 }
 
 export interface PublicProductMediaDTO {
@@ -22,6 +28,23 @@ export interface PublicProductOptionValueDTO {
   id: string;
   name: string;
   displayOrder?: number;
+}
+export interface RatingDistribution {
+  [key: string]: number;
+}
+
+export interface ReviewStatistics {
+  reviewableId: string;
+  totalReviews: number;
+  averageRating: number;
+  ratingDistribution: RatingDistribution;
+  ratingPercentage: RatingDistribution;
+  verifiedPurchaseCount: number;
+  verifiedPurchasePercentage: number;
+  commentCount: number;
+  mediaReviewCount: number;
+  imageReviewCount: number;
+  videoReviewCount: number;
 }
 
 export interface PublicProductOptionDTO {
@@ -150,4 +173,204 @@ export interface PublicProductSearchQueryDTO {
   page?: number;
   size?: number;
   sort?: string;
+}
+
+export interface ProductCategoryDto {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  active: boolean;
+  imageBasePath: string;
+  imageExtension: string;
+  parent: string;
+  children: string[];
+  defaultShippingRestrictions: ProductShippingRestrictionDto;
+  createdBy: string;
+  createdDate: string;
+  lastModifiedBy: string;
+  lastModifiedDate: string;
+  version: number;
+}
+export interface ProductShippingRestrictionDto {
+  restrictionType: "NONE" | "RADIUS" | string;
+  maxShippingRadiusKm: number;
+  countryRestrictionType: "ALLOW_ONLY" | "EXCLUDE_ONLY" | string;
+  restrictedCountries: string[];
+  restrictedRegions: string[];
+}
+
+export interface ProductShopDto {
+  shopId: string;
+  shopName: string;
+  description: string;
+  logoUrl: string;
+  bannerUrl: string;
+  status: "PENDING" | "APPROVED" | "REJECTED" | string;
+  rejectedReason?: string;
+  verifyBy?: string;
+  verifyDate?: string;
+  userId: string;
+  username: string;
+}
+
+export interface ProductCampaignDto {
+  campaignId: string;
+  campaignName: string;
+  campaignType: string;
+  sponsorType: string;
+  startTime: string;
+  endTime: string;
+  secondsRemaining: number;
+}
+
+export interface ProductVariantDto {
+  id: string;
+  sku: string;
+  imageBasePath: string;
+  imageExtension: string;
+  imageAssetId: string;
+  imageUrl: string;
+  price: number;
+  priceBeforeDiscount: number;
+  hasStock: boolean;
+  optionValues: Array<{
+    id: string;
+    name: string;
+    displayOrder: number;
+  }>;
+  inventory: {
+    id: string;
+    quantity: number;
+    reserved: number;
+    available: number;
+  };
+  promotion: {
+    promotionId: string;
+    campaignId: string;
+    stockLimit: number;
+    stockSold: number;
+  };
+  lengthCm: number;
+  widthCm: number;
+  heightCm: number;
+  weightGrams: number;
+  dimensionsString: string;
+  weightString: string;
+  volumeCm3: number;
+  weightKg: number;
+}
+
+export interface ProductOptionValueDto {
+  id: string;
+  name: string;
+  displayOrder: number;
+}
+
+export interface ProductInventoryDto {
+  id: string;
+  quantity: number;
+  reserved: number;
+  available: number;
+}
+
+export interface ProductVariantPromotionDto {
+  promotionId: string;
+  campaignId: string;
+  stockLimit: number;
+  stockSold: number;
+}
+
+export interface ProductMediaDto {
+  id: string;
+  basePath: string;
+  extension: string;
+  mediaAssetId: string;
+  url: string;
+  type: string;
+  title: string;
+  altText: string;
+  sortOrder: number;
+  isPrimary: boolean;
+  productId: string;
+}
+
+export interface ProductOptionDto {
+  id: string;
+  name: string;
+  values: ProductOptionValueDto[];
+}
+
+export interface PublicProductDto {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  priceMin: number;
+  priceMax: number;
+  priceBeforeDiscount: number;
+  showDiscount: number;
+  active: boolean;
+  approvalStatus: "DRAFT" | "PENDING" | "APPROVED" | "REJECTED";
+  approvedBy: string;
+  approvedAt: string;
+  promotedUntil: string;
+  isFeatured: boolean;
+  category: ProductCategoryDto;
+  shop: ProductShopDto;
+  activeCampaigns: Array<{
+    campaignId: string;
+    campaignName: string;
+    campaignType: "FLASH_SALE" | string;
+    sponsorType: "SHOP" | "PLATFORM";
+    startTime: string;
+    endTime: string;
+    secondsRemaining: number;
+  }>;
+  variants: ProductVariantDto[];
+  media: Array<{
+    id: string;
+    basePath: string;
+    extension: string;
+    mediaAssetId: string;
+    url: string;
+    type: "IMAGE" | "VIDEO" | "AUDIO";
+    title: string;
+    altText: string;
+    sortOrder: number;
+    isPrimary: boolean;
+    productId: string;
+  }>;
+  options: Array<{
+    id: string;
+    name: string;
+    values: Array<{
+      id: string;
+      name: string;
+      displayOrder: number;
+    }>;
+  }>;
+  reviewStatistics: ReviewStatistics;
+  shippingRestrictions: ProductShippingRestrictionDto;
+  bestShopVoucher: ProductVoucherInfoDTO | null;
+  bestPlatformVoucher: ProductVoucherInfoDTO | null;
+  priceAfterBestVoucher: number;
+  priceAfterBestShopVoucher: number;
+  priceAfterBestPlatformVoucher: number;
+  version: number;
+}
+
+export interface PublicProductListResponse {
+  content: PublicProductDto[];
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+  hasNext: boolean;
+  hasPrevious: boolean;
+  previousPage: number;
+  nextPage: number;
+  empty: boolean;
+  first: boolean;
+  last: boolean;
 }

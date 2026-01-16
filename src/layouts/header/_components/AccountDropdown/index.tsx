@@ -116,7 +116,7 @@ export const AccountDropdown = () => {
           "w-9 h-9 rounded-full flex items-center justify-center overflow-hidden shrink-0 border transition-all duration-300",
           isActuallyAuthenticated
             ? "bg-gray-200 border-white/20"
-            : "bg-gray-100 border-gray-200 text-gray-600 group-hover:text-blue-600"
+            : "bg-gray-100 border-gray-200 text-gray-600 group-hover:text-(--color-mainColor)"
         )}
       >
         {isActuallyAuthenticated && userData.image ? (
@@ -167,7 +167,7 @@ export const AccountDropdown = () => {
     <AppPopover trigger={Trigger} className="w-72 p-1.5" align="right">
       {isActuallyAuthenticated && (
         <div className="p-3 mb-2 bg-gray-50 border border-gray-100 rounded-xl flex items-center gap-3">
-          <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-sm shrink-0 bg-white">
+          <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-custom shrink-0 bg-white">
             {userData.image ? (
               <Image
                 src={userData.image}
@@ -211,7 +211,7 @@ export const AccountDropdown = () => {
                   "p-1.5 rounded-lg transition-colors",
                   isLogout
                     ? "bg-rose-100 text-rose-600"
-                    : "bg-gray-100 text-gray-600 group-hover:bg-white group-hover:text-orange-500 shadow-xs"
+                    : "bg-gray-100 text-gray-600 group-hover:bg-white group-hover:text-(--color-mainColor) shadow-xs"
                 )}
               >
                 {item.icon}
@@ -221,7 +221,7 @@ export const AccountDropdown = () => {
                   "flex-1 text-left text-[13px] font-medium transition-colors",
                   isLogout
                     ? "text-rose-600"
-                    : "text-gray-700 group-hover:text-orange-600"
+                    : "text-gray-700 group-hover:text-(--color-mainColor)"
                 )}
               >
                 {item.label}

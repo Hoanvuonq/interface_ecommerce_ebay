@@ -111,7 +111,7 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
                     <div className="flex justify-between items-center text-sm">
                         <span className="text-gray-500 font-medium">Tạm tính</span>
                         <span className="text-gray-900 font-bold">
-                            {formatPrice(selectedTotal + selectedDiscount)}
+                            {formatPrice(selectedTotal)}
                         </span>
                     </div>
 

@@ -36,10 +36,10 @@ export const ProductFormTabs: React.FC<ProductFormTabsProps> = ({
 }) => {
   const tabs: TabConfig[] = [
     { key: "basic", label: "Cơ bản", icon: LayoutGrid },
-    { key: "details", label: "Chi tiết", icon: Tags, disabled: true },
+    { key: "details", label: "Chi tiết", icon: Tags, },
     { key: "description", label: "Mô tả", icon: Info },
     { key: "sales", label: "Bán hàng", icon: ShoppingBag },
-    { key: "shipping", label: "Vận chuyển", icon: Truck, disabled: true },
+    { key: "shipping", label: "Vận chuyển", icon: Truck, },
   ];
 
   return (

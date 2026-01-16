@@ -1,8 +1,9 @@
 "use client";
 
-import { ButtonField } from "@/components";
+import { ButtonField, CustomButtonActions } from "@/components";
 import { Button } from "@/components/button/button";
 import { formatPrice } from "@/hooks/useFormatPrice";
+import { cn } from "@/utils/cn";
 import { CheckCircle2, Loader2, X } from "lucide-react";
 import React from "react";
 
@@ -91,29 +92,21 @@ export const ShippingMethodModal: React.FC<ShippingMethodModalProps> = ({
         </div>
 
         <div className="p-4 border-t border-gray-100 flex justify-end gap-3 bg-gray-50">
-          <Button variant="edit" onClick={onClose}>
-            Hủy bỏ
-          </Button>
-          <ButtonField
-            form="address-form"
-            htmlType="submit"
-            type="login"
-            onClick={onConfirm}
-            disabled={loadingPrice || totalFee === 0}
-            className={`
-              px-6 py-2.5 rounded-lg text-white font-bold flex items-center gap-2 shadow-lg transition-all
-              ${
-                loadingPrice || totalFee === 0
-                  ? "bg-gray-300 cursor-not-allowed shadow-none"
-                  : "bg-blue-600 hover:bg-blue-700 hover:shadow-blue-200 active:scale-95"
-              }
-            `}
-          >
-            <span className="flex items-center gap-2">
-              <CheckCircle2 size={18} />
-              Xác nhận
-            </span>
-          </ButtonField>
+          <CustomButtonActions
+            formId="address-form"
+            isLoading={loadingPrice}
+            isDisabled={totalFee === 0}
+            onCancel={onClose}
+            onSubmit={onConfirm}
+            submitText="Xác nhận"
+            submitIcon={CheckCircle2}
+            className={cn(
+              "px-6 py-2.5 rounded-lg",
+              !(loadingPrice || totalFee === 0) &&
+                "bg-blue-600 hover:bg-blue-700 shadow-lg active:scale-95"
+            )}
+            containerClassName="p-4 bg-gray-50"
+          />
         </div>
       </div>
     </div>

@@ -151,7 +151,7 @@ const ProductPromotionList: React.FC<ProductPromotionListProps> = ({ onCountUpda
     {
       header: "Trạng thái",
       render: (record) => (
-        <span className={cn("px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border", getStatusStyle(record.status))}>
+        <span className={cn("px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border", getStatusStyle(record.status))}>
           {record.status === "ACTIVE" ? "Đang chạy" : record.status === "SCHEDULED" ? "Sắp diễn ra" : record.status === "ENDED" ? "Kết thúc" : "Đã tắt"}
         </span>
       ),
@@ -202,7 +202,7 @@ const ProductPromotionList: React.FC<ProductPromotionListProps> = ({ onCountUpda
           <button onClick={fetchPromotions} disabled={loading} className="p-2.5 text-slate-500 hover:bg-slate-50 rounded-xl border border-slate-200 transition-all active:scale-95">
             <RefreshCw size={18} className={cn(loading && "animate-spin")} />
           </button>
-          <button onClick={() => setIsFormOpen(true)} className="flex items-center gap-2 px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white text-xs font-black uppercase tracking-widest rounded-xl shadow-lg shadow-orange-200 transition-all active:scale-95">
+          <button onClick={() => setIsFormOpen(true)} className="flex items-center gap-2 px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold uppercase tracking-widest rounded-xl shadow-lg shadow-orange-200 transition-all active:scale-95">
             <Plus size={16} strokeWidth={3} /> Tạo mới
           </button>
         </div>
@@ -243,7 +243,7 @@ const ProductPromotionList: React.FC<ProductPromotionListProps> = ({ onCountUpda
               <option value="DISABLED">Đã tắt</option>
             </select>
             <div className="h-6 w-[1px] bg-slate-200 mx-2 hidden sm:block" />
-            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest bg-slate-50 px-3 py-1 rounded-lg border border-slate-100">
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-slate-50 px-3 py-1 rounded-lg border border-slate-100">
               Tổng: {filteredData.length}
             </span>
           </div>

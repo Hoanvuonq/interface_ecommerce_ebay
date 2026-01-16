@@ -8,10 +8,6 @@ import {
   userProductService,
 } from "@/services/products/product.service";
 import { ProductOptionDTO } from "@/types/product/product-option.dto";
-import {
-  CreateProductVariantDTO,
-  UpdateProductVariantUpsertDTO,
-} from "@/types/product/product-variant.dto";
 import { UserProductDTO } from "@/types/product/user-product.dto";
 import { UploadContext } from "@/types/storage/storage.types";
 import {
@@ -22,33 +18,16 @@ import { ProductMediaModal, RichTextEditorModal } from "../_components";
 import { ProductSidebar } from "../_components/ProductSidebar";
 
 import { SectionLoading } from "@/components/loading";
-import {
-  AlertCircle,
-  ArrowLeft,
-  Box,
-  Building2,
-  CheckCircle2,
-  Clock,
-  DollarSign,
-  Edit3,
-  ExternalLink,
-  Eye,
-  FileText,
-  Image as ImageIcon,
-  Package,
-  Plus,
-  Ruler,
-  ShoppingCart,
-  Star,
-  Tag,
-  Trash2,
-  Video,
-  Weight,
-  X,
-  XCircle,
-} from "lucide-react";
+import { CheckCircle2, Clock, FileText, XCircle } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import { MediaLightbox } from "../_components/MediaLightbox";
+import { ProductDetailHeader } from "../_components/ProductDetailHeader";
+import { ProductGeneralInfo } from "../_components/ProductGeneralInfo";
+import { ProductMediaGallery } from "../_components/ProductMediaGallery";
+import { ProductVariantTable } from "../_components/ProductVariantTable";
+import { VariantDetailModal } from "../_components/VariantDetailModal";
+import { VariantManagementModal } from "../_components/VariantManagementModal";
 import {
   COLOR_NAME_MAP,
   COLOR_OPTION_REGEX,
@@ -60,14 +39,6 @@ import {
   VariantFormValues,
   VariantRow,
 } from "../_types/variant";
-import { VariantManagementModal } from "../_components/VariantManagementModal";
-import Image from "next/image";
-import { VariantDetailModal } from "../_components/VariantDetailModal";
-import { ProductGeneralInfo } from "../_components/ProductGeneralInfo";
-import { ProductMediaGallery } from "../_components/ProductMediaGallery";
-import { ProductVariantTable } from "../_components/ProductVariantTable";
-import { MediaLightbox } from "../_components/MediaLightbox";
-import { ProductDetailHeader } from "../_components/ProductDetailHeader";
 
 export const ProductDetailScreen = () => {
   const params = useParams();
@@ -227,7 +198,7 @@ export const ProductDetailScreen = () => {
   useEffect(() => {
     if (productId) {
       fetchProductDetail();
-      fetchProductOptions();
+      // fetchProductOptions();
     }
   }, [productId]);
 
@@ -256,7 +227,7 @@ export const ProductDetailScreen = () => {
     setManageRows(
       existingRows.length ? existingRows : [createEmptyVariantRow()]
     );
-    setTemporaryOptions([]); // Reset temporary options khi mở modal
+    setTemporaryOptions([]);
     setManageModalOpen(true);
   };
 
@@ -729,7 +700,7 @@ export const ProductDetailScreen = () => {
 
       // 6. Dọn dẹp và làm mới dữ liệu
       setTemporaryOptions([]);
-      await fetchProductOptions();
+      // await fetchProductOptions();
       closeManageModal();
       await fetchProductDetail();
     } catch (err: any) {
@@ -757,33 +728,33 @@ export const ProductDetailScreen = () => {
     return sanitizeColorValue(value);
   };
 
-  const fetchProductOptions = async () => {
-    try {
-      const response = await productOptionService.list(productId);
-      let data: ProductOptionDTO[] = [];
+  // const fetchProductOptions = async () => {
+  //   try {
+  //     const response = await productOptionService.list(productId);
+  //     let data: ProductOptionDTO[] = [];
 
-      if (response && typeof response === "object") {
-        if ("data" in response && response.data) {
-          // ApiResponseDTO<PageDTO<ProductOptionDTO>>
-          if (
-            "content" in response.data &&
-            Array.isArray(response.data.content)
-          ) {
-            data = response.data.content;
-          } else if (Array.isArray(response.data)) {
-            data = response.data;
-          }
-        } else if (Array.isArray(response)) {
-          data = response;
-        }
-      }
+  //     if (response && typeof response === "object") {
+  //       if ("data" in response && response.data) {
+  //         // ApiResponseDTO<PageDTO<ProductOptionDTO>>
+  //         if (
+  //           "content" in response.data &&
+  //           Array.isArray(response.data.content)
+  //         ) {
+  //           data = response.data.content;
+  //         } else if (Array.isArray(response.data)) {
+  //           data = response.data;
+  //         }
+  //       } else if (Array.isArray(response)) {
+  //         data = response;
+  //       }
+  //     }
 
-      setProductOptions(data);
-    } catch (err: any) {
-      console.error("Error fetching product options:", err);
-      setProductOptions([]);
-    }
-  };
+  //     setProductOptions(data);
+  //   } catch (err: any) {
+  //     console.error("Error fetching product options:", err);
+  //     setProductOptions([]);
+  //   }
+  // };
 
   // ESC key to close preview
   useEffect(() => {
@@ -924,46 +895,44 @@ export const ProductDetailScreen = () => {
         onOpenManage={openManageModal}
       />
 
-      <div className="max-w-450 mx-auto px-6 py-8">
-        <div className="flex flex-col lg:flex-row gap-8">
-          <div className="flex-1 space-y-8 animate-in fade-in slide-in-from-left-4 duration-700">
-            <ProductGeneralInfo
-              product={product}
-              onOpenRichText={() => setRichTextModalOpen(true)}
-            />
+      <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex-1 space-y-8 animate-in fade-in slide-in-from-left-4 duration-700">
+          <ProductGeneralInfo
+            product={product}
+            onOpenRichText={() => setRichTextModalOpen(true)}
+          />
 
-            <ProductMediaGallery
-              media={product.media || []}
-              onManage={() => setMediaModalOpen(true)}
-              onPreview={(item) => {
-                const isVideo =
-                  item.type === "VIDEO" || item.url?.includes("/videos/");
-                const mediaUrl = resolveMediaUrl(item, "_medium");
-                const largeUrl = resolveMediaUrl(item, "_large");
+          <ProductMediaGallery
+            media={product.media || []}
+            onManage={() => setMediaModalOpen(true)}
+            onPreview={(item) => {
+              const isVideo =
+                item.type === "VIDEO" || item.url?.includes("/videos/");
+              const mediaUrl = resolveMediaUrl(item, "_medium");
+              const largeUrl = resolveMediaUrl(item, "_large");
 
-                setPreviewMedia({
-                  url: largeUrl || mediaUrl,
-                  type: isVideo ? "VIDEO" : "IMAGE",
-                  title: item.title || item.altText,
-                });
-              }}
-            />
-            <ProductVariantTable
-              variantRows={variantRows}
-              optionNames={optionNames}
-              onOpenManage={openManageModal}
-            />
-          </div>
-
-          <aside className="w-full lg:w-100 shrink-0">
-            <ProductSidebar
-              product={product}
-              actionLoading={actionLoading}
-              onDelete={handleDelete}
-            />
-          </aside>
+              setPreviewMedia({
+                url: largeUrl || mediaUrl,
+                type: isVideo ? "VIDEO" : "IMAGE",
+                title: item.title || item.altText,
+              });
+            }}
+          />
+          <ProductVariantTable
+            variantRows={variantRows}
+            optionNames={optionNames}
+            onOpenManage={openManageModal}
+          />
         </div>
-      </div>
+
+        <aside className="w-full lg:w-100 shrink-0">
+          <ProductSidebar
+            product={product}
+            actionLoading={actionLoading}
+            onDelete={handleDelete}
+          />
+        </aside>
+      </div>  
 
       <VariantManagementModal
         isOpen={manageModalOpen}

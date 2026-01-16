@@ -2,7 +2,7 @@
 import React from "react";
 import { HomeScreen } from "./_pages";
 
-const Home: React.FC = () => {
+export const Home: React.FC = () => {
   return <HomeScreen />;
 };
 

@@ -11,6 +11,7 @@ import { useCheckoutAddress } from "../../_hooks/useCheckoutAddress";
 import { useToast } from "@/hooks/useToast";
 import { SectionLoading } from "@/components/loading";
 import { FaCheckCircle } from "react-icons/fa";
+import { CustomButtonActions } from "@/components";
 
 const AddressModal: React.FC<AddressModalProps> = ({
   isOpen,
@@ -60,30 +61,17 @@ const AddressModal: React.FC<AddressModalProps> = ({
           <span className="uppercase font- italic">Địa chỉ giao hàng</span>
         }
         footer={
-          <div className="flex gap-3 w-full">
-            <Button
-              variant="edit"
-              onClick={onClose}
-              className="flex-1 border-0 h-12"
-              disabled={isUpdating}
-            >
-              Hủy
-            </Button>
-            <Button
-              variant="edit"
-              onClick={handleConfirm}
-              className="flex-1 shadow-orange-200"
-              disabled={isUpdating || !selectedId}
-            >
-              {isUpdating ? (
-                "Đang xử lý..."
-              ) : (
-                <span className="flex items-center justify-center">
-                  <CheckCircle2 size={16} className="mr-2" /> Xác nhận địa chỉ
-                </span>
-              )}
-            </Button>
-          </div>
+          <CustomButtonActions
+            isLoading={isUpdating}
+            isDisabled={!selectedId}
+            cancelText="HỦY BỎ"
+            submitText="XÁC NHẬN ĐỊA CHỈ"
+            submitIcon={CheckCircle2}
+            onCancel={onClose}
+            onSubmit={handleConfirm}
+            containerClassName="w-full flex gap-3 border-t-0"
+            className="w-50!  rounded-4xl"
+          />
         }
         width="max-w-2xl"
       >
@@ -132,8 +120,7 @@ const AddressModal: React.FC<AddressModalProps> = ({
                   <div className="w-full flex justify-between items-center">
                     <div className="font-bold text-gray-900 text-sm uppercase italic">
                       {addr.recipientName}{" "}
-                      <span className="mx-2 text-gray-300">|</span>{" "}
-                      {addr.phone}
+                      <span className="mx-2 text-gray-300">|</span> {addr.phone}
                     </div>
                     {addr.isDefault && (
                       <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-(--color-mainColor) text-white text-[9px] font-bold uppercase tracking-widest shadow-sm animate-fade-in">

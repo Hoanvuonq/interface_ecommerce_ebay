@@ -55,10 +55,10 @@ export default function ReviewStatistics({
         </button>
       </div>
       <div>
-        <p className="text-[11px] font-black uppercase tracking-widest text-slate-400 mb-1">
+        <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-1">
           {title}
         </p>
-        <h3 className="text-2xl font-black text-slate-800 tracking-tight">
+        <h3 className="text-2xl font-bold text-slate-800 tracking-tight">
           {value}
         </h3>
         <div className="flex items-center gap-1.5 mt-2">
@@ -114,14 +114,14 @@ export default function ReviewStatistics({
               <AlertCircle size={28} />
             </div>
             <div>
-              <h4 className="text-sm font-black text-slate-800 uppercase tracking-tight">
+              <h4 className="text-sm font-bold text-slate-800 uppercase tracking-tight">
                 Cần phản hồi tiêu cực
               </h4>
               <p className="text-xs text-slate-400 font-medium mt-0.5">
                 Đánh giá 1 & 2 sao chưa được trả lời
               </p>
               <div className="mt-2 flex items-center gap-2">
-                <span className="text-xl font-black text-rose-600">0</span>
+                <span className="text-xl font-bold text-rose-600">0</span>
                 <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter bg-slate-50 px-2 py-0.5 rounded-md italic">
                   Xem chi tiết
                 </span>
@@ -140,14 +140,14 @@ export default function ReviewStatistics({
               <History size={28} />
             </div>
             <div>
-              <h4 className="text-sm font-black text-slate-800 uppercase tracking-tight">
+              <h4 className="text-sm font-bold text-slate-800 uppercase tracking-tight">
                 Đánh giá mới
               </h4>
               <p className="text-xs text-slate-400 font-medium mt-0.5">
                 Cập nhật trong 7 ngày gần đây
               </p>
               <div className="mt-2 flex items-center gap-2">
-                <span className="text-xl font-black text-blue-600">0</span>
+                <span className="text-xl font-bold text-blue-600">0</span>
                 <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter bg-slate-50 px-2 py-0.5 rounded-md italic">
                   Xem ngay
                 </span>

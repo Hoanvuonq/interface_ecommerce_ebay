@@ -8,7 +8,7 @@ import { resolveBannerImageUrl } from '@/utils/products/media.helpers';
 import { SectionLoading } from '@/components';
 import { BannerSidebarProps } from './type';
 
-const BannerSidebar: React.FC<BannerSidebarProps> = ({ className = '' }) => {
+export const BannerSidebar: React.FC<BannerSidebarProps> = ({ className = '' }) => {
   const { banners, isLoading } = useHomepageContext(); 
   
   const sidebarBanners = banners?.sidebar || []; 
@@ -61,5 +61,3 @@ const BannerSidebar: React.FC<BannerSidebarProps> = ({ className = '' }) => {
     </Link>
   ) : content;
 };
-
-export default BannerSidebar;
