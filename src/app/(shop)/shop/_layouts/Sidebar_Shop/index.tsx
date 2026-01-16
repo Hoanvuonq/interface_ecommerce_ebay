@@ -10,7 +10,6 @@ import {
 } from "../../_constants/sidebar";
 import { SidebarItem } from "@/app/(employee)/employee/_layouts/_components/SidebarItem";
 
-// 💡 Thêm Interface cho Props
 interface ShopSidebarProps {
   collapsed: boolean;
   setCollapsed: (collapsed: boolean) => void;
@@ -21,7 +20,6 @@ export default function ShopSidebar({
   setCollapsed,
 }: ShopSidebarProps) {
   const pathname = usePathname();
-  // const [collapsed, setCollapsed] = useState(false); // ❌ Xóa dòng này
   const [openKeys, setOpenKeys] = useState<string[]>([]);
 
   const { selectedKey, parentKey } = useMemo(() => {
@@ -44,31 +42,41 @@ export default function ShopSidebar({
     <aside
       className={cn(
         "flex flex-col bg-white h-screen sticky top-0 transition-all duration-500 z-50 border-r border-blue-50 shadow-sm",
-        collapsed ? "w-20" : "w-64"
+        collapsed ? "w-20 overflow-visible" : "w-64"
       )}
     >
-      {/* Logo Section */}
       <div className="h-20 flex items-center px-4 mb-4">
         <Link
           href="/shop/dashboard"
-          className="flex items-center gap-3 w-full group"
+          className="flex items-center gap-3 w-full group overflow-hidden"
         >
           <div className="w-10 h-10 shrink-0 bg-(--color-mainColor) rounded-2xl flex items-center justify-center text-white shadow-lg group-hover:rotate-6 transition-all">
-            <span className="text-xl font-bold italic">S</span>
+            <span className="text-xl font-bold italic">C</span>
           </div>
-          {!collapsed && (
-            <div className="flex flex-col animate-in fade-in slide-in-from-left-2 duration-500">
-              <span className="text-lg font-bold tracking-tighter text-gray-800 leading-none">
-                SHOP CENTER
-              </span>
-              <span className="text-[10px] font-bold text-(--color-mainColor) uppercase tracking-widest mt-1">
-                Management Hub
-              </span>
-            </div>
-          )}
+
+          <div
+            className={cn(
+              "flex flex-col transition-all duration-300 ease-in-out origin-left",
+              collapsed
+                ? "opacity-0 translate-x-5 pointer-events-none w-0"
+                : "opacity-100 translate-x-0 w-auto"
+            )}
+          >
+            <span className="text-lg font-bold tracking-tighter text-gray-800 leading-none whitespace-nowrap">
+              CANO X
+            </span>
+            <span className="text-[10px] font-bold text-(--color-mainColor) uppercase tracking-widest mt-1 whitespace-nowrap">
+              Management Hub
+            </span>
+          </div>
         </Link>
       </div>
-      <div className="flex-1 overflow-y-auto custom-scrollbar px-3">
+      <div
+        className={cn(
+          "flex-1 px-3 custom-scrollbar",
+          collapsed ? "overflow-visible" : "overflow-y-auto"
+        )}
+      >
         <nav className="space-y-1">
           {SHOP_SIDEBAR_ITEMS.map((item) => (
             <SidebarItem

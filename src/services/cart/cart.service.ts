@@ -20,9 +20,6 @@ const CART_API_BASE = '/v1/cart';
 const CART_ITEMS_API = '/v1/cart/items';
 const CART_SELECTION_API = '/v1/carts/selection';
 
-// Helper to generate UUID for idempotency keys
-// NOTE: crypto.randomUUID() only works on HTTPS or localhost
-// Your API is running on HTTP (100.125.122.6:3000), so we need a fallback
 const generateIdempotencyKey = () => {
     // Check if crypto.randomUUID is available (HTTPS/localhost only)
     if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {

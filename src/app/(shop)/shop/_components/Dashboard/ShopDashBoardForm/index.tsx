@@ -11,7 +11,7 @@ export default function ShopDashboardForm() {
       <div className="flex justify-between items-end">
         <div>
           <h1 className="text-4xl font-semibold text-gray-900 italic uppercase">
-            Bảng điều khiển
+            Bảng điều khiển 
           </h1>
           <p className="text-[10px] font-bold text-gray-500 uppercase -tracking-tighter ml-1">
             Số liệu thống kê thời gian thực

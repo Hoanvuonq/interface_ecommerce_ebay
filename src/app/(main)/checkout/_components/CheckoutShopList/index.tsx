@@ -183,9 +183,9 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
 
             <div className="py-2 px-6 space-y-2">
               <div className="divide-y divide-gray-50">
-                {shop.items.map((item: any) => (
+                {shop.items.map((item: any, idx: number) => (
                   <div
-                    key={item.itemId}
+                   key={`${item.itemId}-${idx}`}
                     className="flex gap-4 items-center py-2 group"
                   >
                     <ItemImage

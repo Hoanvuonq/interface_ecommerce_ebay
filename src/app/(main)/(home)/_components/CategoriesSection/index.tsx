@@ -4,7 +4,6 @@ import React, { useMemo, useState, useEffect } from "react";
 import { AnimatePresence, motion, PanInfo } from "framer-motion";
 import _ from "lodash";
 import { cn } from "@/utils/cn";
-
 import { SectionLoading } from "@/components";
 import { SectionSreen } from "@/features/SectionSreen";
 import { CategoryItem } from "../CategoryItem";

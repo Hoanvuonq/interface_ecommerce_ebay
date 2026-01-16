@@ -14,7 +14,7 @@ import {
   XAxis, YAxis,
 } from "recharts";
 import { useEmployeeStatistics } from "../../_hooks/useEmployeeStatistics";
-import { TooltipComponents } from "@/components/custom/components/customTooltip";
+import { CustomTooltip } from "@/components";
 
 export default function EmployeeTimeStatistics() {
   const [selectedYear, setSelectedYear] = useState<number>(
@@ -143,7 +143,7 @@ export default function EmployeeTimeStatistics() {
                       tickLine={false}
                       tick={{ fontSize: 10, fill: "#94a3b8" }}
                     />
-                    <RechartsTooltip content={<TooltipComponents />} />
+                    <RechartsTooltip content={<CustomTooltip />} />
                     <Area
                       type="monotone"
                       dataKey="count"
@@ -186,7 +186,7 @@ export default function EmployeeTimeStatistics() {
                     />
                     <RechartsTooltip
                       cursor={{ fill: "#f8fafc" }}
-                      content={<TooltipComponents />}
+                      content={<CustomTooltip />}
                     />
                     <Bar
                       dataKey="count"

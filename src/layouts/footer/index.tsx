@@ -14,48 +14,45 @@ import {
   Twitter,
   Youtube,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import { useState } from "react";
 import { ContactBlock } from "./_components/contactBlock";
 import { FooterSection } from "./_components/footerSection";
 import { SocialCircle } from "./_components/socialCircle";
 
-export const Footer: React.FC = () => {
+export const Footer = () => {
   const [openSection, setOpenSection] = useState<string | null>(null);
   const toggleSection = (section: string) =>
     setOpenSection(openSection === section ? null : section);
+
   return (
-    <footer className="text-white relative border-t border-white/10 background-main-gradient">
-      <div className="absolute top-0 left-1/4 w-96 bg-blue-400/10 rounded-full blur-[100px] pointer-events-none" />
-      <div className="max-w-7xl mx-auto px-6 py-3 relative z-10">
+    <footer className="bg-[#f5f5f5] text-[#1a1a1a] border-t-4 border-(--color-mainColor)">
+      <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-10 lg:gap-x-12">
-          <div className="lg:col-span-4 space-y-5">
-            <Link href="/" className="inline-block group">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-white text-[#053293] rounded-xl flex items-center justify-center font-bold text-xl shadow-lg transition-transform group-hover:-rotate-6">
-                  C
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-xl font-bold leading-none tracking-tight">
-                    CaLaTha <span className="text-white">Mall</span>
-                  </span>
-                  <span className="text-[10px] text-white/50 uppercase tracking-[0.2em] mt-1">
-                    International Standard
-                  </span>
-                </div>
-              </div>
+          <div className="lg:col-span-4 space-y-6">
+            <Link href="/" className="inline-block">
+              <Image
+                src="/icon/cano-v4.png"
+                alt="CaLaTha Logo"
+                width={130}
+                height={40}
+                className="object-contain"
+                priority
+              />
             </Link>
-            <p className="text-white/80 text-[14px] leading-relaxed max-w-sm">
+            <p className="text-gray-600 text-sm leading-relaxed max-w-sm">
               Nền tảng thương mại điện tử uy tín, mang đến trải nghiệm mua sắm
               an toàn và dịch vụ vượt trội cho mọi gia đình.
             </p>
-            <div className="flex gap-2">
+            <div className="flex gap-3">
               <SocialCircle icon={Facebook} />
               <SocialCircle icon={Instagram} />
               <SocialCircle icon={Youtube} />
               <SocialCircle icon={Twitter} />
             </div>
           </div>
+
           <div className="lg:col-span-5 grid grid-cols-1 md:grid-cols-2 gap-8">
             <FooterSection
               title="Về CaLaTha"
@@ -67,9 +64,10 @@ export const Footer: React.FC = () => {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-[14px] text-white/70 hover:text-white hover:translate-x-1 inline-block transition-all"
+                      className="text-sm font-semibold text-gray-500 hover:text-(--color-mainColor) transition-colors relative group inline-block pb-0.5"
                     >
                       {link.label}
+                      <span className="absolute left-0 bottom-0 w-0 h-[1.5px] bg-(--color-mainColor) transition-all duration-300 group-hover:w-full" />
                     </Link>
                   </li>
                 ))}
@@ -86,9 +84,10 @@ export const Footer: React.FC = () => {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-[14px] text-white/70 hover:text-white hover:translate-x-1 inline-block transition-all"
+                      className="text-sm font-semibold text-gray-500 hover:text-(--color-mainColor) transition-colors relative group inline-block pb-0.5"
                     >
                       {link.label}
+                      <span className="absolute left-0 bottom-0 w-0 h-[1.5px] bg-(--color-mainColor) transition-all duration-300 group-hover:w-full" />
                     </Link>
                   </li>
                 ))}
@@ -97,10 +96,10 @@ export const Footer: React.FC = () => {
           </div>
 
           <div className="lg:col-span-3">
-            <h3 className="text-sm font-bold text-white uppercase tracking-widest mb-6 border-l-2 border-white pl-3">
+            <h3 className="text-md font-bold uppercase  mb-8 border-l-2 border-(--color-mainColor) pl-4">
               Thông tin liên hệ
             </h3>
-            <div className="space-y-4">
+            <div className="space-y-5">
               <ContactBlock icon={Phone} title="Hotline" value="0932 070 787" />
               <ContactBlock
                 icon={Mail}
@@ -116,17 +115,16 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
-        <div className="mt-2 pt-2 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-white/40">
-          <p className="text-[13px] font-medium italic">
-            &copy; {new Date().getFullYear()} CaLaTha Tech. Design for
-            Excellence.
+        <div className="mt-8 pt-6 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center gap-6">
+          <p className="text-xs text-gray-400 font-medium">
+            &copy; {new Date().getFullYear()} Cano X Tech. All rights reserved.
           </p>
-          <div className="flex flex-wrap justify-center gap-x-8 gap-y-2">
+          <div className="flex gap-x-6">
             {LEGAL_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-[10px] font-semibold hover:text-white transition-colors uppercase tracking-wider"
+                className="text-[10px] text-gray-400 hover:text-(--color-mainColor) uppercase tracking-wider font-semibold transition-colors"
               >
                 {link.label}
               </Link>

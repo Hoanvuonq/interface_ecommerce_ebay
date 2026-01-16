@@ -33,14 +33,23 @@ export const FormInput = React.forwardRef<
     },
     ref
   ) => {
-     const isDate = type === "date" || type === "datetime-local";
+    const isDate = type === "date" || type === "datetime-local";
+
     const commonStyles = cn(
       "w-full px-5 bg-gray-50/50 border border-gray-200 rounded-2xl",
-      "text-sm font-semibold text-gray-700 placeholder:text-gray-500 placeholder:font-normal",
-      "focus:outline-none focus:border-gray-500 focus:ring-4 focus:ring-orange-500/10",
+      "text-sm font-semibold text-gray-700 placeholder:text-gray-400 placeholder:font-normal",
       "transition-all duration-200 shadow-sm",
-       isDate && "cursor-pointer uppercase text-[11px]", 
-      error ? "border-red-400 focus:border-red-500 focus:ring-red-500/10" : ""
+
+      "focus:outline-none",
+      "focus:border-orange-500",
+      "focus:ring-4 focus:ring-orange-500/10",
+      "focus:bg-white",
+
+      isDate && "cursor-pointer uppercase text-[11px]",
+
+      error
+        ? "border-red-400 focus:border-red-500 focus:ring-red-500/10 bg-red-50/30"
+        : ""
     );
 
     return (
@@ -48,7 +57,7 @@ export const FormInput = React.forwardRef<
         {label && (
           <label
             htmlFor={id}
-            className="text-[12px] font-bold  text-gray-700 ml-1 flex items-center gap-1"
+            className="text-[12px] font-bold text-gray-700 ml-1 flex items-center gap-1"
           >
             {label}
             {required && <span className="text-red-500 text-sm">*</span>}
@@ -77,6 +86,7 @@ export const FormInput = React.forwardRef<
             />
           )}
         </div>
+
         {error && (
           <p className="text-[10px] font-medium text-red-500 ml-1 animate-in fade-in slide-in-from-top-1">
             {error}

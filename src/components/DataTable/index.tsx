@@ -1,9 +1,14 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { FiChevronLeft, FiChevronRight, FiInbox, FiLoader } from "react-icons/fi";
+import {
+  FiChevronLeft,
+  FiChevronRight,
+  FiInbox,
+  FiLoader,
+} from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
-import { cn } from "@/utils/cn"; 
+import { cn } from "@/utils/cn";
 import { DataTableProps } from "./type";
 
 export const DataTable = <T,>({
@@ -33,7 +38,13 @@ export const DataTable = <T,>({
 
   const getRowKey = (item: T, index: number) => {
     if (typeof rowKey === "function") return rowKey(item);
-    if (rowKey && typeof rowKey === "string" && item && typeof item === "object" && rowKey in item) {
+    if (
+      rowKey &&
+      typeof rowKey === "string" &&
+      item &&
+      typeof item === "object" &&
+      rowKey in item
+    ) {
       return (item[rowKey as keyof T] as unknown as string) || index;
     }
     return index;
@@ -56,14 +67,19 @@ export const DataTable = <T,>({
       <div className="bg-white border border-gray-100 rounded-4xl shadow-custom overflow-hidden flex flex-col">
         <div className="overflow-x-auto custom-scrollbar">
           <table className="min-w-full border-collapse">
-            <thead className="bg-gray-100 border-b border-gray-100">
+            <thead className="bg-gray-50 border-b border-gray-100">
               <tr>
                 {columns.map((col, idx) => (
                   <th
                     key={idx}
                     className={cn(
                       "px-6 py-4 text-[12px] font-bold uppercase text-gray-600 whitespace-nowrap",
-                      col.align === "center" ? "text-center" : col.align === "right" ? "text-right" : "text-left",
+                      col.align === "center"
+                        ? "text-center"
+                        : col.align === "right"
+                        ? "text-right"
+                        : "text-left",
+                      col.headerClassName,
                       col.headerClassName
                     )}
                   >
@@ -87,7 +103,9 @@ export const DataTable = <T,>({
                         <div className="p-3 bg-orange-50 rounded-2xl">
                           <FiLoader className="w-6 h-6 text-orange-500 animate-spin" />
                         </div>
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Đang tải dữ liệu...</span>
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                          Đang tải dữ liệu...
+                        </span>
                       </div>
                     </td>
                   </motion.tr>
@@ -104,14 +122,17 @@ export const DataTable = <T,>({
                           <FiInbox className="w-8 h-8 text-gray-200" />
                         </div>
                         <div>
-                          <h3 className="text-gray-900 font-bold text-xs uppercase tracking-widest">Trống</h3>
-                          <p className="text-[10px] text-gray-500 font-medium uppercase">{emptyMessage}</p>
+                          <h3 className="text-gray-900 font-bold text-xs uppercase tracking-widest">
+                            Trống
+                          </h3>
+                          <p className="text-[10px] text-gray-500 font-medium uppercase">
+                            {emptyMessage}
+                          </p>
                         </div>
                       </div>
                     </td>
                   </motion.tr>
                 ) : (
-                 
                   <React.Fragment key={page}>
                     {data.map((item, rowIdx) => (
                       <motion.tr
@@ -121,25 +142,60 @@ export const DataTable = <T,>({
                         initial="enter"
                         animate="center"
                         exit="exit"
-                        transition={{ 
-                          x: { type: "spring", stiffness: 400, damping: 40 }, 
+                        transition={{
+                          x: { type: "spring", stiffness: 400, damping: 40 },
                           opacity: { duration: 0.2 },
-                          delay: rowIdx * 0.02 
+                          delay: rowIdx * 0.02,
                         }}
                         className="group hover:bg-orange-50/20 transition-colors border-b border-gray-50 last:border-none"
                       >
-                        {columns.map((col, colIdx) => (
-                          <td
-                            key={colIdx}
-                            className={cn(
-                              "px-6 py-5 whitespace-nowrap text-sm font-medium text-gray-700",
-                              col.align === "center" ? "text-center" : col.align === "right" ? "text-right" : "text-left",
-                              col.className
-                            )}
-                          >
-                            {col.render ? col.render(item, rowIdx) : col.accessor ? (item[col.accessor] as React.ReactNode) : null}
-                          </td>
-                        ))}
+                        {columns.map((col, colIdx) => {
+                          // Thực hiện render nội dung cột
+                          const rendered = col.render
+                            ? col.render(item, rowIdx)
+                            : null;
+
+                          let cellContent: React.ReactNode = null;
+                          let cellRowSpan: number | undefined = undefined;
+
+                          // LOGIC FIX: Kiểm tra nếu render trả về object có chứa rowSpan
+                          if (
+                            rendered &&
+                            typeof rendered === "object" &&
+                            "content" in rendered
+                          ) {
+                            if ((rendered as any).rowSpan === 0) return null;
+
+                            cellContent = (rendered as any).content;
+                            cellRowSpan = (rendered as any).rowSpan;
+                          } else if (col.render) {
+                            cellContent = rendered as React.ReactNode;
+                          } else if (col.accessor) {
+                            cellContent = item[col.accessor] as React.ReactNode;
+                          }
+
+                          return (
+                            <td
+                              key={colIdx}
+                              rowSpan={cellRowSpan}
+                              className={cn(
+                                "px-6 py-5 whitespace-nowrap text-sm font-medium text-gray-700",
+                                col.align === "center"
+                                  ? "text-center"
+                                  : col.align === "right"
+                                  ? "text-right"
+                                  : "text-left",
+                                col.className,
+                                // align-middle giúp nội dung nằm chính giữa vùng gộp dòng
+                                cellRowSpan && cellRowSpan > 1
+                                  ? "align-middle"
+                                  : ""
+                              )}
+                            >
+                              {cellContent}
+                            </td>
+                          );
+                        })}
                       </motion.tr>
                     ))}
                   </React.Fragment>
@@ -152,7 +208,12 @@ export const DataTable = <T,>({
         {/* PAGINATION */}
         <div className="bg-white px-8 py-5 border-t border-gray-50 flex flex-col sm:flex-row gap-4 items-center justify-between">
           <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
-            Hiển thị <span className="text-gray-900 font-bold">{fromItem}-{toItem}</span> / <span className="text-gray-900 font-bold">{totalElements}</span> mục
+            Hiển thị{" "}
+            <span className="text-gray-900 font-bold">
+              {fromItem}-{toItem}
+            </span>{" "}
+            / <span className="text-gray-900 font-bold">{totalElements}</span>{" "}
+            mục
           </div>
 
           <div className="flex items-center gap-3">

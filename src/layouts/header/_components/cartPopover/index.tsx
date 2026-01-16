@@ -1,6 +1,10 @@
 "use client";
 
-import { categoryIcons, getStandardizedKey, ICON_BG_COLORS } from "@/app/(main)/(home)/_types/categories";
+import {
+  categoryIcons,
+  getStandardizedKey,
+  ICON_BG_COLORS,
+} from "@/app/(main)/(home)/_types/categories";
 import { formatPriceFull } from "@/hooks/useFormatPrice";
 import { useAppSelector } from "@/store/store";
 import { cn } from "@/utils/cn";
@@ -13,29 +17,27 @@ const STORAGE_BASE_URL = "https://pub-5341c10461574a539df355b9fbe87197.r2.dev/";
 export const CartPopoverContent: React.FC = () => {
   const { cart, loading } = useAppSelector((state) => state.cart);
   const totalItems = cart?.itemCount || 0;
-  
-  const displayItems = useMemo(() => {
-     return cart?.shops?.flatMap((shop) => shop.items)?.slice(0, 5) || [];
-  }, [cart]);
 
+  const displayItems = useMemo(() => {
+    return cart?.shops?.flatMap((shop) => shop.items)?.slice(0, 5) || [];
+  }, [cart]);
   const hasMoreItems = totalItems > 5;
 
   const ProductImage = ({ item }: { item: any }) => {
     const [imgError, setImgError] = useState(false);
 
     const imageUrl = useMemo(() => {
-        if (!item.imageBasePath || !item.imageExtension) return null;
+      if (!item.imageBasePath || !item.imageExtension) return null;
 
-        let cleanPath = item.imageBasePath;
-        if (cleanPath.startsWith('/')) cleanPath = cleanPath.slice(1);
+      let cleanPath = item.imageBasePath;
+      if (cleanPath.startsWith("/")) cleanPath = cleanPath.slice(1);
 
-        return `${STORAGE_BASE_URL}${cleanPath}_thumb${item.imageExtension}`;
+      return `${STORAGE_BASE_URL}${cleanPath}_thumb${item.imageExtension}`;
     }, [item]);
 
     const categoryKey = getStandardizedKey(item.productName);
     const categoryUI = ICON_BG_COLORS[categoryKey] || ICON_BG_COLORS["default"];
     const categoryEmoji = categoryIcons[categoryKey] || "📦";
-
 
     if (imageUrl && !imgError) {
       return (
@@ -46,20 +48,27 @@ export const CartPopoverContent: React.FC = () => {
           height={40}
           className="w-full h-full object-contain p-1 transition-transform group-hover:scale-110 duration-500"
           onError={(e) => {
-             const target = e.target as HTMLImageElement;
-             if (target.src.includes('_thumb')) {
-                 const cleanPath = item.imageBasePath.startsWith('/') ? item.imageBasePath.slice(1) : item.imageBasePath;
-                 target.src = `${STORAGE_BASE_URL}${cleanPath}_orig${item.imageExtension}`;
-             } else {
-                 setImgError(true);
-             }
+            const target = e.target as HTMLImageElement;
+            if (target.src.includes("_thumb")) {
+              const cleanPath = item.imageBasePath.startsWith("/")
+                ? item.imageBasePath.slice(1)
+                : item.imageBasePath;
+              target.src = `${STORAGE_BASE_URL}${cleanPath}_orig${item.imageExtension}`;
+            } else {
+              setImgError(true);
+            }
           }}
         />
       );
     }
 
     return (
-      <div className={cn("w-full h-full flex items-center justify-center text-xl", categoryUI.bg)}>
+      <div
+        className={cn(
+          "w-full h-full flex items-center justify-center text-xl",
+          categoryUI.bg
+        )}
+      >
         <span>{categoryEmoji}</span>
       </div>
     );
@@ -80,12 +89,14 @@ export const CartPopoverContent: React.FC = () => {
       </div>
     );
   }
-
   return (
     <div className="flex flex-col divide-y divide-gray-50">
       <div className="flex flex-col divide-y divide-gray-50">
-        {displayItems.map((item) => (
-          <div key={item.id} className="flex gap-3 p-4 hover:bg-white transition-all group">
+        {displayItems.map((item, idx) => (
+          <div
+            key={`${item.id}-${idx}`}
+            className="flex gap-3 p-4 hover:bg-white transition-all group"
+          >
             <div className="w-14 h-14 shrink-0 border border-gray-100 rounded-xl overflow-hidden bg-white shadow-sm flex items-center justify-center">
               <ProductImage item={item} />
             </div>
@@ -95,7 +106,8 @@ export const CartPopoverContent: React.FC = () => {
               </h4>
               <div className="flex justify-between items-center mt-1.5">
                 <span className="text-[11px] text-gray-600 font-medium tracking-tight">
-                  {formatPriceFull(item.unitPrice)} <span className="text-[9px]">x</span> {item.quantity}
+                  {formatPriceFull(item.unitPrice)}{" "}
+                  <span className="text-[9px]">x</span> {item.quantity}
                 </span>
                 <span className="text-[12px] font-bold text-(--color-mainColor)">
                   {formatPriceFull(item.totalPrice)}

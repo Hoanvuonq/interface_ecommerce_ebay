@@ -1,6 +1,6 @@
 "use client";
 
-import { StatCardComponents, TooltipComponents } from "@/components";
+import { StatCardComponents, CustomTooltip } from "@/components";
 import { ChartBox } from "@/components/chart";
 import { AlertCircle, BarChart3, Building2, PieChart as PieIcon, RotateCw, TrendingUp, UserCircle2, Users } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -95,7 +95,7 @@ export default function DepartmentStatistics() {
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="none" />
                   ))}
                 </Pie>
-                <RechartsTooltip content={<TooltipComponents unit="Nhân sự" />} />
+                <RechartsTooltip content={<CustomTooltip content="Nhân sự" />} />
                 <Legend verticalAlign="bottom" iconType="circle" formatter={(value) => <span className="text-[10px] font-semibold uppercase text-gray-500 tracking-widest">{value}</span>} />
               </PieChart>
             </ResponsiveContainer>
@@ -109,7 +109,7 @@ export default function DepartmentStatistics() {
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 'bold', fill: '#94a3b8' }} />
                 <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#94a3b8' }} />
-                <RechartsTooltip cursor={{ fill: '#f8fafc' }} content={<TooltipComponents unit="Chức vụ" />} />
+                <RechartsTooltip cursor={{ fill: '#f8fafc' }} content={<CustomTooltip content="Chức vụ" />} />
                 <Bar dataKey="value" radius={[10, 10, 0, 0]} barSize={40}>
                   {statistics.positionsArray.map((entry: any, index: number) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />

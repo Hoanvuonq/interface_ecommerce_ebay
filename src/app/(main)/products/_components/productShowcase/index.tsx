@@ -86,7 +86,7 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
         const response =
           type === "sale"
             ? await publicProductService.getSale(page, productsPerPage)
-            : await publicProductService.getNew(page, productsPerPage);
+            : await publicProductService.getNewProducts(page, productsPerPage);
 
         const productsList = (response.data?.content ||
           []) as PublicProductListItemDTO[];

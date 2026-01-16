@@ -27,8 +27,8 @@ export const ProductReviews = () => {
 
   const ratingEntries = [5, 4, 3, 2, 1].map((star) => ({
     star,
-    count: reviewSummary?.ratingDistribution?.[star] ?? 0,
-    percentage: reviewSummary?.ratingPercentage?.[star] ?? 0,
+    count: reviewSummary?.ratingDistribution?.[star as keyof typeof reviewSummary.ratingDistribution] ?? 0,
+    percentage: reviewSummary?.ratingPercentage?.[star as keyof typeof reviewSummary.ratingPercentage] ?? 0,
   }));
 
   const resolveReviewMediaUrl = (media?: any) => {

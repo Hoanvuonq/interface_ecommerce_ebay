@@ -1,30 +1,16 @@
 import React from "react";
-
-interface Variant {
-  sku?: string;
-  weightGrams?: number;
-  lengthCm?: number;
-  widthCm?: number;
-  heightCm?: number;
-  optionValueNames?: string[];
-}
-
-interface ShippingTableProps {
-  variants: Variant[];
-  optionNames: string[];
-  onUpdateVariant: (index: number, field: keyof Variant, value: any) => void;
-}
+import { ShippingTableProps } from "./type";
 
 export const ShippingTable: React.FC<ShippingTableProps> = ({ variants, optionNames, onUpdateVariant }) => {
   return (
     <div className="overflow-x-auto rounded-xl border border-gray-200 shadow-lg">
       <table className="w-full border-collapse bg-white text-left text-sm">
         <thead>
-          <tr className="bg-gradient-to-r from-orange-50 to-amber-50 border-b-2 border-gray-200">
+          <tr className="bg-linear-to-r from-orange-50 to-amber-50 border-b-2 border-gray-200">
             <th className="px-4 py-4 font-semibold text-gray-600 text-center w-12">#</th>
             {optionNames.length > 0 ? (
               optionNames.map((name, idx) => (
-                <th key={idx} className="px-4 py-4 font-semibold text-gray-700 min-w-[110px]">
+                <th key={idx} className="px-4 py-4 font-semibold text-gray-700 min-w-27.5">
                   <span className="bg-orange-100 text-orange-700 px-3 py-1.5 rounded-full text-xs font-medium">
                     {name}
                   </span>
@@ -37,13 +23,13 @@ export const ShippingTable: React.FC<ShippingTableProps> = ({ variants, optionNa
                 </span>
               </th>
             )}
-            <th className="px-4 py-4 font-semibold text-gray-700 min-w-[150px]">
+            <th className="px-4 py-4 font-semibold text-gray-700 min-w-37.5">
               <span className="flex items-center gap-2">
                 <span className="w-2 h-2 bg-orange-500 rounded-full"></span>
                 Cân nặng (g)
               </span>
             </th>
-            <th className="px-4 py-4 font-semibold text-gray-700 min-w-[300px]">
+            <th className="px-4 py-4 font-semibold text-gray-700 min-w-75">
               <span className="flex items-center gap-2">
                 <span className="w-2 h-2 bg-orange-500 rounded-full"></span>
                 Kích thước D × R × C (cm)

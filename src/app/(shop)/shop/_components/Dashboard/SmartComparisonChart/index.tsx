@@ -14,7 +14,7 @@ import {
   formatCurrency,
   formatCurrencyShort,
 } from "@/utils/analytics/formatters";
-import { TooltipComponents } from "@/components";
+import { CustomTooltip } from "@/components";
 
 export interface SmartComparisonChartProps {
   todayData: number[];
@@ -120,7 +120,7 @@ export function SmartComparisonChart({
             />
 
             <Tooltip
-              content={<TooltipComponents unit="VNĐ" />}
+              content={<CustomTooltip content="VNĐ" />}
               cursor={{
                 stroke: "#f97316",
                 strokeWidth: 2,

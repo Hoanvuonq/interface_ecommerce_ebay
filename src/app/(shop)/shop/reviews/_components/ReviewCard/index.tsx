@@ -74,7 +74,7 @@ export default function ReviewCard({
             {review.verifiedPurchase && (
               <div className="flex items-center gap-1 px-2.5 py-1 bg-emerald-50 text-emerald-600 rounded-full border border-emerald-100">
                 <CheckCircle2 size={12} strokeWidth={3} />
-                <span className="text-[10px] font-black uppercase tracking-wider">
+                <span className="text-[10px] font-bold uppercase tracking-wider">
                   Đã mua
                 </span>
               </div>
@@ -85,7 +85,7 @@ export default function ReviewCard({
           <div className="flex-1 min-w-0">
             <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
               <div>
-                <h4 className="text-lg font-black text-slate-800 tracking-tight leading-none mb-2">
+                <h4 className="text-lg font-bold text-slate-800 tracking-tight leading-none mb-2">
                   {review.username || review.buyerName}
                 </h4>
                 <div className="flex items-center gap-3">
@@ -113,7 +113,7 @@ export default function ReviewCard({
                     className="text-slate-400 group-hover:text-emerald-500"
                   />
                 </div>
-                <span className="text-xs font-black text-slate-600 group-hover:text-emerald-600">
+                <span className="text-xs font-bold text-slate-600 group-hover:text-emerald-600">
                   {review.helpfulCount}
                 </span>
               </div>
@@ -124,7 +124,7 @@ export default function ReviewCard({
                     className="text-slate-400 group-hover:text-rose-500"
                   />
                 </div>
-                <span className="text-xs font-black text-slate-600 group-hover:text-rose-600">
+                <span className="text-xs font-bold text-slate-600 group-hover:text-rose-600">
                   {review.notHelpfulCount}
                 </span>
               </div>
@@ -136,7 +136,7 @@ export default function ReviewCard({
                 <div className="absolute -top-3 left-6 px-3 py-1 bg-white border border-indigo-100 rounded-lg shadow-sm">
                   <div className="flex items-center gap-2 text-indigo-600">
                     <MessageSquareText size={14} />
-                    <span className="text-[10px] font-black uppercase tracking-widest">
+                    <span className="text-[10px] font-bold uppercase tracking-widest">
                       Phản hồi của Shop
                     </span>
                   </div>
@@ -149,7 +149,7 @@ export default function ReviewCard({
                 {showActions && onDeleteResponse && (
                   <button
                     onClick={() => onDeleteResponse(review.id)}
-                    className="mt-4 flex items-center gap-2 px-3 py-1.5 text-rose-500 hover:bg-rose-100 rounded-xl transition-all text-[10px] font-black uppercase tracking-tighter opacity-0 group-hover/response:opacity-100"
+                    className="mt-4 flex items-center gap-2 px-3 py-1.5 text-rose-500 hover:bg-rose-100 rounded-xl transition-all text-[10px] font-bold uppercase tracking-tighter opacity-0 group-hover/response:opacity-100"
                   >
                     <Trash2 size={12} /> Xóa phản hồi
                   </button>
@@ -161,7 +161,7 @@ export default function ReviewCard({
             {showActions && !review.hasResponse && onRespond && (
               <button
                 onClick={() => onRespond(review.id)}
-                className="mt-4 group flex items-center gap-2 px-6 py-3 bg-slate-900 hover:bg-black text-white text-xs font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-slate-200 transition-all active:scale-95"
+                className="mt-4 group flex items-center gap-2 px-6 py-3 bg-slate-900 hover:bg-black text-white text-xs font-bold uppercase tracking-widest rounded-2xl shadow-xl shadow-slate-200 transition-all active:scale-95"
               >
                 <MessageSquareText
                   size={16}

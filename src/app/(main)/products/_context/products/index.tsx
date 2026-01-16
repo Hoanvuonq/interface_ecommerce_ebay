@@ -206,7 +206,7 @@ export const ProductDetailProvider = ({
           const existingIds = new Set(prev.map((item) => item.id));
           return [
             ...prev,
-            ...content.filter((item) => !existingIds.has(item.id)),
+            ...content.filter((item: { id: string; }) => !existingIds.has(item.id)),
           ];
         });
         setReviewPage(res?.page ?? page);

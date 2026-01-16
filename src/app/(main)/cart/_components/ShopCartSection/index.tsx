@@ -37,10 +37,10 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
             <Checkbox
               id={`checkbox-shop-${shop.shopId}`}
               checked={shop.allSelected}
-              onChange={handleShopCheckboxChange} 
+              onChange={handleShopCheckboxChange}
             />
           </div>
-          
+
           <div className="flex items-center gap-3 min-w-0 group cursor-pointer">
             <div className="relative shrink-0">
               <Image
@@ -103,9 +103,9 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
         </div>
 
         <div className="divide-y divide-gray-50 bg-white">
-          {shop.items.map((item) => (
+          {shop.items.map((item, idx) => (
             <CartItem
-              key={item.id}
+              key={`${item.id}-${idx}`}
               item={item}
               etag={etag}
               selected={item.selectedForCheckout}
@@ -115,9 +115,9 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
       </div>
 
       <div className="lg:hidden divide-y divide-gray-50 bg-white">
-        {shop.items.map((item) => (
+        {shop.items.map((item, idx) => (
           <div
-            key={item.id}
+            key={`${item.id}-${idx}`}
             className="p-2 transition-colors active:bg-gray-50"
           >
             <CartItem

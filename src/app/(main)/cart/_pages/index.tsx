@@ -1,5 +1,6 @@
 "use client";
 
+import { Checkbox } from "@/components/checkbox";
 import { SectionPageComponents } from "@/features/SectionPageComponents";
 import { useToast } from "@/hooks/useToast";
 import { useAppDispatch, useAppSelector } from "@/store/store";
@@ -11,16 +12,18 @@ import {
   selectAllItemsLocal,
 } from "@/store/theme/cartSlice";
 import { isAuthenticated } from "@/utils/local.storage";
-import { AlertTriangle, CheckCircle, Trash2 } from "lucide-react";
+import { AlertTriangle, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { CartSummary } from "../_components/CartSummary";
-import { CheckoutPreview } from "../_components/CheckoutPreview";
-import { EmptyCart } from "../_components/EmptyCart";
-import { NotificationRemoveModal } from "../_components/NotificationRemoveModal";
-import { ShopCartSection } from "../_components/ShopCartSection";
+import {
+  CartSummary,
+  CheckoutPreview,
+  EmptyCart,
+  NotificationRemoveModal,
+  ShopCartSection,
+} from "../_components";
 import { HeaderCart } from "../_layouts/headerCart";
-import { Checkbox } from "@/components/checkbox";
+import { CartItemPromotion } from "@/types/cart/cart.types";
 
 export const CartScreen = () => {
   const [showCheckoutPreview, setShowCheckoutPreview] = useState(false);
@@ -113,7 +116,7 @@ export const CartScreen = () => {
 
     const checkoutRequest = {
       shops: cart.shops
-        .filter((shop) => shop.hasSelectedItems)
+        .filter((shop) => shop.items.some((item) => item.selectedForCheckout))
         .map((shop) => ({
           shopId: shop.shopId,
           itemIds: shop.items
@@ -121,11 +124,12 @@ export const CartScreen = () => {
             .map((item) => item.id),
           vouchers: [],
         })),
+      promotion: [] as CartItemPromotion[],
     };
 
     try {
       const previewData = await dispatch(
-        checkoutPreview(checkoutRequest)
+        checkoutPreview(checkoutRequest as any)
       ).unwrap();
       sessionStorage.setItem("checkoutPreview", JSON.stringify(previewData));
       sessionStorage.setItem(

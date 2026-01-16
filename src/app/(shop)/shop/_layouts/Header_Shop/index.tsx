@@ -12,7 +12,12 @@ interface ShopHeaderProps {
 
 export default function ShopHeader({ collapsed, onToggle }: ShopHeaderProps) {
   return (
-    <header className="sticky top-0 z-40 w-full h-16 md:h-20 px-4 md:px-8 flex items-center justify-between bg-white/80 backdrop-blur-xl border-b border-gray-100 shadow-sm transition-all">
+    <header
+      className={cn(
+        "sticky top-0 z-40 w-full h-16 md:h-20 px-4 md:px-8",
+        "flex items-center justify-between bg-white/80 backdrop-blur-xl border-b border-gray-100 shadow-sm transition-all"
+      )}
+    >
       <div className="flex items-center gap-2 md:gap-4">
         <button
           onClick={onToggle}

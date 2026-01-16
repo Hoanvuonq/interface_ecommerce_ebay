@@ -15,7 +15,7 @@ export const useCheckoutActions = () => {
   const previewMutation = useMutation({
     mutationFn: async (updatedRequest: any) => {
       const finalPayload = preparePreviewPayload(updatedRequest);
-      return await dispatch(checkoutPreviewAction(finalPayload)).unwrap();
+      return await dispatch(checkoutPreviewAction({ ...finalPayload, promotion: finalPayload.promotion || [] })).unwrap();
     },
     onMutate: () => setLoading(true),
     

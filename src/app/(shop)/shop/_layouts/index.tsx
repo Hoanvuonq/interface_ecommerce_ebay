@@ -23,8 +23,8 @@ export function BaseShopLayout({ children }: { children: React.ReactNode }) {
           onToggle={() => setCollapsed(!collapsed)}
         />
 
-        <main className="flex-1 p-4 md:p-6 lg:p-8">
-          <div className="min-h-[calc(100vh-120px)] p-2 animate-in fade-in duration-700">
+        <main className="flex-1 p-4 md:p-6">
+          <div className="min-h-[calc(100vh-120px)] animate-in fade-in duration-700">
             <PageTransition>{children}</PageTransition>
           </div>
         </main>

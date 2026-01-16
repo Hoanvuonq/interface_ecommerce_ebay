@@ -1,20 +1,67 @@
-export const TooltipComponents = ({ active, payload, unit = "Người" }: any) => {
+"use client";
+import React, { useState } from "react";
+import { cn } from "@/utils/cn";
+
+interface TooltipProps {
+  children?: React.ReactNode;
+  content?: string;
+  position?: "top" | "bottom" | "left" | "right";
+  active?: boolean;
+  payload?: any[];
+  label?: string;
+}
+
+export const CustomTooltip = ({
+  children,
+  content,
+  position = "top",
+  active,
+  payload,
+  label,
+}: TooltipProps) => {
+  const [isHovered, setIsHovered] = useState(false);
   if (active && payload && payload.length) {
     return (
-      <div className="bg-gray-900/95 backdrop-blur-md px-6 py-4 rounded-3xl shadow-2xl border border-gray-800 animate-in fade-in zoom-in-95 duration-200">
-        <p className="text-[10px] font-semibold text-gray-500 uppercase tracking-[0.2em] mb-2 border-b border-gray-800 pb-2 italic">
-          {payload[0].name}
+      <div className="bg-gray-900/95 backdrop-blur-md text-white px-3 py-2 rounded-xl border border-gray-700 shadow-2xl z-50">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">
+          {label || payload[0].name}
         </p>
-        <div className="flex items-baseline gap-2">
-          <p className="text-3xl font-semibold text-white italic leading-none">
-            {payload[0].value}
-          </p>
-          <span className="text-[10px] font-semibold text-orange-400 uppercase tracking-widest">
-            {unit}
+        <div className="flex items-center gap-2">
+          <div
+            className="w-2 h-2 rounded-full"
+            style={{
+              backgroundColor: payload[0].color || payload[0].payload.fill,
+            }}
+          />
+          <span className="text-xs font-semibold">
+            {content || payload[0].name}:{" "}
+            <span className="text-orange-400">{payload[0].value}</span>
           </span>
         </div>
       </div>
     );
   }
-  return null;
+
+  if (!children) return null;
+
+  return (
+    <div
+      className="relative flex items-center"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {children}
+      {isHovered && content && (
+        <div
+          className={cn(
+            "absolute z-50 px-2 py-1 text-[11px] font-medium text-white bg-gray-800 rounded shadow-lg whitespace-nowrap animate-in fade-in zoom-in duration-200",
+            position === "top" && "bottom-full left-1/2 -translate-x-1/2 mb-2"
+            // ... thêm các position khác nếu cần
+          )}
+        >
+          {content}
+        </div>
+      )}
+    </div>
+  );
 };

@@ -2,7 +2,17 @@
 
 import React, { useRef, useState } from "react";
 import Image from "next/image";
-import { Trash2, Star, Plus, Eye, Loader2, X, Grid3X3, CheckCircle2, ImageIcon as LucideImageIcon } from "lucide-react";
+import {
+  Trash2,
+  Star,
+  Plus,
+  Eye,
+  Loader2,
+  X,
+  Grid3X3,
+  CheckCircle2,
+  ImageIcon as LucideImageIcon,
+} from "lucide-react";
 import { cn } from "@/utils/cn";
 import { PortalModal } from "@/features/PortalModal";
 
@@ -16,7 +26,9 @@ interface CustomFile {
 
 interface ProductImageCardProps {
   fileList: CustomFile[];
-  setFileList: (files: CustomFile[] | ((prev: CustomFile[]) => CustomFile[])) => void;
+  setFileList: (
+    files: CustomFile[] | ((prev: CustomFile[]) => CustomFile[])
+  ) => void;
   onUpload: (files: FileList) => Promise<void>;
   onRemove: (uid: string) => void;
   onPreview: (file: CustomFile) => void;
@@ -52,16 +64,18 @@ export const ProductImageCard: React.FC<ProductImageCardProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div className="flex items-center gap-4">
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-50 text-orange-500 shadow-sm">
-             <LucideImageIcon size={24} />
+            <LucideImageIcon size={24} />
           </div>
           <div>
             <h5 className="text-lg font-bold text-slate-800 tracking-tight leading-none">
               Hình ảnh sản phẩm <span className="text-red-500">*</span>
             </h5>
-            <p className="text-xs text-slate-400 mt-1 font-medium italic">Tối đa 9 ảnh • Định dạng JPG, PNG</p>
+            <p className="text-xs text-slate-400 mt-1 font-medium italic">
+              Tối đa 9 ảnh • Định dạng JPG, PNG
+            </p>
           </div>
         </div>
-        
+
         <div className="flex items-center gap-2">
           {fileList.length > 0 && (
             <button
@@ -78,11 +92,18 @@ export const ProductImageCard: React.FC<ProductImageCardProps> = ({
 
       <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-4">
         {fileList.map((file, index) => (
-          <div key={file.uid} className="relative group aspect-4/5 flex flex-col">
-            <div className={cn(
-              "relative flex-1 rounded-2xl overflow-hidden border-2 transition-all duration-300 bg-slate-50 shadow-sm",
-              index === 0 ? "border-orange-500 ring-4 ring-orange-50" : "border-slate-100 group-hover:border-orange-200"
-            )}>
+          <div
+            key={file.uid}
+            className="relative group aspect-4/5 flex flex-col"
+          >
+            <div
+              className={cn(
+                "relative flex-1 rounded-2xl overflow-hidden border-2 transition-all duration-300 bg-slate-50 shadow-sm",
+                index === 0
+                  ? "border-orange-500 ring-4 ring-orange-50"
+                  : "border-slate-100 group-hover:border-orange-200"
+              )}
+            >
               <Image
                 src={file.url}
                 alt={file.name}
@@ -90,17 +111,20 @@ export const ProductImageCard: React.FC<ProductImageCardProps> = ({
                 sizes="150px"
                 className={cn(
                   "object-cover transition-all duration-700 group-hover:scale-110 cursor-pointer",
-                  (file.status === "uploading" || file.processing) && "opacity-40 blur-sm"
+                  (file.status === "uploading" || file.processing) &&
+                    "opacity-40 blur-sm"
                 )}
                 onClick={() => onPreview(file)}
               />
-              
-              {/* Overlay điều khiển thông minh - chỉ hiện khi hover */}
+
               <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-2 z-20">
                 <div className="flex justify-end">
                   <button
                     type="button"
-                    onClick={(e) => { e.stopPropagation(); onRemove(file.uid); }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onRemove(file.uid);
+                    }}
                     className="p-1.5 bg-white/20 backdrop-blur-md hover:bg-red-500 text-white rounded-lg transition-colors"
                   >
                     <Trash2 size={14} />
@@ -109,7 +133,10 @@ export const ProductImageCard: React.FC<ProductImageCardProps> = ({
                 {index !== 0 && (
                   <button
                     type="button"
-                    onClick={(e) => { e.stopPropagation(); setMainImage(index); }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setMainImage(index);
+                    }}
                     className="w-full py-1.5 bg-white/20 backdrop-blur-md hover:bg-orange-500 text-[9px] font-bold uppercase text-white rounded-lg transition-colors tracking-tighter"
                   >
                     Làm ảnh bìa
@@ -129,22 +156,29 @@ export const ProductImageCard: React.FC<ProductImageCardProps> = ({
                 </div>
               )}
             </div>
-            
-            {/* Tên file rút gọn bên dưới giúp UI chuyên nghiệp hơn */}
+
             <span className="mt-1.5 text-[9px] text-slate-400 truncate px-1 text-center font-medium">
               {file.name}
             </span>
           </div>
         ))}
 
-        {/* Nút thêm ảnh đồng bộ với Grid */}
         {fileList.length < 9 && (
           <label className="aspect-4/5 border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center hover:bg-orange-50/30 hover:border-orange-300 transition-all cursor-pointer group">
-            <input type="file" multiple accept="image/*" className="hidden" onChange={handleFileChange} ref={fileInputRef} />
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              className="hidden"
+              onChange={handleFileChange}
+              ref={fileInputRef}
+            />
             <div className="p-3 bg-slate-50 rounded-xl group-hover:scale-110 group-hover:bg-white transition-all shadow-sm group-hover:shadow-orange-100">
               <Plus className="text-slate-400 group-hover:text-orange-500 w-5 h-5 transition-colors" />
             </div>
-            <span className="mt-3 text-[10px] font-bold text-slate-400 uppercase tracking-tighter group-hover:text-orange-600 transition-colors">Thêm ảnh</span>
+            <span className="mt-3 text-[10px] font-bold text-slate-400 uppercase tracking-tighter group-hover:text-orange-600 transition-colors">
+              Thêm ảnh
+            </span>
           </label>
         )}
       </div>
@@ -173,21 +207,28 @@ export const ProductImageCard: React.FC<ProductImageCardProps> = ({
                   fill
                   className="object-cover transition-transform duration-1000 group-hover:scale-110"
                 />
-                
+
                 <div className="absolute inset-0 bg-linear-to-t from-slate-900 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 p-4 flex flex-col justify-end">
-                    <div className="flex items-center justify-between gap-2">
-                      <span className={cn(
+                  <div className="flex items-center justify-between gap-2">
+                    <span
+                      className={cn(
                         "px-3 py-1 rounded-lg text-[9px] font-bold tracking-widest uppercase",
-                        index === 0 ? "bg-orange-500 text-white" : "bg-white text-slate-900"
-                      )}>
-                        {index === 0 ? "Ảnh chính" : `Vị trí ${index + 1}`}
-                      </span>
-                      {index !== 0 && (
-                         <button onClick={() => setMainImage(index)} className="p-1.5 bg-white/20 hover:bg-orange-500 rounded-lg text-white transition-colors">
-                            <Star size={12} fill="currentColor" />
-                         </button>
+                        index === 0
+                          ? "bg-orange-500 text-white"
+                          : "bg-white text-slate-900"
                       )}
-                    </div>
+                    >
+                      {index === 0 ? "Ảnh chính" : `Vị trí ${index + 1}`}
+                    </span>
+                    {index !== 0 && (
+                      <button
+                        onClick={() => setMainImage(index)}
+                        className="p-1.5 bg-white/20 hover:bg-orange-500 rounded-lg text-white transition-colors"
+                      >
+                        <Star size={12} fill="currentColor" />
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
