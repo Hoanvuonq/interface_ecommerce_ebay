@@ -546,7 +546,7 @@ export const userProductService = {
     status: "DRAFT" | "PENDING" | "APPROVED" | "REJECTED",
     page = 0,
     size = 20
-  ) {
+  ) { 
     return request<ApiResponseDTO<PageDTO<UserProductDTO>>>({
       method: "GET",
       url: `/${API_ENDPOINT_USER_PRODUCTS}/status/${status}`,

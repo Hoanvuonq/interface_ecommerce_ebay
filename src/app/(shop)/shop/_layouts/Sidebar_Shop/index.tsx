@@ -63,7 +63,7 @@ export default function ShopSidebar({
             )}
           >
             <span className="text-lg font-bold tracking-tighter text-gray-800 leading-none whitespace-nowrap">
-              CANO X
+              CANO <span className="text-2xl! italic">X</span>
             </span>
             <span className="text-[10px] font-bold text-(--color-mainColor) uppercase tracking-widest mt-1 whitespace-nowrap">
               Management Hub

@@ -21,14 +21,14 @@ interface ProductListForReviewsProps {
   onSelectProduct: (productId: string) => void;
 }
 
-export default function ProductListForReviews({
+export const ProductListForReviews =({
   onSelectProduct,
-}: ProductListForReviewsProps) {
+}: ProductListForReviewsProps) =>{
   const [products, setProducts] = useState<UserProductDTO[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [pagination, setPagination] = useState({
-    current: 0, // DataTable thường dùng 0-based index cho page
+    current: 0,
     pageSize: 10,
     total: 0,
   });

@@ -103,10 +103,10 @@ export interface UserProductVariantDTO {
 
 export interface UserProductMediaDTO {
   id: string;
-  mediaAssetId?: string | null; // Normalized ID from backend
+  mediaAssetId?: string | null;
   basePath?: string | null;
-  extension?: string | null; // e.g. ".jpg"
-  url?: string | null; // may be relative path
+  extension?: string | null;
+  url?: string | null; 
   type: "IMAGE" | "VIDEO" | "AUDIO";
   title?: string | null;
   altText?: string | null;

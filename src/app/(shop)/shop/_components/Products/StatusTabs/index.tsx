@@ -26,7 +26,7 @@ export const StatusTabs = <T extends string>({
 }: StatusTabsProps<T>) => {
   return (
     <div className={cn("w-full overflow-x-auto no-scrollbar pb-2", className)}>
-      <div className="relative inline-flex bg-gray-100/80 p-1.5 rounded-2xl border border-gray-200 gap-1">
+      <div className="relative inline-flex bg-white p-1.5 rounded-2xl border border-gray-200 gap-1">
         {tabs.map((tab) => {
           const isActive = current === tab.key;
           const Icon = tab.icon;
@@ -54,7 +54,7 @@ export const StatusTabs = <T extends string>({
 
               <div className="relative z-10 flex items-center gap-2">
                 <Icon
-                  size={16}
+                  size={18}
                   className={cn(
                     "transition-colors duration-300",
                     isActive ? "text-orange-500" : "text-gray-400"

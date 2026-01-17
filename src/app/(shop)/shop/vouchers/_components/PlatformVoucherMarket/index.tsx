@@ -188,7 +188,7 @@ export const PlatformVoucherMarket: React.FC<PlatformVoucherMarketProps> = ({
               <button 
                 onClick={onConfirmPurchase}
                 disabled={purchasing}
-                className="flex-1 py-4 bg-orange-500 hover:bg-orange-600 text-white rounded-[1.5rem] text-xs font-bold uppercase tracking-widest shadow-lg shadow-orange-500/30 transition-all flex items-center justify-center gap-2 active:scale-95 disabled:opacity-50"
+                className="flex-1 py-4 bg-orange-500 hover:bg-orange-600 text-white rounded-3xl text-xs font-bold uppercase tracking-widest shadow-lg shadow-orange-500/30 transition-all flex items-center justify-center gap-2 active:scale-95 disabled:opacity-50"
               >
                 {purchasing ? <Loader2 className="animate-spin" size={16} /> : "Xác nhận thanh toán"}
               </button>

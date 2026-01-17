@@ -38,7 +38,6 @@ import {
   TabType,
 } from "../../products/add/_components";
 
-// Services & types
 import { userProductService } from "@/services/products/product.service";
 import { UploadContext } from "@/types/storage/storage.types";
 import type {
@@ -55,12 +54,10 @@ export default function ShopProductAddStepsFormScreen() {
     warning: toastWarning,
   } = useToast();
 
-  // Store
   const { variants, setVariants, addOptionGroup, setCategoryId } =
     useProductStore();
   const { description, setBasicInfo } = useProductStore();
 
-  // Context
   const {
     formData,
     setFormData,
@@ -146,7 +143,7 @@ export default function ShopProductAddStepsFormScreen() {
     handleUploadVariantImage,
   } = useVariantManagement(
     getOptionNames(),
-    Number(getFieldValue("basePrice")) || 0
+    Number(getFieldValue("basePrice")) || 0,
   );
 
   // Sync state variants with local variants
@@ -182,7 +179,7 @@ export default function ShopProductAddStepsFormScreen() {
       optionGroups.some((group) => {
         const nameHasValue = (group.name || "").trim().length > 0;
         const valueHasValue = group.values.some(
-          (value) => (value || "").trim().length > 0
+          (value) => (value || "").trim().length > 0,
         );
         return nameHasValue || valueHasValue;
       });
@@ -251,7 +248,7 @@ export default function ShopProductAddStepsFormScreen() {
           } as CreateUserProductOptionDTO;
         })
         .filter(
-          (option): option is CreateUserProductOptionDTO => option !== null
+          (option): option is CreateUserProductOptionDTO => option !== null,
         );
 
       const variantsToSubmit =
@@ -277,7 +274,7 @@ export default function ShopProductAddStepsFormScreen() {
                   displayOrder: index + 1,
                   sortOrder: index + 1,
                   isPrimary: index === 0,
-                } as any)
+                }) as any,
             ),
           ...videoList
             .filter((file) => file.status === "done" && (file as any).assetId)
@@ -289,13 +286,13 @@ export default function ShopProductAddStepsFormScreen() {
                   displayOrder: fileList.length + index + 1,
                   sortOrder: fileList.length + index + 1,
                   isPrimary: false,
-                } as any)
+                }) as any,
             ),
         ],
         options: optionsForAPI,
         variants: variantsToSubmit.map((v: any) => {
           const variantOptionValues = (v.optionValueNames || []).filter(
-            (val: string) => val && val.trim()
+            (val: string) => val && val.trim(),
           );
           const options: Array<{
             optionId?: string;
@@ -344,7 +341,7 @@ export default function ShopProductAddStepsFormScreen() {
       }
 
       toastSuccess(
-        `✅ Tạo sản phẩm thành công! "${productName}" - Đang chuyển hướng...`
+        `✅ Tạo sản phẩm thành công! "${productName}" - Đang chuyển hướng...`,
       );
 
       setTimeout(() => {
@@ -403,7 +400,7 @@ export default function ShopProductAddStepsFormScreen() {
       handleUpdateVariants,
       toastSuccess,
       toastError,
-    ]
+    ],
   );
 
   // Render methods
@@ -468,7 +465,7 @@ export default function ShopProductAddStepsFormScreen() {
   const previewImage = fileList.find((f) => f.status === "done")?.url;
   const totalStock = stateVariants.reduce(
     (acc, curr) => acc + (curr.stockQuantity || 0),
-    0
+    0,
   );
 
   const [activeTab, setActiveTab] = useState<TabType>("basic");
@@ -555,16 +552,14 @@ export default function ShopProductAddStepsFormScreen() {
       </form>
 
       {optionGroups.length > 0 && (
-        <div className="w-full overflow-hidden">
-          <ProductVariantsSection hasOptions={true}>
-            <ProductVariantsTable
-              variants={stateVariants}
-              optionNames={optionNames}
-              onUpdateVariants={handleUpdateVariants}
-              onUploadImage={handleUploadVariantImageWrapper}
-            />
-          </ProductVariantsSection>
-        </div>
+        <ProductVariantsSection hasOptions={true}>
+          <ProductVariantsTable
+            variants={stateVariants}
+            optionNames={optionNames}
+            onUpdateVariants={handleUpdateVariants}
+            onUploadImage={handleUploadVariantImageWrapper}
+          />
+        </ProductVariantsSection>
       )}
 
       <ImagePreviewModal

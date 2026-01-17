@@ -2,6 +2,7 @@
 
 import React from "react";
 import { cn } from "@/utils/cn";
+import { Checkbox } from "../checkbox";
 
 interface BaseProps {
   label?: string;
@@ -9,6 +10,9 @@ interface BaseProps {
   required?: boolean;
   containerClassName?: string;
   isTextArea?: boolean;
+  isCheckbox?: boolean;
+  checkboxChecked?: boolean;
+  onCheckboxChange?: (checked: boolean) => void;
 }
 
 type FormInputProps = BaseProps &
@@ -29,9 +33,12 @@ export const FormInput = React.forwardRef<
       containerClassName,
       id,
       type,
+      isCheckbox,
+      checkboxChecked,
+      onCheckboxChange,
       ...props
     },
-    ref
+    ref,
   ) => {
     const isDate = type === "date" || type === "datetime-local";
 
@@ -49,7 +56,7 @@ export const FormInput = React.forwardRef<
 
       error
         ? "border-red-400 focus:border-red-500 focus:ring-red-500/10 bg-red-50/30"
-        : ""
+        : "",
     );
 
     return (
@@ -72,7 +79,7 @@ export const FormInput = React.forwardRef<
               className={cn(
                 commonStyles,
                 "py-3 min-h-25 resize-none",
-                className
+                className,
               )}
               {...(props as React.TextareaHTMLAttributes<HTMLTextAreaElement>)}
             />
@@ -81,9 +88,23 @@ export const FormInput = React.forwardRef<
               ref={ref as React.ForwardedRef<HTMLInputElement>}
               id={id}
               type={type}
-              className={cn(commonStyles, "h-12", className)}
+              className={cn(
+                commonStyles,
+                "h-12 text-ellipsis",
+                isCheckbox && "pr-11",
+                className,
+              )}
               {...(props as React.InputHTMLAttributes<HTMLInputElement>)}
             />
+          )}
+          {isCheckbox && (
+            <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center justify-center border-l border-gray-200 pl-2 h-5">
+              <Checkbox
+                checked={checkboxChecked}
+                onChange={(e) => onCheckboxChange?.(e.target.checked)}
+                sizeClassName="w-4 h-4"
+              />
+            </div>
           )}
         </div>
 
@@ -94,7 +115,7 @@ export const FormInput = React.forwardRef<
         )}
       </div>
     );
-  }
+  },
 );
 
 FormInput.displayName = "FormInput";

@@ -81,7 +81,7 @@ body {
 }
 
 .background-main-gradient {
- background: linear-gradient(90deg, #810610 0%, #a52121 100%);
+  background: linear-gradient(90deg, #810610 0%, #a52121 100%);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   width: 100%;

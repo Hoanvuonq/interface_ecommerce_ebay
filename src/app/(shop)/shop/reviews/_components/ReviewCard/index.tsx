@@ -51,7 +51,7 @@ export default function ReviewCard({
   };
 
   return (
-    <div className="bg-white rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden mb-6">
+    <div className="bg-white rounded-4xl border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden mb-6">
       <div className="p-6 sm:p-8">
         <div className="flex flex-col sm:flex-row gap-6">
           {/* Avatar & User Info Side */}

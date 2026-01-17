@@ -38,7 +38,7 @@ export default function ReviewList({
   // State: Loading ban đầu khi chưa có dữ liệu
   if (loading && reviews.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 bg-white rounded-[2rem] border border-slate-100 shadow-sm">
+      <div className="flex flex-col items-center justify-center py-20 bg-white rounded-4xl border border-slate-100 shadow-sm">
         <div className="p-4 bg-orange-50 rounded-2xl mb-4">
           <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
         </div>
@@ -52,7 +52,7 @@ export default function ReviewList({
   // State: Danh sách trống
   if (reviews.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 bg-slate-50/50 rounded-[2rem] border-2 border-dashed border-slate-200">
+      <div className="flex flex-col items-center justify-center py-20 bg-slate-50/50 rounded-4xl border-2 border-dashed border-slate-200">
         <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-sm mb-6 ring-8 ring-slate-50">
           <Inbox size={40} className="text-slate-200" strokeWidth={1.5} />
         </div>

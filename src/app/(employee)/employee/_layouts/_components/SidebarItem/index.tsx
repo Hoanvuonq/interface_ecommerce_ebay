@@ -31,7 +31,7 @@ export const SidebarItem = ({
         "shrink-0 transition-transform duration-300 group-hover:scale-110 relative flex items-center justify-center",
         isActive || highlightParent
           ? "text-(--color-mainColor)"
-          : "text-gray-600 group-hover:text-orange-500"
+          : "text-gray-600 group-hover:text-(--color-mainColor)"
       )}
     >
       {item.icon}

@@ -3,7 +3,13 @@
 
 import { SectionLoading } from "@/components";
 import { useToast } from "@/hooks/useToast";
-import { FileText, ShieldCheck, Store, AlertCircle, MapPin } from "lucide-react";
+import {
+  FileText,
+  ShieldCheck,
+  Store,
+  AlertCircle,
+  MapPin,
+} from "lucide-react";
 import { useEffect, useState, useMemo } from "react";
 import { BasicInfo, LegalInfo, TaxInfo, AddressInfo } from "../_components";
 import { useGetShopInfo } from "../_hooks/useShop";
@@ -24,20 +30,20 @@ export default function ShopProfileScreen() {
   const { error: toastError } = useToast();
 
   useEffect(() => {
-  (async () => {
-    try {
-      const res = await handleGetShopInfo(users?.shopId);
-      if (res) {
-        setShop(res.data);
+    (async () => {
+      try {
+        const res = await handleGetShopInfo(users?.shopId);
+        if (res) {
+          setShop(res.data);
+        }
+      } catch (err: any) {
+        console.error("Error loading shop info:", err);
+        toastError("Không thể tải thông tin shop. Vui lòng thử lại!");
+      } finally {
+        setIsInitialized(true);
       }
-    } catch (err: any) {
-      console.error("Error loading shop info:", err);
-      toastError("Không thể tải thông tin shop. Vui lòng thử lại!");
-    } finally {
-      setIsInitialized(true);
-    }
-  })();
-}, []);
+    })();
+  }, []);
 
   const DataMissingPlaceholder = ({
     title,
@@ -79,32 +85,11 @@ export default function ShopProfileScreen() {
       case "basic":
         return <BasicInfo shop={shop} setShop={setShop} />;
       case "address":
-        return shop.address?.addressId ? (
-          <AddressInfo shop={shop} setShop={setShop} />
-        ) : (
-          <DataMissingPlaceholder
-            title="Chưa cập nhật địa chỉ"
-            desc="Vui lòng cập nhật địa chỉ giao hàng để hoàn tất hồ sơ."
-          />
-        );
+        return <AddressInfo shop={shop} setShop={setShop} />;
       case "tax":
-        return shop.taxInfo && Object.keys(shop.taxInfo).length > 0 ? (
-          <TaxInfo shop={shop} setShop={setShop} />
-        ) : (
-          <DataMissingPlaceholder
-            title="Chưa cập nhật thông tin thuế"
-            desc="Vui lòng cập nhật mã số thuế và địa chỉ kinh doanh để hoàn tất hồ sơ."
-          />
-        );
+        return <TaxInfo shop={shop} setShop={setShop} />;
       case "legal":
-        return shop.legalInfo && Object.keys(shop.legalInfo).length > 0 ? (
-          <LegalInfo shop={shop} setShop={setShop} />
-        ) : (
-          <DataMissingPlaceholder
-            title="Chưa xác thực định danh"
-            desc="Bạn cần cung cấp CCCD/Hộ chiếu để định danh chủ sở hữu cửa hàng."
-          />
-        );
+        return <LegalInfo shop={shop} setShop={setShop} />;
       default:
         return null;
     }

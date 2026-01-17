@@ -1,1 +1,6 @@
 export * from "./ProductListForReviews"
+export * from "./ProductReviewsSection"
+export * from "./ReviewCard"
+export * from "./ReviewList"
+export * from "./ReviewResponseModal"
+export * from "./ReviewStatistics"

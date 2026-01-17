@@ -18,7 +18,7 @@ const API_GETSHOP_USER = "v1/public/shops";
 const API_GETSHOP = "v1/shops";
 
 export async function createShop(
-  payload: CreateShopRequest
+  payload: CreateShopRequest,
 ): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
     url: `/${API_GETSHOP}`,
@@ -31,7 +31,7 @@ export async function createShop(
 }
 
 export async function createCompleteShop(
-  payload: CreateShopComplete
+  payload: CreateShopComplete,
 ): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
     url: `/${API_GETSHOP}/complete`,
@@ -44,7 +44,7 @@ export async function createCompleteShop(
 }
 
 export async function updateCompleteShop(
-  payload: CreateShopComplete
+  payload: CreateShopComplete,
 ): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
     url: `/${API_GETSHOP}/complete`,
@@ -57,7 +57,7 @@ export async function updateCompleteShop(
 }
 
 export async function updateShop(
-  payload: UpdateShopRequest
+  payload: UpdateShopRequest,
 ): Promise<ApiResponse<UpdateShopResponse>> {
   return request<ApiResponse<UpdateShopResponse>>({
     url: `/${API_GETSHOP}`,
@@ -71,7 +71,7 @@ export async function updateShop(
 
 export async function createShopAddress(
   shopId: string,
-  payload: CreateShopAddressRequest
+  payload: CreateShopAddressRequest,
 ): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
     url: `/${API_GETSHOP}/${shopId}/address`,
@@ -86,7 +86,7 @@ export async function createShopAddress(
 export async function updateShopAddress(
   shopId: string,
   addressId: string,
-  payload: UpdateShopAddressRequest
+  payload: UpdateShopAddressRequest,
 ): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
     url: `/${API_GETSHOP}/${shopId}/address/${addressId}`,
@@ -100,7 +100,7 @@ export async function updateShopAddress(
 
 export async function createShopLegalInfo(
   shopId: string,
-  payload: CreateShopLegalRequest
+  payload: CreateShopLegalRequest,
 ): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
     url: `/${API_GETSHOP}/${shopId}/legal-info`,
@@ -115,7 +115,7 @@ export async function createShopLegalInfo(
 export async function updateShopLegalInfo(
   shopId: string,
   legalId: string,
-  payload: UpdateShopLegalRequest
+  payload: UpdateShopLegalRequest,
 ): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
     url: `/${API_GETSHOP}/${shopId}/legal-info/${legalId}`,
@@ -129,7 +129,7 @@ export async function updateShopLegalInfo(
 
 export async function createShopTaxInfo(
   shopId: string,
-  payload: CreateShopTaxRequest
+  payload: CreateShopTaxRequest,
 ): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
     url: `/${API_GETSHOP}/${shopId}/tax-info`,
@@ -144,7 +144,7 @@ export async function createShopTaxInfo(
 export async function updateShopTaxInfo(
   shopId: string,
   taxId: string,
-  payload: UpdateShopTaxRequest
+  payload: UpdateShopTaxRequest,
 ): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
     url: `/${API_GETSHOP}/${shopId}/tax-info/${taxId}`,
@@ -155,13 +155,13 @@ export async function updateShopTaxInfo(
     },
   });
 }
-
+//Update
 export async function getShopTaxInfo(
   shopId: string,
-  taxId: string
+  taxId: string,
 ): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
-    url: `/${API_GETSHOP}/${shopId}/tax-info/${taxId}`,
+    url: `/${API_GETSHOP}/me/tax-info`,
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -169,13 +169,12 @@ export async function getShopTaxInfo(
   });
 }
 
-
 export async function getShopLegalInfo(
   shopId: string,
-  legalId: string
+  legalId: string,
 ): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
-    url: `/${API_GETSHOP}/${shopId}/legal-info/${legalId}`,
+    url: `/${API_GETSHOP}/me/legal-info/${legalId}`,
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -208,7 +207,7 @@ export async function getCurrentUserShopDetail(): Promise<ApiResponse<any>> {
 }
 
 export async function getAllShopAddresses(
-  shopId: string
+  shopId: string,
 ): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
     url: `/${API_GETSHOP}/${shopId}/address`,
@@ -221,7 +220,7 @@ export async function getAllShopAddresses(
 
 export async function getProductsByShopId(
   shopId: string,
-  params: FilterRequest
+  params: FilterRequest,
 ): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
     url: `/${API_GETSHOP}/${shopId}/products`,
@@ -233,7 +232,7 @@ export async function getProductsByShopId(
 export async function getOrdersByShopIdAndBuyerId(
   shopId: string,
   buyerId: string,
-  params: FilterRequest
+  params: FilterRequest,
 ): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
     url: `/${API_GETSHOP}/${shopId}/orders`,

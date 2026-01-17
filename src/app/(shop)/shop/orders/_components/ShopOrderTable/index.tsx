@@ -46,7 +46,6 @@ export default function ShopOrderTable() {
     }
   };
 
-  // 2. Local UI-only state
   const { handleUpdateShopOrderStatus, loading: statusUpdateLoading } =
     useUpdateShopOrderStatus();
   const [statusModalVisible, setStatusModalVisible] = useState(false);
@@ -55,7 +54,6 @@ export default function ShopOrderTable() {
     null
   );
 
-  // ==================== UI RENDERING HELPERS ====================
   const renderStatus = (status: OrderStatus) => {
     const configs: Record<OrderStatus, string> = {
       [OrderStatus.CREATED]: "bg-gray-100 text-gray-600 border-gray-200",
@@ -396,7 +394,6 @@ export default function ShopOrderTable() {
         />
       </div>
 
-      {/* Modals */}
       <UpdateStatusModal
         isOpen={statusModalVisible}
         onClose={() => setStatusModalVisible(false)}

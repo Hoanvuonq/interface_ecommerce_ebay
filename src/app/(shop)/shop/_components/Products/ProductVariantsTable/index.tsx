@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useRef, useCallback } from "react";
+import React, { useMemo, useRef, useCallback, useState } from "react";
 import { DataTable } from "@/components";
 import { ProductVariantsTableProps, Variant } from "./type";
 import { useProductVariantsColumns } from "./columns";
@@ -13,6 +13,15 @@ export const ProductVariantsTable: React.FC<ProductVariantsTableProps> = ({
   onUploadImage,
 }) => {
   const fileInputRefs = useRef<{ [key: number]: HTMLInputElement | null }>({});
+  
+  // Quản lý danh sách các fields được phép bulk update
+  const [selectedBulkFields, setSelectedBulkFields] = useState<string[]>([]);
+
+  const onToggleBulkField = useCallback((field: string) => {
+    setSelectedBulkFields((prev) =>
+      prev.includes(field) ? prev.filter((f) => f !== field) : [...prev, field]
+    );
+  }, []);
 
   const handleInputChange = useCallback(
     (index: number, field: keyof Variant, value: any) => {
@@ -20,15 +29,18 @@ export const ProductVariantsTable: React.FC<ProductVariantsTableProps> = ({
       newVariants[index] = { ...newVariants[index], [field]: value };
       onUpdateVariants(newVariants);
     },
-    [variants, onUpdateVariants]
+    [variants, onUpdateVariants],
   );
 
   const handleBulkUpdate = useCallback(
     (field: keyof Variant, value: any) => {
+      // Chỉ thực hiện update nếu trường này đang được CHECKED
+      if (!selectedBulkFields.includes(field as string)) return;
+
       const newVariants = variants.map((v) => ({ ...v, [field]: value }));
       onUpdateVariants(newVariants);
     },
-    [variants, onUpdateVariants]
+    [variants, onUpdateVariants, selectedBulkFields],
   );
 
   const groupMetadata = useMemo(() => {
@@ -50,22 +62,24 @@ export const ProductVariantsTable: React.FC<ProductVariantsTableProps> = ({
     fileInputRefs,
     handleInputChange,
     handleBulkUpdate,
-    onUploadImage
+    onUploadImage,
+    selectedBulkFields,
+    onToggleBulkField
   );
 
   return (
-    <DataTable
-      data={variants}
-      columns={columns}
-      loading={false}
-      page={0}
-      size={variants.length}
-      totalElements={variants.length}
-      onPageChange={() => {}}
-      rowKey={(item: Variant) =>
-        `v-${item.sku}-${item.optionValueNames?.join("-")}`
-      }
-      emptyMessage="Vui lòng thiết lập phân loại để tạo biến thể"
-    />
+    <div className="space-y-4">
+      <DataTable
+        data={variants}
+        columns={columns}
+        loading={false}
+        page={0}
+        size={variants.length}
+        totalElements={variants.length}
+        onPageChange={() => {}}
+        rowKey={(_, index) => `v-row-${index}`}
+        emptyMessage="Vui lòng thiết lập phân loại để tạo biến thể"
+      />
+    </div>
   );
 };

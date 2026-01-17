@@ -109,6 +109,11 @@ export const SHOP_SIDEBAR_ITEMS = [
         href: "/shop/cskh/chat",
       },
       {
+        key: "cskh-settings",
+        label: "Thiết lập chat",
+        href: "/shop/cskh/settings",
+      },
+      {
         key: "cskh-review",
         label: "Quản lý đánh giá",
         href: "/shop/reviews",
@@ -175,23 +180,7 @@ export const SHOP_SIDEBAR_ITEMS = [
       },
     ],
   },
-  {
-    key: "my-account",
-    label: "Tài khoản của tôi",
-    icon: <UserCircle size={20} />,
-    children: [
-      {
-        key: "account-info",
-        label: "Thông tin tài khoản",
-        href: "/shop/account/info",
-      },
-      {
-        key: "account-password",
-        label: "Đổi mật khẩu",
-        href: "/shop/account/password",
-      },
-    ],
-  },
+  
 ];
 
 export const SHOP_ROUTE_MAPPINGS = [
@@ -209,6 +198,7 @@ export const SHOP_ROUTE_MAPPINGS = [
   { prefix: "/shop/vouchers", key: "vouchers" },
   { prefix: "/shop/cskh/chat", key: "cskh-chat", parent: "cskh" },
   { prefix: "/shop/reviews", key: "cskh-review", parent: "cskh" },
+  { prefix: "/shop/settings", key: "cskh-settings", parent: "cskh" },
   { prefix: "/shop/finance/revenue", key: "finance-revenue", parent: "finance" },
   { prefix: "/shop/finance/bank", key: "finance-bank", parent: "finance" },
   { prefix: "/shop/finance/fees", key: "finance-fees", parent: "finance" },
@@ -217,6 +207,4 @@ export const SHOP_ROUTE_MAPPINGS = [
   { prefix: "/shop/setup", key: "shop-setup", parent: "shop-management" },
   { prefix: "/shop/complaint", key: "shop-complaint", parent: "shop-management" },
   { prefix: "/shop/data", key: "data" },
-  { prefix: "/shop/account/info", key: "account-info", parent: "my-account" },
-  { prefix: "/shop/account/password", key: "account-password", parent: "my-account" },
 ];

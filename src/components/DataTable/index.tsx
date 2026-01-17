@@ -37,7 +37,7 @@ export const DataTable = <T,>({
   }, [page, prevPage]);
 
   const getRowKey = (item: T, index: number) => {
-    if (typeof rowKey === "function") return rowKey(item);
+    if (typeof rowKey === "function") return rowKey(item, index);
     if (
       rowKey &&
       typeof rowKey === "string" &&

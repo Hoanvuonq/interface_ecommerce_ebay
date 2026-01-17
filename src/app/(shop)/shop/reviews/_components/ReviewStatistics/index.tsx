@@ -20,10 +20,10 @@ interface ReviewStatisticsProps {
   loading?: boolean;
 }
 
-export default function ReviewStatistics({
+export const ReviewStatistics = ({
   statistics,
   loading = false,
-}: ReviewStatisticsProps) {
+}: ReviewStatisticsProps) => {
   if (!statistics && !loading) {
     return null;
   }
@@ -45,7 +45,7 @@ export default function ReviewStatistics({
     icon: any;
     colorClass: string;
   }) => (
-    <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-md transition-all">
+    <div className="bg-white p-6 rounded-4xl border border-slate-100 shadow-sm hover:shadow-md transition-all">
       <div className="flex justify-between items-start mb-4">
         <div className={cn("p-3 rounded-2xl", colorClass)}>
           <Icon size={20} />
@@ -108,7 +108,7 @@ export default function ReviewStatistics({
 
       {/* Bottom Row: Attention Needed */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="group flex items-center justify-between p-6 bg-white rounded-[2rem] border border-slate-100 shadow-sm hover:border-rose-200 transition-all cursor-pointer">
+        <div className="group flex items-center justify-between p-6 bg-white rounded-4xl border border-slate-100 shadow-sm hover:border-rose-200 transition-all cursor-pointer">
           <div className="flex items-center gap-5">
             <div className="p-4 bg-rose-50 text-rose-500 rounded-2xl group-hover:scale-110 transition-transform">
               <AlertCircle size={28} />
@@ -134,7 +134,7 @@ export default function ReviewStatistics({
           />
         </div>
 
-        <div className="group flex items-center justify-between p-6 bg-white rounded-[2rem] border border-slate-100 shadow-sm hover:border-blue-200 transition-all cursor-pointer">
+        <div className="group flex items-center justify-between p-6 bg-white rounded-4xl border border-slate-100 shadow-sm hover:border-blue-200 transition-all cursor-pointer">
           <div className="flex items-center gap-5">
             <div className="p-4 bg-blue-50 text-blue-500 rounded-2xl group-hover:scale-110 transition-transform">
               <History size={28} />
@@ -162,4 +162,4 @@ export default function ReviewStatistics({
       </div>
     </div>
   );
-}
+};

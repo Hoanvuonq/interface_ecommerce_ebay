@@ -1,40 +1,43 @@
-import { useState, useCallback, useMemo } from "react";
+import { useCallback, useState } from "react";
 import { OptionConfig } from "./useOptionManagement";
-
+import _ from "lodash";
 const cartesianProduct = (arrays: string[][]): string[][] => {
   if (!arrays.length) return [];
   return arrays.reduce<string[][]>(
     (acc, curr) =>
       acc.flatMap((accItem) => curr.map((currItem) => [...accItem, currItem])),
-    [[]]
+    [[]],
   );
 };
 
 export const useVariantManagement = (
   optionNames: string[],
-  basePrice: number
+  basePrice: number,
 ) => {
   const [variants, setVariants] = useState<any[]>([]);
 
-  const createDefaultVariant = useCallback(() => ({
-    sku: "",
-    corePrice: basePrice || 0,
-    price: basePrice || 0,
-    stockQuantity: 0,
-    lengthCm: undefined,
-    widthCm: undefined,
-    heightCm: undefined,
-    weightGrams: undefined,
-    optionValueNames: [],
-  }), [basePrice]);
+  const createDefaultVariant = useCallback(
+    () => ({
+      sku: "",
+      corePrice: basePrice || 0,
+      price: basePrice || 0,
+      stockQuantity: 0,
+      lengthCm: undefined,
+      widthCm: undefined,
+      heightCm: undefined,
+      weightGrams: undefined,
+      optionValueNames: [],
+    }),
+    [basePrice],
+  );
 
   const regenerateVariantsFromOptions = useCallback(
     (groups: OptionConfig[], baseVariants?: any[]) => {
       const normalizedGroups = groups
         .map((group) => ({
           ...group,
-          name: group.name.trim(),
-          values: group.values.map((value) => value.trim()).filter(Boolean),
+          name: _.trim(group.name),
+          values: group.values.map((value) => _.trim(value)).filter(Boolean),
         }))
         .filter((group) => group.name && group.values.length > 0);
 
@@ -61,7 +64,7 @@ export const useVariantManagement = (
       }
 
       const combinations = cartesianProduct(
-        normalizedGroups.map((group) => group.values)
+        normalizedGroups.map((group) => group.values),
       );
       if (combinations.length === 0) {
         setVariants([]);
@@ -75,8 +78,8 @@ export const useVariantManagement = (
                 Array.isArray(variant.optionValueNames) &&
                 variant.optionValueNames.length === combo.length &&
                 combo.every(
-                  (value, idx) => variant.optionValueNames[idx] === value
-                )
+                  (value, idx) => variant.optionValueNames[idx] === value,
+                ),
             )
           : undefined;
 
@@ -84,12 +87,21 @@ export const useVariantManagement = (
           return existingMatch;
         }
 
+        // Helper to remove Vietnamese tones and map đ/Đ
+        function removeVietnameseTones(str: string) {
+          return str
+            .normalize("NFD")
+            .replace(/\p{Diacritic}/gu, "")
+            .replace(/đ/g, "d")
+            .replace(/Đ/g, "D");
+        }
+
         const skuSuffix = combo
           .map((val) =>
-            val
+            removeVietnameseTones(val)
               .substring(0, 3)
               .toUpperCase()
-              .replace(/[^A-Z0-9]/g, "")
+              .replace(/[^A-Z0-9]/g, ""),
           )
           .join("-");
 
@@ -102,7 +114,7 @@ export const useVariantManagement = (
 
       setVariants(newVariants);
     },
-    [variants, createDefaultVariant]
+    [variants, createDefaultVariant],
   );
 
   const validateVariantStructure = useCallback(
@@ -118,19 +130,19 @@ export const useVariantManagement = (
       if (!hasOptionGroups) {
         if (variantList.length !== 1) {
           structureErrors.push(
-            "Sản phẩm không có phân loại → chỉ được phép có đúng 1 biến thể mặc định."
+            "Sản phẩm không có phân loại → chỉ được phép có đúng 1 biến thể mặc định.",
           );
         }
 
         variantList.forEach((variant, idx) => {
           const optionValues = (variant.optionValueNames || []).filter(
-            (val: string) => val && val.trim()
+            (val: string) => val && val.trim(),
           );
           if (optionValues.length > 0) {
             structureErrors.push(
               `Biến thể #${
                 idx + 1
-              }: Không được chọn phân loại khi sản phẩm không có tùy chọn.`
+              }: Không được chọn phân loại khi sản phẩm không có tùy chọn.`,
             );
           }
         });
@@ -144,7 +156,7 @@ export const useVariantManagement = (
             structureErrors.push(
               `Biến thể #${idx + 1}: Cần nhập đủ ${
                 optionNames.length
-              } giá trị phân loại.`
+              } giá trị phân loại.`,
             );
             return;
           }
@@ -154,7 +166,7 @@ export const useVariantManagement = (
               structureErrors.push(
                 `Biến thể #${idx + 1}: Giá trị "${
                   optionNames[optIdx]
-                }" chưa được nhập.`
+                }" chưa được nhập.`,
               );
             }
           });
@@ -163,7 +175,7 @@ export const useVariantManagement = (
 
       return structureErrors;
     },
-    [optionNames]
+    [optionNames],
   );
 
   const handleUpdateVariants = useCallback((newVariants: any[]) => {
@@ -176,7 +188,7 @@ export const useVariantManagement = (
       newVariants[index] = { ...newVariants[index], [field]: value };
       setVariants(newVariants);
     },
-    [variants]
+    [variants],
   );
 
   const handleUploadVariantImage = useCallback(
@@ -188,7 +200,7 @@ export const useVariantManagement = (
       // Should be called from component with full parameters
       return Promise.resolve();
     },
-    []
+    [],
   );
 
   return {

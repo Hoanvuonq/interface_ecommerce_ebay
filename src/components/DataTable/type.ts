@@ -16,7 +16,7 @@ export interface DataTableProps<T> {
   data: T[];
   columns: Column<T>[];
   loading: boolean;
-  rowKey?: keyof T | ((item: T) => string | number);
+  rowKey?: keyof T | ((item: T, index: number) => string | number);
   emptyMessage?: string;
   page: number;
   size: number;

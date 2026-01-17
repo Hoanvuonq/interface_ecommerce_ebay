@@ -309,7 +309,7 @@ export default function ShopVoucherEditModal({
                   <div className="relative">
                     <select 
                       multiple
-                      className="w-full px-5 py-4 rounded-[1.5rem] border border-gray-100 bg-gray-50/50 focus:bg-white outline-none transition-all text-sm font-bold appearance-none custom-scrollbar min-h-[120px]"
+                      className="w-full px-5 py-4 rounded-3xl border border-gray-100 bg-gray-50/50 focus:bg-white outline-none transition-all text-sm font-bold appearance-none custom-scrollbar min-h-[120px]"
                       value={formData.productIds}
                       onChange={(e) => {
                         const options = Array.from(e.target.selectedOptions, option => option.value);
@@ -322,7 +322,7 @@ export default function ShopVoucherEditModal({
                         </option>
                       ))}
                     </select>
-                    {loadingProducts && <div className="absolute inset-0 flex items-center justify-center bg-white/50 rounded-[1.5rem]"><Loader2 className="animate-spin text-orange-500" /></div>}
+                    {loadingProducts && <div className="absolute inset-0 flex items-center justify-center bg-white/50 rounded-3xl"><Loader2 className="animate-spin text-orange-500" /></div>}
                   </div>
                   <p className="text-[10px] text-gray-400 font-bold mt-2 ml-2 italic">Giữ phím Ctrl (hoặc Cmd) để chọn nhiều sản phẩm</p>
                </div>
