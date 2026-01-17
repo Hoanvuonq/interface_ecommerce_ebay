@@ -75,7 +75,6 @@ export const StatusTabsTable = ({
                     : "text-gray-500 hover:text-gray-700"
                 )}
               >
-                {/* Thanh trượt màu trắng (Soft UI) */}
                 {isActive && (
                   <motion.div
                     layoutId="active-pill-table"
@@ -97,8 +96,7 @@ export const StatusTabsTable = ({
                   />
                   <span>{tab.label}</span>
 
-                  {/* Badge số lượng màu Cam chủ đạo */}
-                  <span
+                   <span
                     className={cn(
                       "ml-1 px-2 py-0.5 rounded-md text-[10px] tabular-nums font-bold transition-all duration-300",
                       isActive
