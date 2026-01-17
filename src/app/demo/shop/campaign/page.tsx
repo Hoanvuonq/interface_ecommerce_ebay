@@ -18,8 +18,27 @@ import type {
     CampaignResponse,
     CampaignSlotProductResponse,
     CampaignSlotResponse,
-    RegisterProductRequest
+    RegisterProductRequest,
+    ProductResponse,
+    ProductVariantResponse
 } from './types';
+
+// Helper to determine display status
+const getDisplayStatus = (campaign: CampaignResponse) => {
+    if (campaign.status === 'CANCELLED') return { label: 'Đã hủy', color: 'bg-red-100 text-red-700' };
+    if (campaign.status === 'PAUSED') return { label: 'Tạm dừng', color: 'bg-amber-100 text-amber-700' };
+    if (campaign.status === 'ENDED') return { label: 'Kết thúc', color: 'bg-gray-100 text-gray-700' };
+
+    // Status is ACTIVE, check time
+    const now = new Date();
+    const start = new Date(campaign.startDate);
+    const end = new Date(campaign.endDate);
+
+    if (now > end) return { label: 'Kết thúc', color: 'bg-gray-100 text-gray-700' }; // Should be caught by BE implicitly but good for safety
+    if (now < start) return { label: 'Sắp diễn ra', color: 'bg-blue-100 text-blue-700' };
+
+    return { label: 'Đang diễn ra', color: 'bg-green-100 text-green-700' };
+};
 
 /**
  * Shop Campaign Demo Page
@@ -43,9 +62,91 @@ export default function ShopCampaignDemoPage() {
 
     // UI state
     const [loading, setLoading] = useState(false);
-    const [activeTab, setActiveTab] = useState<'join' | 'my-registrations' | 'my-campaigns'>('join');
+    const [activeTab, setActiveTab] = useState<'join' | 'my-registrations' | 'my-shop-sales'>('join');
     const [showRegisterModal, setShowRegisterModal] = useState(false);
+    const [showCreateModal, setShowCreateModal] = useState<'simple' | null>(null);
     const [selectedSlot, setSelectedSlot] = useState<CampaignSlotResponse | null>(null);
+
+    // Form state
+    const [createForm, setCreateForm] = useState({
+        name: '',
+        description: '',
+        startDate: new Date().toISOString().slice(0, 16), // "YYYY-MM-DDTHH:mm"
+        endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 16), // +7 days
+        isRecurring: false,
+        recurringStartTime: '09:00',
+        recurringEndTime: '21:00',
+    });
+
+    // Product Selection State
+    const [createStep, setCreateStep] = useState<'INFO' | 'PRODUCTS' | 'CONFIRM'>('INFO');
+    const [myProducts, setMyProducts] = useState<ProductResponse[]>([]);
+    const [productsLoading, setProductsLoading] = useState(false);
+    const [selectedVariants, setSelectedVariants] = useState<{
+        [variantId: string]: {
+            selected: boolean;
+            salePrice?: number;
+            discountPercent: number; // Default 10%
+            stockLimit: number;      // Default 10
+        }
+    }>({});
+
+    const fetchMyProducts = async () => {
+        setProductsLoading(true);
+        try {
+            const res = await shopCampaignService.getMyProducts({ page: 0, size: 50 });
+            setMyProducts(res.content);
+        } catch (error) {
+            console.error('Failed to fetch products', error);
+            toast.error('Không thể tải danh sách sản phẩm');
+        } finally {
+            setProductsLoading(false);
+        }
+    };
+
+
+    const handleCreateCampaign = async () => {
+        if (!createForm.name || !createForm.startDate || !createForm.endDate) {
+            toast.error('Vui lòng điền đầy đủ thông tin bắt buộc');
+            return;
+        }
+
+        setLoading(true);
+        try {
+            // Prepare products payload
+            const productsPayload = Object.entries(selectedVariants)
+                .filter(([_, config]) => config.selected)
+                .map(([variantId, config]) => ({
+                    variantId,
+                    salePrice: config.salePrice || 0,
+                    stockLimit: config.stockLimit,
+                }));
+
+            // For simple shop sale
+            if (showCreateModal === 'simple') {
+                await shopCampaignService.createShopCampaign({
+                    name: createForm.name,
+                    description: createForm.description,
+                    // campaignType removed - backend forces SHOP_SALE
+                    startDate: createForm.startDate, // Already YYYY-MM-DD from input[type=date]
+                    endDate: createForm.endDate,     // Already YYYY-MM-DD from input[type=date]
+                    products: productsPayload.length > 0 ? productsPayload : undefined,
+                });
+            } else {
+                toast.info('Tính năng Flash Sale nâng cao đang được cập nhật');
+                setLoading(false);
+                return;
+            }
+
+            toast.success('Tạo campaign thành công!');
+            setShowCreateModal(null);
+            fetchData(); // Refresh list
+        } catch (err: any) {
+            toast.error(err.message || 'Lỗi khi tạo campaign');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     // Check auth on mount
     useEffect(() => {
@@ -99,6 +200,20 @@ export default function ShopCampaignDemoPage() {
             fetchData();
         } catch (err: any) {
             toast.error(err.message || 'Không thể hủy đăng ký');
+        }
+    };
+
+    const handleToggleCampaign = async (e: React.MouseEvent, campaignId: string, currentStatus: string) => {
+        e.stopPropagation(); // Prevent card click
+        const action = currentStatus === 'PAUSED' ? 'Tiếp tục' : 'Tạm dừng';
+        // if (!confirm(`Bạn có chắc muốn ${action} campaign này?`)) return;
+
+        try {
+            await shopCampaignService.toggleShopCampaign(campaignId);
+            toast.success(`Đã  ${action} campaign`);
+            fetchData();
+        } catch (err: any) {
+            toast.error(err.message || 'Lỗi khi thay đổi trạng thái');
         }
     };
 
@@ -183,7 +298,7 @@ export default function ShopCampaignDemoPage() {
                     {[
                         { id: 'join', label: 'Tham gia Campaign', icon: Plus },
                         { id: 'my-registrations', label: 'Đăng ký của tôi', icon: Package },
-                        { id: 'my-campaigns', label: 'Campaign của tôi', icon: Calendar },
+                        { id: 'my-shop-sales', label: 'Shop Sales', icon: Tag },
                     ].map(({ id, label, icon: Icon }) => (
                         <button
                             key={id}
@@ -412,28 +527,44 @@ export default function ShopCampaignDemoPage() {
                     </div>
                 )}
 
-                {/* Tab: Campaign của tôi */}
-                {activeTab === 'my-campaigns' && (
+                {/* Tab: Shop Sales của tôi */}
+                {activeTab === 'my-shop-sales' && (
                     <div>
                         <div className="flex items-center justify-between mb-4">
                             <h2 className="font-semibold text-lg text-gray-900">
-                                Campaign của tôi ({myCampaigns.length})
+                                Shop Sales của tôi ({myCampaigns.filter(c => c.campaignType === 'SHOP_SALE').length})
                             </h2>
-                            <button className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors cursor-pointer">
+                            <button
+                                onClick={() => {
+                                    setShowCreateModal('simple');
+                                    setCreateStep('INFO');
+                                    setSelectedVariants({});
+                                    setCreateForm({
+                                        name: '',
+                                        description: '',
+                                        startDate: new Date().toISOString().split('T')[0],
+                                        endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                                        isRecurring: false,
+                                        recurringStartTime: '09:00',
+                                        recurringEndTime: '21:00',
+                                    });
+                                }}
+                                className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors cursor-pointer"
+                            >
                                 <Plus className="w-4 h-4" />
-                                Tạo Shop Sale mới
+                                Tạo Shop Sale
                             </button>
                         </div>
 
-                        {myCampaigns.length === 0 ? (
+                        {myCampaigns.filter(c => c.campaignType === 'SHOP_SALE').length === 0 ? (
                             <div className="bg-white rounded-xl p-12 text-center text-gray-500">
-                                <Calendar className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-                                <p>Bạn chưa tạo shop campaign nào</p>
-                                <p className="text-sm mt-1">Tạo Shop Sale để khuyến mãi riêng cho cửa hàng của bạn</p>
+                                <Tag className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+                                <p>Bạn chưa tạo shop sale nào</p>
+                                <p className="text-sm mt-1">Tạo Shop Sale để khuyến mãi dài hạn cho cửa hàng</p>
                             </div>
                         ) : (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                {myCampaigns.map((campaign) => (
+                                {myCampaigns.filter(c => c.campaignType === 'SHOP_SALE').map((campaign) => (
                                     <div key={campaign.id} className="bg-white rounded-xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all cursor-pointer">
                                         <img
                                             src={campaign.bannerUrl || 'https://picsum.photos/400/200'}
@@ -446,17 +577,43 @@ export default function ShopCampaignDemoPage() {
                                                 {formatDate(campaign.startDate)} - {formatDate(campaign.endDate)}
                                             </p>
                                             <div className="flex items-center gap-2 mt-3">
-                                                <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${campaign.status === 'ACTIVE'
-                                                    ? 'bg-green-100 text-green-700'
-                                                    : campaign.status === 'SCHEDULED'
-                                                        ? 'bg-blue-100 text-blue-700'
-                                                        : 'bg-gray-100 text-gray-700'
-                                                    }`}>
-                                                    {campaign.status}
-                                                </span>
+                                                {(() => {
+                                                    const { label, color } = getDisplayStatus(campaign);
+                                                    return (
+                                                        <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${color}`}>
+                                                            {label}
+                                                        </span>
+                                                    );
+                                                })()}
                                                 <span className="text-xs text-gray-400">
                                                     {campaign.totalProducts} sản phẩm
                                                 </span>
+                                            </div>
+
+                                            {/* Actions */}
+                                            <div className="mt-3 flex gap-2 w-full">
+                                                {/* Only show Pause/Resume for ACTIVE/PAUSED campaigns that haven't ended */}
+                                                {(campaign.status === 'ACTIVE' || campaign.status === 'PAUSED') && (
+                                                    <button
+                                                        onClick={(e) => handleToggleCampaign(e, campaign.id, campaign.status)}
+                                                        className={`flex-1 px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${campaign.status === 'PAUSED'
+                                                            ? 'border-green-200 bg-green-50 text-green-700 hover:bg-green-100 hover:border-green-300'
+                                                            : 'border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100 hover:border-amber-300'
+                                                            }`}
+                                                    >
+                                                        {campaign.status === 'PAUSED' ? 'Tiếp tục' : 'Tạm dừng'}
+                                                    </button>
+                                                )}
+
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        toast.info("Tính năng chỉnh sửa đang phát triển");
+                                                    }}
+                                                    className="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100"
+                                                >
+                                                    Sửa
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -465,7 +622,301 @@ export default function ShopCampaignDemoPage() {
                         )}
                     </div>
                 )}
+
+
             </main>
+
+            {/* Create Shop Campaign Modal */}
+            {showCreateModal && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                        <div className="p-6 border-b border-gray-200">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <h2 className="text-xl font-bold text-gray-900">
+                                        {createStep === 'INFO' && 'Bước 1: Thông tin cơ bản'}
+                                        {createStep === 'PRODUCTS' && 'Bước 2: Chọn sản phẩm'}
+                                        {createStep === 'CONFIRM' && 'Bước 3: Xác nhận'}
+                                    </h2>
+                                    <p className="text-sm text-gray-500 mt-1">
+                                        Tạo Shop Sale Mới ({createStep === 'INFO' ? 'Cài đặt chung' : createStep === 'PRODUCTS' ? 'Thêm sản phẩm' : 'Hoàn tất'})
+                                    </p>
+                                </div>
+                                <button
+                                    onClick={() => setShowCreateModal(null)}
+                                    className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                                >
+                                    <span className="text-2xl text-gray-400">×</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="p-6">
+                            {/* STEP 1: INFO */}
+                            {createStep === 'INFO' && (
+                                <div className="space-y-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Tên chương trình *
+                                        </label>
+                                        <input
+                                            type="text"
+                                            placeholder="VD: Giảm giá hè 2024"
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                            value={createForm.name}
+                                            onChange={(e) => setCreateForm(prev => ({ ...prev, name: e.target.value }))}
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Mô tả
+                                        </label>
+                                        <textarea
+                                            rows={3}
+                                            placeholder="Mô tả chi tiết về chương trình..."
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                            value={createForm.description}
+                                            onChange={(e) => setCreateForm(prev => ({ ...prev, description: e.target.value }))}
+                                        />
+                                    </div>
+
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                                Ngày giờ bắt đầu
+                                            </label>
+                                            <input
+                                                type="datetime-local"
+                                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-green-500"
+                                                value={createForm.startDate}
+                                                onChange={(e) => setCreateForm({ ...createForm, startDate: e.target.value })}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                                Ngày giờ kết thúc
+                                            </label>
+                                            <input
+                                                type="datetime-local"
+                                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-green-500"
+                                                value={createForm.endDate}
+                                                onChange={(e) => setCreateForm({ ...createForm, endDate: e.target.value })}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* STEP 2: PRODUCTS */}
+                            {createStep === 'PRODUCTS' && (
+                                <div className="space-y-4">
+                                    <div className="flex justify-between items-center mb-2">
+                                        <p className="text-sm text-gray-600">Chọn sản phẩm tham gia khuyến mãi (Chỉ hiển thị sản phẩm Đã Duyệt).</p>
+                                        <button onClick={fetchMyProducts} className="text-sm text-blue-600 hover:underline flex items-center gap-1">
+                                            <RefreshCw className="w-3 h-3" /> Làm mới
+                                        </button>
+                                    </div>
+
+                                    {productsLoading ? (
+                                        <div className="text-center py-12 bg-gray-50 rounded-lg border border-dashed border-gray-300">
+                                            <RefreshCw className="animate-spin h-8 w-8 mx-auto text-gray-400 mb-2" />
+                                            <p className="text-gray-500">Đang tải sản phẩm...</p>
+                                        </div>
+                                    ) : (
+                                        <div className="border border-gray-200 rounded-lg overflow-hidden max-h-[400px] overflow-y-auto">
+                                            <table className="min-w-full divide-y divide-gray-200">
+                                                <thead className="bg-gray-50 sticky top-0 z-10">
+                                                    <tr>
+                                                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sản phẩm</th>
+                                                        <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Giá gốc</th>
+                                                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Giá khuyến mãi</th>
+                                                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Số lượng bán</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody className="bg-white divide-y divide-gray-200">
+                                                    {myProducts.length === 0 ? (
+                                                        <tr>
+                                                            <td colSpan={4} className="p-8 text-center text-gray-500">
+                                                                Không tìm thấy sản phẩm nào
+                                                            </td>
+                                                        </tr>
+                                                    ) : (
+                                                        myProducts.filter(p => p && p.variants && p.variants.length > 0).map(prod => (
+                                                            prod.variants.map(variant => (
+                                                                <tr key={variant.id} className={`hover:bg-gray-50 transition-colors ${selectedVariants[variant.id]?.selected ? 'bg-green-50' : ''}`}>
+                                                                    <td className="px-4 py-3">
+                                                                        <div className="flex items-center gap-3">
+                                                                            <input
+                                                                                type="checkbox"
+                                                                                checked={!!selectedVariants[variant.id]?.selected}
+                                                                                onChange={(e) => {
+                                                                                    const checked = e.target.checked;
+                                                                                    setSelectedVariants(prev => ({
+                                                                                        ...prev,
+                                                                                        [variant.id]: {
+                                                                                            selected: checked,
+                                                                                            // Initialize sale price if not set (default 10% off)
+                                                                                            salePrice: prev[variant.id]?.salePrice || Math.round(variant.price * 0.9),
+                                                                                            discountPercent: prev[variant.id]?.discountPercent || 10,
+                                                                                            stockLimit: prev[variant.id]?.stockLimit || 10
+                                                                                        }
+                                                                                    }));
+                                                                                }}
+                                                                                className="h-4 w-4 text-green-600 rounded border-gray-300 focus:ring-green-500 cursor-pointer"
+                                                                            />
+                                                                            <div>
+                                                                                <p className="font-medium text-sm text-gray-900 line-clamp-1" title={prod.name}>{prod.name}</p>
+                                                                                <p className="text-xs text-gray-500 mt-0.5">SKU: {variant.sku} {variant.optionValues && variant.optionValues.length > 0 ? `| ${variant.sku}` /* TODO: Better options display */ : ''}</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td className="px-4 py-3 text-sm text-gray-600 text-right whitespace-nowrap">
+                                                                        {new Intl.NumberFormat('vi-VN').format(variant.price)}đ
+                                                                    </td>
+                                                                    <td className="px-4 py-3 text-center">
+                                                                        <div className="flex flex-col items-center gap-1">
+                                                                            <input
+                                                                                type="number"
+                                                                                min="1000"
+                                                                                max={variant.price - 1}
+                                                                                disabled={!selectedVariants[variant.id]?.selected}
+                                                                                value={selectedVariants[variant.id]?.salePrice || variant.price * 0.9} // Default 10% off
+                                                                                onChange={(e) => {
+                                                                                    let val = parseInt(e.target.value);
+                                                                                    if (isNaN(val)) val = 0;
+                                                                                    // Ensure not greater than original price
+                                                                                    if (val >= variant.price) val = variant.price - 1000;
+
+                                                                                    setSelectedVariants(prev => ({
+                                                                                        ...prev,
+                                                                                        [variant.id]: {
+                                                                                            ...prev[variant.id],
+                                                                                            salePrice: val,
+                                                                                            discountPercent: Math.round(((variant.price - val) / variant.price) * 100)
+                                                                                        }
+                                                                                    }));
+                                                                                }}
+                                                                                className="w-24 px-2 py-1 border border-gray-300 rounded text-sm text-center disabled:bg-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                                                                placeholder="Giá bán"
+                                                                            />
+                                                                            {selectedVariants[variant.id]?.selected && (
+                                                                                <span className="text-xs text-red-500 font-medium">
+                                                                                    -{selectedVariants[variant.id]?.discountPercent || 10}%
+                                                                                </span>
+                                                                            )}
+                                                                        </div>
+                                                                    </td>
+                                                                    <td className="px-4 py-3 text-center">
+                                                                        <input
+                                                                            type="number"
+                                                                            min="1"
+                                                                            disabled={!selectedVariants[variant.id]?.selected}
+                                                                            value={selectedVariants[variant.id]?.stockLimit || 10}
+                                                                            onChange={(e) => {
+                                                                                let val = parseInt(e.target.value);
+                                                                                if (isNaN(val)) val = 0;
+                                                                                setSelectedVariants(prev => ({
+                                                                                    ...prev,
+                                                                                    [variant.id]: { ...prev[variant.id], stockLimit: val }
+                                                                                }));
+                                                                            }}
+                                                                            className="w-16 px-2 py-1 border border-gray-300 rounded text-sm text-center disabled:bg-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                                                        />
+                                                                    </td>
+                                                                </tr>
+                                                            ))
+                                                        ))
+                                                    )}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
+                            {/* STEP 3: CONFIRM */}
+                            {createStep === 'CONFIRM' && (
+                                <div className="space-y-4">
+                                    <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                                        <h3 className="font-semibold text-blue-900 mb-2">Xác nhận thông tin</h3>
+                                        <ul className="space-y-1 text-sm text-blue-800">
+                                            <li>• <strong>Tên chương trình:</strong> {createForm.name}</li>
+                                            <li>• <strong>Thời gian:</strong> {createForm.startDate} đến {createForm.endDate}</li>
+                                            <li>• <strong>Số lượng sản phẩm:</strong> <span className="font-bold">{Object.values(selectedVariants).filter(v => v.selected).length}</span> sản phẩm được chọn</li>
+                                        </ul>
+                                    </div>
+
+                                    <div className="text-sm text-gray-500">
+                                        * Lưu ý: Các sản phẩm đã chọn sẽ được đăng ký ngay lập tức khi tạo chương trình.
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="p-6 border-t border-gray-200 flex gap-3 justify-end bg-gray-50 rounded-b-2xl">
+                            {/* INFO step */}
+                            {createStep === 'INFO' && (
+                                <>
+                                    <button
+                                        onClick={() => setShowCreateModal(null)}
+                                        className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-white transition-colors"
+                                    >
+                                        Hủy
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            if (!createForm.name) return toast.error('Vui lòng nhập tên chương trình');
+                                            if (!createForm.startDate || !createForm.endDate) return toast.error('Vui lòng chọn thời gian');
+                                            setCreateStep('PRODUCTS');
+                                            if (myProducts.length === 0) fetchMyProducts();
+                                        }}
+                                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+                                    >
+                                        Tiếp theo <ChevronRight className="w-4 h-4" />
+                                    </button>
+                                </>
+                            )}
+                            {/* PRODUCTS step */}
+                            {createStep === 'PRODUCTS' && (
+                                <>
+                                    <button
+                                        onClick={() => setCreateStep('INFO')}
+                                        className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-white transition-colors"
+                                    >
+                                        Quay lại
+                                    </button>
+                                    <button
+                                        onClick={() => setCreateStep('CONFIRM')}
+                                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+                                    >
+                                        Tiếp theo <ChevronRight className="w-4 h-4" />
+                                    </button>
+                                </>
+                            )}
+                            {/* CONFIRM step */}
+                            {createStep === 'CONFIRM' && (
+                                <>
+                                    <button
+                                        onClick={() => setCreateStep('PRODUCTS')}
+                                        className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-white transition-colors"
+                                    >
+                                        Quay lại
+                                    </button>
+                                    <button
+                                        onClick={handleCreateCampaign}
+                                        disabled={loading}
+                                        className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2 shadow-lg shadow-green-200"
+                                    >
+                                        {loading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <CheckCircle className="w-4 h-4" />}
+                                        Xác nhận tạo Shop Sale
+                                    </button>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )} as any
         </div>
     );
 }

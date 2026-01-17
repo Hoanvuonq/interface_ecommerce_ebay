@@ -18,8 +18,7 @@ export type { CampaignResponse, CampaignSlotProductResponse, CampaignSlotRespons
 export interface RegisterProductRequest {
     slotId: string;
     variantId: string;
-    salePrice?: number;
-    discountPercent?: number;
+    salePrice: number;
     stockLimit: number;
     purchaseLimitPerUser?: number;
     displayPriority?: number;
@@ -28,27 +27,27 @@ export interface RegisterProductRequest {
 export interface CreateShopCampaignRequest {
     name: string;
     description?: string;
-    campaignType: 'SHOP_SALE';
-    startDate: string;
-    endDate: string;
-    isRecurring?: boolean;
-    recurringStartTime?: string;
-    recurringEndTime?: string;
-    slotTimes?: string[];
-    slotDurationMinutes?: number;
-    bannerUrl?: string;
-    thumbnailUrl?: string;
+    startDate: string; // "YYYY-MM-DDTHH:mm"
+    endDate: string;   // "YYYY-MM-DDTHH:mm"
+
     displayPriority?: number;
-    isFeatured?: boolean;
+
+    // Optional: Inline Product Registration
+    products?: {
+        variantId: string;
+        salePrice: number;
+        stockLimit: number;
+        purchaseLimitPerUser?: number;
+        displayPriority?: number;
+    }[];
 }
 
 export interface UpdateCampaignRequest {
     name?: string;
     description?: string;
-    bannerUrl?: string;
-    thumbnailUrl?: string;
+    bannerAssetId?: string;
+    thumbnailAssetId?: string;
     displayPriority?: number;
-    isFeatured?: boolean;
 }
 
 // ============================================================
@@ -63,4 +62,28 @@ export interface PagedResponse<T> {
     number: number;
     first: boolean;
     last: boolean;
+}
+
+// ============================================================
+// PRODUCT SELECTION TYPES
+// ============================================================
+
+export interface ProductResponse {
+    id: string;
+    name: string;
+    active: boolean;
+    approvalStatus: string;
+    variants: ProductVariantResponse[];
+}
+
+export interface ProductVariantResponse {
+    id: string;
+    sku: string;
+    imageUrl?: string;
+    price: number;
+    hasStock: boolean;
+    optionValues?: {
+        optionName: string;
+        valueName: string;
+    }[];
 }

@@ -7,7 +7,7 @@
 // ENUMS
 // ============================================================
 
-export type CampaignStatus = 'DRAFT' | 'SCHEDULED' | 'ACTIVE' | 'ENDED' | 'CANCELLED';
+export type CampaignStatus = 'ACTIVE' | 'PAUSED' | 'ENDED' | 'CANCELLED';
 export type CampaignType = 'FLASH_SALE' | 'DAILY_DEAL' | 'MEGA_SALE' | 'SHOP_SALE';
 export type SlotStatus = 'UPCOMING' | 'ACTIVE' | 'ENDED';
 export type SponsorType = 'PLATFORM' | 'SHOP';
@@ -33,6 +33,8 @@ export interface CampaignResponse {
   recurringEndTime?: string;
 
   // Display
+  bannerAssetId?: string;
+  thumbnailAssetId?: string;
   bannerUrl?: string;
   thumbnailUrl?: string;
   displayPriority?: number;

@@ -11,9 +11,11 @@ import type {
     CreateShopCampaignRequest,
     UpdateCampaignRequest,
     PagedResponse,
+    ProductResponse,
 } from './types';
 
 const SHOP_API = '/v1/shop';
+const USER_API = '/v1/user';
 
 // Helper for Idempotency-Key
 const generateIdempotencyKey = () => {
@@ -157,6 +159,17 @@ class ShopCampaignService {
     }
 
     /**
+     * Toggle my campaign (Pause/Resume)
+     */
+    async toggleShopCampaign(campaignId: string): Promise<CampaignResponse> {
+        const response: ApiResponse<CampaignResponse> = await request({
+            url: `${SHOP_API}/sales/${campaignId}/toggle`,
+            method: 'POST',
+        });
+        return response.data;
+    }
+
+    /**
      * Cancel my campaign
      */
     async cancelMyCampaign(campaignId: string, reason: string): Promise<CampaignResponse> {
@@ -176,6 +189,28 @@ class ShopCampaignService {
             url: `${SHOP_API}/sales/${campaignId}`,
             method: 'DELETE',
         });
+    }
+
+
+    // ============================================================
+    // PRODUCT SELECTION Helper
+    // ============================================================
+
+    /**
+     * Get my products for selection
+     */
+    async getMyProducts(params: { page?: number; size?: number; keyword?: string; }): Promise<PagedResponse<ProductResponse>> {
+        const response: ApiResponse<PagedResponse<ProductResponse>> = await request({
+            url: `${USER_API}/products/search`,
+            method: 'GET',
+            params: {
+                page: params.page || 0,
+                size: params.size || 20,
+                keyword: params.keyword,
+                status: 'APPROVED', // Only approved products can be in campaign
+            },
+        });
+        return response.data;
     }
 }
 
