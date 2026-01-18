@@ -5,11 +5,13 @@
 import type {
     CampaignResponse,
     CampaignSlotProductResponse,
-    CampaignSlotResponse
+    CampaignSlotResponse,
+    CampaignType,
+    CampaignStatus
 } from '../../campaign/types';
 
 // Re-export shared types
-export type { CampaignResponse, CampaignSlotProductResponse, CampaignSlotResponse };
+export type { CampaignResponse, CampaignSlotProductResponse, CampaignSlotResponse, CampaignType, CampaignStatus };
 
 // ============================================================
 // REQUEST DTOs
@@ -17,6 +19,14 @@ export type { CampaignResponse, CampaignSlotProductResponse, CampaignSlotRespons
 
 export interface RegisterProductRequest {
     slotId: string;
+    variantId: string;
+    salePrice: number;
+    stockLimit: number;
+    purchaseLimitPerUser?: number;
+    displayPriority?: number;
+}
+
+export interface ProductItem {
     variantId: string;
     salePrice: number;
     stockLimit: number;
@@ -33,13 +43,7 @@ export interface CreateShopCampaignRequest {
     displayPriority?: number;
 
     // Optional: Inline Product Registration
-    products?: {
-        variantId: string;
-        salePrice: number;
-        stockLimit: number;
-        purchaseLimitPerUser?: number;
-        displayPriority?: number;
-    }[];
+    products?: ProductItem[];
 }
 
 export interface UpdateCampaignRequest {
@@ -56,7 +60,9 @@ export interface UpdateCampaignRequest {
 
 export interface PagedResponse<T> {
     content: T[];
-    totalPages: number;
+    slots?: CampaignSlotResponse[];
+    products?: CampaignSlotProductResponse[]; // For SHOP_SALE detail
+    totalSlots: number;
     totalElements: number;
     size: number;
     number: number;
@@ -67,6 +73,24 @@ export interface PagedResponse<T> {
 // ============================================================
 // PRODUCT SELECTION TYPES
 // ============================================================
+
+// Consolidated Image Fields: 1=Url, 2=Id
+export interface ShopCampaignDetailResponse {
+    id: string;
+    name: string;
+    description: string;
+    campaignType: CampaignType;
+    status: CampaignStatus;
+    startDate: string; // ISO Date
+    endDate: string; // ISO Date
+
+    banner?: string;
+    bannerId?: string;
+    thumbnail?: string;
+    thumbnailId?: string;
+
+    products: CampaignSlotProductResponse[];
+}
 
 export interface ProductResponse {
     id: string;

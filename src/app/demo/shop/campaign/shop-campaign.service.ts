@@ -12,6 +12,7 @@ import type {
     UpdateCampaignRequest,
     PagedResponse,
     ProductResponse,
+    ShopCampaignDetailResponse,
 } from './types';
 
 const SHOP_API = '/v1/shop';
@@ -127,8 +128,11 @@ class ShopCampaignService {
     /**
      * Get my campaign detail
      */
-    async getMyCampaignDetail(campaignId: string): Promise<CampaignResponse> {
-        const response: ApiResponse<CampaignResponse> = await request({
+    /**
+     * Get my campaign detail
+     */
+    async getMyCampaignDetail(campaignId: string): Promise<ShopCampaignDetailResponse> {
+        const response: ApiResponse<ShopCampaignDetailResponse> = await request({
             url: `${SHOP_API}/sales/${campaignId}`,
             method: 'GET',
         });
@@ -165,6 +169,18 @@ class ShopCampaignService {
         const response: ApiResponse<CampaignResponse> = await request({
             url: `${SHOP_API}/sales/${campaignId}/toggle`,
             method: 'POST',
+        });
+        return response.data;
+    }
+
+    /**
+     * Add products to existing shop campaign
+     */
+    async addProductsToShopCampaign(campaignId: string, products: any[]): Promise<CampaignSlotProductResponse[]> {
+        const response: ApiResponse<CampaignSlotProductResponse[]> = await request({
+            url: `${SHOP_API}/sales/${campaignId}/products`,
+            method: 'POST',
+            data: products,
         });
         return response.data;
     }

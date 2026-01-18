@@ -20,52 +20,30 @@ import type {
     CampaignSlotResponse,
     RegisterProductRequest,
     ProductResponse,
-    ProductVariantResponse
+    ProductVariantResponse,
+    ShopCampaignDetailResponse // Add this
 } from './types';
 
-// Helper to determine display status
-const getDisplayStatus = (campaign: CampaignResponse) => {
-    if (campaign.status === 'CANCELLED') return { label: 'Đã hủy', color: 'bg-red-100 text-red-700' };
-    if (campaign.status === 'PAUSED') return { label: 'Tạm dừng', color: 'bg-amber-100 text-amber-700' };
-    if (campaign.status === 'ENDED') return { label: 'Kết thúc', color: 'bg-gray-100 text-gray-700' };
+// ...
 
-    // Status is ACTIVE, check time
-    const now = new Date();
-    const start = new Date(campaign.startDate);
-    const end = new Date(campaign.endDate);
-
-    if (now > end) return { label: 'Kết thúc', color: 'bg-gray-100 text-gray-700' }; // Should be caught by BE implicitly but good for safety
-    if (now < start) return { label: 'Sắp diễn ra', color: 'bg-blue-100 text-blue-700' };
-
-    return { label: 'Đang diễn ra', color: 'bg-green-100 text-green-700' };
-};
-
-/**
- * Shop Campaign Demo Page
- * 
- * Features:
- * - View available platform campaigns to join
- * - Register products for campaign slots
- * - Manage own shop campaigns
- * - View registration status
- */
-export default function ShopCampaignDemoPage() {
-    // Auth state
-    const [authState, setAuthState] = useState(getAuthState());
-
+export default function ShopCampaignPage() {
     // Data state
+    const [authState, setAuthState] = useState(getAuthState());
     const [availableCampaigns, setAvailableCampaigns] = useState<CampaignResponse[]>([]);
     const [myRegistrations, setMyRegistrations] = useState<CampaignSlotProductResponse[]>([]);
     const [myCampaigns, setMyCampaigns] = useState<CampaignResponse[]>([]);
-    const [selectedCampaign, setSelectedCampaign] = useState<CampaignResponse | null>(null);
+    const [selectedCampaign, setSelectedCampaign] = useState<CampaignResponse | ShopCampaignDetailResponse | null>(null); // Update union type
+    const [selectedCampaignProducts, setSelectedCampaignProducts] = useState<CampaignSlotProductResponse[]>([]);
     const [campaignSlots, setCampaignSlots] = useState<CampaignSlotResponse[]>([]);
 
     // UI state
     const [loading, setLoading] = useState(false);
     const [activeTab, setActiveTab] = useState<'join' | 'my-registrations' | 'my-shop-sales'>('join');
     const [showRegisterModal, setShowRegisterModal] = useState(false);
-    const [showCreateModal, setShowCreateModal] = useState<'simple' | null>(null);
+    const [showCreateModal, setShowCreateModal] = useState<'simple' | 'addProduct' | null>(null);
     const [selectedSlot, setSelectedSlot] = useState<CampaignSlotResponse | null>(null);
+    // For adding products to existing campaign
+    const [targetCampaignId, setTargetCampaignId] = useState<string | null>(null);
 
     // Form state
     const [createForm, setCreateForm] = useState({
@@ -124,12 +102,16 @@ export default function ShopCampaignDemoPage() {
 
             // For simple shop sale
             if (showCreateModal === 'simple') {
+                // Convert local datetime-local input to UTC ISO string
+                const startDateUTC = new Date(createForm.startDate).toISOString();
+                const endDateUTC = new Date(createForm.endDate).toISOString();
+
                 await shopCampaignService.createShopCampaign({
                     name: createForm.name,
                     description: createForm.description,
                     // campaignType removed - backend forces SHOP_SALE
-                    startDate: createForm.startDate, // Already YYYY-MM-DD from input[type=date]
-                    endDate: createForm.endDate,     // Already YYYY-MM-DD from input[type=date]
+                    startDate: startDateUTC, // UTC ISO string: "2026-01-17T14:00:00.000Z"
+                    endDate: endDateUTC,     // UTC ISO string
                     products: productsPayload.length > 0 ? productsPayload : undefined,
                 });
             } else {
@@ -143,6 +125,39 @@ export default function ShopCampaignDemoPage() {
             fetchData(); // Refresh list
         } catch (err: any) {
             toast.error(err.message || 'Lỗi khi tạo campaign');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleAddProducts = async () => {
+        if (!targetCampaignId) return;
+
+        setLoading(true);
+        try {
+            // Prepare products payload
+            const productsPayload = Object.entries(selectedVariants)
+                .filter(([_, config]) => config.selected)
+                .map(([variantId, config]) => ({
+                    variantId,
+                    salePrice: config.salePrice || 0,
+                    stockLimit: config.stockLimit,
+                }));
+
+            if (productsPayload.length === 0) {
+                toast.error('Vui lòng chọn ít nhất 1 sản phẩm');
+                setLoading(false);
+                return;
+            }
+
+            await shopCampaignService.addProductsToShopCampaign(targetCampaignId, productsPayload);
+
+            toast.success('Thêm sản phẩm thành công!');
+            setShowCreateModal(null);
+            setTargetCampaignId(null);
+            fetchData(); // Refresh list
+        } catch (err: any) {
+            toast.error(err.message || 'Lỗi khi thêm sản phẩm');
         } finally {
             setLoading(false);
         }
@@ -182,12 +197,24 @@ export default function ShopCampaignDemoPage() {
     };
 
     const handleSelectCampaign = async (campaign: CampaignResponse) => {
+        // Initial set (from list view)
         setSelectedCampaign(campaign);
+        setSelectedCampaignProducts([]);
+        setCampaignSlots([]);
+
         try {
-            const slots = await campaignService.getCampaignProducts(campaign.id);
-            setCampaignSlots(slots);
+            if (campaign.campaignType === 'SHOP_SALE') {
+                // Fetch dedicated detail DTO
+                const detail = await shopCampaignService.getMyCampaignDetail(campaign.id);
+                setSelectedCampaign(detail);
+                if (detail.products) setSelectedCampaignProducts(detail.products);
+            } else {
+                // Platform campaign -> fetch slots
+                const slots = await campaignService.getCampaignProducts(campaign.id);
+                setCampaignSlots(slots);
+            }
         } catch (err) {
-            setCampaignSlots(campaign.slots || []);
+            console.error(err);
         }
     };
 
@@ -227,6 +254,33 @@ export default function ShopCampaignDemoPage() {
             month: 'short',
             year: 'numeric',
         });
+    };
+
+    const formatDateTime = (dateStr: string) => {
+        return new Date(dateStr).toLocaleString('vi-VN', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+        });
+    };
+
+    const getDisplayStatus = (campaign: CampaignResponse) => {
+        const now = new Date();
+        const start = new Date(campaign.startDate);
+        const end = new Date(campaign.endDate);
+
+        if (campaign.status === 'PAUSED') {
+            return { label: 'Tạm dừng', color: 'bg-amber-100 text-amber-700' };
+        }
+        if (now < start) {
+            return { label: 'Sắp diễn ra', color: 'bg-blue-100 text-blue-700' };
+        }
+        if (now > end) {
+            return { label: 'Đã kết thúc', color: 'bg-gray-100 text-gray-500' };
+        }
+        return { label: 'Đang diễn ra', color: 'bg-green-100 text-green-700' };
     };
 
     // If not logged in or wrong role
@@ -354,7 +408,7 @@ export default function ShopCampaignDemoPage() {
                                                     </h3>
                                                     <p className="text-sm text-gray-500 flex items-center gap-1 mt-1">
                                                         <Calendar className="w-3 h-3" />
-                                                        {formatDate(campaign.startDate)} - {formatDate(campaign.endDate)}
+                                                        {formatDateTime(campaign.startDate)} - {formatDateTime(campaign.endDate)}
                                                     </p>
                                                     <div className="flex items-center gap-2 mt-2">
                                                         <span className="px-2 py-0.5 bg-orange-100 text-orange-700 text-xs font-medium rounded-full">
@@ -380,7 +434,7 @@ export default function ShopCampaignDemoPage() {
                                     {/* Banner */}
                                     <div className="relative h-48">
                                         <img
-                                            src={selectedCampaign.bannerUrl || 'https://picsum.photos/800/300'}
+                                            src={(selectedCampaign as any).bannerUrl || (selectedCampaign as any).banner || 'https://picsum.photos/800/300'}
                                             alt={selectedCampaign.name}
                                             className="w-full h-full object-cover"
                                         />
@@ -391,66 +445,112 @@ export default function ShopCampaignDemoPage() {
                                         </div>
                                     </div>
 
-                                    {/* Slots */}
+                                    {/* Detail Content */}
                                     <div className="p-6">
-                                        <h3 className="font-semibold text-lg text-gray-900 mb-4">
-                                            Chọn khung giờ để đăng ký
-                                        </h3>
-
-                                        {campaignSlots.length === 0 ? (
-                                            <p className="text-gray-500">Không có slot nào</p>
-                                        ) : (
-                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                                {campaignSlots.map((slot) => (
-                                                    <div
-                                                        key={slot.id}
-                                                        className={`p-4 rounded-xl border-2 transition-all ${slot.isFullyBooked
-                                                            ? 'border-gray-200 bg-gray-50 opacity-60'
-                                                            : 'border-gray-200 hover:border-green-500 cursor-pointer'
-                                                            }`}
-                                                        onClick={() => {
-                                                            if (!slot.isFullyBooked) {
-                                                                setSelectedSlot(slot);
-                                                                setShowRegisterModal(true);
-                                                            }
-                                                        }}
-                                                    >
-                                                        <div className="flex items-center justify-between mb-2">
-                                                            <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${slot.status === 'ACTIVE'
-                                                                ? 'bg-red-100 text-red-700'
-                                                                : slot.status === 'UPCOMING'
-                                                                    ? 'bg-blue-100 text-blue-700'
-                                                                    : 'bg-gray-100 text-gray-700'
-                                                                }`}>
-                                                                {slot.status}
-                                                            </span>
-                                                            {slot.isFullyBooked && (
-                                                                <span className="text-xs text-amber-600 font-medium">Full</span>
-                                                            )}
-                                                        </div>
-
-                                                        <p className="font-semibold text-gray-900">
-                                                            {slot.slotName || 'Slot'}
-                                                        </p>
-                                                        <p className="text-sm text-gray-500 flex items-center gap-1 mt-1">
-                                                            <Clock className="w-3 h-3" />
-                                                            {new Date(slot.startTime).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}
-                                                            {' - '}
-                                                            {new Date(slot.endTime).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}
-                                                        </p>
-                                                        <p className="text-xs text-gray-400 mt-2">
-                                                            {slot.approvedProducts}/{slot.maxProducts} sản phẩm
-                                                        </p>
-
-                                                        {!slot.isFullyBooked && (
-                                                            <button className="mt-3 w-full py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors cursor-pointer">
-                                                                Đăng ký slot này
-                                                            </button>
-                                                        )}
+                                        {selectedCampaign.campaignType === 'SHOP_SALE' ? (
+                                            <div>
+                                                <h3 className="font-semibold text-lg text-gray-900 mb-4">
+                                                    Sản phẩm trong chương trình ({selectedCampaignProducts.length})
+                                                </h3>
+                                                {selectedCampaignProducts.length === 0 ? (
+                                                    <div className="text-center py-8 bg-gray-50 rounded-lg border border-dashed border-gray-200">
+                                                        <Package className="w-12 h-12 mx-auto mb-2 text-gray-300" />
+                                                        <p className="text-gray-500">Chưa có sản phẩm nào</p>
                                                     </div>
-                                                ))}
+                                                ) : (
+                                                    <div className="space-y-3 max-h-[500px] overflow-y-auto pr-1">
+                                                        {selectedCampaignProducts.map((prod) => (
+                                                            <div key={prod.id} className="flex items-start gap-3 p-3 bg-white border border-gray-100 rounded-xl hover:border-gray-300 transition-colors">
+                                                                <img
+                                                                    src={prod.productThumbnail || 'https://picsum.photos/80/80'}
+                                                                    alt={prod.productName}
+                                                                    className="w-16 h-16 rounded-lg object-cover"
+                                                                />
+                                                                <div className="flex-1 min-w-0">
+                                                                    <div className="flex justify-between items-start">
+                                                                        <h4 className="font-medium text-gray-900 truncate pr-2">{prod.productName}</h4>
+                                                                        <span className={`px-2 py-0.5 text-xs font-medium rounded-full whitespace-nowrap ${prod.status === 'APPROVED' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}`}>
+                                                                            {prod.status}
+                                                                        </span>
+                                                                    </div>
+                                                                    <div className="flex items-center gap-4 mt-1 text-sm">
+                                                                        <div className="flex items-center gap-1 text-red-600 font-semibold">
+                                                                            <Tag className="w-3 h-3" />
+                                                                            {formatPrice(prod.salePrice)}
+                                                                        </div>
+                                                                        <div className="text-gray-500 text-xs">
+                                                                            Đã bán: {prod.stockSold}/{prod.stockLimit}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                )}
                                             </div>
+                                        ) : (
+                                            <>
+                                                <h3 className="font-semibold text-lg text-gray-900 mb-4">
+                                                    Chọn khung giờ để đăng ký
+                                                </h3>
+
+                                                {campaignSlots.length === 0 ? (
+                                                    <p className="text-gray-500">Không có slot nào</p>
+                                                ) : (
+                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                        {campaignSlots.map((slot) => (
+                                                            <div
+                                                                key={slot.id}
+                                                                className={`p-4 rounded-xl border-2 transition-all ${slot.isFullyBooked
+                                                                    ? 'border-gray-200 bg-gray-50 opacity-60'
+                                                                    : 'border-gray-200 hover:border-green-500 cursor-pointer'
+                                                                    }`}
+                                                                onClick={() => {
+                                                                    if (!slot.isFullyBooked) {
+                                                                        setSelectedSlot(slot);
+                                                                        setShowRegisterModal(true);
+                                                                    }
+                                                                }}
+                                                            >
+                                                                <div className="flex items-center justify-between mb-2">
+                                                                    <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${slot.status === 'ACTIVE'
+                                                                        ? 'bg-red-100 text-red-700'
+                                                                        : slot.status === 'UPCOMING'
+                                                                            ? 'bg-blue-100 text-blue-700'
+                                                                            : 'bg-gray-100 text-gray-700'
+                                                                        }`}>
+                                                                        {slot.status}
+                                                                    </span>
+                                                                    {slot.isFullyBooked && (
+                                                                        <span className="text-xs text-amber-600 font-medium">Full</span>
+                                                                    )}
+                                                                </div>
+
+                                                                <p className="font-semibold text-gray-900">
+                                                                    {slot.slotName || 'Slot'}
+                                                                </p>
+                                                                <p className="text-sm text-gray-500 flex items-center gap-1 mt-1">
+                                                                    <Clock className="w-3 h-3" />
+                                                                    {new Date(slot.startTime).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}
+                                                                    {' - '}
+                                                                    {new Date(slot.endTime).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}
+                                                                </p>
+                                                                <p className="text-xs text-gray-400 mt-2">
+                                                                    {slot.approvedProducts}/{slot.maxProducts} sản phẩm
+                                                                </p>
+
+                                                                {!slot.isFullyBooked && (
+                                                                    <button className="mt-3 w-full py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors cursor-pointer">
+                                                                        Đăng ký slot này
+                                                                    </button>
+                                                                )}
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                )}
+                                            </>
                                         )}
+
                                     </div>
                                 </div>
                             ) : (
@@ -529,97 +629,220 @@ export default function ShopCampaignDemoPage() {
 
                 {/* Tab: Shop Sales của tôi */}
                 {activeTab === 'my-shop-sales' && (
-                    <div>
-                        <div className="flex items-center justify-between mb-4">
-                            <h2 className="font-semibold text-lg text-gray-900">
-                                Shop Sales của tôi ({myCampaigns.filter(c => c.campaignType === 'SHOP_SALE').length})
-                            </h2>
-                            <button
-                                onClick={() => {
-                                    setShowCreateModal('simple');
-                                    setCreateStep('INFO');
-                                    setSelectedVariants({});
-                                    setCreateForm({
-                                        name: '',
-                                        description: '',
-                                        startDate: new Date().toISOString().split('T')[0],
-                                        endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-                                        isRecurring: false,
-                                        recurringStartTime: '09:00',
-                                        recurringEndTime: '21:00',
-                                    });
-                                }}
-                                className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors cursor-pointer"
-                            >
-                                <Plus className="w-4 h-4" />
-                                Tạo Shop Sale
-                            </button>
-                        </div>
-
-                        {myCampaigns.filter(c => c.campaignType === 'SHOP_SALE').length === 0 ? (
-                            <div className="bg-white rounded-xl p-12 text-center text-gray-500">
-                                <Tag className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-                                <p>Bạn chưa tạo shop sale nào</p>
-                                <p className="text-sm mt-1">Tạo Shop Sale để khuyến mãi dài hạn cho cửa hàng</p>
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        {/* List Column */}
+                        <div className="lg:col-span-1">
+                            <div className="flex items-center justify-between mb-4">
+                                <h2 className="font-semibold text-lg text-gray-900">
+                                    Shop Sales ({myCampaigns.filter(c => c.campaignType === 'SHOP_SALE').length})
+                                </h2>
+                                <button
+                                    onClick={() => {
+                                        setShowCreateModal('simple');
+                                        setCreateStep('INFO');
+                                        setSelectedVariants({});
+                                        setCreateForm({
+                                            name: '',
+                                            description: '',
+                                            startDate: new Date().toISOString().split('T')[0],
+                                            endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                                            isRecurring: false,
+                                            recurringStartTime: '09:00',
+                                            recurringEndTime: '21:00',
+                                        });
+                                    }}
+                                    className="p-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors cursor-pointer"
+                                    title="Tạo Shop Sale Mới"
+                                >
+                                    <Plus className="w-4 h-4" />
+                                </button>
                             </div>
-                        ) : (
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                {myCampaigns.filter(c => c.campaignType === 'SHOP_SALE').map((campaign) => (
-                                    <div key={campaign.id} className="bg-white rounded-xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all cursor-pointer">
-                                        <img
-                                            src={campaign.bannerUrl || 'https://picsum.photos/400/200'}
-                                            alt={campaign.name}
-                                            className="w-full h-32 object-cover"
-                                        />
-                                        <div className="p-4">
-                                            <h3 className="font-semibold text-gray-900">{campaign.name}</h3>
-                                            <p className="text-sm text-gray-500 mt-1">
-                                                {formatDate(campaign.startDate)} - {formatDate(campaign.endDate)}
-                                            </p>
-                                            <div className="flex items-center gap-2 mt-3">
-                                                {(() => {
-                                                    const { label, color } = getDisplayStatus(campaign);
-                                                    return (
-                                                        <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${color}`}>
-                                                            {label}
-                                                        </span>
-                                                    );
-                                                })()}
-                                                <span className="text-xs text-gray-400">
-                                                    {campaign.totalProducts} sản phẩm
-                                                </span>
+
+                            {myCampaigns.filter(c => c.campaignType === 'SHOP_SALE').length === 0 ? (
+                                <div className="bg-white rounded-xl p-8 text-center text-gray-500 border border-gray-200">
+                                    <Tag className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+                                    <p>Chưa có shop sale nào</p>
+                                </div>
+                            ) : (
+                                <div className="space-y-3">
+                                    {myCampaigns.filter(c => c.campaignType === 'SHOP_SALE').map((campaign) => (
+                                        <div
+                                            key={campaign.id}
+                                            onClick={() => handleSelectCampaign(campaign)}
+                                            className={`bg-white rounded-xl overflow-hidden cursor-pointer transition-all hover:shadow-md ${selectedCampaign?.id === campaign.id
+                                                ? 'ring-2 ring-green-500 shadow-md'
+                                                : 'border border-gray-200'
+                                                }`}
+                                        >
+                                            <div className="relative h-24">
+                                                <img
+                                                    src={campaign.bannerUrl || 'https://picsum.photos/400/200'}
+                                                    alt={campaign.name}
+                                                    className="w-full h-full object-cover"
+                                                />
+                                                <div className="absolute top-2 right-2">
+                                                    {(() => {
+                                                        const { label, color } = getDisplayStatus(campaign);
+                                                        return (
+                                                            <span className={`px-2 py-0.5 text-xs font-medium rounded-full shadow-sm ${color}`}>
+                                                                {label}
+                                                            </span>
+                                                        );
+                                                    })()}
+                                                </div>
                                             </div>
+                                            <div className="p-3">
+                                                <h3 className="font-semibold text-gray-900 truncate">{campaign.name}</h3>
+                                                <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
+                                                    <Calendar className="w-3 h-3" />
+                                                    {formatDate(campaign.startDate)} - {formatDate(campaign.endDate)}
+                                                </p>
 
-                                            {/* Actions */}
-                                            <div className="mt-3 flex gap-2 w-full">
-                                                {/* Only show Pause/Resume for ACTIVE/PAUSED campaigns that haven't ended */}
-                                                {(campaign.status === 'ACTIVE' || campaign.status === 'PAUSED') && (
+                                                {/* Actions */}
+                                                <div className="mt-3 flex gap-2 w-full">
+                                                    {/* Only show Pause/Resume for ACTIVE/PAUSED campaigns that haven't ended */}
+                                                    {(campaign.status === 'ACTIVE' || campaign.status === 'PAUSED') && (
+                                                        <button
+                                                            onClick={(e) => handleToggleCampaign(e, campaign.id, campaign.status)}
+                                                            className={`flex-1 px-2 py-1.5 text-xs font-medium rounded-lg border transition-colors ${campaign.status === 'PAUSED'
+                                                                ? 'border-green-200 bg-green-50 text-green-700 hover:bg-green-100'
+                                                                : 'border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100'
+                                                                }`}
+                                                        >
+                                                            {campaign.status === 'PAUSED' ? 'Tiếp tục' : 'Tạm dừng'}
+                                                        </button>
+                                                    )}
+
                                                     <button
-                                                        onClick={(e) => handleToggleCampaign(e, campaign.id, campaign.status)}
-                                                        className={`flex-1 px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${campaign.status === 'PAUSED'
-                                                            ? 'border-green-200 bg-green-50 text-green-700 hover:bg-green-100 hover:border-green-300'
-                                                            : 'border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100 hover:border-amber-300'
-                                                            }`}
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setTargetCampaignId(campaign.id);
+                                                            setShowCreateModal('addProduct');
+                                                            setCreateStep('PRODUCTS');
+                                                            setSelectedVariants({});
+                                                            fetchMyProducts();
+                                                        }}
+                                                        className="flex-1 px-2 py-1.5 text-xs font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100"
                                                     >
-                                                        {campaign.status === 'PAUSED' ? 'Tiếp tục' : 'Tạm dừng'}
+                                                        Thêm SP
                                                     </button>
-                                                )}
-
-                                                <button
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        toast.info("Tính năng chỉnh sửa đang phát triển");
-                                                    }}
-                                                    className="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100"
-                                                >
-                                                    Sửa
-                                                </button>
+                                                </div>
                                             </div>
                                         </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Detail Column (Same as Join Tab) */}
+                        <div className="lg:col-span-2">
+                            {selectedCampaign ? (
+                                <div className="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm">
+                                    {/* Campaign Detail Header */}
+                                    <div className="relative h-40">
+                                        <img
+                                            src={(selectedCampaign as any).bannerUrl || (selectedCampaign as any).banner || 'https://picsum.photos/800/300'}
+                                            alt={selectedCampaign.name}
+                                            className="w-full h-full object-cover"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                                        <div className="absolute bottom-4 left-4 text-white p-2">
+                                            <h2 className="text-xl font-bold">{selectedCampaign.name}</h2>
+                                            <p className="opacity-90 text-sm line-clamp-1">{selectedCampaign.description}</p>
+                                        </div>
+                                        {/* Close Detail View Button (Mobile friendly) */}
+                                        <button
+                                            onClick={() => setSelectedCampaign(null)}
+                                            className="absolute top-2 right-2 p-1 bg-black/30 hover:bg-black/50 rounded-full text-white lg:hidden"
+                                        >
+                                            <Trash2 className="w-4 h-4" />
+                                        </button>
                                     </div>
-                                ))}
-                            </div>
-                        )}
+
+                                    {/* Detail Content */}
+                                    <div className="p-6">
+                                        <div>
+                                            <div className="flex items-center justify-between mb-4">
+                                                <h3 className="font-semibold text-lg text-gray-900">
+                                                    Sản phẩm trong chương trình ({selectedCampaignProducts.length})
+                                                </h3>
+                                                <button
+                                                    onClick={() => {
+                                                        setTargetCampaignId(selectedCampaign.id);
+                                                        setShowCreateModal('addProduct');
+                                                        setCreateStep('PRODUCTS');
+                                                        setSelectedVariants({});
+                                                        fetchMyProducts();
+                                                    }}
+                                                    className="text-sm text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1"
+                                                >
+                                                    <Plus className="w-4 h-4" /> Thêm nhanh
+                                                </button>
+                                            </div>
+
+                                            {selectedCampaignProducts.length === 0 ? (
+                                                <div className="text-center py-12 bg-gray-50 rounded-lg border border-dashed border-gray-200">
+                                                    <Package className="w-12 h-12 mx-auto mb-2 text-gray-300" />
+                                                    <p className="text-gray-500">Chưa có sản phẩm nào</p>
+                                                    <button
+                                                        onClick={() => {
+                                                            setTargetCampaignId(selectedCampaign.id);
+                                                            setShowCreateModal('addProduct');
+                                                            setCreateStep('PRODUCTS');
+                                                            setSelectedVariants({});
+                                                            fetchMyProducts();
+                                                        }}
+                                                        className="mt-3 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+                                                    >
+                                                        Thêm sản phẩm ngay
+                                                    </button>
+                                                </div>
+                                            ) : (
+                                                <div className="space-y-3 max-h-[500px] overflow-y-auto pr-1">
+                                                    {selectedCampaignProducts.map((prod) => (
+                                                        <div key={prod.id} className="flex items-start gap-3 p-3 bg-white border border-gray-100 rounded-xl hover:border-gray-300 transition-colors group">
+                                                            <img
+                                                                src={prod.productThumbnail || 'https://picsum.photos/80/80'}
+                                                                alt={prod.productName}
+                                                                className="w-16 h-16 rounded-lg object-cover"
+                                                            />
+                                                            <div className="flex-1 min-w-0">
+                                                                <div className="flex justify-between items-start">
+                                                                    <h4 className="font-medium text-gray-900 truncate pr-2">{prod.productName}</h4>
+                                                                    <span className={`px-2 py-0.5 text-xs font-medium rounded-full whitespace-nowrap ${prod.status === 'APPROVED' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}`}>
+                                                                        {prod.status}
+                                                                    </span>
+                                                                </div>
+                                                                <div className="flex items-center gap-4 mt-1 text-sm">
+                                                                    <div className="flex items-center gap-1 text-red-600 font-semibold">
+                                                                        <Tag className="w-3 h-3" />
+                                                                        {formatPrice(prod.salePrice)}
+                                                                    </div>
+                                                                    <div className="text-gray-500 text-xs">
+                                                                        Đã bán: {prod.stockSold}/{prod.stockLimit}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-1">
+                                                                <button title="Chỉnh sửa (Coming soon)" className="p-1 hover:bg-gray-100 rounded text-gray-500">
+                                                                    <Eye className="w-4 h-4" />
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="bg-white rounded-xl p-12 text-center text-gray-500 h-full flex flex-col items-center justify-center border border-gray-200 border-dashed">
+                                    <Tag className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+                                    <p className="text-lg font-medium text-gray-900">Chi tiết chương trình</p>
+                                    <p className="text-sm text-gray-500 mt-1">Chọn một shop sale để xem danh sách sản phẩm và thống kê</p>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 )}
 
@@ -634,12 +857,22 @@ export default function ShopCampaignDemoPage() {
                             <div className="flex items-center justify-between">
                                 <div>
                                     <h2 className="text-xl font-bold text-gray-900">
-                                        {createStep === 'INFO' && 'Bước 1: Thông tin cơ bản'}
-                                        {createStep === 'PRODUCTS' && 'Bước 2: Chọn sản phẩm'}
-                                        {createStep === 'CONFIRM' && 'Bước 3: Xác nhận'}
+                                        {showCreateModal === 'addProduct' ? (
+                                            'Thêm sản phẩm vào Campaign'
+                                        ) : (
+                                            <>
+                                                {createStep === 'INFO' && 'Bước 1: Thông tin cơ bản'}
+                                                {createStep === 'PRODUCTS' && 'Bước 2: Chọn sản phẩm'}
+                                                {createStep === 'CONFIRM' && 'Bước 3: Xác nhận'}
+                                            </>
+                                        )}
                                     </h2>
                                     <p className="text-sm text-gray-500 mt-1">
-                                        Tạo Shop Sale Mới ({createStep === 'INFO' ? 'Cài đặt chung' : createStep === 'PRODUCTS' ? 'Thêm sản phẩm' : 'Hoàn tất'})
+                                        {showCreateModal === 'addProduct' ? (
+                                            'Chọn các sản phẩm muốn bổ sung vào chương trình khuyến mãi'
+                                        ) : (
+                                            `Tạo Shop Sale Mới (${createStep === 'INFO' ? 'Cài đặt chung' : createStep === 'PRODUCTS' ? 'Thêm sản phẩm' : 'Hoàn tất'})`
+                                        )}
                                     </p>
                                 </div>
                                 <button
@@ -855,30 +1088,43 @@ export default function ShopCampaignDemoPage() {
                         </div>
 
                         <div className="p-6 border-t border-gray-200 flex gap-3 justify-end bg-gray-50 rounded-b-2xl">
-                            {/* INFO step */}
-                            {createStep === 'INFO' && (
-                                <>
-                                    <button
-                                        onClick={() => setShowCreateModal(null)}
-                                        className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-white transition-colors"
-                                    >
-                                        Hủy
-                                    </button>
-                                    <button
-                                        onClick={() => {
-                                            if (!createForm.name) return toast.error('Vui lòng nhập tên chương trình');
-                                            if (!createForm.startDate || !createForm.endDate) return toast.error('Vui lòng chọn thời gian');
-                                            setCreateStep('PRODUCTS');
-                                            if (myProducts.length === 0) fetchMyProducts();
-                                        }}
-                                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
-                                    >
-                                        Tiếp theo <ChevronRight className="w-4 h-4" />
-                                    </button>
-                                </>
+                            {/* CANCEL button - Always visible */}
+                            <button
+                                onClick={() => setShowCreateModal(null)}
+                                className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-white transition-colors"
+                            >
+                                Hủy
+                            </button>
+
+                            {/* ADD PRODUCTS MODE */}
+                            {showCreateModal === 'addProduct' && (
+                                <button
+                                    onClick={handleAddProducts}
+                                    disabled={loading}
+                                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+                                >
+                                    {loading ? <RefreshCw className="animate-spin w-4 h-4" /> : <Plus className="w-4 h-4" />}
+                                    Xác nhận thêm
+                                </button>
                             )}
-                            {/* PRODUCTS step */}
-                            {createStep === 'PRODUCTS' && (
+
+                            {/* CREATE MODE: INFO step */}
+                            {showCreateModal === 'simple' && createStep === 'INFO' && (
+                                <button
+                                    onClick={() => {
+                                        if (!createForm.name) return toast.error('Vui lòng nhập tên chương trình');
+                                        if (!createForm.startDate || !createForm.endDate) return toast.error('Vui lòng chọn thời gian');
+                                        setCreateStep('PRODUCTS');
+                                        if (myProducts.length === 0) fetchMyProducts();
+                                    }}
+                                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+                                >
+                                    Tiếp theo <ChevronRight className="w-4 h-4" />
+                                </button>
+                            )}
+
+                            {/* CREATE MODE: PRODUCTS step */}
+                            {showCreateModal === 'simple' && createStep === 'PRODUCTS' && (
                                 <>
                                     <button
                                         onClick={() => setCreateStep('INFO')}
@@ -894,8 +1140,9 @@ export default function ShopCampaignDemoPage() {
                                     </button>
                                 </>
                             )}
-                            {/* CONFIRM step */}
-                            {createStep === 'CONFIRM' && (
+
+                            {/* CREATE MODE: CONFIRM step */}
+                            {showCreateModal === 'simple' && createStep === 'CONFIRM' && (
                                 <>
                                     <button
                                         onClick={() => setCreateStep('PRODUCTS')}
