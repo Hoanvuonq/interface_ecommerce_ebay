@@ -14,7 +14,6 @@ export const ProductVariantsTable: React.FC<ProductVariantsTableProps> = ({
 }) => {
   const fileInputRefs = useRef<{ [key: number]: HTMLInputElement | null }>({});
   
-  // Quản lý danh sách các fields được phép bulk update
   const [selectedBulkFields, setSelectedBulkFields] = useState<string[]>([]);
 
   const onToggleBulkField = useCallback((field: string) => {
@@ -33,14 +32,27 @@ export const ProductVariantsTable: React.FC<ProductVariantsTableProps> = ({
   );
 
   const handleBulkUpdate = useCallback(
-    (field: keyof Variant, value: any) => {
-      // Chỉ thực hiện update nếu trường này đang được CHECKED
-      if (!selectedBulkFields.includes(field as string)) return;
-
-      const newVariants = variants.map((v) => ({ ...v, [field]: value }));
-      onUpdateVariants(newVariants);
+    (field: keyof Variant | 'BULK_UPDATE', value: any) => {
+      console.log(`handleBulkUpdate called for ${field} with value:`, value);
+      
+      if (field === 'BULK_UPDATE') {
+        // Handle bulk update with multiple fields
+        const updates = value as { [key: string]: any };
+        const newVariants = variants.map((variant) => {
+          const updatedVariant = { ...variant };
+          Object.keys(updates).forEach((updateField) => {
+            updatedVariant[updateField as keyof Variant] = updates[updateField];
+          });
+          return updatedVariant;
+        });
+        onUpdateVariants(newVariants);
+      } else {
+        // Handle single field update
+        const newVariants = variants.map((v) => ({ ...v, [field]: value }));
+        onUpdateVariants(newVariants);
+      }
     },
-    [variants, onUpdateVariants, selectedBulkFields],
+    [variants, onUpdateVariants],
   );
 
   const groupMetadata = useMemo(() => {

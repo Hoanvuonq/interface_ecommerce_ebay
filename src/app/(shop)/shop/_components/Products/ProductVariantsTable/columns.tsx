@@ -58,23 +58,40 @@ export const useProductVariantsColumns = (
   }, [groupMetadata]);
 
   const applyAllCheckedFields = () => {
+    console.log("Selected bulk fields:", selectedBulkFields);
+    console.log("Bulk values:", bulkValues);
+
+    if (selectedBulkFields.length === 0) return;
+
+    const bulkUpdates: { [key: string]: any } = {};
+
     selectedBulkFields.forEach((field) => {
       const rawValue = bulkValues[field];
-      if (rawValue !== undefined && rawValue !== "") {
-        const isNumber = [
-          "price",
-          "stockQuantity",
-          "lengthCm",
-          "widthCm",
-          "heightCm",
-          "weightGrams",
-        ].includes(field);
-        handleBulkUpdate(
-          field as keyof Variant,
-          isNumber ? parseNumber(rawValue) : rawValue,
-        );
+      const isNumber = [
+        "price",
+        "stockQuantity",
+        "lengthCm",
+        "widthCm",
+        "heightCm",
+        "weightGrams",
+      ].includes(field);
+
+      let valueToApply;
+      if (rawValue === undefined || rawValue === "") {
+        valueToApply = isNumber ? 0 : "";
+      } else {
+        valueToApply = isNumber ? parseNumber(rawValue) : rawValue;
       }
+
+      bulkUpdates[field] = valueToApply;
+      console.log(`Prepared bulk update: ${field} = ${valueToApply}`);
     });
+
+    console.log("Bulk updates object:", bulkUpdates);
+
+    handleBulkUpdate("BULK_UPDATE" as any, bulkUpdates);
+
+    console.log("All fields applied successfully via bulk update!");
   };
 
   return useMemo(() => {
@@ -210,30 +227,47 @@ export const useProductVariantsColumns = (
       field: string,
       placeholder: string,
       type = "text",
-    ) => (
-      <div className="flex flex-col items-center w-full px-1 gap-1">
-      <span className="text-gray-800 text-[12px] font-bold uppercase tracking-wider mb-1 leading-none">
-          {title}
-        </span>
-        <FormInput
-          type={type}
-          placeholder={placeholder}
-          isCheckbox={true}
-          checkboxChecked={selectedBulkFields.includes(field)}
-          onCheckboxChange={() => onToggleBulkField(field)}
-          value={bulkValues[field] || ""}
-          onChange={(e) =>
-            setBulkValues((prev) => ({ ...prev, [field]: e.target.value }))
-          }
-          className={cn(
-            tableInputClass,
-            "w-full pr-11",
-            selectedBulkFields.includes(field) &&
-              "border-orange-500 bg-orange-50/20",
-          )}
-        />
-      </div>
-    );
+    ) => {
+      const isPriceField = field === "price";
+      
+      return (
+        <div className="flex flex-col items-center w-full px-1 gap-1">
+          <span className="text-gray-800 text-[12px] font-bold uppercase tracking-wider mb-1 leading-none">
+            {title}
+          </span>
+          <FormInput
+            type={isPriceField ? "text" : type}
+            inputMode={isPriceField ? "numeric" : undefined}
+            maxLengthNumber={isPriceField ? 13 : undefined}
+            placeholder={placeholder}
+            isCheckbox={true}
+            checkboxChecked={selectedBulkFields.includes(field)}
+            onCheckboxChange={() => onToggleBulkField(field)}
+            value={
+              isPriceField && bulkValues[field] 
+                ? Number(bulkValues[field]).toLocaleString("vi-VN")
+                : bulkValues[field] || ""
+            }
+            onChange={(e) => {
+              if (isPriceField) {
+                const raw = e.target.value.replace(/\D/g, "");
+                const cleanRaw = raw.replace(/^0+/, "") || "0";
+                setBulkValues((prev) => ({ ...prev, [field]: cleanRaw }));
+              } else {
+                setBulkValues((prev) => ({ ...prev, [field]: e.target.value }));
+              }
+            }}
+            className={cn(
+              tableInputClass,
+              "w-full pr-11",
+              isPriceField && "text-center font-bold text-gray-800 bg-orange-50/30",
+              selectedBulkFields.includes(field) &&
+                "border-orange-500 bg-orange-50/20",
+            )}
+          />
+        </div>
+      );
+    };
 
     // 3, 4, 5: SKU, GIÁ, KHO
     cols.push({
@@ -252,29 +286,23 @@ export const useProductVariantsColumns = (
     cols.push({
       header: renderStandardBulkHeader("Giá Bán", "price", "0"),
       className: COL_WIDTHS.PRICE,
-      render: (item, idx) => {
-        const format = (n: any) =>
-          !n
-            ? ""
-            : n
-                .toString()
-                .replace(/\D/g, "")
-                .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        return (
-          <FormInput
-            inputMode="numeric"
-            value={format(item.price)}
-            placeholder="0"
-            onChange={(e) =>
-              handleInputChange(idx, "price", parseNumber(e.target.value))
-            }
-            className={cn(
-              tableInputClass,
-              "text-center font-bold text-gray-800 bg-orange-50/30!",
-            )}
-          />
-        );
-      },
+      render: (item, idx) => (
+        <FormInput
+          inputMode="numeric"
+          maxLengthNumber={13}
+          value={item.price ? Number(item.price).toLocaleString("vi-VN") : ""}
+          placeholder="0"
+          onChange={(e) => {
+            const raw = e.target.value.replace(/\D/g, "");
+            const cleanRaw = raw.replace(/^0+/, "");
+            handleInputChange(idx, "price", parseNumber(cleanRaw));
+          }}
+          className={cn(
+            tableInputClass,
+            "text-center font-bold text-gray-800 bg-orange-50/30!",
+          )}
+        />
+      ),
     });
 
     cols.push({
@@ -283,16 +311,20 @@ export const useProductVariantsColumns = (
       render: (item, idx) => (
         <FormInput
           type="number"
-          value={item.stockQuantity ?? 0}
-          onChange={(e) =>
-            handleInputChange(idx, "stockQuantity", parseNumber(e.target.value))
-          }
+          maxLengthNumber={10}
+          value={item.stockQuantity ?? ""}
+          onChange={(e) => {
+            handleInputChange(
+              idx,
+              "stockQuantity",
+              parseNumber(e.target.value),
+            );
+          }}
           className={cn(tableInputClass, "text-center font-bold")}
         />
       ),
     });
 
-    // 6. CỘT LOGISTICS (D-R-C-G) - CHECKBOX TRONG TỪNG Ô NHỎ
     const logFields = ["lengthCm", "widthCm", "heightCm", "weightGrams"];
     const logLabels = ["D", "R", "C", "G"];
 
@@ -323,7 +355,7 @@ export const useProductVariantsColumns = (
                     }
                     className={cn(
                       tableInputClass,
-                      "text-center px-1 pr-6 text-[12px]!", 
+                      "text-center px-1 pr-6 text-[12px]!",
                       isChecked && "border-orange-500 bg-orange-50/20",
                     )}
                   />

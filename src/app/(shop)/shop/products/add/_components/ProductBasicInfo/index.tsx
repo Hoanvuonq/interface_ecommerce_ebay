@@ -1,6 +1,6 @@
 "use client";
 
-import { useProductStore } from "@/app/(shop)/shop/_store/product.store";
+import { useProductStore } from "@/app/(shop)/shop/_stores/product.store";
 import { FormInput } from "@/components";
 import { useToast } from "@/hooks/useToast";
 import { cn } from "@/utils/cn";

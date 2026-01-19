@@ -15,14 +15,14 @@ export const ProductVariantsSection = ({
     <div className="p-4 bg-white rounded-4xl border border-gray-100/50 shadow-custom space-y-6 animate-in fade-in duration-500">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 bg-orange-100 rounded-2xl">
+          <div className="p-3 bg-orange-100 rounded-2xl">
             <Box className="w-5 h-5 text-orange-600" />
           </div>
           <div>
             <h3 className="text-xl font-bold text-gray-800 ">
               Chi tiết biến thể
             </h3>
-            <p className="text-xs font-medium text-gray-400 mt-0.5">
+            <p className="text-xs font-medium text-gray-700 mt-0.5">
               {hasOptions
                 ? "Thiết lập giá, kho hàng và kích thước riêng cho từng loại sản phẩm."
                 : "Sản phẩm đơn (Không có phiên bản phân loại)."}

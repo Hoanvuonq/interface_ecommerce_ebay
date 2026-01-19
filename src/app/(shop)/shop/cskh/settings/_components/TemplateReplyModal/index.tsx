@@ -56,7 +56,7 @@ export const TemplateReplyModal = ({
 
   const footer = (
     <div className="flex justify-between items-center w-full bg-white">
-      <span className="text-[11px] font-black text-slate-400 uppercase tracking-widest pl-4">
+      <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest pl-4">
         Đã chọn: <span className="text-orange-500">{selectedIds.length}</span>/16
       </span>
       <CustomButtonActions
@@ -76,7 +76,7 @@ export const TemplateReplyModal = ({
       onClose={onClose}
       width="max-w-3xl"
       footer={footer}
-      title={<span className="text-slate-800 font-black uppercase italic">Thêm từ mẫu có sẵn</span>}
+      title={<span className="text-slate-800 font-bold uppercase italic">Thêm từ mẫu có sẵn</span>}
     >
       <div className="space-y-5">
         <div className="flex border-b border-slate-100 gap-8 px-2 overflow-x-auto no-scrollbar">
@@ -85,7 +85,7 @@ export const TemplateReplyModal = ({
               key={tab.key}
               onClick={() => setActiveTab(tab.key)}
               className={cn(
-                "pb-3 text-[13px] font-black uppercase tracking-tight transition-all border-b-2 relative whitespace-nowrap",
+                "pb-3 text-[13px] font-bold uppercase tracking-tight transition-all border-b-2 relative whitespace-nowrap",
                 activeTab === tab.key ? "text-orange-500 border-orange-500" : "text-slate-400 border-transparent hover:text-slate-600"
               )}
             >
@@ -131,7 +131,7 @@ export const TemplateReplyModal = ({
                         </span>
                       )}
                     </div>
-                    <span className="px-3 py-1 bg-slate-100 text-slate-500 text-[10px] font-black rounded-lg border border-slate-200 uppercase tracking-widest">
+                    <span className="px-3 py-1 bg-slate-100 text-slate-500 text-[10px] font-bold rounded-lg border border-slate-200 uppercase tracking-widest">
                       {item.tag}
                     </span>
                   </div>

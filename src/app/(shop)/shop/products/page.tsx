@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import ShopProductScreen from "../_pages/ShopProductScreen";
+import ShopProductScreen from "./_pages/ShopProductScreen";
 
 export const metadata: Metadata = {
   title: "Danh sách sản phẩm",

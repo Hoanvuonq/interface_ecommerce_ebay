@@ -18,15 +18,10 @@ export function formatDate(date: string | Date): string {
 
 export function formatDateTime(date?: string | Date | null): string {
   if (!date) return "--:--";
-
-  // Bước fix: Đảm bảo chuỗi có định dạng ISO chuẩn bằng cách thêm 'Z' (nếu backend trả về giờ UTC)
-  // hoặc cắt bớt phần micro giây dư thừa nếu trình duyệt không đọc được.
   let dateString = typeof date === "string" ? date : date.toISOString();
   
-  // Một số trình duyệt cũ kén định dạng có > 3 chữ số mili giây
   if (typeof date === "string" && date.includes('.')) {
     const parts = date.split('.');
-    // Giữ lại tối đa 3 chữ số ở phần mili giây
     dateString = parts[0] + '.' + parts[1].substring(0, 3);
   }
 

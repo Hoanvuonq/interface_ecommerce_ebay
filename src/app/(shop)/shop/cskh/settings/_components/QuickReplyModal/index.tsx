@@ -109,7 +109,7 @@ export const QuickReplyModal: React.FC<any> = ({
         onClose={onClose}
         width="max-w-5xl"
         title={
-          <span className="text-slate-800 font-black uppercase tracking-tighter italic text-lg">
+          <span className="text-slate-800 font-bold uppercase tracking-tighter italic text-lg">
             Cấu hình tin nhắn nhanh
           </span>
         }
@@ -125,7 +125,7 @@ export const QuickReplyModal: React.FC<any> = ({
       >
         <div className="space-y-6 px-1">
           <div className="space-y-2">
-            <label className="text-[11px] font-black uppercase text-orange-500 ml-1 tracking-[0.1em]">
+            <label className="text-[11px] font-bold uppercase text-orange-500 ml-1 tracking-[0.1em]">
               Tên nhóm tin nhắn *
             </label>
             <FormInput
@@ -136,7 +136,7 @@ export const QuickReplyModal: React.FC<any> = ({
             />
           </div>
 
-          <div className="grid grid-cols-[50px_1fr_1fr_60px] px-6 text-[10px] font-black uppercase text-slate-400 tracking-widest">
+          <div className="grid grid-cols-[50px_1fr_1fr_60px] px-6 text-[10px] font-bold uppercase text-slate-400 tracking-widest">
             <span>No.</span>
             <span>Nội dung phản hồi</span>
             <span>Phím tắt (Tag)</span>
@@ -155,7 +155,7 @@ export const QuickReplyModal: React.FC<any> = ({
                   className="grid grid-cols-[50px_1fr_1fr_60px] items-center gap-5 p-4 bg-white border border-slate-100 rounded-[2rem] shadow-sm hover:border-orange-200 transition-all group"
                 >
                   <div className="flex flex-col items-center gap-2">
-                    <span className="text-[11px] font-black text-slate-300 group-hover:text-orange-500 transition-colors">
+                    <span className="text-[11px] font-bold text-slate-300 group-hover:text-orange-500 transition-colors">
                       {index + 1}
                     </span>
                     <GripVertical
@@ -203,14 +203,14 @@ export const QuickReplyModal: React.FC<any> = ({
                   { id: Date.now().toString(), content: "", tags: [] },
                 ])
               }
-              className="flex-1 py-4 border-2 border-dashed border-slate-200 rounded-[1.5rem] flex items-center justify-center gap-2 text-[11px] font-black uppercase tracking-widest text-slate-400 hover:border-orange-400 hover:text-orange-500 transition-all bg-slate-50/30 active:scale-[0.98]"
+              className="flex-1 py-4 border-2 border-dashed border-slate-200 rounded-[1.5rem] flex items-center justify-center gap-2 text-[11px] font-bold uppercase tracking-widest text-slate-400 hover:border-orange-400 hover:text-orange-500 transition-all bg-slate-50/30 active:scale-[0.98]"
             >
               <Plus size={16} strokeWidth={3} /> Thêm tin nhắn ({replies.length}
               /20)
             </button>
             <button
               onClick={() => setIsTemplateModalOpen(true)}
-              className="flex-1 py-4 border-2 border-dashed border-slate-200 rounded-[1.5rem] flex items-center justify-center gap-2 text-[11px] font-black uppercase tracking-widest text-slate-400 hover:border-blue-400 hover:text-blue-500 transition-all bg-slate-50/30 active:scale-[0.98]"
+              className="flex-1 py-4 border-2 border-dashed border-slate-200 rounded-[1.5rem] flex items-center justify-center gap-2 text-[11px] font-bold uppercase tracking-widest text-slate-400 hover:border-blue-400 hover:text-blue-500 transition-all bg-slate-50/30 active:scale-[0.98]"
             >
               <LayoutTemplate size={16} strokeWidth={2.5} /> Mẫu có sẵn
             </button>

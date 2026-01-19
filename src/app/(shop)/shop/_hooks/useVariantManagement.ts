@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 import { OptionConfig } from "./useOptionManagement";
 import _ from "lodash";
+import { Variant } from "../_components/Products/ProductVariantsTable/type";
 const cartesianProduct = (arrays: string[][]): string[][] => {
   if (!arrays.length) return [];
   return arrays.reduce<string[][]>(
@@ -84,7 +85,12 @@ export const useVariantManagement = (
           : undefined;
 
         if (existingMatch) {
-          return existingMatch;
+          // Always preserve imageUrl, imageAssetId, and any custom fields from the old variant
+          return {
+            ...createDefaultVariant(),
+            ...existingMatch,
+            optionValueNames: combo,
+          };
         }
 
         // Helper to remove Vietnamese tones and map đ/Đ
@@ -182,14 +188,20 @@ export const useVariantManagement = (
     setVariants(newVariants);
   }, []);
 
-  const handleUpdateVariant = useCallback(
-    (index: number, field: string, value: any) => {
-      const newVariants = [...variants];
-      newVariants[index] = { ...newVariants[index], [field]: value };
-      setVariants(newVariants);
-    },
-    [variants],
-  );
+  const handleUpdateVariant = (
+    index: number,
+    field: keyof Variant,
+    value: any,
+  ) => {
+    setVariants((prev) => {
+      const newVariants = [...prev];
+      newVariants[index] = {
+        ...newVariants[index],
+        [field]: value,
+      };
+      return newVariants;
+    });
+  };
 
   const handleUploadVariantImage = useCallback(
     async (file: File, index: number) => {

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { cn } from "@/utils/cn";
 import { Checkbox } from "../checkbox";
 
@@ -13,6 +13,7 @@ interface BaseProps {
   isCheckbox?: boolean;
   checkboxChecked?: boolean;
   onCheckboxChange?: (checked: boolean) => void;
+  maxLengthNumber?: number; // Thêm prop giới hạn chữ số cho type number
 }
 
 type FormInputProps = BaseProps &
@@ -26,7 +27,7 @@ export const FormInput = React.forwardRef<
   (
     {
       label,
-      error,
+      error: externalError,
       required,
       isTextArea,
       className,
@@ -36,27 +37,48 @@ export const FormInput = React.forwardRef<
       isCheckbox,
       checkboxChecked,
       onCheckboxChange,
+      maxLengthNumber = 10, // Mặc định là 10 con số theo ý bro
+      onChange,
       ...props
     },
     ref,
   ) => {
+    const [isShaking, setIsShaking] = useState(false);
+    const [localError, setLocalError] = useState(false);
+
     const isDate = type === "date" || type === "datetime-local";
+
+    const handleInputChange = (e: React.ChangeEvent<any>) => {
+      const val = e.target.value;
+
+      const cleanVal = val.replace(/\D/g, "");
+
+      if (type === "number" || props.inputMode === "numeric") {
+        if (cleanVal.length > maxLengthNumber) {
+          if (!isShaking) {
+            setIsShaking(true);
+            setLocalError(true);
+
+            setTimeout(() => {
+              setIsShaking(false);
+              setLocalError(false);
+            }, 400);
+          }
+          return;
+        }
+      }
+      onChange?.(e);
+    };
 
     const commonStyles = cn(
       "w-full px-5 bg-gray-50/50 border border-gray-200 rounded-2xl",
       "text-sm font-semibold text-gray-700 placeholder:text-gray-400 placeholder:font-normal",
       "transition-all duration-200 shadow-sm",
-
-      "focus:outline-none",
-      "focus:border-orange-500",
-      "focus:ring-4 focus:ring-orange-500/10",
-      "focus:bg-white",
-
+      "focus:outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 focus:bg-white",
       isDate && "cursor-pointer uppercase text-[11px]",
-
-      error
-        ? "border-red-400 focus:border-red-500 focus:ring-red-500/10 bg-red-50/30"
-        : "",
+      (externalError || localError) &&
+        "border-red-400 focus:border-red-500 focus:ring-red-500/10 bg-red-50/30",
+      isShaking && "animate-shake",
     );
 
     return (
@@ -75,18 +97,17 @@ export const FormInput = React.forwardRef<
           {isTextArea ? (
             <textarea
               ref={ref as React.ForwardedRef<HTMLTextAreaElement>}
-              id={id}
               className={cn(
                 commonStyles,
                 "py-3 min-h-25 resize-none",
                 className,
               )}
-              {...(props as React.TextareaHTMLAttributes<HTMLTextAreaElement>)}
+              onChange={handleInputChange}
+              {...(props as any)}
             />
           ) : (
             <input
               ref={ref as React.ForwardedRef<HTMLInputElement>}
-              id={id}
               type={type}
               className={cn(
                 commonStyles,
@@ -94,9 +115,11 @@ export const FormInput = React.forwardRef<
                 isCheckbox && "pr-11",
                 className,
               )}
-              {...(props as React.InputHTMLAttributes<HTMLInputElement>)}
+              onChange={handleInputChange}
+              {...(props as any)}
             />
           )}
+
           {isCheckbox && (
             <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center justify-center border-l border-gray-200 pl-2 h-5">
               <Checkbox
@@ -108,9 +131,9 @@ export const FormInput = React.forwardRef<
           )}
         </div>
 
-        {error && (
+        {externalError && (
           <p className="text-[10px] font-medium text-red-500 ml-1 animate-in fade-in slide-in-from-top-1">
-            {error}
+            {externalError}
           </p>
         )}
       </div>

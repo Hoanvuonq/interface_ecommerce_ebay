@@ -11,32 +11,32 @@ import {
   useCategoryManagement,
   useOptionManagement,
   useVariantManagement,
-} from "../../_hooks";
-import { useProductContext } from "../../_context";
+} from "../../../../_hooks";
+import { useProductContext } from "../../../../_contexts";
 
 import { usePresignedUpload } from "@/hooks/usePresignedUpload";
 import { useToast } from "@/hooks/useToast";
-import { useProductStore } from "../../_store/product.store";
+import { useProductStore } from "../../../../_stores/product.store";
 
 import { ButtonField, CustomVideoModal, ImagePreviewModal } from "@/components";
 import { Button } from "@/components/button/button";
 import {
   AddOptionGroupModal,
   CategorySelectionModal,
-} from "../../_components/Modal";
-import { BasePriceSection } from "../../_components/Products/BasePriceSection";
-import { ProductClassificationSection } from "../../_components/Products/ProductClassificationSection";
-import { ProductDescription } from "../../_components/Products/ProductDescription";
-import { ProductPreviewSidebar } from "../../_components/Products/ProductPreviewSidebar";
-import { ProductVariantsSection } from "../../_components/Products/ProductVariantsSection";
-import { ProductVariantsTable } from "../../_components/Products/ProductVariantsTable";
+} from "../../../../_components/Modal";
+import { BasePriceSection } from "../../../../_components/Products/BasePriceSection";
+import { ProductClassificationSection } from "../../../../_components/Products/ProductClassificationSection";
+import { ProductDescription } from "../../../../_components/Products/ProductDescription";
+import { ProductPreviewSidebar } from "../../../../_components/Products/ProductPreviewSidebar";
+import { ProductVariantsSection } from "../../../../_components/Products/ProductVariantsSection";
+import { ProductVariantsTable } from "../../../../_components/Products/ProductVariantsTable";
 import {
   ProductBasicTabs,
   ProductDetailsTabs,
   ProductFormTabs,
   ProductShippingTabs,
   TabType,
-} from "../../products/add/_components";
+} from "../../_components";
 
 import { userProductService } from "@/services/products/product.service";
 import { UploadContext } from "@/types/storage/storage.types";
@@ -54,9 +54,15 @@ export default function ShopProductAddStepsFormScreen() {
     warning: toastWarning,
   } = useToast();
 
-  const { variants, setVariants, addOptionGroup, setCategoryId } =
-    useProductStore();
-  const { description, setBasicInfo } = useProductStore();
+  const {
+    variants,
+    setVariants,
+    addOptionGroup,
+    setCategoryId,
+    description,
+    setBasicInfo,
+    updateVariantByKey,
+  } = useProductStore();
 
   const {
     formData,
@@ -131,27 +137,30 @@ export default function ShopProductAddStepsFormScreen() {
     confirmAddOption,
     getOptionNames,
   } = useOptionManagement(toastWarning, toastSuccess, (groups) => {
-    regenerateVariantsFromOptions(groups);
+    // Sử dụng store thay vì hook để regenerate variants
+    const store = useProductStore.getState();
+    store.setOptionGroups(groups);
+    store.regenerateVariants();
   });
 
-  const {
-    variants: stateVariants,
-    regenerateVariantsFromOptions,
-    validateVariantStructure,
-    handleUpdateVariants,
-    handleUpdateVariant,
-    handleUploadVariantImage,
-  } = useVariantManagement(
-    getOptionNames(),
-    Number(getFieldValue("basePrice")) || 0,
-  );
+  // Không cần useVariantManagement nữa, chỉ cần wrapper functions
+  const handleUpdateVariant = useCallback((index: number, field: string, value: any) => {
+    const store = useProductStore.getState();
+    store.updateVariant(index, field as any, value);
+  }, []);
 
-  // Sync state variants with local variants
-  useEffect(() => {
-    if (stateVariants.length > 0) {
-      setVariants(stateVariants);
+  const handleUpdateVariants = useCallback((newVariants: any[]) => {
+    setVariants(newVariants);
+  }, []);
+
+  const validateVariantStructure = useCallback((variantList: any[]): string[] => {
+    const errors: string[] = [];
+    if (!variantList || variantList.length === 0) {
+      errors.push("Cần tạo ít nhất 1 biến thể trước khi tiếp tục.");
     }
-  }, [stateVariants]);
+    return errors;
+  }, []);
+
 
   const optionNames = getOptionNames();
 
@@ -161,12 +170,10 @@ export default function ShopProductAddStepsFormScreen() {
     loadCategoryTree();
   }, []);
 
-  // Update selectedCategoryPath when categoryId changes
   useEffect(() => {
     updateCategoryPath(String(getFieldValue("categoryId")));
   }, [formFields.categoryId, categoryTree, categories]);
 
-  // Track form changes
   useEffect(() => {
     const values = getFieldsValue();
     const hasData =
@@ -175,7 +182,7 @@ export default function ShopProductAddStepsFormScreen() {
       values.basePrice > 0 ||
       fileList.length > 0 ||
       videoList.length > 0 ||
-      stateVariants.length > 0 ||
+      variants.length > 0 ||
       optionGroups.some((group) => {
         const nameHasValue = (group.name || "").trim().length > 0;
         const valueHasValue = group.values.some(
@@ -185,9 +192,8 @@ export default function ShopProductAddStepsFormScreen() {
       });
 
     setHasUnsavedChanges(Boolean(hasData));
-  }, [formFields, fileList, videoList, stateVariants, optionGroups]);
+  }, [formFields, fileList, videoList, variants, optionGroups]);
 
-  // Warn before leaving if unsaved
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (hasUnsavedChanges) {
@@ -206,7 +212,7 @@ export default function ShopProductAddStepsFormScreen() {
     handleConfirmCategory((categoryId, path) => {
       setFieldValue("categoryId", categoryId);
       setSelectedCategoryPath(path);
-      setCategoryId(categoryId, path); // Update store
+      setCategoryId(categoryId, path);
     });
   };
 
@@ -252,7 +258,7 @@ export default function ShopProductAddStepsFormScreen() {
         );
 
       const variantsToSubmit =
-        stateVariants.length > 0 ? stateVariants : values.variants || [];
+        variants.length > 0 ? variants : values.variants || [];
       const structuralErrors = validateVariantStructure(variantsToSubmit);
       if (structuralErrors.length > 0) {
         showVariantErrors(structuralErrors);
@@ -357,53 +363,31 @@ export default function ShopProductAddStepsFormScreen() {
 
   const handleUploadVariantImageWrapper = useCallback(
     async (file: File, index: number) => {
+      const { variants, updateVariantByKey } = useProductStore.getState();
+      const currentVariant = variants[index];
+      if (!currentVariant) return;
+
+      const variantKey = currentVariant.optionValueNames.join("|");
+      const localUrl = URL.createObjectURL(file);
+
       try {
-        const localUrl = URL.createObjectURL(file);
-        const newVariants = [...stateVariants];
-        newVariants[index] = {
-          ...newVariants[index],
-          imageUrl: localUrl,
-          imageProcessing: true,
-        };
-        handleUpdateVariants(newVariants);
+        // HIỆN ẢNH NGAY, TẮT LOADING LUÔN
+        updateVariantByKey(variantKey, "imageUrl", localUrl);
+        updateVariantByKey(variantKey, "imageProcessing", false);
 
         const res = await uploadPresigned(file, UploadContext.PRODUCT_IMAGE);
-
-        if (res.finalUrl && res.assetId) {
-          const updatedVariants = [...stateVariants];
-          updatedVariants[index] = {
-            ...updatedVariants[index],
-            imageUrl: res.finalUrl,
-            imageAssetId: res.assetId,
-            imageProcessing: false,
-          };
-
-          handleUpdateVariants(updatedVariants);
-          toastSuccess("Upload ảnh biến thể thành công");
-          URL.revokeObjectURL(localUrl);
-        } else {
-          throw new Error("Không nhận được URL ảnh");
+        if (res?.assetId) {
+          updateVariantByKey(variantKey, "imageAssetId", res.assetId);
+          updateVariantByKey(variantKey, "imageUrl", res.finalUrl);
+          toastSuccess(`Upload thành công: ${variantKey}`);
         }
       } catch (error) {
-        toastError("Lỗi upload ảnh biến thể");
-        const revertedVariants = [...stateVariants];
-        revertedVariants[index] = {
-          ...revertedVariants[index],
-          imageProcessing: false,
-        };
-        handleUpdateVariants(revertedVariants);
+        toastError("Upload lỗi");
+        updateVariantByKey(variantKey, "imageUrl", undefined);
       }
     },
-    [
-      stateVariants,
-      uploadPresigned,
-      handleUpdateVariants,
-      toastSuccess,
-      toastError,
-    ],
+    [uploadPresigned],
   );
-
-  // Render methods
   const renderBasicTab = () => (
     <ProductBasicTabs
       form={{ getFieldValue, setFieldValue, validateFields }}
@@ -456,14 +440,14 @@ export default function ShopProductAddStepsFormScreen() {
 
   const renderShippingTab = () => (
     <ProductShippingTabs
-      variants={stateVariants}
+      variants={variants}
       optionNames={optionNames}
       onUpdateVariant={handleUpdateVariant}
     />
   );
 
   const previewImage = fileList.find((f) => f.status === "done")?.url;
-  const totalStock = stateVariants.reduce(
+  const totalStock = variants.reduce(
     (acc, curr) => acc + (curr.stockQuantity || 0),
     0,
   );
@@ -485,7 +469,7 @@ export default function ShopProductAddStepsFormScreen() {
               setFormData({
                 ...formData,
                 ...currentData,
-                variants: stateVariants,
+                variants: variants,
                 saveAsDraft: true,
               });
               handleSubmit();
@@ -542,6 +526,7 @@ export default function ShopProductAddStepsFormScreen() {
             <ProductPreviewSidebar
               fileList={fileList}
               videoList={videoList}
+              variants={variants}
               name={formFields.name}
               basePrice={formFields.basePrice}
               description={formFields.description}
@@ -554,9 +539,9 @@ export default function ShopProductAddStepsFormScreen() {
       {optionGroups.length > 0 && (
         <ProductVariantsSection hasOptions={true}>
           <ProductVariantsTable
-            variants={stateVariants}
+            variants={variants}
             optionNames={optionNames}
-            onUpdateVariants={handleUpdateVariants}
+            onUpdateVariants={setVariants}
             onUploadImage={handleUploadVariantImageWrapper}
           />
         </ProductVariantsSection>

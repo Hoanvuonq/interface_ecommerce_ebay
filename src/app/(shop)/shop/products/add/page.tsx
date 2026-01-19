@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { ProductProvider } from "../../_context";
-import ShopProductAddStepsFormScreen from "../../_pages/ShopProductAddStepsFormScreen";
+import { ProductProvider } from "../../_contexts";
+import ShopProductAddStepsFormScreen from "./_pages/ShopProductAddStepsFormScreen";
 
 export const metadata: Metadata = {
   title: "Thêm sản phẩm",

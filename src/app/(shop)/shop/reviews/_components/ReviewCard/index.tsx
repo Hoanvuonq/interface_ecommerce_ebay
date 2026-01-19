@@ -57,7 +57,7 @@ export default function ReviewCard({
           {/* Avatar & User Info Side */}
           <div className="flex sm:flex-col items-center gap-4 shrink-0">
             <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-tr from-orange-400 to-indigo-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-300"></div>
+              <div className="absolute -inset-1 bg-linear-to-tr from-orange-400 to-indigo-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-300"></div>
               {review.userAvatar ? (
                 <img
                   src={review.userAvatar}

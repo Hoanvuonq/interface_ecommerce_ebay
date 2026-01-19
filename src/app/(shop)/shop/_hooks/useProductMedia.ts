@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { UploadFile } from '@/app/(main)/orders/_types/review';
-import { useProductStore } from '../_store/product.store';
+import { useProductStore } from '../_stores/product.store';
 import { usePresignedUpload } from "@/hooks/usePresignedUpload";
 import { UploadContext } from "@/types/storage/storage.types";
 import { useToast } from '@/hooks/useToast';

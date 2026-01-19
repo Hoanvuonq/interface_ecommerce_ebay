@@ -73,8 +73,7 @@ export const ReviewResponseModal =({
       width="max-w-2xl"
       className="p-0 overflow-hidden rounded-2xl"
     >
-      {/* Header với Gradient mượt hơn */}
-      <div className="bg-gradient-to-br from-indigo-600 to-purple-700 p-6 text-white relative">
+      <div className="bg-linear-to-br from-indigo-600 to-purple-700 p-6 text-white relative">
         <button
           onClick={handleClose}
           className="absolute top-4 right-4 p-1 rounded-full hover:bg-white/20 transition-colors"

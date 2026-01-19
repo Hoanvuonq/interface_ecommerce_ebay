@@ -115,7 +115,7 @@ export const SettingCard = ({
                     <div className="p-1.5 bg-orange-100 rounded-lg">
                       <CalendarDays className="text-orange-500" size={16} />
                     </div>
-                    <h3 className="text-sm font-black uppercase text-gray-800 italic tracking-tight">
+                    <h3 className="text-sm font-bold uppercase text-gray-800 italic tracking-tight">
                       Cấu hình lịch làm việc
                     </h3>
                   </div>

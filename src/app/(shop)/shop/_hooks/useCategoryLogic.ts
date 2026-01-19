@@ -1,21 +1,22 @@
-import { useEffect, useState } from 'react';
-import { useToast } from '@/hooks/useToast';
-import { useProductStore } from '../_store/product.store';
+import { useEffect, useState } from "react";
+import { useToast } from "@/hooks/useToast";
+import { useProductStore } from "../_stores/product.store";
 import { CategoryService } from "@/app/(main)/category/_service/category.service";
 import { CategoryResponse } from "@/types/categories/category.detail";
 
 export const useCategoryLogic = () => {
-    const {success, warning, error} = useToast();
-  const { 
-    categoryTree, setCategoryTree, 
-    setCategoryId, categoryId,
-    confirmCategorySelection 
+  const { success, warning, error } = useToast();
+  const {
+    categoryTree,
+    setCategoryTree,
+    setCategoryId,
+    categoryId,
+    confirmCategorySelection,
   } = useProductStore();
 
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
   const [loadingCategoryTree, setLoadingCategoryTree] = useState(false);
 
-  // Load category tree on mount
   useEffect(() => {
     const loadCategoryTree = async () => {
       if (categoryTree.length > 0) return;
@@ -39,10 +40,13 @@ export const useCategoryLogic = () => {
   };
 
   const handleConfirmCategory = () => {
-    // Logic validate ở store hoặc kiểm tra tại đây
     const storeState = useProductStore.getState();
-    const finalCategory = storeState.selectedLevel4 || storeState.selectedLevel3 || storeState.selectedLevel2 || storeState.selectedLevel1;
-    
+    const finalCategory =
+      storeState.selectedLevel4 ||
+      storeState.selectedLevel3 ||
+      storeState.selectedLevel2 ||
+      storeState.selectedLevel1;
+
     if (!finalCategory) {
       warning("Vui lòng chọn ngành hàng");
       return;

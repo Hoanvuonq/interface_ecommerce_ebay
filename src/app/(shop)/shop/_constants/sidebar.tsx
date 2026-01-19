@@ -91,6 +91,11 @@ export const SHOP_SIDEBAR_ITEMS = [
         href: "/shop/marketing/coupon",
       },
       {
+        key: "marketing-campaigns",
+        label: "Chiến dịch Marketing ",
+        href: "/shop/marketing/campaigns",
+      },
+      {
         key: "marketing-loyalty",
         label: "Điểm thưởng",
         href: "/shop/marketing/loyalty",
@@ -194,6 +199,7 @@ export const SHOP_ROUTE_MAPPINGS = [
   { prefix: "/shop/orders", key: "orders-all", parent: "orders" },
   { prefix: "/shop/marketing/promotion", key: "marketing-promotion", parent: "marketing" },
   { prefix: "/shop/marketing/coupon", key: "marketing-coupon", parent: "marketing" },
+  { prefix: "/shop/marketing/campaigns", key: "marketing-campaigns", parent: "marketing" },
   { prefix: "/shop/marketing/loyalty", selectedKey: "marketing-loyalty", openKey: "marketing" },
   { prefix: "/shop/vouchers", key: "vouchers" },
   { prefix: "/shop/cskh/chat", key: "cskh-chat", parent: "cskh" },

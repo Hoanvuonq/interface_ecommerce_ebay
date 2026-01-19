@@ -21,7 +21,7 @@ export const SettingsAutoMessage = () => {
         </div>
         
         <div className="space-y-2 relative z-10">
-          <p className="text-xs font-black uppercase text-slate-800 tracking-wider">
+          <p className="text-xs font-bold uppercase text-slate-800 tracking-wider">
             Quy tắc phản hồi hệ thống
           </p>
           <ul className="text-[11px] font-bold text-slate-500 uppercase leading-relaxed space-y-1.5 tracking-tight">

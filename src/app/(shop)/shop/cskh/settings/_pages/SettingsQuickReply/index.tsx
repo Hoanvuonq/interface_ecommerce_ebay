@@ -31,10 +31,10 @@ export const SettingsQuickReply = () => {
               <ChevronLeft size={24} />
             </button>
             <div>
-              <h1 className="text-3xl font-black text-slate-800 tracking-tight italic uppercase leading-none">
+              <h1 className="text-3xl font-bold text-slate-800 tracking-tight italic uppercase leading-none">
                 Tin nhắn nhanh
               </h1>
-              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-orange-400 mt-2">
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-orange-400 mt-2">
                 Personalized Response Templates
               </p>
             </div>
@@ -43,7 +43,7 @@ export const SettingsQuickReply = () => {
           {/* Nút Tạo tin nhắn mới - Kích hoạt Modal */}
           <button
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-2 px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white rounded-[2rem] text-[10px] font-black uppercase tracking-[0.2em] shadow-xl shadow-orange-500/20 transition-all active:scale-95"
+            className="flex items-center gap-2 px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white rounded-[2rem] text-[10px] font-bold uppercase tracking-[0.2em] shadow-xl shadow-orange-500/20 transition-all active:scale-95"
           >
             <Plus size={18} strokeWidth={3} /> Tạo tin nhắn mới
           </button>
@@ -62,9 +62,9 @@ export const SettingsQuickReply = () => {
               className="w-full pl-12 pr-4 py-4 bg-white border border-slate-100 rounded-3xl text-[10px] font-bold tracking-widest outline-none focus:border-orange-200 focus:ring-4 focus:ring-orange-50 shadow-sm transition-all"
             />
           </div>
-          <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">
+          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest italic">
             Đã dùng:{" "}
-            <span className="text-orange-500 text-sm font-black">01</span> / 25
+            <span className="text-orange-500 text-sm font-bold">01</span> / 25
             nhóm
           </div>
         </div>
@@ -78,7 +78,7 @@ export const SettingsQuickReply = () => {
                 <MessageSquare size={22} />
               </div>
               <div className="space-y-1">
-                <h2 className="text-xl font-black text-slate-800 uppercase tracking-tight">
+                <h2 className="text-xl font-bold text-slate-800 uppercase tracking-tight">
                   Nhóm tin nhắn chung
                 </h2>
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest italic">
@@ -179,13 +179,13 @@ export const SettingsQuickReply = () => {
                         />
 
                         <div className="space-y-2">
-                          <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">
+                          <label className="text-[10px] font-bold uppercase text-slate-400 ml-1 tracking-widest">
                             Phím tắt (Tag)
                           </label>
                           <input
                             type="text"
                             placeholder="VÍ DỤ: /CAMON"
-                            className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[10px] font-black tracking-widest outline-none focus:border-orange-300 transition-all"
+                            className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[10px] font-bold tracking-widest outline-none focus:border-orange-300 transition-all"
                           />
                         </div>
 
@@ -196,7 +196,7 @@ export const SettingsQuickReply = () => {
                     ))}
                   </div>
 
-                  <button className="w-full py-5 border-2 border-dashed border-slate-200 rounded-[2rem] text-[10px] font-black uppercase tracking-widest text-slate-400 hover:border-orange-300 hover:text-orange-500 hover:bg-white transition-all">
+                  <button className="w-full py-5 border-2 border-dashed border-slate-200 rounded-[2rem] text-[10px] font-bold uppercase tracking-widest text-slate-400 hover:border-orange-300 hover:text-orange-500 hover:bg-white transition-all">
                     + Thêm mẫu tin nhắn mới (Tối đa 20)
                   </button>
 

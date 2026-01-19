@@ -197,7 +197,6 @@ export default function ShopCampaignPage() {
     };
 
     const handleSelectCampaign = async (campaign: CampaignResponse) => {
-        // Initial set (from list view)
         setSelectedCampaign(campaign);
         setSelectedCampaignProducts([]);
         setCampaignSlots([]);
@@ -1163,7 +1162,7 @@ export default function ShopCampaignPage() {
                         </div>
                     </div>
                 </div>
-            )} as any
+            )} 
         </div>
     );
 }
