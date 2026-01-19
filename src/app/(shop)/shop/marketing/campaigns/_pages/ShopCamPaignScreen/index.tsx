@@ -11,6 +11,9 @@ import {
 } from "@/app/(shop)/shop/_components/Products/StatusTabs";
 import { AnimatePresence, motion } from "framer-motion";
 import { ParticipateCampaignScreen } from "../ParticipateCampaignScreen";
+import { MyRegistrationsScreen } from "../MyRegistrationsScreen";
+import { MyShopSaleScreen } from "../MyShopSaleScreen";
+import { getDisplayStatus } from "../../_constants/getDisplayStatus";
 
 type CampaignTabs =
   | "participate-campaign"
@@ -22,8 +25,22 @@ export const ShopCamPaignScreen = () => {
     "participate-campaign",
   );
 
-  const { handleSelectCampaign, formatPrice } = useShopCampaign();
-
+  const {
+    handleSelectCampaign,
+    formatPrice,
+    handleCancelRegistration,
+    handleToggleCampaign,
+    fetchMyProducts,
+  } = useShopCampaign();
+  const setCreateStep = useCampaignStore((s) => s.setCreateStep);
+  const setShowCreateModal = useCampaignStore((s) => s.setShowCreateModal);
+  const [targetCampaignId, setTargetCampaignId] = useState<string | null>(null);
+  const myCampaigns = useCampaignStore((s) => s.myCampaigns);
+  const selectedCampaign = useCampaignStore((s) => s.selectedCampaign);
+  const selectedCampaignProducts = useCampaignStore(
+    (s) => s.selectedCampaignProducts,
+  );
+  const myRegistrations = useCampaignStore((s) => s.myRegistrations);
   const setAuthState = useCampaignStore((s) => s.setAuthState);
   const setSelectedSlot = useCampaignStore((s) => s.setSelectedSlot);
   const setShowRegisterModal = useCampaignStore((s) => s.setShowRegisterModal);
@@ -51,19 +68,34 @@ export const ShopCamPaignScreen = () => {
         );
       case "register-campaign":
         return (
-          <div className="bg-white rounded-4xl p-20 text-center border-2 border-dashed border-slate-100">
-            <p className="text-sm font-bold text-slate-400 uppercase tracking-widest italic">
-              Tính năng "Đăng ký của tôi" đang đồng bộ dữ liệu...
-            </p>
-          </div>
+          <MyRegistrationsScreen
+            registrations={myRegistrations}
+            onCancel={handleCancelRegistration}
+            formatPrice={formatPrice}
+          />
         );
       case "discount-campaign":
         return (
-          <div className="bg-white rounded-4xl p-20 text-center border-2 border-dashed border-slate-100">
-            <p className="text-sm font-bold text-slate-400 uppercase tracking-widest italic">
-              Tính năng "Giảm giá tại cửa hàng" đang được cập nhật
-            </p>
-          </div>
+          <MyShopSaleScreen
+            myCampaigns={myCampaigns}
+            selectedCampaign={selectedCampaign}
+            selectedCampaignProducts={selectedCampaignProducts}
+            onSelectCampaign={handleSelectCampaign}
+            onToggleStatus={handleToggleCampaign}
+            onAddNew={() => {
+              setShowCreateModal("simple");
+              setCreateStep("INFO");
+              // ... reset form khác
+            }}
+            onAddProducts={(id) => {
+              setTargetCampaignId(id);
+              setShowCreateModal("addProduct");
+              setCreateStep("PRODUCTS");
+              fetchMyProducts();
+            }}
+            formatPrice={formatPrice}
+            getDisplayStatus={getDisplayStatus}
+          />
         );
       default:
         return null;
@@ -85,15 +117,14 @@ export const ShopCamPaignScreen = () => {
         className="w-full md:w-auto"
       />
 
-      {/* Content Area với Motion mượt mà */}
       <div className="relative">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
-            initial={{ opacity: 0, y: 15 }} // Trượt nhẹ từ dưới lên
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }} // Cubic Bezier chuẩn mượt
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           >
             {renderTabContent}
           </motion.div>

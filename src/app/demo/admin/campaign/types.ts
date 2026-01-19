@@ -28,6 +28,8 @@ export interface CreateCampaignRequest {
     slotTimes?: string[];
     slotDurationMinutes?: number;
     bannerUrl?: string;
+    bannerAssetId?: string;
+    thumbnailAssetId?: string;
     thumbnailUrl?: string;
     displayPriority?: number;
     isFeatured?: boolean;

@@ -53,7 +53,7 @@ export const CustomTabs: React.FC<CustomTabsProps> = ({
               <span className="whitespace-nowrap">{item.label}</span>
 
               {isActive && (
-                <span className="absolute bottom-0 left-0 w-full h-[2px] bg-blue-600 rounded-t-full animate-in fade-in zoom-in-95 duration-300" />
+                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 rounded-t-full animate-in fade-in zoom-in-95 duration-300" />
               )}
             </button>
           );
