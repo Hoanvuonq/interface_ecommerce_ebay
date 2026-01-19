@@ -67,20 +67,20 @@ export const DataTable = <T,>({
       <div className="bg-white border border-gray-100 rounded-4xl shadow-custom overflow-hidden flex flex-col">
         <div className="overflow-x-auto custom-scrollbar">
           <table className="min-w-full border-collapse">
-            <thead className="bg-[#fdfbfb] border-b border-gray-100">
+            <thead className="bg-[#ffffff] border-b border-gray-100">
               <tr>
                 {columns.map((col, idx) => (
                   <th
                     key={idx}
                     className={cn(
-                      "px-6 py-2 text-[12px] font-bold uppercase text-gray-600 whitespace-nowrap",
+                      "px-6 py-4 text-[12px] font-bold uppercase text-gray-600 whitespace-nowrap",
                       col.align === "center"
                         ? "text-center"
                         : col.align === "right"
-                        ? "text-right"
-                        : "text-left",
+                          ? "text-right"
+                          : "text-left",
                       col.headerClassName,
-                      col.headerClassName
+                      col.headerClassName,
                     )}
                   >
                     {col.header}
@@ -147,9 +147,10 @@ export const DataTable = <T,>({
                           opacity: { duration: 0.2 },
                           delay: rowIdx * 0.02,
                         }}
-                        className="group hover:bg-gray-50/20 transition-colors border-b border-gray-50 last:border-none"
+                        className="group hover:bg-orange-50/20 transition-colors border-b border-gray-50 last:border-none"
                       >
                         {columns.map((col, colIdx) => {
+                          // Thực hiện render nội dung cột
                           const rendered = col.render
                             ? col.render(item, rowIdx)
                             : null;
@@ -157,6 +158,7 @@ export const DataTable = <T,>({
                           let cellContent: React.ReactNode = null;
                           let cellRowSpan: number | undefined = undefined;
 
+                          // LOGIC FIX: Kiểm tra nếu render trả về object có chứa rowSpan
                           if (
                             rendered &&
                             typeof rendered === "object" &&
@@ -181,12 +183,13 @@ export const DataTable = <T,>({
                                 col.align === "center"
                                   ? "text-center"
                                   : col.align === "right"
-                                  ? "text-right"
-                                  : "text-left",
+                                    ? "text-right"
+                                    : "text-left",
                                 col.className,
+                                // align-middle giúp nội dung nằm chính giữa vùng gộp dòng
                                 cellRowSpan && cellRowSpan > 1
                                   ? "align-middle"
-                                  : ""
+                                  : "",
                               )}
                             >
                               {cellContent}

@@ -173,7 +173,7 @@ export const MyShopSaleScreen: React.FC<MyShopSalesTabProps> = ({
                 fill
                 className="object-cover scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-slate-950 via-slate-950/40 to-transparent" />
               <div className="absolute bottom-8 left-10 right-10 text-white">
                 <div className="flex items-end justify-between gap-6">
                   <div className="flex-1 min-w-0 space-y-2">
@@ -191,7 +191,7 @@ export const MyShopSaleScreen: React.FC<MyShopSalesTabProps> = ({
                   </div>
                   <button
                     onClick={() => onAddProducts(selectedCampaign.id)}
-                    className="bg-white hover:bg-orange-500 hover:text-white text-slate-900 px-8 py-4 rounded-[1.5rem] font-black text-xs uppercase tracking-widest transition-all shadow-2xl active:scale-95 flex items-center gap-3 whitespace-nowrap group"
+                    className="bg-white hover:bg-orange-500 hover:text-white text-slate-900 px-8 py-4 rounded-3xl font-black text-xs uppercase tracking-widest transition-all shadow-2xl active:scale-95 flex items-center gap-3 whitespace-nowrap group"
                   >
                     <Plus className="w-4 h-4 stroke-[4px] group-hover:scale-125 transition-transform" />
                     Bơm sản phẩm
@@ -230,7 +230,7 @@ export const MyShopSaleScreen: React.FC<MyShopSalesTabProps> = ({
                     return (
                       <div
                         key={prod.id}
-                        className="group flex items-center gap-5 p-5 bg-white border border-slate-100 rounded-[2rem] hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.08)] transition-all hover:-translate-y-1"
+                        className="group flex items-center gap-5 p-5 bg-white border border-slate-100 rounded-4xl hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.08)] transition-all hover:-translate-y-1"
                       >
                         <div className="relative w-20 h-20 shrink-0 rounded-2xl overflow-hidden shadow-md group-hover:rotate-3 transition-transform">
                           <Image
@@ -270,8 +270,8 @@ export const MyShopSaleScreen: React.FC<MyShopSalesTabProps> = ({
                                 className={cn(
                                   "h-full transition-all duration-1000 ease-out rounded-full",
                                   sellRatio > 80
-                                    ? "bg-gradient-to-r from-orange-500 to-red-500"
-                                    : "bg-gradient-to-r from-orange-400 to-orange-600",
+                                    ? "bg-linear-to-r from-orange-500 to-red-500"
+                                    : "bg-linear-to-r from-orange-400 to-orange-600",
                                 )}
                                 style={{ width: `${sellRatio}%` }}
                               />

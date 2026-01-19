@@ -56,7 +56,7 @@ export const BaseEmployeeLayout = ({ children }: { children: React.ReactNode }) 
           isMobile={isMobile} 
         />
         
-        <main className="flex-1 overflow-y-auto overflow-x-hidden relative bg-gray-50/50 custom-scrollbar">
+        <main className="flex-1 overflow-y-auto overflow-x-hidden relative bg-[#fafafa] custom-scrollbar">
           <div className="max-w-8xl mx-auto p-4 md:p-6 lg:p-8 min-h-full">
             <PageTransition key={pathname}>
               {children}

@@ -134,7 +134,7 @@ export const SelectComponent = ({
       <div ref={wrapperRef} className={cn("relative w-full", className)}>
         <div
           className={cn(
-            "w-full h-12 px-5 bg-gray-50/50 border border-gray-200 rounded-2xl flex items-center justify-between cursor-pointer transition-all select-none shadow-sm",
+            "w-full h-12 px-5 rounded-2xl flex items-center justify-between cursor-pointer transition-all select-none shadow-custom",
             disabled
               ? "opacity-50 cursor-not-allowed bg-gray-100"
               : "hover:border-gray-400 hover:bg-white",

@@ -1,21 +1,18 @@
-/**
- * Campaign Types - Based on Backend DTOs
- * Location: demo/campaign/types.ts
- */
-
-// ============================================================
-// ENUMS
-// ============================================================
-
-export type CampaignStatus = 'ACTIVE' | 'PAUSED' | 'ENDED' | 'CANCELLED' | 'DRAFT' | 'SCHEDULED';
-export type CampaignType = 'FLASH_SALE' | 'DAILY_DEAL' | 'MEGA_SALE' | 'SHOP_SALE';
-export type SlotStatus = 'UPCOMING' | 'ACTIVE' | 'ENDED';
-export type SponsorType = 'PLATFORM' | 'SHOP';
-export type RegistrationStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
-
-// ============================================================
-// RESPONSE DTOs
-// ============================================================
+export type CampaignStatus =
+  | "ACTIVE"
+  | "PAUSED"
+  | "ENDED"
+  | "CANCELLED"
+  | "DRAFT"
+  | "SCHEDULED";
+export type CampaignType =
+  | "FLASH_SALE"
+  | "DAILY_DEAL"
+  | "MEGA_SALE"
+  | "SHOP_SALE";
+export type SlotStatus = "UPCOMING" | "ACTIVE" | "ENDED";
+export type SponsorType = "PLATFORM" | "SHOP";
+export type RegistrationStatus = "PENDING" | "APPROVED" | "REJECTED";
 
 export interface CampaignResponse {
   id: string;
