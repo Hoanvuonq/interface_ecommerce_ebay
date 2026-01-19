@@ -67,7 +67,7 @@ export default function ShopVoucherPurchaseModal({
           </div>
           <h2 className="text-xl font-bold text-gray-900 uppercase tracking-tight">Xác nhận thanh toán</h2>
         </div>
-        <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-400">
+        <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-500">
           <X size={20} />
         </button>
       </div>
@@ -94,14 +94,14 @@ export default function ShopVoucherPurchaseModal({
                 <h3 className="text-lg font-bold text-gray-900 leading-tight">{voucher.name}</h3>
               </div>
               <div className="text-right">
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Loại Voucher</p>
+                <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Loại Voucher</p>
                 <span className="text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-lg uppercase">Platform</span>
               </div>
            </div>
 
            <div className="grid grid-cols-2 gap-4">
               <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1 flex items-center gap-1.5">
+                <p className="text-[9px] font-bold text-gray-500 uppercase tracking-widest mb-1 flex items-center gap-1.5">
                   <Trophy size={12}/> Quyền lợi
                 </p>
                 <p className="text-sm font-bold text-gray-800 tabular-nums">
@@ -111,7 +111,7 @@ export default function ShopVoucherPurchaseModal({
                 </p>
               </div>
               <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1 flex items-center gap-1.5">
+                <p className="text-[9px] font-bold text-gray-500 uppercase tracking-widest mb-1 flex items-center gap-1.5">
                   <Clock size={12}/> Hạn dùng
                 </p>
                 <p className="text-sm font-bold text-gray-800 tabular-nums">
@@ -123,7 +123,7 @@ export default function ShopVoucherPurchaseModal({
 
         {/* Checkout Summary */}
         <div className="space-y-4">
-          <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] ml-2">
+          <div className="flex items-center gap-2 text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] ml-2">
             <Info size={14} /> Chi tiết thanh toán
           </div>
           
@@ -151,7 +151,7 @@ export default function ShopVoucherPurchaseModal({
         {/* Note Area */}
         <div className="flex gap-3 px-4">
           <AlertTriangle className="text-amber-500 shrink-0" size={18} />
-          <p className="text-[10px] font-bold text-gray-400 leading-relaxed uppercase">
+          <p className="text-[10px] font-bold text-gray-500 leading-relaxed uppercase">
             Bằng việc nhấn "Xác nhận & Thanh toán", bạn đồng ý với các chính sách sử dụng Voucher của Platform. Voucher không thể quy đổi thành tiền mặt hoặc hoàn trả sau khi mua.
           </p>
         </div>

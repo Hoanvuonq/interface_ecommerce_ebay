@@ -109,7 +109,7 @@ export const TaxInfo = ({
                 <h2 className="text-lg font-bold text-gray-900 uppercase tracking-tight">Thông tin Thuế</h2>
                 {statusTagMap[status]}
               </div>
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-0.5">Xác thực pháp lý cửa hàng</p>
+              <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest ml-0.5">Xác thực pháp lý cửa hàng</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -172,10 +172,10 @@ export const TaxInfo = ({
                 },
               ].map((item, idx) => (
                 <div key={idx} className="grid grid-cols-1 md:grid-cols-[280px_1fr] bg-white p-5 group/row hover:bg-gray-50 transition-colors">
-                  <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-400 self-center">{item.label}</span>
+                  <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-500 self-center">{item.label}</span>
                   <span className={cn(
                     "text-sm font-bold text-gray-800",
-                    item.isMasked && "tracking-[0.3em] text-gray-300"
+                    item.isMasked && "tracking-[0.3em] text-gray-500"
                   )}>
                     {item.value || "Chưa cập nhật"}
                   </span>
@@ -211,7 +211,7 @@ export const TaxInfo = ({
               type="button"
               disabled={updating}
               onClick={() => setOpenModal(false)}
-              className="px-8 py-2.5 rounded-xl font-bold uppercase text-[10px] tracking-widest text-gray-400 hover:text-gray-600 transition-colors"
+              className="px-8 py-2.5 rounded-xl font-bold uppercase text-[10px] tracking-widest text-gray-500 hover:text-gray-600 transition-colors"
             >
               Hủy bỏ
             </button>

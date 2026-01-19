@@ -130,7 +130,7 @@ export default function ShopOrderTable() {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <span className="text-gray-300 text-[10px] font-bold text-center">
+                <span className="text-gray-500 text-[10px] font-bold text-center">
                   N/A
                 </span>
               )}

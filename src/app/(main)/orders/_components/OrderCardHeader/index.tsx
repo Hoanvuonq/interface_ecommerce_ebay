@@ -33,7 +33,7 @@ export const OrderCardHeader: React.FC<HeaderProps> = ({ shop, orderNumber }) =>
           <span className="bg-orange-50 text-orange-600 text-[10px] font-bold px-2 py-0.5 rounded-lg">
             YÊU THÍCH
           </span>
-          <ChevronRight size={14} className="text-gray-300" />
+          <ChevronRight size={14} className="text-gray-500" />
         </div>
         <p className="text-[11px] text-gray-600 mt-1 font-medium tracking-wide uppercase">
           Mã đơn: {orderNumber}

@@ -251,7 +251,7 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ category, onSuccess, onC
                                 <option value="">Genesis Node (Root)</option>
                                 {parentCategories.map(cat => <option key={cat.id} value={cat.id}>{cat.name}</option>)}
                             </select>
-                            <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-300 pointer-events-none" size={18} />
+                            <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" size={18} />
                         </div>
                     </div>
 

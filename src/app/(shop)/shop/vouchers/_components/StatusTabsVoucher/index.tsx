@@ -57,7 +57,7 @@ export const StatusTabsVoucher = ({
                       "transition-transform duration-300 group-hover:scale-110",
                       isActive
                         ? "text-orange-400"
-                        : "text-gray-400 group-hover:text-orange-500"
+                        : "text-gray-500 group-hover:text-orange-500"
                     )}
                   >
                     {tab.icon}

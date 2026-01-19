@@ -206,7 +206,7 @@ export default function ShopVoucherList() {
                   setSelectedVoucher(item);
                   setDetailModalOpen(true);
                 }}
-                className="p-2 hover:bg-gray-100 rounded-xl transition-all text-gray-400 hover:text-gray-900 border border-transparent hover:border-gray-200"
+                className="p-2 hover:bg-gray-100 rounded-xl transition-all text-gray-500 hover:text-gray-900 border border-transparent hover:border-gray-200"
               >
                 <Eye size={18} />
               </button>
@@ -216,7 +216,7 @@ export default function ShopVoucherList() {
                     setSelectedVoucher(item);
                     setEditModalOpen(true);
                   }}
-                  className="p-2 hover:bg-orange-50 rounded-xl transition-all text-gray-400 hover:text-orange-600 border border-transparent hover:border-gray-100"
+                  className="p-2 hover:bg-orange-50 rounded-xl transition-all text-gray-500 hover:text-orange-600 border border-transparent hover:border-gray-100"
                 >
                   <Edit3 size={18} />
                 </button>
@@ -236,7 +236,7 @@ export default function ShopVoucherList() {
 
               {isShopVoucher && (
                 <div className="relative group">
-                  <button className="p-2 hover:bg-gray-100 rounded-xl transition-all text-gray-400">
+                  <button className="p-2 hover:bg-gray-100 rounded-xl transition-all text-gray-500">
                     <MoreVertical size={18} />
                   </button>
                   {/* Dropdown custom thay antd: 
@@ -346,7 +346,7 @@ const kpiItems = useMemo(() => [
       <div className="space-y-6">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-white p-6 rounded-[2.5rem] shadow-sm border border-gray-100">
           <div className="flex items-center gap-2 bg-gray-50 p-1.5 rounded-2xl border border-gray-100 w-full lg:w-auto focus-within:ring-4 focus-within:ring-orange-500/10 transition-all">
-            <Search size={18} className="ml-3 text-gray-400" />
+            <Search size={18} className="ml-3 text-gray-500" />
             <input
               type="text"
               placeholder="Tìm tên hoặc mã voucher..."
@@ -373,13 +373,13 @@ const kpiItems = useMemo(() => [
 
             <button
               onClick={handleResetFilters}
-              className="p-3 bg-gray-50 text-gray-400 hover:text-(--color-mainColor) rounded-2xl transition-all shadow-sm"
+              className="p-3 bg-gray-50 text-gray-500 hover:text-(--color-mainColor) rounded-2xl transition-all shadow-sm"
             >
               <Eraser size={20} />
             </button>
             <button
               onClick={handleRefresh}
-              className="p-3 bg-gray-50 text-gray-400 hover:text-blue-600 rounded-2xl transition-all shadow-sm"
+              className="p-3 bg-gray-50 text-gray-500 hover:text-blue-600 rounded-2xl transition-all shadow-sm"
             >
               <RefreshCw size={20} />
             </button>

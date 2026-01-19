@@ -56,7 +56,7 @@ export const StatCard = ({ item }: { item: any }) => {
               {item.value}
             </h3>
             {item.total && (
-              <span className="text-gray-300 text-sm font-bold">
+              <span className="text-gray-500 text-sm font-bold">
                 / {item.total}
               </span>
             )}

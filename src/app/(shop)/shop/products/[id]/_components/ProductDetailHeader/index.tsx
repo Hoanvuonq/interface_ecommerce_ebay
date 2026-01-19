@@ -49,10 +49,10 @@ export const ProductDetailHeader = ({
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest bg-gray-50 px-2 py-1 rounded-lg border border-gray-100">
+              <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest bg-gray-50 px-2 py-1 rounded-lg border border-gray-100">
                 ID: {product.id}
               </span>
-              <span className="text-[10px] font-bold text-gray-300 uppercase tracking-widest hidden md:inline">
+              <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest hidden md:inline">
                 • SLUG:{" "}
                 <span className="text-gray-500 font-mono lowercase tracking-normal">
                   {product.slug}

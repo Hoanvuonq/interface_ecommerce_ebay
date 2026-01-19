@@ -67,13 +67,13 @@ export const DataTable = <T,>({
       <div className="bg-white border border-gray-100 rounded-4xl shadow-custom overflow-hidden flex flex-col">
         <div className="overflow-x-auto custom-scrollbar">
           <table className="min-w-full border-collapse">
-            <thead className="bg-gray-50 border-b border-gray-100">
+            <thead className="bg-[#fdfbfb] border-b border-gray-100">
               <tr>
                 {columns.map((col, idx) => (
                   <th
                     key={idx}
                     className={cn(
-                      "px-6 py-4 text-[12px] font-bold uppercase text-gray-600 whitespace-nowrap",
+                      "px-6 py-2 text-[12px] font-bold uppercase text-gray-600 whitespace-nowrap",
                       col.align === "center"
                         ? "text-center"
                         : col.align === "right"
@@ -103,7 +103,7 @@ export const DataTable = <T,>({
                         <div className="p-3 bg-orange-50 rounded-2xl">
                           <FiLoader className="w-6 h-6 text-orange-500 animate-spin" />
                         </div>
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500">
                           Đang tải dữ liệu...
                         </span>
                       </div>
@@ -147,10 +147,9 @@ export const DataTable = <T,>({
                           opacity: { duration: 0.2 },
                           delay: rowIdx * 0.02,
                         }}
-                        className="group hover:bg-orange-50/20 transition-colors border-b border-gray-50 last:border-none"
+                        className="group hover:bg-gray-50/20 transition-colors border-b border-gray-50 last:border-none"
                       >
                         {columns.map((col, colIdx) => {
-                          // Thực hiện render nội dung cột
                           const rendered = col.render
                             ? col.render(item, rowIdx)
                             : null;
@@ -158,7 +157,6 @@ export const DataTable = <T,>({
                           let cellContent: React.ReactNode = null;
                           let cellRowSpan: number | undefined = undefined;
 
-                          // LOGIC FIX: Kiểm tra nếu render trả về object có chứa rowSpan
                           if (
                             rendered &&
                             typeof rendered === "object" &&
@@ -186,7 +184,6 @@ export const DataTable = <T,>({
                                   ? "text-right"
                                   : "text-left",
                                 col.className,
-                                // align-middle giúp nội dung nằm chính giữa vùng gộp dòng
                                 cellRowSpan && cellRowSpan > 1
                                   ? "align-middle"
                                   : ""
@@ -205,14 +202,13 @@ export const DataTable = <T,>({
           </table>
         </div>
 
-        {/* PAGINATION */}
-        <div className="bg-white px-8 py-5 border-t border-gray-50 flex flex-col sm:flex-row gap-4 items-center justify-between">
-          <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
-            Hiển thị{" "}
+        <div className="bg-[#f5f5f5] px-8 py-2 border-t border-gray-50 flex flex-col sm:flex-row gap-4 items-center justify-between">
+          <div className="text-[10px] flex items-center gap-1 font-bold text-gray-500 uppercase">
+            Hiển thị
             <span className="text-gray-900 font-bold">
               {fromItem}-{toItem}
-            </span>{" "}
-            / <span className="text-gray-900 font-bold">{totalElements}</span>{" "}
+            </span>
+            / <span className="text-gray-900 font-bold">{totalElements}</span>
             mục
           </div>
 
@@ -225,7 +221,7 @@ export const DataTable = <T,>({
               <FiChevronLeft size={18} />
             </button>
 
-            <div className="px-5 py-1.5 rounded-xl bg-gray-50 border border-gray-100 text-[10px] font-bold text-gray-700 tracking-tighter">
+            <div className="px-5 py-1.5 rounded-xl bg-gray-50 border border-gray-100 text-[10px] font-bold text-gray-700">
               TRANG {page + 1} / {totalPages || 1}
             </div>
 

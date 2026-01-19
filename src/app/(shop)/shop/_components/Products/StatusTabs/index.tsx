@@ -57,7 +57,7 @@ export const StatusTabs = <T extends string>({
                   size={18}
                   className={cn(
                     "transition-colors duration-300",
-                    isActive ? "text-orange-500" : "text-gray-400"
+                    isActive ? "text-orange-500" : "text-gray-500"
                   )}
                 />
                 <span>{tab.label}</span>

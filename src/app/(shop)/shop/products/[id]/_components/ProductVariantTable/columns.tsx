@@ -29,7 +29,7 @@ export const getVariantColumns = (optionNames: string[]): Column<any>[] => [
         <span className="font-semibold text-gray-800 text-[14px] uppercase tracking-tight">
           {item.sku}
         </span>
-        <span className="text-[11px] text-gray-400 font-medium">
+        <span className="text-[11px] text-gray-500 font-medium">
           Giá gốc: {item.corePrice?.toLocaleString("vi-VN")} <span className="underline">đ</span>
         </span>
       </div>

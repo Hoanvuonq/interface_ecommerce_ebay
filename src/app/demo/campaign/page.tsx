@@ -201,14 +201,14 @@ export default function CampaignDemoPage() {
                     <div className="flex items-center justify-between mb-6">
                         <h2 className="font-rubik font-bold text-2xl text-gray-900">
                             Sản phẩm Flash Sale
-                            <span className="ml-2 text-base font-normal text-gray-400">
+                            <span className="ml-2 text-base font-normal text-gray-500">
                                 ({products.length} sản phẩm)
                             </span>
                         </h2>
 
                         {/* Search */}
                         <div className="relative">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
                             <input
                                 type="text"
                                 placeholder="Tìm sản phẩm..."

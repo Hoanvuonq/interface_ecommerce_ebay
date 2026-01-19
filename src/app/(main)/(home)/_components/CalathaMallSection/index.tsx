@@ -46,7 +46,7 @@ const BrandCard = ({ product, isWishlisted }: { product: any; isWishlisted: bool
       <div className="absolute top-2 right-2 z-10">
         <Heart
           size={14}
-          className={cn("transition-colors", isWishlisted ? "fill-red-500 text-red-500" : "text-gray-300 group-hover:text-orange-400")}
+          className={cn("transition-colors", isWishlisted ? "fill-red-500 text-red-500" : "text-gray-500 group-hover:text-orange-400")}
         />
       </div>
 
@@ -60,7 +60,7 @@ const BrandCard = ({ product, isWishlisted }: { product: any; isWishlisted: bool
             className="object-contain p-2 transition-transform duration-500 group-hover:scale-110"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-[8px] text-gray-300 uppercase">No Image</div>
+          <div className="w-full h-full flex items-center justify-center text-[8px] text-gray-500 uppercase">No Image</div>
         )}
       </div>
 
@@ -124,7 +124,7 @@ export const CalathaMallSection = () => {
           />
           <div className="absolute inset-0 bg-linear-to-t from-gray-950/80 via-transparent to-transparent p-6 sm:p-8 flex flex-col justify-end">
             <span className="text-(--color-mainColor) text-[9px] font-bold tracking-[0.3em] uppercase mb-1">Authentic 100%</span>
-            <h3 className="text-white text-3xl sm:text-4xl font-bold leading-[0.9] mb-4 tracking-tighter">PREMIUM<br/><span className="text-gray-300/50">STORE.</span></h3>
+            <h3 className="text-white text-3xl sm:text-4xl font-bold leading-[0.9] mb-4 tracking-tighter">PREMIUM<br/><span className="text-gray-500/50">STORE.</span></h3>
             <Link href="/products" className="w-fit bg-white text-gray-950 px-6 py-2.5 rounded-full font-bold text-[9px] uppercase hover:bg-orange-500 hover:text-white transition-all active:scale-95 shadow-xl">
               SĂN DEAL NGAY
             </Link>

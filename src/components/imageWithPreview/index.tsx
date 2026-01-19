@@ -30,7 +30,7 @@ export const ImageWithPreview: React.FC<any> = ({
           className="fixed inset-0 z-9999 flex items-center justify-center bg-black/90 p-4 animate-in fade-in duration-200"
           onClick={() => setShowModal && setShowModal(false)}
         >
-          <button className="absolute top-5 right-5 text-white hover:text-gray-300 transition-colors">
+          <button className="absolute top-5 right-5 text-white hover:text-gray-500 transition-colors">
             <X size={32} />
           </button>
           <img

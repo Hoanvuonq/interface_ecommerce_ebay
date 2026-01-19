@@ -77,7 +77,7 @@ export const InputField = forwardRef<
         {label && (
           <label
             htmlFor={name}
-            className="block text-sm font-fold text-black dark:text-gray-300 mb-1"
+            className="block text-sm font-fold text-black dark:text-gray-500 mb-1"
           >
             {label}
             {rules.some((r: any) => r.required) && (

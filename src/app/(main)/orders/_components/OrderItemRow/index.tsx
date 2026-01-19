@@ -46,7 +46,7 @@ export const OrderItemRow = ({
 
         <div className="flex flex-wrap items-center gap-y-1 gap-x-3">
           {item.sku && (
-            <div className="flex items-center gap-1 text-[10px] font-bold text-gray-400 uppercase tracking-tighter bg-gray-100/80 px-2 py-0.5 rounded-md">
+            <div className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase tracking-tighter bg-gray-100/80 px-2 py-0.5 rounded-md">
               <Tag size={10} />
               SKU: {item.sku}
             </div>
@@ -54,7 +54,7 @@ export const OrderItemRow = ({
 
           <span className="text-gray-500 text-[11px] font-semibold italic">
             Phân loại:{" "}
-            <span className="text-gray-400 font-medium">
+            <span className="text-gray-500 font-medium">
               {item.variantAttributes || "Mặc định"}
             </span>
           </span>
@@ -82,7 +82,7 @@ export const OrderItemRow = ({
             className={cn(
               "flex items-center gap-2 p-2 rounded-xl text-[10px] font-bold uppercase transition-all shadow-sm active:scale-95",
               isReviewed
-                ? "bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed"
+                ? "bg-gray-100 text-gray-500 border border-gray-200 cursor-not-allowed"
                 : "bg-white text-orange-600 border border-gray-200 hover:bg-orange-600 hover:text-white hover:border-gray-600 hover:shadow-orange-200"
             )}
           >

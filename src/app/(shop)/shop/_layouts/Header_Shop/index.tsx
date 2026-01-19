@@ -21,7 +21,7 @@ export default function ShopHeader({ collapsed, onToggle }: ShopHeaderProps) {
       <div className="flex items-center gap-2 md:gap-4">
         <button
           onClick={onToggle}
-          className="p-2 rounded-xl text-gray-400 hover:text-(--color-mainColor) hover:bg-orange-50 transition-all active:scale-90"
+          className="p-2 rounded-xl text-gray-500 hover:text-(--color-mainColor) hover:bg-orange-50 transition-all active:scale-90"
           aria-label="Toggle Sidebar"
         >
           <Menu
@@ -41,7 +41,7 @@ export default function ShopHeader({ collapsed, onToggle }: ShopHeaderProps) {
 
       <div className="flex items-center gap-2 md:gap-5">
         <div className="flex items-center gap-1 md:gap-3">
-          <button className="relative p-2 md:p-2.5 rounded-xl md:rounded-2xl text-gray-400 hover:text-(--color-mainColor) hover:bg-orange-50 transition-all group">
+          <button className="relative p-2 md:p-2.5 rounded-xl md:rounded-2xl text-gray-500 hover:text-(--color-mainColor) hover:bg-orange-50 transition-all group">
             <Bell
               size={20}
               className="group-hover:animate-swing w-5 h-5 md:w-5 md:h-5"

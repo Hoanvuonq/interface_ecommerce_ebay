@@ -52,7 +52,7 @@ export const ReviewPreviewModal: React.FC<ReviewPreviewModalProps> = ({
               <h3 className="text-lg font-bold text-gray-800 tracking-tight leading-none">
                 Chi tiết đánh giá
               </h3>
-              <p className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.15em] mt-1.5 flex items-center gap-1">
+              <p className="text-[10px] text-gray-500 font-bold uppercase tracking-[0.15em] mt-1.5 flex items-center gap-1">
                 Verified Review <ChevronRight size={10} />
               </p>
             </div>
@@ -84,7 +84,7 @@ export const ReviewPreviewModal: React.FC<ReviewPreviewModalProps> = ({
               <p className="text-sm font-bold text-gray-800 line-clamp-1 italic tracking-tight">
                 {productName}
               </p>
-              <div className="flex items-center gap-1.5 mt-1 text-gray-400">
+              <div className="flex items-center gap-1.5 mt-1 text-gray-500">
                 <Calendar size={12} />
                 <span className="text-[10px] font-bold uppercase">
                   {reviewData.createdAt || "Vừa xong"}
@@ -104,7 +104,7 @@ export const ReviewPreviewModal: React.FC<ReviewPreviewModalProps> = ({
                 )}
               >
                 <div className="absolute top-0 left-0 w-1 h-full bg-orange-500/20" />
-                <label className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.3em] mb-4">
+                <label className="text-[11px] font-bold text-gray-500 uppercase tracking-[0.3em] mb-4">
                   Mức độ hài lòng
                 </label>
                 <CustomRate

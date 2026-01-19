@@ -148,7 +148,7 @@ export default function ProductListLayout({
             )
           )}
           {Math.ceil(totalProducts / pageSize) > 5 && (
-            <span className="w-9 h-9 flex items-center justify-center text-gray-300">
+            <span className="w-9 h-9 flex items-center justify-center text-gray-500">
               ...
             </span>
           )}

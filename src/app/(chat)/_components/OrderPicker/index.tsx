@@ -23,7 +23,7 @@ export const OrderPicker: React.FC<OrderPickerProps> = (props) => {
       isLoading={isLoading}
     >
       {orders.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 text-gray-400">
+        <div className="flex flex-col items-center justify-center py-20 text-gray-500">
           <Package size={40} className="mb-3 opacity-20" />
           <p className="text-xs font-bold uppercase tracking-widest italic">Không có đơn hàng</p>
         </div>
@@ -33,7 +33,7 @@ export const OrderPicker: React.FC<OrderPickerProps> = (props) => {
             <div key={order.orderId} className="bg-white rounded-4xl border border-gray-100 p-5 shadow-sm hover:border-gray-500/30 transition-all duration-300">
               <div className="flex items-center justify-between mb-4">
                 <div className="px-3 py-1 bg-gray-50 rounded-full border border-gray-100 flex items-center gap-1.5">
-                  <Hash size={10} className="text-gray-400" />
+                  <Hash size={10} className="text-gray-500" />
                   <span className="text-[11px] font-bold text-gray-700 tracking-tighter">{order.orderNumber}</span>
                 </div>
                 <span className={cn(
@@ -65,12 +65,12 @@ export const OrderPicker: React.FC<OrderPickerProps> = (props) => {
                             onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} 
                           />
                         ) : (
-                          <Package size={20} className="text-gray-300" />
+                          <Package size={20} className="text-gray-500" />
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-xs font-bold text-gray-800 truncate italic">{item.productName}</p>
-                        <p className="text-[10px] text-gray-400 font-bold uppercase tracking-tighter">SL: {item.quantity}</p>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-tighter">SL: {item.quantity}</p>
                       </div>
                     </div>
                   );
@@ -80,7 +80,7 @@ export const OrderPicker: React.FC<OrderPickerProps> = (props) => {
               <div className="flex items-center justify-between pt-3 border-t border-gray-50">
                 <p className="text-[13px] font-bold text-orange-600 leading-none">{formatPrice(order.grandTotal)}</p>
                 <div className="flex gap-2">
-                  <button onClick={() => onViewDetails(order)} className="w-9 h-9 flex items-center justify-center bg-gray-50 text-gray-400 rounded-xl hover:bg-orange-50 hover:text-orange-500 transition-colors">
+                  <button onClick={() => onViewDetails(order)} className="w-9 h-9 flex items-center justify-center bg-gray-50 text-gray-500 rounded-xl hover:bg-orange-50 hover:text-orange-500 transition-colors">
                     <ExternalLink size={16} />
                   </button>
                   <button

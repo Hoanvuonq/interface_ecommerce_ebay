@@ -137,7 +137,7 @@ const VoucherStatistics: React.FC = () => {
         return (
           <div className="space-y-1.5">
             <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest">
-              <span className="text-gray-400">Tỷ lệ</span>
+              <span className="text-gray-500">Tỷ lệ</span>
               <span
                 className={cn(
                   rate > 70 ? "text-emerald-500" : "text-orange-500"
@@ -191,7 +191,7 @@ const VoucherStatistics: React.FC = () => {
             <h2 className="text-xl font-bold text-gray-900 uppercase tracking-tight">
               Thống kê Voucher
             </h2>
-            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mt-1">
+            <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mt-1">
               Phân tích hiệu quả kinh doanh
             </p>
           </div>
@@ -200,7 +200,7 @@ const VoucherStatistics: React.FC = () => {
         <div className="flex flex-wrap items-center gap-3">
           <div className="relative group">
             <Search
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-orange-500 transition-colors"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-orange-500 transition-colors"
               size={18}
             />
             <input
@@ -222,7 +222,7 @@ const VoucherStatistics: React.FC = () => {
           </select>
           <button
             onClick={fetchVouchers}
-            className="p-2.5 bg-white border border-gray-100 rounded-2xl text-gray-400 hover:text-orange-500 hover:bg-orange-50 transition-all shadow-sm"
+            className="p-2.5 bg-white border border-gray-100 rounded-2xl text-gray-500 hover:text-orange-500 hover:bg-orange-50 transition-all shadow-sm"
           >
             <RefreshCcw size={18} className={cn(loading && "animate-spin")} />
           </button>
@@ -254,7 +254,7 @@ const VoucherStatistics: React.FC = () => {
 
       {/* Main Table Container */}
       <div className="space-y-4">
-        <div className="flex items-center gap-2 px-2 text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">
+        <div className="flex items-center gap-2 px-2 text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]">
           <BarChart3 size={14} /> Bảng xếp hạng chi tiết
         </div>
         <DataTable
@@ -306,11 +306,11 @@ const OverviewCard = ({ label, value, icon, color, isCurrency }: any) => (
       <div className="p-3 bg-white rounded-2xl shadow-sm border border-white/50 text-gray-600">
         {icon}
       </div>
-      <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 opacity-50">
+      <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500 opacity-50">
         Realtime
       </span>
     </div>
-    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
+    <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">
       {label}
     </p>
     <h3 className="text-2xl font-bold text-gray-900 tracking-tight">
@@ -340,7 +340,7 @@ const TopBox = ({ title, icon, data, type }: any) => (
                   "w-8 h-8 rounded-xl flex items-center justify-center font-bold text-xs",
                   idx === 0
                     ? "bg-amber-100 text-amber-600"
-                    : "bg-gray-100 text-gray-400"
+                    : "bg-gray-100 text-gray-500"
                 )}
               >
                 #{idx + 1}
@@ -349,7 +349,7 @@ const TopBox = ({ title, icon, data, type }: any) => (
                 <p className="text-sm font-bold text-gray-800 font-mono tracking-wider">
                   {item.voucherCode}
                 </p>
-                <p className="text-[10px] text-gray-400 font-medium uppercase">
+                <p className="text-[10px] text-gray-500 font-medium uppercase">
                   {item.voucherName}
                 </p>
               </div>
@@ -360,14 +360,14 @@ const TopBox = ({ title, icon, data, type }: any) => (
                   ? `${item.usageRate}%`
                   : `${item.totalDiscount?.toLocaleString()}₫`}
               </p>
-              <p className="text-[10px] text-gray-400 font-bold uppercase tracking-tighter">
+              <p className="text-[10px] text-gray-500 font-bold uppercase tracking-tighter">
                 {item.totalUsed} lượt dùng
               </p>
             </div>
           </div>
         ))
       ) : (
-        <div className="py-10 text-center text-gray-400 italic text-sm font-medium">
+        <div className="py-10 text-center text-gray-500 italic text-sm font-medium">
           Chưa có dữ liệu xếp hạng
         </div>
       )}

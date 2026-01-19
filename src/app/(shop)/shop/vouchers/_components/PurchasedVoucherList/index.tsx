@@ -113,7 +113,7 @@ const PurchasedVoucherList: React.FC<PurchasedVoucherListProps> = ({
                 {loading ? (
                     <div className="flex flex-col items-center justify-center h-[400px] gap-3">
                         <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
-                        <span className="text-[10px] font-bold uppercase text-gray-400 tracking-widest">Đang tải dữ liệu...</span>
+                        <span className="text-[10px] font-bold uppercase text-gray-500 tracking-widest">Đang tải dữ liệu...</span>
                     </div>
                 ) : instances.length === 0 ? (
                     <div className="flex flex-col items-center justify-center h-[400px] gap-4 p-8 text-center">
@@ -122,7 +122,7 @@ const PurchasedVoucherList: React.FC<PurchasedVoucherListProps> = ({
                         </div>
                         <div className="space-y-1">
                             <h3 className="text-gray-900 font-bold uppercase tracking-widest text-sm">Trống</h3>
-                            <p className="text-xs text-gray-400 font-medium max-w-[250px]">
+                            <p className="text-xs text-gray-500 font-medium max-w-[250px]">
                                 Bạn chưa mua voucher nào. Hãy sang tab <span className="font-bold text-orange-500 italic">"Voucher Platform"</span> để mua thêm nhé!
                             </p>
                         </div>
@@ -131,7 +131,7 @@ const PurchasedVoucherList: React.FC<PurchasedVoucherListProps> = ({
                     <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse">
                             <thead>
-                                <tr className="bg-gray-50/50 text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] border-b border-gray-50">
+                                <tr className="bg-gray-50/50 text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] border-b border-gray-50">
                                     <th className="px-6 py-5">Thông tin Voucher</th>
                                     <th className="px-6 py-5 text-right">Mức giảm</th>
                                     <th className="px-6 py-5">Sử dụng</th>
@@ -173,7 +173,7 @@ const PurchasedVoucherList: React.FC<PurchasedVoucherListProps> = ({
                                                             {item.discountType === "PERCENTAGE" ? `${item.discountValue}%` : formatCurrency(item.discountValue)}
                                                         </span>
                                                         {item.maxDiscount && (
-                                                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">
+                                                            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-tighter">
                                                                 Tối đa {formatCurrency(item.maxDiscount)}
                                                             </span>
                                                         )}
@@ -181,7 +181,7 @@ const PurchasedVoucherList: React.FC<PurchasedVoucherListProps> = ({
                                                 </td>
                                                 <td className="px-6 py-5">
                                                     <div className="w-32 space-y-2">
-                                                        <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                                                        <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-gray-500">
                                                             <span>Tiến độ</span>
                                                             <span className="text-gray-900">{usagePercent}%</span>
                                                         </div>
@@ -192,7 +192,7 @@ const PurchasedVoucherList: React.FC<PurchasedVoucherListProps> = ({
                                                             />
                                                         </div>
                                                         <div className="text-[10px] font-bold text-gray-500 tabular-nums">
-                                                            {item.usedQuantity}/{item.totalQuantity} <span className="font-medium text-gray-300">lượt</span>
+                                                            {item.usedQuantity}/{item.totalQuantity} <span className="font-medium text-gray-500">lượt</span>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -205,7 +205,7 @@ const PurchasedVoucherList: React.FC<PurchasedVoucherListProps> = ({
                                                 <td className="px-6 py-5">
                                                     <div className="flex flex-col">
                                                         <span className="text-xs font-bold text-gray-700">{dayjs(item.expiryDate).format("DD/MM/YYYY")}</span>
-                                                        <span className="text-[10px] text-gray-400 font-medium uppercase tracking-tighter">Hết hạn vào</span>
+                                                        <span className="text-[10px] text-gray-500 font-medium uppercase tracking-tighter">Hết hạn vào</span>
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-5 text-right">

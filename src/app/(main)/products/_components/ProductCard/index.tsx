@@ -241,7 +241,7 @@ export const ProductCard = ({
                 <button
                     onClick={handleAddToWishlist}
                     className={cn("p-1.5 rounded-full transition-all duration-300 active:scale-90", isList
-                    ? "text-gray-300 hover:text-red-500"
+                    ? "text-gray-500 hover:text-red-500"
                     : "absolute top-2 right-2 bg-white/80 backdrop-blur-md shadow-sm hover:bg-white hov" +
                             "er:text-red-500 z-20")}>
                     {loadingProductDetail

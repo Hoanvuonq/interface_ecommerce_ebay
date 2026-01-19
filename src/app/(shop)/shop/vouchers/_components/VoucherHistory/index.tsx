@@ -144,7 +144,7 @@ const VoucherHistory: React.FC<VoucherHistoryProps> = ({ onCountUpdate }) => {
       render: (item: any) => (
         <button 
           onClick={() => { setSelectedTransaction(item); setDetailModalVisible(true); }}
-          className="p-2 bg-gray-50 text-gray-400 hover:bg-gray-900 hover:text-white rounded-xl transition-all shadow-sm"
+          className="p-2 bg-gray-50 text-gray-500 hover:bg-gray-900 hover:text-white rounded-xl transition-all shadow-sm"
         >
           <Eye size={16} />
         </button>
@@ -162,13 +162,13 @@ const VoucherHistory: React.FC<VoucherHistoryProps> = ({ onCountUpdate }) => {
           </div>
           <div>
             <h2 className="text-lg font-bold text-gray-900 uppercase tracking-tight leading-none">Lịch sử giao dịch</h2>
-            <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mt-1">Quản lý dòng tiền Voucher</p>
+            <p className="text-[11px] font-bold text-gray-500 uppercase tracking-widest mt-1">Quản lý dòng tiền Voucher</p>
           </div>
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
            <div className="flex items-center gap-2 bg-gray-50 p-1.5 rounded-2xl border border-gray-100">
-             <Filter size={14} className="ml-2 text-gray-400" />
+             <Filter size={14} className="ml-2 text-gray-500" />
              <select 
               value={filterType} 
               onChange={(e) => setFilterType(e.target.value)}
@@ -234,11 +234,11 @@ const VoucherHistory: React.FC<VoucherHistoryProps> = ({ onCountUpdate }) => {
               {/* Transaction Highlight */}
               <div className="bg-white rounded-4xl border border-gray-100 p-6 shadow-sm flex items-center justify-between">
                  <div>
-                   <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Mã tham chiếu</p>
+                   <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Mã tham chiếu</p>
                    <p className="font-mono text-lg font-bold text-gray-900 tabular-nums uppercase">{selectedTransaction.id}</p>
                  </div>
                  <div className="text-right">
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Tổng cộng</p>
+                    <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Tổng cộng</p>
                     <p className="text-2xl font-bold text-orange-600 tracking-tighter">
                       {selectedTransaction.totalAmount.toLocaleString()}₫
                     </p>
@@ -249,23 +249,23 @@ const VoucherHistory: React.FC<VoucherHistoryProps> = ({ onCountUpdate }) => {
               <div className="grid grid-cols-2 gap-4">
                  <div className="space-y-4">
                     <div className="space-y-1">
-                       <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Tên Voucher</p>
+                       <p className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">Tên Voucher</p>
                        <p className="text-sm font-bold text-gray-800 leading-tight">{selectedTransaction.voucherName}</p>
                     </div>
                     <div className="space-y-1">
-                       <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Phương thức</p>
+                       <p className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">Phương thức</p>
                        <p className="text-sm font-bold text-gray-700">{selectedTransaction.paymentMethod || "N/A"}</p>
                     </div>
                  </div>
                  <div className="space-y-4">
                     <div className="space-y-1 text-right">
-                       <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Mã Code</p>
+                       <p className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">Mã Code</p>
                        <span className="text-[10px] font-mono font-bold bg-orange-100 text-orange-700 px-2 py-0.5 rounded uppercase">
                           {selectedTransaction.voucherCode}
                        </span>
                     </div>
                     <div className="space-y-1 text-right">
-                       <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Số lượng mua</p>
+                       <p className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">Số lượng mua</p>
                        <p className="text-sm font-bold text-gray-800">{selectedTransaction.quantity} lượt</p>
                     </div>
                  </div>
@@ -330,8 +330,8 @@ const TimelineStep = ({ active, title, time, desc, success, error, pending }: an
       {error && <XCircle size={10} className="text-white" />}
     </div>
     <div className="space-y-0.5">
-      <p className={cn("text-[11px] font-bold uppercase tracking-tight", active ? "text-gray-900" : "text-gray-400")}>{title}</p>
-      {time && <p className="text-[10px] font-bold text-gray-400 uppercase tracking-tighter leading-none mb-1">{time}</p>}
+      <p className={cn("text-[11px] font-bold uppercase tracking-tight", active ? "text-gray-900" : "text-gray-500")}>{title}</p>
+      {time && <p className="text-[10px] font-bold text-gray-500 uppercase tracking-tighter leading-none mb-1">{time}</p>}
       <p className="text-xs font-medium text-gray-500 leading-tight">{desc}</p>
     </div>
   </div>

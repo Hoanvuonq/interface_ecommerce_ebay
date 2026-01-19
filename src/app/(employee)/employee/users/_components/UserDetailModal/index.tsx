@@ -491,7 +491,7 @@ export default function UserDetailModal({
                 {user.rolePermissions?.map((perm: any) => (
                   <span
                     key={perm.permissionId}
-                    className="px-4 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-[10px] font-bold text-gray-300 transition-all hover:scale-105 cursor-default uppercase"
+                    className="px-4 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-[10px] font-bold text-gray-500 transition-all hover:scale-105 cursor-default uppercase"
                   >
                     {perm.permissionName}
                   </span>
@@ -515,7 +515,7 @@ export default function UserDetailModal({
           </div>
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center py-32 text-gray-300 gap-4">
+        <div className="flex flex-col items-center justify-center py-32 text-gray-500 gap-4">
           <Activity size={48} strokeWidth={1} />
           <p className="font-semibold uppercase tracking-[0.3em] text-[10px]">
             Thực thể không tồn tại

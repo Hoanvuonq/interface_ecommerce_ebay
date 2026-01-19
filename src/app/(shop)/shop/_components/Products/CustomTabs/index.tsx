@@ -44,7 +44,7 @@ export const CustomTabs: React.FC<CustomTabsProps> = ({
               {item.icon && (
                 <span className={cn(
                   "transition-colors duration-300",
-                  isActive ? "text-blue-600" : "text-gray-400 group-hover:text-gray-600"
+                  isActive ? "text-blue-600" : "text-gray-500 group-hover:text-gray-600"
                 )}>
                   {item.icon}
                 </span>

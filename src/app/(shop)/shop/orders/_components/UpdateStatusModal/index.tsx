@@ -125,7 +125,7 @@ export const UpdateStatusModal: React.FC<UpdateStatusModalProps> = ({
                 setFormData((prev) => ({ ...prev, carrier: val }))
               }
             />
-            <p className="text-[10px] text-gray-400 font-medium ml-1">
+            <p className="text-[10px] text-gray-500 font-medium ml-1">
               * Mã vận đơn được tạo tự động, chỉ chọn nếu muốn thay thế.
             </p>
           </div>

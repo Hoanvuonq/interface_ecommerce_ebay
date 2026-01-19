@@ -122,7 +122,7 @@ export default function ShopVoucherDetailModal({
           </div>
           <h2 className="text-xl font-bold text-gray-900 uppercase tracking-tight">Chi tiết Voucher</h2>
         </div>
-        <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-400">
+        <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-500">
           <X size={20} />
         </button>
       </div>
@@ -131,7 +131,7 @@ export default function ShopVoucherDetailModal({
         {loading || !voucherInfo ? (
           <div className="py-20 flex flex-col items-center justify-center gap-4">
             <Loader2 className="w-10 h-10 text-orange-500 animate-spin" />
-            <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Đang tải dữ liệu...</span>
+            <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Đang tải dữ liệu...</span>
           </div>
         ) : (
           <>
@@ -155,7 +155,7 @@ export default function ShopVoucherDetailModal({
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="md:col-span-2 space-y-6">
                 <div className="bg-white rounded-4xl border border-gray-100 p-6 shadow-sm space-y-4">
-                  <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">
+                  <div className="flex items-center gap-2 text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]">
                     <Info size={14} /> Thông tin Template
                   </div>
                   <div className="space-y-3">
@@ -173,7 +173,7 @@ export default function ShopVoucherDetailModal({
 
                 {/* Instance List using your custom DataTable */}
                 <div className="space-y-4">
-                  <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] ml-2">
+                  <div className="flex items-center gap-2 text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] ml-2">
                     <Layers size={14} /> Kho Voucher (Instances)
                   </div>
                   <DataTable 

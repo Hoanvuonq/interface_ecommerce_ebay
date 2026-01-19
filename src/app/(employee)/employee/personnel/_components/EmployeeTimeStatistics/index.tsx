@@ -31,7 +31,7 @@ export default function EmployeeTimeStatistics() {
     return (
       <div className="flex flex-col items-center justify-center h-96 gap-4">
         <RotateCw className="animate-spin text-orange-500" size={40} />
-        <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-gray-300 italic">
+        <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-gray-500 italic">
           Đang đồng bộ dòng thời gian...
         </span>
       </div>
@@ -221,7 +221,7 @@ export default function EmployeeTimeStatistics() {
                     </p>
                     <p className="text-3xl font-semibold text-gray-800 italic leading-none">
                       {item.count}{" "}
-                      <span className="text-[10px] not-italic text-gray-300 uppercase font-bold tracking-tighter">
+                      <span className="text-[10px] not-italic text-gray-500 uppercase font-bold tracking-tighter">
                         New
                       </span>
                     </p>

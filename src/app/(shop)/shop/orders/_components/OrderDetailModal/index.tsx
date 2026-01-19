@@ -49,7 +49,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
             <div className="flex flex-col min-w-0">
               <span className="font-bold text-gray-800 truncate text-sm">{record.productName}</span>
               {record.variantAttributes && (
-                <span className="text-[10px] text-gray-400 font-bold uppercase">{record.variantAttributes}</span>
+                <span className="text-[10px] text-gray-500 font-bold uppercase">{record.variantAttributes}</span>
               )}
               {record.sku && (
                 <span className="text-[10px] text-blue-500 font-mono">SKU: {record.sku}</span>
@@ -99,7 +99,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
       <div className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="bg-gray-50/50 rounded-3xl p-5 border border-gray-100 space-y-4">
-            <h4 className="text-[11px] font-bold uppercase text-gray-400 tracking-widest flex items-center gap-2">
+            <h4 className="text-[11px] font-bold uppercase text-gray-500 tracking-widest flex items-center gap-2">
               <FiUser /> Thông tin chung
             </h4>
             <div className="space-y-2">
@@ -167,7 +167,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
 
           {/* Box 4: Ghi chú */}
           <div className="bg-gray-50 rounded-3xl p-5 border border-gray-100 flex flex-col justify-center">
-            <h4 className="text-[11px] font-bold uppercase text-gray-400 tracking-widest flex items-center gap-2 mb-2">
+            <h4 className="text-[11px] font-bold uppercase text-gray-500 tracking-widest flex items-center gap-2 mb-2">
               <FiMapPin /> Ghi chú từ khách
             </h4>
             <p className="text-sm text-gray-600 italic">
@@ -178,7 +178,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
 
         {/* Danh sách sản phẩm */}
         <div className="space-y-3">
-          <h4 className="text-[11px] font-bold uppercase text-gray-400 tracking-widest ml-1">Sản phẩm trong đơn</h4>
+          <h4 className="text-[11px] font-bold uppercase text-gray-500 tracking-widest ml-1">Sản phẩm trong đơn</h4>
           <DataTable
             columns={productColumns}
             data={order.items || []}

@@ -147,7 +147,7 @@ export const ProductMediaModal = ({
             <AlertTriangle size={14} /> Có thay đổi chưa lưu
           </span>
         ) : (
-          <span className="text-gray-400 text-xs font-bold uppercase flex items-center gap-1">
+          <span className="text-gray-500 text-xs font-bold uppercase flex items-center gap-1">
             <Clock size={14} /> Chưa có thay đổi
           </span>
         )}
@@ -189,7 +189,7 @@ export const ProductMediaModal = ({
           </div>
           <div>
             <div className="text-base font-bold uppercase tracking-tight text-gray-800 leading-none">Quản lý Media</div>
-            <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1.5">{productName}</div>
+            <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-1.5">{productName}</div>
           </div>
         </div>
       }

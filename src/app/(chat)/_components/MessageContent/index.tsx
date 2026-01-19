@@ -127,7 +127,7 @@ export const MessageContent: React.FC<MessageContentProps> = ({ message }) => {
                   alt={product.productName || "product"}
                 />
               ) : (
-                <Package className="text-gray-300 w-10 h-10" />
+                <Package className="text-gray-500 w-10 h-10" />
               )}
             </div>
             <div>
@@ -214,7 +214,7 @@ export const MessageContent: React.FC<MessageContentProps> = ({ message }) => {
                           alt="item"
                         />
                       ) : (
-                        <Package size={20} className="text-gray-300" />
+                        <Package size={20} className="text-gray-500" />
                       )}
                     </div>
                     <div className="flex-1 min-w-0">

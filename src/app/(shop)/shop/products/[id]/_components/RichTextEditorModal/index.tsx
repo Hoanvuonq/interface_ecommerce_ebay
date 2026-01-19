@@ -168,7 +168,7 @@ export function RichTextEditorModal({
           </div>
           <div>
             <h2 className="text-base font-bold text-gray-800 uppercase tracking-tight leading-none">Mô tả nâng cao</h2>
-            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Rich Text Editor</p>
+            <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-1">Rich Text Editor</p>
           </div>
         </div>
       }
@@ -178,7 +178,7 @@ export function RichTextEditorModal({
         {loading ? (
           <div className="flex flex-col items-center justify-center py-32 gap-4">
             <Loader2 className="w-10 h-10 text-orange-500 animate-spin" />
-            <span className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.2em]">Đang tải dữ liệu...</span>
+            <span className="text-[11px] font-bold text-gray-500 uppercase tracking-[0.2em]">Đang tải dữ liệu...</span>
           </div>
         ) : (
           <div className="space-y-6">

@@ -47,7 +47,7 @@ export const OrderCancelModal: React.FC<OrderCancelModalProps> = ({
       </div>
       <div>
         <h3 className="text-lg font-bold text-gray-800 tracking-tight leading-none">Hủy đơn hàng</h3>
-        <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1.5">Mã đơn: #{orderNumber}</p>
+        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-1.5">Mã đơn: #{orderNumber}</p>
       </div>
     </div>
   );
@@ -96,7 +96,7 @@ export const OrderCancelModal: React.FC<OrderCancelModalProps> = ({
 
         {/* Reasons List */}
         <div className="space-y-3">
-          <label className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.2em] px-1">Vui lòng chọn lý do</label>
+          <label className="text-[11px] font-bold text-gray-500 uppercase tracking-[0.2em] px-1">Vui lòng chọn lý do</label>
           <div className="grid gap-2">
             {PREDEFINED_REASONS.map((reason) => (
               <label
@@ -141,7 +141,7 @@ export const OrderCancelModal: React.FC<OrderCancelModalProps> = ({
             </div>
             <textarea
               rows={3}
-              className="w-full px-4 py-3 text-[13px] border border-gray-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-gray-500 transition-all placeholder:text-gray-300 resize-none bg-gray-50/50 font-medium"
+              className="w-full px-4 py-3 text-[13px] border border-gray-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-gray-500 transition-all placeholder:text-gray-500 resize-none bg-gray-50/50 font-medium"
               placeholder="Vui lòng cho chúng tôi biết thêm thông tin..."
               value={otherReason}
               onChange={(e) => setOtherReason(e.target.value)}

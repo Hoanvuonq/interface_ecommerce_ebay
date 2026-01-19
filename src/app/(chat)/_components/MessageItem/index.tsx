@@ -160,7 +160,7 @@ export const MessageItem = ({
                         className="text-sky-400 shadow-sm"
                       />
                     ) : (
-                      <Check size={13} className="text-gray-400" />
+                      <Check size={13} className="text-gray-500" />
                     )}
                   </span>
                 )}
@@ -180,7 +180,7 @@ export const MessageItem = ({
                 <button
                   onClick={() => setShowMenu(!showMenu)}
                   className={cn(
-                    "p-2 rounded-full hover:bg-white hover:shadow-md text-gray-400 transition-all border border-transparent",
+                    "p-2 rounded-full hover:bg-white hover:shadow-md text-gray-500 transition-all border border-transparent",
                     showMenu &&
                       "bg-white shadow-md text-orange-500 border-gray-100 opacity-100"
                   )}

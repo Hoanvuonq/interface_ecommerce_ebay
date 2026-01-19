@@ -107,7 +107,7 @@ export default function WishlistShareModal({
             <div className="space-y-8">
                 {!shareToken ? (
                     <div className="py-10 text-center space-y-4 bg-gray-50 rounded-4xl border border-dashed border-gray-200">
-                        <ShieldAlert size={48} strokeWidth={1.5} className="mx-auto text-gray-300" />
+                        <ShieldAlert size={48} strokeWidth={1.5} className="mx-auto text-gray-500" />
                         <p className="text-gray-500 font-medium leading-relaxed px-6">
                             Wishlist này đang ở chế độ riêng tư. <br />
                             Vui lòng chuyển sang <span className="text-orange-600 font-bold">Công khai</span> để chia sẻ.

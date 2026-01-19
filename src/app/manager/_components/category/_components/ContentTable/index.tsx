@@ -225,7 +225,7 @@ const ContentTable: React.FC<ContentTableProps> = ({
                           alt=""
                         />
                       ) : (
-                        <ImageIcon className="text-gray-300 w-6 h-6" />
+                        <ImageIcon className="text-gray-500 w-6 h-6" />
                       )}
                     </div>
                   </td>

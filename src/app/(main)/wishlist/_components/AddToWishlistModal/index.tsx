@@ -258,7 +258,7 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
                         unoptimized
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-gray-300">
+                      <div className="w-full h-full flex items-center justify-center text-gray-500">
                         <ShoppingBag size={20} />
                       </div>
                     )}
@@ -445,7 +445,7 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
                 <input
                   type="number"
                   placeholder="Nhập giá (VNĐ)"
-                  className="w-full pl-3 pr-3 py-2.5 bg-gray-50 border-0 rounded-xl text-sm font-bold focus:ring-2 focus:ring-orange-500/20 text-orange-600 placeholder:text-gray-300"
+                  className="w-full pl-3 pr-3 py-2.5 bg-gray-50 border-0 rounded-xl text-sm font-bold focus:ring-2 focus:ring-orange-500/20 text-orange-600 placeholder:text-gray-500"
                   value={formData.desiredPrice}
                   onChange={(e) =>
                     setFormData({ ...formData, desiredPrice: e.target.value })

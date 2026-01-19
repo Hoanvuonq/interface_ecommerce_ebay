@@ -52,7 +52,7 @@ export const ProductDetailsTabs: React.FC = () => {
           <h3 className="text-xl font-bold text-gray-800 tracking-tight">
             Thông tin chi tiết
           </h3>
-          <p className="text-xs font-medium text-gray-400">
+          <p className="text-xs font-medium text-gray-500">
             Hoàn thành các thuộc tính để tăng mức độ hiển thị cho sản phẩm.
           </p>
         </div>

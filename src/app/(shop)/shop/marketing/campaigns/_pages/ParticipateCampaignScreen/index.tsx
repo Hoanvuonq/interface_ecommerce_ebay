@@ -84,7 +84,7 @@ export const ParticipateCampaignScreen = ({
                     <h3 className="font-bold text-gray-800 truncate uppercase text-sm italic tracking-tight">
                       {campaign.name}
                     </h3>
-                    <div className="flex items-center gap-1.5 text-[10px] font-bold text-gray-400 uppercase tracking-tighter">
+                    <div className="flex items-center gap-1.5 text-[10px] font-bold text-gray-500 uppercase tracking-tighter">
                       <Calendar className="w-3 h-3 text-orange-400" />
                       {formatDateTime(campaign.startDate)}
                     </div>
@@ -92,8 +92,8 @@ export const ParticipateCampaignScreen = ({
                       <span className="px-2.5 py-1 bg-orange-500 text-white text-[9px] font-bold rounded-lg uppercase tracking-widest shadow-sm shadow-orange-200">
                         {campaign.campaignType}
                       </span>
-                      <span className="text-[10px] font-bold text-gray-400 flex items-center gap-1">
-                        <LayoutGrid size={12} className="text-gray-300" />{" "}
+                      <span className="text-[10px] font-bold text-gray-500 flex items-center gap-1">
+                        <LayoutGrid size={12} className="text-gray-500" />{" "}
                         {campaign.totalSlots} SLOTS
                       </span>
                     </div>
@@ -156,7 +156,7 @@ export const ParticipateCampaignScreen = ({
                   {selectedCampaignProducts.length === 0 ? (
                     <div className="text-center py-16 bg-gray-50/50 rounded-4xl border-2 border-dashed border-gray-100">
                       <Package className="w-12 h-12 mx-auto mb-3 text-gray-200" />
-                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">
+                      <p className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]">
                         Chưa có sản phẩm nào
                       </p>
                     </div>
@@ -186,7 +186,7 @@ export const ParticipateCampaignScreen = ({
                               <span className="text-sm font-bold text-orange-500 italic">
                                 {formatPrice(prod.salePrice)}
                               </span>
-                              <span className="text-[9px] font-bold text-gray-400 bg-gray-50 px-2 py-0.5 rounded-lg border border-gray-100 uppercase tracking-widest">
+                              <span className="text-[9px] font-bold text-gray-500 bg-gray-50 px-2 py-0.5 rounded-lg border border-gray-100 uppercase tracking-widest">
                                 {prod.status}
                               </span>
                             </div>
@@ -198,7 +198,7 @@ export const ParticipateCampaignScreen = ({
                                 }}
                               />
                             </div>
-                            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-tighter pt-1">
+                            <p className="text-[9px] font-bold text-gray-500 uppercase tracking-tighter pt-1">
                               Đã bán:{" "}
                               <span className="text-orange-500">
                                 {prod.stockSold}
@@ -257,7 +257,7 @@ export const ParticipateCampaignScreen = ({
                         <p className="font-bold text-gray-800 uppercase italic tracking-tight text-base mb-1">
                           {slot.slotName || "Khung giờ vàng"}
                         </p>
-                        <div className="flex items-center gap-1.5 text-xs font-bold text-gray-400 uppercase tracking-tighter">
+                        <div className="flex items-center gap-1.5 text-xs font-bold text-gray-500 uppercase tracking-tighter">
                           <Clock size={14} className="text-orange-400" />
                           {new Date(slot.startTime).toLocaleTimeString(
                             "vi-VN",
@@ -271,7 +271,7 @@ export const ParticipateCampaignScreen = ({
                         </div>
 
                         <div className="mt-4 pt-4 border-t border-gray-50 flex items-center justify-between">
-                          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                          <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
                             <span className="text-orange-500">
                               {slot.approvedProducts}
                             </span>
@@ -299,7 +299,7 @@ export const ParticipateCampaignScreen = ({
               <p className="text-lg font-bold text-gray-800 uppercase italic tracking-tighter">
                 Khám phá Campaign
               </p>
-              <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">
+              <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">
                 Chọn một chương trình bên trái để xem chi tiết
               </p>
             </div>

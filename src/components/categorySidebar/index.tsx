@@ -124,7 +124,7 @@ export default function CategorySidebar({
 
           {/* Danh sách danh mục */}
           {listToRender.length === 0 ? (
-            <div className="py-8 text-center text-xs text-gray-400 font-medium">
+            <div className="py-8 text-center text-xs text-gray-500 font-medium">
               Không có danh mục nào
             </div>
           ) : (
@@ -175,7 +175,7 @@ export default function CategorySidebar({
                         onClick={(e) => toggleExpand(parent.id, e)}
                         className={cn(
                           "p-1 rounded-full hover:bg-gray-200/50 transition-colors",
-                          (isParentActive || hasActiveChild) ? "text-[#ff8800]" : "text-gray-400"
+                          (isParentActive || hasActiveChild) ? "text-[#ff8800]" : "text-gray-500"
                         )}
                       >
                          {isExpanded ? (
@@ -230,7 +230,7 @@ export default function CategorySidebar({
 
       {!isShop && (
         <div className="p-3 bg-gray-50 border-t border-gray-100 text-center">
-          <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">
+          <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">
             Hỗ trợ 24/7
           </p>
         </div>

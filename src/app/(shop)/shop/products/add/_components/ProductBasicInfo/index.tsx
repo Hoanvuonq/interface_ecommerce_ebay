@@ -163,12 +163,12 @@ export const ProductBasicTabs: React.FC<ProductBasicTabsProps> = ({
                 <span
                   className={cn(
                     "text-sm font-semibold transition-colors duration-300",
-                    categoryPath ? "text-gray-800" : "text-gray-400"
+                    categoryPath ? "text-gray-800" : "text-gray-500"
                   )}
                 >
                   {categoryPath || "Chọn ngành hàng"}
                 </span>
-                <Pencil className="w-4 h-4 text-gray-400 group-hover:text-orange-500 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12" />
+                <Pencil className="w-4 h-4 text-gray-500 group-hover:text-orange-500 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12" />
               </div>
             </div>
           </div>

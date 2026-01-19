@@ -120,7 +120,7 @@ const AddressModal: React.FC<AddressModalProps> = ({
                   <div className="w-full flex justify-between items-center">
                     <div className="font-bold text-gray-900 text-sm uppercase italic">
                       {addr.recipientName}{" "}
-                      <span className="mx-2 text-gray-300">|</span> {addr.phone}
+                      <span className="mx-2 text-gray-500">|</span> {addr.phone}
                     </div>
                     {addr.isDefault && (
                       <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-(--color-mainColor) text-white text-[9px] font-bold uppercase tracking-widest shadow-sm animate-fade-in">

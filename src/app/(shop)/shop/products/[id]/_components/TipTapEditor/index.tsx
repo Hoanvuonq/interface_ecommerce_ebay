@@ -181,7 +181,7 @@ export function TipTapEditor({ content, onChange, placeholder = "Nhập mô tả
       <EditorContent editor={editor} />
       
       <div className="px-4 py-2 bg-gray-50 border-t border-gray-100 flex justify-between items-center">
-        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1">
+        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest flex items-center gap-1">
           <Type size={12} /> Editor Ready
         </span>
         <div className="flex gap-1">

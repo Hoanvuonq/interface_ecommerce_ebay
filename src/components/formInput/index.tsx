@@ -72,7 +72,7 @@ export const FormInput = React.forwardRef<
 
     const commonStyles = cn(
       "w-full px-5 bg-gray-50/50 border border-gray-200 rounded-2xl",
-      "text-sm font-semibold text-gray-700 placeholder:text-gray-400 placeholder:font-normal",
+      "text-sm font-semibold text-gray-700 placeholder:text-gray-500 placeholder:font-normal",
       "transition-all duration-200 shadow-sm",
       "focus:outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 focus:bg-white",
       isDate && "cursor-pointer uppercase text-[11px]",

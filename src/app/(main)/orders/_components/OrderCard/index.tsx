@@ -185,7 +185,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
                 className="object-cover"
               />
             ) : (
-              <Package size={16} className="text-gray-300" />
+              <Package size={16} className="text-gray-500" />
             )}
           </div>
           <div className="min-w-0">

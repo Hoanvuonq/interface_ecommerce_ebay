@@ -32,7 +32,7 @@ export const CustomBreadcrumb: React.FC<BreadcrumbProps> = ({ items }) => {
           return (
             <li key={item.title} className="flex items-center">
               <ChevronRight
-                className="h-4 w-4 shrink-0 text-gray-300 mx-1 sm:mx-2"
+                className="h-4 w-4 shrink-0 text-gray-500 mx-1 sm:mx-2"
                 aria-hidden="true"
               />
 

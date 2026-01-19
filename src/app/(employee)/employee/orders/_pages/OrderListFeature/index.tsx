@@ -86,7 +86,7 @@
 //                                 }}
 //                                 className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all ${status === filter.value
 //                                         ? "bg-primary text-white shadow-md shadow-primary/30"
-//                                         : "bg-white dark:bg-[#1c2127] text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-[#3b4754] hover:border-primary/50 hover:bg-primary/5"
+//                                         : "bg-white dark:bg-[#1c2127] text-gray-700 dark:text-gray-500 border border-gray-200 dark:border-[#3b4754] hover:border-primary/50 hover:bg-primary/5"
 //                                     }`}
 //                             >
 //                                 <Icon size={16} />
@@ -110,7 +110,7 @@
 //                     {/* Pagination */}
 //                     {!loading && totalElements > 0 && (
 //                         <div className="flex items-center justify-between px-6 py-4 border-t border-gray-200 dark:border-[#3b4754] bg-gray-50 dark:bg-[#111418]">
-//                             <p className="text-sm text-gray-600 dark:text-gray-400">
+//                             <p className="text-sm text-gray-600 dark:text-gray-500">
 //                                 Hiển thị{" "}
 //                                 <span className="font-semibold text-gray-900 dark:text-white">
 //                                     {page * pageSize + 1}
@@ -129,7 +129,7 @@
 //                                 <button
 //                                     onClick={() => handlePageChange(page - 1)}
 //                                     disabled={page === 0 || loading}
-//                                     className="p-2 rounded-lg border border-gray-300 dark:border-[#3b4754] text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#283039] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+//                                     className="p-2 rounded-lg border border-gray-300 dark:border-[#3b4754] text-gray-700 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-[#283039] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
 //                                 >
 //                                     <ChevronLeft size={18} />
 //                                 </button>
@@ -143,7 +143,7 @@
 //                                                 onClick={() => handlePageChange(pageNum)}
 //                                                 className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors ${page === pageNum
 //                                                         ? "bg-primary text-white"
-//                                                         : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#283039]"
+//                                                         : "text-gray-700 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-[#283039]"
 //                                                     }`}
 //                                             >
 //                                                 {pageNum + 1}
@@ -154,7 +154,7 @@
 //                                 <button
 //                                     onClick={() => handlePageChange(page + 1)}
 //                                     disabled={page >= totalPages - 1 || loading}
-//                                     className="p-2 rounded-lg border border-gray-300 dark:border-[#3b4754] text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#283039] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+//                                     className="p-2 rounded-lg border border-gray-300 dark:border-[#3b4754] text-gray-700 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-[#283039] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
 //                                 >
 //                                     <ChevronRight size={18} />
 //                                 </button>

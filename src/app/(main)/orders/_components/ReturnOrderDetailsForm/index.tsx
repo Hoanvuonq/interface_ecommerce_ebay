@@ -101,7 +101,7 @@ export const ReturnOrderDetailsForm: React.FC<ReturnOrderDetailsFormProps> = ({
                     "w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-sm",
                     isSelected
                       ? "bg-orange-500 text-white"
-                      : "bg-white text-gray-400"
+                      : "bg-white text-gray-500"
                   )}
                 >
                   <Building2 size={20} strokeWidth={1.5} />
@@ -146,7 +146,7 @@ export const ReturnOrderDetailsForm: React.FC<ReturnOrderDetailsFormProps> = ({
             Minh chứng thực tế ({selectedImages.length}/6)
           </label>
           <div className="group relative">
-            <Info size={14} className="text-gray-400 cursor-help" />
+            <Info size={14} className="text-gray-500 cursor-help" />
             <div className="absolute bottom-full right-0 mb-2 w-48 p-2 bg-gray-800 text-white text-[9px] rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10 shadow-xl">
               Cung cấp ảnh rõ nét để được xử lý nhanh hơn (Tối đa 6 ảnh)
             </div>
@@ -154,7 +154,7 @@ export const ReturnOrderDetailsForm: React.FC<ReturnOrderDetailsFormProps> = ({
         </div>
 
         <div className="grid grid-cols-4 gap-3">
-          <label className="aspect-square border-2 border-dashed border-gray-200 bg-gray-50/50 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:bg-white hover:border-gray-400 hover:text-orange-500 transition-all text-gray-400">
+          <label className="aspect-square border-2 border-dashed border-gray-200 bg-gray-50/50 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:bg-white hover:border-gray-400 hover:text-orange-500 transition-all text-gray-500">
             <Camera size={22} strokeWidth={1.5} />
             <span className="text-[9px] font-bold mt-1.5 uppercase">
               Tải ảnh
@@ -196,7 +196,7 @@ export const ReturnOrderDetailsForm: React.FC<ReturnOrderDetailsFormProps> = ({
           Mô tả chi tiết
         </label>
         <textarea
-          className="w-full rounded-2xl border border-gray-100 bg-white p-4 text-xs font-medium text-gray-700 placeholder:text-gray-300 focus:border-gray-400 focus:ring-4 focus:ring-orange-50/50 outline-none transition-all min-h-[100px] shadow-sm"
+          className="w-full rounded-2xl border border-gray-100 bg-white p-4 text-xs font-medium text-gray-700 placeholder:text-gray-500 focus:border-gray-400 focus:ring-4 focus:ring-orange-50/50 outline-none transition-all min-h-[100px] shadow-sm"
           placeholder="Vui lòng cho chúng tôi biết thêm chi tiết về vấn đề này..."
           value={description}
           onChange={(e) => setDescription(e.target.value)}

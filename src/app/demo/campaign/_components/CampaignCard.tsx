@@ -112,15 +112,15 @@ export function CampaignCard({ campaign, onClick }: CampaignCardProps) {
                 <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
                     <div className="text-center">
                         <p className="text-lg font-bold text-blue-600">{campaign.totalSlots}</p>
-                        <p className="text-xs text-gray-400">Slots</p>
+                        <p className="text-xs text-gray-500">Slots</p>
                     </div>
                     <div className="text-center">
                         <p className="text-lg font-bold text-green-600">{campaign.activeSlots}</p>
-                        <p className="text-xs text-gray-400">Active</p>
+                        <p className="text-xs text-gray-500">Active</p>
                     </div>
                     <div className="text-center">
                         <p className="text-lg font-bold text-orange-600">{campaign.totalSold?.toLocaleString() || 0}</p>
-                        <p className="text-xs text-gray-400">Đã bán</p>
+                        <p className="text-xs text-gray-500">Đã bán</p>
                     </div>
                 </div>
             </div>

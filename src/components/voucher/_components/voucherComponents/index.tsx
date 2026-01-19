@@ -158,12 +158,12 @@ export const VoucherComponents: React.FC<VoucherInputProps> = (props) => {
         <div className="relative flex-1 group">
           <Ticket
             size={14}
-            className="absolute left-4 top-1/2 -trangray-y-1/2 text-gray-300 group-focus-within:text-orange-500 transition-colors pointer-events-none"
+            className="absolute left-4 top-1/2 -trangray-y-1/2 text-gray-500 group-focus-within:text-orange-500 transition-colors pointer-events-none"
           />
           <input
             type="text"
             placeholder="NHẬP MÃ GIẢM GIÁ..."
-            className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl font-bold text-[11px] uppercase tracking-wider focus:border-gray-500 focus:ring-4 focus:ring-orange-50 outline-none transition-all placeholder:text-gray-300"
+            className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl font-bold text-[11px] uppercase tracking-wider focus:border-gray-500 focus:ring-4 focus:ring-orange-50 outline-none transition-all placeholder:text-gray-500"
             value={state.voucherCode}
             onChange={(e) =>
               actions.setVoucherCode(e.target.value.toUpperCase())

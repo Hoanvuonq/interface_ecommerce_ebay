@@ -91,7 +91,7 @@ export const StatusTabsTable = ({
                       "transition-colors duration-300",
                       isActive
                         ? "text-orange-500"
-                        : "text-gray-400 group-hover:text-gray-600"
+                        : "text-gray-500 group-hover:text-gray-600"
                     )}
                   />
                   <span>{tab.label}</span>

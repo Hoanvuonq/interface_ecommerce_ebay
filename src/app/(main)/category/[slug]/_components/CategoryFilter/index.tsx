@@ -93,7 +93,7 @@ export default function CategoryFilter({
                           )}
                         >
                           {/* Icon chỉ dẫn nhỏ cho đẹp */}
-                          <CornerDownRight size={12} className={cn("shrink-0", isChildActive ? "text-[#ee4d2d]" : "text-gray-300")} />
+                          <CornerDownRight size={12} className={cn("shrink-0", isChildActive ? "text-[#ee4d2d]" : "text-gray-500")} />
                           
                           <span className="truncate">{child.name}</span>
                         </Link>

@@ -182,7 +182,7 @@ export default function BroadcastNotificationForm() {
                         value={formData.title}
                         onChange={handleInputChange}
                         placeholder="Nhập tiêu đề thu hút người dùng..."
-                        className="w-full bg-white border-2 border-gray-100 rounded-2xl p-4 outline-none focus:border-gray-500 transition-all font-bold text-gray-800 placeholder:text-gray-300"
+                        className="w-full bg-white border-2 border-gray-100 rounded-2xl p-4 outline-none focus:border-gray-500 transition-all font-bold text-gray-800 placeholder:text-gray-500"
                     />
                 </div>
 
@@ -194,7 +194,7 @@ export default function BroadcastNotificationForm() {
                         onChange={handleInputChange}
                         rows={4}
                         placeholder="Nội dung thông báo sẽ xuất hiện trên thiết bị người dùng..."
-                        className="w-full bg-white border-2 border-gray-100 rounded-2xl p-4 outline-none focus:border-gray-500 transition-all font-bold text-gray-800 placeholder:text-gray-300 resize-none"
+                        className="w-full bg-white border-2 border-gray-100 rounded-2xl p-4 outline-none focus:border-gray-500 transition-all font-bold text-gray-800 placeholder:text-gray-500 resize-none"
                     />
                 </div>
             </div>
@@ -221,8 +221,8 @@ export default function BroadcastNotificationForm() {
                             </motion.div>
                         ) : (
                             <label className="w-32 h-32 rounded-3xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center cursor-pointer hover:bg-orange-50 hover:border-gray-300 transition-all group">
-                                <ImageIcon className="text-gray-300 group-hover:text-orange-400 transition-colors" size={28} />
-                                <span className="text-[10px] font-semibold text-gray-300 group-hover:text-orange-400 uppercase mt-2">Tải ảnh</span>
+                                <ImageIcon className="text-gray-500 group-hover:text-orange-400 transition-colors" size={28} />
+                                <span className="text-[10px] font-semibold text-gray-500 group-hover:text-orange-400 uppercase mt-2">Tải ảnh</span>
                                 <input type="file" hidden accept="image/*" onChange={handleImageUpload} />
                             </label>
                         )}
@@ -242,7 +242,7 @@ export default function BroadcastNotificationForm() {
                     value={formData.redirectUrl}
                     onChange={handleInputChange}
                     placeholder="/san-pham/123 hoặc https://..."
-                    className="w-full bg-white border-2 border-gray-100 rounded-2xl p-4 outline-none focus:border-gray-500 transition-all font-bold text-gray-800 placeholder:text-gray-300 shadow-sm"
+                    className="w-full bg-white border-2 border-gray-100 rounded-2xl p-4 outline-none focus:border-gray-500 transition-all font-bold text-gray-800 placeholder:text-gray-500 shadow-sm"
                 />
             </div>
 

@@ -32,7 +32,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
       <div className="md:col-span-5 relative group">
         <Search
           size={18}
-          className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-orange-500 transition-colors"
+          className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-orange-500 transition-colors"
         />
         <input
           type="text"
@@ -42,7 +42,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
             setFilters((p) => ({ ...p, keyword: e.target.value }))
           }
           onKeyDown={(e) => e.key === "Enter" && onSearch()}
-          className="w-full h-12 pl-12 pr-4 bg-white border border-gray-200 rounded-2xl text-sm font-bold text-gray-700 outline-none focus:border-gray-500 focus:ring-4 focus:ring-orange-500/10 transition-all shadow-sm placeholder:font-normal placeholder:text-gray-400"
+          className="w-full h-12 pl-12 pr-4 bg-white border border-gray-200 rounded-2xl text-sm font-bold text-gray-700 outline-none focus:border-gray-500 focus:ring-4 focus:ring-orange-500/10 transition-all shadow-sm placeholder:font-normal placeholder:text-gray-500"
         />
       </div>
 

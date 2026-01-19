@@ -136,7 +136,7 @@ export const WishlistListItem = memo<WishlistListItemProps>(
                   "transition-all",
                   isSelected
                     ? "translate-x-0 text-orange-500 opacity-100"
-                    : "-translate-x-2 text-gray-300 opacity-0 group-hover:translate-x-0 group-hover:opacity-100"
+                    : "-translate-x-2 text-gray-500 opacity-0 group-hover:translate-x-0 group-hover:opacity-100"
                 )}
               />
             </div>

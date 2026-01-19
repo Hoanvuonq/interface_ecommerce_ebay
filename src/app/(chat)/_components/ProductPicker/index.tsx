@@ -23,7 +23,7 @@ export const ProductPicker: React.FC<ProductPickerProps> = (props) => {
       isLoading={isLoading}
     >
       {_.isEmpty(products) ? (
-        <div className="flex flex-col items-center justify-center py-20 text-gray-400">
+        <div className="flex flex-col items-center justify-center py-20 text-gray-500">
           <Package size={40} className="mb-3 opacity-20" />
           <p className="text-xs font-bold uppercase tracking-widest italic">Không có sản phẩm</p>
         </div>
@@ -47,13 +47,13 @@ export const ProductPicker: React.FC<ProductPickerProps> = (props) => {
                     />
                   ) : (
                     // Fallback icon nếu không có link ảnh
-                    <Package size={32} className="text-gray-300" />
+                    <Package size={32} className="text-gray-500" />
                   )}
                 </div>
 
                 <div className="flex-1 min-w-0 flex flex-col justify-center">
                   <h5 className="text-[13px] font-bold text-gray-900 truncate">{product.name}</h5>
-                  <p className="text-[10px] text-gray-400 font-medium mb-1 truncate uppercase">SKU: {product.sku || "N/A"}</p>
+                  <p className="text-[10px] text-gray-500 font-medium mb-1 truncate uppercase">SKU: {product.sku || "N/A"}</p>
                   <p className="text-sm font-bold text-gray-900">
                     {price.toLocaleString("vi-VN")}₫
                   </p>

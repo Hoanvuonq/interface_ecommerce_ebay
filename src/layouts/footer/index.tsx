@@ -116,7 +116,7 @@ export const Footer = () => {
         </div>
 
         <div className="mt-8 pt-6 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-xs text-gray-400 font-medium">
+          <p className="text-xs text-gray-500 font-medium">
             &copy; {new Date().getFullYear()} Cano X Tech. All rights reserved.
           </p>
           <div className="flex gap-x-6">
@@ -124,7 +124,7 @@ export const Footer = () => {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-[10px] text-gray-400 hover:text-(--color-mainColor) uppercase tracking-wider font-semibold transition-colors"
+                className="text-[10px] text-gray-500 hover:text-(--color-mainColor) uppercase tracking-wider font-semibold transition-colors"
               >
                 {link.label}
               </Link>

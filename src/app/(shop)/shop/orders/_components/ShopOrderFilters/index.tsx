@@ -94,7 +94,7 @@ export const ShopOrderFilters: React.FC<ShopOrderFiltersProps> = ({
               onChange={(e) => handleDateChange(0, e.target.value)}
               className="h-11 w-44"
             />
-            <span className="text-gray-400 font-bold">→</span>
+            <span className="text-gray-500 font-bold">→</span>
             <FormInput
               type="date"
               value={dateRange[1] ? dateRange[1].format("YYYY-MM-DD") : ""}

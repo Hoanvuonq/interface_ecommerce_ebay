@@ -66,7 +66,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
           <span
             className={cn(
               "text-[13px] font-bold tracking-tight transition-all duration-200",
-              checked ? "text-gray-800" : "text-gray-400"
+              checked ? "text-gray-800" : "text-gray-500"
             )}
           >
             {label}

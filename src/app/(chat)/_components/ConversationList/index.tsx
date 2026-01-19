@@ -24,7 +24,7 @@ const ConversationAvatar = ({
 
   if (!src || imgError) {
     return (
-      <div className="w-full h-full flex items-center justify-center text-gray-300 bg-gray-100">
+      <div className="w-full h-full flex items-center justify-center text-gray-500 bg-gray-100">
         <Store size={20} />
       </div>
     );
@@ -110,7 +110,7 @@ export const ConversationList: React.FC<ConversationListProps> = ({
         {_.isEmpty(conversations) ? (
           <div className="flex flex-col items-center justify-center py-20 px-6 text-center">
             <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-4 animate-pulse">
-              <Inbox size={36} className="text-gray-300" />
+              <Inbox size={36} className="text-gray-500" />
             </div>
             <p className="text-sm font-semibold text-gray-500">
               Chưa có tin nhắn nào

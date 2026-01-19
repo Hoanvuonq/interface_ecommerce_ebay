@@ -27,7 +27,7 @@ const CheckoutStepper: React.FC<CheckoutStepperProps> = ({ currentStep }) => {
                         ? "bg-orange-500 border-gray-500 text-white shadow-lg shadow-orange-200 scale-110"
                         : isCompleted
                         ? "bg-white border-gray-500 text-orange-500"
-                        : "bg-white border-gray-200 text-gray-300"
+                        : "bg-white border-gray-200 text-gray-500"
                     }
                   `}
                 >
@@ -48,7 +48,7 @@ const CheckoutStepper: React.FC<CheckoutStepperProps> = ({ currentStep }) => {
                         ? "text-orange-600 opacity-100 translate-y-0"
                         : isCompleted
                         ? "text-orange-500 opacity-80"
-                        : "text-gray-400 opacity-50"
+                        : "text-gray-500 opacity-50"
                     }
                   `}
                 >

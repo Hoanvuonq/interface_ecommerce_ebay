@@ -227,7 +227,7 @@ export function VerifyForm({ email, type, mode = "REGISTRATION", onSuccess }: Ve
               <button
                 type="button"
                 onClick={handleCancel}
-                className="w-full h-12 rounded-xl text-base font-semibold text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white border-2 border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 bg-transparent hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200"
+                className="w-full h-12 rounded-xl text-base font-semibold text-gray-600 dark:text-gray-500 hover:text-gray-900 dark:hover:text-white border-2 border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 bg-transparent hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200"
               >
                 {mode === "REGISTRATION" ? "Quay lại đăng ký" : "Quay lại đăng nhập"}
               </button>
@@ -240,7 +240,7 @@ export function VerifyForm({ email, type, mode = "REGISTRATION", onSuccess }: Ve
                 <FaShieldAlt className="text-lg" />
               </div>
               <div>
-                <h4 className="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wide mb-1">
+                <h4 className="text-xs font-bold text-gray-700 dark:text-gray-500 uppercase tracking-wide mb-1">
                   Lưu ý bảo mật
                 </h4>
                 <p className="text-[11px] text-gray-500 dark:text-gray-600 leading-relaxed">

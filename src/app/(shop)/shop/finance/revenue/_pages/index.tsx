@@ -64,7 +64,7 @@ export default function ShopRevenueScreen() {
                  onClick={() => setTimeRange(range)}
                  className={cn(
                    "px-4 py-2 text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all",
-                   timeRange === range ? "bg-gray-900 text-white shadow-md" : "text-gray-400 hover:bg-gray-50"
+                   timeRange === range ? "bg-gray-900 text-white shadow-md" : "text-gray-500 hover:bg-gray-50"
                  )}
                >
                  {range === "7days" ? "7 Ngày" : range === "30days" ? "30 Ngày" : "3 Tháng"}
@@ -119,7 +119,7 @@ export default function ShopRevenueScreen() {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h3 className="text-lg font-bold text-gray-900 tracking-tight uppercase">Biểu đồ tăng trưởng</h3>
-            <p className="text-xs text-gray-400 font-bold uppercase tracking-widest mt-1">Doanh thu theo thời gian</p>
+            <p className="text-xs text-gray-500 font-bold uppercase tracking-widest mt-1">Doanh thu theo thời gian</p>
           </div>
           <div className="flex items-center gap-6">
              <div className="flex items-center gap-2">
@@ -186,7 +186,7 @@ export default function ShopRevenueScreen() {
                    </div>
                    <div>
                       <p className="text-sm font-bold text-gray-800">Thanh toán đơn hàng #ORD-992{item}</p>
-                      <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">24 Tháng 1, 2024 • 14:30</p>
+                      <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">24 Tháng 1, 2024 • 14:30</p>
                    </div>
                 </div>
                 <div className="text-right">
@@ -222,7 +222,7 @@ const StatCard = ({ label, value, trend, isUp, icon, color, isCurrency = true }:
           {trend}
         </div>
       </div>
-      <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-gray-400 mb-1">{label}</p>
+      <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-gray-500 mb-1">{label}</p>
       <h3 className="text-xl font-bold text-gray-900 tracking-tight">
         {isCurrency ? new Intl.NumberFormat("vi-VN").format(value) + " ₫" : value}
       </h3>

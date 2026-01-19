@@ -122,7 +122,7 @@ export default function NotificationHistoryTable() {
                                     </td>
                                     <td className="px-6 py-5 max-w-md">
                                         <div className="flex flex-col gap-1">
-                                            <span className="text-sm font-extrabold text-gray-800 line-clamp-1">{record.title}</span>
+                                            <span className="text-sm font-bold text-gray-800 line-clamp-1">{record.title}</span>
                                             <span className="text-xs text-gray-500 line-clamp-1 font-medium italic">{record.content || "Không có nội dung"}</span>
                                         </div>
                                     </td>

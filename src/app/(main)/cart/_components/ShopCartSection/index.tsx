@@ -69,7 +69,7 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
                 </h3>
                 <ChevronRight
                   size={22}
-                  className="text-gray-300 group-hover:text-orange-400 transition-transform group-hover:translate-x-0.5"
+                  className="text-gray-500 group-hover:text-orange-400 transition-transform group-hover:translate-x-0.5"
                 />
               </div>
 

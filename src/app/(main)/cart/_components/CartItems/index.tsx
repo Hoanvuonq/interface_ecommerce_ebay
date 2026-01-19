@@ -242,7 +242,7 @@ export const CartItem: React.FC<CartItemProps> = ({
 
           <button
             onClick={handleRemoveClick}
-            className="text-gray-300 hover:text-orange-600 hover:bg-orange-50 p-2 self-start transition-colors rounded-lg"
+            className="text-gray-500 hover:text-orange-600 hover:bg-orange-50 p-2 self-start transition-colors rounded-lg"
           >
             <Trash2 size={18} strokeWidth={2} />
           </button>
@@ -282,7 +282,7 @@ export const CartItem: React.FC<CartItemProps> = ({
         <div className="col-span-2 text-center">
           <div className="flex flex-col items-center">
             {item.discountAmount > 0 && (
-              <span className="text-[11px] text-gray-300 line-through mb-1 font-bold">
+              <span className="text-[11px] text-gray-500 line-through mb-1 font-bold">
                 {formatPriceFull(item.unitPrice)}
               </span>
             )}

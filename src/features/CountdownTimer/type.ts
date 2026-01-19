@@ -29,7 +29,7 @@ const themeConfig = {
   dark: {
     bg: "bg-gray-800",
     text: "text-white",
-    label: "text-gray-300",
+    label: "text-gray-500",
     border: "border-gray-700",
   },
   danger: {

@@ -334,7 +334,7 @@ export default function ProfilePage() {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <FaUser className="text-gray-300 text-lg" />
+                  <FaUser className="text-gray-500 text-lg" />
                 )}
               </div>
               <div className="overflow-hidden">

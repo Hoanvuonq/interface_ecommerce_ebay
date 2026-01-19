@@ -88,7 +88,7 @@ export const AddressInfo = ({
               <h2 className="text-lg font-bold text-gray-900 uppercase tracking-tight">
                 Thông tin Địa chỉ
               </h2>
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+              <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
                 Địa chỉ giao hàng và nhận hàng mặc định
               </p>
             </div>
@@ -132,7 +132,7 @@ export const AddressInfo = ({
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ml-1">
               <div className="flex flex-col gap-1">
-                <p className="text-[10px] font-bold uppercase text-gray-400 tracking-wider">
+                <p className="text-[10px] font-bold uppercase text-gray-500 tracking-wider">
                   Tỉnh / Thành phố
                 </p>
                 <p className="text-sm font-semibold text-gray-800">
@@ -141,7 +141,7 @@ export const AddressInfo = ({
               </div>
 
               <div className="flex flex-col gap-1">
-                <p className="text-[10px] font-bold uppercase text-gray-400 tracking-wider">
+                <p className="text-[10px] font-bold uppercase text-gray-500 tracking-wider">
                   Quận / Huyện
                 </p>
                 <p className="text-sm font-semibold text-gray-800">
@@ -150,7 +150,7 @@ export const AddressInfo = ({
               </div>
 
               <div className="flex flex-col gap-1">
-                <p className="text-[10px] font-bold uppercase text-gray-400 tracking-wider">
+                <p className="text-[10px] font-bold uppercase text-gray-500 tracking-wider">
                   Phường / Xã
                 </p>
                 <p className="text-sm font-semibold text-gray-800">
@@ -159,7 +159,7 @@ export const AddressInfo = ({
               </div>
 
               <div className="flex flex-col gap-1">
-                <p className="text-[10px] font-bold uppercase text-gray-400 tracking-wider">
+                <p className="text-[10px] font-bold uppercase text-gray-500 tracking-wider">
                   Quốc gia
                 </p>
                 <p className="text-sm font-semibold text-gray-800">
@@ -169,7 +169,7 @@ export const AddressInfo = ({
             </div>
 
             <div className="flex flex-col gap-1 mt-4 p-4 bg-gray-50/50 rounded-2xl border border-gray-100">
-              <p className="text-[10px] font-bold uppercase text-gray-400 tracking-wider">
+              <p className="text-[10px] font-bold uppercase text-gray-500 tracking-wider">
                 Địa chỉ chi tiết
               </p>
               <p className="text-sm font-medium text-gray-800 leading-relaxed">
@@ -282,7 +282,7 @@ export const AddressInfo = ({
               type="button"
               disabled={updating}
               onClick={() => setOpenModal(false)}
-              className="px-8 py-2.5 rounded-xl font-bold uppercase text-[10px] tracking-widest text-gray-400 hover:text-gray-600 transition-colors"
+              className="px-8 py-2.5 rounded-xl font-bold uppercase text-[10px] tracking-widest text-gray-500 hover:text-gray-600 transition-colors"
             >
               Hủy bỏ
             </button>

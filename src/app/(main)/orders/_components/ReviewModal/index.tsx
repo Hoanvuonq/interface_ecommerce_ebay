@@ -51,7 +51,7 @@ export const ReviewModal: React.FC<ReviewModalProps> = (props) => {
             <span className="text-lg font-bold text-gray-800 tracking-tight block">
               {isUpdateMode ? "Chỉnh sửa đánh giá" : "Đánh giá sản phẩm"}
             </span>
-            <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">
+            <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">
               Phản hồi của bạn rất quý giá
             </span>
           </div>
@@ -69,7 +69,7 @@ export const ReviewModal: React.FC<ReviewModalProps> = (props) => {
           <div className="flex gap-3 w-full sm:w-auto">
             <button
               onClick={resetState}
-              className="flex-1 sm:flex-none px-6 py-2.5 text-sm font-bold text-gray-400 hover:text-gray-600 transition-colors"
+              className="flex-1 sm:flex-none px-6 py-2.5 text-sm font-bold text-gray-500 hover:text-gray-600 transition-colors"
             >
               Hủy
             </button>
@@ -100,7 +100,7 @@ export const ReviewModal: React.FC<ReviewModalProps> = (props) => {
                 sizes="64px"
               />
             ) : (
-              <div className="flex flex-col items-center justify-center h-full text-gray-300">
+              <div className="flex flex-col items-center justify-center h-full text-gray-500">
                 <ImageIcon size={20} strokeWidth={1.5} />
                 <span className="text-[8px] font-bold uppercase mt-1">
                   No Img
@@ -119,7 +119,7 @@ export const ReviewModal: React.FC<ReviewModalProps> = (props) => {
         </div>
 
         <div className="flex flex-col items-center py-6 bg-white rounded-3xl border border-gray-50 shadow-sm shadow-orange-100/30">
-          <label className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-4">
+          <label className="text-[11px] font-bold text-gray-500 uppercase tracking-[0.2em] mb-4">
             Chất lượng sản phẩm
           </label>
           <div className="flex items-center gap-3">
@@ -167,7 +167,7 @@ export const ReviewModal: React.FC<ReviewModalProps> = (props) => {
             <span
               className={cn(
                 "text-[10px]",
-                comment.length > 1900 ? "text-red-500" : "text-gray-400"
+                comment.length > 1900 ? "text-red-500" : "text-gray-500"
               )}
             >
               {comment.length}/2000
@@ -178,7 +178,7 @@ export const ReviewModal: React.FC<ReviewModalProps> = (props) => {
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             placeholder="Chia sẻ trải nghiệm thực tế của bạn về sản phẩm này..."
-            className="w-full p-5 bg-gray-50 border-none rounded-3xl focus:ring-2 focus:ring-orange-200 text-sm text-gray-800 placeholder:text-gray-400 resize-none transition-all shadow-inner outline-none"
+            className="w-full p-5 bg-gray-50 border-none rounded-3xl focus:ring-2 focus:ring-orange-200 text-sm text-gray-800 placeholder:text-gray-500 resize-none transition-all shadow-inner outline-none"
           />
         </div>
 
@@ -229,7 +229,7 @@ export const ReviewModal: React.FC<ReviewModalProps> = (props) => {
               {fileList.length < 7 && (
                 <button
                   onClick={() => fileInputRef.current?.click()}
-                  className="aspect-square rounded-2xl border-2 border-dashed border-gray-200 hover:border-gray-400 hover:bg-orange-50 transition-all flex flex-col items-center justify-center text-gray-400 hover:text-orange-500 gap-1.5"
+                  className="aspect-square rounded-2xl border-2 border-dashed border-gray-200 hover:border-gray-400 hover:bg-orange-50 transition-all flex flex-col items-center justify-center text-gray-500 hover:text-orange-500 gap-1.5"
                 >
                   <UploadCloud size={24} strokeWidth={1.5} />
                   <span className="text-[9px] font-bold uppercase">Thêm</span>

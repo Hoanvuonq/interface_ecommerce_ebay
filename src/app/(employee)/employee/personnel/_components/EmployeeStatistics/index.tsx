@@ -33,7 +33,7 @@ export default function EmployeeStatistics() {
     return (
       <div className="flex flex-col items-center justify-center h-96 gap-4">
         <RotateCw className="animate-spin text-orange-500" size={40} />
-        <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-gray-300 italic">
+        <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-gray-500 italic">
           Đang khởi tạo báo cáo...
         </span>
       </div>

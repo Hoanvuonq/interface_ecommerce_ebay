@@ -183,7 +183,7 @@ const InfoItem = ({ label, value, icon, copyable, onCopy }: any) => (
     <div className="flex items-center gap-2">
       <span className="text-sm font-bold text-gray-700 truncate max-w-[200px]">{value}</span>
       {copyable && (
-        <button onClick={onCopy} className="text-gray-300 hover:text-orange-500 transition-colors">
+        <button onClick={onCopy} className="text-gray-500 hover:text-orange-500 transition-colors">
           <Copy size={12} />
         </button>
       )}

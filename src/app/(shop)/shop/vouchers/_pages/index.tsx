@@ -205,7 +205,7 @@ const MiniStat = ({ label, value, icon }: any) => (
   <div className="flex flex-col items-end">
     <div className="flex items-center gap-1">
       {icon}
-      <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{label}</span>
+      <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{label}</span>
     </div>
     <p className="text-lg font-bold text-gray-900 leading-none mt-0.5">{value}</p>
   </div>
@@ -227,7 +227,7 @@ const SummaryCard = ({ label, value, icon, color }: any) => {
           {React.cloneElement(icon, { size: 20 })}
         </div>
       </div>
-      <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-gray-400 mb-1">{label}</p>
+      <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-gray-500 mb-1">{label}</p>
       <h3 className="text-2xl font-bold text-gray-900 tabular-nums">{value.toLocaleString()}</h3>
     </div>
   );

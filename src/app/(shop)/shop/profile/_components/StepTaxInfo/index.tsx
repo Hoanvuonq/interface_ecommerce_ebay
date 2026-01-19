@@ -51,7 +51,7 @@ export function StepTaxInfo({ formData, setFormData }: any) {
       
       {/* 01. Loại hình kinh doanh */}
       <div className="space-y-4">
-        <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-400">
+        <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-500">
           <Briefcase size={14} /> 01. Hình thức pháp lý
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -79,7 +79,7 @@ export function StepTaxInfo({ formData, setFormData }: any) {
 
       {/* 02. Địa chỉ kinh doanh */}
       <div className="space-y-6">
-        <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-400">
+        <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-500">
           <MapPin size={14} /> 02. Địa chỉ đăng ký
         </div>
 
@@ -89,7 +89,7 @@ export function StepTaxInfo({ formData, setFormData }: any) {
             <div className="space-y-2">
               <label className="text-[11px] font-bold uppercase text-gray-500 ml-1">Quốc gia</label>
               <div className="h-12 px-5 flex items-center bg-gray-100/50 border border-gray-200 rounded-2xl text-sm font-bold text-gray-700">
-                <Globe size={14} className="mr-2 text-gray-400" /> Việt Nam
+                <Globe size={14} className="mr-2 text-gray-500" /> Việt Nam
               </div>
             </div>
 
@@ -119,7 +119,7 @@ export function StepTaxInfo({ formData, setFormData }: any) {
                     <option key={p.code} value={p.fullName}>{p.fullName}</option>
                   ))}
                 </select>
-                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={16} />
+                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" size={16} />
               </div>
             </div>
 
@@ -148,7 +148,7 @@ export function StepTaxInfo({ formData, setFormData }: any) {
                     <option key={w.code} value={w.fullName}>{w.fullName}</option>
                   ))}
                 </select>
-                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={16} />
+                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" size={16} />
               </div>
             </div>
           </div>
@@ -174,7 +174,7 @@ export function StepTaxInfo({ formData, setFormData }: any) {
 
       {/* 03. Liên hệ & Thuế */}
       <div className="space-y-6">
-        <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-400">
+        <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-500">
           <Hash size={14} /> 03. Liên hệ & Mã số thuế
         </div>
 

@@ -18,7 +18,7 @@ export const FooterSection = ({ title, children, isOpen, onClick }: any) => (
       <ChevronDown
         size={18}
         className={cn(
-          "text-gray-400 lg:hidden transition-transform duration-300",
+          "text-gray-500 lg:hidden transition-transform duration-300",
           isOpen && "rotate-180 text-(--color-mainColor)"
         )}
       />

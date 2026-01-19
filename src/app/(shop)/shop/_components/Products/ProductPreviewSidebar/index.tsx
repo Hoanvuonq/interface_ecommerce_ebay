@@ -106,8 +106,8 @@ export const ProductPreviewSidebar: React.FC<ProductPreviewSidebarProps> = ({
       className="sticky top-25 w-full bg-white rounded-4xl border border-gray-200 shadow-custom overflow-hidden"
     >
       <div className="px-5 py-4 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
-        <h3 className="text-sm font-black text-gray-800 flex items-center gap-2 uppercase italic tracking-tighter">
-          <ImageIcon size={18} className="text-orange-500" /> Preview
+        <h3 className="text-sm font-bold text-gray-800 flex items-center gap-2 uppercase italic tracking-tighter">
+          <ImageIcon size={18} className="text-orange-500" />  Xem trước sản phẩm
         </h3>
         {mediaItems.length > 0 && (
           <span className="text-[10px] font-bold text-orange-500 bg-orange-50 px-2 py-0.5 rounded-lg border border-orange-100">
@@ -117,7 +117,7 @@ export const ProductPreviewSidebar: React.FC<ProductPreviewSidebarProps> = ({
       </div>
 
       <div className="p-5 flex flex-col gap-5">
-        <div className="aspect-square w-full rounded-4xl overflow-hidden relative group shadow-inner bg-gray-50 border border-gray-100">
+        <div className="aspect-square w-full rounded-4xl overflow-hidden relative group shadow-inner bg-gray-50 border border-gray-200">
           <AnimatePresence initial={false} custom={direction} mode="wait">
             {mediaItems.length > 0 ? (
               <motion.div
@@ -148,15 +148,14 @@ export const ProductPreviewSidebar: React.FC<ProductPreviewSidebarProps> = ({
                     className="object-cover"
                   />
                 )}
-                {/* Overlay nhãn ảnh */}
-                <div className="absolute top-3 left-3 bg-black/40 backdrop-blur-md text-[9px] text-white px-2 py-1 rounded-full font-bold uppercase tracking-widest">
+                <div className="absolute top-3 left-3 bg-black/40 backdrop-blur-md text-[9px] text-white px-2 py-1 rounded-full font-bold uppercase ">
                   {mediaItems[currentIndex].label}
                 </div>
               </motion.div>
             ) : (
-              <div className="flex flex-col items-center justify-center text-gray-300 h-full">
+              <div className="flex flex-col items-center justify-center text-gray-500 h-full">
                 <ImageIcon size={48} className="mb-2 opacity-20" />
-                <span className="text-[10px] font-bold uppercase tracking-widest">
+                <span className="text-[10px] font-bold uppercase ">
                   Chưa có ảnh
                 </span>
               </div>
@@ -183,30 +182,30 @@ export const ProductPreviewSidebar: React.FC<ProductPreviewSidebarProps> = ({
 
         <div className="space-y-5">
           <div>
-            <span className="text-[10px] font-black text-gray-400 uppercase block mb-1 tracking-widest">
+            <span className="text-[12px] font-bold text-gray-500 uppercase block mb-1 ">
               Sản phẩm
             </span>
-            <p className="text-base font-bold text-gray-900 line-clamp-2 leading-tight italic uppercase tracking-tighter">
+            <p className="text-xl font-bold text-gray-800 line-clamp-2 leading-tight italic uppercase ">
               {name || "Đang thiết lập..."}
             </p>
           </div>
 
           <div className="grid grid-cols-2 gap-6 bg-orange-50/30 p-4 rounded-3xl border border-orange-100/50">
             <div>
-              <span className="text-[10px] font-black text-orange-400 uppercase block mb-1 tracking-widest">
+              <span className="text-[12px] font-bold text-gray-600 uppercase block mb-1 ">
                 Giá niêm yết
               </span>
-              <p className="text-lg font-black text-orange-600 tabular-nums italic tracking-tighter">
+              <p className="text-lg font-bold text-orange-600 tabular-nums italic ">
                 {formattedPrice}
               </p>
             </div>
             <div>
-              <span className="text-[10px] font-black text-gray-400 uppercase block mb-1 tracking-widest">
+              <span className="text-[12px] font-bold text-gray-600 uppercase block mb-1 ">
                 Tổng kho
               </span>
-              <p className="text-lg font-black text-gray-800 tabular-nums italic tracking-tighter">
+              <p className="text-lg font-bold text-gray-800 tabular-nums italic ">
                 {totalStock}{" "}
-                <span className="text-[10px] font-bold italic text-gray-400">
+                <span className="text-[11px] font-bold italic text-gray-500">
                   UNIT
                 </span>
               </p>
@@ -215,21 +214,21 @@ export const ProductPreviewSidebar: React.FC<ProductPreviewSidebarProps> = ({
 
           {variants.length > 0 && (
             <div>
-              <span className="text-[10px] font-black text-gray-400 uppercase block mb-2 tracking-widest">
+              <span className="text-[12px] font-bold text-gray-600 uppercase block mb-2 ">
                 Biến thể ({variants.length})
               </span>
               <div className="flex flex-wrap gap-1.5">
                 {variants.slice(0, 6).map((v, i) => (
                   <div
                     key={i}
-                    className="px-2 py-1 bg-white border border-gray-100 rounded-lg text-[9px] font-bold text-gray-600 shadow-sm uppercase"
+                    className="px-2 py-1 bg-white border border-gray-100 rounded-lg text-[10px] font-bold text-gray-600 shadow-sm uppercase"
                   >
                     {v.optionValueNames?.join(" / ")}
                   </div>
                 ))}
                 {variants.length > 6 && (
-                  <span className="text-[9px] font-bold text-gray-400">
-                    +{variants.length - 6} nữa
+                  <span className="text-[12px] font-bold text-(--color-mainColor)">
+                    +{variants.length - 6} 
                   </span>
                 )}
               </div>
@@ -237,7 +236,7 @@ export const ProductPreviewSidebar: React.FC<ProductPreviewSidebarProps> = ({
           )}
 
           <div className="pt-2">
-            <span className="text-[10px] font-black text-gray-400 uppercase block mb-2 tracking-widest">
+            <span className="text-[12px] font-bold text-gray-500 uppercase block mb-2 ">
               Mô tả
             </span>
             <div className="bg-gray-50/50 rounded-2xl p-4 border border-gray-100 min-h-20 max-h-32 overflow-y-auto text-[11px] text-gray-500 leading-relaxed font-medium italic custom-scrollbar">

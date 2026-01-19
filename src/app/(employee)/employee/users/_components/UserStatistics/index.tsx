@@ -301,7 +301,7 @@ const [activeTab, setActiveTab] = useState('overview');
                                     </PieChart>
                                 </ResponsiveContainer>
                             </div>
-                        ) : <div className="text-center py-20 text-gray-300 font-bold">Trống</div>}
+                        ) : <div className="text-center py-20 text-gray-500 font-bold">Trống</div>}
                     </div>
 
                     <div className="lg:col-span-4 space-y-6">

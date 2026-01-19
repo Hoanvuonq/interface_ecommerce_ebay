@@ -72,10 +72,10 @@ export const AddOptionGroupModal: React.FC<AddOptionGroupModalProps> = ({
             />
           </div>
           <div className="flex flex-col">
-            <span className="text-gray-900 font-extrabold text-xl  leading-none">
+            <span className="text-gray-900 font-bold text-xl  leading-none">
               Thêm phân loại
             </span>
-            <span className="text-[10px] text-gray-400 uppercase font-bold  mt-1">
+            <span className="text-[10px] text-gray-500 uppercase font-bold  mt-1">
               Thiết lập thuộc tính sản phẩm
             </span>
           </div>
@@ -108,13 +108,13 @@ export const AddOptionGroupModal: React.FC<AddOptionGroupModalProps> = ({
         <div className="space-y-3">
           {/* Phần Label và Counter giữ bên ngoài để linh hoạt */}
           <div className="flex justify-between items-end px-1">
-            <label className="text-[11px] font-semibold text-gray-400 uppercase ">
+            <label className="text-[11px] font-semibold text-gray-500 uppercase ">
               Tên nhóm phân loại
             </label>
             <span
               className={cn(
                 "text-[10px] font-bold tabular-nums transition-colors",
-                name.length >= 45 ? "text-red-500" : "text-gray-300"
+                name.length >= 45 ? "text-red-500" : "text-gray-500"
               )}
             >
               {name.length}/50
@@ -126,7 +126,7 @@ export const AddOptionGroupModal: React.FC<AddOptionGroupModalProps> = ({
             <div
               className={cn(
                 "absolute left-5 top-1/2 -translate-y-1/2 z-10 transition-all duration-300 pointer-events-none",
-                name ? "text-orange-500 scale-110" : "text-gray-300"
+                name ? "text-orange-500 scale-110" : "text-gray-500"
               )}
             >
               <TagIcon size={18} />
@@ -150,7 +150,7 @@ export const AddOptionGroupModal: React.FC<AddOptionGroupModalProps> = ({
           <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
             <div className="flex items-center gap-2 px-1">
               <div className="h-px flex-1 bg-gray-100" />
-              <span className="text-[10px] font-bold text-gray-300 uppercase whitespace-nowrap">
+              <span className="text-[10px] font-bold text-gray-500 uppercase whitespace-nowrap">
                 Đã sử dụng
               </span>
               <div className="h-px flex-1 bg-gray-100" />

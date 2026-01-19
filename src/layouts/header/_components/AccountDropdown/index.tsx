@@ -157,7 +157,7 @@ export const AccountDropdown = () => {
           "transition-all ml-0.5",
           shouldShowBlackText && isSpecialRole
             ? "text-black"
-            : "text-gray-300 group-hover:text-white"
+            : "text-gray-500 group-hover:text-white"
         )}
       />
     </div>
@@ -177,7 +177,7 @@ export const AccountDropdown = () => {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-gray-400 bg-gray-100">
+              <div className="w-full h-full flex items-center justify-center text-gray-500 bg-gray-100">
                 <User size={24} />
               </div>
             )}

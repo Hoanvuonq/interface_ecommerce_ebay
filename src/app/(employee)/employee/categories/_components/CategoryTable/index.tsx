@@ -179,7 +179,7 @@ export default function CategoryTable() {
         <StatCardComponents
           label="Tạm ngưng"
           value={stats.inactive}
-          color="text-gray-300"
+          color="text-gray-500"
           size="md"
           icon={<PauseCircle />}
         />
@@ -209,7 +209,7 @@ export default function CategoryTable() {
           </div>
           <div className="relative group max-w-sm w-full ml-4">
             <Search
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-orange-500 transition-colors"
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-orange-500 transition-colors"
               size={16}
             />
             <input

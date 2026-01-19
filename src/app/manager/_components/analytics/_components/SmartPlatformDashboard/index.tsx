@@ -40,7 +40,7 @@ export function SmartPlatformDashboard() {
         return (
             <div className="flex flex-col items-center justify-center py-24 bg-white rounded-[40px] border border-dashed border-gray-200">
                 <div className="p-4 bg-gray-50 rounded-full mb-4">
-                    <Inbox className="w-12 h-12 text-gray-300" />
+                    <Inbox className="w-12 h-12 text-gray-500" />
                 </div>
                 <h3 className="text-lg font-semibold text-gray-800 uppercase tracking-widest">Không có dữ liệu</h3>
                 <p className="text-gray-600 text-sm font-medium">Vui lòng thử lại hoặc chọn một ngày khác.</p>

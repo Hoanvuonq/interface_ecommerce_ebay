@@ -23,7 +23,7 @@ export const CustomTooltip = ({
   if (active && payload && payload.length) {
     return (
       <div className="bg-gray-900/95 backdrop-blur-md text-white px-3 py-2 rounded-xl border border-gray-700 shadow-2xl z-50">
-        <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1">
           {label || payload[0].name}
         </p>
         <div className="flex items-center gap-2">

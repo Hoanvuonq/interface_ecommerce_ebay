@@ -58,7 +58,7 @@ export function SmartHeroHeader({
                 </h2>
                 <TrendingUp className="w-4 h-4 text-emerald-500" />
               </div>
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none mt-1.5">
+              <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest leading-none mt-1.5">
                 {formatDateTime(currentTime)}
               </p>
             </div>
@@ -66,7 +66,7 @@ export function SmartHeroHeader({
 
           <div className="flex items-center gap-2 bg-gray-50 p-2 rounded-2xl border border-gray-200 self-start">
             <div className="relative flex items-center bg-white rounded-xl px-3 border border-gray-100 hover:border-gray-200 transition-colors shadow-xs">
-              <Calendar className="w-4 h-4 text-gray-400 mr-2" />
+              <Calendar className="w-4 h-4 text-gray-500 mr-2" />
               <input
                 type="date"
                 value={selectedDate || getTodayISO()}
@@ -81,7 +81,7 @@ export function SmartHeroHeader({
             <button
               onClick={onRefresh}
               disabled={isRefreshing}
-              className="p-2.5 rounded-xl hover:bg-orange-50 text-gray-400 hover:text-(--color-mainColor) active:scale-90 transition-all group"
+              className="p-2.5 rounded-xl hover:bg-orange-50 text-gray-500 hover:text-(--color-mainColor) active:scale-90 transition-all group"
               title="Làm mới dữ liệu"
             >
               <RotateCw
@@ -95,14 +95,14 @@ export function SmartHeroHeader({
         </div>
 
         <div className="flex flex-col gap-1 animate-in fade-in slide-in-from-bottom-4 duration-700">
-          <p className="text-[10px] font-bold uppercase -tracking-tight text-gray-400 ml-1">
+          <p className="text-[10px] font-bold uppercase -tracking-tight text-gray-500 ml-1">
             Tổng cộng nhận được
           </p>
           <div className="flex items-baseline gap-3">
             <span className="text-6xl md:text-8xl font-bold tracking-tighter italic leading-none text-gray-900">
               {revenueValue}
             </span>
-            <span className="text-4xl md:text-5xl font-light text-gray-300 italic leading-none">
+            <span className="text-4xl md:text-5xl font-light text-gray-500 italic leading-none">
               đ
             </span>
             <div className="hidden md:flex items-center bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-100 mb-2 shadow-xs">

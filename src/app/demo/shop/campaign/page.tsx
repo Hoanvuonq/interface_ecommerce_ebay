@@ -381,7 +381,7 @@ export default function ShopCampaignPage() {
 
                             {availableCampaigns.length === 0 ? (
                                 <div className="bg-white rounded-xl p-8 text-center text-gray-500">
-                                    <Zap className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+                                    <Zap className="w-12 h-12 mx-auto mb-3 text-gray-500" />
                                     <p>Không có campaign nào đang mở đăng ký</p>
                                 </div>
                             ) : (
@@ -413,12 +413,12 @@ export default function ShopCampaignPage() {
                                                         <span className="px-2 py-0.5 bg-orange-100 text-orange-700 text-xs font-medium rounded-full">
                                                             {campaign.campaignType}
                                                         </span>
-                                                        <span className="text-xs text-gray-400">
+                                                        <span className="text-xs text-gray-500">
                                                             {campaign.totalSlots} slots
                                                         </span>
                                                     </div>
                                                 </div>
-                                                <ChevronRight className="w-5 h-5 text-gray-400" />
+                                                <ChevronRight className="w-5 h-5 text-gray-500" />
                                             </div>
                                         </div>
                                     ))}
@@ -453,7 +453,7 @@ export default function ShopCampaignPage() {
                                                 </h3>
                                                 {selectedCampaignProducts.length === 0 ? (
                                                     <div className="text-center py-8 bg-gray-50 rounded-lg border border-dashed border-gray-200">
-                                                        <Package className="w-12 h-12 mx-auto mb-2 text-gray-300" />
+                                                        <Package className="w-12 h-12 mx-auto mb-2 text-gray-500" />
                                                         <p className="text-gray-500">Chưa có sản phẩm nào</p>
                                                     </div>
                                                 ) : (
@@ -534,7 +534,7 @@ export default function ShopCampaignPage() {
                                                                     {' - '}
                                                                     {new Date(slot.endTime).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}
                                                                 </p>
-                                                                <p className="text-xs text-gray-400 mt-2">
+                                                                <p className="text-xs text-gray-500 mt-2">
                                                                     {slot.approvedProducts}/{slot.maxProducts} sản phẩm
                                                                 </p>
 
@@ -554,7 +554,7 @@ export default function ShopCampaignPage() {
                                 </div>
                             ) : (
                                 <div className="bg-white rounded-xl p-12 text-center text-gray-500">
-                                    <Package className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+                                    <Package className="w-16 h-16 mx-auto mb-4 text-gray-500" />
                                     <p className="text-lg">Chọn một campaign để xem chi tiết</p>
                                 </div>
                             )}
@@ -571,7 +571,7 @@ export default function ShopCampaignPage() {
 
                         {myRegistrations.length === 0 ? (
                             <div className="bg-white rounded-xl p-12 text-center text-gray-500">
-                                <Package className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+                                <Package className="w-16 h-16 mx-auto mb-4 text-gray-500" />
                                 <p>Bạn chưa đăng ký sản phẩm nào</p>
                             </div>
                         ) : (
@@ -606,7 +606,7 @@ export default function ShopCampaignPage() {
                                         </div>
 
                                         <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between">
-                                            <span className="text-xs text-gray-400">
+                                            <span className="text-xs text-gray-500">
                                                 Stock: {reg.stockSold}/{reg.stockLimit}
                                             </span>
                                             {reg.status === 'PENDING' && (
@@ -659,7 +659,7 @@ export default function ShopCampaignPage() {
 
                             {myCampaigns.filter(c => c.campaignType === 'SHOP_SALE').length === 0 ? (
                                 <div className="bg-white rounded-xl p-8 text-center text-gray-500 border border-gray-200">
-                                    <Tag className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+                                    <Tag className="w-12 h-12 mx-auto mb-3 text-gray-500" />
                                     <p>Chưa có shop sale nào</p>
                                 </div>
                             ) : (
@@ -781,7 +781,7 @@ export default function ShopCampaignPage() {
 
                                             {selectedCampaignProducts.length === 0 ? (
                                                 <div className="text-center py-12 bg-gray-50 rounded-lg border border-dashed border-gray-200">
-                                                    <Package className="w-12 h-12 mx-auto mb-2 text-gray-300" />
+                                                    <Package className="w-12 h-12 mx-auto mb-2 text-gray-500" />
                                                     <p className="text-gray-500">Chưa có sản phẩm nào</p>
                                                     <button
                                                         onClick={() => {
@@ -836,7 +836,7 @@ export default function ShopCampaignPage() {
                                 </div>
                             ) : (
                                 <div className="bg-white rounded-xl p-12 text-center text-gray-500 h-full flex flex-col items-center justify-center border border-gray-200 border-dashed">
-                                    <Tag className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+                                    <Tag className="w-16 h-16 mx-auto mb-4 text-gray-500" />
                                     <p className="text-lg font-medium text-gray-900">Chi tiết chương trình</p>
                                     <p className="text-sm text-gray-500 mt-1">Chọn một shop sale để xem danh sách sản phẩm và thống kê</p>
                                 </div>
@@ -878,7 +878,7 @@ export default function ShopCampaignPage() {
                                     onClick={() => setShowCreateModal(null)}
                                     className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
                                 >
-                                    <span className="text-2xl text-gray-400">×</span>
+                                    <span className="text-2xl text-gray-500">×</span>
                                 </button>
                             </div>
                         </div>
@@ -952,7 +952,7 @@ export default function ShopCampaignPage() {
 
                                     {productsLoading ? (
                                         <div className="text-center py-12 bg-gray-50 rounded-lg border border-dashed border-gray-300">
-                                            <RefreshCw className="animate-spin h-8 w-8 mx-auto text-gray-400 mb-2" />
+                                            <RefreshCw className="animate-spin h-8 w-8 mx-auto text-gray-500 mb-2" />
                                             <p className="text-gray-500">Đang tải sản phẩm...</p>
                                         </div>
                                     ) : (

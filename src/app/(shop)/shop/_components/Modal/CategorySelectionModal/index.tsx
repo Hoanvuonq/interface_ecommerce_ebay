@@ -58,7 +58,7 @@ export const CategorySelectionModal: React.FC<CategorySelectionModalProps> = ({
 
     if (parts.length === 0)
       return (
-        <span className="text-gray-400 italic text-xs font-normal">
+        <span className="text-gray-500 italic text-xs font-normal">
           Vui lòng chọn ngành hàng
         </span>
       );
@@ -84,7 +84,7 @@ export const CategorySelectionModal: React.FC<CategorySelectionModalProps> = ({
           <Layers size={16} className="text-orange-500" />
         </div>
         <div className="flex flex-col">
-          <span className="text-[10px] uppercase font-bold text-gray-400 tracking-[0.15em] mb-1">
+          <span className="text-[10px] uppercase font-bold text-gray-500 tracking-[0.15em] mb-1">
             Lộ trình đã chọn
           </span>
           {renderSelectedPath()}
@@ -147,7 +147,7 @@ export const CategorySelectionModal: React.FC<CategorySelectionModalProps> = ({
             size={14}
             className={cn(
               "transition-transform duration-300 group-hover:trangray-x-1",
-              isSelected ? "text-orange-500" : "text-gray-300"
+              isSelected ? "text-orange-500" : "text-gray-500"
             )}
           />
         )}
@@ -175,7 +175,7 @@ export const CategorySelectionModal: React.FC<CategorySelectionModalProps> = ({
       <div className="flex flex-col gap-6 p-1">
         <div className="relative group">
           <Search
-            className="absolute left-4 top-1/2 -trangray-y-1/2 text-gray-400 group-focus-within:text-orange-500 transition-colors"
+            className="absolute left-4 top-1/2 -trangray-y-1/2 text-gray-500 group-focus-within:text-orange-500 transition-colors"
             size={20}
           />
           <input
@@ -183,7 +183,7 @@ export const CategorySelectionModal: React.FC<CategorySelectionModalProps> = ({
             placeholder="Tìm nhanh ngành hàng (ví dụ: Áo thun, Đồ điện tử...)"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
-            className="w-full pl-12 pr-12 py-4 bg-gray-50 border border-gray-100 rounded-[1.25rem] text-[15px] focus:outline-none focus:bg-white focus:border-orange-300 focus:ring-4 focus:ring-orange-500/5 transition-all placeholder:text-gray-400 font-medium shadow-inner"
+            className="w-full pl-12 pr-12 py-4 bg-gray-50 border border-gray-100 rounded-[1.25rem] text-[15px] focus:outline-none focus:bg-white focus:border-orange-300 focus:ring-4 focus:ring-orange-500/5 transition-all placeholder:text-gray-500 font-medium shadow-inner"
           />
           {searchText && (
             <button
@@ -207,7 +207,7 @@ export const CategorySelectionModal: React.FC<CategorySelectionModalProps> = ({
               className="flex flex-col h-full bg-white/80 backdrop-blur-sm rounded-4xl border border-white shadow-sm overflow-hidden"
             >
               <div className="px-5 py-4 flex items-center justify-between border-b border-orange-50 bg-white">
-                <span className="text-sm font-bold uppercase text-gray-400 ">
+                <span className="text-sm font-bold uppercase text-gray-500 ">
                   {col.title}
                 </span>
                 {col.selected && (
@@ -235,14 +235,14 @@ export const CategorySelectionModal: React.FC<CategorySelectionModalProps> = ({
                   ) : (
                     <div className="flex flex-col items-center justify-center h-full opacity-40">
                       <Layers size={32} className="text-gray-200 mb-2" />
-                      <p className="text-[10px] font-bold text-gray-300 uppercase tracking-widest">
+                      <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
                         Trống
                       </p>
                     </div>
                   )
                 ) : (
                   <div className="flex flex-col items-center justify-center h-full text-center px-6">
-                    <p className="text-[10px] font-bold text-gray-300 uppercase leading-loose tracking-widest">
+                    <p className="text-[10px] font-bold text-gray-500 uppercase leading-loose tracking-widest">
                       Chọn cấp {idx} <br/> để xem tiếp
                     </p>
                   </div>

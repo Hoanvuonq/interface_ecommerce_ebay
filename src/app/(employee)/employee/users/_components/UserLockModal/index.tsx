@@ -84,7 +84,7 @@ export const UserLockModal: React.FC<UserLockModalProps> = ({ logic }) => {
           </label>
           <textarea
             className={cn(
-              "w-full p-5 rounded-3xl bg-gray-50 border-2 border-transparent focus:border-rose-500/20 focus:bg-white focus:ring-4 focus:ring-rose-500/5 outline-none text-sm font-bold text-gray-700 h-40 resize-none transition-all placeholder:text-gray-300 placeholder:font-normal",
+              "w-full p-5 rounded-3xl bg-gray-50 border-2 border-transparent focus:border-rose-500/20 focus:bg-white focus:ring-4 focus:ring-rose-500/5 outline-none text-sm font-bold text-gray-700 h-40 resize-none transition-all placeholder:text-gray-500 placeholder:font-normal",
               lockModal.reason.length < 5 &&
                 lockModal.reason.length > 0 &&
                 "border-rose-200 bg-rose-50/30"
@@ -106,7 +106,7 @@ export const UserLockModal: React.FC<UserLockModalProps> = ({ logic }) => {
                 "text-[10px] font-semibold tracking-widest",
                 lockModal.reason.length > 0
                   ? "text-gray-600"
-                  : "text-gray-300"
+                  : "text-gray-500"
               )}
             >
               {lockModal.reason.length} ký tự

@@ -31,7 +31,7 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>(
     return (
       <div className={cn("mb-6", containerClassName)}>
         {label && (
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-500 mb-1">
             {label}
             {rules.some((r: any) => r.required) && (
               <span className="text-red-500 ml-1">*</span>

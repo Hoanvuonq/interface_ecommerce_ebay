@@ -211,7 +211,7 @@ export default function NotificationList({ recipientRole }: Props) {
                         sizes="48px"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-gray-400">
+                      <div className="w-full h-full flex items-center justify-center text-gray-500">
                         <Bell size={22} strokeWidth={2.2} />
                       </div>
                     )}
@@ -230,7 +230,7 @@ export default function NotificationList({ recipientRole }: Props) {
                         {item.title || "Calatha System"}
                       </h4>
                       {/* <span
-                        className="text-[10px] font-bold text-gray-400 uppercase flex items-center gap-1.5 shrink-0 ml-4 italic whitespace-nowrap bg-gray-50 px-2 py-0.5 rounded-lg border border-gray-100"
+                        className="text-[10px] font-bold text-gray-500 uppercase flex items-center gap-1.5 shrink-0 ml-4 italic whitespace-nowrap bg-gray-50 px-2 py-0.5 rounded-lg border border-gray-100"
                         title={formatDateTime(item.createdAt)}
                       >
                         <Calendar size={11} strokeWidth={2.5} />
@@ -279,7 +279,7 @@ export default function NotificationList({ recipientRole }: Props) {
                 {!hasMore && notifications.length > 0 && (
                   <div className="flex items-center gap-4 w-full max-w-sm">
                     <div className="h-px flex-1 bg-gray-100" />
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 italic">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500 italic">
                       Đã xem hết
                     </span>
                     <div className="h-px flex-1 bg-gray-100" />

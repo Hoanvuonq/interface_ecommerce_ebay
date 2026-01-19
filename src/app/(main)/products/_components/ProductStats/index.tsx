@@ -38,7 +38,7 @@ export const ProductStats: React.FC<IStartProps> = ({
         <span className="text-[15px] font-bold text-gray-800 tracking-tight decoration-gray-300 underline-offset-4 group-hover:text-(--color-mainColor) group-hover:underline">
           {totalReviews}
         </span>
-        <span className="text-[11px] font-medium text-gray-400 ">
+        <span className="text-[11px] font-medium text-gray-500 ">
           Đánh giá
         </span>
       </div>
@@ -47,7 +47,7 @@ export const ProductStats: React.FC<IStartProps> = ({
         <span className="text-[15px] font-bold text-gray-800 tracking-tight">
           {displaySold}
         </span>
-        <span className="text-[11px] font-medium text-gray-400 ">
+        <span className="text-[11px] font-medium text-gray-500 ">
           Đã bán
         </span>
       </div>

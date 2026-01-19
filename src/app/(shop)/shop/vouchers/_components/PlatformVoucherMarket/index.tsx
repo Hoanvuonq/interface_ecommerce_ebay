@@ -86,7 +86,7 @@ export const PlatformVoucherMarket: React.FC<PlatformVoucherMarketProps> = ({
 
         <div className="flex flex-wrap items-center gap-3">
           <div className="relative group">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-orange-500 transition-colors" size={18} />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-orange-500 transition-colors" size={18} />
             <input 
               type="text"
               placeholder="Tìm tên hoặc mã voucher..."
@@ -99,11 +99,11 @@ export const PlatformVoucherMarket: React.FC<PlatformVoucherMarketProps> = ({
           <div className="flex items-center gap-2 bg-gray-50 p-1 rounded-2xl border border-gray-100">
             <button 
               onClick={() => setFilterType("all")}
-              className={cn("px-4 py-1.5 text-[10px] font-bold uppercase rounded-xl transition-all", filterType === 'all' ? "bg-white text-orange-600 shadow-sm" : "text-gray-400")}
+              className={cn("px-4 py-1.5 text-[10px] font-bold uppercase rounded-xl transition-all", filterType === 'all' ? "bg-white text-orange-600 shadow-sm" : "text-gray-500")}
             >Tất cả</button>
             <button 
               onClick={() => setFilterType(DiscountMethod.PERCENTAGE)}
-              className={cn("px-4 py-1.5 text-[10px] font-bold uppercase rounded-xl transition-all", filterType === DiscountMethod.PERCENTAGE ? "bg-white text-orange-600 shadow-sm" : "text-gray-400")}
+              className={cn("px-4 py-1.5 text-[10px] font-bold uppercase rounded-xl transition-all", filterType === DiscountMethod.PERCENTAGE ? "bg-white text-orange-600 shadow-sm" : "text-gray-500")}
             >Giảm %</button>
           </div>
         </div>
@@ -117,7 +117,7 @@ export const PlatformVoucherMarket: React.FC<PlatformVoucherMarketProps> = ({
             onClick={() => setActiveTab(tab)}
             className={cn(
               "pb-4 text-xs font-bold uppercase tracking-[0.2em] transition-all relative",
-              activeTab === tab ? "text-gray-900" : "text-gray-400 hover:text-gray-600"
+              activeTab === tab ? "text-gray-900" : "text-gray-500 hover:text-gray-600"
             )}
           >
             {tab === "recommended" ? "Đề xuất" : tab === "hot" ? "Ưu đãi Hot" : "Cao cấp"}
@@ -130,7 +130,7 @@ export const PlatformVoucherMarket: React.FC<PlatformVoucherMarketProps> = ({
       {loading ? (
         <div className="flex flex-col items-center justify-center py-24 gap-4">
           <Loader2 className="w-10 h-10 text-orange-500 animate-spin" />
-          <span className="text-xs font-bold uppercase text-gray-400 tracking-widest">Đang quét kho ưu đãi...</span>
+          <span className="text-xs font-bold uppercase text-gray-500 tracking-widest">Đang quét kho ưu đãi...</span>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
@@ -183,7 +183,7 @@ export const PlatformVoucherMarket: React.FC<PlatformVoucherMarketProps> = ({
             <div className="flex items-center gap-4">
               <button 
                 onClick={() => setConfirmModalVisible(false)}
-                className="flex-1 py-4 text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-gray-600 transition-colors"
+                className="flex-1 py-4 text-xs font-bold uppercase tracking-widest text-gray-500 hover:text-gray-600 transition-colors"
               >Hủy bỏ</button>
               <button 
                 onClick={onConfirmPurchase}
@@ -240,11 +240,11 @@ const VoucherCard = ({ voucher, onBuy }: { voucher: VoucherTemplate; onBuy: () =
         </div>
 
         <div className="space-y-2 px-1">
-          <div className="flex justify-between items-center text-[10px] font-bold text-gray-400 uppercase tracking-tighter">
+          <div className="flex justify-between items-center text-[10px] font-bold text-gray-500 uppercase tracking-tighter">
             <div className="flex items-center gap-1.5"><ShoppingCart size={12} /> Đơn tối thiểu:</div>
             <span className="text-gray-900">{voucher.minOrderAmount ? `${voucher.minOrderAmount.toLocaleString()}đ` : "0đ"}</span>
           </div>
-          <div className="flex justify-between items-center text-[10px] font-bold text-gray-400 uppercase tracking-tighter">
+          <div className="flex justify-between items-center text-[10px] font-bold text-gray-500 uppercase tracking-tighter">
             <div className="flex items-center gap-1.5"><Calendar size={12} /> Thời hạn:</div>
             <span className={cn(daysLeft <= 3 ? "text-rose-500" : "text-gray-900")}>Còn {daysLeft} ngày</span>
           </div>
@@ -255,7 +255,7 @@ const VoucherCard = ({ voucher, onBuy }: { voucher: VoucherTemplate; onBuy: () =
         <div className="h-[1px] bg-gray-50 w-full" />
         <div className="flex items-center justify-between">
            <div>
-             <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Giá mua</p>
+             <p className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">Giá mua</p>
              <p className="text-sm font-bold text-orange-600 tracking-tight">{voucher.price ? `${voucher.price.toLocaleString()}đ` : "MIỄN PHÍ"}</p>
            </div>
            <button 

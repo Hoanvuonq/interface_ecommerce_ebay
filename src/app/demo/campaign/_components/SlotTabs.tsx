@@ -96,7 +96,7 @@ export function SlotTabs({ slots, activeSlotId, onSlotChange }: SlotTabsProps) {
                         {/* Time Range */}
                         <p className="text-lg font-bold text-gray-700 flex items-center gap-1">
                             {formatTime(slot.startTime)}
-                            <ChevronRight size={16} className="text-gray-400" />
+                            <ChevronRight size={16} className="text-gray-500" />
                             {formatTime(slot.endTime)}
                         </p>
 

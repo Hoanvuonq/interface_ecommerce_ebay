@@ -64,7 +64,7 @@ export const OrderFeeBreakdownViewer: React.FC = () => {
               value={orderId}
               onChange={(e) => setOrderId(e.target.value)}
             />
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
           </div>
           <button
             type="submit"
@@ -76,7 +76,7 @@ export const OrderFeeBreakdownViewer: React.FC = () => {
           <button
             type="button"
             onClick={() => { setData(null); setOrderId(''); }}
-            className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
+            className="p-2 text-gray-500 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
           >
             <Trash2 className="w-5 h-5" />
           </button>
@@ -127,12 +127,12 @@ export const OrderFeeBreakdownViewer: React.FC = () => {
             <div className="bg-white border border-gray-100 rounded-3xl overflow-hidden shadow-sm">
               <div className="px-6 py-4 border-b border-gray-50 bg-gray-50/50 flex justify-between items-center">
                 <h3 className="text-sm font-bold text-gray-800">Phí cấp ORDER (Thanh toán, COD, Dịch vụ...)</h3>
-                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">% dựa trên tổng phí</span>
+                <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">% dựa trên tổng phí</span>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm text-left">
                   <thead>
-                    <tr className="text-gray-400 text-[11px] font-bold uppercase tracking-wider">
+                    <tr className="text-gray-500 text-[11px] font-bold uppercase tracking-wider">
                       <th className="px-6 py-3">Loại phí</th>
                       <th className="px-6 py-3">Mã</th>
                       <th className="px-6 py-3 text-center">Bên chịu</th>
@@ -167,7 +167,7 @@ export const OrderFeeBreakdownViewer: React.FC = () => {
               <div className="overflow-x-auto">
                 <table className="w-full text-sm text-left">
                   <thead>
-                    <tr className="text-gray-400 text-[11px] font-bold uppercase tracking-wider">
+                    <tr className="text-gray-500 text-[11px] font-bold uppercase tracking-wider">
                       <th className="px-6 py-3">Sản phẩm</th>
                       <th className="px-6 py-3">Loại phí</th>
                       <th className="px-6 py-3 text-center">Bên chịu</th>
@@ -208,9 +208,9 @@ const SummaryCard = ({ icon, label, value, subtext, color }: any) => (
   )}>
     <div className="flex justify-between items-start mb-4">
       <div className="p-2.5 bg-white rounded-2xl shadow-sm border border-white/50">{icon}</div>
-      <ArrowUpRight className="w-4 h-4 text-gray-300" />
+      <ArrowUpRight className="w-4 h-4 text-gray-500" />
     </div>
-    <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">{label}</p>
+    <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1">{label}</p>
     <h3 className="text-xl font-bold text-gray-900 tracking-tight">{value}</h3>
     <p className="text-[11px] font-bold text-gray-500 mt-2 flex items-center gap-1 opacity-70">
       <span className="w-1 h-1 rounded-full bg-current" /> {subtext}

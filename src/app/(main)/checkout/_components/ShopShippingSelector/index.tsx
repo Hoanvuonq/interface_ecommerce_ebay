@@ -98,7 +98,7 @@ export const ShopShippingSelector: React.FC<ShopShippingSelectorProps> = ({
             })
           ) : (
             <div className="col-span-full py-6 text-center">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500">
                 Vui lòng chọn địa chỉ để thấy phí vận chuyển
               </p>
             </div>

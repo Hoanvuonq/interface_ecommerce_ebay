@@ -186,7 +186,7 @@ export default function CreateWishlistModal({
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         placeholder="Ví dụ: Đồ Decor nhà mới..."
-                        className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:border-gray-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-bold text-gray-700 placeholder:text-gray-300 shadow-inner"
+                        className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:border-gray-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-bold text-gray-700 placeholder:text-gray-500 shadow-inner"
                     />
                 </div>
 
@@ -198,7 +198,7 @@ export default function CreateWishlistModal({
                         onChange={(e) => setDescription(e.target.value)}
                         rows={3}
                         placeholder="Ghi chú về danh sách này..."
-                        className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:border-gray-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-medium text-gray-600 resize-none placeholder:text-gray-300 shadow-inner"
+                        className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:border-gray-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-medium text-gray-600 resize-none placeholder:text-gray-500 shadow-inner"
                     />
                 </div>
 

@@ -133,7 +133,7 @@ export const FiedFileUpload: React.FC<FiedFileUploadProps> = ({
             isDragging ? "border-gray-500 bg-orange-50" : "border-gray-200 bg-gray-50 hover:bg-white hover:border-gray-300 shadow-sm"
           )}
         >
-          <CloudUpload className={cn("mb-2 transition-colors", isDragging ? "text-orange-500" : "text-gray-400")} size={32} />
+          <CloudUpload className={cn("mb-2 transition-colors", isDragging ? "text-orange-500" : "text-gray-500")} size={32} />
           <p className="text-xs font-bold text-gray-700 uppercase italic">Kéo thả hoặc nhấp để tải file</p>
           <p className="text-[10px] text-gray-500 uppercase mt-1">{description}</p>
         </div>
@@ -149,8 +149,8 @@ export const FiedFileUpload: React.FC<FiedFileUploadProps> = ({
               <p className="text-[9px] text-gray-500 uppercase">{(file.size / 1024).toFixed(0)} KB • {file.type.split("/")[1]}</p>
             </div>
             <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-              <button type="button" onClick={() => window.open(file.preview, "_blank")} className="p-1.5 text-gray-400 hover:text-orange-500"><Eye size={16} /></button>
-              <button type="button" onClick={() => removeFile(file.id)} className="p-1.5 text-gray-400 hover:text-red-500"><X size={16} /></button>
+              <button type="button" onClick={() => window.open(file.preview, "_blank")} className="p-1.5 text-gray-500 hover:text-orange-500"><Eye size={16} /></button>
+              <button type="button" onClick={() => removeFile(file.id)} className="p-1.5 text-gray-500 hover:text-red-500"><X size={16} /></button>
             </div>
           </div>
         ))}

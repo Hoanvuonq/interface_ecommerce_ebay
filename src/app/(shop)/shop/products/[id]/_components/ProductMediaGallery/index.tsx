@@ -21,7 +21,7 @@ export const ProductMediaGallery = ({
         <h2 className="text-[15px] font-bold text-gray-800 tracking-tight">
           Media Gallery
         </h2>
-        <span className="text-xs font-bold text-gray-400 bg-gray-100 px-2.5 py-0.5 rounded-full">
+        <span className="text-xs font-bold text-gray-500 bg-gray-100 px-2.5 py-0.5 rounded-full">
           {media.length} items
         </span>
       </div>
@@ -83,7 +83,7 @@ export const ProductMediaGallery = ({
       ) : (
         <div className="py-12 flex flex-col items-center justify-center bg-gray-50/50 rounded-3xl border-2 border-dashed border-gray-100">
           <ImageIcon size={40} className="text-gray-200 mb-3" />
-          <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">
+          <p className="text-sm font-bold text-gray-500 uppercase tracking-widest">
             Chưa có hình ảnh
           </p>
         </div>

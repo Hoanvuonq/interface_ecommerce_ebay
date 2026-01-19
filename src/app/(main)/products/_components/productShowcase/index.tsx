@@ -263,7 +263,7 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
     <section className="py-8 sm:py-12 bg-gray-50 border-t border-gray-200">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         <div className="text-center mb-8">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 mb-1">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-1">
             {title}
           </h2>
           <p className="text-sm sm:text-base text-gray-600">{subtitle}</p>

@@ -66,7 +66,7 @@ export function ProductInfo({ product, selectedVariant }: ProductInfoProps) {
                                         {entry.value}
                                     </span>
                                 </div>
-                                <ChevronRight size={14} className="text-gray-300 group-hover:text-(--color-mainColor) group-hover:translate-x-1 transition-all" />
+                                <ChevronRight size={14} className="text-gray-500 group-hover:text-(--color-mainColor) group-hover:translate-x-1 transition-all" />
                             </div>
                         ))}
                     </div>

@@ -253,14 +253,14 @@ export const ReturnOrderModal: React.FC<ReturnOrderModalProps> = ({
                       <h4 className="font-bold text-gray-800 text-xs uppercase">
                         {item.label}
                       </h4>
-                      <p className="text-[10px] text-gray-400 mt-0.5 italic">
+                      <p className="text-[10px] text-gray-500 mt-0.5 italic">
                         {item.sub}
                       </p>
                     </div>
                   </div>
                   <ChevronRight
                     size={18}
-                    className="text-gray-300 group-hover:text-orange-500"
+                    className="text-gray-500 group-hover:text-orange-500"
                   />
                 </button>
               ))}

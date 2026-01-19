@@ -120,7 +120,7 @@ export const SettingsQuickReply = () => {
                 )}
               </button>
 
-              <button className="p-3 rounded-2xl bg-gray-50 text-gray-400 hover:text-red-500 border border-gray-100 transition-all active:scale-90">
+              <button className="p-3 rounded-2xl bg-gray-50 text-gray-500 hover:text-red-500 border border-gray-100 transition-all active:scale-90">
                 <Trash2 size={18} />
               </button>
             </div>

@@ -29,7 +29,7 @@ export default function EmployeeHeader({
       <div className="flex items-center gap-2 md:gap-4 flex-1 min-w-0">
         <button
           onClick={onToggleSidebar}
-          className="p-2 rounded-xl text-gray-400 hover:text-(--color-mainColor) hover:bg-orange-50 active:scale-90 transition-all duration-200"
+          className="p-2 rounded-xl text-gray-500 hover:text-(--color-mainColor) hover:bg-orange-50 active:scale-90 transition-all duration-200"
           aria-label="Toggle Sidebar"
         >
           <Menu
@@ -52,7 +52,7 @@ export default function EmployeeHeader({
       <div className="flex items-center gap-2 md:gap-5">
        
         <div className="flex items-center gap-1 md:gap-3">
-          <button className="relative p-2 md:p-2.5 rounded-xl md:rounded-2xl text-gray-400 hover:text-(--color-mainColor) hover:bg-orange-50 transition-all duration-200 group">
+          <button className="relative p-2 md:p-2.5 rounded-xl md:rounded-2xl text-gray-500 hover:text-(--color-mainColor) hover:bg-orange-50 transition-all duration-200 group">
             <Bell className="w-5 h-5 group-hover:animate-swing" />
             <span className="absolute top-2 right-2 flex h-2.5 w-2.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>

@@ -47,7 +47,7 @@ export const NotificationScreen = () => {
               <h1 className="text-base font-bold text-gray-900 italic uppercase tracking-tighter leading-none">
                 Thông báo
               </h1>
-              <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mt-1">
+              <span className="text-[9px] font-bold text-gray-500 uppercase tracking-widest mt-1">
                 Calatha Hub
               </span>
             </div>
@@ -64,7 +64,7 @@ export const NotificationScreen = () => {
                     "relative flex items-center gap-2 px-4 py-2.5 rounded-xl transition-all duration-500 min-w-max",
                     isActive
                       ? "text-(--color-mainColor)"
-                      : "text-gray-400 hover:text-gray-600"
+                      : "text-gray-500 hover:text-gray-600"
                   )}
                 >
                   {isActive && (
@@ -96,7 +96,7 @@ export const NotificationScreen = () => {
             })}
           </div>
 
-          <button className="hidden lg:flex p-2 rounded-xl bg-gray-50 text-gray-400 hover:text-(--color-mainColor) border border-transparent hover:border-gray-100 transition-all">
+          <button className="hidden lg:flex p-2 rounded-xl bg-gray-50 text-gray-500 hover:text-(--color-mainColor) border border-transparent hover:border-gray-100 transition-all">
             <Settings2 size={16} />
           </button>
         </div>

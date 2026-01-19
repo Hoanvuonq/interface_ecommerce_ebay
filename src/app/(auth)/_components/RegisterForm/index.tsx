@@ -162,7 +162,7 @@ export function RegisterForm({ type, initialValues, onSuccess }: RegisterFormPro
                                     CaLaTha
                                 </Title>
                             </div>
-                            <Text className="text-gray-600 dark:text-gray-300">
+                            <Text className="text-gray-600 dark:text-gray-500">
                                 {panelData.welcome.title}
                             </Text>
                         </div>
@@ -206,7 +206,7 @@ export function RegisterForm({ type, initialValues, onSuccess }: RegisterFormPro
                                 <div className="flex items-center justify-between mb-1">
                                     <label
                                         htmlFor="password"
-                                        className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        className="block text-sm font-medium text-gray-700 dark:text-gray-500">
                                         Mật khẩu
                                     </label>
                                     <button
@@ -249,7 +249,7 @@ export function RegisterForm({ type, initialValues, onSuccess }: RegisterFormPro
                             </form>
 
                             <div className="text-center mt-6">
-                                <Text className="text-gray-600 dark:text-gray-300">
+                                <Text className="text-gray-600 dark:text-gray-500">
                                     Đã có tài khoản?
                                     <Link
                                         className="text-orange-600 hover:text-orange-700 font-bold hover:underline ml-1"

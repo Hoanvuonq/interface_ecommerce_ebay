@@ -5,7 +5,7 @@ import { Controller } from "react-hook-form";
 export const FormSelectWrapper = ({ label, name, control, errorMessage, ...props }: any) => (
   <div className="mb-6 flex flex-col gap-1.5">
     {label && (
-      <label className="block text-sm font-bold text-black dark:text-gray-300">
+      <label className="block text-sm font-bold text-black dark:text-gray-500">
         {label}
         {props.required && <span className="text-red-500 ml-1">*</span>}
       </label>

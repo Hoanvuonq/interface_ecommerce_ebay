@@ -56,7 +56,7 @@ export const LegalInfo = ({ shop, setShop }: { shop: any; setShop: any }) => {
                 </div>
               )}
             </div>
-            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+            <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
               Xác thực danh tính chủ cửa hàng
             </p>
           </div>
@@ -70,7 +70,7 @@ export const LegalInfo = ({ shop, setShop }: { shop: any; setShop: any }) => {
               key={idx}
               className="bg-white p-6 flex flex-col gap-2 border-b border-r last:border-0 border-gray-50 group hover:bg-gray-50/50 transition-colors"
             >
-              <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.15em] text-gray-400 group-hover:text-blue-400 transition-colors">
+              <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.15em] text-gray-500 group-hover:text-blue-400 transition-colors">
                 {item.icon} {item.label}
               </div>
               <div className="text-sm font-bold text-gray-800 tracking-tight">
@@ -83,7 +83,7 @@ export const LegalInfo = ({ shop, setShop }: { shop: any; setShop: any }) => {
         {/* Section Hình ảnh CCCD */}
         <div className="mt-10 space-y-4">
           <div className="flex items-center gap-2 ml-1">
-            <ImageIcon size={16} className="text-gray-400" />
+            <ImageIcon size={16} className="text-gray-500" />
             <span className="text-[11px] font-bold uppercase tracking-widest text-gray-500">
               Giấy tờ đính kèm
             </span>
@@ -105,7 +105,7 @@ export const LegalInfo = ({ shop, setShop }: { shop: any; setShop: any }) => {
                       className="object-cover"
                     />
                   ) : (
-                    <div className="flex flex-col items-center gap-2 text-gray-400">
+                    <div className="flex flex-col items-center gap-2 text-gray-500">
                       <ShieldCheck size={24} strokeWidth={1} />
                       <span className="text-[10px] font-bold uppercase tracking-tighter">
                         Bản sao bảo mật
@@ -113,7 +113,7 @@ export const LegalInfo = ({ shop, setShop }: { shop: any; setShop: any }) => {
                     </div>
                   )}
                 </div>
-                <p className="text-center text-[10px] font-bold uppercase text-gray-400 group-hover:text-blue-500 transition-colors">
+                <p className="text-center text-[10px] font-bold uppercase text-gray-500 group-hover:text-blue-500 transition-colors">
                   {img.label}
                 </p>
               </div>

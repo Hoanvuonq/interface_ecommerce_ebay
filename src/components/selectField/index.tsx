@@ -105,7 +105,7 @@ export const SelectField = ({
   return (
     <div className={cn("mb-6", containerClassName)}>
       {label && (
-        <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+        <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-500">
           {label}
           {rules.some((r: any) => r.required) && <span className="text-red-500 ml-1">*</span>}
         </label>

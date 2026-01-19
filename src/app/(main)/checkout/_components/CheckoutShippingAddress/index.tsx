@@ -52,7 +52,7 @@ export const CheckoutShippingAddress: React.FC<ShippingAddressCardProps> = ({
                   </p>
                 </div>
               ) : (
-                <p className="text-gray-400 text-[13px] font-medium italic">
+                <p className="text-gray-500 text-[13px] font-medium italic">
                   Vui lòng cập nhật địa chỉ để nhận hàng nhanh nhất
                 </p>
               )}

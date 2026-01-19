@@ -208,7 +208,7 @@ export const CartScreen = () => {
                         ${
                           selectedCount > 0
                             ? "text-red-500 hover:bg-red-50 active:scale-95 cursor-pointer"
-                            : "text-gray-300 cursor-not-allowed"
+                            : "text-gray-500 cursor-not-allowed"
                         }`}
                 >
                   <Trash2 size={16} />

@@ -44,7 +44,7 @@ const InfoRow = ({
       {showChevron && (
         <ChevronRight
           size={16}
-          className="text-gray-300 group-hover/row:text-blue-500 transition-transform group-hover/row:translate-x-1"
+          className="text-gray-500 group-hover/row:text-blue-500 transition-transform group-hover/row:translate-x-1"
         />
       )}
     </div>

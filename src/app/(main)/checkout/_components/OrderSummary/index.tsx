@@ -45,7 +45,7 @@ export const OrderSummary = ({ onSubmit }: OrderSummaryProps) => {
         {hasMultipleShops && (
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="text-gray-400 hover:text-orange-500 p-1 transition-colors"
+            className="text-gray-500 hover:text-orange-500 p-1 transition-colors"
           >
             <ChevronDown
               size={20}
@@ -61,7 +61,7 @@ export const OrderSummary = ({ onSubmit }: OrderSummaryProps) => {
       <div className="p-6 space-y-6">
         {hasMultipleShops && isExpanded && (
           <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
-            <div className="flex items-center justify-between text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em] pb-2 border-b border-gray-50">
+            <div className="flex items-center justify-between text-[10px] font-bold text-gray-500 uppercase tracking-[0.15em] pb-2 border-b border-gray-50">
               <span>Cửa hàng / Sản phẩm</span>
               <span>Thành tiền</span>
             </div>
@@ -77,7 +77,7 @@ export const OrderSummary = ({ onSubmit }: OrderSummaryProps) => {
                       <Store size={14} className="text-orange-500 shrink-0" />
                       <span className="truncate">{shop.shopName}</span>
                     </div>
-                    <span className="text-[11px] text-gray-400 font-medium pl-5">
+                    <span className="text-[11px] text-gray-500 font-medium pl-5">
                       {shop.items?.length || 0} sản phẩm
                     </span>
                   </div>
@@ -88,7 +88,7 @@ export const OrderSummary = ({ onSubmit }: OrderSummaryProps) => {
                       )}
                     </span>
                     <div className="flex flex-col gap-0">
-                      <span className="text-[10px] text-gray-400">
+                      <span className="text-[10px] text-gray-500">
                         Ship: {formatPrice(shop.summary?.shippingFee)}
                       </span>
                       {shop.voucherResult?.totalDiscount > 0 && (
@@ -149,7 +149,7 @@ export const OrderSummary = ({ onSubmit }: OrderSummaryProps) => {
             <span className="text-[12px] font-bold text-gray-800 uppercase tracking-tight">
               Tổng thanh toán
             </span>
-            <span className="text-[10px] text-gray-400 font-medium italic">
+            <span className="text-[10px] text-gray-500 font-medium italic">
               (Đã bao gồm VAT & Phí)
             </span>
           </div>

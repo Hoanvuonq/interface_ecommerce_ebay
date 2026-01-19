@@ -66,8 +66,8 @@ export const ProductDescription = ({
             >
               {value.length.toLocaleString()}
             </span>
-            <span className="text-[11px] text-gray-300">/</span>
-            <span className="text-[11px] text-gray-400 font-bold">
+            <span className="text-[11px] text-gray-500">/</span>
+            <span className="text-[11px] text-gray-500 font-bold">
               {maxLength.toLocaleString()}
             </span>
           </div>

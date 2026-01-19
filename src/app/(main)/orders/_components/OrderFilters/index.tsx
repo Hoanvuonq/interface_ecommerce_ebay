@@ -20,7 +20,7 @@ export const OrderFilters = () => {
     <div className="flex flex-col gap-5 w-full">
       {/* --- Search Bar --- */}
       <div className="relative group w-full">
-        <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-orange-500 transition-colors">
+        <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-orange-500 transition-colors">
           <Search size={18} strokeWidth={2.5} />
         </div>
         <input
@@ -28,12 +28,12 @@ export const OrderFilters = () => {
           placeholder="Mã đơn hàng, tên sản phẩm..."
           value={searchText}
           onChange={(e) => actions.onSearchChange(e.target.value)}
-          className="w-full h-12 pl-14 pr-12 rounded-full border-2 border-gray-100 bg-white text-sm font-semibold placeholder:text-gray-400 focus:outline-none focus:border-gray-500 focus:ring-4 focus:ring-orange-50 transition-all duration-300"
+          className="w-full h-12 pl-14 pr-12 rounded-full border-2 border-gray-100 bg-white text-sm font-semibold placeholder:text-gray-500 focus:outline-none focus:border-gray-500 focus:ring-4 focus:ring-orange-50 transition-all duration-300"
         />
         {!_.isEmpty(searchText) && (
           <button
             onClick={() => actions.onSearchChange("")}
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300 hover:text-red-500 p-2 transition-all active:scale-90"
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-red-500 p-2 transition-all active:scale-90"
           >
             <X size={18} strokeWidth={3} />
           </button>

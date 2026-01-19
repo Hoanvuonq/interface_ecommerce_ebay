@@ -104,7 +104,7 @@ export default function ProductFilters({
                   )}
                 ></span>
               </span>
-              <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
+              <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider">
                 {hasActiveFilters ? "Đang áp dụng bộ lọc" : "Tùy chỉnh kết quả"}
               </p>
             </div>
@@ -118,7 +118,7 @@ export default function ProductFilters({
           >
             <ChevronDown
               size={16}
-              className="text-gray-400 group-hover:text-orange-500"
+              className="text-gray-500 group-hover:text-orange-500"
             />
           </motion.div>
         </div>
@@ -141,11 +141,11 @@ export default function ProductFilters({
                   </label>
                   <div className="relative group">
                     <Search
-                      className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-orange-500 transition-colors"
+                      className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-orange-500 transition-colors"
                       size={16}
                     />
                     <input
-                      className="w-full pl-11 pr-4 h-12 text-sm font-medium bg-gray-50 border border-transparent rounded-2xl outline-none focus:bg-white focus:border-gray-200 focus:ring-4 focus:ring-orange-50 transition-all placeholder:text-gray-400 text-gray-700"
+                      className="w-full pl-11 pr-4 h-12 text-sm font-medium bg-gray-50 border border-transparent rounded-2xl outline-none focus:bg-white focus:border-gray-200 focus:ring-4 focus:ring-orange-50 transition-all placeholder:text-gray-500 text-gray-700"
                       placeholder="Tìm kiếm sản phẩm..."
                       value={value.keyword || ""}
                       onChange={(e) =>
@@ -197,7 +197,7 @@ export default function ProductFilters({
                   </label>
                   <div className="flex items-center gap-3 text-xs font-bold text-gray-800 bg-white px-3 py-1.5 rounded-xl border border-gray-100 shadow-sm">
                     <span>{formatVND(value.minPrice || 0)}</span>
-                    <ArrowRight size={12} className="text-gray-400" />
+                    <ArrowRight size={12} className="text-gray-500" />
                     <span>{formatVND(value.maxPrice || 100_000_000)}</span>
                   </div>
                 </div>

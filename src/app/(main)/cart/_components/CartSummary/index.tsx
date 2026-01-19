@@ -100,7 +100,7 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
             <div className="p-5 space-y-5">
                 <div className="flex items-center justify-between bg-gray-50/80 p-3 rounded-xl border border-gray-100">
                     <div className="flex items-center gap-2.5">
-                        <CheckCircle className={cn("w-5 h-5", hasSelectedItems ? "text-green-500" : "text-gray-300")} />
+                        <CheckCircle className={cn("w-5 h-5", hasSelectedItems ? "text-green-500" : "text-gray-500")} />
                         <span className="text-sm font-bold text-gray-600">
                             Đã chọn <span className="text-gray-900">{selectedItems}/{cart.itemCount}</span> sản phẩm
                         </span>

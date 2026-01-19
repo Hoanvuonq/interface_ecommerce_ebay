@@ -61,7 +61,7 @@ console.log("Debug Selection:", {
           className="relative group" 
           onSubmit={(e) => { e.preventDefault(); onApplyCode?.(voucherCode); }}
         >
-          <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" />
+          <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
           <input
             type="text"
             value={voucherCode}
@@ -154,7 +154,7 @@ console.log("Debug Selection:", {
         <div className="flex items-center gap-3">
           <div className={cn(
             "w-10 h-10 rounded-xl flex items-center justify-center transition-all", 
-            currentTotalSaving > 0 ? "bg-orange-500 text-white shadow-lg shadow-orange-200" : "bg-gray-100 text-gray-300"
+            currentTotalSaving > 0 ? "bg-orange-500 text-white shadow-lg shadow-orange-200" : "bg-gray-100 text-gray-500"
           )}>
             <Sparkles size={18} className={currentTotalSaving > 0 ? "animate-pulse" : ""} />
           </div>

@@ -181,7 +181,7 @@ export default function EditWishlistItemModal({
                     <div className="flex items-center justify-between ml-1">
                         <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-600">Giá mong muốn (VND)</label>
                         <div className="group relative">
-                            <HelpCircle size={14} className="text-gray-300 cursor-help" />
+                            <HelpCircle size={14} className="text-gray-500 cursor-help" />
                             <div className="absolute bottom-full right-0 mb-2 w-48 p-2 bg-gray-800 text-white text-[9px] rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20 font-medium">
                                 Hệ thống sẽ thông báo khi sản phẩm đạt mức giá này.
                             </div>
@@ -196,9 +196,9 @@ export default function EditWishlistItemModal({
                                 setDesiredPrice(val ? parseInt(val) : "");
                             }}
                             placeholder="Nhập giá bạn muốn chờ đợi..."
-                            className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:border-gray-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-semibold text-orange-600 placeholder:text-gray-300 shadow-inner"
+                            className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:border-gray-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-semibold text-orange-600 placeholder:text-gray-500 shadow-inner"
                         />
-                        <span className="absolute right-5 top-1/2 -translate-y-1/2 font-semibold text-gray-300 group-focus-within:text-orange-300">₫</span>
+                        <span className="absolute right-5 top-1/2 -translate-y-1/2 font-semibold text-gray-500 group-focus-within:text-orange-300">₫</span>
                     </div>
                 </div>
 
@@ -210,7 +210,7 @@ export default function EditWishlistItemModal({
                         onChange={(e) => setNotes(e.target.value)}
                         rows={3}
                         placeholder="Lưu ý về size, màu sắc hoặc thời điểm mua..."
-                        className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:border-gray-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-medium text-gray-600 resize-none placeholder:text-gray-300 shadow-inner"
+                        className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:border-gray-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-medium text-gray-600 resize-none placeholder:text-gray-500 shadow-inner"
                     />
                 </div>
             </div>

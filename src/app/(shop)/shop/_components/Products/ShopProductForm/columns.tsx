@@ -79,7 +79,7 @@ export const getProductColumns = (
               {record.name}
             </Link>
             <div className="flex items-center gap-2 mt-1">
-              <span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest bg-gray-100 px-1.5 py-0.5 rounded">
+              <span className="text-[9px] text-gray-500 font-bold uppercase tracking-widest bg-gray-100 px-1.5 py-0.5 rounded">
                 SKU: {record.slug?.split("-")[0] || "N/A"}
               </span>
               <span className="flex items-center gap-1 text-[9px] text-orange-500 font-bold uppercase tracking-tighter">
@@ -111,10 +111,10 @@ export const getProductColumns = (
       <div className="flex flex-col items-center font-bold text-xs">
         <span>
           <span className="text-orange-500">{totalSold < 0 ? 0 : totalSold}</span>
-          <span className="mx-1 text-gray-400">/</span>
+          <span className="mx-1 text-gray-500">/</span>
           <span className="text-blue-600">{totalQuantity}</span>
         </span>
-        <span className="text-[10px] text-gray-400 font-normal">Đã bán / Nhập kho</span>
+        <span className="text-[10px] text-gray-500 font-normal">Đã bán / Nhập kho</span>
       </div>
     );
   },
@@ -185,7 +185,7 @@ export const getProductColumns = (
           "inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[9px] font-bold uppercase tracking-tighter transition-all",
           record.active
             ? "text-blue-600 bg-blue-50"
-            : "text-gray-400 bg-gray-50"
+            : "text-gray-500 bg-gray-50"
         )}
       >
         {record.active ? (

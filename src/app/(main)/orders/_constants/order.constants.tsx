@@ -74,7 +74,7 @@ export const DEFAULT_STATUS_CONFIG: StatusUIConfig = {
   label: "Trạng thái khác",
   icon: <HelpCircle size={14} />,
   bg: "bg-gray-50",
-  text: "text-gray-400",
+  text: "text-gray-500",
   border: "border-gray-100",
   strip: "#E5E7EB",
 };

@@ -90,7 +90,7 @@ export const VariantDetailModal = ({
 
         {/* Upload Ảnh */}
         <div className="space-y-3">
-          <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Ảnh đại diện biến thể</label>
+          <label className="text-[11px] font-bold text-gray-500 uppercase tracking-widest ml-1">Ảnh đại diện biến thể</label>
           <div className="flex items-center gap-5 p-4 bg-gray-50 rounded-3xl border border-gray-100">
             <div className="w-24 h-24 rounded-2xl border-2 border-dashed border-gray-200 bg-white flex items-center justify-center overflow-hidden shrink-0 shadow-inner">
               {values.imageUrl ? (
@@ -116,7 +116,7 @@ export const VariantDetailModal = ({
         {/* Grid thông tin chính */}
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Mã SKU *</label>
+            <label className="text-[11px] font-bold text-gray-500 uppercase tracking-widest ml-1">Mã SKU *</label>
             <input
               type="text"
               value={values.sku}
@@ -126,7 +126,7 @@ export const VariantDetailModal = ({
             />
           </div>
           <div className="space-y-2">
-            <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Số lượng tồn kho *</label>
+            <label className="text-[11px] font-bold text-gray-500 uppercase tracking-widest ml-1">Số lượng tồn kho *</label>
             <input
               type="number"
               value={values.stockQuantity}
@@ -138,12 +138,12 @@ export const VariantDetailModal = ({
 
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Giá gốc (₫) *</label>
+            <label className="text-[11px] font-bold text-gray-500 uppercase tracking-widest ml-1">Giá gốc (₫) *</label>
             <input
               type="number"
               value={values.corePrice}
               onChange={(e) => onFieldChange("corePrice", Number(e.target.value))}
-              className="w-full px-4 py-3 bg-gray-50 border-transparent rounded-2xl focus:bg-white focus:border-gray-500 outline-none font-bold text-gray-400 border"
+              className="w-full px-4 py-3 bg-gray-50 border-transparent rounded-2xl focus:bg-white focus:border-gray-500 outline-none font-bold text-gray-500 border"
             />
           </div>
           <div className="space-y-2">
@@ -159,7 +159,7 @@ export const VariantDetailModal = ({
 
         {/* Kích thước */}
         <div className="p-5 bg-gray-50/50 rounded-4xl border border-gray-100 space-y-4">
-          <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.2em] flex items-center gap-2">
+          <h3 className="text-[11px] font-bold text-gray-500 uppercase tracking-[0.2em] flex items-center gap-2">
             <Ruler size={14} /> Thông số vận chuyển
           </h3>
           <div className="grid grid-cols-3 gap-3">
@@ -183,14 +183,14 @@ export const VariantDetailModal = ({
               className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl font-bold text-sm outline-none focus:border-gray-300"
               placeholder="Trọng lượng (gram)"
             />
-            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-bold text-gray-400 uppercase">Gram</span>
+            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-bold text-gray-500 uppercase">Gram</span>
           </div>
         </div>
 
         {/* Thuộc tính động */}
         {productOptions.length > 0 && (
           <div className="space-y-4">
-            <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.2em] flex items-center gap-2 ml-1">
+            <h3 className="text-[11px] font-bold text-gray-500 uppercase tracking-[0.2em] flex items-center gap-2 ml-1">
               <Tag size={14} /> Giá trị phân loại
             </h3>
             <div className="grid grid-cols-2 gap-4">

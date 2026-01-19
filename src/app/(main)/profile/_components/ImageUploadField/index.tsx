@@ -175,7 +175,7 @@ export const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
           >
             <button
               onClick={closePreview}
-              className="absolute -top-10 right-0 text-white hover:text-gray-300 text-2xl transition-colors"
+              className="absolute -top-10 right-0 text-white hover:text-gray-500 text-2xl transition-colors"
             >
               <FaTimes />
             </button>

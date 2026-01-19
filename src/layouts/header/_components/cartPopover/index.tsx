@@ -78,7 +78,7 @@ export const CartPopoverContent: React.FC = () => {
     return (
       <div className="flex flex-col items-center justify-center py-12 px-6 text-center">
         <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4">
-          <ShoppingBag size={32} className="text-gray-300" strokeWidth={1.5} />
+          <ShoppingBag size={32} className="text-gray-500" strokeWidth={1.5} />
         </div>
         <p className="text-gray-900 font-bold mb-1 uppercase text-[10px] tracking-widest">
           Giỏ hàng đang trống

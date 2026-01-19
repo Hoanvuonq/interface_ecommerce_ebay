@@ -61,7 +61,7 @@ export const CustomCollapseItem: React.FC<Props> = ({
           onClick={(e) => handleItemClick(e, category.id)}
         >
           <span className="flex-1 truncate mr-2 text-left">{category.name}</span>
-          <ChevronDown className="w-4 h-4 text-gray-400 transition-transform duration-300 group-open:rotate-180" />
+          <ChevronDown className="w-4 h-4 text-gray-500 transition-transform duration-300 group-open:rotate-180" />
         </Link>
       </summary>
 

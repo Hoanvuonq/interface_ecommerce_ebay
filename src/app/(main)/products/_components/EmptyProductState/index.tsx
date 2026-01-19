@@ -27,7 +27,7 @@ export const EmptyProductState = ({
         className="relative mb-8"
       >
         <div className="w-24 h-24 bg-white rounded-3xl flex items-center justify-center shadow-sm border border-gray-100">
-          <Inbox size={48} strokeWidth={1} className="text-gray-300" />
+          <Inbox size={48} strokeWidth={1} className="text-gray-500" />
         </div>
 
         <motion.div

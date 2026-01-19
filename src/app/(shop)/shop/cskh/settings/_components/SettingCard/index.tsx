@@ -94,7 +94,7 @@ export const SettingCard = ({
                   <label className="text-[12px] font-bold uppercase text-gray-700 tracking-tight">
                     Nội dung tin nhắn
                   </label>
-                  <span className="text-[10px] font-bold text-gray-400 tracking-widest bg-white px-2 py-1 rounded-lg border border-gray-100">
+                  <span className="text-[10px] font-bold text-gray-500 tracking-widest bg-white px-2 py-1 rounded-lg border border-gray-100">
                     {tempText.length}/600
                   </span>
                 </div>

@@ -33,7 +33,7 @@ export const ProductSidebar = ({
 
         <div className="space-y-5">
           <div className="group">
-            <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1 mb-2 block">
+            <label className="text-[11px] font-bold text-gray-500 uppercase tracking-widest ml-1 mb-2 block">
               Danh mục
             </label>
             <div className="flex items-center gap-3 p-3 bg-gray-50/50 border border-gray-100 rounded-2xl group-hover:bg-white group-hover:border-gray-200 transition-all duration-300">
@@ -45,7 +45,7 @@ export const ProductSidebar = ({
           </div>
 
           <div className="group">
-            <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1 mb-2 block">
+            <label className="text-[11px] font-bold text-gray-500 uppercase tracking-widest ml-1 mb-2 block">
               Cửa hàng sở hữu
             </label>
             <div className="flex items-center gap-4 p-3.5 bg-orange-50/30 border border-gray-100/50 rounded-2xl group-hover:bg-white group-hover:border-gray-200 transition-all duration-300">
@@ -81,7 +81,7 @@ export const ProductSidebar = ({
         </div>
 
         <div className="relative z-10">
-          <div className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1 mb-2">Giá cơ bản</div>
+          <div className="text-[11px] font-bold text-gray-500 uppercase tracking-widest ml-1 mb-2">Giá cơ bản</div>
           <div className="flex items-baseline justify-end gap-1.5">
             <span className="text-3xl font-bold text-orange-600 tabular-nums">
               {product.basePrice?.toLocaleString("vi-VN")}
@@ -113,7 +113,7 @@ export const ProductSidebar = ({
             { icon: <Package size={16} />, label: "Thể tích", value: firstVariant?.volumeCm3 ? `${firstVariant.volumeCm3.toLocaleString()} cm³` : null },
           ].map((item, idx) => (
             <div key={idx} className="flex items-center justify-between p-3.5 hover:bg-gray-50 rounded-2xl transition-all duration-200 group/item">
-              <div className="flex items-center gap-3 text-gray-400 group-hover/item:text-orange-500 transition-colors">
+              <div className="flex items-center gap-3 text-gray-500 group-hover/item:text-orange-500 transition-colors">
                 {item.icon}
                 <span className="text-xs font-bold uppercase tracking-wide">{item.label}</span>
               </div>

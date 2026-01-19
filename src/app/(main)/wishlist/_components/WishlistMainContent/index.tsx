@@ -113,7 +113,7 @@ export const WishlistMainContent: React.FC<WishlistMainContentProps> = ({
           ))
         ) : (
           <div className="col-span-full py-16 bg-gray-50/50 rounded-4xl border border-dashed border-gray-200 text-center flex flex-col items-center">
-            <Package size={32} className="text-gray-300 mb-2" strokeWidth={1.5} />
+            <Package size={32} className="text-gray-500 mb-2" strokeWidth={1.5} />
             <h3 className="text-gray-600 font-bold uppercase text-[10px] tracking-widest">Empty</h3>
             <Link href="/products" className="mt-4 text-[9px] font-bold uppercase text-orange-600 hover:underline">
               Explore Products →

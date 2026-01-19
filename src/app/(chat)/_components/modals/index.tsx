@@ -66,13 +66,13 @@ export const PickupModal: React.FC<PickupModalProps> = ({
                   </div>
                   <h3 className="text-[15px] font-bold text-gray-800 uppercase tracking-tight">{title}</h3>
                 </div>
-                <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full text-gray-400 transition-colors">
+                <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full text-gray-500 transition-colors">
                   <X size={20} />
                 </button>
               </div>
 
               <div className="relative">
-                <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
                 <input
                   placeholder={placeholder || "Tìm kiếm..."}
                   value={searchText}
@@ -86,7 +86,7 @@ export const PickupModal: React.FC<PickupModalProps> = ({
               {isLoading ? (
                 <div className="flex flex-col items-center justify-center py-20 gap-3">
                   <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
-                  <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Đang tải dữ liệu...</span>
+                  <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Đang tải dữ liệu...</span>
                 </div>
               ) : children}
             </div>

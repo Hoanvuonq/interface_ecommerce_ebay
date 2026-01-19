@@ -36,7 +36,7 @@ export function SmartShopDashboard() {
     return (
       <div className="flex flex-col items-center justify-center py-20 bg-white rounded-[3rem] shadow-custom border border-dashed border-gray-200">
         <div className="p-4 bg-gray-50 rounded-full mb-4">
-          <ShoppingBag size={40} className="text-gray-300" />
+          <ShoppingBag size={40} className="text-gray-500" />
         </div>
         <p className="text-gray-500 font-medium italic uppercase tracking-widest text-xs">
           Không có dữ liệu để hiển thị

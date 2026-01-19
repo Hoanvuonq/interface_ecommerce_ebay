@@ -272,7 +272,7 @@ export const VariantSelector: React.FC<VariantSelectorProps> = ({
                         ? "border-gray-500 text-orange-600 bg-orange-50/50 ring-2 ring-orange-100"
                         : "border-gray-200 text-gray-700 hover:border-gray-300 bg-white",
                       !isAvailable &&
-                        "opacity-50 cursor-not-allowed bg-gray-50 text-gray-400 border-gray-100" // Style cho disabled
+                        "opacity-50 cursor-not-allowed bg-gray-50 text-gray-500 border-gray-100" // Style cho disabled
                     )}
                     disabled={!isAvailable} // Thêm disabled native
                   >

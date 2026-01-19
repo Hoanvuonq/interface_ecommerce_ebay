@@ -357,7 +357,7 @@ export default function AdminCampaignDemoPage() {
 
                         {campaigns.length === 0 ? (
                             <div className="bg-white rounded-xl p-12 text-center text-gray-500">
-                                <Calendar className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+                                <Calendar className="w-16 h-16 mx-auto mb-4 text-gray-500" />
                                 <p>Chưa có campaign nào</p>
                             </div>
                         ) : (
@@ -405,7 +405,7 @@ export default function AdminCampaignDemoPage() {
                                                     </td>
                                                     <td className="px-4 py-4 text-sm text-gray-600">
                                                         <p>{formatDate(campaign.startDate)}</p>
-                                                        <p className="text-gray-400">→ {formatDate(campaign.endDate)}</p>
+                                                        <p className="text-gray-500">→ {formatDate(campaign.endDate)}</p>
                                                     </td>
                                                     <td className="px-4 py-4 text-sm">
                                                         <div className="flex items-center gap-3 text-gray-500">
@@ -417,7 +417,7 @@ export default function AdminCampaignDemoPage() {
                                                         <div className="flex items-center justify-end gap-2">
                                                             <button
                                                                 onClick={() => handleViewStats(campaign)}
-                                                                className="p-2 text-gray-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors cursor-pointer"
+                                                                className="p-2 text-gray-500 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors cursor-pointer"
                                                                 title="Xem thống kê"
                                                             >
                                                                 <BarChart3 className="w-4 h-4" />
@@ -426,7 +426,7 @@ export default function AdminCampaignDemoPage() {
                                                             {campaign.status === 'DRAFT' && (
                                                                 <button
                                                                     onClick={() => handleScheduleCampaign(campaign.id)}
-                                                                    className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
+                                                                    className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
                                                                     title="Lên lịch"
                                                                 >
                                                                     <Play className="w-4 h-4" />
@@ -436,7 +436,7 @@ export default function AdminCampaignDemoPage() {
                                                             {['DRAFT', 'SCHEDULED', 'ACTIVE'].includes(campaign.status) && (
                                                                 <button
                                                                     onClick={() => handleCancelCampaign(campaign.id)}
-                                                                    className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                                                                    className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
                                                                     title="Hủy"
                                                                 >
                                                                     <Ban className="w-4 h-4" />
@@ -511,25 +511,25 @@ export default function AdminCampaignDemoPage() {
                                                     {reg.productName}
                                                 </h3>
                                                 <p className="text-sm text-gray-500">{reg.shopName}</p>
-                                                <p className="text-xs text-gray-400 mt-1">{reg.campaignName}</p>
+                                                <p className="text-xs text-gray-500 mt-1">{reg.campaignName}</p>
                                             </div>
                                         </div>
 
                                         <div className="mt-4 grid grid-cols-2 gap-2 text-sm">
                                             <div>
-                                                <p className="text-gray-400">Giá gốc</p>
+                                                <p className="text-gray-500">Giá gốc</p>
                                                 <p className="line-through text-gray-500">{formatPrice(reg.originalPrice)}</p>
                                             </div>
                                             <div>
-                                                <p className="text-gray-400">Giá sale</p>
+                                                <p className="text-gray-500">Giá sale</p>
                                                 <p className="font-semibold text-red-500">{formatPrice(reg.salePrice)}</p>
                                             </div>
                                             <div>
-                                                <p className="text-gray-400">Giảm</p>
+                                                <p className="text-gray-500">Giảm</p>
                                                 <p className="font-medium text-orange-500">{reg.discountPercent}%</p>
                                             </div>
                                             <div>
-                                                <p className="text-gray-400">Số lượng</p>
+                                                <p className="text-gray-500">Số lượng</p>
                                                 <p className="font-medium">{reg.stockLimit}</p>
                                             </div>
                                         </div>
@@ -619,7 +619,7 @@ export default function AdminCampaignDemoPage() {
                             </div>
                         ) : (
                             <div className="bg-white rounded-xl p-12 text-center text-gray-500">
-                                <BarChart3 className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+                                <BarChart3 className="w-16 h-16 mx-auto mb-4 text-gray-500" />
                                 <p>Chọn một campaign từ tab "Campaigns" để xem thống kê</p>
                             </div>
                         )}

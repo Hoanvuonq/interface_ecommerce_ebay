@@ -116,7 +116,7 @@ export default function ShopVoucherEditModal({
           </div>
           <h2 className="text-xl font-bold text-gray-900 uppercase tracking-tight">Chỉnh sửa Voucher</h2>
         </div>
-        <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-400">
+        <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-500">
           <X size={20} />
         </button>
       </div>
@@ -125,7 +125,7 @@ export default function ShopVoucherEditModal({
         
         {/* Section: Basic Info */}
         <section className="space-y-4">
-          <div className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-[0.2em]">
+          <div className="flex items-center gap-2 text-xs font-bold text-gray-500 uppercase tracking-[0.2em]">
             <Info size={14} /> Thông tin cơ bản
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -183,7 +183,7 @@ export default function ShopVoucherEditModal({
                   "px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all",
                   formData.discountMethod === method.id 
                     ? "bg-orange-500 text-white shadow-md shadow-orange-200" 
-                    : "text-gray-400 hover:text-gray-600"
+                    : "text-gray-500 hover:text-gray-600"
                 )}
               >
                 {method.label}
@@ -230,7 +230,7 @@ export default function ShopVoucherEditModal({
         {/* Section: Time & Limit */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="space-y-4">
-            <div className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-[0.2em]">
+            <div className="flex items-center gap-2 text-xs font-bold text-gray-500 uppercase tracking-[0.2em]">
               <Calendar size={14} /> Thời gian hiệu lực
             </div>
             <div className="space-y-3">
@@ -252,7 +252,7 @@ export default function ShopVoucherEditModal({
           </div>
 
           <div className="space-y-4">
-            <div className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-[0.2em]">
+            <div className="flex items-center gap-2 text-xs font-bold text-gray-500 uppercase tracking-[0.2em]">
               <Users size={14} /> Giới hạn lượt dùng
             </div>
             <input
@@ -268,7 +268,7 @@ export default function ShopVoucherEditModal({
 
         {/* Section: Scope */}
         <section className="space-y-4">
-          <div className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-[0.2em]">
+          <div className="flex items-center gap-2 text-xs font-bold text-gray-500 uppercase tracking-[0.2em]">
             <CheckCircle2 size={14} /> Phạm vi áp dụng
           </div>
           
@@ -281,7 +281,7 @@ export default function ShopVoucherEditModal({
 
           <div className="space-y-6">
             <div className="space-y-3">
-              <p className="text-[11px] font-bold text-gray-400 uppercase ml-1">Sản phẩm áp dụng</p>
+              <p className="text-[11px] font-bold text-gray-500 uppercase ml-1">Sản phẩm áp dụng</p>
               <div className="flex gap-2">
                 {[
                   { id: true, label: "Tất cả sản phẩm" },
@@ -295,7 +295,7 @@ export default function ShopVoucherEditModal({
                       "flex-1 py-3 px-4 rounded-2xl border text-[10px] font-bold uppercase tracking-widest transition-all",
                       formData.applyToAllProducts === opt.id 
                         ? "bg-white border-gray-500 text-orange-600 shadow-sm ring-1 ring-orange-500" 
-                        : "bg-gray-50 border-gray-100 text-gray-400 hover:border-gray-200"
+                        : "bg-gray-50 border-gray-100 text-gray-500 hover:border-gray-200"
                     )}
                   >
                     {opt.label}
@@ -324,7 +324,7 @@ export default function ShopVoucherEditModal({
                     </select>
                     {loadingProducts && <div className="absolute inset-0 flex items-center justify-center bg-white/50 rounded-3xl"><Loader2 className="animate-spin text-orange-500" /></div>}
                   </div>
-                  <p className="text-[10px] text-gray-400 font-bold mt-2 ml-2 italic">Giữ phím Ctrl (hoặc Cmd) để chọn nhiều sản phẩm</p>
+                  <p className="text-[10px] text-gray-500 font-bold mt-2 ml-2 italic">Giữ phím Ctrl (hoặc Cmd) để chọn nhiều sản phẩm</p>
                </div>
             )}
           </div>

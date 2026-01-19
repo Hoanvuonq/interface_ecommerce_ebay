@@ -133,7 +133,7 @@ export default function ShopVoucherCreateModal({ open, onClose, onSuccess }: any
           </div>
 
           <div className="space-y-4">
-            <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] px-2">
+            <div className="flex items-center gap-2 text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] px-2">
               <FileText size={14} /> 01. Thông tin định danh
             </div>
             
@@ -144,7 +144,7 @@ export default function ShopVoucherCreateModal({ open, onClose, onSuccess }: any
                   {["manual", "auto"].map((mode) => (
                     <button key={mode} type="button" onClick={() => setCodeGenerateMode(mode as any)}
                       className={cn("px-8 py-2.5 text-[10px] font-bold uppercase rounded-xl transition-all",
-                        codeGenerateMode === mode ? "bg-gray-900 text-white shadow-lg" : "text-gray-400")}>
+                        codeGenerateMode === mode ? "bg-gray-900 text-white shadow-lg" : "text-gray-500")}>
                       {mode === "manual" ? "Nhập tay" : "Tự động"}
                     </button>
                   ))}
@@ -171,7 +171,7 @@ export default function ShopVoucherCreateModal({ open, onClose, onSuccess }: any
 
           {/* Section 02: Cấu hình ưu đãi */}
           <div className="space-y-6">
-            <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] px-2">
+            <div className="flex items-center gap-2 text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] px-2">
               <DollarSign size={14} /> 02. Cấu hình mức giảm
             </div>
 
@@ -183,7 +183,7 @@ export default function ShopVoucherCreateModal({ open, onClose, onSuccess }: any
                     {[ { id: DiscountType.FIXED_AMOUNT, label: "Số tiền" }, { id: DiscountType.PERCENTAGE, label: "Phần trăm" } ].map((t) => (
                       <button key={t.id} type="button" onClick={() => setFormData((p: any) => ({ ...p, discountType: t.id }))}
                         className={cn("flex-1 py-3 text-[10px] font-bold uppercase rounded-xl transition-all",
-                          formData.discountType === t.id ? "bg-orange-500 text-white shadow-md" : "text-gray-400")}>
+                          formData.discountType === t.id ? "bg-orange-500 text-white shadow-md" : "text-gray-500")}>
                         {t.label}
                       </button>
                     ))}
@@ -210,7 +210,7 @@ export default function ShopVoucherCreateModal({ open, onClose, onSuccess }: any
 
           {/* Section 03: Điều kiện & Thời gian */}
           <div className="space-y-6">
-            <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] px-2">
+            <div className="flex items-center gap-2 text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] px-2">
               <Clock size={14} /> 03. Thời gian & Giới hạn
             </div>
 
@@ -228,7 +228,7 @@ export default function ShopVoucherCreateModal({ open, onClose, onSuccess }: any
 
           {/* Section 04: Phạm vi */}
           <div className="space-y-6 pb-4">
-            <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] px-2">
+            <div className="flex items-center gap-2 text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] px-2">
               <MousePointer2 size={14} /> 04. Đối tượng áp dụng
             </div>
 
@@ -239,7 +239,7 @@ export default function ShopVoucherCreateModal({ open, onClose, onSuccess }: any
                   {[ { id: true, label: "Tất cả sản phẩm" }, { id: false, label: "Sản phẩm chọn lọc" } ].map((opt) => (
                     <button key={String(opt.id)} type="button" onClick={() => setFormData((p: any) => ({ ...p, applyToAllProducts: opt.id }))}
                       className={cn("flex-1 py-3 text-[10px] font-bold uppercase rounded-xl transition-all",
-                        formData.applyToAllProducts === opt.id ? "bg-gray-900 text-white shadow-md" : "text-gray-400")}>
+                        formData.applyToAllProducts === opt.id ? "bg-gray-900 text-white shadow-md" : "text-gray-500")}>
                       {opt.label}
                     </button>
                   ))}
@@ -252,7 +252,7 @@ export default function ShopVoucherCreateModal({ open, onClose, onSuccess }: any
                     onChange={(e) => setFormData((p: any) => ({ ...p, productIds: Array.from(e.target.selectedOptions, (o) => o.value) }))}>
                     {products?.filter(p => p).map((p) => (<option key={p.id} value={p.id} className="py-3 px-5 rounded-xl mb-1 checked:bg-orange-500 checked:text-white">{p.name}</option>))}
                   </select>
-                  <p className="text-[9px] text-gray-400 font-bold mt-3 ml-2 flex items-center gap-2 italic uppercase">
+                  <p className="text-[9px] text-gray-500 font-bold mt-3 ml-2 flex items-center gap-2 italic uppercase">
                     <Info size={12}/> Giữ Ctrl/Cmd để chọn nhiều sản phẩm
                   </p>
                 </div>

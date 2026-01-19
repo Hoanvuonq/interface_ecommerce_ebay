@@ -51,7 +51,7 @@ export const ProductReviews = () => {
       <div className="p-6 md:p-8">
         <h3 className="text-lg font-bold text-gray-800 mb-8 flex items-center gap-2">
           Đánh giá từ khách hàng
-          <span className="text-sm font-medium text-gray-400">
+          <span className="text-sm font-medium text-gray-500">
             ({reviewSummary?.totalReviews ?? 0})
           </span>
         </h3>

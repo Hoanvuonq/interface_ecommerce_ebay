@@ -78,7 +78,7 @@ export default function DepartmentTable() {
     <div className="w-full space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="relative group flex-1 max-w-md">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-orange-500 transition-colors" size={18} />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-orange-500 transition-colors" size={18} />
           <input
             type="text"
             placeholder="Truy vấn tên phòng ban..."

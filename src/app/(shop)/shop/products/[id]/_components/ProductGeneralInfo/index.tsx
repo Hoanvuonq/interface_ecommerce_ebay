@@ -15,14 +15,14 @@ export const ProductGeneralInfo = ({ product, onOpenRichText }: { product: UserP
     </div>
     <div className="p-8 space-y-6">
       <div className="group">
-        <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1 mb-2 block">Tên sản phẩm</label>
+        <label className="text-[11px] font-bold text-gray-500 uppercase tracking-widest ml-1 mb-2 block">Tên sản phẩm</label>
         <div className="px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl font-bold text-gray-700">
           {product.name}
         </div>
       </div>
 
       <div className="group">
-        <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1 mb-2 block">Slug (URL)</label>
+        <label className="text-[11px] font-bold text-gray-500 uppercase tracking-widest ml-1 mb-2 block">Slug (URL)</label>
         <div className="px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl font-medium text-gray-500 font-mono text-xs">
           {product.slug}
         </div>
@@ -30,7 +30,7 @@ export const ProductGeneralInfo = ({ product, onOpenRichText }: { product: UserP
 
       <div className="space-y-3">
         <div className="flex items-center justify-between px-1">
-          <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest block">Mô tả sản phẩm</label>
+          <label className="text-[11px] font-bold text-gray-500 uppercase tracking-widest block">Mô tả sản phẩm</label>
           <button
             onClick={onOpenRichText}
             className="flex items-center gap-2 px-4 py-1.5 bg-orange-500 text-white rounded-xl text-[11px] font-bold uppercase tracking-wider hover:bg-orange-600 transition-all shadow-md shadow-orange-200"
@@ -40,7 +40,7 @@ export const ProductGeneralInfo = ({ product, onOpenRichText }: { product: UserP
         </div>
         <div className="border border-gray-100 rounded-4xl bg-gray-50/30 p-6 min-h-35 relative">
           <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-wrap">
-            {product.description || <span className="text-gray-300 italic font-medium">Sản phẩm chưa có mô tả chi tiết...</span>}
+            {product.description || <span className="text-gray-500 italic font-medium">Sản phẩm chưa có mô tả chi tiết...</span>}
           </p>
         </div>
       </div>

@@ -190,7 +190,7 @@ export default function UserUpdateForm({
                     ID Tài khoản
                   </label>
                   <div className="px-4 py-2.5 bg-gray-50/50 border border-gray-100 rounded-xl text-gray-500 font-mono text-xs font-bold flex items-center gap-2">
-                    <Hash size={12} className="text-gray-300" />#
+                    <Hash size={12} className="text-gray-500" />#
                     {user.userId.slice(-12).toUpperCase()}
                   </div>
                 </div>

@@ -38,7 +38,7 @@ const InfoSale: React.FC<InfoSaleProps> = ({ discountInfo, formatPrice }) => {
                             <div className="absolute -left-1.5 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full border-r border-gray-100" />
                             <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full border-l border-gray-100" />
                             
-                            <div className="font-extrabold text-orange-700 text-sm leading-tight">
+                            <div className="font-bold text-orange-700 text-sm leading-tight">
                                 {discountInfo.voucherName}
                             </div>
                             {discountInfo.voucherCode && (

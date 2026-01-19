@@ -213,7 +213,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                     </div>
                     <ChevronDown
                       className={cn(
-                        "text-gray-300 transition-transform duration-300",
+                        "text-gray-500 transition-transform duration-300",
                         expandedChildren.has(child.id) && "rotate-180"
                       )}
                       size={20}

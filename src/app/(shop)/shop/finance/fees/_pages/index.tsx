@@ -92,7 +92,7 @@ export const ShopFeeReportScreen: React.FC = () => {
     return (
       <div className="min-h-[400px] flex flex-col items-center justify-center gap-4">
         <Loader2 className="w-10 h-10 text-orange-500 animate-spin" />
-        <span className="text-sm font-bold text-gray-400 uppercase tracking-widest">
+        <span className="text-sm font-bold text-gray-500 uppercase tracking-widest">
           Đang tải thông tin shop...
         </span>
       </div>
@@ -127,7 +127,7 @@ export const ShopFeeReportScreen: React.FC = () => {
 
         <div className="flex items-center gap-3 bg-white p-2 rounded-2xl shadow-sm border border-gray-100">
           <div className="flex items-center gap-2 px-3">
-            <Calendar size={16} className="text-gray-400" />
+            <Calendar size={16} className="text-gray-500" />
             <input
               type="date"
               className="text-sm font-bold text-gray-700 outline-none bg-transparent"
@@ -136,7 +136,7 @@ export const ShopFeeReportScreen: React.FC = () => {
                 setDateRange((prev) => ({ ...prev, from: e.target.value }))
               }
             />
-            <span className="text-gray-300">→</span>
+            <span className="text-gray-500">→</span>
             <input
               type="date"
               className="text-sm font-bold text-gray-700 outline-none bg-transparent"
@@ -204,7 +204,7 @@ export const ShopFeeReportScreen: React.FC = () => {
                 <h3 className="font-bold text-gray-800 tracking-tight">
                   Chi tiết từng loại phí
                 </h3>
-                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest bg-white px-3 py-1 rounded-full shadow-sm">
+                <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest bg-white px-3 py-1 rounded-full shadow-sm">
                   Phân tích tỉ trọng
                 </span>
               </div>
@@ -213,7 +213,7 @@ export const ShopFeeReportScreen: React.FC = () => {
                 {feeBreakdown.length > 0 ? (
                   <table className="w-full text-left border-collapse">
                     <thead>
-                      <tr className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.1em]">
+                      <tr className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">
                         <th className="px-8 py-5">Loại phí</th>
                         <th className="px-8 py-5 text-right">Tổng số tiền</th>
                         <th className="px-8 py-5 text-center">Số lần</th>
@@ -231,7 +231,7 @@ export const ShopFeeReportScreen: React.FC = () => {
                             <div className="font-bold text-gray-700">
                               {fee.displayName}
                             </div>
-                            <div className="text-[10px] font-mono text-gray-400 uppercase">
+                            <div className="text-[10px] font-mono text-gray-500 uppercase">
                               {fee.feeType}
                             </div>
                           </td>
@@ -252,7 +252,7 @@ export const ShopFeeReportScreen: React.FC = () => {
                                   style={{ width: `${fee.percentage}%` }}
                                 />
                               </div>
-                              <span className="text-[11px] font-bold text-gray-400 w-10">
+                              <span className="text-[11px] font-bold text-gray-500 w-10">
                                 {fee.percentage.toFixed(1)}%
                               </span>
                             </div>
@@ -279,7 +279,7 @@ export const ShopFeeReportScreen: React.FC = () => {
                 ) : (
                   <div className="py-20 flex flex-col items-center justify-center gap-4">
                     <Inbox size={48} className="text-gray-200" />
-                    <p className="text-gray-400 font-bold uppercase text-xs tracking-widest">
+                    <p className="text-gray-500 font-bold uppercase text-xs tracking-widest">
                       Không có dữ liệu
                     </p>
                   </div>
@@ -321,19 +321,19 @@ const SummaryCard = ({
           {icon}
         </div>
         <ArrowUpRight
-          className="text-gray-300 group-hover:text-gray-500 transition-colors"
+          className="text-gray-500 group-hover:text-gray-500 transition-colors"
           size={20}
         />
       </div>
       <div>
-        <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-gray-400 mb-1">
+        <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-gray-500 mb-1">
           {title}
         </p>
         <h3 className="text-2xl font-bold tracking-tight text-gray-900">
           {isNegative && "-"}
           {value?.toLocaleString("vi-VN")} ₫
         </h3>
-        <p className="mt-2 text-xs font-bold text-gray-400 flex items-center gap-1.5 uppercase tracking-tighter">
+        <p className="mt-2 text-xs font-bold text-gray-500 flex items-center gap-1.5 uppercase tracking-tighter">
           <span className="w-1.5 h-1.5 rounded-full bg-current opacity-50" />
           {subValue}
         </p>

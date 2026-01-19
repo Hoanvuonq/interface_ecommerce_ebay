@@ -258,7 +258,7 @@ export const PayOSQRPayment: React.FC<PayOSQRPaymentProps> = ({
             <span className="text-gray-500 text-sm uppercase tracking-wide font-medium block mb-2">
               Số tiền cần thanh toán
             </span>
-            <div className="text-3xl font-extrabold text-red-600">
+            <div className="text-3xl font-bold text-red-600">
               {formatPrice(payOSData.amount)}
             </div>
           </div>

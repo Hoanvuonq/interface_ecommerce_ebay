@@ -173,7 +173,7 @@ const DetailSalaryBox = ({ label, value, color, icon }: any) => (
 
 const PaymentStep = ({ label, date, isHighlighted }: any) => (
   <div className="space-y-1">
-    <p className="text-[10px] font-semibold text-gray-300 uppercase tracking-widest">{label}</p>
+    <p className="text-[10px] font-semibold text-gray-500 uppercase tracking-widest">{label}</p>
     <div className={cn(
       "px-4 py-3 rounded-xl border font-bold text-sm",
       isHighlighted ? "bg-emerald-50 border-emerald-100 text-emerald-700" : "bg-gray-50 border-gray-100 text-gray-500"

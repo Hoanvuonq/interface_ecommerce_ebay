@@ -127,7 +127,7 @@ export const BasicInfo =({
   const ImagePlaceholder = ({ type }: { type: "logo" | "banner" }) => (
     <div
       className={cn(
-        "flex items-center justify-center bg-linear-to-br from-gray-50 to-gray-100 border border-gray-200 rounded-3xl text-gray-300",
+        "flex items-center justify-center bg-linear-to-br from-gray-50 to-gray-100 border border-gray-200 rounded-3xl text-gray-500",
         type === "logo" ? "w-24 h-24" : "w-48 h-24"
       )}
     >

@@ -82,7 +82,7 @@ export const AUTH_PANEL_DATA: Record<AuthPanelType , PanelContent> = {
         brandColorFrom: 'from-gray-700',
         brandColorTo: 'to-blue-600',
         features: [
-            { icon: FaChartBar, iconColor: 'text-gray-600 dark:text-gray-300', gradientFrom: 'from-gray-100 dark:from-gray-800', gradientTo: 'to-gray-200 dark:to-gray-700', title: 'Dashboard quản lý', description: 'Theo dõi và phân tích dữ liệu' },
+            { icon: FaChartBar, iconColor: 'text-gray-600 dark:text-gray-500', gradientFrom: 'from-gray-100 dark:from-gray-800', gradientTo: 'to-gray-200 dark:to-gray-700', title: 'Dashboard quản lý', description: 'Theo dõi và phân tích dữ liệu' },
             { icon: FaUsers, iconColor: 'text-blue-600 dark:text-blue-300', gradientFrom: 'from-blue-100 dark:from-blue-900', gradientTo: 'to-blue-200 dark:to-blue-800', title: 'Quản lý người dùng', description: 'Quản lý tài khoản và phân quyền' },
             { icon: FaFileInvoiceDollar, iconColor: 'text-indigo-600 dark:text-indigo-300', gradientFrom: 'from-indigo-100 dark:from-indigo-900', gradientTo: 'to-indigo-200 dark:to-indigo-800', title: 'Xử lý đơn hàng', description: 'Quản lý và xử lý đơn hàng hiệu quả' },
             { icon: FaShieldAlt, iconColor: 'text-green-600 dark:text-green-300', gradientFrom: 'from-green-100 dark:from-green-900', gradientTo: 'to-green-200 dark:to-green-800', title: 'Bảo mật cao', description: 'Hệ thống bảo mật đa lớp' },
@@ -136,7 +136,7 @@ export const AUTH_PANEL_DATA: Record<AuthPanelType , PanelContent> = {
         brandColorFrom: 'from-gray-700',
         brandColorTo: 'to-blue-600',
         features: [
-            { icon: FaChartBar, iconColor: 'text-gray-600 dark:text-gray-300', gradientFrom: 'from-gray-100 dark:from-gray-800', gradientTo: 'to-gray-200 dark:to-gray-700', title: 'Dashboard quản lý', description: 'Theo dõi và phân tích dữ liệu' },
+            { icon: FaChartBar, iconColor: 'text-gray-600 dark:text-gray-500', gradientFrom: 'from-gray-100 dark:from-gray-800', gradientTo: 'to-gray-200 dark:to-gray-700', title: 'Dashboard quản lý', description: 'Theo dõi và phân tích dữ liệu' },
             { icon: FaUsers, iconColor: 'text-blue-600 dark:text-blue-300', gradientFrom: 'from-blue-100 dark:from-blue-900', gradientTo: 'to-blue-200 dark:to-blue-800', title: 'Quản lý người dùng', description: 'Quản lý tài khoản và phân quyền' },
             { icon: FaFileInvoiceDollar, iconColor: 'text-indigo-600 dark:text-indigo-300', gradientFrom: 'from-indigo-100 dark:from-indigo-900', gradientTo: 'to-indigo-200 dark:to-indigo-800', title: 'Xử lý đơn hàng', description: 'Quản lý và xử lý đơn hàng hiệu quả' },
             { icon: FaShieldAlt, iconColor: 'text-green-600 dark:text-green-300', gradientFrom: 'from-green-100 dark:from-green-900', gradientTo: 'to-green-200 dark:to-green-800', title: 'Bảo mật cao', description: 'Hệ thống bảo mật đa lớp' },

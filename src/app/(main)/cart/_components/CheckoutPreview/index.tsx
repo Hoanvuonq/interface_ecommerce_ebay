@@ -247,7 +247,7 @@ export const CheckoutPreview: React.FC<CheckoutPreviewProps> = ({
                         <p className="text-[11px] font-semibold text-blue-400 uppercase leading-none mb-1">
                           Điểm thành viên
                         </p>
-                        <p className="text-xs font-medium text-gray-300">
+                        <p className="text-xs font-medium text-gray-500">
                           Đổi{" "}
                           <span className="text-white font-bold">
                             {preview.loyaltyPointsInfo.pointsToRedeem} điểm

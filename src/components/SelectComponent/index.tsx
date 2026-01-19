@@ -146,7 +146,7 @@ export const SelectComponent = ({
             className={cn(
               "text-xs font-semibold truncate",
               !value || (Array.isArray(value) && value.length === 0)
-                ? "text-gray-400"
+                ? "text-gray-500"
                 : "text-gray-700"
             )}
           >
@@ -175,7 +175,7 @@ export const SelectComponent = ({
           >
             <div className="p-3 border-b border-gray-50">
               <div className="relative">
-                <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 text-xs" />
+                <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-xs" />
                 <input
                   autoFocus
                   className="w-full pl-10 pr-4 h-10 text-sm bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-gray-300 focus:bg-white transition-all font-medium text-gray-600"

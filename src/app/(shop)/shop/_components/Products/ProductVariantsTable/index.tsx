@@ -31,29 +31,41 @@ export const ProductVariantsTable: React.FC<ProductVariantsTableProps> = ({
     [variants, onUpdateVariants],
   );
 
-  const handleBulkUpdate = useCallback(
-    (field: keyof Variant | 'BULK_UPDATE', value: any) => {
-      console.log(`handleBulkUpdate called for ${field} with value:`, value);
-      
-      if (field === 'BULK_UPDATE') {
-        // Handle bulk update with multiple fields
-        const updates = value as { [key: string]: any };
-        const newVariants = variants.map((variant) => {
-          const updatedVariant = { ...variant };
-          Object.keys(updates).forEach((updateField) => {
-            updatedVariant[updateField as keyof Variant] = updates[updateField];
-          });
-          return updatedVariant;
+ // Trong file ProductVariantsTable.tsx
+const handleBulkUpdate = useCallback(
+  (field: keyof Variant | 'BULK_UPDATE', value: any) => {
+    if (field === 'BULK_UPDATE') {
+      const updates = value as { [key: string]: any };
+      const newVariants = variants.map((variant) => {
+        const updatedVariant = { ...variant };
+        
+        Object.keys(updates).forEach((updateField) => {
+          const newValue = updates[updateField];
+
+          if (updateField === 'sku' && newValue) {
+            const currentSku = variant.sku || "";
+            if (currentSku.includes("-")) {
+              const parts = currentSku.split("-");
+              const suffix = parts.slice(1).join("-"); 
+              updatedVariant.sku = `${newValue}-${suffix}`.toUpperCase();
+            } else {
+              updatedVariant.sku = newValue.toUpperCase();
+            }
+          } else {
+            updatedVariant[updateField as keyof Variant] = newValue;
+          }
         });
-        onUpdateVariants(newVariants);
-      } else {
-        // Handle single field update
-        const newVariants = variants.map((v) => ({ ...v, [field]: value }));
-        onUpdateVariants(newVariants);
-      }
-    },
-    [variants, onUpdateVariants],
-  );
+        return updatedVariant;
+      });
+      onUpdateVariants(newVariants);
+    } else {
+      // Handle single field update...
+      const newVariants = variants.map((v) => ({ ...v, [field]: value }));
+      onUpdateVariants(newVariants);
+    }
+  },
+  [variants, onUpdateVariants]
+);
 
   const groupMetadata = useMemo(() => {
     const firstOptionMap = new Map<string, boolean>();

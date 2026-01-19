@@ -154,7 +154,7 @@ export default function ReviewManagement() {
                   <tr>
                     <td colSpan={7} className="py-32 text-center">
                       <RotateCw className="animate-spin text-orange-500 mx-auto" size={40} />
-                      <p className="text-[10px] font-semibold text-gray-300 uppercase mt-4 tracking-widest">Đang tải dữ liệu...</p>
+                      <p className="text-[10px] font-semibold text-gray-500 uppercase mt-4 tracking-widest">Đang tải dữ liệu...</p>
                     </td>
                   </tr>
                 ) : reviews.length > 0 ? (
@@ -185,7 +185,7 @@ export default function ReviewManagement() {
                       <td className="px-6 py-5">{renderStars(record.rating)}</td>
                       <td className="px-6 py-5 max-w-xs">
                         <p className="truncate text-gray-600 font-medium" title={record.comment}>
-                          {record.comment || <span className="italic text-gray-300">Không có nội dung</span>}
+                          {record.comment || <span className="italic text-gray-500">Không có nội dung</span>}
                         </p>
                       </td>
                       <td className="px-6 py-5 text-center">
@@ -228,7 +228,7 @@ export default function ReviewManagement() {
                 ) : (
                   <tr>
                     <td colSpan={7} className="py-24 text-center">
-                      <div className="flex flex-col items-center gap-2 text-gray-300">
+                      <div className="flex flex-col items-center gap-2 text-gray-500">
                         <AlertCircle size={48} strokeWidth={1} />
                         <p className="text-sm font-bold italic">Danh sách trống</p>
                       </div>

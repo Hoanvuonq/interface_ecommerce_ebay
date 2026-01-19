@@ -42,7 +42,7 @@ export function SmartMetricsPanel({
           <div className="w-1.5 h-6 bg-orange-500 rounded-full" />
           Tổng Quan Chỉ Số
         </h3>
-        <p className="text-[9px] font-bold text-gray-400 uppercase tracking-[0.2em] ml-4">
+        <p className="text-[9px] font-bold text-gray-500 uppercase tracking-[0.2em] ml-4">
           Phân tích hiệu suất cửa hàng
         </p>
       </div>

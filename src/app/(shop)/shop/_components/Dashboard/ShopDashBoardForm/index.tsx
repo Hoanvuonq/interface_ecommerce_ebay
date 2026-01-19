@@ -67,14 +67,14 @@ export default function ShopDashboardForm() {
                 className="flex items-center justify-between group"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center font-bold text-gray-400 group-hover:bg-orange-500 group-hover:text-white transition-all">
+                  <div className="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center font-bold text-gray-500 group-hover:bg-orange-500 group-hover:text-white transition-all">
                     {idx + 1}
                   </div>
                   <div>
                     <p className="text-sm font-bold text-gray-800 uppercase tracking-tight italic">
                       {item.name}
                     </p>
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                    <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
                       Đã bán: {item.sold}
                     </p>
                   </div>

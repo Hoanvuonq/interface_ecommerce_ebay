@@ -119,7 +119,7 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
       ) : addresses.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-16 bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl">
           <div className="p-4 bg-white rounded-full mb-3 shadow-sm">
-            <FaMapMarkerAlt className="text-3xl text-gray-300" />
+            <FaMapMarkerAlt className="text-3xl text-gray-500" />
           </div>
           <p className="text-gray-500 mb-4 font-medium">
             Bạn chưa lưu địa chỉ nào
@@ -154,7 +154,7 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
                     <span className="font-bold text-gray-900 text-lg">
                       {addr.recipientName}
                     </span>
-                    <span className="text-gray-300 hidden sm:inline">|</span>
+                    <span className="text-gray-500 hidden sm:inline">|</span>
                     <span className="text-gray-600 font-medium">
                       {addr.phone}
                     </span>

@@ -54,10 +54,10 @@ export const ProductClassificationSection = ({
             <Layers className="w-6 h-6 text-orange-600" />
           </div>
           <div>
-            <h3 className="text-xl font-extrabold text-gray-900 tracking-tight leading-none">
+            <h3 className="text-xl font-bold text-gray-900 tracking-tight leading-none">
               Phân loại sản phẩm
             </h3>
-            <p className="text-[10px] font-bold text-gray-400 uppercase mt-1.5">
+            <p className="text-[10px] font-bold text-gray-500 uppercase mt-1.5">
               Quản lý thuộc tính và biến thể sản phẩm
             </p>
           </div>
@@ -83,7 +83,7 @@ export const ProductClassificationSection = ({
             <button
               type="button"
               onClick={() => onRemoveGroup(groupIdx)}
-              className="absolute top-6 right-6 p-2.5 bg-white text-gray-300 hover:text-white hover:bg-red-500 rounded-xl transition-all shadow-sm border border-gray-100 opacity-0 group-hover/panel:opacity-100 z-10"
+              className="absolute top-6 right-6 p-2.5 bg-white text-gray-500 hover:text-white hover:bg-red-500 rounded-xl transition-all shadow-sm border border-gray-100 opacity-0 group-hover/panel:opacity-100 z-10"
             >
               <Trash2 size={16} />
             </button>
@@ -143,7 +143,7 @@ export const ProductClassificationSection = ({
                             onRemoveValue(groupIdx, valIdx);
                           }}
                           className={cn(
-                            "absolute right-2.5 flex items-center justify-center bg-gray-100 text-gray-400 rounded-lg p-1 hover:bg-red-500 hover:text-white transition-all opacity-0 group-hover/tag:opacity-100",
+                            "absolute right-2.5 flex items-center justify-center bg-gray-100 text-gray-500 rounded-lg p-1 hover:bg-red-500 hover:text-white transition-all opacity-0 group-hover/tag:opacity-100",
                             // Nếu không có lỗi, top là giữa ô input. Nếu có lỗi, giữ nguyên vị trí cũ
                             hasError
                               ? "top-5.5 -translate-y-1/2"
@@ -176,7 +176,7 @@ export const ProductClassificationSection = ({
             <Info size={22} />
           </div>
           <div className="space-y-1">
-            <h4 className="text-[10px] font-extrabold text-orange-700 uppercase tracking-[0.2em]">
+            <h4 className="text-[10px] font-bold text-orange-700 uppercase tracking-[0.2em]">
               Mẹo nhỏ thiết lập
             </h4>
             <p className="text-xs text-orange-900/60 leading-relaxed font-semibold">

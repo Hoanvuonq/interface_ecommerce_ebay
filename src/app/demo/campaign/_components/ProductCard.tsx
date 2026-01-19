@@ -76,7 +76,7 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
                     <span className="text-xl font-bold text-red-500">
                         {formatPrice(product.salePrice)}
                     </span>
-                    <span className="text-sm text-gray-400 line-through">
+                    <span className="text-sm text-gray-500 line-through">
                         {formatPrice(product.originalPrice)}
                     </span>
                 </div>
@@ -126,7 +126,7 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
 
                 {/* Limit Badge */}
                 {product.purchaseLimitPerUser && product.purchaseLimitPerUser > 0 && (
-                    <p className="text-center text-xs text-gray-400 mt-2">
+                    <p className="text-center text-xs text-gray-500 mt-2">
                         Giới hạn {product.purchaseLimitPerUser} sản phẩm/người
                     </p>
                 )}

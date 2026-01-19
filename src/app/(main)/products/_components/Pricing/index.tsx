@@ -39,7 +39,7 @@ const Pricing: React.FC<PricingProps> = ({
             <div className="flex items-center justify-center bg-red-500 rounded-md p-1 shadow-sm">
               <Flame className="w-3.5 h-3.5 text-white fill-white" />
             </div>
-            <span className="uppercase text-[13px] font-extrabold tracking-wider text-black">
+            <span className="uppercase text-[13px] font-bold tracking-wider text-black">
               Giá tốt nhất
             </span>
             {discountInfo && (

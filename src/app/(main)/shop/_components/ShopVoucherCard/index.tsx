@@ -53,7 +53,7 @@ export const ShopVoucherCard = ({
         <span className="text-[10px] font-semibold text-(--color-mainColor) uppercase tracking-widest">
           Giảm
         </span>
-        <div className="text-3xl font-extrabold text-(--color-mainColor)/90 tracking-tighter mt-0.5">
+        <div className="text-3xl font-bold text-(--color-mainColor)/90 tracking-tighter mt-0.5">
           {discountType === "PERCENTAGE" ? `${value}%` : `${value / 1000}k`}
         </div>
         <span className="text-[9px] font-bold text-(--color-mainColor)/70 mt-1 uppercase tracking-tight">

@@ -33,7 +33,7 @@ export const BasePriceSection = ({
           <h3 className="text-lg font-bold text-gray-800 tracking-tight">
             Giá cơ bản
           </h3>
-          <p className="text-xs font-medium text-gray-400">
+          <p className="text-xs font-medium text-gray-500">
             Giá này sẽ được áp dụng cho tất cả các biến thể nếu bạn không thiết
             lập riêng.
           </p>

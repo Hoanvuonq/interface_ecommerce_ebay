@@ -38,7 +38,7 @@ export default function EmployeeDashboardScreen() {
             <span className="px-3 py-1 rounded-full bg-orange-100 text-orange-700 text-[10px] font-semibold uppercase tracking-widest border border-gray-200">
               Employee Hub
             </span>
-            <span className="text-gray-300 text-xs">•</span>
+            <span className="text-gray-500 text-xs">•</span>
             <span className="text-gray-600 text-xs font-bold uppercase tracking-wide">
               {new Date().toLocaleDateString("vi-VN", {
                 weekday: "long",
