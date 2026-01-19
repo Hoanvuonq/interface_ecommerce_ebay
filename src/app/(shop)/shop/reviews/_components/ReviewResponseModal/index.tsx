@@ -13,12 +13,20 @@ interface ReviewResponseModalProps {
   onSuccess: () => void;
 }
 
+<<<<<<< HEAD
 export const ReviewResponseModal =({
+=======
+export default function ReviewResponseModal({
+>>>>>>> 8a2068ab96d618c3c925402d94a049953fa71d7b
   open,
   reviewId,
   onClose,
   onSuccess,
+<<<<<<< HEAD
 }: ReviewResponseModalProps) =>{
+=======
+}: ReviewResponseModalProps) {
+>>>>>>> 8a2068ab96d618c3c925402d94a049953fa71d7b
   const [responseValue, setResponseValue] = useState("");
   const [error, setError] = useState("");
   const { handleCreateReviewResponse, loading } = useCreateReviewResponse();
