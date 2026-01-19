@@ -1,10 +1,6 @@
 "use client";
 
-<<<<<<< HEAD
 import React, { useMemo, useRef, useCallback, useState } from "react";
-=======
-import React, { useMemo, useRef, useCallback } from "react";
->>>>>>> 8a2068ab96d618c3c925402d94a049953fa71d7b
 import { DataTable } from "@/components";
 import { ProductVariantsTableProps, Variant } from "./type";
 import { useProductVariantsColumns } from "./columns";
@@ -38,12 +34,9 @@ export const ProductVariantsTable: React.FC<ProductVariantsTableProps> = ({
 
   const handleBulkUpdate = useCallback(
     (field: keyof Variant, value: any) => {
-<<<<<<< HEAD
       // Chỉ thực hiện update nếu trường này đang được CHECKED
       if (!selectedBulkFields.includes(field as string)) return;
 
-=======
->>>>>>> 8a2068ab96d618c3c925402d94a049953fa71d7b
       const newVariants = variants.map((v) => ({ ...v, [field]: value }));
       onUpdateVariants(newVariants);
     },
@@ -69,7 +62,6 @@ export const ProductVariantsTable: React.FC<ProductVariantsTableProps> = ({
     fileInputRefs,
     handleInputChange,
     handleBulkUpdate,
-<<<<<<< HEAD
     onUploadImage,
     selectedBulkFields,
     onToggleBulkField
@@ -89,24 +81,5 @@ export const ProductVariantsTable: React.FC<ProductVariantsTableProps> = ({
         emptyMessage="Vui lòng thiết lập phân loại để tạo biến thể"
       />
     </div>
-=======
-    onUploadImage
-  );
-
-  return (
-    <DataTable
-      data={variants}
-      columns={columns}
-      loading={false}
-      page={0}
-      size={variants.length}
-      totalElements={variants.length}
-      onPageChange={() => {}}
-      rowKey={(item: Variant) =>
-        `v-${item.sku}-${item.optionValueNames?.join("-")}`
-      }
-      emptyMessage="Vui lòng thiết lập phân loại để tạo biến thể"
-    />
->>>>>>> 8a2068ab96d618c3c925402d94a049953fa71d7b
   );
 };

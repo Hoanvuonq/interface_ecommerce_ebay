@@ -89,11 +89,7 @@ export const ProductPreviewSidebar: React.FC<ProductPreviewSidebarProps> = ({
       </div>
 
       <div className="p-5 flex flex-col gap-5">
-<<<<<<< HEAD
         <div className="aspect-square w-full rounded-xl overflow-hidden relative group shadow-custom">
-=======
-        <div className="aspect-square w-full rounded-xl overflow-hidden bg-black relative group shadow-inner">
->>>>>>> 8a2068ab96d618c3c925402d94a049953fa71d7b
           <AnimatePresence initial={false} custom={direction}>
             {mediaItems.length > 0 ? (
               <motion.div
