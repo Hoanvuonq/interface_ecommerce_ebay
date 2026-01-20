@@ -221,7 +221,7 @@ const ProductPromotionList: React.FC<ProductPromotionListProps> = ({ onCountUpda
         emptyMessage="Chưa có chương trình khuyến mãi nào được tạo."
         headerContent={
           <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
-            <div className="relative group min-w-[280px]">
+            <div className="relative group min-w-70">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-orange-500 transition-colors" size={16} />
               <input
                 type="text"
@@ -242,7 +242,7 @@ const ProductPromotionList: React.FC<ProductPromotionListProps> = ({ onCountUpda
               <option value="ENDED">Kết thúc</option>
               <option value="DISABLED">Đã tắt</option>
             </select>
-            <div className="h-6 w-[1px] bg-slate-200 mx-2 hidden sm:block" />
+            <div className="h-6 w-px bg-slate-200 mx-2 hidden sm:block" />
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-slate-50 px-3 py-1 rounded-lg border border-slate-100">
               Tổng: {filteredData.length}
             </span>

@@ -17,7 +17,7 @@ export const VariantTable = ({ variants }: VariantTableProps) => {
     () => [
       {
         header: "Thông tin biến thể",
-        className: "min-w-[250px]",
+        className: "min-w-62.5",
         render: (variant) => (
           <div className="flex items-center gap-4 py-1">
             <div className="relative w-12 h-12 shrink-0 rounded-2xl overflow-hidden bg-slate-50 border border-slate-100 shadow-inner group">

@@ -2,7 +2,14 @@
 "use client";
 
 import { VoucherTemplate } from "@/app/(main)/shop/_types/dto/shop.voucher.dto";
-import { ButtonField, DataTable, SelectComponent } from "@/components"; // Dùng SelectComponent của bạn
+import {
+  ButtonField,
+  DataTable,
+  SelectComponent,
+  ActionBtn,
+  ActionDropdown,
+} from "@/components";
+import { Column } from "@/components/DataTable/type";
 import { formatCurrency } from "@/hooks/format";
 import { useToast } from "@/hooks/useToast";
 import { cn } from "@/utils/cn";
@@ -11,7 +18,7 @@ import {
   Edit3,
   Eraser,
   Eye,
-  MoreVertical,
+  MoreHorizontal,
   Plus,
   Power,
   RefreshCw,
@@ -74,6 +81,7 @@ export default function ShopVoucherList() {
     { label: "50 mục", value: "50" },
   ];
 
+  // LOGIC GIỮ NGUYÊN
   const fetchStatistics = async () => {
     const [all, shop, platform, applicable] = await Promise.all([
       searchTemplates({ scope: "all", page: 0, size: 1 }),
@@ -93,7 +101,7 @@ export default function ShopVoucherList() {
     page: number = 1,
     scope = activeTab,
     search = searchText,
-    pageSize = pagination.pageSize
+    pageSize = pagination.pageSize,
   ) => {
     const result = await searchTemplates({
       scope,
@@ -111,12 +119,14 @@ export default function ShopVoucherList() {
       });
     }
   };
+
   const handleResetFilters = () => {
     setSearchText("");
     setActiveTab("shop");
     setPagination({ current: 1, pageSize: 10, total: 0 });
     fetchVouchers(1, "shop", "");
   };
+
   const handleRefresh = () => {
     fetchStatistics();
     fetchVouchers(pagination.current, activeTab, searchText);
@@ -127,205 +137,242 @@ export default function ShopVoucherList() {
     fetchVouchers(1, activeTab);
   }, [activeTab]);
 
+  // CỘT TABLE VỚI ACTIONBTN & DROPDOWN
   const columns = useMemo(
-    () => [
+    (): Column<VoucherTemplate>[] => [
       {
         header: "Voucher",
-        className: "min-w-[250px]",
+        className: "min-w-[280px]",
         render: (item: VoucherTemplate) => (
-          <div className="flex flex-col gap-1">
-            <span className="px-2 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-bold w-fit rounded-lg tracking-widest font-mono border border-blue-100 uppercase">
+          <div className="flex flex-col gap-1.5 py-1">
+            <span className="px-2 py-0.5 bg-orange-50 text-orange-600 text-[10px] font-bold w-fit rounded-lg tracking-widest border border-orange-100 uppercase italic">
               {item.code}
             </span>
-            <span className="text-sm font-bold text-gray-800 line-clamp-1">
+            <span className="text-[13px] font-bold text-gray-800 line-clamp-1 italic uppercase tracking-tight">
               {item.name}
             </span>
           </div>
         ),
       },
       {
-        header: "Ưu đãi",
-        align: "center" as const,
+        header: "Mức ưu đãi",
+        align: "center",
         render: (item: VoucherTemplate) => (
-          <span
-            className={cn(
-              "px-3 py-1 rounded-xl text-xs font-bold uppercase tracking-tight shadow-sm border",
-              item.discountMethod === "FIXED_AMOUNT"
-                ? "bg-emerald-50 text-emerald-700 border-emerald-100"
-                : "bg-orange-50 text-orange-700 border-gray-100"
-            )}
-          >
-            {item.discountMethod === "FIXED_AMOUNT"
-              ? formatCurrency(item.discountValue)
-              : `${item.discountValue}%`}
-          </span>
-        ),
-      },
-      {
-        header: "Loại",
-        align: "center" as const,
-        render: (item: VoucherTemplate) => (
-          <span
-            className={cn(
-              "px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-widest",
-              item.creatorType === "SHOP"
-                ? "bg-purple-100 text-purple-700"
-                : "bg-cyan-100 text-cyan-700"
-            )}
-          >
-            {item.creatorType === "SHOP" ? "Shop" : "Sàn"}
-          </span>
-        ),
-      },
-      {
-        header: "Trạng thái",
-        align: "center" as const,
-        render: (item: VoucherTemplate) => (
-          <div className="flex items-center justify-center gap-2">
-            <div
+          <div className="flex flex-col items-center">
+            <span
               className={cn(
-                "w-2 h-2 rounded-full",
-                item.active ? "bg-emerald-500 animate-pulse" : "bg-gray-300"
+                "px-3 py-1 rounded-2xl text-[11px] font-bold uppercase tracking-widest shadow-sm border italic",
+                item.discountMethod === "FIXED_AMOUNT"
+                  ? "bg-emerald-50 text-emerald-600 border-emerald-100 shadow-emerald-100/50"
+                  : "bg-orange-50 text-orange-600 border-orange-100 shadow-orange-100/50",
               )}
-            />
-            <span className="text-[10px] font-bold uppercase text-gray-500 tracking-widest">
-              {item.active ? "Online" : "Offline"}
+            >
+              {item.discountMethod === "FIXED_AMOUNT"
+                ? formatCurrency(item.discountValue)
+                : `${item.discountValue}%`}
             </span>
           </div>
         ),
       },
       {
-        header: "Hành động",
-        align: "right" as const,
+        header: "Nguồn cấp",
+        align: "center",
+        render: (item: VoucherTemplate) => (
+          <span
+            className={cn(
+              "px-3 py-1 rounded-xl text-[10px] font-bold uppercase tracking-tighter italic border",
+              item.creatorType === "SHOP"
+                ? "bg-purple-50 text-purple-600 border-purple-100"
+                : "bg-cyan-50 text-cyan-600 border-cyan-100",
+            )}
+          >
+            {item.creatorType === "SHOP" ? "Shop Mall" : "Platform"}
+          </span>
+        ),
+      },
+      {
+        header: "Trạng thái",
+        align: "center",
+        render: (item: VoucherTemplate) => (
+          <div className="flex items-center justify-center gap-2 bg-gray-50 py-1.5 px-3 rounded-2xl border border-gray-100/50">
+            <div
+              className={cn(
+                "w-1.5 h-1.5 rounded-full",
+                item.active ? "bg-emerald-500 animate-pulse" : "bg-gray-300",
+              )}
+            />
+            <span className="text-[10px] font-bold uppercase text-gray-500 tracking-widest">
+              {item.active ? "Live" : "Pause"}
+            </span>
+          </div>
+        ),
+      },
+      {
+        header: "Thao tác",
+        align: "right",
         render: (item: VoucherTemplate) => {
           const isShopVoucher = item.creatorType === "SHOP";
+          const dropdownItems = [
+            {
+              key: "copy",
+              label: "Nhân bản",
+              icon: <Copy size={14} />,
+              onClick: () => handleDuplicateAction(item.id),
+            },
+            {
+              key: "toggle",
+              label: item.active ? "Tạm ngưng" : "Kích hoạt",
+              icon: <Power size={14} />,
+              onClick: () => handleToggleAction(item.id),
+            },
+            { key: "divider", label: "", type: "divider" as const },
+            {
+              key: "delete",
+              label: "Xóa vĩnh viễn",
+              icon: <Trash2 size={14} />,
+              danger: true,
+              onClick: () => handleDeleteAction(item),
+            },
+          ];
+
           return (
             <div className="flex items-center justify-end gap-2">
-              <button
+              <ActionBtn
+                icon={<Eye size={16} />}
                 onClick={() => {
                   setSelectedVoucher(item);
                   setDetailModalOpen(true);
                 }}
-                className="p-2 hover:bg-gray-100 rounded-xl transition-all text-gray-500 hover:text-gray-900 border border-transparent hover:border-gray-200"
-              >
-                <Eye size={18} />
-              </button>
+                tooltip="Xem chi tiết"
+              />
+
               {isShopVoucher ? (
-                <button
-                  onClick={() => {
-                    setSelectedVoucher(item);
-                    setEditModalOpen(true);
-                  }}
-                  className="p-2 hover:bg-orange-50 rounded-xl transition-all text-gray-500 hover:text-orange-600 border border-transparent hover:border-gray-100"
-                >
-                  <Edit3 size={18} />
-                </button>
+                <>
+                  <ActionBtn
+                    icon={<Edit3 size={16} />}
+                    onClick={() => {
+                      setSelectedVoucher(item);
+                      setEditModalOpen(true);
+                    }}
+                    tooltip="Chỉnh sửa"
+                  />
+                  <ActionDropdown
+                    trigger={<ActionBtn icon={<MoreHorizontal size={16} />} />}
+                    items={dropdownItems}
+                  />
+                </>
               ) : (
                 item.purchasable && (
-                  <button
+                  <ActionBtn
+                    icon={<ShoppingCart size={16} />}
+                    color="bg-gray-900 text-white hover:bg-orange-600"
                     onClick={() => {
                       setSelectedVoucher(item);
                       setPurchaseModalOpen(true);
                     }}
-                    className="p-2 bg-gray-900 text-white rounded-xl hover:bg-orange-500 transition-all shadow-lg active:scale-90"
-                  >
-                    <ShoppingCart size={18} />
-                  </button>
+                    tooltip="Mua gói voucher"
+                  />
                 )
-              )}
-
-              {isShopVoucher && (
-                <div className="relative group">
-                  <button className="p-2 hover:bg-gray-100 rounded-xl transition-all text-gray-500">
-                    <MoreVertical size={18} />
-                  </button>
-                  {/* Dropdown custom thay antd: 
-                    Bạn có thể dùng component Popover custom hoặc đơn giản là Tailwind group-hover 
-                 */}
-                  <div className="absolute right-0 top-full mt-1 hidden group-hover:block z-50 bg-white border border-gray-100 rounded-2xl shadow-2xl py-2 min-w-[160px] animate-in fade-in slide-in-from-top-2 duration-200">
-                    <button
-                      onClick={() => handleDuplicateAction(item.id)}
-                      className="w-full px-4 py-2 text-left text-xs font-bold text-gray-600 hover:bg-gray-50 flex items-center gap-2"
-                    >
-                      <Copy /> Sao chép
-                    </button>
-                    <button
-                      onClick={() => handleToggleAction(item.id)}
-                      className="w-full px-4 py-2 text-left text-xs font-bold text-gray-600 hover:bg-gray-50 flex items-center gap-2"
-                    >
-                      <Power /> {item.active ? "Tắt" : "Bật"}
-                    </button>
-                    <div className="h-[1px] bg-gray-50 my-1" />
-                    <button
-                      onClick={() => handleDeleteAction(item)}
-                      className="w-full px-4 py-2 text-left text-xs font-bold text-red-500 hover:bg-red-50 flex items-center gap-2"
-                    >
-                      <Trash2 /> Xóa bỏ
-                    </button>
-                  </div>
-                </div>
               )}
             </div>
           );
         },
       },
     ],
-    [vouchers]
+    [vouchers],
   );
 
-const kpiItems = useMemo(() => [
-  { id: "total", title: "Tổng voucher", value: stats.totalVouchers, colorTheme: "blue" as const, icon: <Ticket /> },
-  { id: "shop", title: "Của tôi", value: stats.shopVouchers, colorTheme: "purple" as const, icon: <ShoppingBag /> },
-  { id: "platform", title: "Từ Sàn", value: stats.platformVouchers, colorTheme: "orange" as const, icon: <Zap /> },
-  { id: "running", title: "Đang chạy", value: stats.applicableVouchers, colorTheme: "green" as const, icon: <ShieldCheck /> },
-], [stats]);
+  // LOGIC ACTIONS GIỮ NGUYÊN
   const handleToggleAction = async (id: string) => {
     const res = await handleToggle(id);
     if (res?.code === 1000) {
-      success("Cập nhật thành công");
+      success("Cập nhật trạng thái thành công");
       fetchVouchers(pagination.current);
     }
   };
+
   const handleDuplicateAction = async (id: string) => {
     const res = await handleDuplicate(id);
     if (res?.code === 1000) {
-      success("Đã sao chép");
+      success("Đã nhân bản voucher thành công");
       fetchVouchers(1);
     }
   };
+
   const handleDeleteAction = async (voucher: VoucherTemplate) => {
-    if (window.confirm(`Xác nhận xóa: ${voucher.name}?`)) {
+    if (window.confirm(`Xác nhận xóa voucher: ${voucher.name}?`)) {
       const res = await handleDelete(voucher.id);
       if (res?.code === 1000) {
-        success("Đã xóa");
+        success("Đã xóa voucher khỏi hệ thống");
         fetchVouchers(pagination.current);
         fetchStatistics();
       }
     }
   };
 
+  const kpiItems = useMemo(
+    () => [
+      {
+        id: "total",
+        title: "Tổng Voucher",
+        value: stats.totalVouchers,
+        colorTheme: "blue" as const,
+        icon: <Ticket />,
+      },
+      {
+        id: "shop",
+        title: "Của Shop",
+        value: stats.shopVouchers,
+        colorTheme: "purple" as const,
+        icon: <ShoppingBag />,
+      },
+      {
+        id: "platform",
+        title: "Từ Sàn",
+        value: stats.platformVouchers,
+        colorTheme: "orange" as const,
+        icon: <Zap />,
+      },
+      {
+        id: "running",
+        title: "Đang Chạy",
+        value: stats.applicableVouchers,
+        colorTheme: "green" as const,
+        icon: <ShieldCheck />,
+      },
+    ],
+    [stats],
+  );
+
   return (
     <div className="p-6 space-y-8 animate-in fade-in duration-700">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div className="space-y-1">
-          <h1 className="text-3xl font-bold text-gray-900 uppercase tracking-tight flex items-center gap-3">
-            <div className="p-2.5 bg-gray-900 rounded-[1.25rem] text-white shadow-xl">
-              <Ticket size={28} />
+        <div className="space-y-2">
+          <div className="flex items-center gap-3">
+            <div className="p-3 bg-gray-900 rounded-3xl text-white shadow-2xl shadow-gray-200">
+              <Ticket size={28} strokeWidth={2.5} />
             </div>
-            Quản lý Voucher
-          </h1>
-          <p className="text-sm text-gray-500 font-medium ml-1">
-            Tạo và quản trị các chiến dịch ưu đãi của Shop
-          </p>
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900 uppercase tracking-tighter italic leading-none">
+                Voucher Management
+              </h1>
+              <div className="flex items-center gap-2 mt-2">
+                <div className="size-1.5 rounded-full bg-orange-500 animate-pulse" />
+                <p className="text-[10px] font-bold text-gray-400 uppercase">
+                  Promotion & Marketing Protocol
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
         <ButtonField
           type="login"
           onClick={() => setCreateModalOpen(true)}
-          className="w-60 h-12 rounded-2xl text-[10px] font-bold uppercase tracking-[0.2em] shadow-custom "
+          className="w-50 h-12 rounded-2xl text-[11px]! font-bold uppercase  shadow-[0_20px_40px_-15px_rgba(249,115,22,0.4)] bg-orange-500"
         >
-          <span className="flex gap-2 items-center">
-            <Plus size={16} className="mr-2" strokeWidth={3} /> Tạo Voucher Mới
+          <span className="flex gap-3 items-center">
+            <Plus size={18} strokeWidth={3} /> Tạo Chiến Dịch Mới
           </span>
         </ButtonField>
       </div>
@@ -344,13 +391,17 @@ const kpiItems = useMemo(() => [
       </div>
 
       <div className="space-y-6">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-white p-6 rounded-[2.5rem] shadow-sm border border-gray-100">
-          <div className="flex items-center gap-2 bg-gray-50 p-1.5 rounded-2xl border border-gray-100 w-full lg:w-auto focus-within:ring-4 focus-within:ring-orange-500/10 transition-all">
-            <Search size={18} className="ml-3 text-gray-500" />
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-white/60 backdrop-blur-xl p-6 rounded-[2.5rem] shadow-sm border border-gray-100">
+          <div className="flex items-center gap-2 bg-white p-1.5 rounded-2xl border border-gray-200 w-full lg:w-auto focus-within:ring-8 focus-within:ring-orange-500/5 focus-within:border-orange-200 transition-all duration-300">
+            <Search
+              size={18}
+              className="ml-4 text-gray-400"
+              strokeWidth={2.5}
+            />
             <input
               type="text"
-              placeholder="Tìm tên hoặc mã voucher..."
-              className="bg-transparent border-none outline-none p-2 text-sm font-bold text-gray-700 w-full lg:min-w-[350px]"
+              placeholder="Truy vấn mã hoặc tên chiến dịch..."
+              className="bg-transparent border-none outline-none p-2 text-[13px] font-bold text-gray-700 w-full lg:min-w-87.5 placeholder:text-gray-300 italic"
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
               onKeyDown={(e) =>
@@ -361,7 +412,7 @@ const kpiItems = useMemo(() => [
 
           <div className="flex items-center gap-3">
             <SelectComponent
-              className="w-40"
+              className="w-44"
               options={pageSizeOptions}
               value={String(pagination.pageSize)}
               onChange={(val) => {
@@ -371,22 +422,21 @@ const kpiItems = useMemo(() => [
               }}
             />
 
-            <button
+            <ActionBtn
+              icon={<Eraser size={20} />}
               onClick={handleResetFilters}
-              className="p-3 bg-gray-50 text-gray-500 hover:text-(--color-mainColor) rounded-2xl transition-all shadow-sm"
-            >
-              <Eraser size={20} />
-            </button>
-            <button
+              tooltip="Xóa bộ lọc"
+            />
+            <ActionBtn
+              icon={<RefreshCw size={20} />}
               onClick={handleRefresh}
-              className="p-3 bg-gray-50 text-gray-500 hover:text-blue-600 rounded-2xl transition-all shadow-sm"
-            >
-              <RefreshCw size={20} />
-            </button>
+              tooltip="Làm mới dữ liệu"
+              color="bg-white text-blue-500"
+            />
           </div>
         </div>
 
-        <div className="h-[68px]">
+        <div className="h-10">
           <StatusTabsTable
             current={activeTab}
             onChange={setActiveTab}
@@ -394,7 +444,7 @@ const kpiItems = useMemo(() => [
           />
         </div>
 
-        <div className="min-h-[500px] transition-all duration-300">
+        <div className="transition-all duration-500">
           <DataTable
             data={vouchers}
             columns={columns}
@@ -407,6 +457,7 @@ const kpiItems = useMemo(() => [
         </div>
       </div>
 
+      {/* MODALS GIỮ NGUYÊN LOGIC */}
       <ShopVoucherCreateModal
         open={createModalOpen}
         onClose={() => setCreateModalOpen(false)}

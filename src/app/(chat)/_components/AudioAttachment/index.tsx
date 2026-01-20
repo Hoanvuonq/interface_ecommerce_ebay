@@ -107,7 +107,7 @@ export const AudioAttachment: React.FC<AudioAttachmentProps> = ({ attachment }) 
   }, [drawWaveform]);
 
   return (
-    <div className="mt-2 p-3 w-full max-w-[320px] bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl border border-gray-200 shadow-sm transition-all hover:shadow-md">
+    <div className="mt-2 p-3 w-full max-w-[320px] bg-linear-to-br from-gray-50 to-gray-100 rounded-2xl border border-gray-200 shadow-sm transition-all hover:shadow-md">
       <audio
         ref={audioRef}
         src={fileUrl}

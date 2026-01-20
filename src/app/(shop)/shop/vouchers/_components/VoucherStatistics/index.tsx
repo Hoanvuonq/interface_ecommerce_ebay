@@ -1,28 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
-import {
-  BarChart3,
-  Search,
-  Calendar,
-  RefreshCcw,
-  Eraser,
-  Trophy,
-  TrendingUp,
-  DollarSign,
-  Gift,
-  Loader2,
-  Inbox,
-  Target,
-} from "lucide-react";
-import dayjs from "dayjs";
-import {
-  useSearchVoucherTemplates,
-  useGetAllVoucherStats,
-} from "../../_hooks/useShopVoucher";
 import { DataTable } from "@/components";
 import { cn } from "@/utils/cn";
+import {
+  BarChart3,
+  DollarSign,
+  RefreshCcw,
+  Search,
+  Target,
+  TrendingUp,
+  Trophy
+} from "lucide-react";
+import React, { useEffect, useMemo, useState } from "react";
+import {
+  useGetAllVoucherStats,
+  useSearchVoucherTemplates,
+} from "../../_hooks/useShopVoucher";
 
 interface VoucherStats {
   voucherCode: string;
@@ -294,7 +288,7 @@ const VoucherStatistics: React.FC = () => {
 const OverviewCard = ({ label, value, icon, color, isCurrency }: any) => (
   <div
     className={cn(
-      "p-6 rounded-[2.5rem] border bg-gradient-to-br shadow-sm transition-all hover:shadow-md",
+      "p-6 rounded-[2.5rem] border bg-linear-to-br shadow-sm transition-all hover:shadow-md",
       color === "emerald"
         ? "from-emerald-50 to-white border-emerald-100"
         : color === "rose"

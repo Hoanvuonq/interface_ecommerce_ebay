@@ -51,7 +51,7 @@ export const AdminActionsCard = ({
       {/* Main Status / Approve Button */}
       <div className="mb-8">
         {isApproved ? (
-          <div className="w-full bg-green-50 text-green-700 font-bold uppercase tracking-widest text-xs py-5 rounded-[1.5rem] flex items-center justify-center gap-3 border-2 border-green-100 shadow-sm animate-in zoom-in duration-300">
+          <div className="w-full bg-green-50 text-green-700 font-bold uppercase tracking-widest text-xs py-5 rounded-3xl flex items-center justify-center gap-3 border-2 border-green-100 shadow-sm animate-in zoom-in duration-300">
             <CheckCircle size={20} strokeWidth={3} />
             Sản phẩm đã được phê duyệt
           </div>
@@ -59,7 +59,7 @@ export const AdminActionsCard = ({
           <button
             onClick={onApprove}
             disabled={loading}
-            className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold uppercase tracking-widest text-sm py-5 rounded-[1.5rem] flex items-center justify-center gap-3 transition-all shadow-xl shadow-orange-500/25 active:scale-[0.98] disabled:opacity-50 border-b-4 border-orange-700"
+            className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold uppercase tracking-widest text-sm py-5 rounded-3xl flex items-center justify-center gap-3 transition-all shadow-xl shadow-orange-500/25 active:scale-[0.98] disabled:opacity-50 border-b-4 border-orange-700"
           >
             <CheckCircle size={20} strokeWidth={3} />
             Phê duyệt sản phẩm ngay
@@ -85,7 +85,7 @@ export const AdminActionsCard = ({
           onClick={() => onReject(reason)}
           disabled={loading || !reason.trim()}
           className={cn(
-            "flex flex-col items-center justify-center gap-2 p-4 rounded-[1.5rem] transition-all border-2 group/btn",
+            "flex flex-col items-center justify-center gap-2 p-4 rounded-3xl transition-all border-2 group/btn",
             "bg-red-50/50 border-red-100 text-red-600 hover:bg-red-500 hover:text-white hover:border-red-500 disabled:opacity-40",
           )}
         >
@@ -102,7 +102,7 @@ export const AdminActionsCard = ({
           onClick={() => onRequestEdit(reason)}
           disabled={loading || !reason.trim()}
           className={cn(
-            "flex flex-col items-center justify-center gap-2 p-4 rounded-[1.5rem] transition-all border-2 group/btn",
+            "flex flex-col items-center justify-center gap-2 p-4 rounded-3xl transition-all border-2 group/btn",
             "bg-amber-50/50 border-amber-100 text-amber-600 hover:bg-amber-500 hover:text-white hover:border-amber-500 disabled:opacity-40",
           )}
         >

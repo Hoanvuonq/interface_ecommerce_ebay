@@ -33,7 +33,7 @@ export const FlashSaleSection: React.FC = () => {
   if (flashSale.length === 0) return null;
 
   return (
-    <SectionSreen id="calatha-mall" animation="slideUp">
+    <SectionSreen id="flash-sale" animation="slideUp">
       <CountdownFlashSale />
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 pt-3">
@@ -50,7 +50,7 @@ export const FlashSaleSection: React.FC = () => {
             <div key={product.id} className="flex flex-col group">
               <div
                 className={cn(
-                  "bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all",
+                  "bg-white rounded-4xl overflow-hidden shadow-md hover:shadow-2xl transition-all",
                   "duration-300 transform group-hover:-translate-y-1 border border-gray-100"
                 )}
               >

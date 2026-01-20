@@ -1,8 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState, useCallback } from "react";
-import { X } from "lucide-react";
+import { useEffect, useState, useCallback } from "react";
 
 // Hooks
 import {
@@ -10,7 +9,6 @@ import {
   useFileUpload,
   useCategoryManagement,
   useOptionManagement,
-  useVariantManagement,
 } from "../../../../_hooks";
 import { useProductContext } from "../../../../_contexts";
 
@@ -144,23 +142,31 @@ export default function ShopProductAddStepsFormScreen() {
   });
 
   // Không cần useVariantManagement nữa, chỉ cần wrapper functions
-  const handleUpdateVariant = useCallback((index: number, field: string, value: any) => {
-    const store = useProductStore.getState();
-    store.updateVariant(index, field as any, value);
-  }, []);
+  const handleUpdateVariant = useCallback(
+    (index: number, field: string, value: any) => {
+      const store = useProductStore.getState();
+      store.updateVariant(index, field as any, value);
+    },
+    [],
+  );
 
-  const handleUpdateVariants = useCallback((newVariants: any[]) => {
-    setVariants(newVariants);
-  }, []);
+  const handleUpdateVariants = useCallback(
+    (newVariants: any[]) => {
+      setVariants(newVariants);
+    },
+    [setVariants],
+  );
 
-  const validateVariantStructure = useCallback((variantList: any[]): string[] => {
-    const errors: string[] = [];
-    if (!variantList || variantList.length === 0) {
-      errors.push("Cần tạo ít nhất 1 biến thể trước khi tiếp tục.");
-    }
-    return errors;
-  }, []);
-
+  const validateVariantStructure = useCallback(
+    (variantList: any[]): string[] => {
+      const errors: string[] = [];
+      if (!variantList || variantList.length === 0) {
+        errors.push("Cần tạo ít nhất 1 biến thể trước khi tiếp tục.");
+      }
+      return errors;
+    },
+    [],
+  );
 
   const optionNames = getOptionNames();
 
@@ -259,44 +265,110 @@ export default function ShopProductAddStepsFormScreen() {
 
       const variantsToSubmit =
         variants.length > 0 ? variants : values.variants || [];
+
+      // Debug: Show all variant keys and their image status
+      console.log("📊 Detailed variants analysis:");
+      variantsToSubmit.forEach((v, idx) => {
+        const variantKey = v.optionValueNames?.join("|") || "no-key";
+        console.log(`  Variant ${idx + 1} (${v.sku}):`, {
+          key: variantKey,
+          optionValues: v.optionValueNames,
+          hasImageAssetId: !!v.imageAssetId,
+          imageAssetId: v.imageAssetId,
+          hasImageUrl: !!v.imageUrl,
+          imageUrl: v.imageUrl?.substring(0, 50) + "...",
+          hasExtension: !!v.imageExtension,
+        });
+      });
+
+      console.log(
+        "🔍 Variants to submit:",
+        variantsToSubmit.map((v) => ({
+          sku: v.sku,
+          hasImageAssetId: !!v.imageAssetId,
+          imageAssetId: v.imageAssetId,
+          imageUrl: v.imageUrl,
+          imageExtension: v.imageExtension,
+        })),
+      );
+
       const structuralErrors = validateVariantStructure(variantsToSubmit);
       if (structuralErrors.length > 0) {
         showVariantErrors(structuralErrors);
         return;
       }
 
+      // Debug: Check fileList and videoList before building media array
+      console.log(
+        "📸 FileList debug:",
+        fileList.map((f) => ({
+          uid: f.uid,
+          name: f.name,
+          status: f.status,
+          url: f.url,
+          assetId: (f as any).assetId,
+          response: (f as any).response,
+        })),
+      );
+      console.log(
+        "🎥 VideoList debug:",
+        videoList.map((v) => ({
+          uid: v.uid,
+          name: v.name,
+          status: v.status,
+          url: v.url,
+          assetId: (v as any).assetId,
+          response: (v as any).response,
+        })),
+      );
+
+      // Build media array
+      const mediaArray = [
+        ...fileList
+          .filter((file) => file.status === "done" && (file as any).assetId)
+          .map(
+            (file, index) =>
+              ({
+                mediaAssetId: (file as any).assetId as string,
+                type: "IMAGE" as const,
+                displayOrder: index + 1,
+                sortOrder: index + 1,
+                isPrimary: index === 0,
+              }) as any,
+          ),
+        ...videoList
+          .filter((file) => file.status === "done" && (file as any).assetId)
+          .map(
+            (file, index) =>
+              ({
+                mediaAssetId: (file as any).assetId as string,
+                type: "VIDEO" as const,
+                displayOrder: fileList.length + index + 1,
+                sortOrder: fileList.length + index + 1,
+                isPrimary: false,
+              }) as any,
+          ),
+      ];
+
+      console.log("📦 Media array to submit:", mediaArray);
+
+      // Warning if no media
+      if (mediaArray.length === 0) {
+        console.warn(
+          "⚠️ No product media! fileList:",
+          fileList.length,
+          "videoList:",
+          videoList.length,
+        );
+      }
+
       const finalData: CreateUserProductBulkDTO = {
         ...formData,
         ...values,
         active: values.active ?? false,
-        media: [
-          ...fileList
-            .filter((file) => file.status === "done" && (file as any).assetId)
-            .map(
-              (file, index) =>
-                ({
-                  mediaAssetId: (file as any).assetId as string,
-                  type: "IMAGE" as const,
-                  displayOrder: index + 1,
-                  sortOrder: index + 1,
-                  isPrimary: index === 0,
-                }) as any,
-            ),
-          ...videoList
-            .filter((file) => file.status === "done" && (file as any).assetId)
-            .map(
-              (file, index) =>
-                ({
-                  mediaAssetId: (file as any).assetId as string,
-                  type: "VIDEO" as const,
-                  displayOrder: fileList.length + index + 1,
-                  sortOrder: fileList.length + index + 1,
-                  isPrimary: false,
-                }) as any,
-            ),
-        ],
+        media: mediaArray,
         options: optionsForAPI,
-        variants: variantsToSubmit.map((v: any) => {
+        variants: variantsToSubmit.map((v: any, index: number) => {
           const variantOptionValues = (v.optionValueNames || []).filter(
             (val: string) => val && val.trim(),
           );
@@ -318,7 +390,8 @@ export default function ShopProductAddStepsFormScreen() {
             });
           }
 
-          return {
+          // Prepare variant data
+          const variantData: any = {
             sku: v.sku,
             corePrice: v.corePrice,
             price: v.price,
@@ -328,8 +401,28 @@ export default function ShopProductAddStepsFormScreen() {
             heightCm: v.heightCm,
             weightGrams: v.weightGrams,
             options: options.length > 0 ? options : undefined,
-            imageAssetId: v.imageAssetId || undefined,
           };
+
+          // Add image data if exists
+          if (v.imageAssetId) {
+            variantData.imageAssetId = v.imageAssetId;
+            console.log(
+              `✅ Variant ${index + 1} (${v.sku}) has imageAssetId: ${v.imageAssetId}`,
+            );
+          } else {
+            console.log(
+              `⚠️ Variant ${index + 1} (${v.sku}) missing imageAssetId`,
+            );
+          }
+
+          if (v.imageUrl) {
+            variantData.imageUrl = v.imageUrl;
+          }
+          if (v.imageExtension) {
+            variantData.imageExtension = v.imageExtension;
+          }
+
+          return variantData;
         }),
       };
 
@@ -362,31 +455,111 @@ export default function ShopProductAddStepsFormScreen() {
   };
 
   const handleUploadVariantImageWrapper = useCallback(
-    async (file: File, index: number) => {
+    async (
+      file: File,
+      index: number,
+      applyToSameFirstOption: boolean = true,
+    ) => {
       const { variants, updateVariantByKey } = useProductStore.getState();
       const currentVariant = variants[index];
-      if (!currentVariant) return;
+
+
+      if (!currentVariant) {
+        console.error(`Variant at index ${index} not found`);
+        toastError("Không tìm thấy biến thể để upload hình");
+        return;
+      }
 
       const variantKey = currentVariant.optionValueNames.join("|");
       const localUrl = URL.createObjectURL(file);
+      const firstOptionValue = currentVariant.optionValueNames[0];
+
 
       try {
-        // HIỆN ẢNH NGAY, TẮT LOADING LUÔN
         updateVariantByKey(variantKey, "imageUrl", localUrl);
-        updateVariantByKey(variantKey, "imageProcessing", false);
+        updateVariantByKey(variantKey, "imageProcessing", true);
 
         const res = await uploadPresigned(file, UploadContext.PRODUCT_IMAGE);
-        if (res?.assetId) {
-          updateVariantByKey(variantKey, "imageAssetId", res.assetId);
-          updateVariantByKey(variantKey, "imageUrl", res.finalUrl);
-          toastSuccess(`Upload thành công: ${variantKey}`);
+
+        if (res?.assetId && res?.finalUrl) {
+          const extension = file.name.split(".").pop();
+          const imageExtension = extension ? `.${extension.toLowerCase()}` : "";
+
+          // Get fresh state from store for related variants
+          const freshState = useProductStore.getState();
+          const freshVariants = freshState.variants;
+          const freshUpdateVariantByKey = freshState.updateVariantByKey;
+
+          // Update current variant
+          freshUpdateVariantByKey(variantKey, "imageAssetId", res.assetId);
+          freshUpdateVariantByKey(variantKey, "imageUrl", res.finalUrl);
+          if (imageExtension) {
+            freshUpdateVariantByKey(
+              variantKey,
+              "imageExtension",
+              imageExtension,
+            );
+          }
+          freshUpdateVariantByKey(variantKey, "imageProcessing", false);
+
+          if (applyToSameFirstOption && firstOptionValue) {
+            const relatedVariants = freshVariants.filter(
+              (v) =>
+                v.optionValueNames[0] === firstOptionValue &&
+                v.optionValueNames.join("|") !== variantKey,
+            );
+
+            relatedVariants.forEach((v) => {
+              const relatedKey = v.optionValueNames.join("|");
+              freshUpdateVariantByKey(relatedKey, "imageAssetId", res.assetId);
+              freshUpdateVariantByKey(relatedKey, "imageUrl", res.finalUrl);
+              if (imageExtension) {
+                freshUpdateVariantByKey(
+                  relatedKey,
+                  "imageExtension",
+                  imageExtension,
+                );
+              }
+              console.log(`  ✅ Applied to ${v.sku} (key: ${relatedKey})`);
+            });
+          }
+
+          // Verify the update worked
+          setTimeout(() => {
+            const updatedState = useProductStore.getState();
+            const allVariantsWithImage = updatedState.variants.filter(
+              (v) => v.imageAssetId,
+            );
+          }, 100);
+
+          const appliedCount = applyToSameFirstOption
+            ? freshVariants.filter(
+                (v) => v.optionValueNames[0] === firstOptionValue,
+              ).length
+            : 1;
+
+          if (appliedCount > 1) {
+            toastSuccess(
+              `Upload thành công! Đã áp dụng cho ${appliedCount} biến thể cùng "${firstOptionValue}"`,
+            );
+          } else {
+            toastSuccess(`Upload thành công cho ${currentVariant.sku}`);
+          }
+        } else {
+          throw new Error("Upload response không hợp lệ");
         }
       } catch (error) {
-        toastError("Upload lỗi");
+        console.error(`❌ Upload failed for ${variantKey}:`, error);
+        toastError(`Upload lỗi: ${currentVariant.sku}`);
+
+        // Reset image data on error
         updateVariantByKey(variantKey, "imageUrl", undefined);
+        updateVariantByKey(variantKey, "imageAssetId", undefined);
+        updateVariantByKey(variantKey, "imageExtension", undefined);
+        updateVariantByKey(variantKey, "imageProcessing", false);
       }
     },
-    [uploadPresigned],
+    [uploadPresigned, toastSuccess, toastError],
   );
   const renderBasicTab = () => (
     <ProductBasicTabs

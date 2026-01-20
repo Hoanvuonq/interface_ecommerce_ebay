@@ -41,7 +41,7 @@ export const CountdownFlashSale = () => {
                 </span>
               </div>
               <div className="flex items-center gap-1.5 mt-1">
-                <p className="text-xs font-medium text-gray-500">
+                <p className="text-xs font-medium text-gray-600">
                   Kết thúc trong
                 </p>
                 <div className="h-1.5 w-16 bg-gray-100 rounded-full overflow-hidden">

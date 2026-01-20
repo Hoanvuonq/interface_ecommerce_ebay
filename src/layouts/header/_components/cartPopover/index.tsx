@@ -46,7 +46,7 @@ export const CartPopoverContent: React.FC = () => {
           alt={item.productName}
           width={40}
           height={40}
-          className="w-full h-full object-contain p-1 transition-transform group-hover:scale-110 duration-500"
+          className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500"
           onError={(e) => {
             const target = e.target as HTMLImageElement;
             if (target.src.includes("_thumb")) {

@@ -33,10 +33,34 @@ export const resolvePreviewItemImageUrl = (
   extension: string | null | undefined,
   size: '_thumb' | '_medium' | '_large' | '_orig' = '_thumb'
 ): string => {
-  if (basePath && extension) {
+  if (!basePath) return '';
+  
+  // Case 1: basePath + extension provided separately
+  if (extension) {
     const raw = `${basePath}${size}${extension}`;
     return toPublicUrl(raw);
   }
+  
+  // Case 2: basePath already contains full path with extension (e.g., "path/file_orig.jpg")
+  // Extract extension from basePath and reconstruct with requested size
+  const extensionMatch = basePath.match(/(_orig|_thumb|_medium|_large)?(\.[a-zA-Z0-9]+)$/);
+  if (extensionMatch) {
+    const [fullMatch, existingSize, ext] = extensionMatch;
+    // Remove existing size suffix and extension, then add requested size + extension
+    const baseWithoutSizeAndExt = basePath.replace(fullMatch, '');
+    const raw = `${baseWithoutSizeAndExt}${size}${ext}`;
+    return toPublicUrl(raw);
+  }
+  
+  // Case 3: basePath has extension but no size suffix (e.g., "path/file.jpg")
+  const simpleExtMatch = basePath.match(/(\.[a-zA-Z0-9]+)$/);
+  if (simpleExtMatch) {
+    const ext = simpleExtMatch[1];
+    const baseWithoutExt = basePath.replace(ext, '');
+    const raw = `${baseWithoutExt}${size}${ext}`;
+    return toPublicUrl(raw);
+  }
+  
   return '';
 };
 

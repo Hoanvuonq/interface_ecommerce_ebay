@@ -7,7 +7,7 @@ import { cn } from "@/utils/cn";
 import Image from "next/image";
 
 interface ItemImageProps {
-  item: {
+  items: {
     basePath?: string;
     extension?: string;
     productName?: string;
@@ -16,15 +16,15 @@ interface ItemImageProps {
 }
 
 export const ItemImage: React.FC<ItemImageProps> = ({
-  item,
+  items,
   className = "w-16 h-16 rounded-lg border",
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
   const imageUrl = resolvePreviewItemImageUrl(
-    item.basePath,
-    item.extension,
+    items.basePath,
+    items.extension,
     "_thumb"
   );
 
@@ -60,7 +60,7 @@ export const ItemImage: React.FC<ItemImageProps> = ({
       )}
       <Image
         src={imageUrl}
-        alt={item.productName || "Product Image"}
+        alt={items.basePath || "Product Image"}
         width={64}
         height={64}
         onLoad={() => setIsLoading(false)}

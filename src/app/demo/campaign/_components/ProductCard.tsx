@@ -27,7 +27,7 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
         <div className="group relative bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 cursor-pointer">
             {/* Discount Badge */}
             <div className="absolute top-3 left-0 z-10">
-                <div className="bg-gradient-to-r from-red-500 to-orange-500 text-white px-3 py-1 rounded-r-full font-bold text-sm shadow-lg flex items-center gap-1">
+                <div className="bg-linear-to-r from-red-500 to-orange-500 text-white px-3 py-1 rounded-r-full font-bold text-sm shadow-lg flex items-center gap-1">
                     <Tag size={14} />
                     -{product.discountPercent}%
                 </div>
@@ -93,10 +93,10 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
                     <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
                         <div
                             className={`h-full rounded-full transition-all duration-500 ${progressPercent >= 80
-                                    ? 'bg-gradient-to-r from-red-500 to-orange-500'
+                                    ? 'bg-linear-to-r from-red-500 to-orange-500'
                                     : progressPercent >= 50
-                                        ? 'bg-gradient-to-r from-amber-400 to-orange-400'
-                                        : 'bg-gradient-to-r from-blue-500 to-blue-600'
+                                        ? 'bg-linear-to-r from-amber-400 to-orange-400'
+                                        : 'bg-linear-to-r from-blue-500 to-blue-600'
                                 }`}
                             style={{ width: `${progressPercent}%` }}
                         />
@@ -116,7 +116,7 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
             transition-all duration-200
             ${product.isSoldOut
                             ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                            : 'bg-gradient-to-r from-orange-500 to-red-500 text-white hover:from-orange-600 hover:to-red-600 active:scale-95 shadow-lg shadow-orange-500/30'
+                            : 'bg-linear-to-r from-orange-500 to-red-500 text-white hover:from-orange-600 hover:to-red-600 active:scale-95 shadow-lg shadow-orange-500/30'
                         }
           `}
                 >

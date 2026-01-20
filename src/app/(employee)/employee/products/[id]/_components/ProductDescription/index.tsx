@@ -57,7 +57,7 @@ export const ProductDescription = ({
             "prose max-w-none text-slate-600 text-sm leading-relaxed whitespace-pre-line",
             "prose-headings:text-slate-900 prose-headings:font-bold prose-headings:uppercase prose-headings:italic prose-headings:tracking-tighter",
             "prose-strong:text-orange-600 prose-strong:font-bold",
-            "prose-img:rounded-[2rem] prose-img:shadow-xl",
+            "prose-img:rounded-4xl prose-img:shadow-xl",
           )}
           dangerouslySetInnerHTML={{
             __html:

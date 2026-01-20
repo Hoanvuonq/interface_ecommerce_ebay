@@ -1,26 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React, { useState, useMemo } from "react";
-import { 
-  Search, 
-  Flame, 
-  Info, 
-  ShoppingCart, 
-  Calendar, 
-  Ticket as TicketIcon, 
-  CreditCard,
-  CheckCircle,
-  X,
-  Loader2,
-  Filter
-} from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import dayjs from "dayjs";
-import { VoucherTemplate, DiscountMethod } from "@/app/(main)/shop/_types/dto/shop.voucher.dto";
-import { usePurchaseVoucher, useGetRecommendedPlatformVouchers } from "../../_hooks/useShopVoucher";
+import { DiscountMethod, VoucherTemplate } from "@/app/(main)/shop/_types/dto/shop.voucher.dto";
+import { PortalModal } from "@/features/PortalModal";
 import { cn } from "@/utils/cn";
-import { PortalModal } from "@/features/PortalModal"; // Giả sử bạn có component PortalModal đã dùng ở trước
+import dayjs from "dayjs";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  Calendar,
+  Flame,
+  Loader2,
+  Search,
+  ShoppingCart,
+  Ticket as TicketIcon
+} from "lucide-react";
+import React, { useMemo, useState } from "react";
+import { useGetRecommendedPlatformVouchers, usePurchaseVoucher } from "../../_hooks/useShopVoucher";
 
 interface PlatformVoucherMarketProps {
   onPurchaseSuccess?: () => void;
@@ -29,7 +24,6 @@ interface PlatformVoucherMarketProps {
 export const PlatformVoucherMarket: React.FC<PlatformVoucherMarketProps> = ({
   onPurchaseSuccess,
 }) => {
-  // Disable auto-fetch, manually control when to fetch
   const { data: recommendedVouchers, loading, refetch } = useGetRecommendedPlatformVouchers();
   const { handlePurchase, loading: purchasing, error: purchaseError } = usePurchaseVoucher();
   
@@ -39,7 +33,6 @@ export const PlatformVoucherMarket: React.FC<PlatformVoucherMarketProps> = ({
   const [filterType, setFilterType] = useState<string>("all");
   const [activeTab, setActiveTab] = useState("recommended");
 
-  // Fetch only when component mounts OR tab changes to "platform-market"
   React.useEffect(() => {
     if (recommendedVouchers.length === 0) {
       refetch();
@@ -156,7 +149,7 @@ export const PlatformVoucherMarket: React.FC<PlatformVoucherMarketProps> = ({
               <p className="text-sm text-gray-500 font-medium">Voucher sẽ được kích hoạt ngay sau khi thanh toán thành công</p>
             </div>
 
-            <div className="bg-gradient-to-br from-gray-900 to-slate-800 p-6 rounded-[2.5rem] text-white relative overflow-hidden shadow-2xl">
+            <div className="bg-linear-to-br from-gray-900 to-slate-800 p-6 rounded-[2.5rem] text-white relative overflow-hidden shadow-2xl">
               <div className="relative z-10 space-y-4">
                 <div className="flex justify-between items-start">
                   <div className="bg-orange-500 px-3 py-1 rounded-lg text-[10px] font-bold uppercase tracking-widest">Platform Exclusive</div>
@@ -217,8 +210,8 @@ const VoucherCard = ({ voucher, onBuy }: { voucher: VoucherTemplate; onBuy: () =
         <div className={cn(
           "w-full p-6 rounded-4xl text-center relative overflow-hidden",
           voucher.discountMethod === DiscountMethod.PERCENTAGE 
-            ? "bg-gradient-to-br from-orange-400 to-rose-500 text-white shadow-lg shadow-orange-500/20" 
-            : "bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-500/20"
+            ? "bg-linear-to-br from-orange-400 to-rose-500 text-white shadow-lg shadow-orange-500/20" 
+            : "bg-linear-to-br from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-500/20"
         )}>
           <div className="relative z-10">
             <span className="text-3xl font-bold tracking-tighter">
@@ -230,7 +223,7 @@ const VoucherCard = ({ voucher, onBuy }: { voucher: VoucherTemplate; onBuy: () =
         </div>
 
         <div className="space-y-2 px-1">
-          <h3 className="font-bold text-gray-900 uppercase text-sm leading-tight line-clamp-2 min-h-[2.5rem]">{voucher.name}</h3>
+          <h3 className="font-bold text-gray-900 uppercase text-sm leading-tight line-clamp-2 min-h-10">{voucher.name}</h3>
           <div className="flex items-center gap-2">
             <div className="px-2 py-1 bg-orange-50 rounded-lg border border-gray-100">
                <span className="text-[10px] font-mono font-bold text-orange-600 tracking-widest">{voucher.code}</span>
@@ -252,7 +245,7 @@ const VoucherCard = ({ voucher, onBuy }: { voucher: VoucherTemplate; onBuy: () =
       </div>
 
       <div className="mt-6 space-y-3 px-1">
-        <div className="h-[1px] bg-gray-50 w-full" />
+        <div className="h-px bg-gray-50 w-full" />
         <div className="flex items-center justify-between">
            <div>
              <p className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">Giá mua</p>

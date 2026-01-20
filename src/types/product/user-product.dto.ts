@@ -48,7 +48,6 @@ export interface CreateUserProductVariantDTO {
 
 export interface CreateUserProductBulkDTO {
   name: string;
-  // slug is auto-generated from name by backend
   description?: string;
   basePrice?: number; // Add this field
   categoryId: string;

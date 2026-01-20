@@ -468,7 +468,7 @@ export default function AdminCampaignDemoPage() {
                                                                 <p className="font-medium text-gray-900">
                                                                     {campaign.name}
                                                                 </p>
-                                                                <p className="text-sm text-gray-500 truncate max-w-[200px]">
+                                                                <p className="text-sm text-gray-500 truncate max-w-50">
                                                                     {campaign.description}
                                                                 </p>
                                                             </div>

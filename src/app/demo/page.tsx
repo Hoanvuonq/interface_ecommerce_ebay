@@ -17,7 +17,7 @@ export default function DemoIndexPage() {
             description: 'Flash Sale, Countdown Timer, Product Cards cho Buyer',
             href: '/demo/campaign',
             icon: Zap,
-            color: 'bg-gradient-to-r from-orange-500 to-red-500',
+            color: 'bg-linear-to-r from-orange-500 to-red-500',
             role: 'Public',
             features: ['Flash Sale Banner', 'Countdown Timer', 'Product Grid', 'Time Slots'],
         },
@@ -26,7 +26,7 @@ export default function DemoIndexPage() {
             description: 'Đăng ký sản phẩm vào Flash Sale, quản lý Shop Sales',
             href: '/demo/shop/campaign',
             icon: Store,
-            color: 'bg-gradient-to-r from-green-500 to-emerald-500',
+            color: 'bg-linear-to-r from-green-500 to-emerald-500',
             role: 'Shop Owner',
             features: ['Tham gia Platform Campaigns', 'Đăng ký sản phẩm', 'Quản lý Shop Sale'],
         },
@@ -35,19 +35,19 @@ export default function DemoIndexPage() {
             description: 'Tạo/quản lý Platform Campaigns, duyệt đăng ký',
             href: '/demo/admin/campaign',
             icon: Shield,
-            color: 'bg-gradient-to-r from-purple-500 to-indigo-500',
+            color: 'bg-linear-to-r from-purple-500 to-indigo-500',
             role: 'Admin',
             features: ['Tạo Campaign', 'Duyệt đăng ký', 'Thống kê', 'Quản lý Slots'],
         },
     ];
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100">
             {/* Header */}
             <header className="bg-white shadow-sm">
                 <div className="max-w-6xl mx-auto px-4 py-6">
                     <div className="flex items-center gap-3">
-                        <div className="p-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl">
+                        <div className="p-3 bg-linear-to-r from-blue-600 to-purple-600 rounded-2xl">
                             <Eye className="w-8 h-8 text-white" />
                         </div>
                         <div>

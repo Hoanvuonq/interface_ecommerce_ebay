@@ -99,8 +99,6 @@ export function WebSocketProvider({
 
     try {
       setError(null);
-      // ✅ Backend đọc token từ cookies, không cần truyền token
-      // ✅ Truyền empty string để WebSocket service không thêm token vào URL
       await wsServiceRef.current.connect("");
       setConnected(true);
       setReconnectAttempts(0);

@@ -109,20 +109,20 @@ const PurchasedVoucherList: React.FC<PurchasedVoucherListProps> = ({
             </div>
 
             {/* List Container */}
-            <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-custom overflow-hidden min-h-[400px]">
+            <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-custom overflow-hidden min-h-100">
                 {loading ? (
-                    <div className="flex flex-col items-center justify-center h-[400px] gap-3">
+                    <div className="flex flex-col items-center justify-center h-100 gap-3">
                         <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
                         <span className="text-[10px] font-bold uppercase text-gray-500 tracking-widest">Đang tải dữ liệu...</span>
                     </div>
                 ) : instances.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center h-[400px] gap-4 p-8 text-center">
+                    <div className="flex flex-col items-center justify-center h-100 gap-4 p-8 text-center">
                         <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center text-gray-200">
                             <Ticket size={40} />
                         </div>
                         <div className="space-y-1">
                             <h3 className="text-gray-900 font-bold uppercase tracking-widest text-sm">Trống</h3>
-                            <p className="text-xs text-gray-500 font-medium max-w-[250px]">
+                            <p className="text-xs text-gray-500 font-medium max-w-62.5">
                                 Bạn chưa mua voucher nào. Hãy sang tab <span className="font-bold text-orange-500 italic">"Voucher Platform"</span> để mua thêm nhé!
                             </p>
                         </div>

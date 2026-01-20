@@ -429,7 +429,7 @@ const [activeTab, setActiveTab] = useState('overview');
                                     <TrendingUp className="text-emerald-500" />
                                 </div>
                                 {loadingTime ? <div className="flex justify-center py-20"><Loader2 className="animate-spin text-orange-500" /></div> : (
-                                    <div className="h-[400px]">
+                                    <div className="h-100">
                                         <ResponsiveContainer width="100%" height="100%">
                                             <AreaChart data={dailyBarData}>
                                                 <defs>
@@ -497,11 +497,11 @@ const [activeTab, setActiveTab] = useState('overview');
 
                         <div className="bg-white p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-50">
                              <div className="flex justify-between items-center mb-10">
-                                <h4 className="font-semibold text-gray-800 tracking-tight uppercase tracking-[0.2em] text-xs">Biểu đồ tăng trưởng đăng nhập</h4>
+                                <h4 className="font-semibold text-gray-800 uppercase tracking-[0.2em] text-xs">Biểu đồ tăng trưởng đăng nhập</h4>
                                 <LogIn className="text-orange-500" size={20} />
                             </div>
                             {loadingBehavior ? <div className="flex justify-center py-20"><Loader2 className="animate-spin text-orange-500" /></div> : (
-                                <div className="h-[400px]">
+                                <div className="h-100">
                                     <ResponsiveContainer width="100%" height="100%">
                                         <LineChart data={behaviorStats?.monthlyStats}>
                                             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />

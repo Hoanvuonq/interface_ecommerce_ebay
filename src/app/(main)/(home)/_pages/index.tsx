@@ -9,7 +9,6 @@ import {
   IntroBanner,
   BannerSidebar,
 } from "../_components";
-import { ProductShowcaseTest } from "../_components/ProductShowcaseTest";
 
 export const HomeScreen = () => {
   return (
@@ -26,7 +25,6 @@ export const HomeScreen = () => {
         sidebar={<BannerSidebar />}
       />
       <ProductShowcase />
-      <ProductShowcaseTest/>
       <CalathaMallSection />
     </HomepageProvider>
   );

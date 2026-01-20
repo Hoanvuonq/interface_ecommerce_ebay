@@ -53,7 +53,7 @@ export function CampaignCard({ campaign, onClick }: CampaignCardProps) {
                 />
 
                 {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
 
                 {/* Status Badge */}
                 <div className="absolute top-3 left-3">

@@ -90,13 +90,13 @@ export const TemplateReplyModal = ({
               )}
             >
               {tab.label}
-              {activeTab === tab.key && <div className="absolute bottom-[-2px] left-0 right-0 h-[2px] bg-orange-500 shadow-[0_2px_8px_rgba(249,115,22,0.4)]" />}
+              {activeTab === tab.key && <div className="absolute bottom-0.5 left-0 right-0 h-0.5 bg-orange-500 shadow-[0_2px_8px_rgba(249,115,22,0.4)]" />}
             </button>
           ))}
         </div>
 
         <div className="rounded-3xl border border-slate-100 overflow-hidden bg-slate-50/30">
-          <div className="max-h-[400px] overflow-y-auto custom-scrollbar bg-white">
+          <div className="max-h-100 overflow-y-auto custom-scrollbar bg-white">
             {currentTemplates.map((item) => {
               const isAdded = existingContents.includes(item.content);
               const isSelected = selectedIds.includes(item.id);

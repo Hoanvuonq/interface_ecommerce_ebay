@@ -160,7 +160,7 @@ export default function ProductMediaUpload({
       <div className="relative group">
         <label
           className={cn(
-            "flex flex-col items-center justify-center w-full h-40 rounded-[2rem] border-2 border-dashed transition-all duration-300 cursor-pointer",
+            "flex flex-col items-center justify-center w-full h-40 rounded-4xl border-2 border-dashed transition-all duration-300 cursor-pointer",
             globalUploading
               ? "bg-gray-50 border-orange-200 cursor-not-allowed"
               : "bg-white border-gray-200 hover:border-orange-400 hover:bg-orange-50/30 group-hover:shadow-2xl group-hover:shadow-orange-100",

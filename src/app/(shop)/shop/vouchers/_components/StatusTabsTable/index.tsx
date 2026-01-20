@@ -5,7 +5,6 @@ import { Ticket, Zap, ShieldCheck, ShoppingBag } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { motion, LayoutGroup } from "framer-motion";
 
-// Định nghĩa kiểu dữ liệu cho props để linh hoạt hơn
 type VoucherScope = "all" | "shop" | "platform" | "applicableForShop";
 
 interface StatusTabsTableProps {
@@ -59,7 +58,7 @@ export const StatusTabsTable = ({
   return (
     <div className={cn("w-full overflow-x-auto no-scrollbar pb-2", className)}>
       <LayoutGroup id="voucher-table-tabs">
-        <div className="inline-flex bg-gray-100/80 p-1.5 rounded-2xl border border-gray-100 gap-1 relative">
+        <div className="inline-flex bg-white p-1.5 rounded-2xl border border-gray-100 gap-1 relative">
           {tabs.map((tab) => {
             const isActive = current === tab.id;
             const Icon = tab.icon;
@@ -78,7 +77,7 @@ export const StatusTabsTable = ({
                 {isActive && (
                   <motion.div
                     layoutId="active-pill-table"
-                    className="absolute inset-0 bg-white shadow-sm ring-1 ring-gray-200"
+                    className="absolute inset-0 bg-white shadow-custom ring-1 ring-gray-200"
                     style={{ borderRadius: 12 }}
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />

@@ -43,7 +43,7 @@ export default function ShopCheckPage() {
         {/* --- CASE 1: CHƯA CÓ SHOP --- */}
         {status === "no-shop" && (
           <div className="bg-white rounded-[32px] shadow-2xl shadow-orange-100/50 p-8 md:p-10 border border-white/60 backdrop-blur-sm text-center animate-in fade-in zoom-in duration-500">
-            <div className="w-24 h-24 bg-gradient-to-br from-orange-50 to-amber-50 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-inner border border-gray-100/50 relative group">
+            <div className="w-24 h-24 bg-linear-to-br from-orange-50 to-amber-50 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-inner border border-gray-100/50 relative group">
               <div className="absolute inset-0 bg-orange-200/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <Store className="w-12 h-12 text-orange-600 relative z-10" strokeWidth={1.5} />
             </div>
@@ -57,7 +57,7 @@ export default function ShopCheckPage() {
 
             <div className="space-y-3">
               <Link href="/shop/onboarding" className="block">
-                <button className="w-full py-4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-2xl font-bold transition-all active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20 group relative overflow-hidden">
+                <button className="w-full py-4 bg-linear-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-2xl font-bold transition-all active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20 group relative overflow-hidden">
                   <span className="relative z-10 flex items-center gap-2">
                     Tạo cửa hàng mới <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
                   </span>
@@ -76,7 +76,7 @@ export default function ShopCheckPage() {
         {/* --- CASE 2: ĐANG CHỜ DUYỆT --- */}
         {status === "pending" && (
           <div className="bg-white rounded-[32px] shadow-2xl shadow-orange-100/50 p-8 md:p-10 border border-white/60 backdrop-blur-sm text-center animate-in fade-in zoom-in duration-500">
-            <div className="w-24 h-24 bg-gradient-to-br from-yellow-50 to-orange-50 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-inner border border-gray-100/50 relative">
+            <div className="w-24 h-24 bg-linear-to-br from-yellow-50 to-orange-50 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-inner border border-gray-100/50 relative">
               <div className="absolute inset-0 bg-orange-100/40 rounded-3xl animate-pulse" />
               <Clock className="w-12 h-12 text-orange-500 relative z-10" strokeWidth={1.5} />
             </div>
@@ -102,7 +102,7 @@ export default function ShopCheckPage() {
         {status === "needs-update" && (
           <div className="bg-white rounded-[32px] shadow-2xl shadow-orange-100/50 overflow-hidden border border-white/60 backdrop-blur-sm animate-in fade-in zoom-in duration-500">
             <div className="p-8 md:p-10 pb-6 text-center">
-                <div className="w-20 h-20 bg-gradient-to-br from-red-50 to-orange-50 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner border border-red-100/50">
+                <div className="w-20 h-20 bg-linear-to-br from-red-50 to-orange-50 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner border border-red-100/50">
                   <FileWarning className="w-10 h-10 text-red-500" strokeWidth={1.5} />
                 </div>
                 

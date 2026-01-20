@@ -205,11 +205,6 @@ export const useVariantManagement = (
 
   const handleUploadVariantImage = useCallback(
     async (file: File, index: number) => {
-      // This is a simplified wrapper. Full implementation requires:
-      // - uploadPresigned function
-      // - UploadContext
-      // - onSuccess/onError callbacks
-      // Should be called from component with full parameters
       return Promise.resolve();
     },
     [],

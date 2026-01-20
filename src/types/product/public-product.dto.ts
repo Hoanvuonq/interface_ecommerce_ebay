@@ -148,6 +148,8 @@ export interface PublicProductListItemDTO {
   priceMin?: number | null;
   priceMax?: number | null;
   comparePrice?: number;
+  priceBeforeDiscount?: number | null;
+  showDiscount?: number | null;
   active: boolean;
   promotedUntil?: string | null;
   isFeatured?: boolean;
@@ -162,6 +164,8 @@ export interface PublicProductListItemDTO {
   priceAfterBestPlatformVoucher?: number;
   version: number;
   variants?: PublicProductVariantDTO[];
+  reviewStatistics?: ReviewStatistics | null;
+  shop?: PublicShopSummaryDTO | null;
 }
 
 export interface PublicProductSearchQueryDTO {

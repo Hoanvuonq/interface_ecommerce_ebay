@@ -192,7 +192,7 @@ export const CartItem: React.FC<CartItemProps> = ({
                 {item.productName}
               </h4>
               <span className="inline-block text-[10px] font-bold text-gray-600 uppercase tracking-wider bg-gray-50 px-1.5 py-0.5 rounded-md border border-gray-100">
-                {item.variantAttributes || "Mặc định"}
+                # {item.sku || "Mặc định"}
               </span>
             </div>
 
@@ -273,7 +273,7 @@ export const CartItem: React.FC<CartItemProps> = ({
             </Link>
             <div className="flex items-center gap-2">
               <span className="text-[9px] font-bold text-gray-600 bg-gray-100 px-2 py-1 rounded-lg  tracking-widest border border-gray-100">
-                {item.variantAttributes || "Mặc định"}
+                # {item.sku || "Mặc định"}
               </span>
             </div>
           </div>

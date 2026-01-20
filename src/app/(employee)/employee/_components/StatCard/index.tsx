@@ -69,7 +69,7 @@ export const StatCard = ({ item }: { item: any }) => {
                 color={
                   isHighPerformance
                     ? "bg-emerald-500"
-                    : "bg-gradient-to-r from-orange-500 to-amber-400"
+                    : "bg-linear-to-r from-orange-500 to-amber-400"
                 }
                 className="h-1.5 rounded-full bg-gray-100/50"
               />

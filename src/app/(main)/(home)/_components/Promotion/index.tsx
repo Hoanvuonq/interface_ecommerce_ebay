@@ -28,7 +28,7 @@ export const Promotion: React.FC = () => {
 
   return (
     <section className="bg-white shadow-sm py-1 pb-2 overflow-hidden">
-      <div className="max-w-300 mx-auto w-full">
+      <div className="max-w-7xl mx-auto w-full">
         <HeroBanners banners={isError ? [] : mappedHeroBanners} />
         <div className="mx-auto w-full mt-6">
           <div className="grid grid-cols-4 lg:grid-cols-8 gap-y-2 gap-x-4 items-start">

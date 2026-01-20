@@ -437,7 +437,7 @@ export default function ShopCampaignPage() {
                                             alt={selectedCampaign.name}
                                             className="w-full h-full object-cover"
                                         />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                                        <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
                                         <div className="absolute bottom-4 left-4 text-white">
                                             <h2 className="text-2xl font-bold">{selectedCampaign.name}</h2>
                                             <p className="opacity-90">{selectedCampaign.description}</p>
@@ -744,7 +744,7 @@ export default function ShopCampaignPage() {
                                             alt={selectedCampaign.name}
                                             className="w-full h-full object-cover"
                                         />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                                        <div className="absolute inset-0 bg-linear-to-t from-black/70 to-transparent" />
                                         <div className="absolute bottom-4 left-4 text-white p-2">
                                             <h2 className="text-xl font-bold">{selectedCampaign.name}</h2>
                                             <p className="opacity-90 text-sm line-clamp-1">{selectedCampaign.description}</p>
@@ -956,7 +956,7 @@ export default function ShopCampaignPage() {
                                             <p className="text-gray-500">Đang tải sản phẩm...</p>
                                         </div>
                                     ) : (
-                                        <div className="border border-gray-200 rounded-lg overflow-hidden max-h-[400px] overflow-y-auto">
+                                        <div className="border border-gray-200 rounded-lg overflow-hidden max-h-100 overflow-y-auto">
                                             <table className="min-w-full divide-y divide-gray-200">
                                                 <thead className="bg-gray-50 sticky top-0 z-10">
                                                     <tr>

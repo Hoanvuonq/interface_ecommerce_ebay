@@ -167,10 +167,10 @@ export const ProductMediaModal = ({
           onClick={handleSave}
           disabled={!hasChanges || saving}
           className={cn(
-            "flex items-center gap-2 px-8 py-2.5 rounded-2xl text-[11px] font-bold text-white transition-all uppercase tracking-[0.1em] italic",
+            "flex items-center gap-2 px-8 py-2.5 rounded-2xl text-[11px] font-bold text-white transition-all uppercase tracking-widest italic",
             !hasChanges || saving 
               ? "bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200" 
-              : "bg-gradient-to-r from-orange-500 to-orange-600 hover:shadow-lg hover:shadow-orange-200 shadow-md shadow-orange-100 active:scale-95"
+              : "bg-linear-to-r from-orange-500 to-orange-600 hover:shadow-lg hover:shadow-orange-200 shadow-md shadow-orange-100 active:scale-95"
           )}
         >
           {saving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} strokeWidth={2.5} />}

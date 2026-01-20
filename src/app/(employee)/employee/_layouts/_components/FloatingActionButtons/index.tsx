@@ -45,7 +45,7 @@ export const FloatingActionButtons = () => {
           "w-14 h-14 rounded-2xl shadow-lg flex items-center justify-center text-white transition-all duration-300 active:scale-90",
           isOpen
             ? "bg-gray-900 rotate-45 shadow-gray-200"
-            : "bg-gradient-to-br from-orange-500 to-amber-600 shadow-orange-500/30"
+            : "bg-linear-to-br from-orange-500 to-amber-600 shadow-orange-500/30"
         )}
       >
         {isOpen ? <X size={24} /> : <MessageCircle size={28} />}

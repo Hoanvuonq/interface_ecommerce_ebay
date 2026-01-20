@@ -189,7 +189,7 @@ export const VideoAttachment: React.FC<VideoAttachmentProps> = ({
 
           {/* Controls Overlay */}
           <div className={cn(
-            "absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent transition-opacity duration-300 flex flex-col justify-end p-4",
+            "absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent transition-opacity duration-300 flex flex-col justify-end p-4",
             showControls ? "opacity-100" : "opacity-0"
           )}>
             

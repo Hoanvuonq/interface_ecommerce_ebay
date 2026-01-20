@@ -109,7 +109,6 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
   return (
     <div className="space-y-6">
       {shops.map((shop) => {
-        // ... (Phần tính toán hiển thị giữ nguyên)
         const shopSummary = _.get(shop, "summary", {});
         const subtotal = Number(shopSummary.subtotal || 0);
         const shippingFee = Number(shopSummary.shippingFee || 0);
@@ -117,7 +116,6 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
         const totalDiscount = Number(voucherResult.totalDiscount || 0);
         const discountDetails = _.get(voucherResult, "discountDetails", []);
 
-        // ... (Logic tính discount hiển thị giữ nguyên)
         const shipDiscount =
           _.chain(discountDetails)
             .filter(
@@ -133,8 +131,9 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
         const finalShopTotal = Number(
           shopSummary.shopTotal || originalShopPrice - totalDiscount
         );
-
-        // Map voucher đã áp dụng để hiển thị lên UI
+console.log("totalDiscount", finalShopTotal);
+        console.log("shipDiscount", shipDiscount);
+        console.log("productOrOrderDiscount", productOrOrderDiscount);
         const appliedShopOrder = _.find(
           discountDetails,
           (d: any) =>
@@ -189,7 +188,7 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
                     className="flex gap-4 items-center py-2 group"
                   >
                     <ItemImage
-                      item={item}
+                      items={item}
                       className="w-16 h-16 rounded-2xl border border-gray-50 object-cover shadow-sm"
                     />
                     <div className="flex-1 min-w-0">

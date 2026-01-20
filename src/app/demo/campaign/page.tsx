@@ -127,7 +127,7 @@ export default function CampaignDemoPage() {
                 <div className="max-w-7xl mx-auto px-4 py-4">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                            <div className="p-2 bg-gradient-to-r from-orange-500 to-red-500 rounded-xl">
+                            <div className="p-2 bg-linear-to-r from-orange-500 to-red-500 rounded-xl">
                                 <Zap className="w-6 h-6 text-white" />
                             </div>
                             <div>

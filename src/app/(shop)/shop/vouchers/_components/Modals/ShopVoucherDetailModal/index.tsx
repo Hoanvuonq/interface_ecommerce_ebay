@@ -121,7 +121,7 @@ export default function ShopVoucherDetailModal({
           <>
             {/* Status Alert - Fixed check logic */}
             <div className={cn(
-              "p-5 rounded-[2rem] border flex items-start gap-4 animate-in fade-in slide-in-from-top-4 duration-500",
+              "p-5 rounded-4xl border flex items-start gap-4 animate-in fade-in slide-in-from-top-4 duration-500",
               isActuallyUsable ? "bg-emerald-50 border-emerald-100 text-emerald-800" : "bg-red-50 border-red-100 text-red-800"
             )}>
               {isActuallyUsable ? <CheckCircle2 className="shrink-0" /> : <AlertCircle className="shrink-0" />}
@@ -149,7 +149,7 @@ export default function ShopVoucherDetailModal({
                        <span className="px-4 py-1.5 bg-gray-900 text-orange-400 rounded-xl font-mono font-bold text-xl tracking-tighter shadow-inner">
                          {voucherInfo.template.code}
                        </span>
-                       <h3 className="text-2xl font-black text-gray-800 leading-tight italic">{voucherInfo.template.name}</h3>
+                       <h3 className="text-2xl font-bold text-gray-800 leading-tight italic">{voucherInfo.template.name}</h3>
                     </div>
                     <p className="text-sm text-gray-500 font-medium leading-relaxed bg-gray-50 p-4 rounded-2xl border border-gray-100/50">
                       {voucherInfo.template.description}
@@ -163,7 +163,7 @@ export default function ShopVoucherDetailModal({
                     <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">
                       <Layers size={14} strokeWidth={3} /> Danh sách thực thể (Instances)
                     </div>
-                    <span className="text-[10px] font-black text-orange-500 bg-orange-50 px-2 py-0.5 rounded-full uppercase italic">
+                    <span className="text-[10px] font-bold text-orange-500 bg-orange-50 px-2 py-0.5 rounded-full uppercase italic">
                       {voucherInfo.instances?.length || 0} mục
                     </span>
                   </div>
@@ -179,7 +179,7 @@ export default function ShopVoucherDetailModal({
                       onPageChange={() => {}}
                     />
                   ) : (
-                    <div className="py-12 bg-gray-50/50 rounded-[2rem] border border-dashed border-gray-200 flex flex-col items-center gap-2">
+                    <div className="py-12 bg-gray-50/50 rounded-4xl border border-dashed border-gray-200 flex flex-col items-center gap-2">
                       <Layers className="text-gray-300" size={32} />
                       <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest italic">Không có instance cụ thể (Voucher dùng chung)</p>
                     </div>
@@ -187,7 +187,6 @@ export default function ShopVoucherDetailModal({
                 </div>
               </div>
 
-              {/* Sidebar Info */}
               <div className="space-y-6">
                 <div className="bg-gray-900 rounded-[2.5rem] p-8 text-white shadow-2xl shadow-gray-300 relative overflow-hidden group">
                   <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:scale-110 transition-transform">
@@ -200,7 +199,7 @@ export default function ShopVoucherDetailModal({
                         <DollarSign size={12} strokeWidth={3} /> Giá trị ưu đãi
                       </p>
                       <div className="flex flex-col gap-1">
-                        <span className="text-4xl font-black text-orange-400 tracking-tighter italic">
+                        <span className="text-4xl font-bold text-orange-400 tracking-tighter italic">
                           {voucherInfo.template.discountType === "FIXED_AMOUNT" 
                             ? formatCurrency(voucherInfo.template.discountValue)
                             : `${Math.round(voucherInfo.template.discountValue)}%`}
@@ -213,7 +212,7 @@ export default function ShopVoucherDetailModal({
                       </div>
                     </div>
 
-                    <div className="h-[1px] bg-white/10 w-full" />
+                    <div className="h-px bg-white/10 w-full" />
 
                     <div className="grid grid-cols-1 gap-5">
                        <InfoItem icon={<Target size={14}/>} label="Đơn tối thiểu" value={formatCurrency(voucherInfo.template.minOrderAmount)} />
@@ -224,7 +223,6 @@ export default function ShopVoucherDetailModal({
                   </div>
                 </div>
 
-                {/* Scope Info */}
                 <div className="bg-orange-50/50 rounded-[2.5rem] border border-orange-100 p-8 space-y-5 shadow-sm">
                    <div className="text-[10px] font-bold text-orange-600 uppercase tracking-[0.2em] flex items-center gap-2">
                      <CheckCircle2 size={14} strokeWidth={3} /> Phạm vi áp dụng
@@ -244,7 +242,7 @@ export default function ShopVoucherDetailModal({
       <div className="px-8 py-5 border-t border-gray-100 bg-gray-50/50 flex justify-end">
         <button 
           onClick={onClose}
-          className="px-10 py-3 bg-gray-900 text-white rounded-[1.2rem] text-[11px] font-black uppercase tracking-[0.2em] hover:bg-orange-600 transition-all active:scale-95 shadow-xl shadow-gray-200 italic"
+          className="px-10 py-3 bg-gray-900 text-white rounded-[1.2rem] text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-orange-600 transition-all active:scale-95 shadow-xl shadow-gray-200 italic"
         >
           Xác nhận đóng
         </button>
@@ -266,7 +264,7 @@ const ScopeTag = ({ label, active }: { label: string, active: boolean }) => (
   <div className="flex items-center justify-between px-5 py-3 bg-white rounded-2xl border border-gray-100 shadow-sm transition-all hover:border-orange-200">
     <span className="text-[10px] font-bold text-gray-400 uppercase tracking-tight">{label}</span>
     <span className={cn(
-      "text-[9px] font-black uppercase px-2.5 py-1 rounded-lg italic",
+      "text-[9px] font-bold uppercase px-2.5 py-1 rounded-lg italic",
       active ? "bg-emerald-50 text-emerald-600" : "bg-amber-50 text-amber-600"
     )}>
       {active ? "Tất cả" : "Giới hạn"}

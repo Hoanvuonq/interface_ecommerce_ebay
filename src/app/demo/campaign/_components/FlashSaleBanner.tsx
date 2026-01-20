@@ -15,7 +15,7 @@ interface FlashSaleBannerProps {
  */
 export function FlashSaleBanner({ campaign, activeSlot }: FlashSaleBannerProps) {
     return (
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 p-8 md:p-12">
+        <div className="relative overflow-hidden rounded-3xl bg-linear-to-r from-orange-500 via-red-500 to-pink-500 p-8 md:p-12">
             {/* Background Pattern */}
             <div className="absolute inset-0 opacity-10">
                 <div className="absolute top-0 left-0 w-40 h-40 bg-white rounded-full blur-3xl" />

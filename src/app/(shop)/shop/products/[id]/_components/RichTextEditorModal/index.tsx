@@ -174,7 +174,7 @@ export function RichTextEditorModal({
       }
       footer={footerContent}
     >
-      <div className="min-h-[400px]">
+      <div className="min-h-100">
         {loading ? (
           <div className="flex flex-col items-center justify-center py-32 gap-4">
             <Loader2 className="w-10 h-10 text-orange-500 animate-spin" />
@@ -182,7 +182,6 @@ export function RichTextEditorModal({
           </div>
         ) : (
           <div className="space-y-6">
-            {/* Banner hướng dẫn */}
             <div className="flex gap-4 p-4 bg-orange-50/50 border border-gray-100 rounded-3xl">
               <div className="shrink-0 w-9 h-9 flex items-center justify-center bg-white rounded-xl shadow-sm text-orange-600 border border-gray-50">
                 <Lightbulb size={18} />

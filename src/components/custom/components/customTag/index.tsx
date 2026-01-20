@@ -10,11 +10,11 @@ interface CustomTagProps {
 
 export const CustomTag = ({ icon, children, color = "blue", className }: CustomTagProps) => {
   const variants = {
-    blue: "bg-gradient-to-r from-blue-500 to-cyan-400 text-white shadow-lg shadow-blue-500/25 ring-1 ring-blue-400/50",
-    red: "bg-gradient-to-r from-rose-500 to-pink-500 text-white shadow-lg shadow-rose-500/25 ring-1 ring-rose-400/50",
-    orange: "bg-gradient-to-r from-orange-600 to-amber-400 text-white shadow-lg shadow-orange-600/25 ring-1 ring-orange-600/50",
-    green: "bg-gradient-to-r from-emerald-500 to-teal-400 text-white shadow-lg shadow-emerald-500/25 ring-1 ring-emerald-400/50",
-    purple: "bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white shadow-lg shadow-violet-500/25 ring-1 ring-violet-400/50",
+    blue: "bg-linear-to-r from-blue-500 to-cyan-400 text-white shadow-lg shadow-blue-500/25 ring-1 ring-blue-400/50",
+    red: "bg-linear-to-r from-rose-500 to-pink-500 text-white shadow-lg shadow-rose-500/25 ring-1 ring-rose-400/50",
+    orange: "bg-linear-to-r from-orange-600 to-amber-400 text-white shadow-lg shadow-orange-600/25 ring-1 ring-orange-600/50",
+    green: "bg-linear-to-r from-emerald-500 to-teal-400 text-white shadow-lg shadow-emerald-500/25 ring-1 ring-emerald-400/50",
+    purple: "bg-linear-to-r from-violet-500 to-fuchsia-500 text-white shadow-lg shadow-violet-500/25 ring-1 ring-violet-400/50",
   };
 
   return (

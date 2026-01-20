@@ -24,6 +24,7 @@ export interface VariantData {
   optionValueNames: string[];
   imageUrl?: string;
   imageAssetId?: string;
+  imageExtension?: string;
   imageProcessing?: boolean;
 }
 

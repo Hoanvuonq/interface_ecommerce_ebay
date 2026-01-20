@@ -137,7 +137,7 @@ export default function ShopVoucherPurchaseModal({
               <span className="text-sm font-bold text-emerald-600 uppercase tracking-widest text-[10px] bg-emerald-100 px-2 py-0.5 rounded-md">Miễn phí</span>
             </div>
             
-            <div className="h-[1px] bg-gray-200 w-full my-2 border-dashed border-t" />
+            <div className="h-px bg-gray-200 w-full my-2 border-dashed border-t" />
             
             <div className="flex justify-between items-end">
               <span className="text-base font-bold text-gray-900 uppercase tracking-tight">Tổng thanh toán</span>

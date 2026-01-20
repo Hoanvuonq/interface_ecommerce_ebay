@@ -19,7 +19,7 @@ export const ChatLoginAlert = () => {
         </p>
         <button
           onClick={() => router.push("/login")}
-          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-yellow-500 text-white text-xs font-bold rounded-xl hover:shadow-lg hover:shadow-orange-200 active:scale-95 transition-all"
+          className="flex items-center gap-2 px-4 py-2 bg-linear-to-r from-orange-500 to-yellow-500 text-white text-xs font-bold rounded-xl hover:shadow-lg hover:shadow-orange-200 active:scale-95 transition-all"
         >
           <LogIn size={14} />
           Đăng nhập ngay

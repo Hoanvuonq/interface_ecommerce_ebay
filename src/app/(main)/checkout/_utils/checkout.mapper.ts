@@ -56,8 +56,15 @@ export const prepareOrderRequest = (params: any): any => {
         .map("voucherCode")
         .value();
 
+      const items = _.map(s.items, (item: any) => ({
+        itemId: item.itemId,
+        expectedUnitPrice: Number(item.unitPrice || item.expectedUnitPrice || 0),
+        promotionId: item.promotionId || null,
+      }));
+
       return {
         shopId: s.shopId,
+        items,
         itemIds: _.map(s.items, "itemId"),
         vouchers: shopReq?.vouchers || [],
         serviceCode: Number(

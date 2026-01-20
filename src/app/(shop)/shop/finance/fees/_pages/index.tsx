@@ -90,7 +90,7 @@ export const ShopFeeReportScreen: React.FC = () => {
 
   if (loadingShop)
     return (
-      <div className="min-h-[400px] flex flex-col items-center justify-center gap-4">
+      <div className="min-h-100 flex flex-col items-center justify-center gap-4">
         <Loader2 className="w-10 h-10 text-orange-500 animate-spin" />
         <span className="text-sm font-bold text-gray-500 uppercase tracking-widest">
           Đang tải thông tin shop...
@@ -213,7 +213,7 @@ export const ShopFeeReportScreen: React.FC = () => {
                 {feeBreakdown.length > 0 ? (
                   <table className="w-full text-left border-collapse">
                     <thead>
-                      <tr className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em]">
+                      <tr className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
                         <th className="px-8 py-5">Loại phí</th>
                         <th className="px-8 py-5 text-right">Tổng số tiền</th>
                         <th className="px-8 py-5 text-center">Số lần</th>

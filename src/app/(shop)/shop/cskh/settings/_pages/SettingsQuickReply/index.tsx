@@ -43,7 +43,7 @@ export const SettingsQuickReply = () => {
           {/* Nút Tạo tin nhắn mới - Kích hoạt Modal */}
           <button
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-2 px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white rounded-[2rem] text-[10px] font-bold uppercase tracking-[0.2em] shadow-xl shadow-orange-500/20 transition-all active:scale-95"
+            className="flex items-center gap-2 px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white rounded-4xl text-[10px] font-bold uppercase tracking-[0.2em] shadow-xl shadow-orange-500/20 transition-all active:scale-95"
           >
             <Plus size={18} strokeWidth={3} /> Tạo tin nhắn mới
           </button>
@@ -165,7 +165,7 @@ export const SettingsQuickReply = () => {
                     {[1, 2].map((item) => (
                       <div
                         key={item}
-                        className="grid grid-cols-1 md:grid-cols-[40px_1fr_200px_40px] items-start gap-4 p-6 bg-white rounded-[2rem] shadow-xl shadow-slate-200/20 border border-transparent hover:border-orange-200 transition-all group/item"
+                        className="grid grid-cols-1 md:grid-cols-[40px_1fr_200px_40px] items-start gap-4 p-6 bg-white rounded-4xl shadow-xl shadow-slate-200/20 border border-transparent hover:border-orange-200 transition-all group/item"
                       >
                         <div className="mt-4 text-slate-300 cursor-grab active:cursor-grabbing flex justify-center">
                           <GripVertical size={18} />
@@ -196,7 +196,7 @@ export const SettingsQuickReply = () => {
                     ))}
                   </div>
 
-                  <button className="w-full py-5 border-2 border-dashed border-slate-200 rounded-[2rem] text-[10px] font-bold uppercase tracking-widest text-slate-400 hover:border-orange-300 hover:text-orange-500 hover:bg-white transition-all">
+                  <button className="w-full py-5 border-2 border-dashed border-slate-200 rounded-4xl text-[10px] font-bold uppercase tracking-widest text-slate-400 hover:border-orange-300 hover:text-orange-500 hover:bg-white transition-all">
                     + Thêm mẫu tin nhắn mới (Tối đa 20)
                   </button>
 
@@ -205,7 +205,7 @@ export const SettingsQuickReply = () => {
                     onSubmit={() => console.log("Save groups")}
                     submitText="Cập nhật nhóm"
                     containerClassName="pt-6 border-t-0 justify-end"
-                    className="w-48! rounded-[2rem] h-12"
+                    className="w-48! rounded-4xl h-12"
                   />
                 </div>
               </motion.div>

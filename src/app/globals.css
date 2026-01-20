@@ -153,14 +153,11 @@ body {
 }
 
 .accent-gradient {
-  background: linear-gradient(
-    135deg, 
-    rgba(233, 33, 33, 0.952) 0%,  
-    rgba(233, 146, 146, 0.8) 50%, 
-    rgba(221, 17, 17, 0.966) 100%   /* Đỏ gradient 2 nhạt dần */
-  );
-  
-  backdrop-blur: 10px;
+  background: linear-gradient(135deg,
+      rgba(233, 33, 33, 0.945) 0%,
+      rgba(233, 105, 105, 0.8) 50%,
+      rgba(221, 17, 17, 0.966) 100%);
+
   border: 1px solid rgba(238, 94, 94, 0.1);
 }
 

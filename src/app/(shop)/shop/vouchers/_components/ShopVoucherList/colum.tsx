@@ -24,7 +24,7 @@ export const getVoucherColumns = (actions: {
 }): Column<VoucherTemplate>[] => [
   {
     header: "Voucher",
-    className: "min-w-[250px]",
+    className: "min-w-62.5",
     render: (item: VoucherTemplate) => (
       <div className="flex flex-col gap-1">
         <span className="px-2 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-bold w-fit rounded-lg tracking-widest font-mono border border-blue-100 uppercase">
@@ -100,7 +100,7 @@ export const getVoucherColumns = (actions: {
               {/* Dropdown Content */}
               <div className={cn(
                 "absolute right-0 top-[110%] w-48 bg-white border border-gray-100 rounded-2xl shadow-2xl py-2",
-                "z-[9999] transition-all duration-200 ease-out", // Tăng Z-index cực cao
+                "z-9999 transition-all duration-200 ease-out", // Tăng Z-index cực cao
                 "invisible opacity-0 translate-y-2 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0"
               )}>
                 <button 
@@ -118,7 +118,7 @@ export const getVoucherColumns = (actions: {
                   {item.active ? "Tắt voucher" : "Bật voucher"}
                 </button>
 
-                <div className="h-[1px] bg-gray-50 my-1 mx-2" />
+                <div className="h-px bg-gray-50 my-1 mx-2" />
 
                 <button 
                   onClick={() => actions.onDelete(item)}
