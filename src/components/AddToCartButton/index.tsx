@@ -100,7 +100,7 @@ export const AddToCartButton: React.FC<
       type="login"
       onClick={handleAddToCart}
       disabled={disabled || loading || quantity < 1 || maxQuantity === 0}
-      className={cn("flex-1 h-11 flex items-center justify-center gap-2 rounded-lg px-6 text-white shadow-lg transition-all")}
+      className={cn("flex-1 h-11 flex items-center text-[14px] justify-center gap-2 rounded-lg px-6 text-white shadow-lg transition-all")}
     >
       <span className="flex items-center gap-2">
         {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <ShoppingCart className="w-5 h-5" />}

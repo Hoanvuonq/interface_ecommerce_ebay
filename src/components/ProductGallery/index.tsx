@@ -35,7 +35,7 @@ export const ProductGallery = ({ product, galleryImages = [] }: any) => {
           <div className="absolute inset-0 bg-linear-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
           
           <div className="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 pointer-events-none">
-            <span className="bg-white/90 backdrop-blur-xl text-orange-600 px-5 py-2 rounded-2xl text-[10px] flex items-center gap-2 font-black uppercase tracking-widest shadow-2xl border border-orange-100">
+            <span className="bg-white/90 backdrop-blur-xl text-orange-600 px-5 py-2 rounded-2xl text-[10px] flex items-center gap-2 font-bold uppercase tracking-widest shadow-2xl border border-orange-100">
                 <Maximize2 size={14} strokeWidth={3} />
                 Phóng to tài sản
             </span>
@@ -43,7 +43,6 @@ export const ProductGallery = ({ product, galleryImages = [] }: any) => {
         </div>
       </div>
 
-      {/* Danh sách ảnh nhỏ (Thumbnails) */}
       {galleryImages.length > 1 ? (
         <div className="flex flex-wrap gap-3 px-2">
           {galleryImages.map((img: any, idx: number) => {

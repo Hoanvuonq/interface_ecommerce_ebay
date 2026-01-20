@@ -50,36 +50,29 @@ export const DataTable = <T,>({
     return index;
   };
 
-  const variants = {
-    enter: (d: number) => ({ x: d > 0 ? 20 : -20, opacity: 0 }),
-    center: { x: 0, opacity: 1 },
-    exit: (d: number) => ({ x: d > 0 ? -20 : 20, opacity: 0 }),
-  };
-
   return (
-    <div className="space-y-4 w-full">
+    <div className="w-full space-y-4">
       {headerContent && (
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-in fade-in slide-in-from-top-2 duration-500">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between animate-in fade-in slide-in-from-top-2 duration-500">
           {headerContent}
         </div>
       )}
 
-      <div className="bg-white border border-gray-100 rounded-4xl shadow-custom overflow-hidden flex flex-col">
+      <div className="flex flex-col overflow-hidden bg-white border border-gray-100 rounded-[2.5rem] shadow-custom">
         <div className="overflow-x-auto custom-scrollbar">
           <table className="min-w-full border-collapse">
-            <thead className="bg-[#ffffff] border-b border-gray-100">
+            <thead className="bg-[#f5f5f5] border-b border-gray-200">
               <tr>
                 {columns.map((col, idx) => (
                   <th
                     key={idx}
                     className={cn(
-                      "px-6 py-4 text-[12px] font-bold uppercase text-gray-600 whitespace-nowrap",
+                      "px-6 py-5 text-[11px] font-bold uppercase text-gray-700 whitespace-nowrap ",
                       col.align === "center"
                         ? "text-center"
                         : col.align === "right"
                           ? "text-right"
                           : "text-left",
-                      col.headerClassName,
                       col.headerClassName,
                     )}
                   >
@@ -89,7 +82,7 @@ export const DataTable = <T,>({
               </tr>
             </thead>
 
-            <tbody className="relative min-h-50">
+            <tbody className="relative min-h-75">
               <AnimatePresence mode="wait" custom={direction}>
                 {loading ? (
                   <motion.tr
@@ -98,13 +91,13 @@ export const DataTable = <T,>({
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                   >
-                    <td colSpan={columns.length} className="py-24 text-center">
+                    <td colSpan={columns.length} className="py-32 text-center">
                       <div className="flex flex-col items-center gap-3">
-                        <div className="p-3 bg-orange-50 rounded-2xl">
-                          <FiLoader className="w-6 h-6 text-orange-500 animate-spin" />
+                        <div className="p-4 bg-orange-50 rounded-3xl shadow-inner">
+                          <FiLoader className="w-8 h-8 text-orange-500 animate-spin" />
                         </div>
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500">
-                          Đang tải dữ liệu...
+                        <span className="text-[12px] font-bold uppercase tracking-[0.3em] text-orange-500 animate-pulse">
+                          Syncing Data...
                         </span>
                       </div>
                     </td>
@@ -116,56 +109,40 @@ export const DataTable = <T,>({
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                   >
-                    <td colSpan={columns.length} className="py-24 text-center">
+                    <td colSpan={columns.length} className="py-32 text-center">
                       <div className="flex flex-col items-center gap-4">
-                        <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center ring-8 ring-gray-50/50">
-                          <FiInbox className="w-8 h-8 text-gray-200" />
+                        <div className="flex items-center justify-center w-20 h-20 bg-gray-50 rounded-4xl ring-8 ring-gray-50/50">
+                          <FiInbox className="w-10 h-10 text-gray-200" />
                         </div>
-                        <div>
-                          <h3 className="text-gray-900 font-bold text-xs uppercase tracking-widest">
-                            Trống
-                          </h3>
-                          <p className="text-[10px] text-gray-500 font-medium uppercase">
-                            {emptyMessage}
-                          </p>
-                        </div>
+                        <h3 className="text-sm font-bold text-gray-900 uppercase italic tracking-widest">
+                          {emptyMessage}
+                        </h3>
                       </div>
                     </td>
                   </motion.tr>
                 ) : (
-                  <React.Fragment key={page}>
+                  <React.Fragment key={`page-${page}`}>
                     {data.map((item, rowIdx) => (
                       <motion.tr
                         key={getRowKey(item, rowIdx)}
-                        custom={direction}
-                        variants={variants}
-                        initial="enter"
-                        animate="center"
-                        exit="exit"
-                        transition={{
-                          x: { type: "spring", stiffness: 400, damping: 40 },
-                          opacity: { duration: 0.2 },
-                          delay: rowIdx * 0.02,
-                        }}
-                        className="group hover:bg-orange-50/20 transition-colors border-b border-gray-50 last:border-none"
+                        initial={{ opacity: 0, x: direction > 0 ? 20 : -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.3, delay: rowIdx * 0.01 }}
+                        className="group border-b border-gray-50 transition-colors last:border-none hover:bg-orange-50/10"
                       >
                         {columns.map((col, colIdx) => {
-                          // Thực hiện render nội dung cột
                           const rendered = col.render
                             ? col.render(item, rowIdx)
                             : null;
-
                           let cellContent: React.ReactNode = null;
                           let cellRowSpan: number | undefined = undefined;
 
-                          // LOGIC FIX: Kiểm tra nếu render trả về object có chứa rowSpan
                           if (
                             rendered &&
                             typeof rendered === "object" &&
                             "content" in rendered
                           ) {
                             if ((rendered as any).rowSpan === 0) return null;
-
                             cellContent = (rendered as any).content;
                             cellRowSpan = (rendered as any).rowSpan;
                           } else if (col.render) {
@@ -179,14 +156,13 @@ export const DataTable = <T,>({
                               key={colIdx}
                               rowSpan={cellRowSpan}
                               className={cn(
-                                "px-6 py-5 whitespace-nowrap text-sm font-medium text-gray-700",
+                                "px-6 py-5 whitespace-nowrap text-sm font-bold text-gray-600",
                                 col.align === "center"
                                   ? "text-center"
                                   : col.align === "right"
                                     ? "text-right"
                                     : "text-left",
                                 col.className,
-                                // align-middle giúp nội dung nằm chính giữa vùng gộp dòng
                                 cellRowSpan && cellRowSpan > 1
                                   ? "align-middle"
                                   : "",
@@ -205,35 +181,75 @@ export const DataTable = <T,>({
           </table>
         </div>
 
-        <div className="bg-[#f5f5f5] px-8 py-2 border-t border-gray-50 flex flex-col sm:flex-row gap-4 items-center justify-between">
-          <div className="text-[10px] flex items-center gap-1 font-bold text-gray-500 uppercase">
-            Hiển thị
-            <span className="text-gray-900 font-bold">
-              {fromItem}-{toItem}
-            </span>
-            / <span className="text-gray-900 font-bold">{totalElements}</span>
-            mục
+        <div className="flex flex-col items-center justify-between gap-6 bg-[#f5f5f5] px-10 py-2 border-t border-gray-200 sm:flex-row shadow-inner">
+          <div className="flex items-center gap-2 text-[12px] font-bold text-gray-500">
+            <span>Hiển thị:</span>
+            <div className="flex items-center bg-white border border-gray-200 rounded-full px-3 py-1 text-gray-900 shadow-sm">
+              <span className="text-orange-500">
+                {fromItem}-{toItem}
+              </span>
+              <span className="mx-1 text-gray-300">/</span>
+              <span>{totalElements} Assets</span>
+            </div>
           </div>
 
           <div className="flex items-center gap-3">
             <button
+              type="button"
               onClick={() => onPageChange(page - 1)}
               disabled={page === 0 || loading}
-              className="p-2.5 rounded-xl border border-gray-100 text-gray-500 hover:bg-orange-50 hover:text-orange-600 disabled:opacity-30 disabled:hover:bg-transparent transition-all active:scale-90"
+              className="flex h-8 w-8 items-center justify-center rounded-2xl border border-gray-200 bg-white text-gray-500 transition-all hover:border-orange-500 hover:text-orange-500 disabled:opacity-20 active:scale-90 shadow-sm"
             >
-              <FiChevronLeft size={18} />
+              <FiChevronLeft size={20} strokeWidth={3} />
             </button>
 
-            <div className="px-5 py-1.5 rounded-xl bg-gray-50 border border-gray-100 text-[10px] font-bold text-gray-700">
-              TRANG {page + 1} / {totalPages || 1}
+            <div className="flex items-center gap-1">
+              {Array.from({ length: totalPages }, (_, i) => i).map(
+                (pageNum) => {
+                  const isSelected = page === pageNum;
+                  const isEdge = pageNum === 0 || pageNum === totalPages - 1;
+                  const isNear = Math.abs(pageNum - page) <= 1;
+
+                  if (!isEdge && !isNear) {
+                    if (pageNum === 1 || pageNum === totalPages - 2) {
+                      return (
+                        <span
+                          key={pageNum}
+                          className="px-1 text-gray-300 font-bold"
+                        >
+                          ...
+                        </span>
+                      );
+                    }
+                    return null;
+                  }
+
+                  return (
+                    <button
+                      key={pageNum}
+                      type="button"
+                      onClick={() => onPageChange(pageNum)}
+                      className={cn(
+                        "h-8 min-w-8 rounded-2xl text-[11px] font-bold transition-all border shadow-sm",
+                        isSelected
+                          ? "bg-orange-500 border-orange-500 text-white shadow-orange-500/40 scale-85"
+                          : "bg-white border-gray-200 text-gray-500 hover:border-orange-300 hover:text-orange-500",
+                      )}
+                    >
+                      {pageNum + 1}
+                    </button>
+                  );
+                },
+              )}
             </div>
 
             <button
+              type="button"
               onClick={() => onPageChange(page + 1)}
               disabled={page >= totalPages - 1 || loading}
-              className="p-2.5 rounded-xl border border-gray-100 text-gray-500 hover:bg-orange-50 hover:text-orange-600 disabled:opacity-30 disabled:hover:bg-transparent transition-all active:scale-90"
+              className="flex h-8 w-8 items-center justify-center rounded-2xl border border-gray-200 bg-white text-gray-500 transition-all hover:border-orange-500 hover:text-orange-500 disabled:opacity-20 active:scale-90 shadow-sm"
             >
-              <FiChevronRight size={18} />
+              <FiChevronRight size={20} strokeWidth={3} />
             </button>
           </div>
         </div>

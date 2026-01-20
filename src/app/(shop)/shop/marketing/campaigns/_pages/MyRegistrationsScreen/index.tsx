@@ -73,7 +73,7 @@ export const MyRegistrationsScreen: React.FC<MyRegistrationsTabProps> = ({
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-700">
             <div className="flex items-center justify-between px-2">
                 <div className="space-y-1">
-                    <h2 className="font-black text-2xl text-gray-900 tracking-tight flex items-center gap-3">
+                    <h2 className="font-bold text-2xl text-gray-900 tracking-tight flex items-center gap-3">
                         Chiến dịch đã tham gia
                         <span className="bg-green-500 text-white text-xs py-1 px-3 rounded-full font-bold shadow-sm shadow-green-200">
                             {registrations.length}
@@ -117,13 +117,13 @@ export const MyRegistrationsScreen: React.FC<MyRegistrationsTabProps> = ({
                                     <h3 className="font-bold text-gray-900 line-clamp-1 group-hover:text-green-600 transition-colors uppercase tracking-tight text-sm">
                                         {reg.productName}
                                     </h3>
-                                    <p className="text-[10px] text-gray-400 font-black truncate flex items-center gap-1 mt-1 uppercase ">
+                                    <p className="text-[10px] text-gray-500 font-bold truncate flex items-center gap-1 mt-1 uppercase ">
                                         <Tag className="w-3 h-3 text-green-500" />
                                         {reg.campaignName}
                                     </p>
                                     
                                     <div className="mt-4 flex items-center gap-2">
-                                        <span className="text-xl font-black text-red-500 tracking-tighter">
+                                        <span className="text-xl font-bold text-red-500 tracking-tighter">
                                             {formatPrice(reg.salePrice || 0)}
                                         </span>
                                         <span className="text-[10px] font-bold text-gray-300 line-through decoration-gray-200">
@@ -138,7 +138,7 @@ export const MyRegistrationsScreen: React.FC<MyRegistrationsTabProps> = ({
                                     <div className="flex-1">
                                         <div className="flex items-center justify-between mb-2">
                                             <span className="text-[10px] text-gray-500 font-bold uppercase">Sức mua</span>
-                                            <span className="text-[10px] font-black text-gray-700 uppercase tracking-tighter">
+                                            <span className="text-[10px] font-bold text-gray-700 uppercase tracking-tighter">
                                                 {reg.stockSold} / {reg.stockLimit} SP
                                             </span>
                                         </div>
@@ -176,14 +176,14 @@ export const MyRegistrationsScreen: React.FC<MyRegistrationsTabProps> = ({
                 </div>
                 <div className="relative z-10">
                     <h4 className="text-white font-bold text-lg">Chế độ vận hành chiến dịch</h4>
-                    <p className="text-gray-400 text-sm mt-1 max-w-2xl leading-relaxed">
+                    <p className="text-gray-500 text-sm mt-1 max-w-2xl leading-relaxed">
                         Chương trình Flash Sale yêu cầu sự chính xác về kho hàng. Sản phẩm sau khi được <span className="text-green-400 font-bold">APPROVED</span> sẽ được khóa số lượng tồn kho tương ứng với giới hạn đăng ký để đảm bảo quyền lợi người mua.
                     </p>
                     <div className="flex gap-4 mt-4">
-                        <div className="flex items-center gap-2 text-[10px] font-black text-gray-500 uppercase tracking-widest">
+                        <div className="flex items-center gap-2 text-[10px] font-bold text-gray-500 uppercase tracking-widest">
                             <div className="w-2 h-2 rounded-full bg-amber-500" /> Chờ duyệt: Có thể hủy
                         </div>
-                        <div className="flex items-center gap-2 text-[10px] font-black text-gray-500 uppercase tracking-widest">
+                        <div className="flex items-center gap-2 text-[10px] font-bold text-gray-500 uppercase tracking-widest">
                             <div className="w-2 h-2 rounded-full bg-green-500" /> Đã duyệt: Khóa dữ liệu
                         </div>
                     </div>

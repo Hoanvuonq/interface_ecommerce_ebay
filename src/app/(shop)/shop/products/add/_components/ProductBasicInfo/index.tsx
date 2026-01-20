@@ -45,7 +45,6 @@ export const ProductBasicTabs: React.FC<ProductBasicTabsProps> = ({
     setVideoList: storeSetVideoList,
   } = useProductStore();
 
-  // Use props if provided, otherwise use store
   const fileList = propFileList || storeFileList;
   const setFileList = propSetFileList || storeSetFileList;
   const videoList = propVideoList || storeVideoList;

@@ -39,7 +39,7 @@ export const FilterBar = ({
           <Filter size={22} strokeWidth={2.5} />
         </div>
         <div>
-          <h3 className="text-xl font-black uppercase tracking-tighter text-slate-800 italic leading-none">
+          <h3 className="text-xl font-bold uppercase tracking-tighter text-slate-800 italic leading-none">
             Bộ lọc thông minh
           </h3>
           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mt-1">
@@ -86,7 +86,7 @@ export const FilterBar = ({
 
       <div className="flex flex-col md:flex-row items-end md:items-center justify-between gap-8  border-t border-slate-100">
         <div className="w-full md:w-auto">
-          <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4 ml-1">
+          <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 mb-4 ml-1">
             Phân khúc giá (VND)
           </label>
           <div className="flex items-center gap-4">

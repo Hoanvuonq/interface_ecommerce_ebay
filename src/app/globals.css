@@ -17,8 +17,9 @@
   --color-mainColor: #c90808;
   --color-bg-soft: #f5f7ff;
   --color-border-soft: #e6e9ff;
-  --color-gradient-1: #8b0000;
-  --color-gradient-2: #d64545;
+  --color-gradient-1: #ee5e5e;
+  --color-gradient-2: #a73333;
+  --color-soft-white: rgba(255, 255, 255, 0.9);
   --background: var(--color-bg-soft);
   --foreground: #111827;
   --primary-color: var(--color-primary);
@@ -152,7 +153,15 @@ body {
 }
 
 .accent-gradient {
-  background: linear-gradient(to bottom right, var(--color-gradient-1), #b12934, var(--color-gradient-2));
+  background: linear-gradient(
+    135deg, 
+    rgba(233, 33, 33, 0.952) 0%,  
+    rgba(233, 146, 146, 0.8) 50%, 
+    rgba(221, 17, 17, 0.966) 100%   /* Đỏ gradient 2 nhạt dần */
+  );
+  
+  backdrop-blur: 10px;
+  border: 1px solid rgba(238, 94, 94, 0.1);
 }
 
 @layer base {
@@ -304,13 +313,30 @@ body {
 
 @layer utilities {
   @keyframes smooth-shake {
-    0%, 100% { transform: translateX(0); }
-    10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
-    20%, 40%, 60%, 80% { transform: translateX(3px); }
+
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+      transform: translateX(-3px);
+    }
+
+    20%,
+    40%,
+    60%,
+    80% {
+      transform: translateX(3px);
+    }
   }
 
   .animate-shake {
-    animation: smooth-shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+    animation: smooth-shake 0.4s cubic-bezier(.36, .07, .19, .97) both;
     animation-duration: 500ms;
     border-color: #f87171 !important;
     background-color: #fffafb !important;

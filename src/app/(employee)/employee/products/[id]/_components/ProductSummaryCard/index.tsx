@@ -17,25 +17,25 @@ export const ProductSummaryCard =({
     switch (status) {
       case "PENDING":
         return (
-          <span className="bg-amber-50 text-amber-600 border border-amber-100 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-xl shadow-sm">
+          <span className="bg-amber-50 text-amber-600 border border-amber-100 text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-xl shadow-sm">
             Chờ duyệt
           </span>
         );
       case "APPROVED":
         return (
-          <span className="bg-green-50 text-green-600 border border-green-100 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-xl shadow-sm">
+          <span className="bg-green-50 text-green-600 border border-green-100 text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-xl shadow-sm">
             Đã duyệt
           </span>
         );
       case "REJECTED":
         return (
-          <span className="bg-red-50 text-red-600 border border-red-100 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-xl shadow-sm">
+          <span className="bg-red-50 text-red-600 border border-red-100 text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-xl shadow-sm">
             Từ chối
           </span>
         );
       default:
         return (
-          <span className="bg-gray-50 text-gray-600 border border-gray-100 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-xl shadow-sm">
+          <span className="bg-gray-50 text-gray-600 border border-gray-100 text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-xl shadow-sm">
             {status}
           </span>
         );
@@ -58,7 +58,7 @@ export const ProductSummaryCard =({
           </div>
         </div>
 
-        <h1 className="text-3xl font-black text-slate-900 mb-4 leading-tight uppercase italic tracking-tighter group-hover:text-orange-600 transition-colors">
+        <h1 className="text-3xl font-bold text-slate-900 mb-4 leading-tight uppercase italic tracking-tighter group-hover:text-orange-600 transition-colors">
           {product.name}
         </h1>
 
@@ -67,10 +67,10 @@ export const ProductSummaryCard =({
             <Coins size={24} className="text-white" />
           </div>
           <div className="flex flex-col">
-            <span className="text-[10px] font-black text-orange-400 uppercase tracking-[0.2em] leading-none mb-1">
+            <span className="text-[10px] font-bold text-orange-400 uppercase tracking-[0.2em] leading-none mb-1">
               Giá niêm yết
             </span>
-            <span className="text-4xl font-black text-slate-900 tracking-tighter italic">
+            <span className="text-4xl font-bold text-slate-900 tracking-tighter italic">
               {product.basePrice?.toLocaleString("vi-VN")}
               <span className="text-xl ml-1">₫</span>
             </span>
@@ -85,7 +85,7 @@ export const ProductSummaryCard =({
                 <Tag size={18} />
               </div>
               <div>
-                <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
+                <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">
                   Phân loại
                 </p>
                 <p className="text-sm font-bold text-slate-800">
@@ -102,7 +102,7 @@ export const ProductSummaryCard =({
                 <Store size={18} />
               </div>
               <div>
-                <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
+                <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">
                   Cửa hàng
                 </p>
                 <Link

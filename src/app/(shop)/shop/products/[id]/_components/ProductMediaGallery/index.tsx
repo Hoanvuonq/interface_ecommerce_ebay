@@ -1,7 +1,9 @@
 "use client";
 
-import { ImageIcon, Star, Video, Edit3, Play } from "lucide-react"; // Thêm Play icon
+import Image from "next/image";
+import { ImageIcon, Star, Edit3, Play } from "lucide-react";
 import { resolveMediaUrl } from "@/utils/products/media.helpers";
+import { cn } from "@/utils/cn";
 
 export const ProductMediaGallery = ({
   media = [],
@@ -12,79 +14,95 @@ export const ProductMediaGallery = ({
   onManage: () => void;
   onPreview: (item: any) => void;
 }) => (
-  <div className="bg-white rounded-[2.5rem] shadow-custom border border-gray-50 overflow-hidden">
-    <div className="px-8 py-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
-      <div className="flex items-center gap-3">
-        <div className="p-2 bg-orange-100 rounded-xl text-orange-600">
-          <ImageIcon size={20} />
+  <div className="bg-white rounded-4xl shadow-custom border border-gray-50 overflow-hidden transition-all hover:shadow-orange-100/50">
+    <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
+      <div className="flex items-center gap-2.5">
+        <div className="p-2 bg-orange-100 rounded-xl text-orange-600 shadow-sm shadow-orange-100">
+          <ImageIcon size={18} strokeWidth={2.5} />
         </div>
-        <h2 className="text-[15px] font-bold text-gray-800 tracking-tight">
-          Media Gallery
-        </h2>
-        <span className="text-xs font-bold text-gray-500 bg-gray-100 px-2.5 py-0.5 rounded-full">
-          {media.length} items
-        </span>
+        <div>
+          <h2 className="text-[14px] font-bold text-gray-800 tracking-tight uppercase italic">
+            Media Gallery
+          </h2>
+          <span className="text-[9px] font-bold text-orange-500 uppercase tracking-widest leading-none">
+            {media.length} items trong kho
+          </span>
+        </div>
       </div>
       <button
         onClick={onManage}
-        className="p-2 bg-white border border-gray-200 text-gray-600 rounded-xl hover:bg-orange-50 hover:text-orange-600 hover:border-gray-200 transition-all shadow-sm"
+        className="p-2 bg-white border border-orange-100 text-orange-500 rounded-xl hover:bg-orange-500 hover:text-white transition-all shadow-sm active:scale-90"
       >
-        <Edit3 size={18} />
+        <Edit3 size={16} strokeWidth={2.5} />
       </button>
     </div>
-    <div className="p-8">
+
+    <div className="p-6">
       {media.length > 0 ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-5">
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3">
           {[...media]
             .sort((a, b) => (a.isPrimary ? -1 : 1))
-            .map((item, idx) => { // Bỏ tham số mediaItem thừa ở đây
+            .map((item, idx) => {
               const isVideo =
                 item.type === "VIDEO" || item.url?.includes("/videos/");
-              
+
               return (
                 <div
                   key={item.id || idx}
-                  // FIX QUAN TRỌNG: Truyền chính xác 'item' hiện tại
-                  onClick={() => onPreview(item)} 
-                  className="relative aspect-square rounded-3xl overflow-hidden border border-gray-100 bg-gray-50 group cursor-pointer transition-all hover:shadow-lg hover:-translate-y-1"
+                  onClick={() => onPreview(item)}
+                  className="relative aspect-square rounded-2xl overflow-hidden border border-gray-100 bg-gray-50 group cursor-pointer transition-all hover:border-orange-400 hover:shadow-md active:scale-95"
                 >
                   {item.isPrimary && (
-                    <div className="absolute top-2 left-2 z-10 px-2 py-0.5 bg-orange-500 text-[9px] font-bold text-white rounded-lg flex items-center gap-1 shadow-md">
-                      <Star size={8} fill="currentColor" /> CHÍNH
+                    <div className="absolute top-1.5 left-1.5 z-10 px-1.5 py-0.5 bg-orange-500 text-[8px] font-bold text-white rounded-md flex items-center gap-1 shadow-lg uppercase tracking-tighter">
+                      <Star size={8} fill="currentColor" /> Chính
                     </div>
                   )}
 
                   {isVideo ? (
                     <div className="w-full h-full flex flex-col items-center justify-center bg-slate-900 relative">
-                      {/* Thêm icon Play lớn ở giữa cho rõ ràng */}
-                      <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white group-hover:scale-110 transition-transform shadow-lg">
-                        <Play size={20} fill="currentColor" className="ml-1" />
+                      <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white group-hover:scale-110 transition-transform shadow-lg border border-white/30">
+                        <Play
+                          size={14}
+                          fill="currentColor"
+                          className="ml-0.5"
+                        />
                       </div>
-                      <span className="text-[10px] font-bold text-white/50 mt-2 uppercase tracking-widest">Video</span>
+                      <span className="text-[8px] font-bold text-white/50 mt-1.5 uppercase tracking-widest italic">
+                        Video
+                      </span>
                     </div>
                   ) : (
-                    <img
-                      src={resolveMediaUrl(item, "_medium")}
-                      className="w-full h-full object-cover"
-                      alt="product"
-                    />
+                    <div className="relative w-full h-full">
+                      <Image
+                        src={
+                          resolveMediaUrl(item, "_medium") || "/placeholder.png"
+                        }
+                        alt={`Product media ${idx}`}
+                        fill
+                        sizes="(max-width: 768px) 33vw, 150px"
+                        className="object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                    </div>
                   )}
-                  
-                  {/* Overlay khi hover */}
-                  <div className="absolute inset-0 bg-orange-600/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                     <div className="bg-white/90 px-3 py-1.5 rounded-full shadow-sm text-[10px] font-bold text-orange-600 uppercase tracking-tighter scale-90 group-hover:scale-100 transition-transform">
-                        Xem {isVideo ? 'Video' : 'Ảnh'}
-                     </div>
+
+                  <div className="absolute inset-0 bg-orange-600/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[1px]">
+                    <div className="bg-white px-2 py-1 rounded-lg shadow-xl text-[8px] font-bold text-orange-600 uppercase tracking-tight scale-75 group-hover:scale-100 transition-transform italic border border-orange-100">
+                      View {isVideo ? "Video" : "Image"}
+                    </div>
                   </div>
                 </div>
               );
             })}
         </div>
       ) : (
-        <div className="py-12 flex flex-col items-center justify-center bg-gray-50/50 rounded-3xl border-2 border-dashed border-gray-100">
-          <ImageIcon size={40} className="text-gray-200 mb-3" />
-          <p className="text-sm font-bold text-gray-500 uppercase tracking-widest">
-            Chưa có hình ảnh
+        <div className="py-8 flex flex-col items-center justify-center bg-orange-50/20 rounded-2xl border-2 border-dashed border-orange-100/50">
+          <ImageIcon
+            size={32}
+            className="text-orange-200 mb-2"
+            strokeWidth={1.5}
+          />
+          <p className="text-[10px] font-bold text-orange-300 uppercase tracking-[0.2em] italic">
+            Chưa có phương tiện hiển thị
           </p>
         </div>
       )}

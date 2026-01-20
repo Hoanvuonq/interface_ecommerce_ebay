@@ -39,7 +39,7 @@ export const AdminActionsCard = ({
           <ShieldCheck size={24} strokeWidth={2.5} />
         </div>
         <div>
-          <h3 className="text-xl font-black uppercase tracking-tighter text-slate-800 italic leading-none">
+          <h3 className="text-xl font-bold uppercase tracking-tighter text-slate-800 italic leading-none">
             Trung tâm kiểm duyệt
           </h3>
           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mt-1">
@@ -51,7 +51,7 @@ export const AdminActionsCard = ({
       {/* Main Status / Approve Button */}
       <div className="mb-8">
         {isApproved ? (
-          <div className="w-full bg-green-50 text-green-700 font-black uppercase tracking-widest text-xs py-5 rounded-[1.5rem] flex items-center justify-center gap-3 border-2 border-green-100 shadow-sm animate-in zoom-in duration-300">
+          <div className="w-full bg-green-50 text-green-700 font-bold uppercase tracking-widest text-xs py-5 rounded-[1.5rem] flex items-center justify-center gap-3 border-2 border-green-100 shadow-sm animate-in zoom-in duration-300">
             <CheckCircle size={20} strokeWidth={3} />
             Sản phẩm đã được phê duyệt
           </div>
@@ -59,7 +59,7 @@ export const AdminActionsCard = ({
           <button
             onClick={onApprove}
             disabled={loading}
-            className="w-full bg-orange-500 hover:bg-orange-600 text-white font-black uppercase tracking-widest text-sm py-5 rounded-[1.5rem] flex items-center justify-center gap-3 transition-all shadow-xl shadow-orange-500/25 active:scale-[0.98] disabled:opacity-50 border-b-4 border-orange-700"
+            className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold uppercase tracking-widest text-sm py-5 rounded-[1.5rem] flex items-center justify-center gap-3 transition-all shadow-xl shadow-orange-500/25 active:scale-[0.98] disabled:opacity-50 border-b-4 border-orange-700"
           >
             <CheckCircle size={20} strokeWidth={3} />
             Phê duyệt sản phẩm ngay
@@ -93,7 +93,7 @@ export const AdminActionsCard = ({
             size={22}
             className="group-hover/btn:scale-110 transition-transform"
           />
-          <span className="text-[10px] font-black uppercase tracking-widest text-center">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-center">
             Từ chối vĩnh viễn
           </span>
         </button>
@@ -110,7 +110,7 @@ export const AdminActionsCard = ({
             size={22}
             className="group-hover/btn:scale-110 transition-transform"
           />
-          <span className="text-[10px] font-black uppercase tracking-widest text-center">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-center">
             Yêu cầu chỉnh sửa
           </span>
         </button>

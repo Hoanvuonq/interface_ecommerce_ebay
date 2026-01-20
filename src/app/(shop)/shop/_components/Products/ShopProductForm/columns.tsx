@@ -1,23 +1,21 @@
 "use client";
 
-import { ActionBtn } from "@/components";
+import { ActionBtn, ActionDropdown } from "@/components";
 import { Column } from "@/components/DataTable/type";
 import { UserProductDTO } from "@/types/product/user-product.dto";
 import { cn } from "@/utils/cn";
-import {
-  resolveMediaUrl
-} from "@/utils/products/media.helpers";
+import { resolveMediaUrl } from "@/utils/products/media.helpers";
 import {
   CheckCircle2,
   Clock,
   Copy,
   Eye,
   FileText,
+  MoreVerticalIcon,
   PlayCircle,
   Send,
   ShoppingBag,
   StopCircle,
-  Store,
   Tags,
   Trash2,
   XCircle,
@@ -27,64 +25,70 @@ import Link from "next/link";
 
 type StatusType = "DRAFT" | "PENDING" | "APPROVED" | "REJECTED";
 
+const APPROVAL_CONFIGS = {
+  DRAFT: {
+    bg: "bg-slate-100/80",
+    text: "text-slate-500",
+    label: "BẢN NHÁP",
+    icon: <FileText size={12} strokeWidth={2.5} />,
+  },
+  PENDING: {
+    bg: "bg-orange-50",
+    text: "text-orange-600",
+    label: "CHỜ DUYỆT",
+    icon: <Clock size={12} strokeWidth={2.5} />,
+  },
+  APPROVED: {
+    bg: "bg-emerald-50",
+    text: "text-emerald-600",
+    label: "ĐÃ DUYỆT",
+    icon: <CheckCircle2 size={12} strokeWidth={2.5} />,
+  },
+  REJECTED: {
+    bg: "bg-red-50",
+    text: "text-red-500",
+    label: "BỊ TỪ CHỐI",
+    icon: <XCircle size={12} strokeWidth={2.5} />,
+  },
+};
+
 const getProductThumbUrl = (record: any): string => {
-  const primaryMedia =
-    record.media?.find((m: any) => m.isPrimary) || record.media?.[0];
-  if (primaryMedia) {
-    const url = resolveMediaUrl(primaryMedia, "_thumb");
-    if (url) return url;
-  }
-
-  const firstVariantWithImg = record.variants?.find((v: any) => v.imageUrl);
-  if (firstVariantWithImg) {
-    return firstVariantWithImg.imageUrl;
-  }
-
-  return "";
+  const primaryMedia = record.media?.find((m: any) => m.isPrimary) || record.media?.[0];
+  if (primaryMedia) return resolveMediaUrl(primaryMedia, "_thumb") || "";
+  return record.variants?.find((v: any) => v.imageUrl)?.imageUrl || "";
 };
 
 export const getProductColumns = (
-  handleAction: (
-    action: () => Promise<any>,
-    successMsg: string
-  ) => Promise<void>,
-  userProductService: any
+  handleAction: (action: () => Promise<any>, successMsg: string) => Promise<void>,
+  userProductService: any,
+  onDeleteRequest: (record: any) => void // Callback để mở modal xóa
 ): Column<UserProductDTO>[] => [
   {
-    header: "Sản phẩm",
+    header: "Thông tin sản phẩm",
+    className: "min-w-[320px]",
     render: (record) => {
       const thumbUrl = getProductThumbUrl(record);
       return (
-        <div className="flex items-center gap-4 py-1">
-          <div className="w-14 h-14 rounded-2xl overflow-hidden border border-gray-100 bg-orange-50/30 shrink-0 relative shadow-sm">
+        <div className="flex items-center gap-4 py-2">
+          <div className="group relative w-16 h-16 rounded-2xl overflow-hidden border border-orange-100 bg-orange-50/10 shrink-0 shadow-sm transition-all hover:border-orange-400">
             {thumbUrl ? (
-              <Image
-                src={thumbUrl}
-                alt={record.name}
-                fill
-                sizes="56px"
-                className="w-full h-full object-cover"
-              />
+              <Image src={thumbUrl} alt={record.name} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-orange-200 bg-orange-50/50">
-                <ShoppingBag size={20} />
+              <div className="w-full h-full flex items-center justify-center text-orange-200 bg-orange-50/30">
+                <ShoppingBag size={24} />
               </div>
             )}
           </div>
           <div className="flex flex-col min-w-0">
-            <Link
-              href={`/shop/products/${record.id}`}
-              className="text-gray-900 font-bold hover:text-orange-500 truncate transition-colors text-[13px] uppercase tracking-tight"
-            >
+            <Link href={`/shop/products/${record.id}`} className="text-slate-800 font-bold hover:text-orange-500 truncate transition-colors text-[13px] uppercase tracking-tight italic">
               {record.name}
             </Link>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="text-[9px] text-gray-500 font-bold uppercase tracking-widest bg-gray-100 px-1.5 py-0.5 rounded">
-                SKU: {record.slug?.split("-")[0] || "N/A"}
+            <div className="flex flex-wrap items-center gap-2 mt-1.5">
+              <span className="text-[11px] text-slate-500 font-semibold bg-slate-50 px-2 py-0.5 rounded-md border border-slate-200/40">
+                #: {record.slug?.split("-")[0] || "N/A"}
               </span>
-              <span className="flex items-center gap-1 text-[9px] text-orange-500 font-bold uppercase tracking-tighter">
-                <Tags size={10} strokeWidth={3} />{" "}
-                {record.category?.name || "Chưa phân loại"}
+              <span className="flex items-center gap-1 text-[10px] text-orange-500 font-bold uppercase tracking-tight">
+                <Tags size={12} strokeWidth={2.5} /> {record.category?.name || "Chưa phân loại"}
               </span>
             </div>
           </div>
@@ -93,84 +97,46 @@ export const getProductColumns = (
     },
   },
   {
-  header: "Đã bán / Kho",
-  align: "center",
-  render: (record: any) => {
-    let totalStock = 0;
-    let totalQuantity = 0;
-    if (Array.isArray(record.variants)) {
-      record.variants.forEach((variant: any) => {
-        const stock = variant.inventory?.stock ?? 0;
-        const quantity = variant.inventory?.quantity ?? 0;
-        totalStock += stock;
-        totalQuantity += quantity;
+    header: "Kho hàng",
+    align: "center",
+    render: (record: any) => {
+      let totalStock = 0, totalQuantity = 0;
+      record.variants?.forEach((v: any) => {
+        totalStock += v.inventory?.stock ?? 0;
+        totalQuantity += v.inventory?.quantity ?? 0;
       });
-    }
-    const totalSold = totalQuantity - totalStock;
-    return (
-      <div className="flex flex-col items-center font-bold text-xs">
-        <span>
-          <span className="text-orange-500">{totalSold < 0 ? 0 : totalSold}</span>
-          <span className="mx-1 text-gray-500">/</span>
-          <span className="text-blue-600">{totalQuantity}</span>
-        </span>
-        <span className="text-[10px] text-gray-500 font-normal">Đã bán / Nhập kho</span>
-      </div>
-    );
+      const totalSold = Math.max(0, totalQuantity - totalStock);
+      return (
+        <div className="flex flex-col items-center gap-1">
+          <div className="flex items-center text-xs font-bold px-3 py-1 bg-white rounded-full border border-orange-100 shadow-sm">
+            <span className="text-orange-600">{totalSold}</span>
+            <span className="mx-1.5 text-slate-300">/</span>
+            <span className="text-blue-500">{totalQuantity}</span>
+          </div>
+          <span className="text-[9px] text-slate-400 uppercase tracking-widest font-semibold italic">Đã bán / Tổng</span>
+        </div>
+      );
+    },
   },
-},
   {
     header: "Giá niêm yết",
     align: "right",
     render: (record) => (
-      <div className="flex flex-col items-end">
-        <span className="font-bold text-gray-800 text-sm tabular-nums">
+      <div className="flex flex-col items-end pr-2">
+        <div className="font-bold text-slate-700 text-lg tabular-nums flex items-baseline gap-1">
           {record.basePrice?.toLocaleString("vi-VN")}
-          <span className="text-[10px] ml-0.5 text-orange-500">₫</span>
-        </span>
+          <span className="text-[10px] text-orange-500 uppercase font-bold italic tracking-tighter">Vnđ</span>
+        </div>
       </div>
     ),
   },
   {
-    header: "Phê duyệt",
+    header: "Trạng thái phê duyệt",
     align: "center",
     render: (record) => {
-      const configs = {
-        DRAFT: {
-          bg: "bg-gray-100",
-          text: "text-gray-500",
-          label: "Nháp",
-          icon: <FileText size={12} />,
-        },
-        PENDING: {
-          bg: "bg-orange-100",
-          text: "text-orange-600",
-          label: "Chờ duyệt",
-          icon: <Clock size={12} />,
-        },
-        APPROVED: {
-          bg: "bg-emerald-100",
-          text: "text-emerald-700",
-          label: "Đã duyệt",
-          icon: <CheckCircle2 size={12} />,
-        },
-        REJECTED: {
-          bg: "bg-red-100",
-          text: "text-red-600",
-          label: "Từ chối",
-          icon: <XCircle size={12} />,
-        },
-      };
-      const config =
-        configs[record.approvalStatus as StatusType] || configs.DRAFT;
+      const config = APPROVAL_CONFIGS[record.approvalStatus as StatusType] || APPROVAL_CONFIGS.DRAFT;
       return (
-        <div
-          className={cn(
-            "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[9px] font-bold uppercase tracking-widest shadow-sm",
-            config.bg,
-            config.text
-          )}
-        >
+        <div className={cn("inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[9px] font-bold tracking-widest border transition-all shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)]", config.bg, config.text, "border-current/10")}>
           {config.icon} {config.label}
         </div>
       );
@@ -180,19 +146,8 @@ export const getProductColumns = (
     header: "Hiển thị",
     align: "center",
     render: (record) => (
-      <div
-        className={cn(
-          "inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[9px] font-bold uppercase tracking-tighter transition-all",
-          record.active
-            ? "text-blue-600 bg-blue-50"
-            : "text-gray-500 bg-gray-50"
-        )}
-      >
-        {record.active ? (
-          <PlayCircle size={10} fill="currentColor" fillOpacity={0.2} />
-        ) : (
-          <StopCircle size={10} />
-        )}
+      <div className={cn("inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-[9px] font-bold uppercase transition-all border", record.active ? "text-blue-600 bg-blue-50/50 border-blue-100" : "text-slate-400 bg-slate-50 border-slate-100")}>
+        <div className={cn("w-1.5 h-1.5 rounded-full", record.active ? "bg-blue-600 animate-pulse" : "bg-slate-300")} />
         {record.active ? "Đang hoạt động" : "Tạm dừng"}
       </div>
     ),
@@ -200,54 +155,79 @@ export const getProductColumns = (
   {
     header: "Thao tác",
     align: "right",
-    render: (record) => (
-      <div className="flex items-center justify-end gap-1.5">
-        <ActionBtn
-          icon={<Eye size={16} />}
-          tooltip="Xem chi tiết"
-          onClick={() => (window.location.href = `/shop/products/${record.id}`)}
-        />
+    render: (record) => {
+      // Xây dựng danh sách item cho dropdown bên trong render để truy cập record mới nhất
+      const dropdownItems = [];
+      
+      if (record.approvalStatus === "DRAFT") {
+        dropdownItems.push({
+          key: "submit",
+          icon: <Send size={14} />,
+          label: "Gửi xét duyệt ngay",
+          onClick: () => handleAction(() => userProductService.submitForApproval(record.id, record.version), "Đã gửi yêu cầu xét duyệt thành công"),
+        });
+      }
 
-        {record.approvalStatus === "DRAFT" && (
+      if (record.approvalStatus === "APPROVED") {
+        const isActive = record.active;
+        dropdownItems.push({
+          key: isActive ? "unpublish" : "publish",
+          icon: isActive ? <StopCircle size={14} /> : <PlayCircle size={14} />,
+          label: isActive ? "Ngừng hiển thị" : "Bật hiển thị lại",
+          onClick: () => handleAction(
+            () => isActive ? userProductService.unpublish(record.id, record.version) : userProductService.publish(record.id, record.version),
+            isActive ? "Sản phẩm đã được tạm ẩn" : "Sản phẩm đã được hiển thị công khai"
+          ),
+        });
+      }
+
+      if (dropdownItems.length > 0) dropdownItems.push({ key: "div-1", type: "divider" as const, label: "" });
+
+      dropdownItems.push(
+        {
+          key: "duplicate",
+          icon: <Copy size={14} />,
+          label: "Sao chép sản phẩm",
+          onClick: () => handleAction(() => userProductService.duplicate(record.id), "Đã nhân bản sản phẩm mới thành công"),
+        },
+        {
+          key: "delete",
+          icon: <Trash2 size={14} />,
+          label: "Xóa vĩnh viễn",
+          danger: true,
+          onClick: () => onDeleteRequest(record), // Thay confirm bằng callback
+        }
+      );
+
+      return (
+        <div className="flex items-center justify-end gap-2 pr-1">
           <ActionBtn
-            icon={<Send size={16} />}
-            color="text-orange-500 bg-orange-50 border-gray-100 hover:bg-orange-500 hover:text-white"
-            onClick={() =>
-              handleAction(
-                () =>
-                  userProductService.submitForApproval(
-                    record.id,
-                    record.version
-                  ),
-                "Đã gửi yêu cầu xét duyệt"
-              )
-            }
+            icon={<Eye size={16} strokeWidth={2.2} />}
+            tooltip="Xem chi tiết"
+            color="border-slate-100 hover:border-orange-200 hover:bg-orange-50 transition-all active:scale-90"
+            onClick={() => (window.location.href = `/shop/products/${record.id}`)}
           />
-        )}
 
-        <ActionBtn
-          icon={<Copy size={16} />}
-          tooltip="Nhân bản"
-          onClick={() =>
-            handleAction(
-              () => userProductService.duplicate(record.id),
-              "Đã sao chép sản phẩm mới"
-            )
-          }
-        />
+          {record.approvalStatus === "DRAFT" && (
+            <ActionBtn
+              icon={<Send size={16} strokeWidth={2.2} />}
+              tooltip="Gửi duyệt ngay"
+              color="text-orange-500 bg-orange-50/50 border-orange-100 hover:bg-orange-500 hover:text-white"
+              onClick={() => handleAction(() => userProductService.submitForApproval(record.id, record.version), "Yêu cầu xét duyệt đã được gửi")}
+            />
+          )}
 
-        <ActionBtn
-          icon={<Trash2 size={16} />}
-          color="text-red-500 bg-red-50 border-red-100 hover:bg-red-500 hover:text-white"
-          onClick={() => {
-            if (confirm("Xác nhận xóa sản phẩm này?"))
-              handleAction(
-                () => userProductService.delete(record.id, record.version),
-                "Đã xóa sản phẩm"
-              );
-          }}
-        />
-      </div>
-    ),
+          <ActionDropdown
+            trigger={
+              <div className="p-2.5 rounded-xl border border-orange-100 shadow-sm bg-white text-orange-500 hover:bg-orange-500 hover:text-white transition-all active:scale-95 cursor-pointer group">
+                <MoreVerticalIcon size={18} strokeWidth={2.2} className="group-hover:rotate-90 transition-transform duration-300" />
+              </div>
+            }
+            items={dropdownItems}
+            placement="bottomRight"
+          />
+        </div>
+      );
+    },
   },
 ];

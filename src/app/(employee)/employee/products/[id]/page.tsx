@@ -107,7 +107,7 @@ export default function ProductDetailPage() {
           <div className="absolute inset-0 border-4 border-orange-100 rounded-full" />
           <div className="absolute inset-0 border-4 border-orange-500 rounded-full border-t-transparent animate-spin" />
         </div>
-        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-orange-500 animate-pulse">
+        <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-orange-500 animate-pulse">
           Syncing Product Data...
         </p>
       </div>
@@ -120,7 +120,7 @@ export default function ProductDetailPage() {
         <div className="w-24 h-24 bg-red-50 rounded-[2.5rem] flex items-center justify-center mb-6">
           <Box className="text-red-400 w-10 h-10" />
         </div>
-        <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tighter mb-2">
+        <h2 className="text-2xl font-bold text-slate-900 uppercase tracking-tighter mb-2">
           Sản phẩm không tồn tại
         </h2>
         <p className="text-slate-500 text-sm mb-8 max-w-xs">
@@ -156,7 +156,7 @@ export default function ProductDetailPage() {
             </Link>
             <div className="h-8 w-px bg-slate-100" />
             <div className="hidden md:block">
-              <nav className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
+              <nav className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">
                 <Link
                   href="/employee"
                   className="hover:text-orange-500 transition-colors"
@@ -182,7 +182,7 @@ export default function ProductDetailPage() {
             <Link
               href={`/product/${product.slug}`} // Chuyển sang thẻ Link của Next.js cho chuẩn client-side routing
               target="_blank"
-              className="flex items-center gap-2 px-6 py-2.5 bg-white text-slate-900 font-black rounded-xl border border-slate-200 hover:border-orange-500 hover:text-orange-500 transition-all text-[10px] uppercase tracking-widest shadow-sm active:scale-95"
+              className="flex items-center gap-2 px-6 py-2.5 bg-white text-slate-900 font-bold rounded-xl border border-slate-200 hover:border-orange-500 hover:text-orange-500 transition-all text-[10px] uppercase tracking-widest shadow-sm active:scale-95"
             >
               <ExternalLink size={14} strokeWidth={3} />
               Live Preview
@@ -198,7 +198,7 @@ export default function ProductDetailPage() {
             <ShieldCheck size={24} className="text-white" />
           </div>
           <div>
-            <h1 className="text-4xl font-black text-slate-900 uppercase tracking-tighter italic leading-none">
+            <h1 className="text-4xl font-bold text-slate-900 uppercase tracking-tighter italic leading-none">
               Review <span className="text-orange-500">Asset</span>
             </h1>
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mt-1">
@@ -240,7 +240,7 @@ export default function ProductDetailPage() {
 
       <div className="mt-20 flex flex-col items-center justify-center opacity-30 gap-2">
         <LayoutDashboard size={24} className="text-slate-400" />
-        <span className="text-[9px] font-black uppercase tracking-[0.5em] text-slate-500">
+        <span className="text-[9px] font-bold uppercase tracking-[0.5em] text-slate-500">
           Secure Admin Terminal v2.1.0
         </span>
       </div>

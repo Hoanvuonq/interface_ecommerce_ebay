@@ -112,7 +112,7 @@ export const  ProductManagementSreen =() =>{
             <div className="p-3 bg-orange-500 rounded-2xl shadow-lg shadow-orange-200">
               <ShieldCheck className="w-6 h-6 text-white" />
             </div>
-            <h1 className="text-4xl font-black text-gray-900 uppercase tracking-tighter italic">
+            <h1 className="text-4xl font-bold text-gray-900 uppercase tracking-tighter italic">
               Product Control <span className="text-orange-500">Hub</span>
             </h1>
           </div>
@@ -160,7 +160,7 @@ export const  ProductManagementSreen =() =>{
 
       <div className="flex items-center justify-center gap-4 py-4 opacity-50">
         <div className="h-px w-12 bg-gray-300" />
-        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">
+        <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-500">
           Secure Admin Protocol v2.0
         </span>
         <div className="h-px w-12 bg-gray-300" />

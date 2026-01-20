@@ -27,6 +27,7 @@ import { SmartKPICard } from "../../Dashboard";
 import { FilterState, ProductFilters } from "../ProductFilters";
 import { StatusTabItem, StatusTabs } from "../StatusTabs";
 import { getProductColumns } from "./columns";
+import { NotificationRemoveModal } from "@/app/(main)/cart/_components";
 
 type StatusType =
   | "DRAFT"
@@ -42,13 +43,15 @@ interface UserProductWithShop extends UserProductDTO {
 export const ShopProductForm = () => {
   const [products, setProducts] = useState<UserProductDTO[]>([]);
   const { success, error } = useToast();
+  const [deleteTarget, setDeleteTarget] = useState<UserProductDTO | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [loading, setLoading] = useState(false);
   const [statistics, setStatistics] = useState<UserProductStatisticsDTO | null>(
-    null
+    null,
   );
   const [statisticsLoading, setStatisticsLoading] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState<StatusType | "ALL">(
-    "ALL"
+    "ALL",
   );
   const [isSearchMode, setIsSearchMode] = useState(false);
 
@@ -111,7 +114,7 @@ export const ShopProductForm = () => {
       setLoading(true);
       const response = await userProductService.getAllProducts(
         pagination.current - 1,
-        pagination.pageSize
+        pagination.pageSize,
       );
 
       const mappedProducts: UserProductWithShop[] = (
@@ -163,7 +166,7 @@ export const ShopProductForm = () => {
             active: !!item.active,
             shopName: item.shop?.shopName || "N/A",
             categoryName: item.category?.name || "N/A",
-          }))
+          })),
         );
 
         setPagination((prev) => ({
@@ -178,7 +181,7 @@ export const ShopProductForm = () => {
         setLoading(false);
       }
     },
-    [filters, selectedStatus, pagination.pageSize]
+    [filters, selectedStatus, pagination.pageSize],
   );
 
   useEffect(() => {
@@ -190,7 +193,7 @@ export const ShopProductForm = () => {
 
     if (hasFilters) {
       setPagination((prev) =>
-        prev.current === 1 ? prev : { ...prev, current: 1 }
+        prev.current === 1 ? prev : { ...prev, current: 1 },
       );
 
       const timer = setTimeout(() => {
@@ -205,7 +208,7 @@ export const ShopProductForm = () => {
 
   const handleAction = async (
     action: () => Promise<any>,
-    successMsg: string
+    successMsg: string,
   ) => {
     try {
       await action();
@@ -216,7 +219,21 @@ export const ShopProductForm = () => {
       error(e?.response?.data?.message || "Thao tác thất bại");
     }
   };
-
+  const onConfirmDelete = async () => {
+    if (!deleteTarget) return;
+    setIsDeleting(true);
+    try {
+      await userProductService.delete(deleteTarget.id, deleteTarget.version);
+      success("Sản phẩm đã được xóa khỏi hệ thống");
+      fetchProducts();
+      fetchStatistics();
+    } catch (e: any) {
+      error(e?.response?.data?.message || "Xóa sản phẩm thất bại");
+    } finally {
+      setIsDeleting(false);
+      setDeleteTarget(null);
+    }
+  };
   useEffect(() => {
     fetchStatistics();
   }, []);
@@ -278,7 +295,7 @@ export const ShopProductForm = () => {
         colorTheme: "blue" as const,
       },
     ],
-    [statistics, statisticsLoading]
+    [statistics, statisticsLoading],
   );
 
   const productStatusTabs: StatusTabItem<StatusType | "ALL">[] = [
@@ -326,10 +343,13 @@ export const ShopProductForm = () => {
     },
   ];
 
-  const columns = getProductColumns(handleAction, userProductService);
-  useEffect(() => {
-    fetchStatistics();
-  }, []);
+  const columns = useMemo(
+    () =>
+      getProductColumns(handleAction, userProductService, (record) =>
+        setDeleteTarget(record),
+      ),
+    [handleAction, userProductService],
+  );
   return (
     <div className="p-1 min-h-screen space-y-4">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-gray-50 ">
@@ -339,7 +359,9 @@ export const ShopProductForm = () => {
               <ShoppingBag size={28} strokeWidth={2.5} />
             </div>
             <h1 className="flex gap-2 items-center">
-              <span className="text-3xl font-bold text-gray-900">Quản Lý Sản phẩm</span>
+              <span className="text-3xl font-bold text-gray-900">
+                Quản Lý Sản phẩm
+              </span>
               <span className="text-4xl font-bold italic uppercase">
                 {shopDisplayName}
               </span>
@@ -412,7 +434,7 @@ export const ShopProductForm = () => {
         <div
           className={cn(
             "transition-opacity duration-300",
-            loading ? "opacity-60 pointer-events-none" : "opacity-100"
+            loading ? "opacity-60 pointer-events-none" : "opacity-100",
           )}
         >
           <DataTable
@@ -420,17 +442,31 @@ export const ShopProductForm = () => {
             columns={columns}
             loading={loading && products.length === 0}
             rowKey="id"
-            page={pagination.current - 1}
+            page={pagination.current - 1} // Trang 0-based cho DataTable
             size={pagination.pageSize}
-            totalElements={pagination.total}
+            totalElements={pagination.total} // Đảm bảo giá trị này > 0
             onPageChange={(newPage) => {
-              if (isSearchMode) handleSearch(newPage);
-              else setPagination((p) => ({ ...p, current: newPage + 1 }));
+              // DataTable trả về số trang từ 0, 1, 2...
+              // Logic của bro cần cộng 1 để lưu vào state current (1-based)
+              setPagination((prev) => ({ ...prev, current: newPage + 1 }));
+
+              // Nếu đang search thì gọi search trang mới, nếu không gọi fetch mặc định
+              if (isSearchMode) {
+                handleSearch(newPage);
+              }
             }}
             emptyMessage="Không tìm thấy sản phẩm nào"
           />
         </div>
       </div>
+      <NotificationRemoveModal
+        isOpen={!!deleteTarget}
+        onClose={() => setDeleteTarget(null)}
+        onConfirm={onConfirmDelete}
+        isLoading={isDeleting}
+        entityName="sản phẩm"
+        itemName={deleteTarget?.name}
+      />
     </div>
   );
 };

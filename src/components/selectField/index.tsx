@@ -143,7 +143,7 @@ export const SelectField = ({
         <div
           id={`select-dropdown-${name}`}
           className={cn(
-            "fixed z-[99999] bg-white border border-gray-200 rounded-xl shadow-xl flex flex-col overflow-hidden py-1",
+            "fixed z-99999 bg-white border border-gray-200 rounded-xl shadow-xl flex flex-col overflow-hidden py-1",
             "animate-in fade-in zoom-in-95 duration-100 ease-out",
             dropdownStyle.placement === "bottom" ? "origin-top" : "origin-bottom"
           )}

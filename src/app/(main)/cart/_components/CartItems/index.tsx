@@ -208,7 +208,7 @@ export const CartItem: React.FC<CartItemProps> = ({
                 </span>
               </div>
 
-              <div className="flex items-center bg-white rounded-xl p-1 border border-gray-200 shadow-sm scale-90">
+              <div className="flex items-center bg-white rounded-xl p-1 shadow-custom scale-90">
                 <button
                   onClick={() => handleQuantityChange(quantity - 1)}
                   disabled={quantity <= 1 || updating}
@@ -293,7 +293,7 @@ export const CartItem: React.FC<CartItemProps> = ({
         </div>
 
         <div className="col-span-2 flex justify-center">
-          <div className="flex items-center border-2 border-gray-100 rounded-2xl bg-white overflow-hidden shadow-sm">
+          <div className="flex items-center rounded-2xl bg-white overflow-hidden shadow-custom">
             <button
               onClick={() => handleQuantityChange(quantity - 1)}
               disabled={quantity <= 1 || updating}

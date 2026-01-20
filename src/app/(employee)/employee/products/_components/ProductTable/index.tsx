@@ -61,16 +61,16 @@ export default function ProductTable({
             <div className="min-w-0">
               <Link
                 href={`/employee/products/${product.id}`}
-                className="font-black text-gray-900 hover:text-orange-500 text-sm block truncate uppercase tracking-tighter transition-colors"
+                className="font-bold text-gray-900 hover:text-orange-500 text-sm block truncate uppercase tracking-tighter transition-colors"
               >
                 {product.name}
               </Link>
               <div className="flex flex-col gap-0.5 mt-1">
-                <span className="flex items-center gap-1 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                <span className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase tracking-widest">
                   <Store size={10} className="text-orange-400" />
                   {product.shop?.name || "Hệ thống"}
                 </span>
-                <span className="flex items-center gap-1 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                <span className="flex items-center gap-1 text-[10px] font-bold text-gray-500 uppercase tracking-widest">
                   <Box size={10} />
                   {product.category?.name || "Chưa phân loại"}
                 </span>
@@ -99,7 +99,7 @@ export default function ProductTable({
         return (
           <span
             className={cn(
-              "px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border shadow-sm",
+              "px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border shadow-sm",
               styles[status as keyof typeof styles] ||
                 "bg-gray-50 text-gray-500 border-gray-100",
             )}
@@ -114,10 +114,10 @@ export default function ProductTable({
       align: "right",
       render: (product) => (
         <div className="flex flex-col items-end">
-          <span className="text-sm font-black text-slate-900 tracking-tighter">
+          <span className="text-sm font-bold text-slate-900 tracking-tighter">
             {product.basePrice?.toLocaleString("vi-VN")}₫
           </span>
-          <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">
+          <span className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">
             Base Price
           </span>
         </div>

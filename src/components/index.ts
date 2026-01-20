@@ -1,4 +1,5 @@
 export * from "./actionBtn";
+export * from "./actionDropdown";
 export * from "./AddToCartButton";
 export * from "./appPopover";
 export * from "./button";

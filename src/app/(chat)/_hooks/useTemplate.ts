@@ -19,7 +19,6 @@ import {
   UpdateShopChatSettingsRequest,
 } from "../_types/chat.dto";
 import { useToast } from "@/hooks/useToast";
-const { success: messageSuccess, error: messageError } = useToast();
 
 /**
  * Hook để lấy cài đặt chat của shop
@@ -51,6 +50,7 @@ export function useGetShopSettings() {
 export function useUpdateShopSettings() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { success: messageSuccess, error: messageError } = useToast();
 
   const handleUpdateShopSettings = async (
     payload: UpdateShopChatSettingsRequest
@@ -81,6 +81,7 @@ export function useUpdateShopSettings() {
 export function useCreateTemplate() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { success: messageSuccess, error: messageError } = useToast();
 
   const handleCreateTemplate = async (
     payload: CreateTemplateRequest
@@ -137,6 +138,7 @@ export function useGetTemplates() {
 export function useUpdateTemplate() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { success: messageSuccess, error: messageError } = useToast();
 
   const handleUpdateTemplate = async (
     templateId: string,
@@ -168,6 +170,7 @@ export function useUpdateTemplate() {
 export function useDeleteTemplate() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { success: messageSuccess, error: messageError } = useToast();
 
   const handleDeleteTemplate = async (templateId: string): Promise<any> => {
     setLoading(true);

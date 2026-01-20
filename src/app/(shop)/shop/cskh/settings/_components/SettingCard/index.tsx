@@ -3,7 +3,7 @@
 import { cn } from "@/utils/cn";
 import { AnimatePresence, motion } from "framer-motion";
 import { CalendarDays, Pencil } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { FormInput, CustomButtonActions } from "@/components";
 import { WorkingHoursConfig } from "../WorkingHoursConfig";
 
@@ -17,12 +17,34 @@ export const SettingCard = ({
   placeholder,
   showTimeAction,
   isLoading = false,
+  value = "",
+  onSave,
+  workingConfig
 }: any) => {
-  const [tempText, setTempText] = useState("");
+  const [tempText, setTempText] = useState(value);
+  // FIX 1: Tạo state tạm để giữ cấu hình lịch khi đang chỉnh sửa
+  const [tempConfig, setTempConfig] = useState(workingConfig);
 
-  const handleSave = () => {
-    console.log("Saving content:", tempText);
-    // Thực hiện logic lưu ở đây
+  // Đồng bộ lại khi mở mode Edit hoặc khi dữ liệu gốc từ Server thay đổi
+  useEffect(() => {
+    if (isEditing) {
+      setTempText(value);
+      setTempConfig(workingConfig);
+    }
+  }, [value, workingConfig, isEditing]);
+
+  // FIX 2: Dùng useCallback cho hàm onChange của component con để tránh re-render thừa
+  const handleConfigChange = useCallback((newConfig: any) => {
+    setTempConfig(newConfig);
+  }, []);
+
+  const handleFinalSubmit = () => {
+    // FIX 3: Gửi cả Text và Config mới lên cho cha để gọi API
+    if (showTimeAction) {
+      onSave(tempText, tempConfig);
+    } else {
+      onSave(tempText);
+    }
   };
 
   return (
@@ -31,22 +53,16 @@ export const SettingCard = ({
       <div className="p-8 flex items-center justify-between gap-6">
         <div className="space-y-1.5 flex-1">
           <div className="flex items-center gap-2">
-            <h2 className="text-xl font-bold text-gray-800 uppercase leading-none">
-              {title}
-            </h2>
-            <div
-              className={cn(
-                "w-2 h-2 rounded-full animate-pulse",
-                isActive ? "bg-green-500" : "bg-gray-300",
-              )}
-            />
+            <h2 className="text-xl font-bold text-gray-800 uppercase leading-none italic">{title}</h2>
+            <div className={cn("w-2 h-2 rounded-full", isActive ? "bg-green-500 animate-pulse" : "bg-gray-300")} />
           </div>
           <p className="text-sm text-gray-600 italic font-medium">{desc}</p>
         </div>
 
         <div className="flex items-center gap-4">
-          {/* Toggle Switch */}
+          {/* Nút Toggle nhanh (Switch) */}
           <button
+            type="button"
             onClick={onToggle}
             className={cn(
               "w-16 h-9 rounded-full p-1.5 transition-all duration-500 flex items-center shadow-inner relative",
@@ -61,8 +77,9 @@ export const SettingCard = ({
             />
           </button>
 
-          {/* Nút Edit */}
+          {/* Nút bật tắt chế độ Edit */}
           <button
+            type="button"
             onClick={onEdit}
             className={cn(
               "p-3 rounded-3xl transition-all active:scale-90 border-2",
@@ -76,7 +93,7 @@ export const SettingCard = ({
         </div>
       </div>
 
-      {/* --- Vùng soạn thảo & Cấu hình --- */}
+      {/* --- Vùng soạn thảo --- */}
       <AnimatePresence>
         {isEditing && (
           <motion.div
@@ -86,54 +103,50 @@ export const SettingCard = ({
             className="overflow-visible bg-gray-50/50 border-t border-gray-100"
           >
             <div className="p-8 space-y-8 flex flex-col">
-              {" "}
-              {/* Đổi flex thành flex-col */}
-              {/* Phần soạn thảo tin nhắn */}
               <div className="space-y-3">
                 <div className="flex justify-between items-center px-1">
-                  <label className="text-[12px] font-bold uppercase text-gray-700 tracking-tight">
-                    Nội dung tin nhắn
-                  </label>
+                  <label className="text-[12px] font-bold uppercase text-gray-700 tracking-tight leading-none">Nội dung phản hồi</label>
                   <span className="text-[10px] font-bold text-gray-500 tracking-widest bg-white px-2 py-1 rounded-lg border border-gray-100">
-                    {tempText.length}/600
+                    {tempText?.length || 0}/500
                   </span>
                 </div>
 
                 <FormInput
                   isTextArea
                   placeholder={placeholder}
-                  maxLength={600}
+                  maxLength={500}
                   value={tempText}
                   onChange={(e) => setTempText(e.target.value)}
-                  className="rounded-4xl shadow-xl shadow-gray-200/20 min-h-40 bg-white border-transparent focus:bg-white"
+                  className="rounded-4xl shadow-xl shadow-gray-200/20 min-h-40 bg-white border-transparent focus:ring-2 focus:ring-orange-100"
                 />
               </div>
-              {/* Phần cấu hình lịch trình */}
+
               {showTimeAction && (
                 <div className="space-y-5 pt-6 border-t border-gray-200/60">
                   <div className="flex items-center gap-2 ml-1">
-                    <div className="p-1.5 bg-orange-100 rounded-lg">
-                      <CalendarDays className="text-orange-500" size={16} />
+                    <div className="p-1.5 bg-orange-100 rounded-lg text-orange-500 shadow-sm">
+                      <CalendarDays size={16} strokeWidth={2.5} />
                     </div>
-                    <h3 className="text-sm font-bold uppercase text-gray-800 italic tracking-tight">
-                      Cấu hình lịch làm việc
-                    </h3>
+                    <h3 className="text-sm font-bold uppercase text-gray-800 italic">Lịch biểu hoạt động</h3>
                   </div>
-
-                  <div className="px-1">
-                    <WorkingHoursConfig />
-                  </div>
+                  
+                  {/* Truyền tempConfig và handle change để không bị spam */}
+                  <WorkingHoursConfig 
+                    initialData={workingConfig} 
+                    onChange={handleConfigChange} 
+                  />
                 </div>
               )}
-              <div className="pt-2">
+
+              <div className="pt-2 flex justify-end">
                 <CustomButtonActions
                   onCancel={onEdit}
-                  onSubmit={handleSave}
+                  onSubmit={handleFinalSubmit}
                   isLoading={isLoading}
-                  hasChanges={tempText.length > 0}
-                  submitText="Lưu thay đổi"
+                  hasChanges={true}
+                  submitText="Xác nhận lưu"
                   containerClassName="w-full flex gap-3 border-t-0 pt-0 justify-end"
-                  className="w-40! rounded-4xl h-12"
+                  className="w-44! rounded-4xl h-12 shadow-orange-200 shadow-lg"
                 />
               </div>
             </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo, useCallback } from "react";
-import { Save, Loader2, Image as ImageIcon, CheckCircle2, AlertTriangle, Clock } from "lucide-react";
+import { Save, Loader2, Image as ImageIcon, CheckCircle2, AlertTriangle, Clock, X } from "lucide-react";
 import ProductMediaUpload, { MediaUploadItem } from "../ProductMediaUpload";
 import { productMediaService } from "@/services/products/product.service";
 import { useToast } from "@/hooks/useToast";
@@ -34,7 +34,7 @@ export const ProductMediaModal = ({
   const [saveSuccess, setSaveSuccess] = useState(false);
   const { success, error } = useToast();
 
-  // Khởi tạo dữ liệu khi mở Modal
+  // --- LOGIC GIỮ NGUYÊN ---
   useEffect(() => {
     if (isOpen) {
       const converted: MediaUploadItem[] = existingMedia.map((m: any) => ({
@@ -55,7 +55,6 @@ export const ProductMediaModal = ({
     }
   }, [isOpen, existingMedia]);
 
-  // Dùng useCallback để tránh re-render component con vô hạn
   const handleMediaChange = useCallback((updated: MediaUploadItem[]) => {
     setMediaItems(updated);
   }, []);
@@ -135,27 +134,31 @@ export const ProductMediaModal = ({
     }
   };
 
+  // --- UI FIX LẠI CHO ĐẸP ---
   const footerContent = (
-    <div className="flex items-center justify-between w-full">
-      <div className="flex items-center gap-2">
+    <div className="flex items-center justify-between w-full px-2 py-1">
+      <div className="flex items-center gap-3">
         {saveSuccess ? (
-          <span className="text-green-600 text-xs font-bold uppercase flex items-center gap-1 animate-in fade-in">
-            <CheckCircle2 size={14} /> Đã lưu thành công
-          </span>
+          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 text-emerald-600 rounded-full border border-emerald-100 animate-in zoom-in-95 duration-300">
+            <CheckCircle2 size={14} strokeWidth={2.5} />
+            <span className="text-[10px] font-bold uppercase tracking-tight italic leading-none">Hoàn tất lưu trữ</span>
+          </div>
         ) : hasChanges ? (
-          <span className="text-orange-500 text-xs font-bold uppercase flex items-center gap-1 animate-pulse">
-            <AlertTriangle size={14} /> Có thay đổi chưa lưu
-          </span>
+          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-orange-50 text-orange-600 rounded-full border border-orange-100 animate-pulse leading-none">
+            <AlertTriangle size={14} strokeWidth={2.5} />
+            <span className="text-[10px] font-bold uppercase tracking-tight italic">Chờ xác nhận lưu</span>
+          </div>
         ) : (
-          <span className="text-gray-500 text-xs font-bold uppercase flex items-center gap-1">
-            <Clock size={14} /> Chưa có thay đổi
-          </span>
+          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 text-slate-400 rounded-full border border-slate-100 leading-none">
+            <Clock size={14} strokeWidth={2.5} />
+            <span className="text-[10px] font-bold uppercase tracking-tight italic">Dữ liệu ổn định</span>
+          </div>
         )}
       </div>
-      <div className="flex gap-2">
+      <div className="flex gap-3">
         <button
           onClick={onClose}
-          className="px-5 py-2 text-sm font-bold text-gray-500 hover:bg-gray-100 rounded-xl transition-all"
+          className="px-6 py-2.5 text-[11px] font-bold text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-2xl transition-all uppercase tracking-widest active:scale-95 disabled:opacity-50"
           disabled={saving}
         >
           Hủy bỏ
@@ -164,14 +167,14 @@ export const ProductMediaModal = ({
           onClick={handleSave}
           disabled={!hasChanges || saving}
           className={cn(
-            "flex items-center gap-2 px-6 py-2 rounded-xl text-sm font-bold text-white transition-all shadow-lg active:scale-95",
+            "flex items-center gap-2 px-8 py-2.5 rounded-2xl text-[11px] font-bold text-white transition-all uppercase tracking-[0.1em] italic",
             !hasChanges || saving 
-              ? "bg-gray-200 cursor-not-allowed shadow-none" 
-              : "bg-orange-500 hover:bg-orange-600 shadow-orange-500/20"
+              ? "bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200" 
+              : "bg-gradient-to-r from-orange-500 to-orange-600 hover:shadow-lg hover:shadow-orange-200 shadow-md shadow-orange-100 active:scale-95"
           )}
         >
-          {saving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
-          LƯU THAY ĐỔI
+          {saving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} strokeWidth={2.5} />}
+          Lưu thay đổi
         </button>
       </div>
     </div>
@@ -181,27 +184,37 @@ export const ProductMediaModal = ({
     <PortalModal
       isOpen={isOpen}
       onClose={onClose}
-      width="max-w-4xl"
+      width="max-w-5xl" // Tăng độ rộng để thao tác gallery thoải mái hơn
       title={
-        <div className="flex items-center gap-3">
-          <div className="p-2 bg-orange-100 rounded-xl text-orange-600 shadow-sm border border-gray-200">
-            <ImageIcon size={20} strokeWidth={2.5} />
+        <div className="flex items-center gap-4">
+          <div className="relative">
+            <div className="absolute -inset-1 bg-orange-400 opacity-20 blur-sm rounded-xl"></div>
+            <div className="relative p-2.5 bg-orange-500 rounded-2xl text-white shadow-md border border-orange-400">
+              <ImageIcon size={22} strokeWidth={2.5} />
+            </div>
           </div>
           <div>
-            <div className="text-base font-bold uppercase tracking-tight text-gray-800 leading-none">Quản lý Media</div>
-            <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-1.5">{productName}</div>
+            <div className="text-[15px] font-bold uppercase tracking-tight text-slate-800 leading-none italic">
+              Quản lý Thư viện Media
+            </div>
+            <div className="flex items-center gap-1.5 mt-1.5">
+               <div className="h-1 w-1 rounded-full bg-orange-400"></div>
+               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em]">
+                Sản phẩm: {productName}
+              </span>
+            </div>
           </div>
         </div>
       }
       footer={footerContent}
     >
-      <div className="py-2">
-        <ProductMediaUpload
-          productId={productId}
-          productName={productName}
-          existingMedia={mediaItems}
-          onMediaChange={handleMediaChange}
-        />
+      <div className="py-4">
+          <ProductMediaUpload
+            productId={productId}
+            productName={productName}
+            existingMedia={mediaItems}
+            onMediaChange={handleMediaChange}
+          />
       </div>
     </PortalModal>
   );

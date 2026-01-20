@@ -47,13 +47,13 @@ export const MyShopSaleScreen: React.FC<MyShopSalesTabProps> = ({
       <div className="lg:col-span-4 space-y-6">
         <div className="flex items-center justify-between px-2">
           <div>
-            <h2 className="font-black text-2xl text-slate-900 uppercase tracking-tighter flex items-center gap-2 italic">
+            <h2 className="font-bold text-2xl text-slate-900 uppercase tracking-tighter flex items-center gap-2 italic">
               Shop Sales
-              <span className="text-[10px] bg-orange-100 text-orange-600 px-3 py-1 rounded-full font-black border border-orange-200 shadow-sm">
+              <span className="text-[10px] bg-orange-100 text-orange-600 px-3 py-1 rounded-full font-bold border border-orange-200 shadow-sm">
                 {shopSales.length}
               </span>
             </h2>
-            <p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mt-1 ml-1">
+            <p className="text-[9px] font-bold text-slate-400 uppercase tracking-[0.2em] mt-1 ml-1">
               Store Marketing Protocol
             </p>
           </div>
@@ -76,7 +76,7 @@ export const MyShopSaleScreen: React.FC<MyShopSalesTabProps> = ({
             </p>
             <button
               onClick={onAddNew}
-              className="mt-4 text-xs font-black text-orange-500 hover:text-orange-600 uppercase tracking-widest transition-colors"
+              className="mt-4 text-xs font-bold text-orange-500 hover:text-orange-600 uppercase tracking-widest transition-colors"
             >
               + Khởi tạo ngay
             </button>
@@ -111,7 +111,7 @@ export const MyShopSaleScreen: React.FC<MyShopSalesTabProps> = ({
                     <div className="flex-1 min-w-0">
                       <div
                         className={cn(
-                          "inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[9px] font-black uppercase mb-2 border shadow-sm",
+                          "inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[9px] font-bold uppercase mb-2 border shadow-sm",
                           status.color.includes("green")
                             ? "bg-green-50 text-green-600 border-green-100"
                             : "bg-orange-50 text-orange-600 border-orange-100",
@@ -178,11 +178,11 @@ export const MyShopSaleScreen: React.FC<MyShopSalesTabProps> = ({
                 <div className="flex items-end justify-between gap-6">
                   <div className="flex-1 min-w-0 space-y-2">
                     <div className="flex items-center gap-2">
-                      <span className="bg-orange-500 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest shadow-lg shadow-orange-500/40">
+                      <span className="bg-orange-500 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-lg shadow-orange-500/40">
                         Active Node
                       </span>
                     </div>
-                    <h2 className="text-4xl font-black uppercase tracking-tighter italic drop-shadow-2xl">
+                    <h2 className="text-4xl font-bold uppercase tracking-tighter italic drop-shadow-2xl">
                       {selectedCampaign.name}
                     </h2>
                     <p className="text-sm font-medium text-slate-300 line-clamp-1 opacity-90 max-w-lg">
@@ -191,7 +191,7 @@ export const MyShopSaleScreen: React.FC<MyShopSalesTabProps> = ({
                   </div>
                   <button
                     onClick={() => onAddProducts(selectedCampaign.id)}
-                    className="bg-white hover:bg-orange-500 hover:text-white text-slate-900 px-8 py-4 rounded-3xl font-black text-xs uppercase tracking-widest transition-all shadow-2xl active:scale-95 flex items-center gap-3 whitespace-nowrap group"
+                    className="bg-white hover:bg-orange-500 hover:text-white text-slate-900 px-8 py-4 rounded-3xl font-bold text-xs uppercase tracking-widest transition-all shadow-2xl active:scale-95 flex items-center gap-3 whitespace-nowrap group"
                   >
                     <Plus className="w-4 h-4 stroke-[4px] group-hover:scale-125 transition-transform" />
                     Bơm sản phẩm
@@ -204,7 +204,7 @@ export const MyShopSaleScreen: React.FC<MyShopSalesTabProps> = ({
             <div className="p-10 flex-1 overflow-y-auto custom-scrollbar bg-slate-50/30">
               <div className="flex items-center justify-between mb-8">
                 <div className="space-y-1">
-                  <h3 className="font-black text-slate-900 uppercase tracking-widest text-xs flex items-center gap-2">
+                  <h3 className="font-bold text-slate-900 uppercase tracking-widest text-xs flex items-center gap-2">
                     <TrendingUp className="w-4 h-4 text-orange-500" />
                     Product Performance Hub
                   </h3>
@@ -219,7 +219,7 @@ export const MyShopSaleScreen: React.FC<MyShopSalesTabProps> = ({
                   <div className="w-20 h-20 bg-orange-50 rounded-full flex items-center justify-center mb-4">
                     <PackageOpen className="w-10 h-10 text-orange-300" />
                   </div>
-                  <p className="text-slate-400 font-black uppercase tracking-widest text-xs">
+                  <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">
                     Chưa có tài sản nào được đăng ký
                   </p>
                 </div>
@@ -244,11 +244,11 @@ export const MyShopSaleScreen: React.FC<MyShopSalesTabProps> = ({
                           />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h4 className="font-black text-slate-800 text-sm truncate uppercase italic tracking-tighter">
+                          <h4 className="font-bold text-slate-800 text-sm truncate uppercase italic tracking-tighter">
                             {prod.productName}
                           </h4>
                           <div className="flex items-center gap-3 mt-2">
-                            <span className="text-orange-600 font-black text-lg tracking-tighter">
+                            <span className="text-orange-600 font-bold text-lg tracking-tighter">
                               {formatPrice(prod.salePrice)}
                             </span>
                             <span className="text-[10px] font-bold text-slate-300 line-through">
@@ -257,7 +257,7 @@ export const MyShopSaleScreen: React.FC<MyShopSalesTabProps> = ({
                           </div>
 
                           <div className="space-y-2 mt-4">
-                            <div className="flex justify-between text-[9px] font-black uppercase tracking-widest">
+                            <div className="flex justify-between text-[9px] font-bold uppercase tracking-widest">
                               <span className="text-slate-400 italic">
                                 Sold Intensity
                               </span>
@@ -297,7 +297,7 @@ export const MyShopSaleScreen: React.FC<MyShopSalesTabProps> = ({
             <div className="w-32 h-32 bg-orange-50 rounded-[2.5rem] flex items-center justify-center mb-8 ring-8 ring-orange-50/50 group-hover:scale-110 transition-transform duration-700 shadow-xl shadow-orange-500/5">
               <MousePointerClick className="w-16 h-16 text-orange-500" />
             </div>
-            <h3 className="text-slate-900 font-black uppercase tracking-widest text-2xl italic">
+            <h3 className="text-slate-900 font-bold uppercase tracking-widest text-2xl italic">
               Protocol Offline
             </h3>
             <p className="max-w-sm mt-4 text-slate-400 text-sm font-medium leading-relaxed">

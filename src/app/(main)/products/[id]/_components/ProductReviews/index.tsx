@@ -102,7 +102,7 @@ export const ProductReviews = () => {
 
         <div className="space-y-0">
           {productReviews.length === 0 && !reviewsLoading ? (
-            <div className="py-20 flex flex-col items-center">
+            <div className=" flex flex-col items-center">
               <CustomEmpty description="Sản phẩm chưa có nhận xét nào" />
               <ButtonField
                 type="login"

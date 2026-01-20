@@ -40,7 +40,7 @@ export function ProductInfo({ product, selectedVariant }: ProductInfoProps) {
         return text.replace(/^(MÔ TẢ SẢN PHẨM|Mô tả sản phẩm)\s+/i, "").trim();
     };
     return (
-        <CardComponents className="border-none shadow-custom overflow-hidden bg-white rounded-4xl">
+        <CardComponents className="border-none shadow-custom overflow-hidden bg-[#fdfdfd] rounded-4xl">
             <div className="flex flex-col gap-10 p-2 sm:p-4">
                 <section>
                     <div className="flex items-center gap-3 mb-6 px-2">
@@ -52,14 +52,14 @@ export function ProductInfo({ product, selectedVariant }: ProductInfoProps) {
                         </h3>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
                         {specEntries.map((entry) => (
                             <div 
                                 key={entry.label} 
-                                className="group cursor-pointer flex items-center justify-between px-5 py-3 bg-gray-50/50 hover:bg-orange-50/50 shadow rounded-2xl border border-transparent hover:border-gray-100 transition-all duration-300"
+                                className="group cursor-pointer flex items-center justify-between px-4 py-2 bg-gray-50/50 hover:bg-orange-50/50 shadow-custom rounded-2xl border border-transparent hover:border-gray-100 transition-all duration-300"
                             >
                                 <div className="flex flex-col gap-0.5">
-                                    <span className="text-[11px] font-bold text-gray-600 uppercase tracking-wider">
+                                    <span className="text-[12px] font-bold text-orange-700 ">
                                         {entry.label}
                                     </span>
                                     <span className="text-[14px] font-bold text-gray-700 group-hover:text-(--color-mainColor)">
@@ -83,7 +83,7 @@ export function ProductInfo({ product, selectedVariant }: ProductInfoProps) {
                         </h3>
                     </div>
                     
-                    <div className="bg-gray-50/50 border border-gray-100/50 rounded-[28px] p-6 relative overflow-hidden">
+                    <div className="bg-white border border-gray-200 rounded-[28px] p-6 relative overflow-hidden">
                         <div className="absolute -bottom-10 -right-10 opacity-40 rotate-12 text-(--color-mainColor) animate-infinite-scroll">
                             <Package size={200} />
                         </div>

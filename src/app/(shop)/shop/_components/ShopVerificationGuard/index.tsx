@@ -79,10 +79,10 @@ export default function ShopVerificationGuard({
           <Store className="w-8 h-8 text-(--color-mainColor)" />
         </div>
         <div className="text-center space-y-2">
-          <p className="text-lg font-bold text-gray-800 italic uppercase tracking-tighter">
+          <p className="text-lg font-bold text-gray-800 italic uppercase">
             Đang xác thực quyền truy cập
           </p>
-          <div className="flex justify-center gap-1">
+          <div className="flex justify-center gap-2">
             {[0, 1, 2].map((i) => (
               <div
                 key={i}
@@ -112,7 +112,7 @@ export default function ShopVerificationGuard({
             <ShieldAlert size={40} />
           </div>
 
-          <h2 className="text-2xl font-bold text-gray-900 mb-3 italic uppercase tracking-tighter">
+          <h2 className="text-2xl font-bold text-gray-900 mb-3 italic uppercase ">
             Lỗi xác thực
           </h2>
           <p className="text-gray-500 mb-10 text-sm leading-relaxed font-medium">
