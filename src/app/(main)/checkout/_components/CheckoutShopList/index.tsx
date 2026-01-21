@@ -32,7 +32,7 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
   // 1. Xử lý Voucher RIÊNG của Shop
   const handleSelectShopVoucher = async (
     shopId: string,
-    selected: any
+    selected: any,
   ): Promise<boolean> => {
     if (!request || !request.shops) return false;
 
@@ -68,7 +68,7 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
   // 2. Xử lý Voucher SÀN (Platform) cho từng Shop
   const handleSelectPlatformVoucher = async (
     shopId: string,
-    selected: any
+    selected: any,
   ): Promise<boolean> => {
     if (!request || !request.shops) return false;
 
@@ -81,18 +81,14 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
       if (s.shopId === shopId) {
         return {
           ...s,
-          // CẬP NHẬT globalVouchers CHO RIÊNG SHOP NÀY
           globalVouchers: newGlobalCodes,
-          // Giữ nguyên voucher shop đang có
           vouchers: Array.isArray(s.vouchers) ? s.vouchers : [],
         };
       }
-      return s; // Các shop khác giữ nguyên
+      return s;
     });
 
     try {
-      // QUAN TRỌNG: Gửi payload với globalVouchers ở root là Mảng Rỗng (để tránh conflict)
-      // Dữ liệu thật sự nằm trong từng shop ở mảng updatedShops
       await syncPreview({
         ...request,
         globalVouchers: [],
@@ -121,7 +117,8 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
             .filter(
               (d: any) =>
                 d.valid &&
-                (d.discountTarget === "SHIPPING" || d.discountTarget === "SHIP")
+                (d.discountTarget === "SHIPPING" ||
+                  d.discountTarget === "SHIP"),
             )
             .sumBy("discountAmount")
             .value() || 0;
@@ -129,38 +126,35 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
         const productOrOrderDiscount = totalDiscount - shipDiscount;
         const originalShopPrice = subtotal + shippingFee;
         const finalShopTotal = Number(
-          shopSummary.shopTotal || originalShopPrice - totalDiscount
+          shopSummary.shopTotal || originalShopPrice - totalDiscount,
         );
-console.log("totalDiscount", finalShopTotal);
-        console.log("shipDiscount", shipDiscount);
-        console.log("productOrOrderDiscount", productOrOrderDiscount);
         const appliedShopOrder = _.find(
           discountDetails,
           (d: any) =>
             d.voucherType === "SHOP" &&
             ["ORDER", "PRODUCT"].includes(d.discountTarget) &&
-            d.valid
+            d.valid,
         );
         const appliedShopShip = _.find(
           discountDetails,
           (d: any) =>
             d.voucherType === "SHOP" &&
             ["SHIPPING", "SHIP"].includes(d.discountTarget) &&
-            d.valid
+            d.valid,
         );
         const appliedPlatformOrder = _.find(
           discountDetails,
           (d: any) =>
             d.voucherType === "PLATFORM" &&
             ["ORDER", "PRODUCT"].includes(d.discountTarget) &&
-            d.valid
+            d.valid,
         );
         const appliedPlatformShip = _.find(
           discountDetails,
           (d: any) =>
             d.voucherType === "PLATFORM" &&
             ["SHIPPING", "SHIP"].includes(d.discountTarget) &&
-            d.valid
+            d.valid,
         );
 
         return (
@@ -168,7 +162,6 @@ console.log("totalDiscount", finalShopTotal);
             key={shop.shopId}
             className="bg-white rounded-xl shadow-custom border border-gray-100 overflow-hidden"
           >
-            {/* ... (Header Shop và List Items giữ nguyên) */}
             <div className="px-5 py-2 border-b border-gray-50 flex items-center justify-between bg-gray-50">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-white rounded-xl shadow-sm text-orange-600">
@@ -184,7 +177,7 @@ console.log("totalDiscount", finalShopTotal);
               <div className="divide-y divide-gray-50">
                 {shop.items.map((item: any, idx: number) => (
                   <div
-                   key={`${item.itemId}-${idx}`}
+                    key={`${item.itemId}-${idx}`}
                     className="flex gap-4 items-center py-2 group"
                   >
                     <ItemImage

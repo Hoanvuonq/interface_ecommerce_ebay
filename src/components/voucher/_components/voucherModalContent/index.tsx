@@ -46,11 +46,7 @@ export const VoucherModalContent: React.FC<ContentProps> = (props) => {
   const selectedCount = useMemo(() => {
     return (selectedOrderId ? 1 : 0) + (selectedShipId ? 1 : 0);
   }, [selectedOrderId, selectedShipId]);
-console.log("Debug Selection:", { 
-    selectedOrderId, 
-    selectedShipId, 
-    availableCodes: allVouchersFlat.map(v => v.code) 
-});
+
   if (loading) return <SectionLoading message="Đang tải ưu đãi..." />;
 
   return (

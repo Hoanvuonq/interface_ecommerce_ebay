@@ -18,7 +18,6 @@ export const VoucherCard: React.FC<VoucherCardProps> = ({
   onSelect,
   type,
 }) => {
-  // Logic kiểm tra loại voucher
   const isShipping = type === "shipping" || voucher.voucherScope === "SHIPPING" || voucher.voucherType === "SHIPPING";
   const canSelect = voucher.canSelect !== false;
 
@@ -26,7 +25,7 @@ export const VoucherCard: React.FC<VoucherCardProps> = ({
     <div
       onClick={() => canSelect && onSelect()}
       className={cn(
-        "group relative flex border rounded-2xl transition-all duration-300 mb-4 cursor-pointer overflow-visible min-h-[110px]",
+        "group relative flex border rounded-2xl transition-all duration-300 mb-4 cursor-pointer overflow-visible min-h-27.5",
         isSelected
           ? isShipping 
             ? "border-emerald-500 bg-emerald-50/30 shadow-[0_10px_25px_-5px_rgba(16,185,129,0.15)] scale-[1.01] z-10"
@@ -107,8 +106,8 @@ export const VoucherCard: React.FC<VoucherCardProps> = ({
         )}
       </div>
 
-      <div className="absolute left-[90px] -top-2 w-4 h-4 bg-white border-b border-gray-100 rounded-full z-10" />
-      <div className="absolute left-[90px] -bottom-2 w-4 h-4 bg-white border-t border-gray-100 rounded-full z-10" />
+      <div className="absolute left-22.5 -top-2 w-4 h-4 bg-white border-b border-gray-100 rounded-full z-10" />
+      <div className="absolute left-22.5 -bottom-2 w-4 h-4 bg-white border-t border-gray-100 rounded-full z-10" />
     </div>
   );
 };

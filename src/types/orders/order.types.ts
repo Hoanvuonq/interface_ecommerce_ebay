@@ -112,53 +112,116 @@ export interface ShopInfo {
   username: string;
 }
 
-export interface OrderResponse {
-  orderId: string;
-  orderNumber: string;
-  shopId?: string;
-  shopInfo?: ShopInfo;
-  buyerId: string;
-  status: string;
-  currency: string;
+// Pricing info from API response
+export interface OrderPricing {
   subtotal: number;
-  orderDiscount: number;
+  shopDiscount: number;
+  platformDiscount: number;
+  shippingDiscount: number;
+  originalShippingFee: number;
+  appliedVoucherCodes?: string;
   totalDiscount: number;
   taxAmount: number;
   shippingFee: number;
   grandTotal: number;
+}
+
+// Payment info from API response
+export interface OrderPayment {
+  method: string;
+  url?: string | null;
+  intentId?: string | null;
+  groupId?: string | null;
+  expiresAt?: string | null;
+}
+
+// Shipment info from API response
+export interface OrderShipment {
+  trackingNumber?: string | null;
+  carrier?: string | null;
+}
+
+// Shipping address from API response
+export interface OrderShippingAddress {
+  recipientName: string;
+  phoneNumber: string;
+  addressLine1: string;
+  addressLine2?: string | null;
+  city: string;
+  province: string;
+  postalCode: string;
+  country: string;
+  email?: string;
+}
+
+// Loyalty info from API response
+export interface OrderLoyalty {
+  pointsUsed: number;
+  discountAmount: number;
+  pointsEarned: number;
+}
+
+export interface OrderResponse {
+  orderId: string;
+  orderNumber: string;
+  shopId?: string | null;
+  shopInfo?: ShopInfo | null;
+  buyerId?: string;
+  status: string;
+  currency?: string;
+  
+  // New nested structure from API
+  pricing?: OrderPricing;
+  payment?: OrderPayment;
+  shipment?: OrderShipment;
+  shippingAddress?: OrderShippingAddress;
+  loyalty?: OrderLoyalty;
+  
+  // Legacy flat fields (for backward compatibility)
+  subtotal?: number;
+  orderDiscount?: number;
+  totalDiscount?: number;
+  taxAmount?: number;
+  shippingFee?: number;
+  grandTotal?: number;
+  
   itemCount: number;
   totalQuantity: number;
   customerNote?: string;
-  createdAt: string;
+  cancellationReason?: string | null;
+  createdAt?: string | null;
+  updatedAt?: string;
   reviewed?: boolean;
   items: OrderItemResponse[];
-  // Payment
-  paymentMethod: string;
+  
+  // Legacy payment fields (for backward compatibility)
+  paymentMethod?: string;
   paymentUrl?: string;
   paymentIntentId?: string;
   expiresAt?: string;
-  // PayOS specific fields (returned with order creation)
   payosQrCode?: string;
   payosAccountNumber?: string;
   payosAccountName?: string;
   payosOrderCode?: string;
   payosDepositId?: string;
-  // Shipping/Tracking
+  
+  // Legacy shipment fields
   trackingNumber?: string;
   carrier?: string;
   conkinBillId?: string;
   conkinShippingCost?: number;
   shippingMethod?: string;
-  recipientName: string;
-  phoneNumber: string;
-  addressLine1: string;
-  addressLine2: string;
-  city: string;
-  updatedAt?: string;
-  province: string;
-  postalCode: string;
-  country: string;
-  email: string;
+  
+  // Legacy address fields
+  recipientName?: string;
+  phoneNumber?: string;
+  addressLine1?: string;
+  addressLine2?: string;
+  city?: string;
+  province?: string;
+  postalCode?: string;
+  country?: string;
+  email?: string;
 }
 
 export interface ApiResponseOrder<T> {

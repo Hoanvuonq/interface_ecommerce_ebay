@@ -6,8 +6,8 @@ export interface Step {
 
 export interface OrderStatusTimelineProps {
   status: string;
-  createdAt: string;
-  updatedAt?: string;
-  trackingNumber?: string; 
-  carrier?: string;        
+  createdAt?: string | null;
+  updatedAt?: string | null;
+  trackingNumber?: string | null;
+  carrier?: string | null;
 }

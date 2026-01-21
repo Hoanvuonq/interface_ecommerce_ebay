@@ -14,26 +14,59 @@ import {
   RefreshCcw,
   XCircle,
   RotateCcw,
+  Tag,
+  Receipt,
 } from "lucide-react";
 
-// --- Utils & Hooks ---
 import { formatPrice } from "@/hooks/useFormatPrice";
 import { cn } from "@/utils/cn";
 import { useOrderDetailView } from "../../_hooks/useOrderDetailView";
 import { getMyReviews } from "@/services/review/review.service";
 
-// --- Components ---
 import { ReviewModal } from "../ReviewModal";
 import { ReviewPreviewModal } from "../ReviewPreviewModal";
 import { ReturnOrderModal } from "../ReturnOrderModal";
 import { OrderCancelModal } from "../OrderCancelModal";
 import { OrderCardProps, OrderStatus } from "../../_types/order";
 import {
-  getOrderStatusConfig, // ✅ Dùng hàm helper an toàn
+  getOrderStatusConfig,
   PAYMENT_METHOD_LABELS,
   resolveOrderItemImageUrl,
 } from "../../_constants/order.constants";
 import type { OrderResponse } from "@/types/orders/order.types";
+
+const extractPricing = (order: OrderResponse) => {
+  if (order.pricing) {
+    return {
+      subtotal: order.pricing.subtotal || 0,
+      shopDiscount: order.pricing.shopDiscount || 0,
+      platformDiscount: order.pricing.platformDiscount || 0,
+      shippingDiscount: order.pricing.shippingDiscount || 0,
+      originalShippingFee: order.pricing.originalShippingFee || 0,
+      shippingFee: order.pricing.shippingFee || 0,
+      totalDiscount: order.pricing.totalDiscount || 0,
+      grandTotal: order.pricing.grandTotal || 0,
+      appliedVoucherCodes: order.pricing.appliedVoucherCodes || "",
+    };
+  }
+
+  // Legacy flat structure
+  return {
+    subtotal: order.subtotal || 0,
+    shopDiscount: 0,
+    platformDiscount: 0,
+    shippingDiscount: 0,
+    originalShippingFee: order.shippingFee || 0,
+    shippingFee: order.shippingFee || 0,
+    totalDiscount: order.totalDiscount || 0,
+    grandTotal: order.grandTotal || 0,
+    appliedVoucherCodes: "",
+  };
+};
+
+const extractPaymentMethod = (order: OrderResponse): string => {
+  return order.payment?.method || order.paymentMethod || "COD";
+};
 
 export const OrderCard: React.FC<OrderCardProps> = ({
   order: orderProp,
@@ -43,23 +76,23 @@ export const OrderCard: React.FC<OrderCardProps> = ({
   const order = orderProp as OrderResponse;
   const router = useRouter();
 
-  // Logic Modal & Reviews
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
   const [isReturnOpen, setIsReturnOpen] = useState(false);
   const [dbReview, setDbReview] = useState<any>(null);
   const [loadingReview, setLoadingReview] = useState(false);
 
-  // Hook xử lý hủy đơn (Giả định hook này đã có sẵn)
   const {
     state: { cancelModalVisible, cancelling },
     actions: { setCancelModalVisible, handleCancelOrder },
   } = useOrderDetailView(order);
 
-  // --- 1. Fetch Review ---
+  // Extract pricing data
+  const pricing = useMemo(() => extractPricing(order), [order]);
+  const paymentMethod = useMemo(() => extractPaymentMethod(order), [order]);
+
   useEffect(() => {
     const fetchMyReview = async () => {
-      // Dùng Enum thay vì string cứng
       const ALLOWED_STATUSES = [OrderStatus.DELIVERED, OrderStatus.COMPLETED];
 
       if (ALLOWED_STATUSES.includes(order.status as OrderStatus)) {
@@ -67,7 +100,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
           setLoadingReview(true);
           const response = await getMyReviews(0, 50);
           const foundReview = response.content?.find(
-            (r: any) => r.orderId === order.orderId
+            (r: any) => r.orderId === order.orderId,
           );
           if (foundReview) setDbReview(foundReview);
         } catch (error) {
@@ -80,9 +113,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
     fetchMyReview();
   }, [order.orderId, order.status]);
 
-  // --- 2. UI Computation (Memoized) ---
   const ui = useMemo(() => {
-    // ✅ FIX: Dùng hàm helper để lấy config màu sắc an toàn
     const config = getOrderStatusConfig(order.status);
 
     const firstItem = _.first(order.items);
@@ -90,7 +121,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
     const rawImageUrl = resolveOrderItemImageUrl(
       firstItem?.imageBasePath,
       firstItem?.imageExtension,
-      "_medium"
+      "_medium",
     );
 
     const productImageUrl =
@@ -99,8 +130,9 @@ export const OrderCard: React.FC<OrderCardProps> = ({
     const rawLogoUrl = _.get(order, "shopInfo.logoUrl");
     const shopLogo = rawLogoUrl && rawLogoUrl.trim() !== "" ? rawLogoUrl : null;
 
-    // Ép kiểu status để so sánh Enum
     const status = order.status as OrderStatus;
+
+    const hasFreeship = pricing.shippingDiscount > 0;
 
     return {
       config,
@@ -111,25 +143,23 @@ export const OrderCard: React.FC<OrderCardProps> = ({
       itemCount: order.items.length,
       firstItem,
       productImageUrl,
-      paymentLabel:
-        PAYMENT_METHOD_LABELS[order.paymentMethod] || order.paymentMethod,
+      paymentLabel: PAYMENT_METHOD_LABELS[paymentMethod] || paymentMethod,
       isReviewed: !!dbReview || !!order.reviewed,
+      hasFreeship,
 
-      // ✅ FIX: Dùng Enum cho các điều kiện logic
       canReview: [OrderStatus.DELIVERED, OrderStatus.COMPLETED].includes(
-        status
+        status,
       ),
       canReorder: [OrderStatus.DELIVERED, OrderStatus.COMPLETED].includes(
-        status
+        status,
       ),
-      canReturn: [OrderStatus.COMPLETED].includes(status), // Có thể thêm logic 7 ngày đổi trả ở đây
+      canReturn: [OrderStatus.COMPLETED].includes(status),
       canCancel: [OrderStatus.AWAITING_PAYMENT, OrderStatus.CREATED].includes(
-        status
+        status,
       ),
     };
-  }, [order, dbReview]);
+  }, [order, dbReview, pricing, paymentMethod]);
 
-  // --- 3. Review Data Format ---
   const reviewDisplayData = useMemo(() => {
     if (!dbReview) return null;
     return {
@@ -139,13 +169,12 @@ export const OrderCard: React.FC<OrderCardProps> = ({
         dbReview.mediaAssets?.map(
           (m: any) =>
             m.url ||
-            `https://pub-5341c10461574a539df355b9fbe87197.r2.dev/${m.basePath}${m.extension}`
+            `https://pub-5341c10461574a539df355b9fbe87197.r2.dev/${m.basePath}${m.extension}`,
         ) || [],
       createdAt: dbReview.createdAt,
     };
   }, [dbReview]);
 
-  // --- 4. Handlers ---
   const handleReorder = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (ui.firstItem?.productId) {
@@ -172,7 +201,6 @@ export const OrderCard: React.FC<OrderCardProps> = ({
 
   return (
     <article className="group relative bg-white border border-gray-100 rounded-2xl p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-300 mb-3 overflow-hidden">
-      {/* Header: Shop Info & Status Badge */}
       <div className="flex items-center justify-between mb-3 pb-3 border-b border-gray-50">
         <div className="flex items-center gap-2 min-w-0">
           <div className="relative w-10 h-10 shrink-0 rounded-lg border border-gray-200 overflow-hidden flex items-center justify-center bg-gray-50 shadow-inner">
@@ -198,21 +226,19 @@ export const OrderCard: React.FC<OrderCardProps> = ({
           </div>
         </div>
 
-        {/* Status Badge from UI Config */}
         <div
           className={cn(
             "px-2 py-0.5 rounded-lg text-[10px] font-bold uppercase flex items-center gap-1.5 border shadow-xs",
             ui.config.bg,
             ui.config.text,
-            ui.config.border
+            ui.config.border,
           )}
         >
-          {ui.config.icon} {/* Thêm Icon vào badge cho đẹp */}
+          {ui.config.icon}
           {ui.config.label}
         </div>
       </div>
 
-      {/* Main Content: Image & Info */}
       <div className="flex items-start gap-3 sm:gap-4">
         <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl border border-gray-100 overflow-hidden shrink-0 shadow-sm bg-white">
           {ui.productImageUrl ? (
@@ -240,9 +266,22 @@ export const OrderCard: React.FC<OrderCardProps> = ({
           </button>
 
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1.5">
-            <div className="flex items-center gap-1 text-emerald-600 font-bold text-[11px] uppercase">
-              <Truck size={12} strokeWidth={2.5} /> Freeship
-            </div>
+            {ui.hasFreeship && (
+              <div className="flex items-center gap-1 text-emerald-600 font-bold text-[11px] uppercase">
+                <Truck size={12} strokeWidth={2.5} />
+                {pricing.shippingDiscount > 0 ? (
+                  <>
+                    <span className="text-[11px] text-emerald-600">
+                      {formatPrice(pricing.shippingFee)}
+                    </span>
+                  </>
+                ) : (
+                  <span className="text-[11px] text-gray-500">
+                    {formatPrice(pricing.shippingFee)}
+                  </span>
+                )}
+              </div>
+            )}
             <div className="flex items-center gap-1 text-gray-500 font-bold text-[11px] uppercase">
               <Wallet size={12} strokeWidth={2.5} /> {ui.paymentLabel}
             </div>
@@ -250,13 +289,63 @@ export const OrderCard: React.FC<OrderCardProps> = ({
         </div>
 
         <div className="flex flex-col items-end gap-2 shrink-0">
-          <div className="text-right">
-            <span className="text-[8px] font-bold text-gray-700 uppercase block">
-              Tạm tính
-            </span>
-            <span className="text-sm sm:text-lg font-bold text-orange-600 leading-none">
-              {formatPrice(order.grandTotal)}
-            </span>
+          <div className="text-right space-y-0.5">
+            {pricing.subtotal > 0 && (
+              <div className="flex items-center justify-end gap-1">
+                <span className="text-[9px] text-gray-400 uppercase">
+                  Tạm tính:
+                </span>
+                <span className="text-[11px] font-medium text-gray-500">
+                  {formatPrice(pricing.subtotal)}
+                </span>
+              </div>
+            )}
+
+            {/* Shipping Fee */}
+            {pricing.originalShippingFee > 0 && (
+              <div className="flex items-center justify-end gap-1">
+                <Truck size={10} className="text-gray-400" />
+                <span className="text-[9px] text-gray-400 uppercase">
+                  Ship:
+                </span>
+                {pricing.shippingDiscount > 0 ? (
+                  <>
+                    <span className="text-[10px] text-gray-400 line-through">
+                      {formatPrice(pricing.originalShippingFee)}
+                    </span>
+                    <span className="text-[11px] font-medium text-emerald-600">
+                      {formatPrice(pricing.shippingFee)}
+                    </span>
+                  </>
+                ) : (
+                  <span className="text-[11px] font-medium text-gray-500">
+                    {formatPrice(pricing.shippingFee)}
+                  </span>
+                )}
+              </div>
+            )}
+
+            {/* Total Discount */}
+            {pricing.totalDiscount > 0 && (
+              <div className="flex items-center justify-end gap-1">
+                <Tag size={10} className="text-red-400" />
+                <span className="text-[9px] text-red-400 uppercase">Giảm:</span>
+                <span className="text-[11px] font-semibold text-red-500">
+                  -{formatPrice(pricing.totalDiscount)}
+                </span>
+              </div>
+            )}
+
+            {/* Grand Total */}
+            <div className="flex items-center justify-end gap-1 pt-1 border-t border-gray-100 mt-1">
+              <Receipt size={12} className="text-orange-500" />
+              <span className="text-[10px] font-bold text-gray-600 uppercase">
+                Tổng:
+              </span>
+              <span className="text-base sm:text-lg font-bold text-orange-600 leading-none">
+                {formatPrice(pricing.grandTotal)}
+              </span>
+            </div>
           </div>
 
           <div className="flex items-center gap-1.5">
@@ -283,7 +372,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
                   "flex items-center gap-1 px-3 h-8 rounded-xl text-[10px] font-bold uppercase transition-all shadow-sm active:scale-95",
                   ui.isReviewed
                     ? "bg-white border border-emerald-100 hover:bg-emerald-100"
-                    : "bg-white text-gray-900 border border-gray-200 hover:border-gray-500 hover:text-orange-600"
+                    : "bg-white text-gray-900 border border-gray-200 hover:border-gray-500 hover:text-orange-600",
                 )}
               >
                 {loadingReview ? (
@@ -294,7 +383,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
                     className={cn(
                       ui.isReviewed
                         ? "fill-emerald-500 text-emerald-500"
-                        : "fill-orange-400 text-orange-400"
+                        : "fill-orange-400 text-orange-400",
                     )}
                   />
                 )}
@@ -334,7 +423,6 @@ export const OrderCard: React.FC<OrderCardProps> = ({
         </div>
       </div>
 
-      {/* --- MODALS --- */}
       <OrderCancelModal
         isOpen={cancelModalVisible}
         onClose={() => setCancelModalVisible(false)}
@@ -353,7 +441,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
           onSuccess={() => {
             setDbReview({ rating: 5, comment: "Đã đánh giá" });
             setIsReviewModalOpen(false);
-            onOrderCancelled?.(); // Reload list nếu cần
+            onOrderCancelled?.();
           }}
           productId={ui.firstItem?.productId || ""}
           productName={ui.firstItem?.productName || ""}

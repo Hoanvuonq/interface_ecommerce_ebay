@@ -119,15 +119,17 @@ export const OrderStatusTimeline: React.FC<OrderStatusTimelineProps> = ({
                         isCancel ? "text-red-400" : "text-emerald-600"
                       }`}
                     >
-                      {new Date(
-                        index === 0 ? createdAt : updatedAt || createdAt
-                      ).toLocaleString("vi-VN", {
-                        day: "2-digit",
-                        month: "2-digit",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
+                      {(() => {
+                        const dateStr = index === 0 ? createdAt : (updatedAt || createdAt);
+                        if (!dateStr) return "Không có thông tin";
+                        return new Date(dateStr).toLocaleString("vi-VN", {
+                          day: "2-digit",
+                          month: "2-digit",
+                          year: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        });
+                      })()}
                     </span>
                   ) : (
                     <span className="text-[10px] font-medium text-zinc-400 flex items-center gap-1">

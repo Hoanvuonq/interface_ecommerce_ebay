@@ -32,17 +32,25 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
     const firstItem = order.items?.[0];
 
     const statusInfo = ORDER_STATUS_UI[status];
+    
+    // Extract payment method from new or legacy structure
+    const paymentMethod = order.payment?.method || order.paymentMethod || "COD";
+    
+    // Extract shipping fee from new or legacy structure
+    const shippingFee = order.pricing?.shippingFee ?? order.conkinShippingCost ?? order.shippingFee ?? 0;
+    
+    // Extract cancellation reason
+    const cancellationReason = order.cancellationReason || (order as any).cancellationReason || "Không có lý do cụ thể";
 
     return {
       statusInfo,
       isDelivered: status === "COMPLETED" || status === "DELIVERED",
       isCancelled: status === "CANCELLED",
       canCancel: ["CREATED", "AWAITING_PAYMENT"].includes(status),
-      shippingFee: order.conkinShippingCost ?? order.shippingFee ?? 0,
+      shippingFee,
       paymentLabel:
-        PAYMENT_METHOD_LABELS[order.paymentMethod] || order.paymentMethod,
-      cancellationReason:
-        (order as any).cancellationReason || "Không có lý do cụ thể",
+        PAYMENT_METHOD_LABELS[paymentMethod] || paymentMethod,
+      cancellationReason,
       reBuyUrl: firstItem?.productId
         ? `/products/${firstItem.productId}`
         : "/products",

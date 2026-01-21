@@ -36,73 +36,82 @@ export const useVoucherModalLogic = (props: VoucherModalProps) => {
   }>({});
 
   const [isPending, startTransition] = useTransition();
-  // useVoucherModalLogic.ts
-  // useVoucherModalLogic.ts
+
+  // Sync selection khi modal mở hoặc khi appliedVouchers/previewData thay đổi
   useEffect(() => {
     if (open && request) {
       let savedOrderCode: string | undefined;
       let savedShipCode: string | undefined;
 
-      // 1. Tìm đúng shop trong Store dựa trên shopId đang mở modal
-      const shopReq = request.shops?.find((s: any) => s.shopId === shopId);
-
-      // 2. Gộp TẤT CẢ các mã liên quan đến shop này từ Store (vouchers + globalVouchers)
-      // Payload của bạn cho thấy mã "FREESHIP_MAX1" nằm trong globalVouchers của shop
-      const allAppliedCodes = [
-        ...(shopReq?.vouchers || []),
-        ...(shopReq?.globalVouchers || []),
-        ...(isPlatform ? request.globalVouchers || [] : []),
-      ];
-
-      // 3. Lấy thông tin chi tiết từ previewData (Backend) để biết mã nào là SHIP, mã nào là ORDER
+      // 1. Lấy thông tin chi tiết từ previewData (Backend)
       const shopsArray = previewData?.data?.shops || previewData?.shops || [];
       const shopPreview = shopsArray.find((s: any) => s.shopId === shopId);
       const discountDetails = shopPreview?.voucherResult?.discountDetails || [];
 
-      // 4. Duyệt qua danh sách mã đã áp dụng trong Store và so khớp với loại (Target) của nó
-      allAppliedCodes.forEach((code) => {
-        const detail = discountDetails.find((d: any) => d.voucherCode === code);
-        if (detail && detail.valid) {
-          // Nếu Target là SHIP hoặc SHIPPING -> Gán vào ô chọn Shipping
+      // 2. Xác định voucher đã áp dụng dựa trên voucherType (SHOP vs PLATFORM)
+      if (isPlatform) {
+        // Modal Platform Voucher -> Chỉ tìm mã có voucherType === "PLATFORM"
+        const platformVouchers = discountDetails.filter(
+          (d: any) => d.voucherType === "PLATFORM" && d.valid
+        );
+
+        platformVouchers.forEach((detail: any) => {
           if (
             detail.discountTarget === "SHIP" ||
             detail.discountTarget === "SHIPPING"
           ) {
-            savedShipCode = code;
+            savedShipCode = detail.voucherCode;
           }
-          // Nếu Target là ORDER hoặc PRODUCT -> Gán vào ô chọn Order
           if (
             detail.discountTarget === "ORDER" ||
             detail.discountTarget === "PRODUCT"
           ) {
-            savedOrderCode = code;
+            savedOrderCode = detail.voucherCode;
           }
-        }
-      });
+        });
+      } else {
+        // Modal Shop Voucher -> Chỉ tìm mã có voucherType === "SHOP"
+        const shopVouchers = discountDetails.filter(
+          (d: any) => d.voucherType === "SHOP" && d.valid
+        );
 
-      // 5. Nếu Store hoàn toàn trống (lần đầu mở), mới dùng tới gợi ý mặc định của Server
-      if (!savedOrderCode && !savedShipCode) {
-        const recOrder = discountDetails.find(
-          (v: any) =>
-            v.valid &&
-            (v.discountTarget === "ORDER" || v.discountTarget === "PRODUCT")
-        );
-        const recShip = discountDetails.find(
-          (v: any) =>
-            v.valid &&
-            (v.discountTarget === "SHIP" || v.discountTarget === "SHIPPING")
-        );
-        savedOrderCode = recOrder?.voucherCode;
-        savedShipCode = recShip?.voucherCode;
+        shopVouchers.forEach((detail: any) => {
+          if (
+            detail.discountTarget === "SHIP" ||
+            detail.discountTarget === "SHIPPING"
+          ) {
+            savedShipCode = detail.voucherCode;
+          }
+          if (
+            detail.discountTarget === "ORDER" ||
+            detail.discountTarget === "PRODUCT"
+          ) {
+            savedOrderCode = detail.voucherCode;
+          }
+        });
       }
 
-      // 6. Cập nhật state để UI hiển thị dấu tích (Active)
+      // 3. Fallback: Lấy từ appliedVouchers prop nếu có
+      if (!savedOrderCode && appliedVouchers?.order) {
+        const orderCode =
+          (appliedVouchers.order as any).voucherCode ||
+          (appliedVouchers.order as any).code;
+        savedOrderCode = orderCode;
+      }
+      if (!savedShipCode && appliedVouchers?.shipping) {
+        const shipCode =
+          (appliedVouchers.shipping as any).voucherCode ||
+          (appliedVouchers.shipping as any).code;
+        savedShipCode = shipCode;
+      }
+
+      // 4. Cập nhật state để UI hiển thị dấu tích (Active)
       setTempSelection({
         order: savedOrderCode,
         shipping: savedShipCode,
       });
     }
-  }, [open, previewData, shopId, request, isPlatform]);
+  }, [open, previewData, shopId, request, isPlatform, appliedVouchers]);
   useEffect(() => {
     if (open && onFetchVouchers) {
       setLoading(true);
