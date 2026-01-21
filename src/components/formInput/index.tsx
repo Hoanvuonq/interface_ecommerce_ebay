@@ -13,7 +13,7 @@ interface BaseProps {
   isCheckbox?: boolean;
   checkboxChecked?: boolean;
   onCheckboxChange?: (checked: boolean) => void;
-  maxLengthNumber?: number; // Thêm prop giới hạn chữ số cho type number
+  maxLengthNumber?: number;
 }
 
 type FormInputProps = BaseProps &
@@ -37,7 +37,7 @@ export const FormInput = React.forwardRef<
       isCheckbox,
       checkboxChecked,
       onCheckboxChange,
-      maxLengthNumber = 10, // Mặc định là 10 con số theo ý bro
+      maxLengthNumber = 10,
       onChange,
       ...props
     },
@@ -49,16 +49,15 @@ export const FormInput = React.forwardRef<
     const isDate = type === "date" || type === "datetime-local";
 
     const handleInputChange = (e: React.ChangeEvent<any>) => {
-      const val = e.target.value;
-
-      const cleanVal = val.replace(/\D/g, "");
+      let val = e.target.value;
 
       if (type === "number" || props.inputMode === "numeric") {
-        if (cleanVal.length > maxLengthNumber) {
+        const digitsOnly = val.replace(/\D/g, "");
+
+        if (digitsOnly.length > maxLengthNumber) {
           if (!isShaking) {
             setIsShaking(true);
             setLocalError(true);
-
             setTimeout(() => {
               setIsShaking(false);
               setLocalError(false);
@@ -108,7 +107,8 @@ export const FormInput = React.forwardRef<
           ) : (
             <input
               ref={ref as React.ForwardedRef<HTMLInputElement>}
-              type={type}
+              type={type === "number" ? "text" : type}
+              inputMode={type === "number" ? "numeric" : props.inputMode}
               className={cn(
                 commonStyles,
                 "h-12 text-ellipsis",
@@ -116,7 +116,7 @@ export const FormInput = React.forwardRef<
                 className,
               )}
               onChange={handleInputChange}
-              {...(props as any)}
+              {...props}
             />
           )}
 

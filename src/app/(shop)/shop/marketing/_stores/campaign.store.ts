@@ -51,10 +51,16 @@ interface CampaignStore {
     startDate: string;
     endDate: string;
     isRecurring: boolean;
+    thumbnailAssetId?: string;
+    thumbnailPreview?: string;
+    displayPriority?: number;
+    bannerAssetId?: string;
+    bannerPreview?: string;
     recurringStartTime: string;
     recurringEndTime: string;
   };
   setCreateForm: (v: any) => void;
+  resetCreateForm: () => void;
   createStep: "INFO" | "PRODUCTS" | "CONFIRM";
   setCreateStep: (v: "INFO" | "PRODUCTS" | "CONFIRM") => void;
   myProducts: ProductResponse[];
@@ -115,11 +121,37 @@ export const useCampaignStore = create<CampaignStore>((set) => ({
     isRecurring: false,
     recurringStartTime: "09:00",
     recurringEndTime: "21:00",
+    bannerAssetId: undefined,
+    bannerPreview: undefined,
+    thumbnailAssetId: undefined,
+    thumbnailPreview: undefined,
+    displayPriority: undefined,
   },
   setCreateForm: (v) =>
     set((state) => ({
       createForm: { ...state.createForm, ...v },
     })),
+  resetCreateForm: () =>
+    set({
+      createForm: {
+        name: "",
+        description: "",
+        startDate: new Date().toISOString().slice(0, 16),
+        endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+          .toISOString()
+          .slice(0, 16),
+        isRecurring: false,
+        recurringStartTime: "09:00",
+        recurringEndTime: "21:00",
+        bannerAssetId: undefined,
+        bannerPreview: undefined,
+        thumbnailAssetId: undefined,
+        thumbnailPreview: undefined,
+        displayPriority: undefined,
+      },
+      selectedVariants: {},
+      createStep: "INFO",
+    }),
 
   createStep: "INFO",
   setCreateStep: (v) => set({ createStep: v }),

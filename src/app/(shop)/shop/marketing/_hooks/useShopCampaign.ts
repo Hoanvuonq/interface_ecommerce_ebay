@@ -1,3 +1,5 @@
+"use client";
+
 import { useCampaignStore } from "../_stores/campaign.store";
 import { shopCampaignService } from "@/app/(shop)/shop/marketing/campaigns/_services/shop-campaign.service";
 import { campaignService } from "@/app/(shop)/shop/marketing/campaigns/_services/campaign.service";
@@ -12,17 +14,21 @@ export function useShopCampaign() {
   const toast = useToast();
   const queryClient = useQueryClient();
   const store = useCampaignStore();
+  const setAuthState = useCampaignStore((s) => s.setAuthState);
 
   useEffect(() => {
-    store.setAuthState(getAuthState());
+    setAuthState(getAuthState());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const { authState } = store;
 
+  // 1. Trích xuất productsLoading từ isLoading của query shop-products
   const {
     refetch: refetchProducts,
     data: productsData,
     isError: productsError,
+    isLoading: productsLoading, // Đảm bảo biến này tồn tại ở đây
   } = useQuery({
     queryKey: ["shop-products"],
     queryFn: () => shopCampaignService.getMyProducts({ page: 0, size: 50 }),
@@ -92,14 +98,18 @@ export function useShopCampaign() {
 
       if (showCreateModal === "simple") {
         await shopCampaignService.createShopCampaign({
-          ..._.pick(createForm, ["name", "description"]),
+          name: createForm.name,
+          description: createForm.description,
           startDate: new Date(createForm.startDate).toISOString(),
           endDate: new Date(createForm.endDate).toISOString(),
+          bannerAssetId: createForm.bannerAssetId,
+          thumbnailAssetId: createForm.thumbnailAssetId,
+          displayPriority: createForm.displayPriority,
           products: !_.isEmpty(products) ? products : undefined,
         });
-
         toast.success("Tạo chiến dịch thành công!");
         store.setShowCreateModal(null);
+        store.resetCreateForm();
         refreshAllData();
       } else {
         toast.info("Tính năng Flash Sale nâng cao đang được cập nhật");
@@ -204,6 +214,7 @@ export function useShopCampaign() {
 
   return {
     isLoading: isDataLoading || store.loading,
+    productsLoading, 
     fetchMyProducts: refetchProducts,
     fetchData: refreshAllData,
     handleCreateCampaign,

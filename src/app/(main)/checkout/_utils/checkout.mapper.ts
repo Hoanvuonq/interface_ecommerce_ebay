@@ -5,16 +5,26 @@ export const preparePreviewPayload = (
   currentPreview?: any
 ) => {
   const raw = _.cloneDeep(updatedRequest);
+  let allGlobalVouchers: string[] = [];
+  if (Array.isArray(raw.globalVouchers) && raw.globalVouchers.length > 0) {
+    allGlobalVouchers = _.uniq(raw.globalVouchers);
+  } else if (Array.isArray(raw.shops)) {
+    allGlobalVouchers = _.uniq(
+      _.flatMap(raw.shops, (shop) =>
+        Array.isArray(shop.globalVouchers) ? shop.globalVouchers : []
+      )
+    );
+  }
 
   return {
     addressId: raw.addressId,
     shippingAddress: {
       addressId: raw.addressId,
       addressChanged: true,
-      country: raw.country || "VN", 
-      taxFee: raw.taxFee || raw.taxAddress || "", 
+      country: raw.country || "VN",
+      taxFee: raw.taxFee || raw.taxAddress || "",
     },
-    globalVouchers: [], 
+    globalVouchers: allGlobalVouchers,
     promotion: raw.promotion || [],
     shops: _.map(raw.shops, (shop) => {
       const shopPayload: any = {
@@ -24,11 +34,11 @@ export const preparePreviewPayload = (
         shippingFee: Number(shop.shippingFee || 0),
       };
 
-      if (Array.isArray(shop.vouchers)) {
+      if (Array.isArray(shop.vouchers) && shop.vouchers.length > 0) {
         shopPayload.vouchers = shop.vouchers;
       }
 
-      if (Array.isArray(shop.globalVouchers)) {
+      if (Array.isArray(shop.globalVouchers) && shop.globalVouchers.length > 0) {
         shopPayload.globalVouchers = shop.globalVouchers;
       }
 

@@ -11,14 +11,17 @@ import { cn } from "@/utils/cn";
 import { toPublicUrl } from "@/utils/storage/url";
 import { PlayCircle } from "lucide-react";
 import dynamic from "next/dynamic";
-import { useParams } from "next/navigation";
-import { useEffect, useMemo, useState, useRef } from "react";
+import { useParams, useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { FeaturedProductsSidebar } from "../../_components/FeaturedProductsSidebar";
 import { ProductInfo } from "../../_components/ProductInfo/ProductInfo";
 import { useProductDetail } from "../../_context/products";
-import { ProductPurchaseActions } from "../_components";
-import { InfomationShop } from "../_components/InfomationShop";
-import { ProductReviews } from "../_components/ProductReviews";
+import { ProductGallery } from "@/components";
+import {
+  ProductReviews,
+  ProductPurchaseActions,
+  InfomationShop,
+} from "../_components";
 import Image from "next/image";
 import { SectionPageComponents } from "@/features/SectionPageComponents";
 import { PortalModal } from "@/features/PortalModal";
@@ -30,7 +33,7 @@ interface ProductDetailPageProps {
 const RelatedProducts = dynamic(
   () =>
     import("../../_components/RelatedProducts").then(
-      (mod) => mod.RelatedProducts
+      (mod) => mod.RelatedProducts,
     ),
   {
     ssr: false,
@@ -39,13 +42,13 @@ const RelatedProducts = dynamic(
         <CustomSpinner />
       </div>
     ),
-  }
+  },
 );
 
 const SimilarProducts = dynamic(
   () =>
     import("../../_components/SimilarProducts").then(
-      (mod) => mod.SimilarProducts
+      (mod) => mod.SimilarProducts,
     ),
   {
     ssr: false,
@@ -54,7 +57,7 @@ const SimilarProducts = dynamic(
         <CustomSpinner />
       </div>
     ),
-  }
+  },
 );
 
 const PLACEHOLDER_IMAGE =
@@ -69,12 +72,15 @@ const resolveReviewMediaUrl = (media?: ReviewMediaResponse) => {
   const raw = media.url
     ? media.url
     : media.basePath && media.extension
-    ? `${media.basePath}${media.extension}`
-    : "";
+      ? `${media.basePath}${media.extension}`
+      : "";
   return toPublicUrl(raw || "");
 };
 
-export const ProductDetailPage = ({ productId, isPreview = false }: ProductDetailPageProps) => {
+export const ProductDetailPage = ({
+  productId,
+  isPreview = false,
+}: ProductDetailPageProps) => {
   const {
     product,
     loading,
@@ -95,6 +101,8 @@ export const ProductDetailPage = ({ productId, isPreview = false }: ProductDetai
     followerCount,
   } = useProductDetail();
   const params = useParams() as { id: string };
+  const searchParams = useSearchParams();
+  const isBuyNow = searchParams?.get("buynow") === "1";
   const [shopChatOpen, setShopChatOpen] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
@@ -132,13 +140,18 @@ export const ProductDetailPage = ({ productId, isPreview = false }: ProductDetai
     }
   }, [loading, product, selectedVariant, setSelectedVariant]);
 
-  const hasVariantImage = (variant?: PublicProductVariantDTO | null) => {
-    if (!variant) return false;
-    return Boolean(
-      variant.imageUrl || (variant.imageBasePath && variant.imageExtension)
-    );
-  };
+  const handleThumbnailAction = useCallback(
+    (preview: string, key: string) => {
+      setActiveThumbnail(preview);
 
+      if (key.startsWith("variant-")) {
+        const vId = key.replace("variant-", "");
+        const targetV = product?.variants?.find((v) => v.id === vId);
+        if (targetV) setSelectedVariant(targetV);
+      }
+    },
+    [product?.variants, setActiveThumbnail, setSelectedVariant],
+  );
   const STAR_LEVELS = [5, 4, 3, 2, 1];
 
   const ratingDistributionEntries = reviewSummary
@@ -155,7 +168,7 @@ export const ProductDetailPage = ({ productId, isPreview = false }: ProductDetai
       const vPrice =
         selectedVariant?.price !== undefined && selectedVariant?.price !== null
           ? selectedVariant.price
-          : product?.priceMin ?? product?.basePrice ?? 0;
+          : (product?.priceMin ?? product?.basePrice ?? 0);
       const calculatePriceAfterVoucher = () => {
         if (!selectedVariant) {
           return (
@@ -282,7 +295,7 @@ export const ProductDetailPage = ({ productId, isPreview = false }: ProductDetai
 
   const priceRangeLabel = hasPriceRange
     ? `${formatPriceFull(product!.priceMin!)} - ${formatPriceFull(
-        product!.priceMax!
+        product!.priceMax!,
       )}`
     : null;
 
@@ -366,7 +379,15 @@ export const ProductDetailPage = ({ productId, isPreview = false }: ProductDetai
       {isPreview && (
         <div className="bg-amber-50 border border-amber-200 p-4 rounded-2xl mb-4">
           <p className="text-amber-800 font-bold text-xs uppercase tracking-widest">
-             👁️ Chế độ xem trước (Sản phẩm: {product?.approvalStatus})
+            👁️ Chế độ xem trước (Sản phẩm: {product?.approvalStatus})
+          </p>
+        </div>
+      )}
+      {isBuyNow && (
+        <div className="bg-green-50 border border-green-200 p-4 rounded-2xl mb-4 animate-in fade-in slide-in-from-top-2">
+          <p className="text-green-800 font-bold text-xs uppercase tracking-widest">
+            🚀 Bạn vừa chọn MUA NGAY! Vui lòng kiểm tra lại thông tin sản phẩm
+            và tiến hành thanh toán.
           </p>
         </div>
       )}
@@ -374,51 +395,13 @@ export const ProductDetailPage = ({ productId, isPreview = false }: ProductDetai
         <>
           <CardComponents className="overflow-visible pt-2 shadow-custom transition-shadow">
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1.8fr)]">
-              <section className="space-y-4">
-                <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-md">
-                  <div className="relative w-full aspect-square overflow-hidden rounded-xl bg-gray-50">
-                    <ImageWithPreview
-                      src={primaryImage}
-                      alt={product.name}
-                      className="absolute inset-0 w-full h-full object-cover cursor-zoom-in transition-transform duration-500 hover:scale-105"
-                      onClick={() => setImagePreview(primaryImage)}
-                    />
-                  </div>
-                </div>
-                {galleryImages.length > 1 && (
-                  <div className="grid grid-cols-5 gap-2">
-                    {galleryImages.slice(0, 5).map((img) => (
-                      <div
-                        key={img.key}
-                        className={cn(
-                          "relative aspect-square w-full rounded-lg overflow-hidden border-2 transition-all cursor-pointer bg-gray-50",
-                          primaryImage === img.preview
-                            ? "border-gray-500 scale-105 shadow-md z-10"
-                            : "border-gray-200 hover:border-gray-300"
-                        )}
-                        onClick={() => {
-                          setActiveThumbnail(img.preview);
-                          if (img.key.startsWith("variant-")) {
-                            const vId = img.key.replace("variant-", "");
-                            const targetV = product.variants?.find(
-                              (v) => v.id === vId
-                            );
-                            if (targetV) setSelectedVariant(targetV);
-                          }
-                        }}
-                      >
-                       <Image
-                          src={img.thumb}
-                          alt="thumbnail"
-                          fill
-                          sizes="100px"
-                          className="object-cover"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </section>
+              <ProductGallery
+                product={product}
+                galleryImages={galleryImages}
+                activeImg={primaryImage} 
+                onThumbnailClick={handleThumbnailAction}
+                onZoomClick={setImagePreview}
+              />
 
               <div ref={purchaseActionsRef}>
                 <ProductPurchaseActions
@@ -468,26 +451,26 @@ export const ProductDetailPage = ({ productId, isPreview = false }: ProductDetai
         onCancel={() => setVideoPreview(null)}
       />
       {imagePreview && (
-       <PortalModal
-        isOpen={Boolean(imagePreview)}
-        onClose={() => setImagePreview(null)}
-        width="max-w-4xl"
-        className="bg-transparent shadow-none border-none"
-      >
-        <div className="flex items-center justify-center p-0 min-h-[50vh]">
-          {imagePreview && (
-            <div className="relative w-full aspect-square md:aspect-video">
-              <Image
-                src={imagePreview}
-                alt="Product preview"
-                fill
-                className="object-contain"
-                sizes="80vw"
-              />
-            </div>
-          )}
-        </div>
-      </PortalModal>
+        <PortalModal
+          isOpen={Boolean(imagePreview)}
+          onClose={() => setImagePreview(null)}
+          width="max-w-4xl"
+          className="bg-transparent shadow-none border-none"
+        >
+          <div className="flex items-center justify-center p-0 min-h-[50vh]">
+            {imagePreview && (
+              <div className="relative w-full aspect-square md:aspect-video">
+                <Image
+                  src={imagePreview}
+                  alt="Product preview"
+                  fill
+                  className="object-contain"
+                  sizes="80vw"
+                />
+              </div>
+            )}
+          </div>
+        </PortalModal>
       )}
     </SectionPageComponents>
   );

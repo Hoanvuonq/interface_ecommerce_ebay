@@ -52,10 +52,7 @@ export const Header = () => {
   }, []);
 
   return (
-    <header
-      className="sticky top-0 z-50 transition-all duration-300"
-      style={{ boxShadow: "0 1px 6px rgba(0,0,0,0.08)" }}
-    >
+    <header className="fixed top-0 left-0 w-full z-50 transition-all duration-300">
       <div className="hidden md:block">
         <TopHeader />
       </div>

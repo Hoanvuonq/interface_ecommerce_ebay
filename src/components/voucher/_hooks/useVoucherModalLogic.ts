@@ -37,20 +37,16 @@ export const useVoucherModalLogic = (props: VoucherModalProps) => {
 
   const [isPending, startTransition] = useTransition();
 
-  // Sync selection khi modal mở hoặc khi appliedVouchers/previewData thay đổi
   useEffect(() => {
     if (open && request) {
       let savedOrderCode: string | undefined;
       let savedShipCode: string | undefined;
 
-      // 1. Lấy thông tin chi tiết từ previewData (Backend)
       const shopsArray = previewData?.data?.shops || previewData?.shops || [];
       const shopPreview = shopsArray.find((s: any) => s.shopId === shopId);
       const discountDetails = shopPreview?.voucherResult?.discountDetails || [];
 
-      // 2. Xác định voucher đã áp dụng dựa trên voucherType (SHOP vs PLATFORM)
       if (isPlatform) {
-        // Modal Platform Voucher -> Chỉ tìm mã có voucherType === "PLATFORM"
         const platformVouchers = discountDetails.filter(
           (d: any) => d.voucherType === "PLATFORM" && d.valid
         );
@@ -70,7 +66,6 @@ export const useVoucherModalLogic = (props: VoucherModalProps) => {
           }
         });
       } else {
-        // Modal Shop Voucher -> Chỉ tìm mã có voucherType === "SHOP"
         const shopVouchers = discountDetails.filter(
           (d: any) => d.voucherType === "SHOP" && d.valid
         );
@@ -91,7 +86,6 @@ export const useVoucherModalLogic = (props: VoucherModalProps) => {
         });
       }
 
-      // 3. Fallback: Lấy từ appliedVouchers prop nếu có
       if (!savedOrderCode && appliedVouchers?.order) {
         const orderCode =
           (appliedVouchers.order as any).voucherCode ||
@@ -105,7 +99,6 @@ export const useVoucherModalLogic = (props: VoucherModalProps) => {
         savedShipCode = shipCode;
       }
 
-      // 4. Cập nhật state để UI hiển thị dấu tích (Active)
       setTempSelection({
         order: savedOrderCode,
         shipping: savedShipCode,

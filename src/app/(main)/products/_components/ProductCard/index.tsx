@@ -146,7 +146,6 @@ export const ProductCard = ({
     }
   };
 
-  // Dữ liệu giá từ API
   const displayPrice = product.priceAfterBestVoucher || product.priceMin || product.basePrice;
   const originalPrice = product.priceMax || product.basePrice;
   const discountPercent = product.showDiscount || 0;
@@ -252,11 +251,11 @@ export const ProductCard = ({
         >
           <div className="flex justify-between items-start mb-1">
             <div className="flex items-center gap-1.5 overflow-hidden">
-              <span className="bg-orange-50 text-(--color-mainColor) text-[8px] font-semibold px-1.5 py-0.5 rounded border border-gray-100 uppercase shrink-0 tracking-tighter">
-                Mall
+              <span className="bg-orange-50 text-(--color-mainColor) text-[10px] font-bold italic px-1.5 py-0.5 rounded border border-gray-100 uppercase shrink-0 tracking-tighter">
+                Sale
               </span>
               <span className="text-[10px] text-gray-600 font-bold uppercase tracking-tight truncate">
-                CaLaTha Store
+                CanoX Store
               </span>
             </div>
 

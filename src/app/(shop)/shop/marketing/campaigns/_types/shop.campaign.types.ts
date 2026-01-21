@@ -39,7 +39,8 @@ export interface CreateShopCampaignRequest {
     description?: string;
     startDate: string; // "YYYY-MM-DDTHH:mm"
     endDate: string;   // "YYYY-MM-DDTHH:mm"
-
+    bannerAssetId?: string;
+    thumbnailAssetId?: string;
     displayPriority?: number;
 
     // Optional: Inline Product Registration

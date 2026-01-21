@@ -29,7 +29,9 @@ export const useProductVariantsColumns = (
   variants: Variant[],
   optionNames: string[],
   groupMetadata: { isFirst: boolean; label: string; rowSpan?: number }[],
-  fileInputRefs: React.MutableRefObject<{ [key: number]: HTMLInputElement | null }>,
+  fileInputRefs: React.MutableRefObject<{
+    [key: number]: HTMLInputElement | null;
+  }>,
   handleInputChange: (index: number, field: keyof Variant, value: any) => void,
   handleBulkUpdate: (field: keyof Variant, value: any) => void,
   onUploadImage: (file: File, index: number) => Promise<void>,
@@ -37,7 +39,9 @@ export const useProductVariantsColumns = (
   onToggleBulkField: (field: string) => void,
 ): Column<Variant>[] => {
   const [bulkValues, setBulkValues] = useState<{ [key: string]: string }>({});
-  const [uploadingIndexes, setUploadingIndexes] = useState<Set<number>>(new Set());
+  const [uploadingIndexes, setUploadingIndexes] = useState<Set<number>>(
+    new Set(),
+  );
 
   // Xử lý rowSpan cho nhóm 1
   const processedMetadata = useMemo(() => {
@@ -64,8 +68,15 @@ export const useProductVariantsColumns = (
     const bulkUpdates: { [key: string]: any } = {};
     selectedBulkFields.forEach((field) => {
       const rawValue = bulkValues[field];
-      const isNumber = ["price", "stockQuantity", "lengthCm", "widthCm", "heightCm", "weightGrams"].includes(field);
-      
+      const isNumber = [
+        "price",
+        "stockQuantity",
+        "lengthCm",
+        "widthCm",
+        "heightCm",
+        "weightGrams",
+      ].includes(field);
+
       if (rawValue === undefined || rawValue === "") {
         bulkUpdates[field] = isNumber ? 0 : "";
       } else {
@@ -93,7 +104,9 @@ export const useProductVariantsColumns = (
             className="flex items-center gap-1 py-1 px-3 bg-orange-500 hover:bg-orange-600 text-white rounded-full mt-1 shadow-md transition-all active:scale-95 disabled:opacity-30"
           >
             <Zap size={10} fill="currentColor" />
-            <span className="text-[9px] font-bold uppercase">Áp dụng tất cả</span>
+            <span className="text-[9px] font-bold uppercase">
+              Áp dụng tất cả
+            </span>
           </button>
         </div>
       ),
@@ -112,28 +125,54 @@ export const useProductVariantsColumns = (
                 {meta.label}
               </span>
               <div
-                onClick={() => !isUploading && fileInputRefs.current[idx]?.click()}
+                onClick={() =>
+                  !isUploading && fileInputRefs.current[idx]?.click()
+                }
                 className={cn(
                   "w-16 h-16 relative rounded-xl border-2 border-dashed overflow-hidden flex items-center justify-center",
-                  isUploading ? "bg-orange-50 cursor-not-allowed" : "border-gray-100 hover:border-orange-400 cursor-pointer bg-gray-50"
+                  isUploading
+                    ? "bg-orange-50 cursor-not-allowed"
+                    : "border-gray-100 hover:border-orange-400 cursor-pointer bg-gray-50",
                 )}
               >
                 {item.imageUrl ? (
-                  <Image src={item.imageUrl} alt="v" fill className={cn("object-cover", isUploading && "opacity-30")} />
-                ) : !isUploading && <ImageIcon className="text-gray-500" size={20} />}
-                {isUploading && <div className="absolute inset-0 flex items-center justify-center"><div className="w-5 h-5 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" /></div>}
+                  <Image
+                    src={item.imageUrl}
+                    alt="v"
+                    fill
+                    className={cn("object-cover", isUploading && "opacity-30")}
+                  />
+                ) : (
+                  !isUploading && (
+                    <ImageIcon className="text-gray-500" size={20} />
+                  )
+                )}
+                {isUploading && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-5 h-5 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
+                  </div>
+                )}
               </div>
               <input
                 type="file"
                 className="hidden"
                 accept="image/*"
-                ref={(el) => { if (el) fileInputRefs.current[idx] = el; }}
+                ref={(el) => {
+                  if (el) fileInputRefs.current[idx] = el;
+                }}
                 onChange={async (e) => {
                   const file = e.target.files?.[0];
                   if (file) {
-                    setUploadingIndexes(prev => new Set(prev).add(idx));
-                    try { await onUploadImage(file, idx); } 
-                    finally { setUploadingIndexes(prev => { const n = new Set(prev); n.delete(idx); return n; }); }
+                    setUploadingIndexes((prev) => new Set(prev).add(idx));
+                    try {
+                      await onUploadImage(file, idx);
+                    } finally {
+                      setUploadingIndexes((prev) => {
+                        const n = new Set(prev);
+                        n.delete(idx);
+                        return n;
+                      });
+                    }
                   }
                 }}
               />
@@ -146,10 +185,18 @@ export const useProductVariantsColumns = (
     // CỘT 2: NHÓM PHÂN LOẠI 2 (NẾU CÓ)
     if (optionNames.length >= 2) {
       cols.push({
-        header: <span className="text-gray-500 text-[10px] uppercase font-bold block text-center">{optionNames[1]}</span>,
+        header: (
+          <span className="text-gray-500 text-[10px] uppercase font-bold block text-center">
+            {optionNames[1]}
+          </span>
+        ),
         className: COL_WIDTHS.GROUP_2,
         cellClassName: "px-1 text-center border-r border-gray-50",
-        render: (item) => <span className="text-[10px] font-bold uppercase text-gray-500">{item.optionValueNames?.[1] || "-"}</span>,
+        render: (item) => (
+          <span className="text-[10px] font-bold uppercase text-gray-500">
+            {item.optionValueNames?.[1] || "-"}
+          </span>
+        ),
       });
     }
 
@@ -169,7 +216,9 @@ export const useProductVariantsColumns = (
       render: (item, idx) => (
         <FormInput
           value={item.sku || ""}
-          onChange={(e) => handleInputChange(idx, "sku", e.target.value.toUpperCase())}
+          onChange={(e) =>
+            handleInputChange(idx, "sku", e.target.value.toUpperCase())
+          }
           className={tableInputClass}
           placeholder="Mã SKU..."
         />
@@ -179,27 +228,49 @@ export const useProductVariantsColumns = (
     cols.push({
       header: (
         <div className="flex flex-col items-center w-full px-1 gap-1">
-          <span className="text-gray-800 text-[12px] font-bold uppercase mb-1">Giá Bán</span>
+          <span className="text-gray-800 text-[12px] font-bold uppercase mb-1">
+            Giá Bán
+          </span>
           <FormInput
             placeholder="0"
+            type="number" // FormInput bên trên sẽ tự chuyển về text + numeric mode
             isCheckbox={true}
             checkboxChecked={selectedBulkFields.includes("price")}
             onCheckboxChange={() => onToggleBulkField("price")}
-            value={bulkValues["price"] ? Number(bulkValues["price"]).toLocaleString("vi-VN") : ""}
+            // Hiển thị: Định dạng có dấu chấm
+            value={
+              bulkValues["price"]
+                ? Number(bulkValues["price"]).toLocaleString("vi-VN")
+                : ""
+            }
             onChange={(e) => {
-              const raw = e.target.value.replace(/\D/g, "").replace(/^0+/, "") || "0";
-              setBulkValues(prev => ({ ...prev, price: raw }));
+              // Xử lý: Xóa hết ký tự không phải số trước khi lưu vào bulkValues
+              const raw = e.target.value.replace(/\D/g, "");
+              setBulkValues((prev) => ({ ...prev, price: raw }));
             }}
-            className={cn(tableInputClass, "w-full pr-10 text-center font-bold text-orange-600", selectedBulkFields.includes("price") && "border-orange-500 bg-orange-50/20")}
+            className={cn(
+              tableInputClass,
+              "w-full pr-10 text-center font-bold text-orange-600",
+            )}
           />
         </div>
       ),
       className: COL_WIDTHS.PRICE,
       render: (item, idx) => (
         <FormInput
+          type="number"
+          // Hiển thị: Định dạng có dấu chấm
           value={item.price ? Number(item.price).toLocaleString("vi-VN") : ""}
-          onChange={(e) => handleInputChange(idx, "price", parseNumber(e.target.value))}
-          className={cn(tableInputClass, "text-center font-bold text-orange-600 bg-orange-50/10!")}
+          onChange={(e) => {
+            // Xử lý: Xóa dấu chấm/phẩy, chuyển về số rồi mới gửi lên handleInputChange
+            const rawValue = e.target.value.replace(/\D/g, "");
+            const numericValue = rawValue === "" ? 0 : parseInt(rawValue);
+            handleInputChange(idx, "price", numericValue);
+          }}
+          className={cn(
+            tableInputClass,
+            "text-center font-bold text-orange-600",
+          )}
         />
       ),
     });
@@ -208,7 +279,9 @@ export const useProductVariantsColumns = (
     cols.push({
       header: (
         <div className="flex flex-col items-center w-full px-1 gap-1">
-          <span className="text-gray-800 text-[12px] font-bold uppercase mb-1">Kho</span>
+          <span className="text-gray-800 text-[12px] font-bold uppercase mb-1">
+            Kho
+          </span>
           <FormInput
             type="number"
             placeholder="0"
@@ -216,8 +289,18 @@ export const useProductVariantsColumns = (
             checkboxChecked={selectedBulkFields.includes("stockQuantity")}
             onCheckboxChange={() => onToggleBulkField("stockQuantity")}
             value={bulkValues["stockQuantity"] || ""}
-            onChange={(e) => setBulkValues(prev => ({ ...prev, stockQuantity: e.target.value }))}
-            className={cn(tableInputClass, "w-full pr-10 text-center", selectedBulkFields.includes("stockQuantity") && "border-orange-500 bg-orange-50/20")}
+            onChange={(e) =>
+              setBulkValues((prev) => ({
+                ...prev,
+                stockQuantity: e.target.value,
+              }))
+            }
+            className={cn(
+              tableInputClass,
+              "w-full pr-10 text-center",
+              selectedBulkFields.includes("stockQuantity") &&
+                "border-orange-500 bg-orange-50/20",
+            )}
           />
         </div>
       ),
@@ -226,7 +309,9 @@ export const useProductVariantsColumns = (
         <FormInput
           type="number"
           value={item.stockQuantity ?? ""}
-          onChange={(e) => handleInputChange(idx, "stockQuantity", parseNumber(e.target.value))}
+          onChange={(e) =>
+            handleInputChange(idx, "stockQuantity", parseNumber(e.target.value))
+          }
           className={cn(tableInputClass, "text-center font-bold")}
         />
       ),
@@ -238,7 +323,9 @@ export const useProductVariantsColumns = (
     cols.push({
       header: (
         <div className="flex flex-col items-center w-full px-1 gap-1">
-          <span className="text-gray-800 text-[12px] font-bold uppercase mb-1">Kích thước & Cân nặng</span>
+          <span className="text-gray-800 text-[12px] font-bold uppercase mb-1">
+            Kích thước & Cân nặng
+          </span>
           <div className="flex gap-1 w-full">
             {logLabels.map((l, i) => {
               const f = logFields[i];
@@ -250,8 +337,15 @@ export const useProductVariantsColumns = (
                   checkboxChecked={selectedBulkFields.includes(f)}
                   onCheckboxChange={() => onToggleBulkField(f)}
                   value={bulkValues[f] || ""}
-                  onChange={(e) => setBulkValues(prev => ({ ...prev, [f]: e.target.value }))}
-                  className={cn(tableInputClass, "flex-1 px-1 pr-6 text-center text-[10px]", selectedBulkFields.includes(f) && "border-orange-500 bg-orange-50/20")}
+                  onChange={(e) =>
+                    setBulkValues((prev) => ({ ...prev, [f]: e.target.value }))
+                  }
+                  className={cn(
+                    tableInputClass,
+                    "flex-1 px-1 pr-6 text-center text-[10px]",
+                    selectedBulkFields.includes(f) &&
+                      "border-orange-500 bg-orange-50/20",
+                  )}
                 />
               );
             })}
@@ -265,7 +359,9 @@ export const useProductVariantsColumns = (
             <FormInput
               key={f}
               value={item[f as keyof Variant] ?? ""}
-              onChange={(e) => handleInputChange(idx, f as any, parseNumber(e.target.value))}
+              onChange={(e) =>
+                handleInputChange(idx, f as any, parseNumber(e.target.value))
+              }
               className={cn(tableInputClass, "flex-1 px-1 text-center")}
             />
           ))}
@@ -274,5 +370,12 @@ export const useProductVariantsColumns = (
     });
 
     return cols;
-  }, [optionNames, variants, processedMetadata, selectedBulkFields, bulkValues, applyAllCheckedFields]);
+  }, [
+    optionNames,
+    variants,
+    processedMetadata,
+    selectedBulkFields,
+    bulkValues,
+    applyAllCheckedFields,
+  ]);
 };

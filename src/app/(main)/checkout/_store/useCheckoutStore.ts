@@ -36,7 +36,12 @@ interface CheckoutState {
   updateRequestPatch: (patch: any) => void;
   updateShopVouchers: (
     shopId: string,
-    vouchers: { order?: string; shipping?: string }
+    vouchers: {
+      order?: string;
+      shipping?: string;
+      platformOrder?: string;
+      platformShipping?: string;
+    }
   ) => void;
   getValidVouchersByShop: (shopId: string) => string[];
 }
@@ -109,16 +114,15 @@ export const useCheckoutStore = create<CheckoutState>((set, get) => ({
     set({ request: nextRequest });
   },
 
-  updateShopVouchers: (shopId, { order, shipping }) => {
+  updateShopVouchers: (shopId, { order, shipping, platformOrder, platformShipping }) => {
     const state = get();
     if (!state.request) return;
 
     const updatedShops = state.request.shops.map((s: any) => {
       if (s.shopId === shopId) {
-        const newVouchers = [order, shipping].filter(
-          (code): code is string => !!code
-        );
-        return { ...s, vouchers: newVouchers };
+        const vouchers = [order, shipping].filter((code): code is string => !!code);
+        const globalVouchers = [platformOrder, platformShipping].filter((code): code is string => !!code);
+        return { ...s, vouchers, globalVouchers };
       }
       return s;
     });

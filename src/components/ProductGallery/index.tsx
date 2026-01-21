@@ -1,71 +1,105 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import Image from "next/image";
-import { ImageWithPreview } from "../imageWithPreview";
 import { cn } from "@/utils/cn";
-import { Maximize2, Box } from "lucide-react";
+import { Box, Maximize2 } from "lucide-react";
+import Image from "next/image";
+import { useCallback, useEffect, useState, useMemo } from "react";
+import { ImageWithPreview } from "../imageWithPreview";
+import { GalleryItem, ProductGalleryProps } from "./type";
 
 const PLACEHOLDER_IMAGE = "https://picsum.photos/600/600";
 
-export const ProductGallery = ({ product, galleryImages = [] }: any) => {
-  // Đồng bộ ảnh active khi galleryImages thay đổi
-  const [activeImg, setActiveImg] = useState(galleryImages[0]?.url || PLACEHOLDER_IMAGE);
+
+export const ProductGallery = ({
+  product,
+  galleryImages: manualImages,
+  media,
+  activeImg: primaryImageFromParent,
+  onThumbnailClick,
+  onZoomClick,
+}: ProductGalleryProps) => {
+  
+  const finalImages = useMemo(() => {
+    if (manualImages && manualImages.length > 0) return manualImages;
+    if (media && media.length > 0) {
+      return media.map((m: any, idx: number) => ({
+        key: m.id || `media-${idx}`,
+        preview: m.url || m.previewUrl || PLACEHOLDER_IMAGE,
+        thumb: m.url || m.previewUrl || PLACEHOLDER_IMAGE,
+      }));
+    }
+    return [];
+  }, [manualImages, media]);
+
+  const [currentImg, setCurrentImg] = useState(
+    primaryImageFromParent || finalImages[0]?.preview || PLACEHOLDER_IMAGE
+  );
 
   useEffect(() => {
-    if (galleryImages.length > 0) {
-      setActiveImg(galleryImages[0].url);
+    if (primaryImageFromParent) {
+      setCurrentImg(primaryImageFromParent);
+    } else if (finalImages.length > 0 && !currentImg) {
+      setCurrentImg(finalImages[0].preview);
     }
-  }, [galleryImages]);
+  }, [primaryImageFromParent, finalImages]);
+
+  const handleSelect = useCallback(
+    (img: GalleryItem) => {
+      setCurrentImg(img.preview); 
+      if (onThumbnailClick) {
+        onThumbnailClick(img.preview, img.key);
+      }
+    },
+    [onThumbnailClick]
+  );
 
   return (
-    <section className="space-y-6 animate-in fade-in slide-in-from-left-4 duration-700">
-      {/* Ảnh Chính lớn */}
-      <div className="rounded-[2.5rem] border border-orange-50 bg-white p-2 shadow-custom-lg group relative overflow-hidden transition-all duration-500 hover:border-orange-200">
-        <div className="relative aspect-square w-full overflow-hidden rounded-[2.2rem]">
+    <section className="space-y-4 animate-in fade-in slide-in-from-left-4 duration-700">
+      <div className="rounded-4xl border border-slate-100 bg-white p-1.5 shadow-custom transition-all duration-500 hover:border-orange-200 group relative">
+        <div className="relative aspect-square w-full overflow-hidden rounded-[1.8rem] bg-slate-50">
           <ImageWithPreview
-            src={activeImg}
+            src={currentImg}
             alt={product?.name || "Product Image"}
-            width={600}
-            height={600}
-            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+            fill
+            priority
+            sizes="(max-width: 768px) 100vw, 600px"
+            className="object-cover cursor-zoom-in transition-transform duration-700 group-hover:scale-105"
+            onClick={() => onZoomClick && onZoomClick(currentImg)}
           />
-          
-          {/* Overlay Web3 Style */}
-          <div className="absolute inset-0 bg-linear-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-          
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 pointer-events-none">
-            <span className="bg-white/90 backdrop-blur-xl text-orange-600 px-5 py-2 rounded-2xl text-[10px] flex items-center gap-2 font-bold uppercase tracking-widest shadow-2xl border border-orange-100">
-                <Maximize2 size={14} strokeWidth={3} />
-                Phóng to tài sản
-            </span>
+
+          <div className="absolute inset-0 flex items-end justify-center pb-6 opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none">
+            <div className="bg-white/80 backdrop-blur-md text-slate-700 px-4 py-2 rounded-xl text-[10px] flex items-center gap-2 font-black uppercase tracking-widest border border-white shadow-xl translate-y-2 group-hover:translate-y-0 transition-transform">
+              <Maximize2 size={12} strokeWidth={3} className="text-orange-500" />
+              Click để xem ảnh lớn
+            </div>
           </div>
         </div>
       </div>
 
-      {galleryImages.length > 1 ? (
-        <div className="flex flex-wrap gap-3 px-2">
-          {galleryImages.map((img: any, idx: number) => {
-            const isSelected = activeImg === img.url;
+      {/* Danh sách Thumbnails */}
+      {finalImages.length > 1 ? (
+        <div className="grid grid-cols-5 gap-2.5">
+          {finalImages.map((img: GalleryItem, idx: number) => {
+            const isSelected = currentImg === img.preview;
             return (
               <div
-                key={img.key || idx}
+                key={img.key}
                 className={cn(
-                  "relative h-20 w-20 rounded-2xl overflow-hidden border-2 transition-all duration-300 cursor-pointer shadow-sm",
-                  isSelected 
-                    ? "border-orange-500 ring-4 ring-orange-500/10 scale-95 shadow-orange-500/20" 
-                    : "border-slate-100 hover:border-orange-300 grayscale group"
+                  "relative aspect-square rounded-xl overflow-hidden border-2 transition-all duration-200 cursor-pointer bg-white",
+                  isSelected
+                    ? "border-orange-500 shadow-sm scale-95"
+                    : "border-slate-100 hover:border-orange-200"
                 )}
-                onClick={() => setActiveImg(img.url)}
+                onClick={() => handleSelect(img)} 
               >
                 <Image
-                  src={img.thumb || img.url}
-                  alt={img.alt || `Thumbnail ${idx}`}
+                  src={img.thumb}
+                  alt={`Thumbnail ${idx}`}
                   fill
-                  sizes="80px"
+                  sizes="100px"
                   className={cn(
-                    "object-cover transition-all duration-500",
-                    isSelected ? "scale-110 grayscale-0" : "group-hover:grayscale-0"
+                    "object-cover transition-opacity duration-300",
+                    !isSelected && "opacity-90 hover:opacity-100"
                   )}
                 />
               </div>
@@ -73,10 +107,12 @@ export const ProductGallery = ({ product, galleryImages = [] }: any) => {
           })}
         </div>
       ) : (
-          <div className="flex items-center gap-2 px-6 py-3 bg-slate-50 rounded-2xl border border-slate-100 opacity-60 italic">
-              <Box size={14} className="text-slate-400" />
-              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-tight">Duy nhất 1 hình ảnh định danh</span>
-          </div>
+        <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 rounded-xl border border-slate-100 opacity-60">
+          <Box size={14} className="text-slate-400" />
+          <span className="text-[10px] font-bold text-slate-500 uppercase">
+            Duy nhất 1 ảnh định danh
+          </span>
+        </div>
       )}
     </section>
   );

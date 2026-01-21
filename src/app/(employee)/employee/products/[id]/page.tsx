@@ -1,30 +1,30 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
-import { useParams, useRouter } from "next/navigation";
-import Link from "next/link";
+import { ProductGallery, SectionLoading } from "@/components";
+import { useToast } from "@/hooks/useToast";
 import {
-  ChevronRight,
   ArrowLeft,
-  ExternalLink,
-  ShieldCheck,
-  LayoutDashboard,
   Box,
+  ChevronRight,
+  ExternalLink,
+  LayoutDashboard,
+  ShieldCheck,
 } from "lucide-react";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 import {
-  getProductById,
   approveProduct,
+  getProductById,
   rejectProduct,
 } from "../_services/product.service";
 import { ProductResponse } from "../_types/dto/product.dto";
-// import { ProductGallery } from "@/components";
 import {
-  ProductSummaryCard,
   AdminActionsCard,
   ProductDescription,
+  ProductSummaryCard,
   VariantTable,
 } from "./_components";
-import { useToast } from "@/hooks/useToast";
 import { cn } from "@/utils/cn";
 
 export default function ProductDetailPage() {
@@ -102,15 +102,7 @@ export default function ProductDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#FDFBFB] flex flex-col items-center justify-center gap-4">
-        <div className="relative w-16 h-16">
-          <div className="absolute inset-0 border-4 border-orange-100 rounded-full" />
-          <div className="absolute inset-0 border-4 border-orange-500 rounded-full border-t-transparent animate-spin" />
-        </div>
-        <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-orange-500 animate-pulse">
-          Syncing Product Data...
-        </p>
-      </div>
+     <SectionLoading message="Đang tải thông tin sản phẩm..." />
     );
   }
 
@@ -140,9 +132,8 @@ export default function ProductDetailPage() {
 
   return (
     <div className="min-h-screen bg-[#FDFBFB] pb-24">
-      {/* Top Navigation Bar */}
       <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-orange-50 mb-8">
-        <div className="max-w-[1440px] mx-auto px-8 h-20 flex items-center justify-between">
+        <div className="max-w-360 mx-auto px-8 h-20 flex items-center justify-between">
           <div className="flex items-center gap-6">
             <Link
               href="/employee/products"
@@ -180,9 +171,13 @@ export default function ProductDetailPage() {
 
           <div className="flex items-center gap-4">
             <Link
-              href={`/product/${product.slug}`} // Chuyển sang thẻ Link của Next.js cho chuẩn client-side routing
+              href={`/product/${product.slug}`}
               target="_blank"
-              className="flex items-center gap-2 px-6 py-2.5 bg-white text-slate-900 font-bold rounded-xl border border-slate-200 hover:border-orange-500 hover:text-orange-500 transition-all text-[10px] uppercase tracking-widest shadow-sm active:scale-95"
+              className={cn(
+                "flex items-center gap-2 px-6 py-2.5 bg-white",
+                "text-slate-900 font-bold rounded-xl border border-slate-200 hover:border-orange-500",
+                "hover:text-orange-500 transition-all text-[10px] uppercase tracking-widest shadow-sm active:scale-95",
+              )}
             >
               <ExternalLink size={14} strokeWidth={3} />
               Live Preview
@@ -191,8 +186,7 @@ export default function ProductDetailPage() {
         </div>
       </div>
 
-      <main className="max-w-[1440px] mx-auto px-8">
-        {/* Page Title Section */}
+      <main className="max-w-360 mx-auto px-8">
         <div className="mb-10 flex items-center gap-4">
           <div className="p-3 bg-orange-500 rounded-2xl shadow-lg shadow-orange-200">
             <ShieldCheck size={24} className="text-white" />
@@ -208,17 +202,15 @@ export default function ProductDetailPage() {
         </div>
 
         <div className="grid grid-cols-12 gap-10">
-          {/* Left Column: Gallery & Media */}
-          {/* <div className="col-span-12 lg:col-span-5 space-y-8">
+          <div className="col-span-12 lg:col-span-5 space-y-8">
             <div className="bg-white p-4 rounded-[3rem] border border-orange-50 shadow-custom-lg overflow-hidden group">
               <ProductGallery
-                media={product.media || []}
-                productName={product.name}
+                media={product.media || []} 
+                product={product} 
               />
             </div>
-          </div> */}
+          </div>
 
-          {/* Right Column: Key Info & Admin Actions */}
           <div className="col-span-12 lg:col-span-7 space-y-8">
             <ProductSummaryCard product={product} />
 

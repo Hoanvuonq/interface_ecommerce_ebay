@@ -66,7 +66,7 @@ export const VoucherModalContent: React.FC<ContentProps> = (props) => {
             className="w-full pl-11 pr-24 py-3 bg-gray-50 rounded-2xl text-[11px] font-bold outline-none focus:bg-white focus:shadow-sm transition-all"
           />
           <button 
-            type="submit"
+            type="button"
             className="absolute right-2 top-1/2 -translate-y-1/2 px-5 py-1.5 bg-orange-500 text-white font-bold text-[10px] rounded-xl active:scale-95 transition-all"
           >
             ÁP DỤNG

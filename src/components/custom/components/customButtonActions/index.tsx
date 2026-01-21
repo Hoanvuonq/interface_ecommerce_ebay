@@ -3,22 +3,10 @@
 import { ButtonField } from "@/components";
 import { Button } from "@/components/button/button";
 import { cn } from "@/utils/cn";
-import { Loader2, LucideIcon, Save } from "lucide-react";
+import { Loader2, Save } from "lucide-react";
 import React from "react";
+import { ICustomButtonActions } from "./type";
 
-interface ICustomButtonActions {
-  isLoading?: boolean;
-  isDisabled?: boolean;
-  hasChanges?: boolean;
-  cancelText?: string;
-  submitText?: string;
-  submitIcon?: LucideIcon;
-  onCancel: () => void;
-  onSubmit?: () => void; 
-  formId?: string;
-  className?: string;
-  containerClassName?: string;
-}
 
 export const CustomButtonActions: React.FC<ICustomButtonActions> = ({
   isLoading = false,

@@ -74,7 +74,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
   const imageUrl = getImageUrl(category);
 
   return (
-    <div className="fixed inset-0 z-[150] flex justify-end">
+    <div className="fixed inset-0 z-150 flex justify-end">
       {/* Backdrop Layer */}
       <div
         className="absolute inset-0 bg-gray-900/60 backdrop-blur-md animate-in fade-in duration-300"
