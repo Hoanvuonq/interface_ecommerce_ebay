@@ -1,25 +1,25 @@
-import { CheckCircle2, CreditCard, MapPin, ShoppingCart } from "lucide-react";
+import { CheckCircle2, CreditCard, MapPin, ShoppingCart, Truck } from "lucide-react";
 
 
 export const ISteps = [
   {
     id: 0,
-    title: "Giỏ hàng",
+    title: "Giỏ Hàng",
     icon: ShoppingCart,
   },
   {
     id: 1,
-    title: "Giao hàng",
-    icon: MapPin,
-  },
-  {
-    id: 2,
-    title: "Thanh toán",
+    title: "Thanh Toán",
     icon: CreditCard,
   },
   {
+    id: 2,
+    title: "Giao Hàng",
+    icon: Truck,
+  },
+  {
     id: 3,
-    title: "Hoàn tất",
+    title: "Hoàn Tất",
     icon: CheckCircle2,
   },
 ];

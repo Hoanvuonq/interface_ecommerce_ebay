@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 import AddressModal from "../_components/AddressModal";
 import { CheckoutShippingAddress } from "../_components/CheckoutShippingAddress";
 import { CheckoutShopList } from "../_components/CheckoutShopList";
-import CheckoutStepper from "../_components/CheckoutStepper";
+import {CheckoutStepper} from "../_components/CheckoutStepper";
 import { NoteSection } from "../_components/NoteSection";
 import { OrderSuccessModal } from "../_components/OrderSuccessModal";
 import { OrderSummary } from "../_components/OrderSummary";

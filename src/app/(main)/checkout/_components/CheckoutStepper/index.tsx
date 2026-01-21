@@ -1,16 +1,18 @@
 import React from "react";
 import { ISteps } from "../../_types/stepper";
+import { cn } from "@/utils/cn";
 
 interface CheckoutStepperProps {
   currentStep: number;
 }
 
-const CheckoutStepper: React.FC<CheckoutStepperProps> = ({ currentStep }) => {
+export const CheckoutStepper: React.FC<CheckoutStepperProps> = ({
+  currentStep,
+}) => {
   return (
     <div className="w-full bg-white rounded-2xl border border-gray-100 py-4 px-6 shadow-sm">
       <div className="flex items-center justify-between w-full relative">
         {ISteps.map((step, index) => {
-          // Logic trạng thái
           const isCompleted = currentStep > index;
           const isActive = currentStep === index;
           const isPending = currentStep < index;
@@ -18,16 +20,15 @@ const CheckoutStepper: React.FC<CheckoutStepperProps> = ({ currentStep }) => {
 
           return (
             <React.Fragment key={step.id}>
-              {/* Vòng tròn bước */}
               <div className="relative flex flex-col items-center z-10">
                 <div
                   className={`flex items-center justify-center w-10 h-10 rounded-full transition-all duration-500 border-2 
                     ${
                       isActive
-                        ? "bg-orange-500 border-gray-500 text-white shadow-lg shadow-orange-200 scale-110"
+                        ? "bg-orange-500 border-orange-200 text-white shadow-lg shadow-orange-200 scale-110"
                         : isCompleted
-                        ? "bg-white border-gray-500 text-orange-500"
-                        : "bg-white border-gray-200 text-gray-500"
+                          ? "bg-white border-orange-200 text-orange-500"
+                          : "bg-white border-gray-200 text-gray-500"
                     }
                   `}
                 >
@@ -40,17 +41,18 @@ const CheckoutStepper: React.FC<CheckoutStepperProps> = ({ currentStep }) => {
                   />
                 </div>
 
-                {/* Tiêu đề bước */}
                 <span
-                  className={`mt-2 text-[11px] font-bold uppercase tracking-tighter transition-all duration-500 absolute top-10 w-32 text-center
-                    ${
+                  className={cn(
+                    "mt-2 text-[11px] font-bold uppercase tracking-tighter transition-all duration-500 absolute top-10 w-32 text-center",
+                    `${
                       isActive
                         ? "text-orange-600 opacity-100 translate-y-0"
                         : isCompleted
-                        ? "text-orange-500 opacity-80"
-                        : "text-gray-500 opacity-50"
+                          ? "text-orange-500 opacity-80"
+                          : "text-gray-500 opacity-50"
                     }
-                  `}
+                  `,
+                  )}
                 >
                   {step.title}
                 </span>
@@ -83,5 +85,3 @@ const CheckoutStepper: React.FC<CheckoutStepperProps> = ({ currentStep }) => {
     </div>
   );
 };
-
-export default CheckoutStepper;

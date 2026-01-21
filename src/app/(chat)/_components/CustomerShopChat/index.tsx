@@ -195,10 +195,12 @@ export const CustomerShopChat: React.FC<CustomerShopChatProps> = ({
                     currentUsername={getStoredUserDetail()?.username}
                   />
 
-                  {/* Pickers trượt từ phải ra bằng ChatSideModal logic */}
                   <OrderPicker
                     isVisible={store.showOrderPicker}
-                    orders={chatLogic.orders}
+                    orders={chatLogic.orders.map((order) => ({
+                      ...order,
+                      grandTotal: order.grandTotal ?? 0,
+                    }))}
                     isLoading={chatLogic.loadingOrders}
                     searchText={store.orderSearchText}
                     onSearchChange={(val) =>
@@ -300,7 +302,6 @@ export const CustomerShopChat: React.FC<CustomerShopChatProps> = ({
         </div>
       </div>
 
-      {/* Delete Confirmation Portal */}
       <PortalModal
         isOpen={!!deleteConfirmMsg}
         onClose={() => setDeleteConfirmMsg(null)}
