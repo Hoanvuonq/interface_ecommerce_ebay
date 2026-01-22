@@ -208,7 +208,6 @@ const ProductPromotionList: React.FC<ProductPromotionListProps> = ({ onCountUpda
         </div>
       </div>
 
-      {/* Main Table with DataTable Component */}
       <DataTable
         data={filteredData}
         columns={columns}

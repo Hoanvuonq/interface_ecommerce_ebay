@@ -2,8 +2,7 @@
 
 import { cn } from "@/utils/cn";
 import { Clock, Filter, Package, ShoppingBag, Truck } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
-import dayjs from "dayjs";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import {
   FilterCounts,
@@ -16,15 +15,14 @@ import {
 } from "../../../vouchers/_hooks/useShopOrder";
 import { CARRIER_OPTIONS } from "../_constants/carrier.option.constants";
 
-import { DataTable, Checkbox } from "@/components";
-import { Column } from "@/components/DataTable/type";
+import { DataTable } from "@/components";
 import { useToast } from "@/hooks/useToast";
 import {
   StatusTabItem,
   StatusTabs,
 } from "../../../_components/Products/StatusTabs";
 import { HandoverSidebar } from "../_components/HandoverSidebar";
-
+import { getHandoverColumns } from "../_constants/column.oders.handover";
 export const HandoverScreen = () => {
   const {
     success: toastSuccess,
@@ -34,8 +32,7 @@ export const HandoverScreen = () => {
 
   const [orders, setOrders] = useState<ShopOrderResponse[]>([]);
   const [filterCounts, setFilterCounts] = useState<FilterCounts | null>(null);
-
-  // Quản lý các đơn hàng được chọn
+  const isFetching = useRef(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
 
   const [carrierFilter, setCarrierFilter] = useState<string>("ALL");
@@ -51,6 +48,10 @@ export const HandoverScreen = () => {
     useBulkReadyForPickup();
 
   const fetchOrders = async () => {
+  if (isFetching.current) return; 
+  isFetching.current = true;
+  
+  try {
     const params: any = {};
     if (carrierFilter !== "ALL") params.carrier = carrierFilter;
     if (deadlineFilter !== "ALL") params.deadline = deadlineFilter;
@@ -60,11 +61,15 @@ export const HandoverScreen = () => {
       page,
       size: 10,
     });
+    
     if (res?.success && res.data) {
       setOrders(res.data.orders || []);
       setFilterCounts(res.data.filterCounts || null);
     }
-  };
+  } finally {
+    isFetching.current = false;
+  }
+};
 
   useEffect(() => {
     fetchOrders();
@@ -145,102 +150,16 @@ export const HandoverScreen = () => {
       count: filterCounts?.over24h,
     },
   ];
-
-  const columns: Column<ShopOrderResponse>[] = [
-    {
-      header: (
-        <Checkbox
-          checked={isAllSelected}
-          onChange={handleSelectAll}
-          containerClassName="justify-center"
-        />
-      ),
-      render: (record) => (
-        <Checkbox
-          checked={selectedRowKeys.includes(record.orderId)}
-          onChange={() => handleSelectRow(record.orderId)}
-          disabled={record.status !== OrderStatus.FULFILLING}
-          containerClassName="justify-center"
-        />
-      ),
-      className: "w-10",
-      align: "center",
-    },
-    {
-      header: "Sản phẩm",
-      render: (record) => (
-        <div className="flex flex-col">
-          <span className="font-bold text-gray-800 line-clamp-1 italic text-[13px]">
-            {record.items?.[0]?.productName || "—"}
-          </span>
-          {record.items && record.items.length > 1 && (
-            <span className="text-[10px] text-orange-500 font-bold uppercase tracking-tighter">
-              +{record.items.length - 1} sản phẩm khác
-            </span>
-          )}
-        </div>
-      ),
-    },
-    {
-      header: "Mã đơn hàng",
-      render: (record) => (
-        <span className="bg-gray-100 px-2 py-1 rounded text-[11px] font-mono font-bold text-gray-600 border border-gray-200">
-          #{record.orderNumber}
-        </span>
-      ),
-    },
-    {
-      header: "Người mua",
-      render: (record) => (
-        <div className="flex flex-col">
-          <span className="text-gray-700 font-bold">
-            {record.recipientName || "—"}
-          </span>
-          <span className="text-[11px] text-gray-400">
-            {record.phoneNumber}
-          </span>
-        </div>
-      ),
-    },
-    {
-      header: "Vận chuyển",
-      render: (record) => {
-        const cfg = CARRIER_OPTIONS.find((c) => c.code === record.carrier);
-        return (
-          <span
-            className={cn(
-              "px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border",
-              cfg
-                ? "bg-blue-50 border-blue-200 text-blue-600"
-                : "bg-gray-50 border-gray-200 text-gray-400",
-            )}
-          >
-            {cfg?.label || record.carrier || "Chưa gán"}
-          </span>
-        );
-      },
-    },
-    {
-      header: "Trạng thái",
-      render: (record) => (
-        <div className="flex items-center gap-1.5">
-          <span
-            className={cn(
-              "w-2 h-2 rounded-full",
-              record.status === OrderStatus.FULFILLING
-                ? "bg-orange-400 animate-pulse"
-                : "bg-purple-500",
-            )}
-          />
-          <span className="text-[12px] font-bold text-gray-600 uppercase">
-            {record.status === OrderStatus.FULFILLING
-              ? "Đang chuẩn bị"
-              : "Chờ lấy hàng"}
-          </span>
-        </div>
-      ),
-    },
-  ];
+  const columns = useMemo(
+    () =>
+      getHandoverColumns({
+        selectedRowKeys,
+        handleSelectAll,
+        handleSelectRow,
+        isAllSelected,
+      }),
+    [selectedRowKeys, isAllSelected],
+  );
 
   return (
     <div className="min-h-screen p-4 md:p-8 space-y-10 animate-in fade-in duration-700">
@@ -273,7 +192,7 @@ export const HandoverScreen = () => {
               <button
                 onClick={() => setCarrierFilter("ALL")}
                 className={cn(
-                  "px-4 py-1.5 rounded-xl text-[11px] font-bold uppercase transition-all",
+                  "px-4 py-2 rounded-xl text-[11px] font-bold uppercase transition-all",
                   carrierFilter === "ALL"
                     ? "bg-gray-900 text-white"
                     : "bg-gray-50 text-gray-400 hover:bg-gray-100",
@@ -286,7 +205,7 @@ export const HandoverScreen = () => {
                   key={c.code}
                   onClick={() => setCarrierFilter(c.code)}
                   className={cn(
-                    "px-4 py-1.5 rounded-xl text-[11px] font-bold uppercase transition-all border",
+                    "px-4 py-1.5 rounded-xl text-[12px] font-bold uppercase transition-all border",
                     carrierFilter === c.code
                       ? "border-orange-500 bg-orange-50 text-orange-600 shadow-sm"
                       : "border-gray-100 bg-white text-gray-400 hover:border-gray-300",

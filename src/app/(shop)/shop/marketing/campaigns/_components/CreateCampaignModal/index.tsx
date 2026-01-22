@@ -19,6 +19,7 @@ import {
 import { cn } from "@/utils/cn";
 import { ICreateCampaignModal } from "./type";
 import { IStepInfo } from "./type";
+import { getProductSelectionColumns } from "./column.product.selection";
 import { CreateCampignStepInfo } from "../CreateCampignStepInfo";
 
 export const CreateCampaignModal: React.FC<ICreateCampaignModal> = ({
@@ -303,7 +304,6 @@ export const CreateCampaignModal: React.FC<ICreateCampaignModal> = ({
       <div className="min-h-112.5">
         {step === "INFO" && <CreateCampignStepInfo form={form} setForm={setForm} />}
 
-        {/* STEP 2: PRODUCTS */}
         {step === "PRODUCTS" && (
           <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
             <div className="flex items-center justify-between bg-white p-4 rounded-2xl border border-slate-200">
