@@ -13,13 +13,13 @@ import { VoucherModalContent } from "../voucherModalContent";
 
 export const VoucherModal: React.FC<VoucherModalProps> = (props) => {
   const { open, onClose, title, shopName, isPlatform, shopId } = props;
-  const { preview, updateShopVouchers, request } = useCheckoutStore();
+  const { preview, updateShopVouchers, request, setRequest } = useCheckoutStore();
   const { syncPreview } = useCheckoutActions();
   const { state, actions } = useVoucherModalLogic({
     ...props,
     previewData: preview,
   });
- const handleConfirmVouchers = async () => {
+  const handleConfirmVouchers = async () => {
   if (!request) return;
 
   const orderCode = state.selectedOrderVoucherId;
@@ -49,10 +49,17 @@ export const VoucherModal: React.FC<VoucherModalProps> = (props) => {
        updatedRequest.shops[shopIndex].vouchers = shopOnlyVouchers;
        updatedRequest.shops[shopIndex].globalVouchers = platformVouchersForShop;
     }
-  }
+    }
 
-  onClose();
-  await syncPreview(updatedRequest);
+    // Optimistically update local request so UI reflects selection immediately
+    try {
+      setRequest(updatedRequest);
+    } catch (e) {
+      // ignore
+    }
+
+    onClose();
+    await syncPreview(updatedRequest);
 };
   return (
     <PortalModal

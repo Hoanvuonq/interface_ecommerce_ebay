@@ -1,15 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { isAuthenticated as checkAuth } from "@/utils/local.storage";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/useToast";
 
 
 export const isAuthenticated = (): boolean => {
   return checkAuth();
 };
-
-/**
- * Check if user is authenticated, show message and redirect if not
- */
+const toast = useToast();
 export const requireAuthentication = (
   redirectUrl: string = "/cart"
 ): boolean => {
@@ -28,18 +25,10 @@ export const requireAuthentication = (
   return true;
 };
 
-/**
- * Get user token - DEPRECATED: Tokens được lưu trong HttpOnly cookies
- * ✅ Backend tự đọc từ cookies, frontend không cần token
- */
 export const getAuthToken = (): string | null => {
-  // ✅ Tokens được lưu trong HttpOnly cookies, không thể đọc từ JavaScript
   return null;
 };
 
-/**
- * Check if error is authentication error
- */
 export const isAuthError = (error: any): boolean => {
   return (
     error?.response?.status === 401 ||
