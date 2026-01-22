@@ -210,7 +210,7 @@ export async function getAllShopAddresses(
   shopId: string,
 ): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
-    url: `/${API_GETSHOP}/${shopId}/address`,
+    url: `/${API_GETSHOP}/me/address`,
     method: "GET",
     headers: {
       "Content-Type": "application/json",

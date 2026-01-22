@@ -386,7 +386,7 @@ export const CreateCampaignModal: React.FC<ICreateCampaignModal> = ({
                     Quy mô biến thể
                   </p>
                   <div className="flex items-baseline gap-2">
-                    <span className="text-5xl font-black text-orange-500 tracking-tighter leading-none">
+                    <span className="text-5xl font-bold text-orange-500 tracking-tighter leading-none">
                       {
                         Object.values(selectedVariants).filter(
                           (v: any) => v.selected,

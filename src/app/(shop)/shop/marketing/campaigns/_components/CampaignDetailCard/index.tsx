@@ -40,7 +40,7 @@ export const CampaignDetailCard: React.FC<CampaignDetailCardProps> = ({
         <div className="absolute inset-0 bg-linear-to-t from-slate-900/90 via-slate-900/30 to-transparent" />
         <div className="absolute bottom-8 left-8 right-8 text-white">
           <div className="flex items-center gap-2 mb-2">
-            <span className="bg-orange-500 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest shadow-lg shadow-orange-500/30">
+            <span className="bg-orange-500 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-lg shadow-orange-500/30">
               Live Campaign
             </span>
           </div>
@@ -71,7 +71,7 @@ export const CampaignDetailCard: React.FC<CampaignDetailCardProps> = ({
             {selectedCampaignProducts.length === 0 ? (
               <div className="text-center py-20 bg-slate-50/50 rounded-4xl border-2 border-dashed border-slate-200">
                 <Package className="w-12 h-12 mx-auto mb-4 text-slate-300" />
-                <p className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">
+                <p className="text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em]">
                   Chưa có sản phẩm được kích hoạt
                 </p>
               </div>
@@ -101,7 +101,7 @@ export const CampaignDetailCard: React.FC<CampaignDetailCardProps> = ({
                         {prod.productName}
                       </h4>
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-[15px] font-black text-orange-500 italic">
+                        <span className="text-[15px] font-bold text-orange-500 italic">
                           {formatPrice(prod.salePrice)}
                         </span>
                         <span className="text-[9px] font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-lg border border-slate-100 uppercase">
@@ -161,7 +161,7 @@ export const CampaignDetailCard: React.FC<CampaignDetailCardProps> = ({
                   <div className="flex items-center justify-between mb-4">
                     <span
                       className={cn(
-                        "px-3 py-1 text-[9px] font-black rounded-lg uppercase tracking-widest transition-colors",
+                        "px-3 py-1 text-[9px] font-bold rounded-lg uppercase tracking-widest transition-colors",
                         slot.status === "ACTIVE"
                           ? "bg-orange-500 text-white shadow-md shadow-orange-500/20"
                           : "bg-slate-100 text-slate-500",
@@ -170,7 +170,7 @@ export const CampaignDetailCard: React.FC<CampaignDetailCardProps> = ({
                       {slot.status}
                     </span>
                     {slot.isFullyBooked && (
-                      <span className="text-[9px] font-black text-red-500 uppercase italic">
+                      <span className="text-[9px] font-bold text-red-500 uppercase italic">
                         FULL SLOTS
                       </span>
                     )}
@@ -198,7 +198,7 @@ export const CampaignDetailCard: React.FC<CampaignDetailCardProps> = ({
                       <span className="text-[9px] font-bold text-slate-400 uppercase mb-1">
                         Dung lượng
                       </span>
-                      <span className="text-xs font-black text-slate-700 uppercase">
+                      <span className="text-xs font-bold text-slate-700 uppercase">
                         {slot.approvedProducts}
                         <span className="text-slate-300 mx-1">/</span>
                         {slot.maxProducts}{" "}

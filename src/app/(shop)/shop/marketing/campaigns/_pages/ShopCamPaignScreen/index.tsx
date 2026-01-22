@@ -56,7 +56,7 @@ export const ShopCamPaignScreen = () => {
   const campaignRenderTabs: StatusTabItem<CampaignTabs>[] = [
     { key: "participate-campaign", label: "Tham gia Campaign", icon: Plus },
     { key: "register-campaign", label: "Đăng ký của tôi", icon: Package },
-    { key: "discount-campaign", label: "Giảm giá tại cửa hàng", icon: Tag },
+    { key: "discount-campaign", label: "Tạo giảm giá tại cửa hàng", icon: Tag },
   ];
   const pageMeta = useMemo(() => {
     const metas: Record<CampaignTabs, { title: string; desc: string }> = {

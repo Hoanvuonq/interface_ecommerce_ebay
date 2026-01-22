@@ -71,7 +71,7 @@ export const ParticipateCampaignScreen = ({
             <div className="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500 ring-8 ring-slate-50/50">
               <Package className="w-10 h-10 text-slate-200" />
             </div>
-            <p className="text-xl font-black text-slate-800 uppercase italic tracking-tighter mb-2">
+            <p className="text-xl font-bold text-slate-800 uppercase italic tracking-tighter mb-2">
               Khám phá Campaign
             </p>
             <p className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em]">

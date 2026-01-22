@@ -1,69 +1,83 @@
-export { OrderStatus, ORDER_STATUS_TEXT } from "@/types/orders/order.dto";
-export type {
-  OrderResponse,
-  OrderItemResponse,
-  OrderListResponse,
-} from "@/types/orders/order.dto";
-import type { OrderResponse } from "@/types/orders/order.types";
+// ==================== SHOP ORDER RESPONSE DTOs ====================
+// These DTOs match backend ShopOrderResponse (different from OrderResponse)
+// ShopOrderResponse excludes: shopInfo, paymentUrl, paymentIntentId, paymentGroupId, expiresAt
+// ShopOrderResponse includes: internalNote
 
-// Pricing structure from API response
-export interface ShopOrderPricingResponse {
-  subtotal: number;
-  shopDiscount: number;
-  platformDiscount: number;
-  shippingDiscount: number;
-  originalShippingFee: number;
-  appliedVoucherCodes?: string | null;
-  totalDiscount: number;
-  taxAmount: number;
-  shippingFee: number;
-  grandTotal: number;
-}
-
-// Payment structure from API response
-export interface ShopOrderPaymentResponse {
-  method: string;
-}
-
-// Shipment structure from API response
-export interface ShopOrderShipmentResponse {
-  trackingNumber?: string | null;
-  carrier?: string;
-}
-
+/**
+ * Order item response for Shop (same structure as buyer, without reviewed field)
+ */
 export interface ShopOrderItemResponse {
   itemId: string;
   productId: string;
   variantId: string;
   sku: string;
   productName: string;
-  imageBasePath?: string | null;
-  imageExtension?: string | null;
-  variantAttributes?: string | null;
+  imageBasePath?: string;
+  imageExtension?: string;
+  variantAttributes?: string;
   unitPrice: number;
   quantity: number;
   discountAmount: number;
   lineTotal: number;
+  fulfillmentStatus?: string;
 }
 
-
+/**
+ * Shop Order Response - matches backend ShopOrderResponse
+ * Key differences from OrderResponse:
+ * - NO shopInfo (Shop already knows who they are)
+ * - NO paymentUrl, paymentIntentId, paymentGroupId, expiresAt (Shop doesn't need payment links)
+ * - HAS internalNote (Shop's internal notes)
+ */
 export interface ShopOrderResponse {
+  // Core order info
   orderId: string;
   orderNumber: string;
   buyerId: string;
   status: string;
   currency: string;
-  pricing: ShopOrderPricingResponse;
+
+  // Pricing
+  subtotal: number;
+  shippingDiscount: number;
+  taxAmount: number;
+  shippingFee: number;
+  grandTotal: number;
+
+  // Quantities
   itemCount: number;
   totalQuantity: number;
-  customerNote?: string | null;
-  internalNote?: string | null;
-  cancellationReason?: string | null;
+
+  // Notes
+  customerNote?: string;
+  internalNote?: string; // Shop can add internal notes
+  cancellationReason?: string;
+
+  // Timestamps
   createdAt: string;
+
+  // Items
   items: ShopOrderItemResponse[];
-  payment: ShopOrderPaymentResponse;
-  shipment: ShopOrderShipmentResponse;
-  shippingAddress?: any | null;
+
+  // Payment (minimal for Shop)
+  paymentMethod: string;
+
+  // Shipping/Tracking
+  trackingNumber?: string;
+  carrier?: string;
+  conkinBillId?: string;
+  conkinShippingCost?: number;
+
+  // Buyer shipping address (CRITICAL for Shop to ship)
+  recipientName?: string;
+  phoneNumber?: string;
+  addressLine1?: string;
+  addressLine2?: string;
+  city?: string;
+  province?: string;
+  postalCode?: string;
+  country?: string;
+  email?: string;
 }
 
 /**
@@ -75,23 +89,8 @@ export interface ShopOrderListResponse {
   size: number;
   totalElements: number;
   totalPages: number;
-  hasNext: boolean;
-  hasPrevious: boolean;
-  previousPage: number;
-  nextPage: number;
-  empty: boolean;
-  first: boolean;
   last: boolean;
-}
-
-/**
- * Full API Response wrapper
- */
-export interface ShopOrderApiResponse {
-  code: number;
-  success: boolean;
-  message: string;
-  data: ShopOrderListResponse;
+  first: boolean;
 }
 
 /**
@@ -115,6 +114,16 @@ export interface ShopOrderStatisticsResponse {
 
 // ==================== RE-EXPORT từ Manager ====================
 // Keeping for backward compatibility with existing code
+export {
+  OrderStatus,
+  ORDER_STATUS_TEXT,
+}  from "@/types/orders/order.dto";
+export type {
+  OrderResponse,
+  OrderItemResponse,
+  OrderListResponse,
+}  from "@/types/orders/order.dto";
+import type { OrderResponse } from "@/types/orders/order.dto";
 
 // ==================== SHOP-SPECIFIC REQUEST DTOs ====================
 

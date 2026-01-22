@@ -40,7 +40,7 @@ export const SettingsAutoMessage = ({ onSave }: ShopChatSettingsProps) => {
     if (res?.success && res?.data) {
       const data: ShopChatSettingsResponse = res.data;
       setActiveStandard(data.isAutoReplyEnabled);
-      setTextStandard(data.autoReplyMessage || "");
+      setTextStandard(data.welcomeMessage || "");
 
       setActiveOffTime(data.isOfflineMessageEnabled);
       setTextOffTime(data.offlineMessage || "");
@@ -65,7 +65,7 @@ export const SettingsAutoMessage = ({ onSave }: ShopChatSettingsProps) => {
     try {
       const payload: UpdateShopChatSettingsRequest = {
         isAutoReplyEnabled: activeStandard,
-        autoReplyMessage: type === "STANDARD" ? newText : textStandard,
+        welcomeMessage: type === "STANDARD" ? newText : textStandard,
 
         isOfflineMessageEnabled: activeOffTime,
         offlineMessage: type === "OFFTIME" ? newText : textOffTime,

@@ -84,11 +84,11 @@ export const BrandCard = ({
           />
 
           <div className="absolute top-3 left-3 z-10 flex flex-col gap-1.5">
-            <div className="bg-slate-900/90 backdrop-blur-md text-white text-[8px] font-black px-2 py-1 rounded-full flex items-center gap-1 uppercase tracking-widest border border-white/20 shadow-lg italic">
+            <div className="bg-slate-900/90 backdrop-blur-md text-white text-[8px] font-bold px-2 py-1 rounded-full flex items-center gap-1 uppercase tracking-widest border border-white/20 shadow-lg italic">
               <Sparkles size={10} className="text-yellow-400" /> Mall
             </div>
             {discountPercent > 0 && (
-              <div className="bg-red-500 text-white text-[9px] font-black px-2 py-0.5 rounded-lg shadow-lg italic">
+              <div className="bg-red-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-lg shadow-lg italic">
                 -{discountPercent}%
               </div>
             )}
@@ -102,7 +102,7 @@ export const BrandCard = ({
             <button
               onClick={handleAddToCart}
               disabled={addingToCart}
-              className="w-full bg-white/90 backdrop-blur-md py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-2xl transition-all flex items-center justify-center gap-2 hover:bg-orange-500 hover:text-white active:scale-95 disabled:opacity-50"
+              className="w-full bg-white/90 backdrop-blur-md py-2.5 rounded-2xl text-[10px] font-bold uppercase tracking-widest shadow-2xl transition-all flex items-center justify-center gap-2 hover:bg-orange-500 hover:text-white active:scale-95 disabled:opacity-50"
             >
               {addingToCart ? <div className="size-3 border-2 border-slate-400 border-t-transparent rounded-full animate-spin" /> : <ShoppingBag size={14} strokeWidth={2.5} />}
               Thêm vào giỏ hàng
@@ -122,7 +122,7 @@ export const BrandCard = ({
 
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-slate-700 dark:text-white font-black text-md tabular-nums tracking-tighter">
+              <span className="text-slate-700 dark:text-white font-bold text-md tabular-nums tracking-tighter">
                 {formatPrice(displayPrice)}
               </span>
               {discountPercent > 0 && (
@@ -135,7 +135,7 @@ export const BrandCard = ({
             {/* <div className="flex items-center gap-2 pt-2 border-t border-slate-50 dark:border-slate-800">
                <div className="flex items-center gap-0.5 px-1.5 py-0.5 bg-orange-50 dark:bg-orange-500/10 rounded-md">
                 <Star size={10} className="text-orange-500 fill-orange-500" />
-                <span className="text-[9px] font-black text-orange-700 dark:text-orange-400 italic">
+                <span className="text-[9px] font-bold text-orange-700 dark:text-orange-400 italic">
                   {product.reviewStatistics?.averageRating?.toFixed(1) || "5.0"}
                 </span>
               </div>

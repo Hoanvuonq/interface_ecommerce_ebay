@@ -118,7 +118,7 @@ export default function ShopOrderTable() {
   );
 
   return (
-    <div className="min-h-screen p-4 md:p-8 space-y-10 animate-in fade-in duration-700 bg-[#FDFBFB]">
+    <div className="min-h-screen p-4 md:p-8 space-y-10 animate-in fade-in duration-700 ">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div className="space-y-2">
@@ -138,7 +138,6 @@ export default function ShopOrderTable() {
         </div>
       </div>
 
-      {/* KPI Section */}
       <div className="grid grid-cols-12 gap-6">
         {[
           {
@@ -179,14 +178,14 @@ export default function ShopOrderTable() {
       </div>
 
       {/* Main Content Area */}
-      <div className="space-y-8">
+      <div className="space-y-4">
         <StatusTabs
           tabs={orderTabsExtended}
           current={state.activeTab}
           onChange={(key) => actions.setActiveTab(key)}
         />
 
-        <div className="bg-white rounded-[2.5rem] border border-orange-50 shadow-custom-lg overflow-hidden p-2">
+        <div className=" rounded-[2.5rem] border border-orange-50 shadow-custom-lg overflow-hidden p-2">
           <DataTable
             columns={columns}
             data={state.orders}
@@ -195,7 +194,6 @@ export default function ShopOrderTable() {
             page={state.pagination.current - 1} // Trang 0-based
             size={state.pagination.pageSize}
             onPageChange={(p) => {
-              // Chỉ gọi refreshData khi user thực sự click thay đổi trang
               if (lastPageRef.current !== p) {
                 lastPageRef.current = p;
                 const newPage = p + 1; // Convert về 1-based

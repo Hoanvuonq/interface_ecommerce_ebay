@@ -24,11 +24,11 @@ export const CampaignInfoBanner: React.FC = () => {
           sẽ được khóa số lượng tồn kho để đảm bảo quyền lợi người mua.
         </p>
         <div className="flex flex-wrap gap-4 mt-5">
-          <div className="flex items-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-widest bg-white/5 px-3 py-1.5 rounded-full border border-white/10">
+          <div className="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-white/5 px-3 py-1.5 rounded-full border border-white/10">
             <div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
             Chờ duyệt: Có thể hủy
           </div>
-          <div className="flex items-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-widest bg-white/5 px-3 py-1.5 rounded-full border border-white/10">
+          <div className="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-white/5 px-3 py-1.5 rounded-full border border-white/10">
             <div className="w-2 h-2 rounded-full bg-emerald-500" /> Đã duyệt:
             Khóa dữ liệu
           </div>

@@ -486,6 +486,7 @@ export interface ShopChatSettingsResponse {
   workingDays: string;
   autoReplyMessage: string;
   offlineMessage: string;
+  welcomeMessage: string;
   createdDate: string;
   lastModifiedDate: string;
 }
@@ -498,6 +499,7 @@ export interface UpdateShopChatSettingsRequest {
   workingDays?: string;
   autoReplyMessage?: string;
   offlineMessage?: string;
+   welcomeMessage?: string;
 }
 
 // ==================== ADMIN STATISTICS DTOs ====================

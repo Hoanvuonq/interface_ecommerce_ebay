@@ -107,7 +107,7 @@ export const ProductPreviewSidebar: React.FC<ProductPreviewSidebarProps> = ({
     >
       <div className="px-5 py-4 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
         <h3 className="text-sm font-bold text-gray-800 flex items-center gap-2 uppercase italic tracking-tighter">
-          <ImageIcon size={18} className="text-orange-500" />  Xem trước sản phẩm
+          <ImageIcon size={18} className="text-orange-500" /> Xem trước sản phẩm
         </h3>
         {mediaItems.length > 0 && (
           <span className="text-[10px] font-bold text-orange-500 bg-orange-50 px-2 py-0.5 rounded-lg border border-orange-100">
@@ -165,12 +165,14 @@ export const ProductPreviewSidebar: React.FC<ProductPreviewSidebarProps> = ({
           {mediaItems.length > 1 && (
             <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-between px-3 z-10 pointer-events-none">
               <button
+                type="button"
                 onClick={prevSlide}
                 className="p-2 rounded-full bg-white/90 shadow-lg pointer-events-auto hover:bg-orange-500 hover:text-white transition-all"
               >
                 <ChevronLeft size={18} />
               </button>
               <button
+                type="button"
                 onClick={nextSlide}
                 className="p-2 rounded-full bg-white/90 shadow-lg pointer-events-auto hover:bg-orange-500 hover:text-white transition-all"
               >
@@ -228,7 +230,7 @@ export const ProductPreviewSidebar: React.FC<ProductPreviewSidebarProps> = ({
                 ))}
                 {variants.length > 6 && (
                   <span className="text-[12px] font-bold text-(--color-mainColor)">
-                    +{variants.length - 6} 
+                    +{variants.length - 6}
                   </span>
                 )}
               </div>

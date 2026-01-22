@@ -63,6 +63,11 @@ export const SHOP_SIDEBAR_ITEMS = [
         href: "/shop/orders/handover",
       },
       {
+        key: "orders-returns",
+        label: "Trả hàng / Hoàn tiền / Hủy đơn",
+        href: "/shop/orders/returns",
+      },
+      {
         key: "orders-address",
         label: "Cài đặt vận chuyển",
         href: "/shop/orders/address",
@@ -194,6 +199,7 @@ export const SHOP_ROUTE_MAPPINGS = [
   { prefix: "/shop/products/add", key: "add-product", parent: "products" },
   { prefix: "/shop/products", key: "list-products", parent: "products" },
   { prefix: "/shop/orders/handover", key: "orders-handover", parent: "orders" },
+  { prefix: "/shop/orders/returns", key: "orders-returns", parent: "orders" },
   { prefix: "/shop/orders/address", key: "orders-address", parent: "orders" },
   { prefix: "/shop/finance/wallet", key: "finance-wallet", parent: "finance" },
   { prefix: "/shop/orders", key: "orders-all", parent: "orders" },

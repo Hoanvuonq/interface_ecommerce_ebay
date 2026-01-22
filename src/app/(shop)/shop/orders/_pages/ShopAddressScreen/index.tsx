@@ -1,6 +1,6 @@
 "use client";
 
-import { ShopAddressForm } from "../../_components/ShopAddressForm";
+import { ShopAddressForm } from "../../address/_components/ShopAddressForm";
 
 export default function ShopAddressScreen() {
   return <ShopAddressForm />;

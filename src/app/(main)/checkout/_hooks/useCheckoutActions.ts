@@ -13,33 +13,25 @@ export const useCheckoutActions = () => {
   const { success: toastSuccess, error: toastError } = useToast();
   const { request, preview, savedAddresses, setPreview, setRequest, setLoading } = useCheckoutStore();
 
-  // track latest client request id to avoid applying stale preview responses
   const lastRequestIdRef = useRef<number | null>(null);
 
   const previewMutation = useMutation({
-    // Accept either the raw updatedRequest or an object { payload, _clientRequestId }
     mutationFn: async (params: any) => {
       const updatedRequest = params?.payload ?? params;
       const finalPayload = preparePreviewPayload(updatedRequest);
       try {
-        // Temporary debug log to inspect what's sent to preview API
-        // stringify separately to avoid circular refs when logging complex objects
         const reqStr = JSON.stringify(updatedRequest);
         const payloadStr = JSON.stringify(finalPayload);
-        // eslint-disable-next-line no-console
         console.debug("SYNC_PREVIEW_DEBUG", { updatedRequest: reqStr, finalPayload: payloadStr });
       } catch (e) {
-        // ignore stringify errors
       }
       return await dispatch(checkoutPreviewAction({ ...finalPayload, promotion: finalPayload.promotion || [] })).unwrap();
     },
     onMutate: () => setLoading(true),
     
     onSuccess: (result: any, variables: any) => {
-      // If this response is from an older request id, ignore it
       const respId = variables?._clientRequestId;
       if (respId && lastRequestIdRef.current && respId !== lastRequestIdRef.current) {
-        // eslint-disable-next-line no-console
         console.debug("IGNORED_STALE_PREVIEW", { respId, last: lastRequestIdRef.current });
         setLoading(false);
         return;

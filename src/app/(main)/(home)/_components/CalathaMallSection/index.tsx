@@ -2,42 +2,13 @@
 
 import { SectionLoading } from "@/components";
 import { SectionSreen } from "@/features/SectionSreen";
-import { cn } from "@/utils/cn";
-import {
-  resolveMediaUrl as resolveMediaUrlHelper,
-  resolveVariantImageUrl as resolveVariantImageUrlHelper,
-} from "@/utils/products/media.helpers";
 import { motion } from "framer-motion";
-import {
-  ArrowRight,
-  ChevronRight,
-  Heart,
-  RotateCcw,
-  ShieldCheck,
-  Truck,
-} from "lucide-react";
+import { ArrowRight, RotateCcw, ShieldCheck, Truck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo } from "react";
 import { useHomepageContext } from "../../_context/HomepageContext";
 import { BrandCard } from "../BranCard";
-
-const getProductImageUrl = (product: any) => {
-  const media = product?.media || [];
-  if (Array.isArray(media) && media.length > 0) {
-    const image =
-      media.find((m: any) => m.isPrimary && m.type === "IMAGE") || media[0];
-    return resolveMediaUrlHelper(image, "_medium");
-  }
-  const variants = product?.variants || [];
-  if (Array.isArray(variants) && variants.length > 0) {
-    const withImage = variants.find(
-      (v: any) => v?.imageUrl || v?.imageBasePath,
-    );
-    return resolveVariantImageUrlHelper(withImage, "_medium");
-  }
-  return "/placeholder.png";
-};
 
 export const CalathaMallSection = () => {
   const { flashSale, saleProducts, isLoading, isInitialLoading, wishlistMap } =
@@ -48,10 +19,12 @@ export const CalathaMallSection = () => {
       Array.isArray(flashSale) && flashSale.length > 0
         ? flashSale
         : saleProducts;
+
     const finalArray = Array.isArray(rawList)
       ? rawList
       : rawList?.content || [];
-    return finalArray.slice(0, 8);
+
+    return finalArray.slice(0, 7);
   }, [flashSale, saleProducts]);
 
   if (isLoading || isInitialLoading) return <SectionLoading />;
@@ -135,7 +108,8 @@ export const CalathaMallSection = () => {
           </div>
         </motion.div>
 
-        <div className="lg:col-span-8 columns-2 overflow-x-auto scrollbar-none snap-x snap-mandatory flex lg:grid lg:grid-cols-4 gap-4 pb-4">
+        {/* Grid Sản phẩm - lg:col-span-8 */}
+        <div className="lg:col-span-8 overflow-x-auto scrollbar-none snap-x snap-mandatory flex lg:grid lg:grid-cols-4 gap-4 pb-4">
           {displayProducts.map((product: any, idx: number) => (
             <div
               key={product.id || idx}
@@ -149,24 +123,11 @@ export const CalathaMallSection = () => {
               />
             </div>
           ))}
-          {displayProducts.map((product: any, idx: number) => (
-            <div
-              key={product.id || idx}
-              className="min-w-45 sm:min-w-55 lg:min-w-0 snap-start shrink-0"
-            >
-              <BrandCard
-                product={product}
-                isWishlisted={
-                  wishlistMap.get(product.variants?.[0]?.id || "") || false
-                }
-              />
-            </div>
-          ))}
-          
 
+          {/* Card thứ 8: Nút Khám phá thế giới Mall */}
           <Link
             href="/products"
-            className="min-w-45 h-80 lg:min-w-0 snap-start shrink-0 flex flex-col items-center justify-center bg-white/5 border border-dashed border-white/20 rounded-4xl hover:bg-white/10 transition-all group p-6"
+            className="min-w-45 h-auto min-h-80 lg:min-w-0 snap-start shrink-0 flex flex-col items-center justify-center bg-white/5 border border-dashed border-white/20 rounded-4xl hover:bg-white/10 transition-all group p-6"
           >
             <div className="w-14 h-14 rounded-3xl bg-yellow-600 shadow-lg shadow-yellow-500/40 flex items-center justify-center text-white group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 mb-4">
               <ArrowRight size={24} />

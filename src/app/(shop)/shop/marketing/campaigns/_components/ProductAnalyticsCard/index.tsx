@@ -32,7 +32,7 @@ export const ProductAnalyticsCard = ({ prod, formatPrice }: any) => {
             {prod.productName}
           </h4>
           <div className="flex items-baseline gap-2">
-            <span className="text-xl font-black text-orange-600 tracking-tighter">
+            <span className="text-xl font-bold text-orange-600 tracking-tighter">
               {formatPrice(prod.salePrice)}
             </span>
             <span className="text-[10px] font-bold text-slate-300 line-through">
@@ -43,7 +43,7 @@ export const ProductAnalyticsCard = ({ prod, formatPrice }: any) => {
       </div>
 
       <div className="space-y-2 bg-slate-50/50 p-3 rounded-2xl border border-slate-100/50">
-        <div className="flex justify-between text-[9px] font-black uppercase tracking-widest text-slate-400">
+        <div className="flex justify-between text-[9px] font-bold uppercase tracking-widest text-slate-400">
           <span>Sold Intensity</span>
           <span className="text-orange-500">{Math.round(sellRatio)}%</span>
         </div>

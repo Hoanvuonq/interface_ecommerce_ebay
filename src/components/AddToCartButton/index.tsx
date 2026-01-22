@@ -80,7 +80,7 @@ export const AddToCartButton: React.FC<
         <Minus className="w-4 h-4" strokeWidth={3} />
       </button>
 
-      <div className="flex-1 h-full font-black text-slate-800 italic">
+      <div className="flex-1 h-full font-bold text-slate-800 italic">
         <CustomInputNumber
           min={maxQuantity > 0 ? 1 : 0}
           max={maxQuantity}
@@ -132,7 +132,7 @@ export const AddToCartButton: React.FC<
           onClick={() => handleAction("buy")}
           disabled={disabled || !!loading || maxQuantity === 0}
           className={cn(
-            "flex-2 h-12 flex items-center justify-center gap-2 rounded-2xl px-8 text-white shadow-xl transition-all active:scale-95 font-black uppercase italic tracking-tighter text-[14px]",
+            "flex-2 h-12 flex items-center justify-center gap-2 rounded-2xl px-8 text-white shadow-xl transition-all active:scale-95 font-bold uppercase italic tracking-tighter text-[14px]",
           )}
         >
           <span className="flex gap-2 items-center">

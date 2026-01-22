@@ -67,12 +67,14 @@ export const CampaignSidebarCard = ({
             <span
               className={cn(
                 "px-2 py-0.5 rounded-lg text-[9px] font-bold uppercase tracking-wider border transition-colors",
-                isActive
+                status.label === "Đã huỷ" || campaign.status === "CANCELLED"
+                  ? "bg-red-50 text-red-500 border-red-100"
+                  : isActive
                   ? "bg-emerald-50 text-emerald-600 border-emerald-100"
                   : "bg-slate-50 text-slate-400 border-slate-100",
               )}
             >
-              {status.label}
+              {campaign.status === "CANCELLED" ? "Đã huỷ" : status.label}
             </span>
             {isActive && (
               <span className="relative flex h-1.5 w-1.5">

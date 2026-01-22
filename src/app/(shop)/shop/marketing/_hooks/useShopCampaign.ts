@@ -5,52 +5,45 @@ import { shopCampaignService } from "@/app/(shop)/shop/marketing/campaigns/_serv
 import { campaignService } from "@/app/(shop)/shop/marketing/campaigns/_services/campaign.service";
 import { useToast } from "@/hooks/useToast";
 import { getAuthState } from "../_shared";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import _ from "lodash";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { CampaignResponse } from "../campaigns/_types/campaign.type";
 
 export function useShopCampaign() {
   const toast = useToast();
-  const queryClient = useQueryClient();
   const store = useCampaignStore();
   const setAuthState = useCampaignStore((s) => s.setAuthState);
 
+  // 1. Khởi tạo AuthState ngay lập tức để enabled query chạy được luôn (Cực kỳ quan trọng cho HTTPS)
+  const currentAuth = useMemo(() => getAuthState(), []);
+
   useEffect(() => {
-    setAuthState(getAuthState());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    setAuthState(currentAuth);
+  }, [currentAuth, setAuthState]);
 
-  const { authState } = store;
+  const isEligible = !!(
+    currentAuth?.isLoggedIn && currentAuth?.role === "shop"
+  );
 
-  // 1. Trích xuất productsLoading từ isLoading của query shop-products
+  // 2. Query lấy sản phẩm của Shop
   const {
     refetch: refetchProducts,
     data: productsData,
     isError: productsError,
-    isLoading: productsLoading, // Đảm bảo biến này tồn tại ở đây
+    isLoading: productsLoading,
   } = useQuery({
     queryKey: ["shop-products"],
-    queryFn: () => shopCampaignService.getMyProducts({ page: 0, size: 50 }),
-    enabled: Boolean(authState?.isLoggedIn && authState?.role === "shop"),
+    queryFn: () => shopCampaignService.getMyProducts({ page: 0, size: 100 }),
+    enabled: isEligible,
   });
 
-  useEffect(() => {
-    if (productsData) {
-      store.setMyProducts(productsData.content);
-    }
-  }, [productsData, store]);
-
-  useEffect(() => {
-    if (productsError) {
-      toast.error("Không thể tải danh sách sản phẩm");
-    }
-  }, [productsError, toast]);
-
+  // 3. Query lấy thông tin tổng quan (Campaigns sàn, Đăng ký, Shop Sale)
   const {
     refetch: refreshAllData,
     isLoading: isDataLoading,
     data: overviewData,
+    isError: overviewError,
   } = useQuery({
     queryKey: ["campaigns-overview"],
     queryFn: async () => {
@@ -61,16 +54,33 @@ export function useShopCampaign() {
       ]);
       return { campaigns, registrations, shopCampaigns };
     },
-    enabled: Boolean(authState?.isLoggedIn && authState?.role === "shop"),
+    enabled: isEligible,
+    staleTime: 1000 * 60 * 5, // 5 phút
   });
 
+  // ĐỒNG BỘ DỮ LIỆU VÀO STORE KHI CÓ DATA
   useEffect(() => {
     if (overviewData) {
-      store.setAvailableCampaigns(overviewData.campaigns);
-      store.setMyRegistrations(overviewData.registrations.content || []);
-      store.setMyCampaigns(overviewData.shopCampaigns.content || []);
+      store.setAvailableCampaigns(overviewData.campaigns || []);
+      store.setMyRegistrations(overviewData.registrations?.content || []);
+      store.setMyCampaigns(overviewData.shopCampaigns?.content || []);
     }
   }, [overviewData, store]);
+
+  useEffect(() => {
+    if (productsData?.content) {
+      store.setMyProducts(productsData.content);
+    }
+  }, [productsData, store]);
+
+  // Xử lý lỗi
+  useEffect(() => {
+    if (productsError || overviewError) {
+      toast.error("Không thể kết nối với máy chủ marketing. Vui lòng thử lại.");
+    }
+  }, [productsError, overviewError, toast]);
+
+  // --- LOGIC ACTIONS ---
 
   const prepareProductsPayload = useCallback(() => {
     return _(store.selectedVariants)
@@ -86,7 +96,6 @@ export function useShopCampaign() {
 
   const handleCreateCampaign = useCallback(async () => {
     const { createForm, showCreateModal } = store;
-
     if (!createForm.name || !createForm.startDate || !createForm.endDate) {
       toast.error("Vui lòng điền đầy đủ thông tin bắt buộc");
       return;
@@ -95,24 +104,17 @@ export function useShopCampaign() {
     store.setLoading(true);
     try {
       const products = prepareProductsPayload();
-
       if (showCreateModal === "simple") {
         await shopCampaignService.createShopCampaign({
-          name: createForm.name,
-          description: createForm.description,
+          ...createForm,
           startDate: new Date(createForm.startDate).toISOString(),
           endDate: new Date(createForm.endDate).toISOString(),
-          bannerAssetId: createForm.bannerAssetId,
-          thumbnailAssetId: createForm.thumbnailAssetId,
-          displayPriority: createForm.displayPriority,
           products: !_.isEmpty(products) ? products : undefined,
         });
         toast.success("Tạo chiến dịch thành công!");
         store.setShowCreateModal(null);
         store.resetCreateForm();
         refreshAllData();
-      } else {
-        toast.info("Tính năng Flash Sale nâng cao đang được cập nhật");
       }
     } catch (err: any) {
       toast.error(err.message || "Lỗi khi tạo chiến dịch");
@@ -123,21 +125,17 @@ export function useShopCampaign() {
 
   const handleAddProducts = useCallback(async () => {
     if (!store.targetCampaignId) return;
-
     store.setLoading(true);
     try {
       const products = prepareProductsPayload();
-
       if (_.isEmpty(products)) {
         toast.error("Vui lòng chọn ít nhất 1 sản phẩm");
         return;
       }
-
       await shopCampaignService.addProductsToShopCampaign(
         store.targetCampaignId,
         products,
       );
-
       toast.success("Thêm sản phẩm thành công!");
       store.setShowCreateModal(null);
       store.setTargetCampaignId(null);
@@ -154,7 +152,6 @@ export function useShopCampaign() {
       store.setSelectedCampaign(campaign);
       store.setSelectedCampaignProducts([]);
       store.setCampaignSlots([]);
-
       try {
         if (campaign.campaignType === "SHOP_SALE") {
           const detail = await shopCampaignService.getMyCampaignDetail(
@@ -177,11 +174,9 @@ export function useShopCampaign() {
   const handleToggleCampaign = useCallback(
     async (e: React.MouseEvent, campaignId: string, currentStatus: string) => {
       e.stopPropagation();
-      const isPaused = currentStatus === "PAUSED";
-
       try {
         await shopCampaignService.toggleShopCampaign(campaignId);
-        toast.success(`Đã ${isPaused ? "tiếp tục" : "tạm dừng"} chiến dịch`);
+        toast.success(`Đã thay đổi trạng thái chiến dịch`);
         refreshAllData();
       } catch (err: any) {
         toast.error(err.message || "Lỗi khi thay đổi trạng thái");
@@ -192,8 +187,7 @@ export function useShopCampaign() {
 
   const handleCancelRegistration = useCallback(
     async (regId: string) => {
-      if (!window.confirm("Bạn có chắc muốn hủy đăng ký này?")) return;
-
+      if (!window.confirm("Xác nhận hủy đăng ký này?")) return;
       try {
         await shopCampaignService.cancelRegistration(regId);
         toast.success("Đã hủy đăng ký thành công");
@@ -205,23 +199,20 @@ export function useShopCampaign() {
     [refreshAllData, toast],
   );
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("vi-VN", {
-      style: "currency",
-      currency: "VND",
-    }).format(price);
-  };
-
   return {
     isLoading: isDataLoading || store.loading,
-    productsLoading, 
+    productsLoading,
     fetchMyProducts: refetchProducts,
     fetchData: refreshAllData,
     handleCreateCampaign,
-    handleAddProducts,
+    handleAddProducts, 
     handleSelectCampaign,
     handleToggleCampaign,
     handleCancelRegistration,
-    formatPrice,
+    formatPrice: (price: number) =>
+      new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      }).format(price),
   };
 }

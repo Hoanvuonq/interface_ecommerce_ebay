@@ -9,10 +9,12 @@ export const EmptyProductState = ({
   onReset,
   message,
   link,
+  isShop = false, // Thêm prop này để kiểm tra xem có phải giao diện shop hay không
 }: {
   onReset?: () => void;
   message?: string;
   link?: string;
+  isShop?: boolean;
 }) => {
   return (
     <motion.div
@@ -56,28 +58,30 @@ export const EmptyProductState = ({
         </motion.p>
       </div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.6 }}
-      >
-        <Link href={link || "/products"}>
-          <CustomButton
-            variant="dark"
-            onClick={onReset}
-            className="h-14 px-6 rounded-full shadow-[0_20px_40px_rgba(0,0,0,0.1)] hover:shadow-orange-200/50 transition-all duration-300 group"
-            icon={
-              <div className="bg-orange-500 p-1.5 rounded-lg group-hover:rotate-12 transition-transform">
-                <ShoppingBag size={18} className="text-white" />
-              </div>
-            }
-          >
-            <span className="font-bold uppercase tracking-widest text-xs ml-2">
-              Bắt đầu mua sắm ngay
-            </span>
-          </CustomButton>
-        </Link>
-      </motion.div>
+      {!isShop && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6 }}
+        >
+          <Link href={link || "/products"}>
+            <CustomButton
+              variant="dark"
+              onClick={onReset}
+              className="h-14 px-6 rounded-full shadow-[0_20px_40px_rgba(0,0,0,0.1)] hover:shadow-orange-200/50 transition-all duration-300 group"
+              icon={
+                <div className="bg-orange-500 p-1.5 rounded-lg group-hover:rotate-12 transition-transform">
+                  <ShoppingBag size={18} className="text-white" />
+                </div>
+              }
+            >
+              <span className="font-bold uppercase tracking-widest text-xs ml-2">
+                Bắt đầu mua sắm ngay
+              </span>
+            </CustomButton>
+          </Link>
+        </motion.div>
+      )}
     </motion.div>
   );
 };

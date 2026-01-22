@@ -48,7 +48,7 @@ export const useVoucherModalLogic = (props: VoucherModalProps) => {
 
       if (isPlatform) {
         const platformVouchers = discountDetails.filter(
-          (d: any) => d.voucherType === "PLATFORM" && d.valid
+          (d: any) => d.voucherType === "PLATFORM" && d.valid,
         );
 
         platformVouchers.forEach((detail: any) => {
@@ -67,7 +67,7 @@ export const useVoucherModalLogic = (props: VoucherModalProps) => {
         });
       } else {
         const shopVouchers = discountDetails.filter(
-          (d: any) => d.voucherType === "SHOP" && d.valid
+          (d: any) => d.voucherType === "SHOP" && d.valid,
         );
 
         shopVouchers.forEach((detail: any) => {
@@ -104,7 +104,14 @@ export const useVoucherModalLogic = (props: VoucherModalProps) => {
         shipping: savedShipCode,
       });
     }
-  }, [open, previewData, shopId, request, isPlatform, appliedVouchers]);
+  }, [
+    open,
+    previewData,
+    shopId,
+    request,
+    isPlatform,
+    JSON.stringify(appliedVouchers),
+  ]);
   useEffect(() => {
     if (open && onFetchVouchers) {
       setLoading(true);

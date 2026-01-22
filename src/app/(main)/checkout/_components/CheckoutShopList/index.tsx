@@ -46,7 +46,6 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
         return {
           ...s,
           vouchers: newShopCodes,
-          // Giữ nguyên globalVouchers hiện tại của shop này
           globalVouchers: Array.isArray(s.globalVouchers)
             ? s.globalVouchers
             : [],
@@ -77,25 +76,23 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
       selected?.shipping?.code || selected?.shipping?.voucherCode;
     const newGlobalCodes = [orderCode, shipCode].filter(Boolean) as string[];
 
+    // Cập nhật globalVouchers cho từng shop
     const updatedShops = request.shops.map((s: any) => {
       if (s.shopId === shopId) {
         return {
           ...s,
-          // CẬP NHẬT globalVouchers CHO RIÊNG SHOP NÀY
           globalVouchers: newGlobalCodes,
-          // Giữ nguyên voucher shop đang có
           vouchers: Array.isArray(s.vouchers) ? s.vouchers : [],
         };
       }
-      return s; // Các shop khác giữ nguyên
+      return s;
     });
 
     try {
-      // QUAN TRỌNG: Gửi payload với globalVouchers ở root là Mảng Rỗng (để tránh conflict)
-      // Dữ liệu thật sự nằm trong từng shop ở mảng updatedShops
+      // Gửi payload với globalVouchers ở root cũng là newGlobalCodes
       await syncPreview({
         ...request,
-        globalVouchers: [],
+        globalVouchers: newGlobalCodes,
         shops: updatedShops,
       });
       return true;
@@ -109,6 +106,7 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
   return (
     <div className="space-y-6">
       {shops.map((shop) => {
+        // ... (Phần tính toán hiển thị giữ nguyên)
         const shopSummary = _.get(shop, "summary", {});
         const subtotal = Number(shopSummary.subtotal || 0);
         const shippingFee = Number(shopSummary.shippingFee || 0);
@@ -116,6 +114,7 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
         const totalDiscount = Number(voucherResult.totalDiscount || 0);
         const discountDetails = _.get(voucherResult, "discountDetails", []);
 
+        // ... (Logic tính discount hiển thị giữ nguyên)
         const shipDiscount =
           _.chain(discountDetails)
             .filter(
@@ -131,9 +130,8 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
         const finalShopTotal = Number(
           shopSummary.shopTotal || originalShopPrice - totalDiscount
         );
-console.log("totalDiscount", finalShopTotal);
-        console.log("shipDiscount", shipDiscount);
-        console.log("productOrOrderDiscount", productOrOrderDiscount);
+
+        // Map voucher đã áp dụng để hiển thị lên UI
         const appliedShopOrder = _.find(
           discountDetails,
           (d: any) =>

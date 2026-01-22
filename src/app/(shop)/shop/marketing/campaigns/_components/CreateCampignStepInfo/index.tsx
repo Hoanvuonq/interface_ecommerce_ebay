@@ -118,7 +118,7 @@ export const CreateCampignStepInfo: React.FC<IStepInfo> = ({
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
       {/* Banner Upload */}
       <div className="space-y-3">
-        <label className="block text-sm font-black text-slate-800 uppercase tracking-tight">
+        <label className="block text-sm font-bold text-slate-800 uppercase tracking-tight">
           Banner chiến dịch
           <span className="text-[10px] text-slate-400 font-bold ml-2 italic">
             (Khuyến nghị: 1200x400px - Tỉ lệ 3:1)
@@ -186,7 +186,7 @@ export const CreateCampignStepInfo: React.FC<IStepInfo> = ({
               <div className="p-4 bg-slate-50 rounded-3xl mb-3 shadow-inner">
                 <ImagePlus size={32} className="text-slate-300" />
               </div>
-              <span className="text-[11px] font-black uppercase tracking-widest">
+              <span className="text-[11px] font-bold uppercase tracking-widest">
                 Click để tải banner
               </span>
             </div>
@@ -203,7 +203,7 @@ export const CreateCampignStepInfo: React.FC<IStepInfo> = ({
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="space-y-3">
-          <label className="block text-sm font-black text-slate-800 uppercase tracking-tight">
+          <label className="block text-sm font-bold text-slate-800 uppercase tracking-tight">
             Thumbnail
             <span className="text-[10px] text-slate-400 font-bold ml-1 italic">
               (1:1)
@@ -266,7 +266,7 @@ export const CreateCampignStepInfo: React.FC<IStepInfo> = ({
             ) : (
               <div className="h-full flex flex-col items-center justify-center text-slate-400">
                 <ImagePlus size={24} className="mb-1 opacity-50" />
-                <span className="text-[10px] font-black uppercase">
+                <span className="text-[10px] font-bold uppercase">
                   Ảnh đại diện
                 </span>
               </div>
@@ -324,7 +324,7 @@ export const CreateCampignStepInfo: React.FC<IStepInfo> = ({
 
       <div className="flex items-center gap-6 p-5 bg-white rounded-3xl border border-slate-200 shadow-sm">
         <div className="flex-1">
-          <label className="block text-sm font-black text-slate-800 uppercase tracking-tight mb-1">
+          <label className="block text-sm font-bold text-slate-800 uppercase tracking-tight mb-1">
             Độ ưu tiên hiển thị
           </label>
           <p className="text-[11px] text-slate-500 font-bold italic">
@@ -344,7 +344,7 @@ export const CreateCampignStepInfo: React.FC<IStepInfo> = ({
                 : undefined,
             })
           }
-          className="w-28 text-center h-11 text-lg font-black text-orange-600 bg-orange-50/20!"
+          className="w-28 text-center h-11 text-lg font-bold text-orange-600 bg-orange-50/20!"
         />
       </div>
     </div>

@@ -53,12 +53,39 @@ export const ProductImageCard: React.FC<ProductImageCardProps> = ({
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      onUpload(e.target.files);
-    }
-    if (fileInputRef.current) fileInputRef.current.value = "";
-  };
+  if (e.target.files && e.target.files.length > 0) {
+    const selectedFiles = Array.from(e.target.files);
+    
+    // 1. Định nghĩa các đuôi file được phép
+    const allowedExtensions = ['jpg', 'jpeg', 'png'];
 
+    // 2. Lọc các file hợp lệ
+    const validFiles = selectedFiles.filter(file => {
+      const fileName = file.name.toLowerCase();
+      const extension = fileName.split('.').pop();
+      
+      // Kiểm tra đuôi file và đảm bảo không phải webp
+      return extension && allowedExtensions.includes(extension) && !fileName.endsWith('.webp');
+    });
+
+    // 3. Thông báo nếu có file bị từ chối
+    if (validFiles.length < selectedFiles.length) {
+      // Bạn có thể dùng toast.error ở đây thay vì alert
+      alert("Hệ thống chỉ chấp nhận định dạng JPG, JPEG hoặc PNG. Các file .webp hoặc định dạng khác đã bị loại bỏ.");
+    }
+
+    // 4. Chỉ xử lý upload nếu có ít nhất 1 file hợp lệ
+    if (validFiles.length > 0) {
+      // Vì onUpload nhận FileList, ta cần convert Array ngược lại thành FileList
+      const dataTransfer = new DataTransfer();
+      validFiles.forEach(file => dataTransfer.items.add(file));
+      onUpload(dataTransfer.files);
+    }
+  }
+  
+  // Reset input để có thể chọn lại cùng 1 file nếu cần
+  if (fileInputRef.current) fileInputRef.current.value = "";
+};
   return (
     <div className="bg-white p-6 rounded-4xl border border-slate-200/60 shadow-sm animate-in fade-in duration-500">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
@@ -168,7 +195,7 @@ export const ProductImageCard: React.FC<ProductImageCardProps> = ({
             <input
               type="file"
               multiple
-              accept="image/*"
+              accept=".jpg,.jpeg,.png"
               className="hidden"
               onChange={handleFileChange}
               ref={fileInputRef}
