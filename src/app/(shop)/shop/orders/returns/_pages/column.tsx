@@ -76,7 +76,7 @@ export const getReturnColumns = ({
       return (
         <div className="flex items-center gap-1.5" style={{ color }}>
           <FiClock className={cn(isUrgent && "animate-pulse")} />
-          <span className={cn(isUrgent && "font-black")}>{text}</span>
+          <span className={cn(isUrgent && "font-bold")}>{text}</span>
         </div>
       );
     },

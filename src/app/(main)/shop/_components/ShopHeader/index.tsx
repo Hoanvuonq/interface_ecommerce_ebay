@@ -43,10 +43,10 @@ export const ShopHeader = ({ shop, isFollowing, onFollow, onChat, totalProducts 
         {/* Content Section */}
         <div className="flex-1 text-center md:text-left pt-2">
           <div className="flex flex-col md:flex-row items-center gap-3 mb-3">
-            <h1 className="text-3xl md:text-4xl font-black text-slate-800 tracking-tight leading-none">
+            <h1 className="text-3xl md:text-4xl font-bold text-slate-800 tracking-tight leading-none">
               {shop.shopName}
             </h1>
-            <div className="flex items-center gap-1 bg-blue-500 text-white text-[9px] font-black px-2 py-1 rounded-md uppercase tracking-widest shadow-lg shadow-blue-200">
+            <div className="flex items-center gap-1 bg-blue-500 text-white text-[9px] font-bold px-2 py-1 rounded-md uppercase tracking-widest shadow-lg shadow-blue-200">
               <Verified size={10} fill="currentColor" /> Mall
             </div>
           </div>
@@ -76,7 +76,7 @@ export const ShopHeader = ({ shop, isFollowing, onFollow, onChat, totalProducts 
         <div className="flex w-full md:w-auto gap-3 items-center self-center md:self-end">
           <button
             onClick={onFollow}
-            className={`flex-1 md:flex-none px-8 py-3.5 rounded-2xl font-black text-sm uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-2 border-2 ${
+            className={`flex-1 md:flex-none px-8 py-3.5 rounded-2xl font-bold text-sm uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-2 border-2 ${
               isFollowing
                 ? "bg-slate-800 border-slate-800 text-white shadow-xl shadow-slate-200"
                 : "bg-transparent border-slate-200 text-slate-400 hover:border-orange-500 hover:text-orange-500"
@@ -88,7 +88,7 @@ export const ShopHeader = ({ shop, isFollowing, onFollow, onChat, totalProducts 
 
           <button
             onClick={onChat}
-            className="flex-1 md:flex-none px-8 py-3.5 rounded-2xl font-black text-sm uppercase tracking-wider bg-orange-500 text-white shadow-xl shadow-orange-200 hover:bg-orange-600 hover:translate-y-[-2px] active:translate-y-0 transition-all flex items-center justify-center gap-2"
+            className="flex-1 md:flex-none px-8 py-3.5 rounded-2xl font-bold text-sm uppercase tracking-wider bg-orange-500 text-white shadow-xl shadow-orange-200 hover:bg-orange-600 hover:translate-y-[-2px] active:translate-y-0 transition-all flex items-center justify-center gap-2"
           >
             <MessageCircle size={18} />
             Chat ngay

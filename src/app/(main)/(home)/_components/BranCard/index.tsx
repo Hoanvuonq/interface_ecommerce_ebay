@@ -30,7 +30,6 @@ export const BrandCard = ({
     setIsWishlisted(initialIsWishlisted);
   }, [initialIsWishlisted]);
 
-  // Lấy ảnh: Ưu tiên ảnh primary trong media, nếu không lấy variant đầu tiên
   const imageUrl = useMemo(() => {
     const primaryMedia = product?.media?.find((m: any) => m.isPrimary);
     if (primaryMedia) return resolveMediaUrlHelper(primaryMedia, "_medium");
@@ -63,7 +62,6 @@ export const BrandCard = ({
     }
   };
 
-  // Dữ liệu giá từ JSON mới
   const displayPrice = product.priceAfterBestVoucher || product.priceMin;
   const originalPrice = product.priceBeforeDiscount;
   const discountPercent = product.showDiscount;
@@ -112,8 +110,8 @@ export const BrandCard = ({
 
         <div className="p-4 flex-1 flex flex-col min-w-0 justify-between gap-3">
           <div className="space-y-1">
-            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-tighter truncate italic">
-              {product.shop?.shopName || "CanoX Official"}
+            <span className="text-[10px] text-(--color-mainColor) font-bold uppercase tracking-tighter truncate ">
+              {product.shop?.shopName || "CanoX Official"} Store
             </span>
             <h4 className="text-slate-800 dark:text-slate-100 text-sm font-bold uppercase tracking-tight line-clamp-1 group-hover:text-orange-500 transition-colors italic">
               {product.name}
@@ -122,7 +120,7 @@ export const BrandCard = ({
 
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-slate-700 dark:text-white font-bold text-md tabular-nums tracking-tighter">
+              <span className="text-(--color-mainColor) dark:text-white font-bold text-md tabular-nums tracking-tighter">
                 {formatPrice(displayPrice)}
               </span>
               {discountPercent > 0 && (

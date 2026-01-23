@@ -108,7 +108,6 @@ export const CalathaMallSection = () => {
           </div>
         </motion.div>
 
-        {/* Grid Sản phẩm - lg:col-span-8 */}
         <div className="lg:col-span-8 overflow-x-auto scrollbar-none snap-x snap-mandatory flex lg:grid lg:grid-cols-4 gap-4 pb-4">
           {displayProducts.map((product: any, idx: number) => (
             <div
@@ -124,7 +123,6 @@ export const CalathaMallSection = () => {
             </div>
           ))}
 
-          {/* Card thứ 8: Nút Khám phá thế giới Mall */}
           <Link
             href="/products"
             className="min-w-45 h-auto min-h-80 lg:min-w-0 snap-start shrink-0 flex flex-col items-center justify-center bg-white/5 border border-dashed border-white/20 rounded-4xl hover:bg-white/10 transition-all group p-6"

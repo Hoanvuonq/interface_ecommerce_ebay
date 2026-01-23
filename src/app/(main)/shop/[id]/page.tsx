@@ -143,7 +143,7 @@ export default function ShopPage() {
 
   if (!shop) return (
     <div className="h-[60vh] flex flex-col items-center justify-center text-slate-500 gap-4">
-      <div className="text-6xl text-slate-200 font-black tracking-tighter italic">404</div>
+      <div className="text-6xl text-slate-200 font-bold tracking-tighter italic">404</div>
       <p className="font-bold uppercase text-xs tracking-[0.3em]">Cửa hàng này không còn tồn tại</p>
     </div>
   );

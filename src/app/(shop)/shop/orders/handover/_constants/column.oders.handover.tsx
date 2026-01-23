@@ -143,7 +143,7 @@ export const getHandoverColumns = ({
     header: "Thanh toán",
     render: (record) => (
       <div className="flex flex-col items-end">
-        <span className="text-[14px] font-black text-slate-900">
+        <span className="text-[14px] font-bold text-slate-900">
           {record.pricing.grandTotal.toLocaleString()}
         </span>
         <span className="text-[10px] font-bold text-gray-400 uppercase">
@@ -166,7 +166,7 @@ export const getHandoverColumns = ({
         <div className="flex flex-col gap-1">
           <span
             className={cn(
-              "px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider border text-center whitespace-nowrap",
+              "px-3 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider border text-center whitespace-nowrap",
               cfg
                 ? "bg-blue-50 border-blue-200 text-blue-700 shadow-sm"
                 : "bg-gray-50 border-gray-200 text-gray-400",

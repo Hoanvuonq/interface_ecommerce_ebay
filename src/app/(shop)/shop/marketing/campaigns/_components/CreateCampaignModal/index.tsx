@@ -1,26 +1,29 @@
 ﻿"use client";
 
-import React, { useMemo } from "react";
-import { PortalModal } from "@/features/PortalModal";
 import {
-  FormInput,
-  CustomButtonActions,
   Checkbox,
+  CustomButtonActions,
   DataTable,
+  FormInput,
 } from "@/components";
 import { Column } from "@/components/DataTable/type";
-import {
-  RefreshCw,
-  ChevronRight,
-  CheckCircle,
-  Package,
-  Layers,
-} from "lucide-react";
+import { PortalModal } from "@/features/PortalModal";
 import { cn } from "@/utils/cn";
+import {
+  CheckCircle,
+  ChevronRight,
+  Layers,
+  Package,
+  RefreshCw,
+} from "lucide-react";
+import React, { useMemo } from "react";
 import { ICreateCampaignModal } from "./type";
-import { IStepInfo } from "./type";
-import { getProductSelectionColumns } from "./column.product.selection";
-import { CreateCampignStepInfo } from "../CreateCampignStepInfo";
+
+import {
+  CreateCampaignConfirm,
+  CreateCampaignProduction,
+  CreateCampignStepInfo,
+} from "../CreateCampaignByStep";
 
 export const CreateCampaignModal: React.FC<ICreateCampaignModal> = ({
   isOpen,
@@ -157,8 +160,7 @@ export const CreateCampaignModal: React.FC<ICreateCampaignModal> = ({
                 value={displayValue}
                 onChange={(e) => {
                   const numericValue = e.target.value.replace(/[^\d]/g, "");
-                  const val =
-                    numericValue === "" ? "" : parseInt(numericValue);
+                  const val = numericValue === "" ? "" : parseInt(numericValue);
 
                   const newPct =
                     val !== ""
@@ -291,7 +293,7 @@ export const CreateCampaignModal: React.FC<ICreateCampaignModal> = ({
                 key={s}
                 className={cn(
                   "w-2 h-2 rounded-full transition-colors",
-                  step === s ? "bg-orange-500" : "bg-gray-200"
+                  step === s ? "bg-orange-500" : "bg-gray-200",
                 )}
               />
             ))}
@@ -302,105 +304,25 @@ export const CreateCampaignModal: React.FC<ICreateCampaignModal> = ({
       footer={renderFooter()}
     >
       <div className="min-h-112.5">
-        {step === "INFO" && <CreateCampignStepInfo form={form} setForm={setForm} />}
+        {step === "INFO" && (
+          <CreateCampignStepInfo form={form} setForm={setForm} />
+        )}
 
         {step === "PRODUCTS" && (
-          <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
-            <div className="flex items-center justify-between bg-white p-4 rounded-2xl border border-slate-200">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-orange-50 rounded-lg text-orange-500 shadow-sm">
-                  <Layers size={18} />
-                </div>
-                <span className="font-bold text-sm text-slate-700 uppercase tracking-tight">
-                  Biến thể khả dụng
-                </span>
-              </div>
-              <button
-                onClick={onRefreshProducts}
-                className="flex items-center gap-2 px-4 py-1.5 bg-slate-50 hover:bg-slate-100 text-slate-600 rounded-lg border border-slate-200 text-[11px] font-bold transition-all"
-              >
-                <RefreshCw
-                  size={12}
-                  className={cn(productsLoading && "animate-spin")}
-                />{" "}
-                LÀM MỚI
-              </button>
-            </div>
-
-              <DataTable
-                data={flatVariants}
-                columns={productColumns}
-                loading={productsLoading}
-                page={0}
-                size={flatVariants.length || 10}
-                totalElements={flatVariants.length}
-                onPageChange={() => {}}
-                emptyMessage="Không tìm thấy sản phẩm"
-                rowKey={(item: any) => item.id}
-              />
-          </div>
+          <CreateCampaignProduction
+            myProducts={myProducts}
+            productsLoading={productsLoading}
+            selectedVariants={selectedVariants}
+            setSelectedVariants={setSelectedVariants}
+            onRefreshProducts={onRefreshProducts}
+          />
         )}
 
         {step === "CONFIRM" && (
-          <div className="space-y-6 animate-in fade-in zoom-in-95 duration-300">
-            <div className="bg-white border border-slate-200 p-8 rounded-4xl relative overflow-hidden shadow-sm">
-              <div className="absolute right-0 top-0 p-10 opacity-[0.03]">
-                <Package size={140} />
-              </div>
-              <h3 className="font-bold text-slate-800 text-lg mb-8 flex items-center gap-3 uppercase tracking-tight border-b border-slate-100 pb-4">
-                <CheckCircle className="text-green-500" size={22} /> Xác nhận
-                chiến dịch
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                <div className="space-y-4">
-                  {/* Preview Banner */}
-                  {form.bannerPreview && (
-                    <div className="relative h-24 rounded-xl overflow-hidden">
-                      <img
-                        src={form.bannerPreview}
-                        alt="Banner"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  )}
-                  <div>
-                    <p className="text-[10px] font-bold text-gray-500 uppercase mb-1">
-                      Chiến dịch
-                    </p>
-                    <p className="text-lg font-bold text-slate-800">
-                      {form.name}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-[10px] font-bold text-gray-500 uppercase mb-1">
-                      Hiệu lực
-                    </p>
-                    <p className="text-sm font-bold text-slate-600 italic">
-                      {new Date(form.startDate).toLocaleString("vi-VN")} →{" "}
-                      {new Date(form.endDate).toLocaleString("vi-VN")}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex flex-col justify-center items-end bg-slate-50 p-6 rounded-2xl border border-slate-100">
-                  <p className="text-[10px] font-bold text-gray-500 uppercase mb-2">
-                    Quy mô biến thể
-                  </p>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-5xl font-bold text-orange-500 tracking-tighter leading-none">
-                      {
-                        Object.values(selectedVariants).filter(
-                          (v: any) => v.selected,
-                        ).length
-                      }
-                    </span>
-                    <span className="text-xs font-bold text-slate-500 uppercase italic">
-                      Items Selected
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <CreateCampaignConfirm
+            form={form}
+            selectedVariants={selectedVariants}
+          />
         )}
       </div>
     </PortalModal>

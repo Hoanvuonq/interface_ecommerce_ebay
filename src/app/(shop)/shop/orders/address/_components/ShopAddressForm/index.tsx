@@ -153,7 +153,7 @@ export const ShopAddressForm = () => {
     <div className="p-1 lg:p-6 space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-xl font-black text-slate-800 uppercase tracking-tight">
+          <h2 className="text-xl font-bold text-slate-800 uppercase tracking-tight">
             Địa chỉ Shop
           </h2>
           <p className="text-slate-500 text-xs font-medium">

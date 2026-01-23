@@ -97,7 +97,7 @@ export const AddressFormModal = ({
       onClose={onClose}
       title={
         <div className="flex flex-col">
-          <span className="text-sm font-black uppercase text-slate-800 tracking-tight">
+          <span className="text-sm font-bold uppercase text-slate-800 tracking-tight">
             {editingAddress ? "Cấu hình địa chỉ" : "Thiết lập điểm mới"}
           </span>
           <span className="text-[10px] text-slate-400 font-bold uppercase italic">
@@ -183,7 +183,7 @@ export const AddressFormModal = ({
         />
 
         <div className="bg-slate-50 p-5 rounded-4xl space-y-4 border border-slate-100 shadow-inner">
-          <p className="text-[10px] font-black uppercase text-slate-500 tracking-widest">
+          <p className="text-[10px] font-bold uppercase text-slate-500 tracking-widest">
             Thiết lập trạng thái
           </p>
           <div className="grid grid-cols-1 gap-3">

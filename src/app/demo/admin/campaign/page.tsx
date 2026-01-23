@@ -33,15 +33,6 @@ from "./types";
 import type {CampaignStatus}
 from "../../campaign/types";
 
-/**
- * Admin Campaign Demo Page
- *
- * Features:
- * - Create/Manage platform campaigns
- * - Approve/Reject product registrations
- * - View campaign statistics
- * - Manage campaign lifecycle
- */
 export default function AdminCampaignDemoPage() {
     // Auth state
     const [authState,

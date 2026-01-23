@@ -1,9 +1,4 @@
-/**
- * Campaign Service - API calls for campaign feature
- * Location: demo/campaign/campaign.service.ts
- * 
- * NOTE: This service is local to demo folder, using the shared axios instance
- */
+
 
 import { request } from '@/utils/axios.customize';
 import type { ApiResponse } from '@/api/_types/api.types';
@@ -12,6 +7,7 @@ import type {
     CampaignSlotResponse,
     CampaignSlotProductResponse
 }  from '../_types/campaign.type';
+import { isLocalhost } from '@/utils/env';
 
 const PUBLIC_API = '/v1/campaigns';
 

@@ -153,7 +153,7 @@ export default function ReturnsScreen() {
         {activeTab === "returns" || activeTab === "all" ? (
           <div className="space-y-4">
             <div className="flex items-center justify-between px-2">
-              <span className="text-[12px] font-black text-gray-400 uppercase tracking-widest">
+              <span className="text-[12px] font-bold text-gray-400 uppercase tracking-widest">
                 Tìm thấy {returnRequests.length} yêu cầu phù hợp
               </span>
             </div>
@@ -184,7 +184,7 @@ export default function ReturnsScreen() {
               <div className="h-full flex flex-col bg-white shadow-2xl rounded-l-[3rem] overflow-hidden">
                 {/* Drawer Header */}
                 <div className="px-8 py-6 border-b border-gray-50 flex items-center justify-between bg-orange-50/30">
-                  <h2 className="text-sm font-black uppercase tracking-tighter text-orange-600">
+                  <h2 className="text-sm font-bold uppercase tracking-tighter text-orange-600">
                     Yêu cầu #{selectedRequest?.requestId}
                   </h2>
                   <button
@@ -229,7 +229,7 @@ export default function ReturnsScreen() {
                           </div>
                         )}
                         <div>
-                          <p className="font-black text-gray-900 leading-tight mb-1">
+                          <p className="font-bold text-gray-900 leading-tight mb-1">
                             {selectedRequest.productName}
                           </p>
                           <p className="text-orange-500 font-bold text-sm">
@@ -244,7 +244,7 @@ export default function ReturnsScreen() {
                       {/* Info Detail Grid */}
                       <div className="space-y-4">
                         <div className="flex flex-col gap-1">
-                          <span className="text-[10px] font-black uppercase text-gray-400 tracking-widest ml-1">
+                          <span className="text-[10px] font-bold uppercase text-gray-400 tracking-widest ml-1">
                             Khách hàng
                           </span>
                           <p className="text-sm font-bold text-gray-700 bg-white border border-gray-100 px-4 py-2 rounded-xl">
@@ -253,7 +253,7 @@ export default function ReturnsScreen() {
                           </p>
                         </div>
                         <div className="flex flex-col gap-1">
-                          <span className="text-[10px] font-black uppercase text-gray-400 tracking-widest ml-1">
+                          <span className="text-[10px] font-bold uppercase text-gray-400 tracking-widest ml-1">
                             Lý do từ khách
                           </span>
                           <p className="text-sm font-medium text-gray-600 italic leading-relaxed bg-white border border-gray-100 px-4 py-3 rounded-2xl">
@@ -261,7 +261,7 @@ export default function ReturnsScreen() {
                           </p>
                         </div>
                         <div className="flex flex-col gap-2">
-                          <span className="text-[10px] font-black uppercase text-gray-400 tracking-widest ml-1">
+                          <span className="text-[10px] font-bold uppercase text-gray-400 tracking-widest ml-1">
                             Bằng chứng hình ảnh
                           </span>
                           <div className="flex flex-wrap gap-2">

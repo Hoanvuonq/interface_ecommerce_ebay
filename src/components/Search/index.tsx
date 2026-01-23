@@ -99,7 +99,7 @@ export const Search: React.FC<ISearch> = ({
             {!displayValue && history.length > 0 && (
               <div className="p-2">
                 <div className="px-4 py-2 flex justify-between items-center">
-                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Tìm kiếm gần đây</span>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Tìm kiếm gần đây</span>
                   <button 
                     type="button"
                     onClick={() => { setHistory([]); localStorage.removeItem("search_history"); }} 
@@ -128,7 +128,7 @@ export const Search: React.FC<ISearch> = ({
 
             {displayValue.length > 0 && searchOptions.length > 0 && (
               <div className="p-2">
-                <div className="px-4 py-2 text-[10px] font-black text-orange-500 uppercase tracking-[0.2em] flex items-center gap-2 border-b border-gray-50 mb-1">
+                <div className="px-4 py-2 text-[10px] font-bold text-orange-500 uppercase tracking-[0.2em] flex items-center gap-2 border-b border-gray-50 mb-1">
                   <TrendingUp size={12} /> Từ khóa liên quan
                 </div>
                 {searchOptions.map((opt: any, idx: number) => {
@@ -167,7 +167,7 @@ export const Search: React.FC<ISearch> = ({
 
       <button
         type="submit"
-        className="h-12 px-8 rounded-r-2xl font-black text-sm uppercase tracking-widest text-white transition-all hover:brightness-110 active:scale-95 shadow-lg shadow-orange-500/20"
+        className="h-12 px-8 rounded-r-2xl font-bold text-sm uppercase tracking-widest text-white transition-all hover:brightness-110 active:scale-95 shadow-lg shadow-orange-500/20"
         style={{ backgroundColor: ctaColor }}
       >
         Tìm ngay
