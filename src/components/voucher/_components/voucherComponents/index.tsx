@@ -1,17 +1,15 @@
 "use client";
 
-import React from "react";
-import { cn } from "@/utils/cn";
-import { ChevronDown, Loader2, Ticket, CheckCircle2 } from "lucide-react";
-import { formatPrice } from "@/hooks/useFormatPrice";
-import { VoucherModal } from "../voucherModal";
 import { useVoucherLogic } from "@/components/voucher/_hooks/useVoucherLogic";
-import _ from "lodash";
 import {
-  GroupedVouchers,
-  VoucherInputProps,
-  VoucherOption,
+  VoucherInputProps
 } from "@/components/voucher/_types/voucher";
+import { formatPrice } from "@/hooks/useFormatPrice";
+import { cn } from "@/utils/cn";
+import _ from "lodash";
+import { CheckCircle2, ChevronDown, Loader2, Ticket } from "lucide-react";
+import React from "react";
+import { VoucherModal } from "../voucherModal";
 
 export const VoucherComponents: React.FC<VoucherInputProps> = (props) => {
   const { compact, shopName, appliedVouchers, forcePlatform, className } =

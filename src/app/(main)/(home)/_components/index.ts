@@ -10,3 +10,5 @@ export * from "./IntroBanner";
 export * from "./ProductSection";
 export * from "./ProductShowcase";
 export * from "./Promotion";
+export * from "./QuickLinkItem";
+export * from "./MukbangDealSection";

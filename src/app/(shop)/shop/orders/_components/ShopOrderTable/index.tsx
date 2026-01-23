@@ -16,7 +16,7 @@ import {
 import { useMemo, useRef, useState } from "react";
 import { SmartKPICard } from "../../../_components";
 import { StatusTabs } from "../../../_components/Products/StatusTabs";
-import { useUpdateShopOrderStatus } from "../../../vouchers/_hooks/useShopOrder";
+import { useUpdateShopOrderStatus } from "../../../marketing/vouchers/_hooks/useShopOrder";
 import { renderStatus } from "../../_constants/getStatus";
 import { getOrderTabs } from "../../_constants/tabsRender";
 import { useShopOrderManager } from "../../_hooks/useShopOrderManager";

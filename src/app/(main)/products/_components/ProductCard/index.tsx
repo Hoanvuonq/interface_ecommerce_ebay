@@ -1,11 +1,7 @@
 "use client";
 
-import {
-  categoryIcons,
-  getStandardizedKey,
-  ICON_BG_COLORS,
-} from "@/app/(main)/(home)/_types/categories";
 import { AddToWishlistModal } from "@/app/(main)/wishlist/_components/AddToWishlistModal";
+import { CustomHasDiscount } from "@/components";
 import { CustomButton } from "@/components/button";
 import { formatPrice } from "@/hooks/useFormatPrice";
 import { publicProductService } from "@/services/products/product.service";
@@ -19,10 +15,20 @@ import {
   resolveMediaUrl as resolveMediaUrlHelper,
   resolveVariantImageUrl as resolveVariantImageUrlHelper,
 } from "@/utils/products/media.helpers";
-import { Heart, Loader2, ShoppingBag, ShoppingCart, Star } from "lucide-react";
+import {
+  Heart,
+  Loader2,
+  MapPin,
+  Package,
+  ShoppingBag,
+  ShoppingCart,
+  Star,
+} from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
+import { TYPE_CONFIG } from "../../_constants/typeProduct";
 import { useCart } from "../../_hooks/useCart";
 
 const HeartFilled = (props: any) => <Heart {...props} fill="currentColor" />;
@@ -30,12 +36,14 @@ const HeartFilled = (props: any) => <Heart {...props} fill="currentColor" />;
 export const ProductCard = ({
   product,
   highlight,
+  isType = "mall",
   isWishlisted: initialIsWishlisted,
   imageSize = "_medium",
   viewMode = "grid",
 }: {
   product: PublicProductListItemDTO;
   highlight?: "new" | "sale";
+  isType?: "mall" | "flashsale" | "new" | "special";
   isWishlisted?: boolean;
   imageSize?: "_thumb" | "_medium" | "_large" | "_orig";
   viewMode?: "grid" | "list";
@@ -52,20 +60,11 @@ export const ProductCard = ({
   const [imgError, setImgError] = useState(false);
 
   useEffect(() => {
-    if (initialIsWishlisted !== undefined) {
-      setIsWishlisted(initialIsWishlisted);
-    }
+    if (initialIsWishlisted !== undefined) setIsWishlisted(initialIsWishlisted);
   }, [initialIsWishlisted]);
 
   const isList = viewMode === "list";
-
-  const categoryUI = useMemo(() => {
-    const key = getStandardizedKey(product.name);
-    return {
-      colors: ICON_BG_COLORS[key] || ICON_BG_COLORS["default"],
-      emoji: categoryIcons[key] || "📦",
-    };
-  }, [product.name]);
+  const currentType = TYPE_CONFIG[isType] || TYPE_CONFIG.mall;
 
   const imageUrl = useMemo(() => {
     const media = (product as any).media || [];
@@ -75,63 +74,58 @@ export const ProductCard = ({
       return resolveMediaUrlHelper(image, imageSize);
     }
     const variants = (product as any)?.variants || [];
-    if (Array.isArray(variants) && variants.length > 0) {
-      const withImage = variants.find(
-        (v: any) => v?.imageUrl || v?.imageBasePath,
-      );
-      return resolveVariantImageUrlHelper(withImage, imageSize);
-    }
-    return null;
+    const withImage = variants.find(
+      (v: any) => v?.imageUrl || v?.imageBasePath,
+    );
+    return withImage
+      ? resolveVariantImageUrlHelper(withImage, imageSize)
+      : null;
   }, [product, imageSize]);
+
+  const shopLocation =
+    (product as any)?.shop?.shop_location ||
+    (product as any)?.shop?.place ||
+    "Việt Nam";
+
+  const stockAvailable = useMemo(() => {
+    const variants = (product as any).variants;
+    if (Array.isArray(variants) && variants.length > 0) {
+      return variants.reduce(
+        (acc: number, v: any) => acc + (v.inventory?.stock ?? v.stock ?? 0),
+        0,
+      );
+    }
+    return (product as any).stock ?? 0;
+  }, [product]);
+
+  const isOutOfStock = stockAvailable <= 0;
 
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     if (!requireAuthentication(window.location.pathname)) return;
-
     setAddingToCart(true);
     try {
       const resp = await publicProductService.getBySlug(
         product.slug || product.id,
       );
       const variant =
-        resp.data.variants?.find((v: any) => v.stock > 0) ||
-        resp.data.variants?.[0];
-
-      if (!variant) {
-        toast.warning("Sản phẩm hiện không có sẵn");
-        return;
-      }
-
-      const success = await quickAddToCart(variant.id, 1);
+        resp.data.variants?.find(
+          (v: any) => (v.inventory?.stock ?? v.stock ?? 0) > 0,
+        ) || resp.data.variants?.[0];
+      if (!variant) return toast.warning("Sản phẩm hiện không có sẵn");
+      await quickAddToCart(variant.id, 1);
     } catch (error) {
-      toast.error("Không thể thêm vào giỏ hàng");
+      toast.error("Lỗi thêm vào giỏ");
     } finally {
       setAddingToCart(false);
     }
   };
-  const stockAvailable = useMemo(() => {
-    if (typeof (product as any).stock === "number") {
-      return (product as any).stock;
-    }
-    const variants = (product as any).variants;
-    if (Array.isArray(variants) && variants.length > 0) {
-      return variants.reduce((acc: number, v: any) => {
-        const qty = v.inventory?.stock || v.stock || 0;
-        return acc + qty;
-      }, 0);
-    }
-    return 0;
-  }, [product]);
-
-  const isOutOfStock = stockAvailable <= 0;
 
   const handleAddToWishlist = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-
     if (!requireAuthentication(window.location.pathname)) return;
-
     setLoadingProductDetail(true);
     try {
       const resp = await publicProductService.getBySlug(
@@ -146,98 +140,75 @@ export const ProductCard = ({
     }
   };
 
-  const displayPrice = product.priceAfterBestVoucher || product.priceMin || product.basePrice;
+  const displayPrice =
+    // product.priceAfterBestVoucher || product.priceMin || product.basePrice;
+    // Test lấy giá
+    product.priceMin || product.basePrice;
   const originalPrice = product.priceMax || product.basePrice;
   const discountPercent = product.showDiscount || 0;
-  const hasDiscount = discountPercent > 0 && !!originalPrice && originalPrice > displayPrice;
+  const hasDiscount = discountPercent > 0 && originalPrice > displayPrice;
 
   return (
     <>
       <Link
         href={`/products/${product.slug || product.id}`}
         className={cn(
-          "group relative flex bg-white rounded-2xl border border-gray-100 hover:border-gra" +
-            "y-200 hover:shadow-xl hover:shadow-orange-500/10 transition-all duration-500 ove" +
-            "rflow-hidden",
-          isList ? "flex-row h-40 md:h-44" : "flex-col h-full",
+          "group relative flex bg-white rounded-3xl border border-gray-100 hover:border-orange-200 hover:shadow-custom hover:shadow-orange-500/10 transition-all duration-500 overflow-hidden",
+          isList ? "flex-row h-44 md:h-52" : "flex-col h-full",
+          isOutOfStock && "grayscale-[0.5]",
         )}
       >
         <div
           className={cn(
-            "relative overflow-hidden bg-gray-50 shrink-0 transition-all duration-300",
+            "relative overflow-hidden bg-slate-50 shrink-0",
             isList
-              ? "w-32 md:w-46 h-full border-r border-gray-50"
+              ? "w-40 md:w-52 h-full border-r border-gray-50"
               : "aspect-square w-full",
           )}
         >
           {imageUrl && !imgError ? (
-            <img
+            <Image
               alt={product.name}
               src={imageUrl}
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 antialiased"
-              style={{
-                imageRendering: "auto",
-              }}
+              fill
+              sizes={isList ? "200px" : "33vw"}
+              className="object-cover transition-transform duration-700 group-hover:scale-110"
               onError={() => setImgError(true)}
+              priority={highlight === "new"}
             />
           ) : (
-            <div
-              className={cn(
-                "w-full h-full flex flex-col items-center justify-center gap-2",
-                categoryUI.colors.bg,
-              )}
-            >
-              <span className={isList ? "text-2xl" : "text-5xl"}>
-                {categoryUI.emoji}
-              </span>
-              <span
-                className={cn(
-                  "text-[8px] font-semibold uppercase tracking-widest opacity-40",
-                  categoryUI.colors.text,
-                )}
-              >
-                No Image
+            <div className="w-full h-full flex items-center justify-center text-4xl opacity-20 bg-slate-100">
+              📦
+            </div>
+          )}
+
+          {highlight === "new" && (
+            <div className="absolute top-3 left-3 z-10 flex items-center gap-1 bg-white/90 backdrop-blur-md border border-slate-200 px-2 py-0.5 rounded-lg shadow-sm">
+              <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-ping" />
+              <span className="text-[9px] font-bold text-indigo-600 uppercase tracking-widest">
+                New
               </span>
             </div>
           )}
 
-          <div className="absolute top-2 left-2 flex flex-col gap-1 z-10">
-            {hasDiscount && (
-              <div className="bg-red-500 text-white text-[8px] md:text-[9px] font-semibold px-1.5 py-0.5 rounded shadow-lg border border-white/20">
-                -{discountPercent}%
-              </div>
-            )}
-            {highlight === "new" && !isList && (
-              <div className="bg-blue-600 text-white text-[9px] font-semibold px-2 py-1 rounded shadow-lg border border-white/20 uppercase tracking-tighter">
-                New
-              </div>
-            )}
-          </div>
-
-          {!isList && (
-            <div className="absolute inset-x-0 bottom-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-linear-to-t from-black/20 to-transparent hidden sm:block">
+          {!isList && !isOutOfStock && (
+            <div className="absolute inset-x-3 bottom-2 translate-y-12 group-hover:translate-y-0 transition-all duration-300 z-20 hidden sm:block">
               <button
                 onClick={handleAddToCart}
-                disabled={
-                  addingToCart || product.active === false || isOutOfStock
-                }
+                disabled={addingToCart}
                 className={cn(
-                  "w-full bg-white/90 backdrop-blur-md cursor-pointer hover:bg-orange-500 hover:tex" +
-                    "t-white text-gray-900 ",
-                  "py-2 rounded-xl text-[10px] font-semibold uppercase tracking-widest shadow-xl tr" +
-                    "ansition-all flex items-center justify-center gap-2",
-                  isOutOfStock &&
-                    "opacity-70 cursor-not-allowed hover:bg-gray-200 hover:text-gray-500 grayscale",
+                  "w-full bg-white/95 backdrop-blur-md py-2.5 rounded-2xl text-[11px] font-bold",
+                  "uppercase tracking-wider shadow-2xl flex items-center justify-center gap-2",
+                  "transition-all hover:bg-orange-500 hover:text-white active:scale-95",
                 )}
               >
                 {addingToCart ? (
-                  <Loader2 size={12} className="animate-spin" />
-                ) : isOutOfStock ? (
-                  <span className="text-[10px]">🚫</span>
+                  <Loader2 size={14} className="animate-spin" />
                 ) : (
-                  <ShoppingBag size={14} />
+                  <>
+                    <ShoppingBag size={14} /> THÊM VÀO GIỎ
+                  </>
                 )}
-                {isOutOfStock ? "Hết hàng" : "Thêm vào giỏ"}
               </button>
             </div>
           )}
@@ -245,120 +216,133 @@ export const ProductCard = ({
 
         <div
           className={cn(
-            "p-3 md:p-4 flex-1 flex flex-col min-w-0",
-            isList ? "justify-center" : "justify-between",
+            "py-4 px-2 flex-1 flex flex-col min-w-0",
+            isList ? "justify-center gap-1.5" : "justify-between",
           )}
         >
-          <div className="flex justify-between items-start mb-1">
-            <div className="flex items-center gap-1.5 overflow-hidden">
-              <span className="bg-orange-50 text-(--color-mainColor) text-[10px] font-bold italic px-1.5 py-0.5 rounded border border-gray-100 uppercase shrink-0 tracking-tighter">
-                Sale
-              </span>
-              <span className="text-[10px] text-gray-600 font-bold uppercase tracking-tight truncate">
-                CanoX Store
-              </span>
+          <div>
+            <div className="flex justify-between items-center mb-1.5">
+              <div className="flex items-center gap-1.5 min-w-0">
+                <div
+                  className={cn(
+                    "flex items-center gap-0.5 px-1.5 py-0.5 rounded border text-[9px] font-bold italic uppercase shadow-sm shrink-0",
+                    currentType.className,
+                  )}
+                >
+                  {currentType.icon}
+                  {currentType.text}
+                </div>
+                <span className="text-[11px] text-slate-400 font-bold truncate">
+                  {(product as any).shop?.shopName || "CanoX Store"}
+                </span>
+              </div>
+              <button
+                onClick={handleAddToWishlist}
+                className="p-1.5 rounded-full hover:bg-rose-50 text-slate-300 hover:text-rose-500 transition-all active:scale-75"
+              >
+                {loadingProductDetail ? (
+                  <Loader2 size={16} className="animate-spin" />
+                ) : isWishlisted ? (
+                  <HeartFilled size={18} className="text-rose-500" />
+                ) : (
+                  <Heart size={18} />
+                )}
+              </button>
             </div>
 
-            <button
-              onClick={handleAddToWishlist}
+            <h3
               className={cn(
-                "p-1.5 rounded-full transition-all duration-300 active:scale-90",
-                isList
-                  ? "text-gray-500 hover:text-red-500"
-                  : "absolute top-2 right-2 bg-white/80 backdrop-blur-md shadow-sm hover:bg-white hov" +
-                      "er:text-red-500 z-20",
+                "font-bold text-slate-800 group-hover:text-orange-600 transition-colors leading-snug tracking-tight mb-2",
+                isList ? "text-lg line-clamp-1" : "text-sm line-clamp-2 h-10",
               )}
             >
-              {loadingProductDetail ? (
-                <Loader2 size={14} className="animate-spin" />
-              ) : isWishlisted ? (
-                <HeartFilled size={isList ? 16 : 14} className="text-red-500" />
-              ) : (
-                <Heart
-                  size={isList ? 16 : 14}
-                  className="text-gray-600 group-hover:text-red-500"
-                />
-              )}
-            </button>
+              {product.name}
+            </h3>
+
+            <div className="flex items-center gap-2 flex-wrap min-h-6">
+              <span
+                className={cn(
+                  "font-bold text-orange-600 tracking-tight",
+                  isList ? "text-2xl" : "text-lg",
+                )}
+              >
+                {formatPrice(displayPrice)}
+              </span>
+
+              {hasDiscount && <CustomHasDiscount discount={discountPercent} />}
+            </div>
+
+            {/* {hasDiscount && (
+              <span className="text-[11px] text-slate-400 line-through font-medium italic block -mt-0.5">
+                {formatPrice(originalPrice)}
+              </span>
+            )} */}
           </div>
 
-          <h3
-            className={cn(
-              "font-bold text-gray-800 group-hover:text-(--color-mainColor) transition-colors l" +
-                "eading-snug mb-2",
-              isList
-                ? "text-sm md:text-base line-clamp-1"
-                : "text-sm line-clamp-2 h-10",
-            )}
-          >
-            {product.name}
-          </h3>
-
-          <div
-            className={cn(
-              "mt-auto",
-              isList && "flex items-end justify-between gap-3",
-            )}
-          >
-            <div className="flex-1">
-              <div className="flex items-baseline gap-2 mb-0.5">
-                <span
-                  className={cn(
-                    "font-semibold text-(--color-mainColor) tracking-tighter leading-none",
-                    isList ? "text-lg md:text-xl" : "text-lg",
-                  )}
-                >
-                  {formatPrice(displayPrice)}
+          <div className="mt-auto pt-3 border-t border-slate-50 space-y-2.5">
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-0.5 bg-amber-50 px-1.5 py-0.5 rounded-md shrink-0">
+                <Star size={10} className="text-amber-500 fill-amber-500" />
+                <span className="text-[10px] font-bold text-amber-700">
+                  4.8
                 </span>
-                {hasDiscount && (
-                  <span className="text-[10px] text-gray-600 line-through font-medium">
-                    {formatPrice(originalPrice)}
-                  </span>
-                )}
               </div>
 
-              <div className="flex items-center gap-2 mt-1">
-                <div className="flex items-center gap-0.5">
-                  <Star size={10} className="text-yellow-400 fill-yellow-400" />
-                  <span className="text-[10px] font-bold text-gray-600">
-                    4.5
-                  </span>
-                </div>
-                <span className="text-[10px] font-medium text-gray-600 border-l border-gray-200 pl-2">
-                  Đã bán 1.2k+
-                </span>
-                <span
-                  className={cn(
-                    "text-[10px] font-medium border-l border-gray-200 pl-2",
-                    isOutOfStock ? "text-red-500 font-bold" : "text-green-600",
-                  )}
-                >
-                  {isOutOfStock ? "Hết hàng" : `Kho: ${stockAvailable}`}
+              <div className="w-px h-3 bg-slate-200" />
+
+              <span className="text-[10px] font-bold text-slate-500 tracking-tighter whitespace-nowrap">
+                Đã bán 1.2k+
+              </span>
+
+              <div className="w-px h-3 bg-slate-200" />
+
+              <div
+                className={cn(
+                  "flex items-center gap-1 shrink-0",
+                  isOutOfStock ? "text-rose-500" : "text-emerald-600",
+                )}
+              >
+                {isOutOfStock ? (
+                  <Package size={10} />
+                ) : (
+                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                )}
+                <span className="text-[9px] font-bold uppercase tracking-tighter">
+                  {isOutOfStock
+                    ? "HẾT HÀNG"
+                    : `KHO: ${stockAvailable.toLocaleString()}`}
                 </span>
               </div>
             </div>
 
-            {isList && (
-              <div className="hidden sm:block">
-                <CustomButton
-                  variant="dark"
-                  className={cn(
-                    "h-9! px-4! text-[10px]! uppercase tracking-wider shadow-md",
-                    isOutOfStock &&
-                      "bg-gray-300! text-gray-500! cursor-not-allowed! border-gray-300!",
-                  )}
-                  onClick={handleAddToCart}
-                  loading={addingToCart}
-                  disabled={isOutOfStock || product.active === false}
-                  icon={!isOutOfStock && <ShoppingCart size={14} />}
-                >
-                  {isOutOfStock ? "Hết hàng" : "Thêm"}
-                </CustomButton>
-              </div>
-            )}
+            <div className="flex items-center gap-1 text-slate-400 group-hover:text-orange-500 transition-colors">
+              <MapPin size={10} className="shrink-0" />
+              <span className="text-[10px] font-bold truncate uppercase tracking-tight opacity-70">
+                {shopLocation}
+              </span>
+            </div>
           </div>
+
+          {isList && (
+            <div className="mt-2 hidden sm:block">
+              <CustomButton
+                variant="dark"
+                className={cn(
+                  "h-10 px-6 text-[10px] font-bold uppercase tracking-widest rounded-2xl shadow-lg",
+                  isOutOfStock && "opacity-50",
+                )}
+                onClick={handleAddToCart}
+                loading={addingToCart}
+                disabled={isOutOfStock}
+                icon={!isOutOfStock && <ShoppingCart size={14} />}
+              >
+                {isOutOfStock ? "HẾT HÀNG" : "MUA NGAY"}
+              </CustomButton>
+            </div>
+          )}
         </div>
       </Link>
+
       <AddToWishlistModal
         open={wishlistModalOpen}
         onCancel={() => {

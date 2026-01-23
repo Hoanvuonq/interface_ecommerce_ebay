@@ -107,6 +107,7 @@ export const ProductShowcase = ({
             >
               <ProductCard
                 product={product}
+                isType="new"
                 isWishlisted={
                   wishlistMap.get(product.variants?.[0]?.id || "") || false
                 }

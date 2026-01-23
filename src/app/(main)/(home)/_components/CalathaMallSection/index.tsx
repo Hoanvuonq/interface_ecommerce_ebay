@@ -32,7 +32,7 @@ export const CalathaMallSection = () => {
 
   return (
     <SectionSreen id="calatha-mall" animation="slideUp">
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-white/10 pb-6 mb-8">
+      <div className="flex flex-row sm:items-end justify-between gap-4 border-b border-white/10 pb-6 mb-8">
         <div className="space-y-2">
           <div className="flex items-center gap-2">
             <div className="h-2 w-2 rounded-full bg-yellow-500 animate-pulse" />
@@ -65,7 +65,7 @@ export const CalathaMallSection = () => {
             href="/products"
             className="group flex items-center gap-2 px-5 py-2.5 bg-white/5 border border-white/10 rounded-full text-white text-[11px] font-bold uppercase hover:bg-white hover:text-black transition-all"
           >
-            Xem Tất Cả{" "}
+            Xem Tất Cả
             <ArrowRight
               size={14}
               className="group-hover:translate-x-1 transition-transform"

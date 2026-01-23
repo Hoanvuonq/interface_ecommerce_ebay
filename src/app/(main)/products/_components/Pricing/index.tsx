@@ -1,30 +1,30 @@
 "use client";
-import { CustomPopover } from "@/components";
-import { Flame, Info, Tag } from "lucide-react";
+import { CustomHasDiscount, CustomPopover } from "@/components";
+import { Info, Tag } from "lucide-react";
+import Image from "next/image";
 import React from "react";
 import { PricingProps } from "../../_types/product";
-import InfoSale from "../InfoSale";
+import { InfoSale } from "../InfoSale";
 
 const Pricing: React.FC<PricingProps> = ({
   discountInfo,
   primaryPrice,
-  comparePrice, // Đây là giá gốc (trước giảm)
+  comparePrice,
   discountPercentage,
   priceAfterVoucher,
   formatPrice,
   priceRangeLabel,
 }) => {
-  // Logic kiểm tra có giảm giá hay không
-  // Sửa lại: Nếu có discountPercentage > 0 thì coi là có giảm giá
-  const hasDiscount = (discountPercentage && discountPercentage > 0) || (comparePrice && comparePrice > primaryPrice);
+  const hasDiscount =
+    (discountPercentage && discountPercentage > 0) ||
+    (comparePrice && comparePrice > primaryPrice);
 
-  // Nếu không có comparePrice từ props nhưng có discountPercentage, 
-  // ta có thể tự tính ngược lại giá gốc để hiển thị (tùy chọn)
-  // Ví dụ: Giá gốc = Giá hiện tại / (1 - %giảm)
-  const displayOriginalPrice = comparePrice 
-    ? comparePrice 
-    : (hasDiscount && discountPercentage) 
-      ? primaryPrice / (1 - discountPercentage / 100) 
+  // const displayOriginalPrice = comparePrice || null;
+
+  const displayOriginalPrice = comparePrice
+    ? comparePrice
+    : hasDiscount && discountPercentage
+      ? primaryPrice / (1 - discountPercentage / 100)
       : null;
 
   return (
@@ -36,10 +36,18 @@ const Pricing: React.FC<PricingProps> = ({
       <div className="flex flex-col gap-1">
         <div className="flex items-center justify-between mb-1">
           <div className="flex items-center gap-1.5">
-            <div className="flex items-center justify-center bg-red-500 rounded-md p-1 shadow-sm">
-              <Flame className="w-3.5 h-3.5 text-white fill-white" />
+            <div className="flex items-center justify-center bg-orange-200 rounded-md p-1 shadow-custom">
+              <div className="relative w-5 h-5">
+                <Image
+                  src="/gif/icons8-fire.gif"
+                  alt="fire"
+                  fill
+                  unoptimized
+                  className="object-contain drop-shadow-[0_0_8px_rgba(249,115,22,0.8)]"
+                />
+              </div>
             </div>
-            <span className="uppercase text-[13px] font-bold tracking-wider text-black">
+            <span className="uppercase text-[14px] font-bold  text-black">
               Giá tốt nhất
             </span>
             {discountInfo && (
@@ -52,22 +60,18 @@ const Pricing: React.FC<PricingProps> = ({
                 }
                 placement="bottomLeft"
               >
-                <Info className="w-5 h-5 text-blue-500 cursor-pointer hover:text-red-500 transition-colors" />
+                <Info className="w-5 h-5 text-red-400 cursor-pointer hover:text-red-600 transition-colors" />
               </CustomPopover>
             )}
           </div>
 
-          {/* Luôn hiển thị % giảm nếu có */}
           {hasDiscount && discountPercentage && (
-            <div className="bg-red-600 text-white text-[11px] font-bold px-2 py-0.5 rounded-lg shadow-sm animate-pulse">
-              GIẢM {discountPercentage}%
-            </div>
+            <CustomHasDiscount discount={discountPercentage} size="lg" />
           )}
         </div>
 
         <div className="flex items-baseline gap-3 flex-wrap">
-          {/* Giá chính (Giá sau giảm) */}
-          <span className="text-4xl sm:text-5xl font-semibold text-red-600 tracking-tight tabular-nums leading-none">
+          <span className="text-4xl sm:text-5xl font-bold text-red-600 tracking-tight tabular-nums leading-none">
             {formatPrice(primaryPrice)}
           </span>
 
@@ -87,14 +91,14 @@ const Pricing: React.FC<PricingProps> = ({
           </div>
         )}
 
-        {priceRangeLabel && (
+        {/* {priceRangeLabel && (
           <div className="mt-2 flex items-center gap-1 text-[11px] text-gray-500">
             <span className="opacity-70 italic font-medium">
               Khoảng giá từ shop:
             </span>
             <span className="font-bold text-gray-700">{priceRangeLabel}</span>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

@@ -15,7 +15,7 @@ interface InfoSaleProps {
     formatPrice: (price: number) => string;
 }
 
-const InfoSale: React.FC<InfoSaleProps> = ({ discountInfo, formatPrice }) => {
+export const InfoSale: React.FC<InfoSaleProps> = ({ discountInfo, formatPrice }) => {
     if (!discountInfo) return null;
 
     return (
@@ -106,5 +106,3 @@ const InfoSale: React.FC<InfoSaleProps> = ({ discountInfo, formatPrice }) => {
         </div>
     );
 };
-
-export default InfoSale;

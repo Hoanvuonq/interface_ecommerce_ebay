@@ -327,7 +327,7 @@ const [activeTab, setActiveTab] = useState('overview');
                         </div>
 
                         {/* Analysis Card */}
-                        <div className="bg-gradient-to-br from-indigo-500 to-blue-600 p-8 rounded-3xl text-white shadow-xl">
+                        <div className="bg-linear-to-br from-indigo-500 to-blue-600 p-8 rounded-3xl text-white shadow-xl">
                             <h4 className="font-semibold text-white uppercase tracking-[0.2em] text-[10px] mb-4 opacity-80">Insights</h4>
                             <div className="grid grid-cols-2 gap-4">
                                 <div>

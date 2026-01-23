@@ -22,10 +22,8 @@ export const SettingCard = ({
   workingConfig
 }: any) => {
   const [tempText, setTempText] = useState(value);
-  // FIX 1: Tạo state tạm để giữ cấu hình lịch khi đang chỉnh sửa
   const [tempConfig, setTempConfig] = useState(workingConfig);
 
-  // Đồng bộ lại khi mở mode Edit hoặc khi dữ liệu gốc từ Server thay đổi
   useEffect(() => {
     if (isEditing) {
       setTempText(value);
@@ -33,13 +31,11 @@ export const SettingCard = ({
     }
   }, [value, workingConfig, isEditing]);
 
-  // FIX 2: Dùng useCallback cho hàm onChange của component con để tránh re-render thừa
   const handleConfigChange = useCallback((newConfig: any) => {
     setTempConfig(newConfig);
   }, []);
 
   const handleFinalSubmit = () => {
-    // FIX 3: Gửi cả Text và Config mới lên cho cha để gọi API
     if (showTimeAction) {
       onSave(tempText, tempConfig);
     } else {
@@ -49,7 +45,6 @@ export const SettingCard = ({
 
   return (
     <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-xl shadow-custom overflow-hidden transition-all group">
-      {/* --- Card Header --- */}
       <div className="p-8 flex items-center justify-between gap-6">
         <div className="space-y-1.5 flex-1">
           <div className="flex items-center gap-2">
@@ -60,7 +55,6 @@ export const SettingCard = ({
         </div>
 
         <div className="flex items-center gap-4">
-          {/* Nút Toggle nhanh (Switch) */}
           <button
             type="button"
             onClick={onToggle}
@@ -77,7 +71,6 @@ export const SettingCard = ({
             />
           </button>
 
-          {/* Nút bật tắt chế độ Edit */}
           <button
             type="button"
             onClick={onEdit}
@@ -93,7 +86,6 @@ export const SettingCard = ({
         </div>
       </div>
 
-      {/* --- Vùng soạn thảo --- */}
       <AnimatePresence>
         {isEditing && (
           <motion.div
@@ -130,7 +122,6 @@ export const SettingCard = ({
                     <h3 className="text-sm font-bold uppercase text-gray-800 italic">Lịch biểu hoạt động</h3>
                   </div>
                   
-                  {/* Truyền tempConfig và handle change để không bị spam */}
                   <WorkingHoursConfig 
                     initialData={workingConfig} 
                     onChange={handleConfigChange} 

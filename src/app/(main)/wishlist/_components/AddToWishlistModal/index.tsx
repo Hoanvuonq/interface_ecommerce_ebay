@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { toast } from "sonner";
 import {
   Heart,
   Plus,
@@ -34,6 +33,7 @@ import {
 import { SectionHeader } from "@/components";
 import { ButtonField } from "@/components";
 import { Button } from "@/components/button/button";
+import { useToast } from "@/hooks/useToast";
 
 export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
   open,
@@ -52,12 +52,12 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
     desiredPrice: "",
     notes: "",
   });
-
+  const { success, error ,warning} = useToast();
   const [creatingWishlist, setCreatingWishlist] = useState(false);
   const [wishlists, setWishlists] = useState<any[]>([]);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [selectedVariantId, setSelectedVariantId] = useState<string | null>(
-    null
+    null,
   );
   const [submitting, setSubmitting] = useState(false);
   const [previewImage, setPreviewImage] = useState<string>("");
@@ -88,7 +88,7 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
     if (open && product) {
       loadWishlists();
       setSelectedVariantId(
-        defaultVariantId || product.variants?.[0]?.id || null
+        defaultVariantId || product.variants?.[0]?.id || null,
       );
     }
   }, [open, product, defaultVariantId, loadWishlists]);
@@ -113,16 +113,16 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
       const res = await uploadFile(file, UploadContext.WISHLIST_COVER);
       if (res.assetId) {
         setAssetId(res.assetId);
-        toast.success("Đã tải ảnh bìa");
+        success("Đã tải ảnh bìa");
       }
     } catch (err) {
-      toast.error("Lỗi tải ảnh");
+      error("Lỗi tải ảnh");
     }
   };
 
   const handleCreateWishlist = async () => {
     if (!formData.newWishlistName)
-      return toast.warning("Vui lòng nhập tên danh sách");
+      return warning("Vui lòng nhập tên danh sách");
 
     setCreatingWishlist(true);
     try {
@@ -132,7 +132,7 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
         coverImageAssetId: assetId || undefined,
       });
       if (res.success) {
-        toast.success("Đã tạo danh sách mới!");
+        success("Đã tạo danh sách mới!");
         setShowCreateForm(false);
         setFormData((prev) => ({
           ...prev,
@@ -150,7 +150,7 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.wishlistId || !selectedVariantId) {
-      return toast.error("Vui lòng chọn biến thể và danh sách lưu trữ");
+      return error("Vui lòng chọn biến thể và danh sách lưu trữ");
     }
 
     setSubmitting(true);
@@ -166,7 +166,7 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
       });
 
       if (res.success) {
-        toast.success("Đã thêm vào wishlist!");
+        success("Đã thêm vào wishlist!");
         onSuccess?.();
         onCancel();
       }
@@ -229,7 +229,10 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
         className="space-y-8 py-2"
       >
         <section>
-          <SectionHeader icon={<ShoppingBag size={14} />} title="Chọn Phiên Bản" />
+          <SectionHeader
+            icon={<ShoppingBag size={14} />}
+            title="Chọn Phiên Bản"
+          />
           <div className="grid grid-cols-3 gap-3">
             {product.variants?.map((v: any) => {
               const isSelected = selectedVariantId === v.id;
@@ -245,7 +248,7 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
                     "group relative p-2 rounded-2xl border transition-all cursor-pointer bg-white overflow-hidden text-left",
                     isSelected
                       ? "border-gray-500 bg-orange-50/10 ring-2 ring-orange-500/20 shadow-md"
-                      : "border-gray-100 hover:border-gray-200 hover:shadow-sm"
+                      : "border-gray-100 hover:border-gray-200 hover:shadow-sm",
                   )}
                 >
                   <div className="aspect-square rounded-xl overflow-hidden bg-gray-50 mb-2 relative">
@@ -272,7 +275,7 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
                     <p
                       className={cn(
                         "text-[10px] font-bold line-clamp-1",
-                        isSelected ? "text-orange-700" : "text-gray-600"
+                        isSelected ? "text-orange-700" : "text-gray-600",
                       )}
                     >
                       {v.optionValues?.map((o: any) => o.name).join(" / ") ||
@@ -291,7 +294,10 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
         <section className="bg-gray-50/50 p-4 rounded-3xl border border-gray-100">
           {!showCreateForm ? (
             <div className="space-y-3">
-              <SectionHeader icon={<Heart  size={14}/>} title="Lưu vào danh sách" />
+              <SectionHeader
+                icon={<Heart size={14} />}
+                title="Lưu vào danh sách"
+              />
               <div className="flex gap-3">
                 <div className="relative flex-1 group">
                   <SelectComponent
@@ -374,16 +380,16 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
                     }
                     autoFocus
                   />
-                
+
                   <ButtonField
                     htmlType="submit"
                     type="login"
                     form="add-to-wishlist-form"
-                   loading={creatingWishlist}
+                    loading={creatingWishlist}
                     onClick={handleCreateWishlist}
                     className="w-30 m-auto text-xs! rounded-full!"
                   >
-                   Tạo Ngay
+                    Tạo Ngay
                   </ButtonField>
                 </div>
               </div>
@@ -408,7 +414,10 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
             />
           </div>
           <div>
-            <SectionHeader icon={<CheckCircle2 size={14} />} title="Mức độ ưu tiên" />
+            <SectionHeader
+              icon={<CheckCircle2 size={14} />}
+              title="Mức độ ưu tiên"
+            />
             <SelectComponent
               options={priorityOptions}
               value={formData.priority.toString()}

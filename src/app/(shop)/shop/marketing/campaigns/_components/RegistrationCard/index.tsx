@@ -2,9 +2,17 @@
 
 import React from "react";
 import Image from "next/image";
-import { Tag, Trash2, ArrowUpRight, ShoppingBag, Activity } from "lucide-react";
+import {
+  Tag,
+  Trash2,
+  Activity,
+  Clock,
+  Calendar,
+  ShieldCheck,
+  User,
+} from "lucide-react";
 import { cn } from "@/utils/cn";
-
+import { CustomHasDiscount, CustomProgressBar } from "@/components";
 interface RegistrationCardProps {
   reg: any;
   statusStyles: any;
@@ -20,105 +28,125 @@ export const RegistrationCard: React.FC<RegistrationCardProps> = ({
   formatPrice,
   onCancel,
 }) => {
+  const formatDateTime = (dateStr: string) => {
+    if (!dateStr) return "--:--";
+    const date = new Date(dateStr);
+    return new Intl.DateTimeFormat("vi-VN", {
+      hour: "2-digit",
+      minute: "2-digit",
+      day: "2-digit",
+      month: "2-digit",
+    }).format(date);
+  };
+
   return (
-    <div className="group relative bg-[#fcfcfd] rounded-4xl p-1.5 border border-slate-200/60 shadow-custom transition-all duration-700 overflow-hidden flex flex-col">
-      <div className="absolute inset-0 bg-linear-to-br from-orange-50/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-
-      <div className="relative z-10 bg-white rounded-[28px] p-5 shadow-sm flex-1 flex flex-col">
-        <div className="flex gap-5">
-          <div className="relative shrink-0 w-28 h-28">
-            <div className="relative w-full h-full rounded-3xl overflow-hidden bg-slate-100 ring-1 ring-slate-200/50 group-hover:ring-orange-500/20 transition-all duration-700">
-              <Image
-                src={reg.productThumbnail || "https://picsum.photos/200/200"}
-                alt={reg.productName}
-                fill
-                className="object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
-                sizes="112px"
-              />
-              <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors" />
-            </div>
-
-            <div
-              className={cn(
-                "absolute -top-2 -right-2 w-10 h-10 rounded-2xl border-4 border-white flex items-center justify-center shadow-xl z-20 transition-transform group-hover:scale-110",
-                statusStyles.bg,
-                "text-white",
-              )}
-            >
-              {React.cloneElement(statusStyles.icon as React.ReactElement, {})}
-            </div>
+    <div className="group relative bg-white rounded-4xl transition-all duration-500 shadow-custom flex flex-col overflow-hidden p-3">
+      <div className="flex gap-3">
+        <div className="relative shrink-0 w-20 h-20">
+          <div className="w-full h-full rounded-2xl overflow-hidden ring-1 ring-slate-100 group-hover:ring-orange-500/20 transition-all">
+            <Image
+              src={reg.productThumbnail || "https://picsum.photos/200/200"}
+              alt={reg.productName}
+              fill
+              className="object-cover rounded-2xl group-hover:scale-105 transition-transform duration-700"
+              sizes="80px"
+            />
           </div>
+          <div
+            className={cn(
+              "absolute -top-1 -right-1 size-6 rounded-lg border-2 border-white flex items-center justify-center shadow-md z-20 text-white",
+              statusStyles.bg,
+            )}
+          >
+            {React.cloneElement(statusStyles.icon as React.ReactElement)}
+          </div>
+        </div>
 
-          <div className="flex-1 min-w-0">
-            <div className="flex justify-between items-start">
-              <span className="text-[10px] font-bold text-orange-500 bg-orange-50 px-3 py-1 rounded-full tracking-widest uppercase mb-2">
-                {reg.campaignType}
-              </span>
-              <ArrowUpRight className="w-5 h-5 text-gray-400 group-hover:text-orange-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
-            </div>
-
-            <h3 className="font-bold text-gray-900 text-lg leading-tight line-clamp-2 mb-2 tracking-tight">
+        <div className="flex-1 min-w-0 flex flex-col justify-between py-0.5">
+          <div className="space-y-1">
+            <h3 className="font-bold text-slate-800 text-[13px] leading-tight line-clamp-1 uppercase tracking-tight">
               {reg.productName}
             </h3>
-
-            <div className="flex items-center gap-2 text-[11px] font-semibold text-gray-400">
-              <Tag size={12} className="text-gray-400" />
-              <span className="truncate">{reg.campaignName}</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="my-3">
-          <p className="text-[10px] font-semibold text-gray-400 uppercase  mb-1">
-            Giá đăng ký hiện tại
-          </p>
-          <div className="flex items-baseline gap-3">
-            <span className="text-3xl font-bold text-gray-950 tracking-tighter">
-              {formatPrice(reg.salePrice || 0)}
-            </span>
-            <span className="text-sm font-semibold text-gray-400 line-through decoration-slate-200">
-              {formatPrice((reg.salePrice || 0) * 1.2)}
-            </span>
-          </div>
-        </div>
-
-        <div className="mt-auto pt-2 border-t border-slate-50">
-          <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <Activity size={14} className="text-orange-500" />
-              <span className="text-[12px] font-bold text-gray-600 ">
-                Sức mua thị trường
+              <span className="text-[12px] font-bold text-orange-500 bg-orange-50 px-1.5 py-0.5 rounded uppercase border border-orange-100 italic">
+                {reg.campaignName || "SALE"}
+              </span>
+              <span className="text-[12px] font-bold text-gray-600 flex items-center gap-1">
+                <ShieldCheck size={14} className="text-blue-500" />
+                {reg.variantSku || "N/A"}
               </span>
             </div>
-            <span className="text-xs font-bold text-gray-900">
-              {reg.stockSold}
-              <span className="text-gray-400 font-medium">/</span>
-              {reg.stockLimit}
-            </span>
           </div>
 
-          <div className="relative h-3 bg-slate-100 rounded-full p-0.5 overflow-hidden">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,var(--tw-gradient-stops))] from-white/20 to-transparent" />
-            <div
-              className={cn(
-                "h-full rounded-full transition-all duration-1000 ease-in-out relative shadow-[0_0_15px_rgba(0,0,0,0.1)]",
-                statusStyles.bg,
-              )}
-              style={{ width: `${progress}%` }}
-            >
-              <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/30 to-transparent w-full animate-shimmer" />
+          <div className="flex w-auto items-center justify-center gap-1.5 py-1 px-2 bg-slate-50 rounded-lg border border-slate-200">
+            <div className="flex items-center gap-1">
+              <Clock size={10} className="text-emerald-500" />
+              <span className="text-[12px] font-bold text-gray-800 tabular-nums">
+                {formatDateTime(reg.slotStartTime)}
+              </span>
+            </div>
+            <span className="text-gray-500 text-[12px]">—</span>
+            <div className="flex items-center gap-1">
+              <Calendar size={10} className="text-rose-500" />
+              <span className="text-[12px] font-bold text-gray-800 tabular-nums">
+                {formatDateTime(reg.slotEndTime)}
+              </span>
             </div>
           </div>
         </div>
       </div>
 
+      <div className="flex items-center justify-between mt-4 px-1">
+        <div className="flex items-center gap-2">
+          <span className="text-2xl font-bold text-orange-600 tracking-tighter tabular-nums leading-none">
+            {formatPrice(reg.salePrice || 0)}
+          </span>
+          <span className="text-[14px] font-bold text-gray-500 line-through mt-0.5">
+            {formatPrice(reg.originalPrice || 0)}
+          </span>
+        </div>
+        {reg.discountPercent > 0 && (
+          <CustomHasDiscount discount={reg.discountPercent} size="lg" />
+        )}
+      </div>
+
+      <div className="mt-3 px-1 space-y-1.5">
+        <div className="flex justify-between items-center text-[10px] font-bold uppercase text-gray-600">
+          <div className="flex items-center gap-1">
+            <Activity size={10} className="text-orange-500" />
+            <span>Stock Intensity</span>
+          </div>
+          <span className="text-slate-600 font-bold tabular-nums">
+            {reg.stockSold}/{reg.stockLimit}
+          </span>
+        </div>
+       
+        <CustomProgressBar
+          percent={reg.stockSold}
+          color="bg-linear-to-r from-orange-500 to-red-600"
+          className="h-2 rounded-full shadow-inner"
+        />
+      </div>
+
+      <div className="flex items-center justify-between mt-3 px-1 pt-2 border-t border-slate-50 opacity-80 hover:opacity-100 transition-opacity">
+        <div className="flex items-center gap-1.5">
+          <User size={15} className="text-gray-600" />
+          <p className="text-[12px] font-bold text-gray-900 lowercase italic">
+            @{reg.createdBy || "ebay"}
+          </p>
+        </div>
+        <p className="text-[11px] font-bold text-gray-900 ">
+          ID: {reg.id.slice(-6)}
+        </p>
+      </div>
+
       {reg.status === "PENDING" && (
         <button
           onClick={() => onCancel(reg.id)}
-          className="absolute bottom-10 right-10 w-12 h-12 rounded-[20px] bg-slate-950 text-white flex items-center justify-center opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 hover:bg-red-600 shadow-2xl shadow-slate-900/40 active:scale-90"
+          className="absolute top-2 right-2 size-7 rounded-full bg-slate-100 text-gray-600 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all hover:bg-rose-50 hover:text-rose-500 z-30"
           title="Hủy đăng ký"
         >
-          <Trash2 size={20} />
+          <Trash2 size={12} />
         </button>
       )}
     </div>

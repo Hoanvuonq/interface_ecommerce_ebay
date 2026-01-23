@@ -11,3 +11,4 @@ export * from "./components/customTag";
 export * from "./components/customTooltip";
 export * from "./components/customVideoModal";
 export * from "./components/customButtonActions";
+export * from "./components/customHasDiscount";

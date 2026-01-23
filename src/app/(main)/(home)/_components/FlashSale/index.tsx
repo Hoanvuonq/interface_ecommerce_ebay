@@ -12,7 +12,11 @@ import { useHomepageContext } from "../../_context/HomepageContext";
 import { SectionSreen } from "@/features/SectionSreen";
 
 export const FlashSaleSection: React.FC = () => {
-  const { flashSale, isLoading: contextLoading, wishlistMap } = useHomepageContext();
+  const {
+    flashSale,
+    isLoading: contextLoading,
+    wishlistMap,
+  } = useHomepageContext();
 
   const calculateDiscount = (price: number, salePrice: number) => {
     if (!price || !salePrice || price <= salePrice) return 0;
@@ -41,7 +45,7 @@ export const FlashSaleSection: React.FC = () => {
           const firstVariant = product.variants?.[0] || {};
           const discount = calculateDiscount(
             firstVariant.price,
-            firstVariant.salePrice
+            firstVariant.salePrice,
           );
           const isWishlisted = wishlistMap.get(firstVariant.id) || false;
           const soldPercentage = getSoldPercentage(product.id);
@@ -51,7 +55,7 @@ export const FlashSaleSection: React.FC = () => {
               <div
                 className={cn(
                   "bg-white rounded-4xl overflow-hidden shadow-md hover:shadow-2xl transition-all",
-                  "duration-300 transform group-hover:-translate-y-1 border border-gray-100"
+                  "duration-300 transform group-hover:-translate-y-1 border border-gray-100",
                 )}
               >
                 <div className="relative">
@@ -61,7 +65,11 @@ export const FlashSaleSection: React.FC = () => {
                     </div>
                   )}
 
-                  <ProductCard product={product} isWishlisted={isWishlisted} />
+                  <ProductCard
+                    product={product}
+                    isWishlisted={isWishlisted}
+                    isType="flashsale"
+                  />
 
                   {soldPercentage > 60 && (
                     <div className="absolute top-2 left-2 z-20 bg-orange-600 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full shadow-lg flex items-center gap-1 uppercase italic">
@@ -71,7 +79,12 @@ export const FlashSaleSection: React.FC = () => {
                   )}
                 </div>
 
-                <div className="px-3 pb-4 pt-2">
+                <div className="px-3 pb-4 pt-2 flex flex-col gap-2">
+                  <CustomProgressBar
+                    percent={soldPercentage}
+                    color="bg-linear-to-r from-orange-500 to-red-600"
+                    className="h-2 rounded-full shadow-inner"
+                  />
                   <div className="flex justify-between items-center mb-1.5 px-0.5">
                     <span className="text-[10px] text-gray-500 font-bold uppercase">
                       Đã bán {soldPercentage}%
@@ -80,12 +93,6 @@ export const FlashSaleSection: React.FC = () => {
                       Còn {100 - soldPercentage}%
                     </span>
                   </div>
-
-                  <CustomProgressBar
-                    percent={soldPercentage}
-                    color="bg-linear-to-r from-orange-500 to-red-600"
-                    className="h-2 rounded-full shadow-inner"
-                  />
                 </div>
               </div>
             </div>

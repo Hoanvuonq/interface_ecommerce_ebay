@@ -14,10 +14,11 @@ import { useEffect, useState, useMemo } from "react";
 import { BasicInfo, LegalInfo, TaxInfo, AddressInfo } from "../_components";
 import { useGetShopInfo } from "../_hooks/useShop";
 import { getStoredUserDetail } from "@/utils/jwt";
+
 import {
   StatusTabsVoucher,
   StatusTabItem,
-} from "../../vouchers/_components/StatusTabsVoucher";
+} from "../../marketing/vouchers/_components/StatusTabsVoucher";
 
 type TabKey = "basic" | "tax" | "legal" | "address";
 

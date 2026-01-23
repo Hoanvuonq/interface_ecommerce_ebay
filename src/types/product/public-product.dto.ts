@@ -110,7 +110,9 @@ export interface PublicProductDetailDTO {
   priceMin?: number | null;
   priceMax?: number | null;
   comparePrice?: number;
+  priceBeforeDiscount?: number | null; 
   active: boolean;
+  showDiscount?: number | null;
   approvalStatus: "APPROVED" | "PENDING" | "REJECTED" | "DRAFT";
   approvedBy?: string | null;
   approvedAt?: string | null;
@@ -128,6 +130,15 @@ export interface PublicProductDetailDTO {
   priceAfterBestShopVoucher?: number;
   priceAfterBestPlatformVoucher?: number;
   shippingRestrictions?: ShippingRestrictionsDTO | null;
+  activeCampaigns?: Array<{
+    campaignId: string;
+    campaignName: string;
+    campaignType: string;
+    sponsorType: string;
+    startTime: string;
+    endTime: string;
+    secondsRemaining: number;
+  }>;
   version: number;
 }
 

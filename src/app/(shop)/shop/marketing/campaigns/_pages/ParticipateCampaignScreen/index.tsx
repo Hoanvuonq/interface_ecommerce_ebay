@@ -1,21 +1,12 @@
 "use client";
 
-import { formatDateTime } from "@/hooks/format";
-import { cn } from "@/utils/cn";
+import { EmptyProductState } from "@/app/(main)/products/_components/EmptyProductState";
 import {
-  Calendar,
-  ChevronRight,
-  Clock,
-  Info,
-  LayoutGrid,
-  Package,
-  Plus,
-  Zap,
+  Zap
 } from "lucide-react";
-import Image from "next/image";
 import { useCampaignStore } from "../../../_stores/campaign.store";
-import { ParticipateCampaignScreenProps } from "./type";
 import { CampaignCard, CampaignDetailCard } from "../../_components";
+import { ParticipateCampaignScreenProps } from "./type";
 
 export const ParticipateCampaignScreen = ({
   handleSelectCampaign,
@@ -67,17 +58,10 @@ export const ParticipateCampaignScreen = ({
             setShowRegisterModal={setShowRegisterModal}
           />
         ) : (
-          <div className="h-full min-h-125 bg-white rounded-[3rem] p-24 text-center border-2 border-dashed border-slate-100 flex flex-col items-center justify-center group transition-colors hover:bg-slate-50/50">
-            <div className="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500 ring-8 ring-slate-50/50">
-              <Package className="w-10 h-10 text-slate-200" />
-            </div>
-            <p className="text-xl font-bold text-slate-800 uppercase italic tracking-tighter mb-2">
-              Khám phá Campaign
-            </p>
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em]">
-              Chọn một chương trình từ danh sách để kích hoạt module
-            </p>
-          </div>
+          <EmptyProductState
+            isShop={true}
+            message=" Chọn một chương trình từ danh sách để kích hoạt module"
+          />
         )}
       </div>
     </div>

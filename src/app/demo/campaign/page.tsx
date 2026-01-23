@@ -164,7 +164,7 @@ export default function CampaignDemoPage() {
             {error && (
                 <div className="bg-amber-50 border-b border-amber-200 px-4 py-3">
                     <div className="max-w-7xl mx-auto flex items-center gap-2 text-amber-700">
-                        <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                        <AlertCircle className="w-5 h-5 shrink-0" />
                         <p className="text-sm">{error}</p>
                     </div>
                 </div>

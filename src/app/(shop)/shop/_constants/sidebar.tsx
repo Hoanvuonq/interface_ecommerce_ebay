@@ -10,7 +10,7 @@ import {
   ShoppingCart,
   Ticket,
   UserCircle,
-  Wallet
+  Wallet,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -74,12 +74,12 @@ export const SHOP_SIDEBAR_ITEMS = [
       },
     ],
   },
-  {
-    key: "vouchers",
-    label: "Quản lý Voucher",
-    icon: <Ticket size={20} />,
-    href: "/shop/vouchers",
-  },
+  // {
+  //   key: "vouchers",
+  //   label: "Quản lý Voucher",
+  //   icon: <Ticket size={20} />,
+  //   href: "/shop/vouchers",
+  // },
   {
     key: "marketing",
     label: "Kênh marketing",
@@ -89,6 +89,11 @@ export const SHOP_SIDEBAR_ITEMS = [
         key: "marketing-promotion",
         label: "Khuyến mãi của shop",
         href: "/shop/marketing/promotion",
+      },
+      {
+        key: "marketing-vouchers",
+        label: "Quản lý Voucher",
+        href: "/shop/marketing/vouchers",
       },
       {
         key: "marketing-coupon",
@@ -105,7 +110,6 @@ export const SHOP_SIDEBAR_ITEMS = [
         label: "Điểm thưởng",
         href: "/shop/marketing/loyalty",
       },
-     
     ],
   },
   {
@@ -179,9 +183,9 @@ export const SHOP_SIDEBAR_ITEMS = [
         href: "/shop/decorate",
       },
       {
-        key: "shop-setup",
+        key: "shop-settings",
         label: "Thiết lập shop",
-        href: "/shop/setup",
+        href: "/shop/settings",
       },
       {
         key: "shop-complaint",
@@ -190,7 +194,6 @@ export const SHOP_SIDEBAR_ITEMS = [
       },
     ],
   },
-  
 ];
 
 export const SHOP_ROUTE_MAPPINGS = [
@@ -203,20 +206,50 @@ export const SHOP_ROUTE_MAPPINGS = [
   { prefix: "/shop/orders/address", key: "orders-address", parent: "orders" },
   { prefix: "/shop/finance/wallet", key: "finance-wallet", parent: "finance" },
   { prefix: "/shop/orders", key: "orders-all", parent: "orders" },
-  { prefix: "/shop/marketing/promotion", key: "marketing-promotion", parent: "marketing" },
-  { prefix: "/shop/marketing/coupon", key: "marketing-coupon", parent: "marketing" },
-  { prefix: "/shop/marketing/campaigns", key: "marketing-campaigns", parent: "marketing" },
-  { prefix: "/shop/marketing/loyalty", selectedKey: "marketing-loyalty", openKey: "marketing" },
-  { prefix: "/shop/vouchers", key: "vouchers" },
+
+  {
+    prefix: "/shop/marketing/promotion",
+    key: "marketing-promotion",
+    parent: "marketing",
+  },
+  {
+    prefix: "/shop/marketing/coupon",
+    key: "marketing-coupon",
+    parent: "marketing",
+  },
+  {
+    prefix: "/shop/marketing/campaigns",
+    key: "marketing-campaigns",
+    parent: "marketing",
+  },
+  {
+    prefix: "/shop/marketing/loyalty",
+    selectedKey: "marketing-loyalty",
+    openKey: "marketing",
+  },
+  {
+    prefix: "/shop/marketing/vouchers",
+    selectedKey: "marketing-vouchers",
+    openKey: "marketing",
+  },
+
   { prefix: "/shop/cskh/chat", key: "cskh-chat", parent: "cskh" },
   { prefix: "/shop/reviews", key: "cskh-review", parent: "cskh" },
   { prefix: "/shop/settings", key: "cskh-settings", parent: "cskh" },
-  { prefix: "/shop/finance/revenue", key: "finance-revenue", parent: "finance" },
+  {
+    prefix: "/shop/finance/revenue",
+    key: "finance-revenue",
+    parent: "finance",
+  },
   { prefix: "/shop/finance/bank", key: "finance-bank", parent: "finance" },
   { prefix: "/shop/finance/fees", key: "finance-fees", parent: "finance" },
   { prefix: "/shop/profile", key: "shop-profile", parent: "shop-management" },
   { prefix: "/shop/decorate", key: "shop-decorate", parent: "shop-management" },
-  { prefix: "/shop/setup", key: "shop-setup", parent: "shop-management" },
-  { prefix: "/shop/complaint", key: "shop-complaint", parent: "shop-management" },
+  { prefix: "/shop/settings", key: "shop-settings", parent: "shop-management" },
+  {
+    prefix: "/shop/complaint",
+    key: "shop-complaint",
+    parent: "shop-management",
+  },
   { prefix: "/shop/data", key: "data" },
 ];

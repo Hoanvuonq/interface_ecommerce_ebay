@@ -12,7 +12,7 @@ import {
 import {
   useBulkReadyForPickup,
   useGetPendingShipmentOrders,
-} from "../../../vouchers/_hooks/useShopOrder";
+} from "../../../marketing/vouchers/_hooks/useShopOrder";
 import { CARRIER_OPTIONS } from "../_constants/carrier.option.constants";
 
 import { DataTable } from "@/components";

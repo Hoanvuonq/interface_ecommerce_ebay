@@ -10,7 +10,7 @@ import {
   useGetShopOrderStatistics,
   useUpdateShopOrderStatus,
   useGetShopOrderById,
-} from "../../vouchers/_hooks/useShopOrder";
+} from "../../marketing/vouchers/_hooks/useShopOrder";
 import {
   TAB_KEYS,
   TAB_STATUS_MAP,

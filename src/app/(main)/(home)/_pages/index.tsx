@@ -8,6 +8,7 @@ import {
   ProductSection,
   IntroBanner,
   BannerSidebar,
+  MukbangDealSection,
 } from "../_components";
 
 export const HomeScreen = () => {
@@ -17,6 +18,7 @@ export const HomeScreen = () => {
       <Promotion />
       <CategoriesSection />
       <FlashSaleSection />
+      {/* <MukbangDealSection/> */}
       <ProductSection
         type="featured"
         showBadge={true}

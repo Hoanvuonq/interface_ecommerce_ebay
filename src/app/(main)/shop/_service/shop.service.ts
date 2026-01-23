@@ -74,7 +74,7 @@ export async function createShopAddress(
   payload: CreateShopAddressRequest,
 ): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
-    url: `/${API_GETSHOP}/${shopId}/address`,
+    url: `/${API_GETSHOP}/me/address`,
     method: "POST",
     data: payload,
     headers: {
@@ -89,7 +89,7 @@ export async function updateShopAddress(
   payload: UpdateShopAddressRequest,
 ): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
-    url: `/${API_GETSHOP}/${shopId}/address/${addressId}`,
+    url: `/${API_GETSHOP}/me/address/${addressId}`,
     method: "PUT",
     data: payload,
     headers: {

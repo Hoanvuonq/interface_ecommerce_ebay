@@ -5,7 +5,7 @@ import {
   PackageOpen,
   Plus,
   Tag,
-  TrendingUp
+  TrendingUp,
 } from "lucide-react";
 import Image from "next/image";
 import { useShopCampaign } from "../../../_hooks/useShopCampaign";
@@ -34,7 +34,9 @@ export const MyShopSaleScreen = ({
   const createForm = useCampaignStore((s) => s.createForm);
   const setCreateForm = useCampaignStore((s) => s.setCreateForm);
   const selectedVariants = useCampaignStore((s) => s.selectedVariants);
-  const setSelectedVariantsStore = useCampaignStore((s) => s.setSelectedVariants);
+  const setSelectedVariantsStore = useCampaignStore(
+    (s) => s.setSelectedVariants,
+  );
   const myProducts = useCampaignStore((s) => s.myProducts);
 
   const setSelectedVariants = (value: any) => {
@@ -45,7 +47,6 @@ export const MyShopSaleScreen = ({
     }
   };
 
-  // Lấy action từ Hook
   const {
     isLoading: loading,
     productsLoading,
@@ -111,10 +112,12 @@ export const MyShopSaleScreen = ({
             <div className="relative h-64 shrink-0 overflow-hidden">
               <Image
                 src={
-                  typeof selectedCampaign.bannerUrl === "string" && selectedCampaign.bannerUrl.trim().length > 0
-                    ? (selectedCampaign.bannerUrl.startsWith("http") || selectedCampaign.bannerUrl.startsWith("/")
-                        ? selectedCampaign.bannerUrl
-                        : `/${selectedCampaign.bannerUrl}`)
+                  typeof selectedCampaign.bannerUrl === "string" &&
+                  selectedCampaign.bannerUrl.trim().length > 0
+                    ? selectedCampaign.bannerUrl.startsWith("http") ||
+                      selectedCampaign.bannerUrl.startsWith("/")
+                      ? selectedCampaign.bannerUrl
+                      : `/${selectedCampaign.bannerUrl}`
                     : "https://picsum.photos/800/400"
                 }
                 alt="banner"
@@ -156,7 +159,16 @@ export const MyShopSaleScreen = ({
                   {selectedCampaignProducts.map((prod: any) => (
                     <ProductAnalyticsCard
                       key={prod.id}
-                      prod={prod}
+                      prod={{
+                        ...prod,
+                        startDate: prod.startDate || selectedCampaign.startDate,
+                        endDate: prod.endDate || selectedCampaign.endDate,
+                        scheduledAt:
+                          prod.scheduledAt ||
+                          selectedCampaign.createdDate ||
+                          selectedCampaign.scheduledAt,
+                        createdBy: prod.createdBy || selectedCampaign.createdBy,
+                      }}
                       formatPrice={formatPrice}
                     />
                   ))}
@@ -180,7 +192,6 @@ export const MyShopSaleScreen = ({
         )}
       </div>
 
-      {/* MODAL ĐĂNG KÝ / TẠO MỚI (Tích hợp PortalModal & 3 Bước) */}
       <CreateCampaignModal
         isOpen={!!showCreateModal}
         onClose={() => setShowCreateModal(null)}

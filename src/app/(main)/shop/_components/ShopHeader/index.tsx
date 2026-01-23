@@ -13,7 +13,7 @@ export const ShopHeader = ({ shop, isFollowing, onFollow, onChat, totalProducts 
           className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
           alt="shop-banner"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-black/20" />
         
         {/* Nút share nhanh trên banner */}
         <button className="absolute top-4 right-4 p-2 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/40 transition-all">
@@ -26,7 +26,7 @@ export const ShopHeader = ({ shop, isFollowing, onFollow, onChat, totalProducts 
         
         {/* Avatar với viền Neon nhẹ */}
         <div className="relative shrink-0 group">
-          <div className="w-28 h-28 md:w-36 md:h-36 rounded-[2rem] p-1.5 bg-gradient-to-tr from-orange-500 to-yellow-400 shadow-xl overflow-hidden">
+          <div className="w-28 h-28 md:w-36 md:h-36 rounded-[2rem] p-1.5 bg-linear-to-tr from-orange-500 to-yellow-400 shadow-xl overflow-hidden">
             <div className="w-full h-full rounded-[1.8rem] overflow-hidden bg-white">
               <img
                 src={shop.logoUrl || "/placeholder-avatar.jpg"}

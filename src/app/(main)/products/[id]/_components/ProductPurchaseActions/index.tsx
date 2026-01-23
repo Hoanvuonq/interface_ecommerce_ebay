@@ -9,6 +9,7 @@ import { TagComponents } from "@/components/tags";
 import { cn } from "@/utils/cn";
 import React from "react";
 import { ProductPurchaseActionsProps } from "../../_types/products";
+import { ActiveCampaignBanner } from "../ActiveCampaignBanner";
 
 export const ProductPurchaseActions: React.FC<ProductPurchaseActionsProps> = ({
   product,
@@ -27,20 +28,37 @@ export const ProductPurchaseActions: React.FC<ProductPurchaseActionsProps> = ({
   bestPlatformVoucher,
 }) => {
   const [currentQuantity, setCurrentQuantity] = React.useState(1);
+  const activeCampaign = product.activeCampaigns?.[0] || null;
+  const variant = selectedVariant || (product.variants?.[0] ?? null);
+
+  // const primaryPrice = variant ? variant.price : (product.priceMin ?? 0);
+
   const totalPrice = React.useMemo(() => {
     return primaryPrice * currentQuantity;
   }, [primaryPrice, currentQuantity]);
+
+  // const comparePrice = variant
+  //   ? variant.priceBeforeDiscount
+  //   : product.priceBeforeDiscount;
+
+  // const discountPercentage =
+  //   variant?.promotion?.discountPercent ?? product.showDiscount ?? null;
+
+  // const priceAfterVoucher = product.priceAfterBestVoucher;
+
   return (
     <section className="flex flex-col gap-y-3">
+      
       <div className="space-y-2">
         <div className="flex flex-wrap items-center gap-2">
-          {!product.active && (
+          {!product.category.active && (
             <TagComponents colorClass="bg-red-500 text-white font-bold px-2 py-0.5 rounded-sm text-[9px] uppercase tracking-wider">
               Hết hàng
             </TagComponents>
           )}
         </div>
-        <h1 className="text-xl font-bold text-gray-900 leading-snug tracking-tight">
+        {activeCampaign && <ActiveCampaignBanner campaign={activeCampaign} />}
+        <h1 className="text-2xl font-bold text-gray-900 leading-snug tracking-tight">
           {product.name}
         </h1>
         <ProductStats
@@ -99,6 +117,20 @@ export const ProductPurchaseActions: React.FC<ProductPurchaseActionsProps> = ({
                 </span>
               </div>
             )}
+            {/* Hiển thị giá gốc và giá sale nếu có promotion */}
+            {/* {selectedVariant?.promotion && (
+              <div className="flex items-baseline gap-2 mt-1">
+                <span className="text-lg font-medium text-gray-600 line-through decoration-gray-400/50">
+                  {formatPrice(selectedVariant.promotion.originalPrice)}
+                </span>
+                <span className="text-2xl font-bold text-red-600">
+                  {formatPrice(selectedVariant.promotion.salePrice)}
+                </span>
+                <span className="ml-2 text-xs font-bold text-orange-600 bg-orange-100 px-2 py-0.5 rounded">
+                  -{selectedVariant.promotion.discountPercent}%
+                </span>
+              </div>
+            )} */}
           </div>
         )}
       </div>
@@ -122,7 +154,7 @@ export const ProductPurchaseActions: React.FC<ProductPurchaseActionsProps> = ({
                         "font-bold",
                         selectedVariant.inventory.stock <= 5
                           ? "text-red-500"
-                          : "text-(--color-mainColor)"
+                          : "text-(--color-mainColor)",
                       )}
                     >
                       {selectedVariant.inventory.stock}

@@ -33,7 +33,7 @@ export const CountdownFlashSale = () => {
 
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
-                <h2 className="text-xl font-semibold italic text-gray-800 uppercase leading-none">
+                <h2 className="text-2xl font-semibold passero-one-regular italic text-gray-800 uppercase leading-none">
                   Flash <span className="text-orange-600">Sale</span>
                 </h2>
                 <span className="bg-red-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-sm animate-bounce">
@@ -41,7 +41,7 @@ export const CountdownFlashSale = () => {
                 </span>
               </div>
               <div className="flex items-center gap-1.5 mt-1">
-                <p className="text-xs font-medium text-gray-600">
+                <p className="text-xs font-semibold text-gray-700">
                   Kết thúc trong
                 </p>
                 <div className="h-1.5 w-16 bg-gray-100 rounded-full overflow-hidden">

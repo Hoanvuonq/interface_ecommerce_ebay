@@ -340,3 +340,25 @@ body {
     box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1) !important;
   }
 }
+
+@keyframes gradient-x {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes shine {
+  100% { left: 125%; }
+}
+
+.animate-gradient-x {
+  animation: gradient-x 4s ease infinite;
+}
+
+.animate-shine {
+  animation: shine 0.8s forwards;
+}
+
+.animate-spin-slow {
+  animation: spin 3s linear infinite;
+}

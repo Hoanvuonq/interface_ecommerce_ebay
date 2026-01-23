@@ -19,10 +19,8 @@ export const CreateCampaignConfirm: React.FC<ICreateCampaignConfirmProps> = ({
 
   return (
     <div className="space-y-6 animate-in fade-in zoom-in-95 duration-500">
-      {/* Main Card */}
       <div className="bg-white border border-slate-200 rounded-4xl overflow-hidden shadow-xl shadow-slate-100/50">
         <div className="p-8">
-          {/* Header */}
           <div className="flex items-center justify-between border-b border-slate-100 pb-6 mb-8">
             <div className="flex items-center gap-4">
               <div className="p-3 bg-green-50 text-green-600 rounded-2xl shadow-sm">
@@ -40,9 +38,7 @@ export const CreateCampaignConfirm: React.FC<ICreateCampaignConfirmProps> = ({
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            {/* Left Col: Info */}
             <div className="lg:col-span-7 space-y-6">
-              {/* Banner Preview with Glassmorphism */}
               {form.bannerPreview && (
                 <div className="group relative h-32 rounded-3xl overflow-hidden border border-slate-200 shadow-inner bg-slate-50">
                   <img

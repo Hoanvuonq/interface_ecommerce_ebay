@@ -9,7 +9,7 @@ export const EmptyProductState = ({
   onReset,
   message,
   link,
-  isShop = false, // Thêm prop này để kiểm tra xem có phải giao diện shop hay không
+  isShop = false, 
 }: {
   onReset?: () => void;
   message?: string;

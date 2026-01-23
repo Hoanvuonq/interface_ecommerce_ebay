@@ -15,7 +15,6 @@ export function useShopCampaign() {
   const store = useCampaignStore();
   const setAuthState = useCampaignStore((s) => s.setAuthState);
 
-  // 1. Khởi tạo AuthState ngay lập tức để enabled query chạy được luôn (Cực kỳ quan trọng cho HTTPS)
   const currentAuth = useMemo(() => getAuthState(), []);
 
   useEffect(() => {
