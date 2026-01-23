@@ -1,11 +1,9 @@
-
 "use client";
 
 import { useState, useRef, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { searchService, SuggestionItemDTO } from "@/services/search/search.service";
 import React from "react";
-
 
 export interface SearchOption {
   value: string;
@@ -20,32 +18,31 @@ export const useProductSearch = () => {
   const [searchValue, setSearchValue] = useState("");
   const [searchOptions, setSearchOptions] = useState<SearchOption[]>([]);
   const searchDebounceRef = useRef<NodeJS.Timeout | null>(null);
-  // --- 1. TRACKING SEARCH ---
+
   const handleTrackSearchSafe = useCallback(async (keyword: string, source: 'SUBMIT' | 'SUGGESTION_CLICK', categoryId?: string) => {
     try {
-      const trimmed = keyword.trim();
-      if (!trimmed) return;
-      await searchService.trackSearch({ keyword: trimmed, categoryId, source });
-    } catch {
-    }
+      const term = String(keyword || "").trim();
+      if (!term) return;
+      await searchService.trackSearch({ keyword: term, categoryId, source });
+    } catch {}
   }, []);
 
-  // --- 2. NAVIGATION ---
   const handleNavigateToProducts = useCallback((keyword: string, categoryId?: string) => {
     const params = new URLSearchParams();
-    if (keyword) params.set('keyword', keyword);
+    const term = String(keyword || "").trim();
+    if (term) params.set('keyword', term);
     if (categoryId) params.set('categoryId', categoryId);
     const qs = params.toString();
     router.push(qs ? `/products?${qs}` : '/products');
   }, [router]);
 
-  const handleSearchChange = useCallback((value: string) => {
-    setSearchValue(value);
+  const handleSearchChange = useCallback((value: any) => {
+    const stringVal = String(value || ""); // Fix lỗi .trim()
+    setSearchValue(stringVal);
 
-    if (searchDebounceRef.current) {
-      clearTimeout(searchDebounceRef.current);
-    }
-    const trimmed = value.trim();
+    if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current);
+
+    const trimmed = stringVal.trim();
     if (!trimmed) {
       setSearchOptions([]);
       return;
@@ -57,17 +54,7 @@ export const useProductSearch = () => {
         const options: SearchOption[] = (res.suggestions || []).map((s) => ({
           value: s.keyword,
           item: s,
-          label: (
-            // Logic rendering suggestion label
-            <div key={s.keyword} className="flex flex-col">
-              <span className="font-medium">{s.keyword}</span>
-              {typeof s.searchCount === "number" && (
-                <span className="text-xs text-gray-600">
-                  Đã tìm {new Intl.NumberFormat("vi-VN").format(s.searchCount)}{" "} lần
-                </span>
-              )}
-            </div>
-          ),
+          label: null 
         }));
         setSearchOptions(options);
       } catch {
@@ -76,8 +63,20 @@ export const useProductSearch = () => {
     }, SEARCH_DEBOUNCE_MS);
   }, []);
 
-  // --- 4. SUGGESTION SELECTION ---
-  const handleSuggestionSelect = useCallback((option: { value: string; item: SuggestionItemDTO }) => {
+  const handleSearchSubmit = useCallback((value?: string) => {
+    const keyword = String(value ?? searchValue ?? "").trim();
+    if (!keyword) return;
+    handleNavigateToProducts(keyword);
+    handleTrackSearchSafe(keyword, 'SUBMIT');
+  }, [searchValue, handleNavigateToProducts, handleTrackSearchSafe]);
+
+  const handleSuggestionSelect = useCallback((option: SearchOption) => {
+    // Fix lỗi "Cannot read properties of undefined (reading 'source')"
+    if (!option || !option.item) {
+      handleSearchSubmit(option?.value);
+      return;
+    }
+
     const { value: keyword, item } = option;
     const source = (item.source || '').toUpperCase();
 
@@ -85,8 +84,7 @@ export const useProductSearch = () => {
     setSearchOptions([]);
 
     if (source === 'PRODUCT' && (item.productSlug || item.productId)) {
-      const idOrSlug = item.productSlug || item.productId!;
-      router.push(`/products/${encodeURIComponent(idOrSlug)}`);
+      router.push(`/products/${encodeURIComponent(item.productSlug || item.productId!)}`);
       handleTrackSearchSafe(keyword, 'SUGGESTION_CLICK');
       return;
     }
@@ -94,32 +92,16 @@ export const useProductSearch = () => {
     if (source === 'CATEGORY' && (item.categorySlug || item.categoryId)) {
       if (item.categorySlug) {
         router.push(`/category/${encodeURIComponent(item.categorySlug)}`);
-      } else if (item.categoryId) {
+      } else {
         handleNavigateToProducts(keyword, item.categoryId);
       }
       handleTrackSearchSafe(keyword, 'SUGGESTION_CLICK', item.categoryId);
       return;
     }
 
-    // Mặc định KEYWORD
     handleNavigateToProducts(keyword, item.categoryId);
     handleTrackSearchSafe(keyword, 'SUGGESTION_CLICK', item.categoryId);
-  }, [router, handleTrackSearchSafe, handleNavigateToProducts]);
-
-  const handleSearchSubmit = useCallback((value?: string) => {
-    const keyword = (value ?? searchValue).trim();
-    if (!keyword) return;
-    handleNavigateToProducts(keyword);
-    handleTrackSearchSafe(keyword, 'SUBMIT');
-  }, [searchValue, handleNavigateToProducts, handleTrackSearchSafe]);
-
-  useEffect(() => {
-    return () => {
-      if (searchDebounceRef.current) {
-        clearTimeout(searchDebounceRef.current);
-      }
-    };
-  }, []);
+  }, [router, handleTrackSearchSafe, handleNavigateToProducts, handleSearchSubmit]);
 
   return {
     searchValue,

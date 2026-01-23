@@ -24,9 +24,11 @@ import Image from "next/image";
 export const AccountDropdown = () => {
   const isActuallyAuthenticated = useAuth();
   const [userData, setUserData] = useState({ name: "", email: "", image: "" });
+  const [mounted, setMounted] = useState(false); // Thêm state mounted
   const pathname = usePathname();
 
   useEffect(() => {
+    setMounted(true); // Đánh dấu đã mount thành công trên client
     if (isActuallyAuthenticated) {
       const info = getUserInfo();
       setUserData({
@@ -45,6 +47,7 @@ export const AccountDropdown = () => {
       : "default";
     logout(context as any);
   };
+
   const isManagementRoute = useMemo(() => {
     return (
       pathname?.startsWith("/shop") ||
@@ -97,6 +100,7 @@ export const AccountDropdown = () => {
     return items;
   }, [isActuallyAuthenticated, pathname]);
 
+  // Logic màu sắc động
   const shouldShowBlackText = useMemo(() => {
     return isSpecialRole && isManagementRoute;
   }, [isSpecialRole, isManagementRoute]);
@@ -106,7 +110,7 @@ export const AccountDropdown = () => {
       className={cn(
         "flex items-center gap-2 px-2 py-1.5 rounded-full transition-all duration-300 cursor-pointer select-none group border border-transparent",
         "hover:bg-white/10",
-        isActuallyAuthenticated
+        mounted && isActuallyAuthenticated // Chỉ dùng state authenticated khi đã mount
           ? "bg-white/5 backdrop-blur-md border-white/10 shadow-sm"
           : ""
       )}
@@ -114,12 +118,12 @@ export const AccountDropdown = () => {
       <div
         className={cn(
           "w-9 h-9 rounded-full flex items-center justify-center overflow-hidden shrink-0 border transition-all duration-300",
-          isActuallyAuthenticated
+          mounted && isActuallyAuthenticated
             ? "bg-gray-200 border-white/20"
             : "bg-gray-100 border-gray-200 text-gray-600 group-hover:text-(--color-mainColor)"
         )}
       >
-        {isActuallyAuthenticated && userData.image ? (
+        {mounted && isActuallyAuthenticated && userData.image ? (
           <Image
             src={userData.image}
             alt="avatar"
@@ -136,12 +140,13 @@ export const AccountDropdown = () => {
         <span
           className={cn(
             "hidden sm:inline font-bold transition-colors text-[12px] truncate max-w-30 leading-normal",
-            shouldShowBlackText && isSpecialRole
+            mounted && shouldShowBlackText && isSpecialRole
               ? "text-black group-hover:text-gray-900"
               : "text-gray-100 group-hover:text-white"
           )}
         >
-          {isActuallyAuthenticated ? userData.name : "Tài khoản"}
+          {/* Quan trọng: Tránh mismatch text giữa Server và Client */}
+          {mounted ? (isActuallyAuthenticated ? userData.name : "Tài khoản") : "Tài khoản"}
         </span>
         <span className="flex gap-1 items-center">
           <CircleDollarSign size={14} className="text-yellow-500" />
@@ -155,7 +160,7 @@ export const AccountDropdown = () => {
         size={14}
         className={cn(
           "transition-all ml-0.5",
-          shouldShowBlackText && isSpecialRole
+          mounted && shouldShowBlackText && isSpecialRole
             ? "text-black"
             : "text-gray-500 group-hover:text-white"
         )}
@@ -165,7 +170,7 @@ export const AccountDropdown = () => {
 
   return (
     <AppPopover trigger={Trigger} className="w-72 p-1.5" align="right">
-      {isActuallyAuthenticated && (
+      {mounted && isActuallyAuthenticated && (
         <div className="p-3 mb-2 bg-gray-50 border border-gray-100 rounded-xl flex items-center gap-3">
           <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-custom shrink-0 bg-white">
             {userData.image ? (
@@ -195,7 +200,7 @@ export const AccountDropdown = () => {
       )}
 
       <div className="space-y-0.5">
-        {currentMenuItems.map((item) => {
+        {mounted && currentMenuItems.map((item) => {
           const isLogout = item.isLogout;
           const commonClass = cn(
             "group flex items-center gap-3 px-2 py-2 rounded-lg transition-all duration-200 w-full cursor-pointer select-none",

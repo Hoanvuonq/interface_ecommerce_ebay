@@ -3,7 +3,7 @@
 import _ from "lodash";
 import dynamic from "next/dynamic";
 import { useParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
 
 // Services & Utils
 import { createConversation } from "@/app/(chat)/_services";
@@ -29,16 +29,13 @@ import HomeShopLayout from "../_components/HomeShopLayout";
 import ProductListLayout from "../_components/ProductListLayout";
 
 const CustomerShopChat = dynamic(
-  () =>
-    import("@/app/(chat)/_components/CustomerShopChat").then(
-      (mod) => mod.CustomerShopChat
-    ),
+  () => import("@/app/(chat)/_components/CustomerShopChat").then((mod) => mod.CustomerShopChat),
   { ssr: false }
 );
 
 export default function ShopPage() {
   const { id: shopId } = useParams() as { id: string };
-  const { success } = useToast();
+  const { success, warning } = useToast();
 
   // --- STATE ---
   const [loading, setLoading] = useState(true);
@@ -58,63 +55,56 @@ export default function ShopPage() {
   const pageSize = 20;
   const user = getStoredUserDetail();
 
-  const isShopHome = activeTab === "all" && !searchKeyword && !selectedCategory;
+  const isShopHome = useMemo(() => 
+    activeTab === "all" && !searchKeyword && !selectedCategory,
+  [activeTab, searchKeyword, selectedCategory]);
 
-  // --- FETCH DATA ---
+  // --- FETCH INITIAL DATA ---
   useEffect(() => {
     if (!shopId) return;
-    const fetchShop = async () => {
+    const initData = async () => {
       try {
         setLoading(true);
-        const res = await getShopDetail(shopId);
-        const data = _.get(res, "data");
-        if (data) {
+        const [shopRes, catRes] = await Promise.all([
+          getShopDetail(shopId),
+          CategoryService.getAllParents()
+        ]);
+
+        const shopData = _.get(shopRes, "data");
+        if (shopData) {
           setShop({
-            ...data,
-            logoUrl: data.logoUrl ? toPublicUrl(data.logoUrl) : undefined,
-            bannerUrl: data.bannerUrl ? toPublicUrl(data.bannerUrl) : undefined,
+            ...shopData,
+            logoUrl: shopData.logoUrl ? toPublicUrl(shopData.logoUrl) : undefined,
+            bannerUrl: shopData.bannerUrl ? toPublicUrl(shopData.bannerUrl) : undefined,
           });
         }
+
+        const rawCats = _.get(catRes, "data", []) as CategoryResponse[];
+        const flatten = (list: CategoryResponse[]): CategoryResponse[] =>
+          _.flatMap(list, (cat) => [cat, ...flatten(cat.children || [])]);
+        setCategories(flatten(rawCats));
       } finally {
         setLoading(false);
       }
     };
-
-    const fetchCats = async () => {
-      const res = await CategoryService.getAllParents();
-      const raw = _.get(res, "data", []) as CategoryResponse[];
-      const flatten = (list: CategoryResponse[]): CategoryResponse[] =>
-        _.flatMap(list, (cat) => [cat, ...flatten(cat.children || [])]);
-      setCategories(flatten(raw));
-    };
-
-    fetchShop();
-    fetchCats();
+    initData();
   }, [shopId]);
 
-  // --- FETCH PRODUCTS ---
+  // --- FETCH PRODUCTS (Debounced logic for search) ---
   useEffect(() => {
     if (!shopId) return;
     const fetchProducts = async () => {
       setLoadingProducts(true);
       try {
-        const res = await publicProductService.getByShop(
-          shopId,
-          currentPage,
-          pageSize
-        );
+        const res = await publicProductService.getByShop(shopId, currentPage, pageSize);
         let list = _.get(res, "data.content", []);
 
+        // Client-side filtering as secondary (Server-side should be preferred if API supports)
         if (searchKeyword) {
-          list = _.filter(list, (p) =>
-            _.toLower(p.name).includes(_.toLower(searchKeyword))
-          );
+          list = _.filter(list, (p) => _.toLower(p.name).includes(_.toLower(searchKeyword)));
         }
         if (selectedCategory) {
-          list = _.filter(
-            list,
-            (p) => _.get(p, "category.id") === selectedCategory
-          );
+          list = _.filter(list, (p) => _.get(p, "category.id") === selectedCategory);
         }
 
         if (sortBy === "price_asc") list = _.orderBy(list, ["price"], ["asc"]);
@@ -130,7 +120,7 @@ export default function ShopPage() {
   }, [shopId, currentPage, searchKeyword, selectedCategory, sortBy]);
 
   const handleChat = useCallback(async () => {
-    if (!user?.userId) return alert("Vui lòng đăng nhập để chat!");
+    if (!user?.userId) return warning("Vui lòng đăng nhập để trao đổi với shop!");
     if (shop?.userId) {
       const res = await createConversation({
         conversationType: ConversationType.BUYER_TO_SHOP,
@@ -139,22 +129,27 @@ export default function ShopPage() {
       });
       if (_.get(res, "success")) setShopChatOpen(true);
     }
-  }, [shop, user]);
+  }, [shop, user, warning]);
 
-  if (loading)
-    return (
-      <div className="h-screen flex items-center justify-center bg-orange-50">
-        <div className="w-10 h-10 border-4 border-gray-400 border-t-transparent rounded-full animate-spin" />
+  if (loading) return (
+    <div className="h-screen flex flex-col items-center justify-center bg-white">
+      <div className="relative flex items-center justify-center">
+        <div className="w-16 h-16 border-4 border-orange-100 rounded-full" />
+        <div className="absolute w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin" />
       </div>
-    );
+      <p className="mt-4 text-slate-400 font-bold text-sm animate-pulse uppercase tracking-widest">Đang tải cửa hàng...</p>
+    </div>
+  );
 
-  if (!shop)
-    return (
-      <div className="p-20 text-center text-gray-600">Shop không tồn tại</div>
-    );
+  if (!shop) return (
+    <div className="h-[60vh] flex flex-col items-center justify-center text-slate-500 gap-4">
+      <div className="text-6xl text-slate-200 font-black tracking-tighter italic">404</div>
+      <p className="font-bold uppercase text-xs tracking-[0.3em]">Cửa hàng này không còn tồn tại</p>
+    </div>
+  );
 
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="min-h-screen bg-[#F8F9FB]">
       <PageContentTransition>
         <ShopHeader
           shop={shop}
@@ -171,53 +166,61 @@ export default function ShopPage() {
           setSearchKeyword={setSearchKeyword}
         />
 
-        <main className="mx-auto max-w-7xl px-4 pt-4 sm:px-6 lg:px-8">
-          <div className={`flex flex-col gap-8 ${!isShopHome ? "lg:flex-row" : ""}`}>
+        <main className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
+          <div className={`flex flex-col gap-8 transition-all duration-500 ${!isShopHome ? "lg:flex-row" : ""}`}>
             
+            {/* Sidebar chỉ hiện ở tab Sản phẩm hoặc khi có Filter */}
             {!isShopHome && (
-              <aside className="hidden lg:block w-64 space-y-6 shrink-0 sticky top-24 pb-2 h-fit animate-in fade-in slide-in-from-left-4 duration-500">
-                <CategorySidebar
-                  isShop={true}
-                  data={_.take(categories, 15)}
-                  activeId={selectedCategory}
-                  onSelect={(id) => {
-                    setSelectedCategory(id);
-                    setCurrentPage(0);
-                  }}
-                />
+              <aside className="hidden lg:block w-72 space-y-6 shrink-0 sticky top-20 pb-4 h-fit animate-in fade-in slide-in-from-left-4 duration-700">
+                <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-2">
+                  <CategorySidebar
+                    isShop={true}
+                    data={_.take(categories, 15)}
+                    activeId={selectedCategory}
+                    onSelect={(id) => {
+                      setSelectedCategory(id);
+                      setCurrentPage(0);
+                    }}
+                  />
+                </div>
               </aside>
             )}
 
             <section className="flex-1">
-              {isShopHome ? (
-                <HomeShopLayout 
-                  products={products}
-                  onViewAll={() => setActiveTab('new')}
-                  onSaveVoucher={(code) => success(`Đã lưu mã ${code}`)}
-                />
-              ) : (
-                <ProductListLayout
-                  products={products}
-                  loading={loadingProducts}
-                  totalProducts={totalProducts}
-                  currentPage={currentPage}
-                  pageSize={pageSize}
-                  searchKeyword={searchKeyword}
-                  selectedCategory={selectedCategory}
-                  sortBy={sortBy}
-                  onSetSortBy={setSortBy}
-                  onPageChange={setCurrentPage}
-                  onClearFilter={() => {
-                    setSearchKeyword("");
-                    setSelectedCategory(undefined);
-                  }}
-                />
-              )}
+              <div className="transition-all duration-700 ease-in-out">
+                {isShopHome ? (
+                  <HomeShopLayout 
+                    products={products}
+                    onViewAll={() => setActiveTab('new')}
+                    onSaveVoucher={(code) => success(`Đã lưu mã ${code} thành công!`)}
+                  />
+                ) : (
+                  <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+                    <ProductListLayout
+                      products={products}
+                      loading={loadingProducts}
+                      totalProducts={totalProducts}
+                      currentPage={currentPage}
+                      pageSize={pageSize}
+                      searchKeyword={searchKeyword}
+                      selectedCategory={selectedCategory}
+                      sortBy={sortBy}
+                      onSetSortBy={setSortBy}
+                      onPageChange={setCurrentPage}
+                      onClearFilter={() => {
+                        setSearchKeyword("");
+                        setSelectedCategory(undefined);
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
             </section>
           </div>
         </main>
       </PageContentTransition>
 
+      {/* Floating Chat Button (Mobile) or Chat Box */}
       {shop.userId && (
         <CustomerShopChat
           open={shopChatOpen}

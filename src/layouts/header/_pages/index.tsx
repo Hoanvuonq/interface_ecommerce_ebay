@@ -94,12 +94,6 @@ export const Header = () => {
                 />
               </div>
 
-              {/* <div className="hidden md:block mt-1">
-                 <HotKeywords 
-                    keywords={hotKeywords} 
-                    onKeywordSelect={handleHotKeywordSelect} 
-                 /> 
-              </div> */}
             </div>
 
             <div className="hidden md:flex items-center space-x-3 lg:space-x-5 shrink-0">
@@ -108,7 +102,15 @@ export const Header = () => {
               <AccountDropdown />
             </div>
           </div>
+          
+              {/* <div className="hidden md:block mt-1">
+                 <HotKeywords 
+                    keywords={hotKeywords} 
+                    onKeywordSelect={handleHotKeywordSelect} 
+                 /> 
+              </div> */}
         </div>
+        
       </div>
 
       <MobileMenuDrawer

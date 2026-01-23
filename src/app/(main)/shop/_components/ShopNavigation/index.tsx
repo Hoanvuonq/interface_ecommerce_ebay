@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/utils/cn";
-import { Search } from "lucide-react";
+import { Search, Flame, LayoutGrid, Home } from "lucide-react";
 
 interface ShopNavigationProps {
   activeTab: string;
@@ -17,67 +17,71 @@ export default function ShopNavigation({
   setSearchKeyword,
 }: ShopNavigationProps) {
   const tabs = [
-    { id: "all", label: "Trang Chủ" },
-    { id: "new", label: "Sản Phẩm" },
-    { id: "sale", label: "Khuyến mãi" },
+    { id: "all", label: "Trang Chủ", icon: Home },
+    { id: "new", label: "Sản Phẩm", icon: LayoutGrid },
+    { id: "sale", label: "Khuyến mãi", icon: Flame },
   ];
 
   return (
-    <div className="sticky top-0 z-30 bg-white/95 backdrop-blur-xl border-b border-gray-100 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.03)] mb-8 transition-all duration-300">
+    <div className="sticky max-w-7xl mx-auto top-2 mt-5 z-30 bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm mb-8">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 gap-4">
-          <div className="flex gap-1 overflow-x-auto scrollbar-none h-full items-center no-scrollbar">
+        <div className="flex items-center justify-between h-16 gap-8">
+          
+          {/* Tabs Section */}
+          <div className="flex gap-2 h-full items-center overflow-x-auto no-scrollbar py-2">
             {tabs.map((tab) => {
               const isActive = activeTab === tab.id;
+              const Icon = tab.icon;
               return (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`
-                    relative h-full px-5 text-sm font-bold uppercase tracking-wide transition-all duration-300 flex items-center justify-center whitespace-nowrap
-                    ${
-                      isActive
-                        ? "text-(--color-mainColor)"
-                        : "text-gray-500 hover:text-(--color-mainColor)/80 hover:bg-gray-50"
-                    }
-                  `}
+                  className={cn(
+                    "relative group flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all duration-300 whitespace-nowrap",
+                    isActive 
+                      ? "text-(--color-mainColor) bg-(--color-mainColor)/5" 
+                      : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
+                  )}
                 >
-                  {tab.label}
+                  <Icon size={16} className={cn("transition-transform duration-300", isActive && "scale-110")} />
+                  <span className="tracking-tight">{tab.label}</span>
 
-                  <span
-                    className={cn(
-                      "absolute bottom-0 left-0 h-1 w-full rounded-t-full bg-(--color-mainColor) transform transition-all duration-300 ease-out",
-                      ` ${ isActive? "scale-x-100 opacity-100": "scale-x-0 opacity-0"}`
-                    )}
-                  />
+                  {/* Active Indicator (Underline mượt hơn) */}
+                  {isActive && (
+                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 w-8 rounded-full bg-(--color-mainColor) animate-in fade-in zoom-in duration-300" />
+                  )}
                 </button>
               );
             })}
           </div>
 
-          <div className="hidden md:block relative group w-72">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          {/* Search Bar Section */}
+          <div className="relative group w-full max-w-[320px] hidden sm:block">
+            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
               <Search
-                size={18}
-                className="text-gray-600 transition-colors group-focus-within:text-(--color-mainColor)"
+                size={16}
+                className="text-slate-400 transition-colors group-focus-within:text-(--color-mainColor)"
               />
             </div>
             <input
               type="text"
               value={searchKeyword}
               onChange={(e) => setSearchKeyword(e.target.value)}
-              placeholder="Tìm kiếm sản phẩm..."
+              placeholder="Tìm trong cửa hàng..."
               className={cn(
-                "block w-full pl-10 pr-4 py-2.5 placeholder:text-gray-600",
-                "bg-gray-100/50 border border-transparent",
-                "rounded-xl text-sm text-gray-700 transition-all duration-300",
-                "focus:bg-white",
-                "focus:border-(--color-mainColor)/30",
-                "focus:ring-4 focus:ring-(--color-mainColor)/10",
-                "focus:outline-none",
-                "hover:bg-white hover:shadow-sm hover:border-gray-200"
+                "w-full pl-10 pr-4 py-2 text-sm rounded-2xl transition-all duration-300",
+                "bg-slate-100/50 border border-slate-100",
+                "placeholder:text-slate-400 placeholder:font-medium",
+                "focus:bg-white focus:border-(--color-mainColor)/40 focus:ring-4 focus:ring-(--color-mainColor)/5 focus:outline-none",
+                "hover:bg-slate-100/80"
               )}
             />
+            {/* Ký tự phím tắt trang trí cho chuyên nghiệp */}
+            <div className="absolute inset-y-0 right-3 hidden lg:flex items-center">
+              <kbd className="px-1.5 py-0.5 text-[10px] font-bold text-slate-400 bg-white border border-slate-200 rounded-md shadow-sm">
+                /
+              </kbd>
+            </div>
           </div>
         </div>
       </div>
