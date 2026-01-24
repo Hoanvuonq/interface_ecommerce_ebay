@@ -9,7 +9,7 @@ export const StatCard = ({ item }: { item: any }) => {
   return (
     <div
       className={cn(
-        "group bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.02)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.06)]",
+        "group bg-white rounded-3xl p-6 shadow-custom",
         "border border-gray-100 hover:border-gray-100 transition-all duration-500 relative overflow-hidden flex flex-col justify-between min-h-47.5"
       )}
     >
@@ -36,7 +36,7 @@ export const StatCard = ({ item }: { item: any }) => {
             <AnimatedBadge
               text={`${item.percent}% ${isHighPerformance ? "↑" : "→"}`}
               type={isHighPerformance ? "new" : "hot"}
-              size="small"
+              size="large"
               className={cn(
                 "font-semibold tracking-tighter border-0 shadow-lg",
                 isHighPerformance
@@ -48,7 +48,7 @@ export const StatCard = ({ item }: { item: any }) => {
         </div>
 
         <div>
-          <p className="text-gray-600 text-[10px] font-semibold uppercase tracking-[0.2em] mb-1.5 opacity-80 group-hover:text-gray-600 transition-colors">
+          <p className="text-gray-600 text-[10px] font-semibold uppercase tracking-wider mb-1.5 opacity-80 group-hover:text-gray-600 transition-colors">
             {item.title}
           </p>
           <div className="flex items-baseline gap-2 mb-4">

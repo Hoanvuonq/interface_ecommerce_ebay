@@ -5,11 +5,25 @@ import { SelectComponent } from "@/components";
 import { cn } from "@/utils/cn";
 import _ from "lodash";
 import { RotateCw, Search, XCircle } from "lucide-react";
-import React from "react";
+import React, { useMemo } from "react";
 import { DATA_TABS, UserTableFilterProps } from "./type";
-
+import {
+  StatusTabs,
+  StatusTabItem,
+} from "@/app/(shop)/shop/_components/Products/StatusTabs";
 
 export const UserTableFilter: React.FC<UserTableFilterProps> = ({ logic }) => {
+  const tabsWithCounts = useMemo(() => {
+    return DATA_TABS.map((tab) => ({
+      ...tab,
+      count: _.get(
+        logic.statistics,
+        tab.key === "ALL" ? "totalUsers" : `status.${tab.key}`,
+        0,
+      ),
+    })) as StatusTabItem<string>[];
+  }, [logic.statistics]);
+
   return (
     <div className="bg-white p-6 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-50 mb-8 space-y-6">
       <div className="flex flex-col lg:flex-row justify-between gap-4">
@@ -22,7 +36,7 @@ export const UserTableFilter: React.FC<UserTableFilterProps> = ({ logic }) => {
             <input
               className={cn(
                 "w-full pl-12 pr-4 py-3 rounded-2xl bg-gray-50 border-none ",
-                "focus:ring-2 focus:ring-orange-500/20 outline-none font-bold text-sm text-gray-700 placeholder:text-gray-600 transition-all"
+                "focus:ring-2 focus:ring-orange-500/20 outline-none font-bold text-sm text-gray-700 placeholder:text-gray-600 transition-all",
               )}
               placeholder="Tìm kiếm username hoặc email..."
               value={logic.searchKeyword}
@@ -69,51 +83,17 @@ export const UserTableFilter: React.FC<UserTableFilterProps> = ({ logic }) => {
         </div>
       </div>
 
-      <div className="flex gap-2 border-b border-gray-100 pb-1 overflow-x-auto custom-scrollbar">
-        {DATA_TABS.map((tab) => {
-          const count = _.get(
-            logic.statistics,
-            tab.key === "ALL" ? "totalUsers" : `status.${tab.key}`,
-            0
-          );
-          const isActive = logic.activeTab === tab.key;
-
-          return (
-            <button
-              key={tab.key}
-              onClick={() =>
-                logic.updateState({
-                  activeTab: tab.key,
-                  pagination: { ...logic.pagination, current: 1 },
-                })
-              }
-              className={cn(
-                "px-6 py-4 font-semibold text-[11px] uppercase tracking-widest transition-all relative whitespace-nowrap group",
-                isActive
-                  ? "text-orange-500"
-                  : "text-gray-600 hover:text-gray-600"
-              )}
-            >
-              <span className="relative z-10 flex items-center gap-2">
-                {tab.label}
-                <span
-                  className={cn(
-                    "px-2 py-0.5 rounded-lg text-[9px] transition-colors",
-                    isActive
-                      ? "bg-orange-100 text-orange-600"
-                      : "bg-gray-100 text-gray-500 group-hover:bg-gray-200"
-                  )}
-                >
-                  {count}
-                </span>
-              </span>
-
-              {isActive && (
-                <div className="absolute bottom-0 left-0 right-0 h-1 bg-orange-500 rounded-t-full shadow-[0_-4px_12px_rgba(249,115,22,0.4)] animate-in slide-in-from-bottom-1" />
-              )}
-            </button>
-          );
-        })}
+      <div className="pt-2 border-t border-gray-50">
+        <StatusTabs
+          tabs={tabsWithCounts}
+          current={logic.activeTab}
+          onChange={(key) =>
+            logic.updateState({
+              activeTab: key,
+              pagination: { ...logic.pagination, current: 1 },
+            })
+          }
+        />
       </div>
     </div>
   );

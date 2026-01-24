@@ -1,83 +1,92 @@
 export interface OrderItemResponse {
-    itemId: string;
-    productId: string;
-    variantId: string;
-    sku: string;
-    productName: string;
-    imageBasePath: string;
-    imageExtension: string;
-    variantAttributes: string;
-    unitPrice: number;
-    quantity: number;
-    discountAmount: number;
-    lineTotal: number;
-    fulfillmentStatus: string;
-    reviewed: boolean;
+  itemId: string;
+  productId: string;
+  variantId: string;
+  sku: string;
+  productName: string;
+  imageBasePath: string | null;
+  imageExtension: string | null;
+  variantAttributes: any; // Có thể là string hoặc object tùy API
+  unitPrice: number;
+  quantity: number;
+  discountAmount: number;
+  lineTotal: number;
+  reviewed: boolean;
 }
 
 export interface ShopResponse {
-    shopId: string;
-    shopName: string;
-    logoUrl: string;
-    // Add other fields if necessary
+  userId: string;
+  shopId: string;
+  shopName: string;
+  description: string;
+  logoUrl: string | null;
+  bannerUrl: string | null;
+  status: string;
+  onVacation: boolean;
+  shop_location: string;
+  place: string;
+  last_active_time: string | null;
+  createdAt: string | null;
+  statistics: any;
+}
+
+export interface OrderPricingResponse {
+  subtotal: number;
+  shopDiscount: number;
+  platformDiscount: number;
+  shippingDiscount: number;
+  originalShippingFee: number;
+  appliedVoucherCodes: string | null;
+  totalDiscount: number;
+  taxAmount: number;
+  shippingFee: number;
+  grandTotal: number;
+  totalPlatformFee: number | null;
+  netRevenue: number | null;
+}
+
+export interface OrderPaymentResponse {
+  method: string;
+  url: string | null;
+  intentId: string | null;
+  groupId: string | null;
+  expiresAt: string | null;
+}
+
+export interface OrderShipmentResponse {
+  trackingNumber: string | null;
+  carrier: string;
+}
+
+export interface ShippingAddressResponse {
+  recipientName: string;
+  phoneNumber: string;
+  addressLine1: string;
+  addressLine2: string | null;
+  city: string;
+  province: string;
+  postalCode: string;
+  country: string;
+  email: string;
 }
 
 export interface OrderResponseAdmin {
-    orderId: string;
-    orderNumber: string;
-    shopId: string;
-    shopInfo: ShopResponse;
-    buyerId: string;
-    status: string;
-    currency: string;
-    subtotal: number;
-    orderDiscount: number;
-    totalDiscount: number;
-    shippingDiscount: number;
-    taxAmount: number;
-    shippingFee: number;
-    grandTotal: number;
-    itemCount: number;
-    totalQuantity: number;
-    customerNote: string;
-    internalNote: string;
-    cancellationReason: string;
-    createdAt: string; // OffsetDateTime string
-    items: OrderItemResponse[];
-
-    // Payment fields
-    paymentMethod: string;
-    paymentUrl: string;
-    paymentIntentId: string;
-    expiresAt: string;
-
-    // Shipping/Tracking fields
-    trackingNumber: string;
-    carrier: string;
-    conkinBillId: string;
-    conkinShippingCost: number;
-
-    // Shipping address snapshot
-    recipientName: string;
-    phoneNumber: string;
-    addressLine1: string;
-    addressLine2: string;
-    city: string;
-    province: string;
-    postalCode: string;
-    country: string;
-    email: string;
-}
-
-export interface OrderStatisticsResponse {
-    // Define fields if needed later
-}
-
-export interface OrderStatusUpdateRequest {
-    status: string;
-    note?: string;
-}
-
-export interface OrderCancelRequest {
-    reason: string;
+  orderId: string;
+  orderNumber: string;
+  shopId: string;
+  shopInfo: ShopResponse;
+  buyerId: string;
+  status: string;
+  currency: string;
+  pricing: OrderPricingResponse; // Dữ liệu giá nằm trong object này
+  itemCount: number;
+  totalQuantity: number;
+  customerNote: string;
+  internalNote: string | null;
+  cancellationReason: string | null;
+  createdAt: string;
+  items: OrderItemResponse[];
+  payment: OrderPaymentResponse;
+  shipment: OrderShipmentResponse;
+  shippingAddress: ShippingAddressResponse;
 }

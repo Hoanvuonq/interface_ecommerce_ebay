@@ -38,7 +38,6 @@ export const TAB_STATUS_MAP: Record<string, OrderStatus[]> = {
   [TAB_KEYS.RETURNS_REFUNDS]: [OrderStatus.CANCELLED, OrderStatus.REFUNDING, OrderStatus.REFUNDED],
 };
 
-// Thay vì dùng Hook ở đây, hãy tạo một function nhận statistics làm tham số
 export const getOrderTabs = (statistics: OrderStatistics) => [
   {
     key: TAB_KEYS.ALL,

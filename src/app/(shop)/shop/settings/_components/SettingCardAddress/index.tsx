@@ -10,10 +10,10 @@ export const SettingCard = ({
   isActive,
   onToggle,
   isLoading = false,
-  showEditButton = false, // Thêm prop này để kiểm soát việc hiện nút sửa
+  showEditButton = false,
 }: any) => {
   return (
-    <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-xl shadow-custom overflow-hidden transition-all group">
+    <div className="bg-white rounded-3xl border border-gray-100 shadow-xl shadow-custom overflow-hidden transition-all group">
       <div className="p-8 flex items-center justify-between gap-6">
         <div className="space-y-1.5 flex-1">
           <div className="flex items-center gap-2">
@@ -38,7 +38,6 @@ export const SettingCard = ({
         </div>
 
         <div className="flex items-center gap-4">
-          {/* Toggle Switch */}
           <button
             type="button"
             disabled={isLoading}
@@ -56,7 +55,6 @@ export const SettingCard = ({
             />
           </button>
 
-          {/* Nút sửa (ẩn đi theo yêu cầu của bạn) */}
           {showEditButton && (
             <button
               type="button"

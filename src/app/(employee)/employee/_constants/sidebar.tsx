@@ -97,7 +97,7 @@ export const SIDEBAR_ITEMS: MenuItemSidebar[] = [
     label: "Sản phẩm",
     children: [
       { key: "products-all", label: "Tất cả sản phẩm", href: "/employee/products", icon: <Package size={16}/> },
-      { key: "products-data", label: "Thống kê", href: "/employee/products/stats", icon: <BarChart3 size={16}/> }, // Sửa path ví dụ cho khác biệt
+      { key: "products-statistics", label: "Thống kê", href: "/employee/products/statistics", icon: <BarChart3 size={16}/> }, // Sửa path ví dụ cho khác biệt
     ],
   },
   {
@@ -171,7 +171,7 @@ export const ROUTE_MAPPINGS = [
   { prefix: "/employee/reviews", key: "reviews" },
 
   // Sản phẩm
-  { prefix: "/employee/products/stats", key: "products-data", parent: "products" },
+  { prefix: "/employee/products/statistics", key: "products-statistics", parent: "products" },
   { prefix: "/employee/products", key: "products-all", parent: "products" },
 
   // Đơn hàng

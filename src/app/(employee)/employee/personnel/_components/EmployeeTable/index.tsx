@@ -237,7 +237,7 @@ export default function EmployeeTable() {
   );
 
   return (
-    <div className="p-8 bg-[#F8FAFC] min-h-screen space-y-8 animate-in fade-in duration-700">
+    <div className="min-h-screen space-y-4">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
         <div className="space-y-2">
           <h1 className="text-5xl font-semibold text-gray-900 tracking-tighter uppercase italic leading-none">

@@ -119,7 +119,6 @@ export default function ShopOrderTable() {
 
   return (
     <div className="min-h-screen p-4 md:p-8 space-y-10 animate-in fade-in duration-700 ">
-      {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div className="space-y-2">
           <div className="flex items-center gap-4">
@@ -128,7 +127,7 @@ export default function ShopOrderTable() {
             </div>
             <div>
               <h1 className="text-4xl font-bold text-slate-900 uppercase tracking-tighter italic leading-none">
-                Order <span className="text-orange-500">Terminal</span>
+                Quản Lý <span className="text-orange-500">Đơn Hàng</span>
               </h1>
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.3em] mt-2 ml-1">
                 Commerce Management Protocol v4.0
@@ -177,7 +176,6 @@ export default function ShopOrderTable() {
         ))}
       </div>
 
-      {/* Main Content Area */}
       <div className="space-y-4">
         <StatusTabs
           tabs={orderTabsExtended}

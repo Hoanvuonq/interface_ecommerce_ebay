@@ -1,170 +1,128 @@
-// import React, { useEffect, useState } from "react";
-// import OrderListHeader from "./components/OrderListHeader";
-// import OrderFilters from "./components/OrderFilters";
-// import OrderTable from "./components/OrderTable";
-// import { adminOrderService } from "@/services/adminOrder.service";
-// import { OrderResponse } from "@/types/adminOrder.types";
-// import { PageableResponse } from "@/types/api.types";
-// import { ClipboardList, Clock, Truck, CheckCircle, XCircle, ChevronLeft, ChevronRight } from "lucide-react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
 
-// const OrderListFeature: React.FC = () => {
-//     const [orders, setOrders] = useState<OrderResponse[]>([]);
-//     const [loading, setLoading] = useState(true);
-//     const [search, setSearch] = useState("");
-//     const [status, setStatus] = useState("");
-//     const [page, setPage] = useState(0);
-//     const [totalPages, setTotalPages] = useState(0);
-//     const [totalElements, setTotalElements] = useState(0);
-//     const pageSize = 10;
+import { OrderResponseAdmin } from "@/api/_types/adminOrder.types";
+import {
+  StatusTabItem,
+  StatusTabs,
+} from "@/app/(shop)/shop/_components/Products/StatusTabs";
+import {
+  CheckCircle,
+  ClipboardList,
+  Clock,
+  ShoppingBag,
+  Truck,
+  XCircle,
+} from "lucide-react";
+import React, { useEffect, useMemo, useState } from "react";
+import { OrderFilters, OrderTable } from "../../_components";
+import { adminOrderService } from "../../_services/adminOrder.service";
 
-//     const fetchOrders = async () => {
-//         setLoading(true);
-//         try {
-//             const data = await adminOrderService.getAllOrders({
-//                 page,
-//                 size: pageSize,
-//                 status: status || undefined,
-//             });
+export const OrderListFeature: React.FC = () => {
+  const [orders, setOrders] = useState<OrderResponseAdmin[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState(""); 
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalElements, setTotalElements] = useState(0);
+  const pageSize = 10;
 
-//             if (data && data.content) {
-//                 setOrders(data.content);
-//                 setTotalPages(data.totalPages);
-//                 setTotalElements(data.totalElements);
-//             }
-//         } catch (error) {
-//             console.error("Failed to fetch orders", error);
-//         } finally {
-//             setLoading(false);
-//         }
-//     };
+  const statusTabs: StatusTabItem<string>[] = useMemo(
+    () => [
+      { label: "Tất cả", key: "", icon: ClipboardList },
+      { label: "Chờ xử lý", key: "PENDING", icon: Clock },
+      { label: "Đang giao", key: "SHIPPING", icon: Truck },
+      { label: "Hoàn thành", key: "COMPLETED", icon: CheckCircle },
+      { label: "Đã hủy", key: "CANCELLED", icon: XCircle },
+    ],
+    [],
+  );
 
-//     useEffect(() => {
-//         fetchOrders();
-//     }, [page, status]);
+  const fetchOrders = async () => {
+    setLoading(true);
+    try {
+      const data = await adminOrderService.getAllOrders({
+        page,
+        size: pageSize,
+        status: status || undefined,
+      });
 
-//     useEffect(() => {
-//         const timer = setTimeout(() => {
-//             if (page !== 0) {
-//                 setPage(0);
-//             } else {
-//                 fetchOrders();
-//             }
-//         }, 500);
-//         return () => clearTimeout(timer);
-//     }, [search]);
+      if (data && data.content) {
+        setOrders(data.content);
+        setTotalPages(data.totalPages);
+        setTotalElements(data.totalElements);
+      }
+    } catch (error) {
+      console.error("Failed to fetch orders", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-//     const handlePageChange = (newPage: number) => {
-//         if (newPage >= 0 && newPage < totalPages) {
-//             setPage(newPage);
-//         }
-//     };
+  useEffect(() => {
+    fetchOrders();
+  }, [page, status]);
 
-//     const statusFilters = [
-//         { label: "Tất cả", value: "", icon: ClipboardList },
-//         { label: "Chờ xử lý", value: "PENDING", icon: Clock },
-//         { label: "Đang giao", value: "SHIPPING", icon: Truck },
-//         { label: "Hoàn thành", value: "COMPLETED", icon: CheckCircle },
-//         { label: "Đã hủy", value: "CANCELLED", icon: XCircle },
-//     ];
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (page !== 0) {
+        setPage(0);
+      } else {
+        fetchOrders();
+      }
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [search]);
 
-//     return (
-//         <div className="min-h-screen bg-gray-50 dark:bg-[#0a0e14]">
-//             <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
-//                 {/* Header */}
-//                 <OrderListHeader />
+  return (
+    <div className="min-h-screen p-4 md:p-8 space-y-10 animate-in fade-in duration-700 bg-gray-50 dark:bg-[#0a0e14]">
+      {/* Header Section */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div className="space-y-2">
+          <div className="flex items-center gap-4">
+            <div className="p-3.5 bg-orange-500 rounded-[1.2rem] shadow-xl shadow-orange-200">
+              <ShoppingBag size={28} className="text-white" strokeWidth={2.5} />
+            </div>
+            <div>
+              <h1 className="text-4xl font-bold text-slate-900 uppercase tracking-tighter italic leading-none">
+                Quản Lý <span className="text-orange-500">Đơn Hàng</span>
+              </h1>
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.3em] mt-2 ml-1">
+                Commerce Management Protocol v4.0
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
 
-//                 {/* Quick Status Filters */}
-//                 <div className="mt-6 flex flex-wrap gap-2">
-//                     {statusFilters.map((filter) => {
-//                         const Icon = filter.icon;
-//                         return (
-//                             <button
-//                                 key={filter.value}
-//                                 onClick={() => {
-//                                     setStatus(filter.value);
-//                                     setPage(0);
-//                                 }}
-//                                 className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all ${status === filter.value
-//                                         ? "bg-primary text-white shadow-md shadow-primary/30"
-//                                         : "bg-white dark:bg-[#1c2127] text-gray-700 dark:text-gray-500 border border-gray-200 dark:border-[#3b4754] hover:border-primary/50 hover:bg-primary/5"
-//                                     }`}
-//                             >
-//                                 <Icon size={16} />
-//                                 <span>{filter.label}</span>
-//                                 {status === filter.value && totalElements > 0 && (
-//                                     <span className="ml-1 px-1.5 py-0.5 rounded-full bg-white/20 text-xs font-semibold">
-//                                         {totalElements}
-//                                     </span>
-//                                 )}
-//                             </button>
-//                         );
-//                     })}
-//                 </div>
+      {/* Status Tabs Section - Đã thay thế phần nút bấm cũ */}
+      <div className="space-y-4">
+        <StatusTabs
+          tabs={statusTabs}
+          current={status}
+          onChange={(key) => {
+            setStatus(key);
+            setPage(0); // Reset về trang đầu khi đổi tab
+          }}
+        />
+      </div>
 
-//                 {/* Main Content Card */}
-//                 <div className="mt-6 bg-white dark:bg-[#1c2127] rounded-xl border border-gray-200 dark:border-[#3b4754] shadow-sm overflow-hidden">
-//                     <OrderFilters search={search} onSearchChange={setSearch} />
+      {/* Table Section */}
+      <div className="mt-6 bg-white dark:bg-[#1c2127] rounded-[2.5rem] border border-gray-100 dark:border-[#3b4754] shadow-xl shadow-slate-200/50 overflow-hidden">
+        <div className="p-2">
+          <OrderFilters search={search} onSearchChange={setSearch} />
+        </div>
 
-//                     <OrderTable orders={orders} loading={loading} />
-
-//                     {/* Pagination */}
-//                     {!loading && totalElements > 0 && (
-//                         <div className="flex items-center justify-between px-6 py-4 border-t border-gray-200 dark:border-[#3b4754] bg-gray-50 dark:bg-[#111418]">
-//                             <p className="text-sm text-gray-600 dark:text-gray-500">
-//                                 Hiển thị{" "}
-//                                 <span className="font-semibold text-gray-900 dark:text-white">
-//                                     {page * pageSize + 1}
-//                                 </span>
-//                                 {" - "}
-//                                 <span className="font-semibold text-gray-900 dark:text-white">
-//                                     {Math.min((page + 1) * pageSize, totalElements)}
-//                                 </span>
-//                                 {" trên "}
-//                                 <span className="font-semibold text-gray-900 dark:text-white">
-//                                     {totalElements}
-//                                 </span>
-//                                 {" đơn hàng"}
-//                             </p>
-//                             <div className="flex items-center gap-2">
-//                                 <button
-//                                     onClick={() => handlePageChange(page - 1)}
-//                                     disabled={page === 0 || loading}
-//                                     className="p-2 rounded-lg border border-gray-300 dark:border-[#3b4754] text-gray-700 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-[#283039] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-//                                 >
-//                                     <ChevronLeft size={18} />
-//                                 </button>
-//                                 <div className="hidden sm:flex items-center gap-1">
-//                                     {[...Array(Math.min(5, totalPages))].map((_, i) => {
-//                                         const pageNum = page < 3 ? i : page - 2 + i;
-//                                         if (pageNum >= totalPages) return null;
-//                                         return (
-//                                             <button
-//                                                 key={pageNum}
-//                                                 onClick={() => handlePageChange(pageNum)}
-//                                                 className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors ${page === pageNum
-//                                                         ? "bg-primary text-white"
-//                                                         : "text-gray-700 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-[#283039]"
-//                                                     }`}
-//                                             >
-//                                                 {pageNum + 1}
-//                                             </button>
-//                                         );
-//                                     })}
-//                                 </div>
-//                                 <button
-//                                     onClick={() => handlePageChange(page + 1)}
-//                                     disabled={page >= totalPages - 1 || loading}
-//                                     className="p-2 rounded-lg border border-gray-300 dark:border-[#3b4754] text-gray-700 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-[#283039] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-//                                 >
-//                                     <ChevronRight size={18} />
-//                                 </button>
-//                             </div>
-//                         </div>
-//                     )}
-//                 </div>
-//             </div>
-//         </div>
-//     );
-// };
-
-// export default OrderListFeature;
+        <OrderTable
+          orders={orders}
+          loading={loading}
+          page={page}
+          size={pageSize}
+          totalElements={totalElements}
+          onPageChange={(newPage) => setPage(newPage)}
+        />
+      </div>
+    </div>
+  );
+};

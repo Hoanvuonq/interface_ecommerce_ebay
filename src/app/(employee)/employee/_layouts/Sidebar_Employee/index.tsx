@@ -8,6 +8,7 @@ import { ROUTE_MAPPINGS, SIDEBAR_ITEMS } from "../../_constants/sidebar";
 import { EmployeeSidebarProps } from "../../_types/sidebar";
 import { SidebarItem } from "../_components/SidebarItem";
 import { SystemOnline } from "../_components/SystemOnline";
+
 export default function EmployeeSidebar({
   collapsed,
   onMobileMenuClick,

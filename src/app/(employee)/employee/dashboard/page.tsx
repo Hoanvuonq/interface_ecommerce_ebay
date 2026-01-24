@@ -31,12 +31,12 @@ export default function EmployeeDashboardScreen() {
   }, []);
   
   return (
-    <div className="min-h-screen bg-[#f5f5f5] rounded-2xl shadow-lg shadow-gray-200  text-gray-800 p-6 font-sans">
+    <div className="min-h-screen">
       <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
           <div className="flex items-center gap-2 mb-2.5">
-            <span className="px-3 py-1 rounded-full bg-orange-100 text-orange-700 text-[10px] font-semibold uppercase tracking-widest border border-gray-200">
-              Employee Hub
+            <span className="px-3 py-1 rounded-full bg-orange-100 text-orange-700 text-[10px] font-semibold uppercase border border-gray-200">
+              Quản trị viên
             </span>
             <span className="text-gray-500 text-xs">•</span>
             <span className="text-gray-600 text-xs font-bold uppercase tracking-wide">
