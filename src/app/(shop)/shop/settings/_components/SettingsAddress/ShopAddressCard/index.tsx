@@ -39,7 +39,7 @@ export const ShopAddressCard = ({ item, index, onEdit, onDelete }: Props) => {
 
       <span
         className={cn(
-          "absolute -bottom-4 -right-2 text-[80px] font-bold text-slate-50 opacity-[0.05]",
+          "absolute -bottom-4 -right-2 text-[80px] font-bold  text-gray-50 opacity-[0.05]",
           "select-none group-hover:text-orange-500 group-hover:opacity-[0.08] transition-all duration-700 italic leading-none",
         )}
       >
@@ -84,42 +84,42 @@ export const ShopAddressCard = ({ item, index, onEdit, onDelete }: Props) => {
 
       <div className="space-y-4 relative z-10">
         <div className="flex items-center gap-3.5">
-          <div className="w-11 h-11 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-orange-50 group-hover:text-orange-500 transition-all duration-500 shadow-inner shrink-0">
+          <div className="w-11 h-11 rounded-xl bg-slate-50 flex items-center justify-center  text-gray-400 group-hover:bg-orange-50 group-hover:text-orange-500 transition-all duration-500 shadow-inner shrink-0">
             <User size={18} />
           </div>
           <div>
-            <p className="text-[10px] font-bold text-slate-400 uppercase  leading-none mb-1.5">
+            <p className="text-[10px] font-bold  text-gray-400 uppercase  leading-none mb-1.5">
               Người phụ trách
             </p>
-            <span className="font-bold text-slate-800 text-sm uppercase tracking-tight italic leading-none">
+            <span className="font-bold  text-gray-800 text-sm uppercase tracking-tight italic leading-none">
               {item.fullName}
             </span>
           </div>
         </div>
 
         <div className="flex items-center gap-3.5">
-          <div className="w-11 h-11 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-500 transition-all duration-500 shadow-inner shrink-0">
+          <div className="w-11 h-11 rounded-xl bg-slate-50 flex items-center justify-center  text-gray-400 group-hover:bg-blue-50 group-hover:text-blue-500 transition-all duration-500 shadow-inner shrink-0">
             <Phone size={18} />
           </div>
           <div>
-            <p className="text-[10px] font-bold text-slate-400 uppercase  leading-none mb-1.5">
+            <p className="text-[10px] font-bold  text-gray-400 uppercase  leading-none mb-1.5">
               Đường dây nóng
             </p>
-            <span className="text-sm font-bold text-slate-700 tracking-tighter leading-none">
+            <span className="text-sm font-bold  text-gray-700 tracking-tighter leading-none">
               {item.phone}
             </span>
           </div>
         </div>
 
         <div className="flex items-start gap-3.5">
-          <div className="w-11 h-11 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-emerald-50 group-hover:text-emerald-500 transition-all duration-500 shrink-0 shadow-inner">
+          <div className="w-11 h-11 rounded-xl bg-slate-50 flex items-center justify-center  text-gray-400 group-hover:bg-emerald-50 group-hover:text-emerald-500 transition-all duration-500 shrink-0 shadow-inner">
             <MapPin size={18} />
           </div>
           <div>
-            <p className="text-[10px] font-bold text-slate-400 uppercase  leading-none mb-1.5">
+            <p className="text-[10px] font-bold  text-gray-400 uppercase  leading-none mb-1.5">
               Tọa độ vận hành
             </p>
-            <span className="text-[12px] font-medium text-slate-500 leading-snug italic block line-clamp-2 pr-2">
+            <span className="text-[12px] font-medium  text-gray-500 leading-snug italic block line-clamp-2 pr-2">
               {item.address.detail}, {item.address.wardName},{" "}
               {item.address.provinceName}
             </span>

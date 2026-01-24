@@ -62,7 +62,10 @@ export interface ProductVariantResponse {
   price: number;
   optionValues: ProductOptionValueResponse[];
   inventory: InventoryResponse;
-
+lengthCm: number;
+  widthCm: number;
+  heightCm: number;
+  weightGrams: number;
   createdBy: string;
   createdDate: string;
   lastModifiedBy: string;

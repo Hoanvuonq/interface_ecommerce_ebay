@@ -91,7 +91,7 @@ function SmartKPICardComponent({
           >
             {icon}
           </div>
-          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 group-hover:text-gray-600 transition-colors">
+          <span className="text-[10px] font-bold uppercase  text-gray-500 group-hover:text-gray-600 transition-colors">
             {title}
           </span>
         </div>

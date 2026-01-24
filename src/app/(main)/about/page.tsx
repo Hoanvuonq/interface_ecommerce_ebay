@@ -14,7 +14,7 @@ export default function AboutScreen() {
         </div>
         
         <div className="relative z-10 max-w-6xl mx-auto px-4 text-center">
-          <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-orange-50 border border-gray-100 text-orange-600 text-[10px] font-semibold uppercase tracking-[0.2em] mb-8">
+          <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-orange-50 border border-gray-100 text-orange-600 text-[10px] font-semibold uppercase  mb-8">
             Our Identity
           </div>
           <h1 className="text-5xl md:text-7xl font-semibold text-gray-900 mb-8 tracking-tighter leading-[1.1]">

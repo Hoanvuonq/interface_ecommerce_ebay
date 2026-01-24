@@ -40,7 +40,7 @@ export default function ShopNavigation({
                     "relative group flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all duration-300 whitespace-nowrap",
                     isActive 
                       ? "text-(--color-mainColor) bg-(--color-mainColor)/5" 
-                      : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
+                      : " text-gray-500 hover:text-gray-900 hover:bg-slate-50"
                   )}
                 >
                   <Icon size={16} className={cn("transition-transform duration-300", isActive && "scale-110")} />
@@ -60,7 +60,7 @@ export default function ShopNavigation({
             <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
               <Search
                 size={16}
-                className="text-slate-400 transition-colors group-focus-within:text-(--color-mainColor)"
+                className=" text-gray-400 transition-colors group-focus-within:text-(--color-mainColor)"
               />
             </div>
             <input
@@ -71,14 +71,14 @@ export default function ShopNavigation({
               className={cn(
                 "w-full pl-10 pr-4 py-2 text-sm rounded-2xl transition-all duration-300",
                 "bg-slate-100/50 border border-slate-100",
-                "placeholder:text-slate-400 placeholder:font-medium",
+                "placeholder: text-gray-400 placeholder:font-medium",
                 "focus:bg-white focus:border-(--color-mainColor)/40 focus:ring-4 focus:ring-(--color-mainColor)/5 focus:outline-none",
                 "hover:bg-slate-100/80"
               )}
             />
             {/* Ký tự phím tắt trang trí cho chuyên nghiệp */}
             <div className="absolute inset-y-0 right-3 hidden lg:flex items-center">
-              <kbd className="px-1.5 py-0.5 text-[10px] font-bold text-slate-400 bg-white border border-slate-200 rounded-md shadow-sm">
+              <kbd className="px-1.5 py-0.5 text-[10px] font-bold  text-gray-400 bg-white border border-slate-200 rounded-md shadow-sm">
                 /
               </kbd>
             </div>

@@ -57,7 +57,7 @@ export const QuickReplyModal: React.FC<any> = ({
   const renderTagChips = (reply: QuickReplyItem) => (
     <div
       className={cn(
-        "flex flex-wrap items-center gap-1.5 p-2.5 min-h-[80px] w-full",
+        "flex flex-wrap items-center gap-1.5 p-2.5 min-h-20 w-full",
         "bg-slate-50 border border-slate-100 rounded-2xl transition-all duration-300",
         "focus-within:border-orange-400 focus-within:bg-white focus-within:ring-4 focus-within:ring-orange-500/10",
       )}
@@ -96,7 +96,7 @@ export const QuickReplyModal: React.FC<any> = ({
             setTagInputs((prev) => ({ ...prev, [reply.id]: e.target.value }))
           }
           onKeyDown={(e) => handleTagKeyDown(e, reply.id)}
-          className="flex-1 min-w-[80px] bg-transparent outline-none text-[13px] text-slate-700 font-medium placeholder:text-slate-300"
+          className="flex-1 min-w-20 bg-transparent outline-none text-[13px]  text-gray-700 font-medium placeholder:text-gray-300"
         />
       )}
     </div>
@@ -109,7 +109,7 @@ export const QuickReplyModal: React.FC<any> = ({
         onClose={onClose}
         width="max-w-5xl"
         title={
-          <span className="text-slate-800 font-bold uppercase tracking-tighter italic text-lg">
+          <span className=" text-gray-800 font-bold uppercase tracking-tighter italic text-lg">
             Cấu hình tin nhắn nhanh
           </span>
         }
@@ -136,7 +136,7 @@ export const QuickReplyModal: React.FC<any> = ({
             />
           </div>
 
-          <div className="grid grid-cols-[50px_1fr_1fr_60px] px-6 text-[10px] font-bold uppercase text-slate-400 tracking-widest">
+          <div className="grid grid-cols-[50px_1fr_1fr_60px] px-6 text-[10px] font-bold uppercase  text-gray-400 tracking-widest">
             <span>No.</span>
             <span>Nội dung phản hồi</span>
             <span>Phím tắt (Tag)</span>
@@ -155,7 +155,7 @@ export const QuickReplyModal: React.FC<any> = ({
                   className="grid grid-cols-[50px_1fr_1fr_60px] items-center gap-5 p-4 bg-white border border-slate-100 rounded-4xl shadow-sm hover:border-orange-200 transition-all group"
                 >
                   <div className="flex flex-col items-center gap-2">
-                    <span className="text-[11px] font-bold text-slate-300 group-hover:text-orange-500 transition-colors">
+                    <span className="text-[11px] font-bold  text-gray-300 group-hover:text-orange-500 transition-colors">
                       {index + 1}
                     </span>
                     <GripVertical
@@ -168,7 +168,7 @@ export const QuickReplyModal: React.FC<any> = ({
                     isTextArea
                     placeholder="Nhập nội dung..."
                     value={reply.content}
-                    className="min-h-[80px] rounded-2xl text-[13px] font-medium bg-slate-50/50 border-transparent focus:bg-white focus:border-orange-200 py-3"
+                    className="min-h-20 rounded-2xl text-[13px] font-medium bg-slate-50/50 border-transparent focus:bg-white focus:border-orange-200 py-3"
                     onChange={(e: any) =>
                       setReplies((prev) =>
                         prev.map((r) =>
@@ -185,7 +185,7 @@ export const QuickReplyModal: React.FC<any> = ({
                   <div className="flex justify-end">
                     <button
                       onClick={() => handleDeleteRow(reply.id)}
-                      className="p-3 text-slate-300 hover:text-white hover:bg-red-500 rounded-2xl transition-all duration-300 shadow-sm hover:shadow-red-200 active:scale-90"
+                      className="p-3  text-gray-300 hover:text-white hover:bg-red-500 rounded-2xl transition-all duration-300 shadow-sm hover:shadow-red-200 active:scale-90"
                     >
                       <Trash2 size={20} strokeWidth={2.5} />
                     </button>
@@ -203,14 +203,14 @@ export const QuickReplyModal: React.FC<any> = ({
                   { id: Date.now().toString(), content: "", tags: [] },
                 ])
               }
-              className="flex-1 py-4 border-2 border-dashed border-slate-200 rounded-3xl flex items-center justify-center gap-2 text-[11px] font-bold uppercase tracking-widest text-slate-400 hover:border-orange-400 hover:text-orange-500 transition-all bg-slate-50/30 active:scale-[0.98]"
+              className="flex-1 py-4 border-2 border-dashed border-slate-200 rounded-3xl flex items-center justify-center gap-2 text-[11px] font-bold uppercase tracking-widest  text-gray-400 hover:border-orange-400 hover:text-orange-500 transition-all bg-slate-50/30 active:scale-[0.98]"
             >
               <Plus size={16} strokeWidth={3} /> Thêm tin nhắn ({replies.length}
               /20)
             </button>
             <button
               onClick={() => setIsTemplateModalOpen(true)}
-              className="flex-1 py-4 border-2 border-dashed border-slate-200 rounded-3xl flex items-center justify-center gap-2 text-[11px] font-bold uppercase tracking-widest text-slate-400 hover:border-blue-400 hover:text-blue-500 transition-all bg-slate-50/30 active:scale-[0.98]"
+              className="flex-1 py-4 border-2 border-dashed border-slate-200 rounded-3xl flex items-center justify-center gap-2 text-[11px] font-bold uppercase tracking-widest  text-gray-400 hover:border-blue-400 hover:text-blue-500 transition-all bg-slate-50/30 active:scale-[0.98]"
             >
               <LayoutTemplate size={16} strokeWidth={2.5} /> Mẫu có sẵn
             </button>

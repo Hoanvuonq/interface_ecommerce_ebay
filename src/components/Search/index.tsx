@@ -99,7 +99,7 @@ export const Search: React.FC<ISearch> = ({
             {!displayValue && history.length > 0 && (
               <div className="p-2">
                 <div className="px-4 py-2 flex justify-between items-center">
-                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Tìm kiếm gần đây</span>
+                  <span className="text-[10px] font-bold  text-gray-400 uppercase tracking-[0.2em]">Tìm kiếm gần đây</span>
                   <button 
                     type="button"
                     onClick={() => { setHistory([]); localStorage.removeItem("search_history"); }} 
@@ -115,11 +115,11 @@ export const Search: React.FC<ISearch> = ({
                       onClick={() => handleSearchSubmit(item)}
                       className="flex items-center justify-between px-4 py-3 hover:bg-slate-50 cursor-pointer rounded-2xl group/item transition-all"
                     >
-                      <div className="flex items-center gap-3 text-sm font-bold text-slate-600">
-                        <History size={16} className="text-slate-300 group-hover/item:text-orange-500 transition-colors" />
+                      <div className="flex items-center gap-3 text-sm font-bold  text-gray-600">
+                        <History size={16} className=" text-gray-300 group-hover/item:text-orange-500 transition-colors" />
                         {item}
                       </div>
-                      <X size={14} onClick={(e) => removeHistoryItem(e, item)} className="text-slate-300 hover:text-rose-500 opacity-0 group-hover/item:opacity-100 transition-all" />
+                      <X size={14} onClick={(e) => removeHistoryItem(e, item)} className=" text-gray-300 hover:text-rose-500 opacity-0 group-hover/item:opacity-100 transition-all" />
                     </div>
                   ))}
                 </div>
@@ -128,7 +128,7 @@ export const Search: React.FC<ISearch> = ({
 
             {displayValue.length > 0 && searchOptions.length > 0 && (
               <div className="p-2">
-                <div className="px-4 py-2 text-[10px] font-black text-orange-500 uppercase tracking-[0.2em] flex items-center gap-2 border-b border-gray-50 mb-1">
+                <div className="px-4 py-2 text-[10px] font-bold text-orange-500 uppercase  flex items-center gap-2 border-b border-gray-50 mb-1">
                   <TrendingUp size={12} /> Từ khóa liên quan
                 </div>
                 {searchOptions.map((opt: any, idx: number) => {
@@ -145,12 +145,12 @@ export const Search: React.FC<ISearch> = ({
                       className="flex items-center justify-between px-4 py-3 hover:bg-orange-50 cursor-pointer rounded-2xl group/opt transition-all"
                     >
                       <div className="flex flex-col gap-0.5">
-                        <div className="flex items-center gap-3 text-sm text-slate-700 font-bold">
-                           <SearchIcon size={16} className="text-slate-300 group-hover/opt:text-orange-500" />
+                        <div className="flex items-center gap-3 text-sm  text-gray-700 font-bold">
+                           <SearchIcon size={16} className=" text-gray-300 group-hover/opt:text-orange-500" />
                            {labelText}
                         </div>
                         {opt.item?.searchCount > 0 && (
-                          <span className="ml-7 text-[10px] text-slate-400 font-medium italic">
+                          <span className="ml-7 text-[10px]  text-gray-400 font-medium italic">
                             Hơn {opt.item.searchCount.toLocaleString()} lượt tìm kiếm
                           </span>
                         )}
@@ -167,7 +167,7 @@ export const Search: React.FC<ISearch> = ({
 
       <button
         type="submit"
-        className="h-12 px-8 rounded-r-2xl font-black text-sm uppercase tracking-widest text-white transition-all hover:brightness-110 active:scale-95 shadow-lg shadow-orange-500/20"
+        className="h-12 px-8 rounded-r-2xl font-bold text-sm uppercase tracking-widest text-white transition-all hover:brightness-110 active:scale-95 shadow-lg shadow-orange-500/20"
         style={{ backgroundColor: ctaColor }}
       >
         Tìm ngay

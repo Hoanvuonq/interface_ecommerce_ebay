@@ -118,7 +118,7 @@ export function CountdownTimer({
     );
 
     const Separator = () => (
-        <span className={`${sizeClasses[size]} flex items-center justify-center text-slate-400 font-bold`}>
+        <span className={`${sizeClasses[size]} flex items-center justify-center  text-gray-400 font-bold`}>
             :
         </span>
     );

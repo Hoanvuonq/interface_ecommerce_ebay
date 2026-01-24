@@ -101,7 +101,7 @@ export default function ShopVoucherDetailModal({
           </div>
           <div>
             <h2 className="text-xl font-bold text-gray-900 uppercase tracking-tight leading-none">Chi tiết Voucher</h2>
-            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mt-1.5 flex items-center gap-1">
+            <p className="text-[10px] font-bold text-gray-400 uppercase  mt-1.5 flex items-center gap-1">
               ID: {templateId}
             </p>
           </div>
@@ -224,7 +224,7 @@ export default function ShopVoucherDetailModal({
                 </div>
 
                 <div className="bg-orange-50/50 rounded-[2.5rem] border border-orange-100 p-8 space-y-5 shadow-sm">
-                   <div className="text-[10px] font-bold text-orange-600 uppercase tracking-[0.2em] flex items-center gap-2">
+                   <div className="text-[10px] font-bold text-orange-600 uppercase  flex items-center gap-2">
                      <CheckCircle2 size={14} strokeWidth={3} /> Phạm vi áp dụng
                    </div>
                    <div className="space-y-3">
@@ -242,7 +242,7 @@ export default function ShopVoucherDetailModal({
       <div className="px-8 py-5 border-t border-gray-100 bg-gray-50/50 flex justify-end">
         <button 
           onClick={onClose}
-          className="px-10 py-3 bg-gray-900 text-white rounded-[1.2rem] text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-orange-600 transition-all active:scale-95 shadow-xl shadow-gray-200 italic"
+          className="px-10 py-3 bg-gray-900 text-white rounded-[1.2rem] text-[11px] font-bold uppercase  hover:bg-orange-600 transition-all active:scale-95 shadow-xl shadow-gray-200 italic"
         >
           Xác nhận đóng
         </button>

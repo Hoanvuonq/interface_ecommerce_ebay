@@ -164,7 +164,7 @@ export default function EmployeeDetail({
 
 const DetailBox = ({ icon, label, value, isFullWidth = false }: { icon: React.ReactNode; label: string; value?: string; isFullWidth?: boolean }) => (
   <div className={cn("space-y-1.5", isFullWidth ? "w-full" : "")}>
-    <p className="text-[10px] font-semibold text-gray-600 uppercase tracking-[0.2em] ml-1 flex items-center gap-1">
+    <p className="text-[10px] font-semibold text-gray-600 uppercase  ml-1 flex items-center gap-1">
       {icon} {label}
     </p>
     <div className="px-4 py-3 rounded-2xl bg-white border border-gray-100 shadow-sm transition-all hover:border-gray-200 group">

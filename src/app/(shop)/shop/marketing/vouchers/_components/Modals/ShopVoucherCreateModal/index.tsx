@@ -131,7 +131,7 @@ export default function ShopVoucherCreateModal({
         type="login"
         onClick={onFormSubmit}
         disabled={submitting}
-        className="flex w-64 h-11! items-center justify-center gap-2 rounded-2xl text-[10px] font-bold uppercase tracking-[0.2em] shadow-xl shadow-orange-500/20 border-0"
+        className="flex w-64 h-11! items-center justify-center gap-2 rounded-2xl text-[10px] font-bold uppercase  shadow-xl shadow-orange-500/20 border-0"
       >
         <span className="flex gap-2 items-center">
           {submitting ? (
@@ -165,7 +165,7 @@ export default function ShopVoucherCreateModal({
           </div>
 
           <div className="space-y-4">
-            <div className="flex items-center gap-2 text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] px-2">
+            <div className="flex items-center gap-2 text-[10px] font-bold text-gray-500 uppercase  px-2">
               <FileText size={14} /> 01. Thông tin định danh
             </div>
 
@@ -244,7 +244,7 @@ export default function ShopVoucherCreateModal({
 
           {/* Section 02: Cấu hình ưu đãi */}
           <div className="space-y-6">
-            <div className="flex items-center gap-2 text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] px-2">
+            <div className="flex items-center gap-2 text-[10px] font-bold text-gray-500 uppercase  px-2">
               <DollarSign size={14} /> 02. Cấu hình mức giảm
             </div>
 
@@ -329,7 +329,7 @@ export default function ShopVoucherCreateModal({
 
           {/* Section 03: Điều kiện & Thời gian */}
           <div className="space-y-6">
-            <div className="flex items-center gap-2 text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] px-2">
+            <div className="flex items-center gap-2 text-[10px] font-bold text-gray-500 uppercase  px-2">
               <Clock size={14} /> 03. Thời gian & Giới hạn
             </div>
 
@@ -374,7 +374,7 @@ export default function ShopVoucherCreateModal({
 
           {/* Section 04: Phạm vi */}
           <div className="space-y-6 pb-4">
-            <div className="flex items-center gap-2 text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] px-2">
+            <div className="flex items-center gap-2 text-[10px] font-bold text-gray-500 uppercase  px-2">
               <MousePointer2 size={14} /> 04. Đối tượng áp dụng
             </div>
 

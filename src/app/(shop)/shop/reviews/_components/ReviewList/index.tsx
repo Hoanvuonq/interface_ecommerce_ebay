@@ -42,7 +42,7 @@ export default function ReviewList({
         <div className="p-4 bg-orange-50 rounded-2xl mb-4">
           <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
         </div>
-        <p className="text-slate-400 font-medium italic animate-pulse">
+        <p className=" text-gray-400 font-medium italic animate-pulse">
           Đang tải danh sách đánh giá...
         </p>
       </div>
@@ -54,12 +54,12 @@ export default function ReviewList({
     return (
       <div className="flex flex-col items-center justify-center py-20 bg-slate-50/50 rounded-4xl border-2 border-dashed border-slate-200">
         <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-sm mb-6 ring-8 ring-slate-50">
-          <Inbox size={40} className="text-slate-200" strokeWidth={1.5} />
+          <Inbox size={40} className=" text-gray-200" strokeWidth={1.5} />
         </div>
-        <h3 className="text-lg font-bold text-slate-800 uppercase tracking-widest mb-2">
+        <h3 className="text-lg font-bold  text-gray-800 uppercase tracking-widest mb-2">
           Trống
         </h3>
-        <p className="text-slate-400 text-sm font-medium">
+        <p className=" text-gray-400 text-sm font-medium">
           Sản phẩm này chưa có đánh giá nào từ khách hàng.
         </p>
       </div>
@@ -97,16 +97,16 @@ export default function ReviewList({
       {/* Pagination Custom chuyên nghiệp */}
       {pagination && onPageChange && totalPages > 1 && (
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-slate-100">
-          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">
+          <div className="text-[10px] font-bold  text-gray-400 uppercase tracking-[0.2em]">
             Hiển thị{" "}
-            <span className="text-slate-900">
+            <span className=" text-gray-900">
               {(pagination.current - 1) * pagination.pageSize + 1} -{" "}
               {Math.min(
                 pagination.current * pagination.pageSize,
                 pagination.total
               )}
             </span>{" "}
-            trên <span className="text-slate-900">{pagination.total}</span> đánh
+            trên <span className=" text-gray-900">{pagination.total}</span> đánh
             giá
           </div>
 
@@ -116,7 +116,7 @@ export default function ReviewList({
                 onPageChange(pagination.current - 1, pagination.pageSize)
               }
               disabled={pagination.current === 1 || loading}
-              className="p-2 rounded-xl border border-slate-200 text-slate-500 hover:bg-slate-50 hover:text-orange-600 disabled:opacity-30 disabled:hover:bg-transparent transition-all active:scale-90"
+              className="p-2 rounded-xl border border-slate-200  text-gray-500 hover:bg-slate-50 hover:text-orange-600 disabled:opacity-30 disabled:hover:bg-transparent transition-all active:scale-90"
             >
               <ChevronLeft size={20} />
             </button>
@@ -139,7 +139,7 @@ export default function ReviewList({
                         "w-10 h-10 rounded-xl text-[11px] font-bold transition-all",
                         pagination.current === pageNum
                           ? "bg-orange-500 text-white shadow-lg shadow-orange-200 scale-105"
-                          : "text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+                          : " text-gray-400 hover:bg-slate-100 hover:text-gray-600"
                       )}
                     >
                       {pageNum}
@@ -155,7 +155,7 @@ export default function ReviewList({
                     <MoreHorizontal
                       key={pageNum}
                       size={16}
-                      className="text-slate-300 mx-1"
+                      className=" text-gray-300 mx-1"
                     />
                   );
                 }
@@ -168,7 +168,7 @@ export default function ReviewList({
                 onPageChange(pagination.current + 1, pagination.pageSize)
               }
               disabled={pagination.current === totalPages || loading}
-              className="p-2 rounded-xl border border-slate-200 text-slate-500 hover:bg-slate-50 hover:text-orange-600 disabled:opacity-30 disabled:hover:bg-transparent transition-all active:scale-90"
+              className="p-2 rounded-xl border border-slate-200  text-gray-500 hover:bg-slate-50 hover:text-orange-600 disabled:opacity-30 disabled:hover:bg-transparent transition-all active:scale-90"
             >
               <ChevronRight size={20} />
             </button>

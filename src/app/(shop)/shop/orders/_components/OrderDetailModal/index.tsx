@@ -70,12 +70,12 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
               )}
             </div>
             <div className="flex flex-col min-w-0">
-              <span className="font-bold text-slate-800 truncate text-sm uppercase tracking-tighter italic leading-tight">
+              <span className="font-bold  text-gray-800 truncate text-sm uppercase tracking-tighter italic leading-tight">
                 {record.productName}
               </span>
               <div className="flex items-center gap-2 mt-1">
                 {record.variantAttributes && (
-                  <span className="px-1.5 py-0.5 bg-slate-100 rounded text-[9px] text-slate-500 font-bold uppercase tracking-widest border border-slate-200">
+                  <span className="px-1.5 py-0.5 bg-slate-100 rounded text-[9px]  text-gray-500 font-bold uppercase tracking-widest border border-slate-200">
                     {record.variantAttributes}
                   </span>
                 )}
@@ -94,7 +94,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
       header: "Số lượng",
       align: "center",
       render: (record) => (
-        <span className="px-3 py-1 bg-slate-50 rounded-xl border border-slate-100 text-xs font-bold text-slate-700">
+        <span className="px-3 py-1 bg-slate-50 rounded-xl border border-slate-100 text-xs font-bold  text-gray-700">
           x{record.quantity}
         </span>
       ),
@@ -103,7 +103,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
       header: "Đơn giá",
       align: "right",
       render: (record) => (
-        <span className="text-sm font-bold text-slate-500 tabular-nums italic">
+        <span className="text-sm font-bold  text-gray-500 tabular-nums italic">
           {formatCurrency(record.unitPrice)}
         </span>
       ),
@@ -132,7 +132,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
             <span className="text-[12px] font-bold uppercase  text-orange-400 leading-none mb-1">
               Chi tiết tài sản đơn
             </span>
-            <span className="text-xl font-bold text-slate-900 uppercase tracking-tighter italic">
+            <span className="text-xl font-bold  text-gray-900 uppercase tracking-tighter italic">
               Order{" "}
               <span className="text-orange-500">#{order.orderNumber}</span>
             </span>
@@ -155,28 +155,28 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Thông tin chung */}
           <div className="bg-slate-50/50 rounded-4xl p-6 border border-slate-100 space-y-5 group hover:bg-white hover:border-orange-200 transition-all duration-300">
-            <h4 className="text-[10px] font-bold uppercase text-slate-400 tracking-[0.2em] flex items-center gap-2">
+            <h4 className="text-[10px] font-bold uppercase  text-gray-400  flex items-center gap-2">
               <FiUser className="text-orange-500" /> Identity Info
             </h4>
             <div className="space-y-3">
               <div className="flex justify-between items-center text-sm">
-                <span className="text-slate-500 font-bold uppercase text-[10px]">
+                <span className=" text-gray-500 font-bold uppercase text-[10px]">
                   Client Asset ID:
                 </span>
-                <span className="font-mono font-bold text-slate-800 bg-white px-2 py-0.5 rounded-lg border border-slate-200 shadow-sm">
+                <span className="font-mono font-bold  text-gray-800 bg-white px-2 py-0.5 rounded-lg border border-slate-200 shadow-sm">
                   {order.buyerId.substring(0, 12)}...
                 </span>
               </div>
               <div className="flex justify-between items-center text-sm">
-                <span className="text-slate-500 font-bold uppercase text-[10px]">
+                <span className=" text-gray-500 font-bold uppercase text-[10px]">
                   Timestamp:
                 </span>
-                <span className="font-bold text-slate-800 italic">
+                <span className="font-bold  text-gray-800 italic">
                   {dayjs(order.createdAt).format("DD.MM.YYYY • HH:mm")}
                 </span>
               </div>
               <div className="flex justify-between items-center text-sm pt-2 border-t border-slate-100">
-                <span className="text-slate-500 font-bold uppercase text-[10px]">
+                <span className=" text-gray-500 font-bold uppercase text-[10px]">
                   Current Status:
                 </span>
                 <div className="scale-90 origin-right">
@@ -188,12 +188,12 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
 
           {/* Tài chính */}
           <div className="bg-orange-50/30 rounded-4xl p-6 border border-orange-100 space-y-5 group hover:bg-white hover:border-orange-300 transition-all duration-300">
-            <h4 className="text-[10px] font-bold uppercase text-orange-400 tracking-[0.2em] flex items-center gap-2">
+            <h4 className="text-[10px] font-bold uppercase text-orange-400  flex items-center gap-2">
               <FiCreditCard className="text-orange-500" /> Settlement Data
             </h4>
             <div className="space-y-3 text-sm">
               <div className="flex justify-between items-center">
-                <span className="text-slate-500 font-bold uppercase text-[10px]">
+                <span className=" text-gray-500 font-bold uppercase text-[10px]">
                   Gateway Method:
                 </span>
                 <span className="px-3 py-1 bg-white rounded-xl border border-orange-100 font-bold text-orange-600 text-[10px] uppercase shadow-sm">
@@ -201,10 +201,10 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-slate-500 font-bold uppercase text-[10px]">
+                <span className=" text-gray-500 font-bold uppercase text-[10px]">
                   Subtotal Value:
                 </span>
-                <span className="font-bold text-slate-700">
+                <span className="font-bold  text-gray-700">
                   {formatCurrency(order.pricing.subtotal)}
                 </span>
               </div>
@@ -220,7 +220,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                 </span>
               </div>
               <div className="flex justify-between pt-3 border-t-2 border-dashed border-orange-200">
-                <span className="font-bold text-slate-900 uppercase text-[10px]">
+                <span className="font-bold  text-gray-900 uppercase text-[10px]">
                   Total Liquidity:
                 </span>
                 <span className="text-2xl font-bold text-blue-600 tracking-tighter italic leading-none">
@@ -234,12 +234,12 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
         {/* Row 2: Vận chuyển & Ghi chú */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="bg-blue-50/30 rounded-4xl p-6 border border-blue-100 space-y-5 hover:bg-white hover:border-blue-300 transition-all duration-300">
-            <h4 className="text-[10px] font-bold uppercase text-blue-400 tracking-[0.2em] flex items-center gap-2">
+            <h4 className="text-[10px] font-bold uppercase text-blue-400  flex items-center gap-2">
               <FiTruck className="text-blue-500" /> Logistics Protocol
             </h4>
             <div className="space-y-3 text-sm">
               <div className="flex justify-between items-center">
-                <span className="text-slate-500 font-bold uppercase text-[10px]">
+                <span className=" text-gray-500 font-bold uppercase text-[10px]">
                   Carrier:
                 </span>
                 <span className="px-3 py-1 bg-slate-900 text-white rounded-xl text-[10px] font-bold uppercase italic shadow-lg shadow-slate-200">
@@ -247,7 +247,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-slate-500 font-bold uppercase text-[10px]">
+                <span className=" text-gray-500 font-bold uppercase text-[10px]">
                   Waybill Number:
                 </span>
                 <div className="flex items-center gap-2 font-mono font-bold text-blue-600">
@@ -259,11 +259,11 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
           </div>
 
           <div className="bg-slate-50 rounded-4xl p-6 border border-slate-100 flex flex-col justify-center">
-            <h4 className="text-[10px] font-bold uppercase text-slate-400 tracking-[0.2em] flex items-center gap-2 mb-3">
+            <h4 className="text-[10px] font-bold uppercase  text-gray-400  flex items-center gap-2 mb-3">
               <FiMapPin className="text-orange-500" /> Delivery Memo
             </h4>
             <div className="p-4 bg-white rounded-2xl border border-slate-200 shadow-inner min-h-15">
-              <p className="text-xs text-slate-600 italic font-medium leading-relaxed">
+              <p className="text-xs  text-gray-600 italic font-medium leading-relaxed">
                 {order.customerNote
                   ? `"${order.customerNote}"`
                   : "Hệ thống: Không có ghi chú bổ sung từ người mua."}
@@ -276,7 +276,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
         <div className="space-y-4">
           <div className="flex items-center gap-2 px-2">
             <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
-            <h4 className="text-[11px] font-bold uppercase text-slate-900 tracking-widest italic">
+            <h4 className="text-[11px] font-bold uppercase  text-gray-900 tracking-widest italic">
               Inventory Line Items
             </h4>
           </div>

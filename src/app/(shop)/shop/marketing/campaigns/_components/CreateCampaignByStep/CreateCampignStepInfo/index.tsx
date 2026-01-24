@@ -70,10 +70,10 @@ export const CreateCampignStepInfo: React.FC<IStepInfo> = ({
       <div className="grid grid-cols-12 gap-6">
         <div className="col-span-12 md:col-span-8 space-y-3">
           <div className="flex items-center justify-between">
-            <label className="text-[11px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+            <label className="text-[11px] font-bold  text-gray-400 uppercase tracking-widest flex items-center gap-2">
               <LayoutGrid size={14} /> Banner chiến dịch
             </label>
-            <span className="text-[10px] text-slate-400 italic">
+            <span className="text-[10px]  text-gray-400 italic">
               Tỷ lệ 3:1 (1200x400px)
             </span>
           </div>
@@ -119,7 +119,7 @@ export const CreateCampignStepInfo: React.FC<IStepInfo> = ({
                 </div>
               </>
             ) : (
-              <div className="h-full flex flex-col items-center justify-center gap-2 text-slate-400">
+              <div className="h-full flex flex-col items-center justify-center gap-2  text-gray-400">
                 <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-slate-100">
                   <ImagePlus size={24} className="text-orange-400" />
                 </div>
@@ -138,7 +138,7 @@ export const CreateCampignStepInfo: React.FC<IStepInfo> = ({
 
         {/* Thumbnail Area (4 cols) */}
         <div className="col-span-12 md:col-span-4 space-y-3">
-          <label className="text-[11px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+          <label className="text-[11px] font-bold  text-gray-400 uppercase tracking-widest flex items-center gap-2">
             <Award size={14} /> Ảnh đại diện
           </label>
           <div
@@ -160,7 +160,7 @@ export const CreateCampignStepInfo: React.FC<IStepInfo> = ({
                 className="object-cover"
               />
             ) : (
-              <div className="h-full flex flex-col items-center justify-center gap-2 text-slate-400">
+              <div className="h-full flex flex-col items-center justify-center gap-2  text-gray-400">
                 <ImagePlus size={24} />
                 <p className="text-[10px] font-bold uppercase">1:1 Image</p>
               </div>
@@ -183,7 +183,7 @@ export const CreateCampignStepInfo: React.FC<IStepInfo> = ({
             placeholder="VD: Siêu Sale Năm Mới 2026..."
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
-            className="h-12 border-slate-200 focus:border-orange-400 font-bold text-slate-700 rounded-2xl"
+            className="h-12 border-slate-200 focus:border-orange-400 font-bold  text-gray-700 rounded-2xl"
           />
           <FormInput
             label="Mô tả"
@@ -198,10 +198,10 @@ export const CreateCampignStepInfo: React.FC<IStepInfo> = ({
         <div className="col-span-12 md:col-span-5 space-y-6 flex flex-col justify-between">
          <div className="flex items-center justify-between p-5 bg-orange-50/50 rounded-3xl border border-orange-100">
             <div>
-              <span className="block text-xs font-bold text-slate-600 uppercase tracking-tight">
+              <span className="block text-xs font-bold  text-gray-600 uppercase tracking-tight">
                 Độ ưu tiên hiển thị
               </span>
-              <p className="text-[10px] text-slate-400 font-medium">
+              <p className="text-[10px]  text-gray-400 font-medium">
                 Số cao hơn sẽ ưu tiên lên đầu
               </p>
             </div>
@@ -223,7 +223,7 @@ export const CreateCampignStepInfo: React.FC<IStepInfo> = ({
             />
           </div>
           <div className="p-5 bg-slate-50 rounded-3xl space-y-4 border border-slate-100">
-            <div className="flex items-center gap-2 text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">
+            <div className="flex items-center gap-2 text-[11px] font-bold  text-gray-400 uppercase tracking-widest mb-1">
               <Calendar size={14} /> Thời gian chiến dịch
             </div>
             <div className="space-y-4">

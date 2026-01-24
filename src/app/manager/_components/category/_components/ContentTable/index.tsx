@@ -154,7 +154,7 @@ const ContentTable: React.FC<ContentTableProps> = ({
           <h2 className="text-xl font-semibold text-gray-800 uppercase tracking-tighter italic leading-none">
             Category <span className="text-orange-500">Explorer</span>
           </h2>
-          <p className="text-[10px] font-bold text-gray-600 uppercase tracking-[0.2em] mt-2">
+          <p className="text-[10px] font-bold text-gray-600 uppercase  mt-2">
             Tổng cộng: {totalElements} Asset
           </p>
         </div>

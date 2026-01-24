@@ -1,5 +1,6 @@
 import React from "react";
 import { Search, Calendar } from "lucide-react";
+import { FormInput } from "@/components";
 
 interface OrderFiltersProps {
   search: string;
@@ -11,27 +12,25 @@ export const OrderFilters: React.FC<OrderFiltersProps> = ({
   onSearchChange,
 }) => {
   return (
-    <div className="p-4 border-b border-gray-200 dark:border-[#3b4754]">
+    <div className="p-4">
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="flex-1">
-          <div className="relative">
+          <div className="md:col-span-5 relative group">
             <Search
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
               size={18}
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-orange-500 transition-colors z-10"
             />
-            <input
-              type="text"
-              className="w-full h-10 pl-10 pr-4 rounded-lg text-sm bg-gray-50 dark:bg-[#283039] border border-gray-200 dark:border-[#3b4754] text-black dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:bg-white dark:focus:bg-[#1c2127] transition-colors"
+            <FormInput
               placeholder="Tìm kiếm mã đơn hàng, tên khách hàng..."
               value={search}
               onChange={(e) => onSearchChange(e.target.value)}
+              className="w-full h-12 pl-10 pr-4 transition-all"
             />
           </div>
         </div>
 
-        {/* Date Range */}
         <div className="sm:w-64">
-          <button className="w-full h-10 px-3 rounded-lg bg-gray-50 dark:bg-[#283039] border border-gray-200 dark:border-[#3b4754] text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#3b4754] transition-colors flex items-center justify-between">
+          <button className="w-full h-12 px-3 rounded-2xl bg-gray-50 dark:bg-[#283039] border border-gray-200 dark:border-[#3b4754] text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#3b4754] transition-colors flex items-center justify-between">
             <span className="flex items-center gap-2">
               <Calendar size={16} />
               <span>Khoảng thời gian</span>
@@ -55,4 +54,3 @@ export const OrderFilters: React.FC<OrderFiltersProps> = ({
     </div>
   );
 };
-

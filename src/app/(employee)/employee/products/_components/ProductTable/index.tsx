@@ -114,7 +114,7 @@ export default function ProductTable({
       align: "right",
       render: (product) => (
         <div className="flex flex-col items-end">
-          <span className="text-sm font-bold text-slate-900 tracking-tighter">
+          <span className="text-sm font-bold  text-gray-900 tracking-tighter">
             {product.basePrice?.toLocaleString("vi-VN")}₫
           </span>
           <span className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">

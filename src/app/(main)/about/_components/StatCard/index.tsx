@@ -18,7 +18,7 @@ export const StatCard = ({
     <div className={cn("p-4 rounded-2xl mb-4 shrink-0", bgColorClass)}>
       <Icon className={cn("w-7 h-7", colorClass)} strokeWidth={2.5} />
     </div>
-    <span className="text-gray-600 text-[10px] font-semibold uppercase tracking-[0.2em] mb-2">
+    <span className="text-gray-600 text-[10px] font-semibold uppercase  mb-2">
       {title}
     </span>
     <span className={cn("text-2xl font-semibold tracking-tight", colorClass)}>

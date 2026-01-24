@@ -36,7 +36,7 @@ export function StepLegalInfo({ formData, setFormData, errors }: any) {
       
       {/* 01. Thông tin định danh cơ bản */}
       <div className="space-y-6">
-        <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-500 px-2">
+        <div className="flex items-center gap-2 text-[11px] font-bold uppercase  text-gray-500 px-2">
           <User size={14} /> 01. Định danh cá nhân
         </div>
 
@@ -93,7 +93,7 @@ export function StepLegalInfo({ formData, setFormData, errors }: any) {
 
       {/* 02. Hình ảnh giấy tờ */}
       <div className="space-y-6">
-        <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-500 px-2">
+        <div className="flex items-center gap-2 text-[11px] font-bold uppercase  text-gray-500 px-2">
           <CreditCard size={14} /> 02. Xác thực hình ảnh
         </div>
 

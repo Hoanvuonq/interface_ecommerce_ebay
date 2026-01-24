@@ -56,7 +56,7 @@ export function ErrorState({ error, onRetry, className }: ErrorStateProps) {
           <div className="pt-2">
             <button
               onClick={onRetry}
-              className="group relative inline-flex items-center gap-3 px-10 py-4 bg-linear-to-r from-rose-500 to-orange-500 hover:from-rose-600 hover:to-orange-600 text-white rounded-3xl font-semibold uppercase tracking-[0.2em] text-xs transition-all shadow-xl shadow-rose-200 active:scale-95"
+              className="group relative inline-flex items-center gap-3 px-10 py-4 bg-linear-to-r from-rose-500 to-orange-500 hover:from-rose-600 hover:to-orange-600 text-white rounded-3xl font-semibold uppercase  text-xs transition-all shadow-xl shadow-rose-200 active:scale-95"
             >
               <RefreshCw
                 size={18}

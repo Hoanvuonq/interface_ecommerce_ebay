@@ -250,7 +250,7 @@ export default function BroadcastNotificationForm() {
             <div className="pt-4 border-t border-gray-100">
                 <button
                     disabled={loading || uploading}
-                    className="w-full py-5 bg-linear-to-r from-orange-500 to-red-600 hover:scale-[1.01] active:scale-[0.98] disabled:from-gray-200 disabled:to-gray-300 text-white rounded-3xl font-semibold uppercase tracking-[0.2em] text-sm transition-all flex items-center justify-center gap-3 shadow-xl shadow-orange-200"
+                    className="w-full py-5 bg-linear-to-r from-orange-500 to-red-600 hover:scale-[1.01] active:scale-[0.98] disabled:from-gray-200 disabled:to-gray-300 text-white rounded-3xl font-semibold uppercase  text-sm transition-all flex items-center justify-center gap-3 shadow-xl shadow-orange-200"
                 >
                     {loading ? (
                         <Loader2 className="animate-spin" size={20} />

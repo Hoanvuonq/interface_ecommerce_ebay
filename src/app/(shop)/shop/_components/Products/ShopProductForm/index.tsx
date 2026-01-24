@@ -392,7 +392,7 @@ export const ShopProductForm = () => {
           <Link href="/shop/products/add">
             <ButtonField
               type="login"
-              className="w-40 h-12 rounded-2xl text-[10px] font-bold uppercase tracking-[0.2em] shadow-custom "
+              className="w-40 h-12 rounded-2xl text-[10px] font-bold uppercase  shadow-custom "
             >
               <span className="flex gap-2 items-center">
                 <Plus size={16} className="mr-2" strokeWidth={3} /> Thêm mới

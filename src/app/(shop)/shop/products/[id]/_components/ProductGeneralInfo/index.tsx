@@ -36,7 +36,7 @@ export const ProductGeneralInfo = ({
           label="Tên sản phẩm"
           value={product.name}
           readOnly
-          className="bg-gray-50/80 font-bold text-slate-800 border-gray-100 cursor-default"
+          className="bg-gray-50/80 font-bold  text-gray-800 border-gray-100 cursor-default"
           containerClassName="group"
         />
 
@@ -44,7 +44,7 @@ export const ProductGeneralInfo = ({
           label="Slug (URL Định danh)"
           value={product.slug}
           readOnly
-          className="bg-gray-50/50 font-mono text-xs text-slate-500 border-gray-100 cursor-default"
+          className="bg-gray-50/50 font-mono text-xs  text-gray-500 border-gray-100 cursor-default"
           containerClassName="group"
         />
 

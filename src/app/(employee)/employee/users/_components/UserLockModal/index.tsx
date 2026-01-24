@@ -79,7 +79,7 @@ export const UserLockModal: React.FC<UserLockModalProps> = ({ logic }) => {
 
         {/* Ô nhập lý do */}
         <div className="space-y-3">
-          <label className="block text-[11px] font-semibold uppercase tracking-[0.2em] text-gray-600 px-1">
+          <label className="block text-[11px] font-semibold uppercase  text-gray-600 px-1">
             Lý do khóa tài khoản <span className="text-rose-500">*</span>
           </label>
           <textarea

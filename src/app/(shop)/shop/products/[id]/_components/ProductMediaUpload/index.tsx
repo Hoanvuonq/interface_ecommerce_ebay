@@ -282,7 +282,7 @@ export default function ProductMediaUpload({
                       {!item.isPrimary && (
                         <button
                           onClick={() => handleSetPrimary(index)}
-                          className="w-full py-2 bg-white/90 backdrop-blur-md text-slate-900 rounded-xl hover:bg-orange-500 hover:text-white transition-all text-[10px] font-bold uppercase tracking-widest italic shadow-xl"
+                          className="w-full py-2 bg-white/90 backdrop-blur-md  text-gray-900 rounded-xl hover:bg-orange-500 hover:text-white transition-all text-[10px] font-bold uppercase tracking-widest italic shadow-xl"
                         >
                           Đặt làm chính
                         </button>

@@ -117,7 +117,7 @@ export default function WishlistShareModal({
                     <>
                         {/* URL Input Area */}
                         <div className="space-y-3">
-                            <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-600 ml-1">Liên kết chia sẻ</label>
+                            <label className="text-[10px] font-semibold uppercase  text-gray-600 ml-1">Liên kết chia sẻ</label>
                             <div className="flex p-1.5 bg-gray-50 border border-gray-200 rounded-2xl focus-within:border-gray-500 focus-within:ring-4 focus-within:ring-orange-500/10 transition-all shadow-inner">
                                 <input 
                                     readOnly 
@@ -140,7 +140,7 @@ export default function WishlistShareModal({
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center pt-2">
                             {/* Social Icons */}
                             <div className="space-y-4 text-center md:text-left">
-                                <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-600 ml-1 block">Mạng xã hội</label>
+                                <label className="text-[10px] font-semibold uppercase  text-gray-600 ml-1 block">Mạng xã hội</label>
                                 <div className="flex justify-center md:justify-start gap-3">
                                     <SocialButton icon={<Facebook />} color="bg-[#1877F2]" onClick={() => handleShare('fb')} />
                                     <SocialButton icon={<Twitter />} color="bg-[#1DA1F2]" onClick={() => handleShare('tw')} />

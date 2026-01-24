@@ -115,8 +115,8 @@ export const SIDEBAR_ITEMS: MenuItemSidebar[] = [
     label: "Voucher",
     children: [
       { key: "vouchers-all", label: "Tất cả Voucher", href: "/employee/vouchers", icon: <Ticket size={16}/> },
-      { key: "vouchers-data", label: "Thống kê", href: "/employee/vouchers/data", icon: <BarChart3 size={16}/> },
-      { key: "vouchers-v2", label: "Voucher V2", href: "/employee/voucher-v2", icon: <Zap size={16}/> },
+      { key: "vouchers-statistics", label: "Thống kê", href: "/employee/vouchers/statistics", icon: <BarChart3 size={16}/> },
+      // { key: "vouchers-v2", label: "Voucher V2", href: "/employee/voucher-v2", icon: <Zap size={16}/> },
     ],
   },
   {
@@ -130,7 +130,7 @@ export const SIDEBAR_ITEMS: MenuItemSidebar[] = [
     icon: <MessageSquare size={20} />,
     label: "CSKH",
     children: [
-      { key: "cskh-chat", label: "Quản lý Chat", href: "/employee/cskh", icon: <MessageSquare size={16}/> },
+      { key: "cskh-chat", label: "Quản lý Chat", href: "/employee/chat", icon: <MessageSquare size={16}/> },
     ],
   },
   {
@@ -179,12 +179,12 @@ export const ROUTE_MAPPINGS = [
   { prefix: "/employee/orders", key: "orders-all", parent: "orders" },
 
   // Voucher
-  { prefix: "/employee/vouchers/data", key: "vouchers-data", parent: "vouchers" },
+  { prefix: "/employee/vouchers/statistics", key: "vouchers-statistics", parent: "vouchers" },
   { prefix: "/employee/vouchers", key: "vouchers-all", parent: "vouchers" },
-  { prefix: "/employee/voucher-v2", key: "vouchers-v2", parent: "vouchers" },
+  // { prefix: "/employee/voucher-v2", key: "vouchers-v2", parent: "vouchers" },
 
   // CSKH
-  { prefix: "/employee/cskh", key: "cskh-chat", parent: "cskh" },
+  { prefix: "/employee/chat", key: "cskh-chat", parent: "cskh" },
 
   // Tài khoản cá nhân
   { prefix: "/employee/account/info", key: "account-info", parent: "my-account" },

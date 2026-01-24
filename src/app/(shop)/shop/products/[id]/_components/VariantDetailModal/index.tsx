@@ -159,7 +159,7 @@ export const VariantDetailModal = ({
 
         {/* Kích thước */}
         <div className="p-5 bg-gray-50/50 rounded-4xl border border-gray-100 space-y-4">
-          <h3 className="text-[11px] font-bold text-gray-500 uppercase tracking-[0.2em] flex items-center gap-2">
+          <h3 className="text-[11px] font-bold text-gray-500 uppercase  flex items-center gap-2">
             <Ruler size={14} /> Thông số vận chuyển
           </h3>
           <div className="grid grid-cols-3 gap-3">
@@ -190,7 +190,7 @@ export const VariantDetailModal = ({
         {/* Thuộc tính động */}
         {productOptions.length > 0 && (
           <div className="space-y-4">
-            <h3 className="text-[11px] font-bold text-gray-500 uppercase tracking-[0.2em] flex items-center gap-2 ml-1">
+            <h3 className="text-[11px] font-bold text-gray-500 uppercase  flex items-center gap-2 ml-1">
               <Tag size={14} /> Giá trị phân loại
             </h3>
             <div className="grid grid-cols-2 gap-4">

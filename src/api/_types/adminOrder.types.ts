@@ -6,7 +6,7 @@ export interface OrderItemResponse {
   productName: string;
   imageBasePath: string | null;
   imageExtension: string | null;
-  variantAttributes: any; // Có thể là string hoặc object tùy API
+  variantAttributes: any;
   unitPrice: number;
   quantity: number;
   discountAmount: number;
@@ -78,7 +78,7 @@ export interface OrderResponseAdmin {
   buyerId: string;
   status: string;
   currency: string;
-  pricing: OrderPricingResponse; // Dữ liệu giá nằm trong object này
+  pricing: OrderPricingResponse;
   itemCount: number;
   totalQuantity: number;
   customerNote: string;
@@ -88,5 +88,22 @@ export interface OrderResponseAdmin {
   items: OrderItemResponse[];
   payment: OrderPaymentResponse;
   shipment: OrderShipmentResponse;
+  paymentMethod: string;
+  paymentUrl: string;
+  paymentIntentId: string;
+  conkinBillId: string;
+  conkinShippingCost: number;
   shippingAddress: ShippingAddressResponse;
+}
+export interface OrderStatisticsResponse {
+  // Define fields if needed later
+}
+
+export interface OrderStatusUpdateRequest {
+  status: string;
+  note?: string;
+}
+
+export interface OrderCancelRequest {
+  reason: string;
 }

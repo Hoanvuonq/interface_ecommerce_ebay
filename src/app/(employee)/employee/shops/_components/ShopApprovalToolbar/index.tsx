@@ -3,7 +3,7 @@
 
 import React from "react";
 import { Search, RotateCw, Brush } from "lucide-react";
-import { ButtonField } from "@/components";
+import { ButtonField, FormInput } from "@/components";
 import { SelectComponent } from "@/components";
 import { cn } from "@/utils/cn";
 import { Button } from "@/components/button/button";
@@ -23,25 +23,25 @@ export const ShopApprovalToolbar: React.FC<ShopApprovalToolbarProps> = ({
   return (
     <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
       <div className="flex flex-wrap gap-4 flex-1">
-        <div className="relative group flex-1 min-w-75">
+        <div className="md:col-span-5 relative group flex-1 min-w-75">
           <Search
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 group-focus-within:text-orange-500 transition-colors"
             size={18}
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-orange-500 transition-colors z-10"
           />
-          <input
-            className="w-full pl-12 pr-4 py-3 rounded-2xl bg-gray-50 border-none focus:ring-2 focus:ring-orange-500/20 outline-none font-bold text-sm text-gray-700 placeholder:text-gray-600 transition-all"
+          <FormInput
             placeholder="Tìm kiếm theo tên shop..."
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             onKeyDown={(e) =>
               e.key === "Enter" && onSearch(activeTab, searchText, 1)
             }
+            className="w-full h-12 pl-10 pr-4 transition-all"
           />
         </div>
 
         <div className="min-w-35">
           <SelectComponent
-            isMulti={false} 
+            isMulti={false}
             options={[10, 20, 30, 50].map((v) => ({
               label: `${v} dòng`,
               value: v.toString(),

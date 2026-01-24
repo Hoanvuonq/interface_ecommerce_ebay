@@ -51,7 +51,7 @@ export function StepTaxInfo({ formData, setFormData }: any) {
       
       {/* 01. Loại hình kinh doanh */}
       <div className="space-y-4">
-        <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-500">
+        <div className="flex items-center gap-2 text-[11px] font-bold uppercase  text-gray-500">
           <Briefcase size={14} /> 01. Hình thức pháp lý
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -79,7 +79,7 @@ export function StepTaxInfo({ formData, setFormData }: any) {
 
       {/* 02. Địa chỉ kinh doanh */}
       <div className="space-y-6">
-        <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-500">
+        <div className="flex items-center gap-2 text-[11px] font-bold uppercase  text-gray-500">
           <MapPin size={14} /> 02. Địa chỉ đăng ký
         </div>
 
@@ -174,7 +174,7 @@ export function StepTaxInfo({ formData, setFormData }: any) {
 
       {/* 03. Liên hệ & Thuế */}
       <div className="space-y-6">
-        <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-500">
+        <div className="flex items-center gap-2 text-[11px] font-bold uppercase  text-gray-500">
           <Hash size={14} /> 03. Liên hệ & Mã số thuế
         </div>
 

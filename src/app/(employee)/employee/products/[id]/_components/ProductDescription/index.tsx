@@ -41,10 +41,10 @@ export const ProductDescription = ({
           <FileText size={24} strokeWidth={2.5} />
         </div>
         <div>
-          <h3 className="text-xl font-bold uppercase tracking-tighter text-slate-800 italic leading-none">
+          <h3 className="text-xl font-bold uppercase tracking-tighter  text-gray-800 italic leading-none">
             Mô tả chi tiết
           </h3>
-          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mt-1">
+          <p className="text-[10px] font-bold  text-gray-400 uppercase  mt-1">
             Technical Specifications & Details
           </p>
         </div>
@@ -54,8 +54,8 @@ export const ProductDescription = ({
       <div className="relative group">
         <div
           className={cn(
-            "prose max-w-none text-slate-600 text-sm leading-relaxed whitespace-pre-line",
-            "prose-headings:text-slate-900 prose-headings:font-bold prose-headings:uppercase prose-headings:italic prose-headings:tracking-tighter",
+            "prose max-w-none  text-gray-600 text-sm leading-relaxed whitespace-pre-line",
+            "prose-headings: text-gray-900 prose-headings:font-bold prose-headings:uppercase prose-headings:italic prose-headings:tracking-tighter",
             "prose-strong:text-orange-600 prose-strong:font-bold",
             "prose-img:rounded-4xl prose-img:shadow-xl",
           )}
@@ -71,7 +71,7 @@ export const ProductDescription = ({
       <div className="mt-10 pt-10 border-t border-slate-50">
         <div className="flex items-center gap-2 mb-6">
           <Sparkles size={16} className="text-orange-500 animate-pulse" />
-          <h4 className="font-bold text-xs text-slate-900 uppercase tracking-widest italic">
+          <h4 className="font-bold text-xs  text-gray-900 uppercase tracking-widest italic">
             Điểm nổi bật của sản phẩm
           </h4>
         </div>
@@ -86,10 +86,10 @@ export const ProductDescription = ({
                 <item.icon size={20} />
               </div>
               <div className="space-y-0.5 pt-1">
-                <p className="text-[11px] font-bold uppercase tracking-wider text-slate-800">
+                <p className="text-[11px] font-bold uppercase tracking-wider  text-gray-800">
                   {item.title}
                 </p>
-                <p className="text-xs text-slate-500 leading-snug font-medium">
+                <p className="text-xs  text-gray-500 leading-snug font-medium">
                   {item.desc}
                 </p>
               </div>

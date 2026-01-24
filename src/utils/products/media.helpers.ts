@@ -1,14 +1,28 @@
 import { toPublicUrl } from "../storage/url";
 /**
  * Convert a path to sized variant
- * 
+ *
  * @param path - Original path
  * @param size - Variant size (_thumb, _medium, _large, _orig)
  * @returns Path with size suffix added
  */
+
+export const getCleanUrl = (
+  url: string | null | undefined,
+  fallback = "/placeholder-product.png",
+) => {
+  if (!url || url.trim() === "") return fallback;
+  let clean = url.trim();
+  // Bỏ chữ public/ nếu có ở đầu
+  if (clean.startsWith("public/")) clean = clean.replace("public/", "/");
+  // Đảm bảo có dấu / ở đầu cho đường dẫn nội bộ
+  if (!clean.startsWith("http") && !clean.startsWith("/")) clean = `/${clean}`;
+  return clean;
+};
+
 export const toSizedVariant = (
   path?: string | null,
-  size: "_thumb" | "_medium" | "_large" | "_orig" = "_large"
+  size: "_thumb" | "_medium" | "_large" | "_orig" = "_large",
 ): string => {
   if (!path) return "";
 
@@ -22,7 +36,9 @@ export const toSizedVariant = (
 
   const lowerPath = path.toLowerCase();
   const isWebp = lowerPath.endsWith(".webp");
-  const hasSizeSuffix = /_(orig|thumb|medium|large)(\.[a-zA-Z0-9]+)$/i.test(path);
+  const hasSizeSuffix = /_(orig|thumb|medium|large)(\.[a-zA-Z0-9]+)$/i.test(
+    path,
+  );
 
   if (isWebp) {
     if (hasSizeSuffix) {
@@ -33,7 +49,10 @@ export const toSizedVariant = (
   }
 
   if (hasSizeSuffix) {
-    return path.replace(/_(orig|thumb|medium|large)(\.[a-zA-Z0-9]+)$/i, `${size}$2`);
+    return path.replace(
+      /_(orig|thumb|medium|large)(\.[a-zA-Z0-9]+)$/i,
+      `${size}$2`,
+    );
   }
 
   return path.replace(/(\.[a-zA-Z0-9]+)$/i, `${size}$1`);
@@ -41,14 +60,14 @@ export const toSizedVariant = (
 
 /**
  * Resolve media URL to public CDN URL with proper variant
- * 
+ *
  * @param media - Media object with url/basePath/extension
  * @param size - Variant size
  * @returns Full public CDN URL
  */
 export const resolveMediaUrl = (
   media: any,
-  size: "_thumb" | "_medium" | "_large" | "_orig" = "_large"
+  size: "_thumb" | "_medium" | "_large" | "_orig" = "_large",
 ): string => {
   if (!media) return "";
 
@@ -91,14 +110,14 @@ export const resolveMediaUrl = (
 
 /**
  * Resolve variant image URL to public CDN URL
- * 
+ *
  * @param variant - Product variant with imageUrl/imageBasePath/imageExtension
  * @param size - Variant size
  * @returns Full public CDN URL
  */
 export const resolveVariantImageUrl = (
   variant: any,
-  size: "_thumb" | "_medium" | "_large" | "_orig" = "_thumb"
+  size: "_thumb" | "_medium" | "_large" | "_orig" = "_thumb",
 ): string => {
   if (!variant) return "";
 
@@ -107,8 +126,8 @@ export const resolveVariantImageUrl = (
     const match = variant.imageUrl.match(/\.([a-zA-Z0-9]+)$/i);
     extension = match ? `.${match[1]}` : null;
   }
-  
-  if (extension && !extension.startsWith('.')) {
+
+  if (extension && !extension.startsWith(".")) {
     extension = `.${extension}`;
   }
 
@@ -120,10 +139,10 @@ export const resolveVariantImageUrl = (
       ? toSizedVariant(variant.imageUrl, "_orig")
       : toSizedVariant(variant.imageUrl, size);
   } else if (variant.imageBasePath && variant.imageExtension) {
-    const normalizedExtension = variant.imageExtension.startsWith('.') 
-      ? variant.imageExtension 
+    const normalizedExtension = variant.imageExtension.startsWith(".")
+      ? variant.imageExtension
       : `.${variant.imageExtension}`;
-    
+
     raw = isWebp
       ? `${variant.imageBasePath}_orig${normalizedExtension}`
       : `${variant.imageBasePath}${size}${normalizedExtension}`;
@@ -134,7 +153,7 @@ export const resolveVariantImageUrl = (
 
 /**
  * Resolve banner image URL from basePath and extension to public CDN URL
- * 
+ *
  * @param basePath - Base path of the banner image
  * @param extension - Extension of the banner image (with or without leading dot)
  * @param size - Variant size (default: _orig for banners)
@@ -143,34 +162,35 @@ export const resolveVariantImageUrl = (
 export const resolveBannerImageUrl = (
   basePath?: string | null,
   extension?: string | null,
-  size: "_thumb" | "_medium" | "_large" | "_orig" = "_orig"
+  size: "_thumb" | "_medium" | "_large" | "_orig" = "_orig",
 ): string => {
   if (!basePath || !extension) return "";
 
-  const normalizedExtension = extension.startsWith('.') ? extension : `.${extension}`;
+  const normalizedExtension = extension.startsWith(".")
+    ? extension
+    : `.${extension}`;
   const rawPath = `${basePath}${normalizedExtension}`;
   const sizedPath = toSizedVariant(rawPath, size);
-  
+
   return toPublicUrl(sizedPath);
 };
 
 /**
  * Get original media URL for API (without variants)
- * 
+ *
  * @param media - Media object
  * @returns Original URL for API calls
  */
 export const getOriginalMediaUrl = (media: any): string => {
   if (!media) return "";
-  
+
   if (media.url) {
     return media.url;
   }
-  
+
   if (media.basePath && media.extension) {
     return `${media.basePath}_orig${media.extension}`;
   }
-  
+
   return "";
 };
-

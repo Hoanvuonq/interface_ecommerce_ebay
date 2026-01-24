@@ -22,7 +22,7 @@ export const OrderListFeature: React.FC = () => {
   const [orders, setOrders] = useState<OrderResponseAdmin[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [status, setStatus] = useState(""); 
+  const [status, setStatus] = useState("");
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
@@ -76,7 +76,7 @@ export const OrderListFeature: React.FC = () => {
   }, [search]);
 
   return (
-    <div className="min-h-screen p-4 md:p-8 space-y-10 animate-in fade-in duration-700 bg-gray-50 dark:bg-[#0a0e14]">
+    <div className="min-h-screen space-y-4 animate-in fade-in duration-700">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div className="space-y-2">
@@ -85,10 +85,10 @@ export const OrderListFeature: React.FC = () => {
               <ShoppingBag size={28} className="text-white" strokeWidth={2.5} />
             </div>
             <div>
-              <h1 className="text-4xl font-bold text-slate-900 uppercase tracking-tighter italic leading-none">
+              <h1 className="text-4xl font-bold  text-gray-900 uppercase tracking-tighter italic leading-none">
                 Quản Lý <span className="text-orange-500">Đơn Hàng</span>
               </h1>
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.3em] mt-2 ml-1">
+              <p className="text-[10px] font-bold  text-gray-400 uppercase tracking-[0.3em] mt-2 ml-1">
                 Commerce Management Protocol v4.0
               </p>
             </div>
@@ -96,33 +96,28 @@ export const OrderListFeature: React.FC = () => {
         </div>
       </div>
 
-      {/* Status Tabs Section - Đã thay thế phần nút bấm cũ */}
       <div className="space-y-4">
         <StatusTabs
           tabs={statusTabs}
           current={status}
           onChange={(key) => {
             setStatus(key);
-            setPage(0); // Reset về trang đầu khi đổi tab
+            setPage(0);
           }}
         />
       </div>
-
-      {/* Table Section */}
-      <div className="mt-6 bg-white dark:bg-[#1c2127] rounded-[2.5rem] border border-gray-100 dark:border-[#3b4754] shadow-xl shadow-slate-200/50 overflow-hidden">
-        <div className="p-2">
-          <OrderFilters search={search} onSearchChange={setSearch} />
-        </div>
-
-        <OrderTable
-          orders={orders}
-          loading={loading}
-          page={page}
-          size={pageSize}
-          totalElements={totalElements}
-          onPageChange={(newPage) => setPage(newPage)}
-        />
+      <div className="shadow-custom rounded-4xl bg-white">
+        <OrderFilters search={search} onSearchChange={setSearch} />
       </div>
+
+      <OrderTable
+        orders={orders}
+        loading={loading}
+        page={page}
+        size={pageSize}
+        totalElements={totalElements}
+        onPageChange={(newPage) => setPage(newPage)}
+      />
     </div>
   );
 };

@@ -9,12 +9,13 @@ export const EmptyProductState = ({
   onReset,
   message,
   link,
-  isShop = false, 
+  isShop = false,
 }: {
   onReset?: () => void;
   message?: string;
   link?: string;
   isShop?: boolean;
+  onClick?: () => void;
 }) => {
   return (
     <motion.div

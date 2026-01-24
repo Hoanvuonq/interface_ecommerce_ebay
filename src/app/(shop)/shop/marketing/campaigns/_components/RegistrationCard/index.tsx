@@ -64,7 +64,7 @@ export const RegistrationCard: React.FC<RegistrationCardProps> = ({
 
         <div className="flex-1 min-w-0 flex flex-col justify-between py-0.5">
           <div className="space-y-1">
-            <h3 className="font-bold text-slate-800 text-[13px] leading-tight line-clamp-1 uppercase tracking-tight">
+            <h3 className="font-bold  text-gray-800 text-[13px] leading-tight line-clamp-1 uppercase tracking-tight">
               {reg.productName}
             </h3>
             <div className="flex items-center gap-2">
@@ -116,7 +116,7 @@ export const RegistrationCard: React.FC<RegistrationCardProps> = ({
             <Activity size={10} className="text-orange-500" />
             <span>Stock Intensity</span>
           </div>
-          <span className="text-slate-600 font-bold tabular-nums">
+          <span className=" text-gray-600 font-bold tabular-nums">
             {reg.stockSold}/{reg.stockLimit}
           </span>
         </div>

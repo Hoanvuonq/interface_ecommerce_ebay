@@ -481,7 +481,7 @@ export default function UserDetailModal({
             <div className="relative z-10">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-1.5 h-6 bg-orange-500 rounded-full" />
-                <h3 className="font-semibold tracking-[0.2em] uppercase text-xs text-white">
+                <h3 className="font-semibold  uppercase text-xs text-white">
                   Quyền hạn hệ thống
                 </h3>
                 <div className="flex-1 border-b border-white/10 ml-2" />

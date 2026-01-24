@@ -63,7 +63,7 @@ export default function EmployeeStatisticsPage() {
              <div className="p-2 bg-orange-100 rounded-lg text-orange-600">
                 {activeTab === "overview" ? <LayoutDashboard size={20}/> : <CalendarDays size={20}/>}
              </div>
-             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">
+             <span className="text-xs font-semibold uppercase  text-gray-500">
                 Đang hiển thị: {activeTab === "overview" ? "Cấu trúc tổ chức" : "Dòng thời gian tăng trưởng"}
              </span>
           </div>

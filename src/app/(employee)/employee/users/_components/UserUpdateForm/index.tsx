@@ -196,7 +196,7 @@ export default function UserUpdateForm({
             {/* Section: Cập nhật */}
             <div className="p-6 rounded-[2.5rem] bg-orange-50/40 border border-orange-100/50 space-y-6 shadow-sm">
               <div className="flex justify-center -mt-9 mb-2">
-                <span className="bg-orange-500 text-white px-5 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.2em] shadow-md shadow-orange-200">
+                <span className="bg-orange-500 text-white px-5 py-1 rounded-full text-[10px] font-bold uppercase  shadow-md shadow-orange-200">
                   Cấu hình mới
                 </span>
               </div>

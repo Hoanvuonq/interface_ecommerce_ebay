@@ -130,7 +130,7 @@ export const CalathaMallSection = () => {
             <div className="w-14 h-14 rounded-3xl bg-yellow-600 shadow-lg shadow-yellow-500/40 flex items-center justify-center text-white group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 mb-4">
               <ArrowRight size={24} />
             </div>
-            <span className="text-[11px] font-bold text-white/80 uppercase tracking-[0.2em] text-center italic">
+            <span className="text-[11px] font-bold text-white/80 uppercase  text-center italic">
               Khám phá
               <br />
               thế giới mall

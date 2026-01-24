@@ -35,7 +35,7 @@ export const CustomVideoModal: React.FC<CustomVideoModalProps> = ({
 
         <div className="mb-6 flex flex-col items-center text-center animate-in fade-in slide-in-from-top-4 duration-500">
           <div className="px-4 py-1.5 bg-blue-500/10 border border-blue-500/20 rounded-full mb-2">
-            <span className="text-blue-400 text-[10px] font-bold uppercase tracking-[0.2em] flex items-center gap-2">
+            <span className="text-blue-400 text-[10px] font-bold uppercase  flex items-center gap-2">
               <Play size={10} fill="currentColor" /> Preview Video
             </span>
           </div>

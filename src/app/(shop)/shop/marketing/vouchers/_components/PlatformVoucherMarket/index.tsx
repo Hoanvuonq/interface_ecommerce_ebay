@@ -109,7 +109,7 @@ export const PlatformVoucherMarket: React.FC<PlatformVoucherMarketProps> = ({
             key={tab}
             onClick={() => setActiveTab(tab)}
             className={cn(
-              "pb-4 text-xs font-bold uppercase tracking-[0.2em] transition-all relative",
+              "pb-4 text-xs font-bold uppercase  transition-all relative",
               activeTab === tab ? "text-gray-900" : "text-gray-500 hover:text-gray-600"
             )}
           >
@@ -217,7 +217,7 @@ const VoucherCard = ({ voucher, onBuy }: { voucher: VoucherTemplate; onBuy: () =
             <span className="text-3xl font-bold tracking-tighter">
               {voucher.discountMethod === DiscountMethod.PERCENTAGE ? `${voucher.discountValue}%` : `${(voucher.discountValue/1000)}K`}
             </span>
-            <span className="text-[10px] block font-bold uppercase tracking-[0.2em] opacity-80">Giảm giá</span>
+            <span className="text-[10px] block font-bold uppercase  opacity-80">Giảm giá</span>
           </div>
           <TicketIcon className="absolute -bottom-4 -right-4 w-20 h-20 opacity-10 rotate-12" />
         </div>

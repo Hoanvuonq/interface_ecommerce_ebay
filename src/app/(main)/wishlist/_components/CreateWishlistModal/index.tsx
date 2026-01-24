@@ -149,9 +149,8 @@ export default function CreateWishlistModal({
             className="rounded-[2.5rem]"
         >
             <div className="space-y-6">
-                {/* Image Upload Area */}
                 <div className="space-y-3">
-                    <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-600 ml-1">Ảnh bìa (Tùy chọn)</label>
+                    <label className="text-[10px] font-semibold uppercase  text-gray-600 ml-1">Ảnh bìa (Tùy chọn)</label>
                     <div className="relative group aspect-21/9 rounded-3xl border-2 border-dashed border-gray-200 bg-gray-50 overflow-hidden flex items-center justify-center transition-all hover:border-gray-300">
                         {previewImage ? (
                             <>
@@ -181,7 +180,7 @@ export default function CreateWishlistModal({
 
                 {/* Name Input */}
                 <div className="space-y-2">
-                    <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-600 ml-1">Tên Wishlist *</label>
+                    <label className="text-[10px] font-semibold uppercase  text-gray-600 ml-1">Tên Wishlist *</label>
                     <input 
                         value={name}
                         onChange={(e) => setName(e.target.value)}
@@ -192,7 +191,7 @@ export default function CreateWishlistModal({
 
                 {/* Description Input */}
                 <div className="space-y-2">
-                    <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-600 ml-1">Mô tả</label>
+                    <label className="text-[10px] font-semibold uppercase  text-gray-600 ml-1">Mô tả</label>
                     <textarea 
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}

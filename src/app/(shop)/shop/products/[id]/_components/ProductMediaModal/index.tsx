@@ -149,7 +149,7 @@ export const ProductMediaModal = ({
             <span className="text-[10px] font-bold uppercase tracking-tight italic">Chờ xác nhận lưu</span>
           </div>
         ) : (
-          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 text-slate-400 rounded-full border border-slate-100 leading-none">
+          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50  text-gray-400 rounded-full border border-slate-100 leading-none">
             <Clock size={14} strokeWidth={2.5} />
             <span className="text-[10px] font-bold uppercase tracking-tight italic">Dữ liệu ổn định</span>
           </div>
@@ -158,7 +158,7 @@ export const ProductMediaModal = ({
       <div className="flex gap-3">
         <button
           onClick={onClose}
-          className="px-6 py-2.5 text-[11px] font-bold text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-2xl transition-all uppercase tracking-widest active:scale-95 disabled:opacity-50"
+          className="px-6 py-2.5 text-[11px] font-bold  text-gray-500 hover:text-gray-800 hover:bg-slate-100 rounded-2xl transition-all uppercase tracking-widest active:scale-95 disabled:opacity-50"
           disabled={saving}
         >
           Hủy bỏ
@@ -169,7 +169,7 @@ export const ProductMediaModal = ({
           className={cn(
             "flex items-center gap-2 px-8 py-2.5 rounded-2xl text-[11px] font-bold text-white transition-all uppercase tracking-widest italic",
             !hasChanges || saving 
-              ? "bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200" 
+              ? "bg-slate-100  text-gray-400 cursor-not-allowed border border-slate-200" 
               : "bg-linear-to-r from-orange-500 to-orange-600 hover:shadow-lg hover:shadow-orange-200 shadow-md shadow-orange-100 active:scale-95"
           )}
         >
@@ -194,12 +194,12 @@ export const ProductMediaModal = ({
             </div>
           </div>
           <div>
-            <div className="text-[15px] font-bold uppercase tracking-tight text-slate-800 leading-none italic">
+            <div className="text-[15px] font-bold uppercase tracking-tight  text-gray-800 leading-none italic">
               Quản lý Thư viện Media
             </div>
             <div className="flex items-center gap-1.5 mt-1.5">
                <div className="h-1 w-1 rounded-full bg-orange-400"></div>
-               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em]">
+               <span className="text-[10px] font-bold  text-gray-400 uppercase tracking-[0.15em]">
                 Sản phẩm: {productName}
               </span>
             </div>

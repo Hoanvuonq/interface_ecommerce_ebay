@@ -75,7 +75,7 @@ export const ProductGallery = ({
           />
 
           <div className="absolute inset-0 flex items-end justify-center pb-6 opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none">
-            <div className="bg-white/80 backdrop-blur-md text-slate-700 px-4 py-2 rounded-xl text-[10px] flex items-center gap-2 font-bold uppercase tracking-widest border border-white shadow-xl translate-y-2 group-hover:translate-y-0 transition-transform">
+            <div className="bg-white/80 backdrop-blur-md text-slate-700 px-4 py-2 rounded-xl text-[10px] flex items-center gap-2 font-black uppercase tracking-widest border border-white shadow-xl translate-y-2 group-hover:translate-y-0 transition-transform">
               <Maximize2 size={12} strokeWidth={3} className="text-orange-500" />
               Phóng to tài sản
             </div>

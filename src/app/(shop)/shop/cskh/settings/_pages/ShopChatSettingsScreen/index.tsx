@@ -43,7 +43,7 @@ export const ShopChatSettingsScreen = () => {
         return (
           <div
             key="question"
-            className="p-10 text-center text-slate-400 italic"
+            className="p-10 text-center  text-gray-400 italic"
           >
             Tính năng Hỏi đáp đang được cập nhật...
           </div>
@@ -76,10 +76,10 @@ export const ShopChatSettingsScreen = () => {
                   ease: [0.22, 1, 0.36, 1],
                 }}
               >
-                <h1 className="text-3xl font-bold text-slate-800 tracking-tight italic uppercase leading-none">
+                <h1 className="text-3xl font-bold  text-gray-800 tracking-tight italic uppercase leading-none">
                   {pageMeta.title}
                 </h1>
-                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-orange-400 mt-2">
+                <p className="text-[10px] font-bold uppercase  text-orange-400 mt-2">
                   {pageMeta.desc}
                 </p>
               </motion.div>

@@ -22,7 +22,7 @@ export default function EmployeeHeader({
         "sticky top-0 z-40 w-full h-16 md:h-20 px-4 md:px-8",
         "flex items-center justify-between",
         "bg-white/90 backdrop-blur-xl border-b border-gray-100",
-        "shadow-[0_4px_20px_rgba(0,0,0,0.03)]",
+        "shadow-custom",
         "transition-all duration-300"
       )}
     >

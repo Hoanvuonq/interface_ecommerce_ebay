@@ -101,7 +101,7 @@ export const ProductMediaGallery = ({
             className="text-orange-200 mb-2"
             strokeWidth={1.5}
           />
-          <p className="text-[10px] font-bold text-orange-300 uppercase tracking-[0.2em] italic">
+          <p className="text-[10px] font-bold text-orange-300 uppercase  italic">
             Chưa có phương tiện hiển thị
           </p>
         </div>

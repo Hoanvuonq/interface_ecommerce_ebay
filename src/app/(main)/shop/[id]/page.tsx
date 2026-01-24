@@ -137,13 +137,13 @@ export default function ShopPage() {
         <div className="w-16 h-16 border-4 border-orange-100 rounded-full" />
         <div className="absolute w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin" />
       </div>
-      <p className="mt-4 text-slate-400 font-bold text-sm animate-pulse uppercase tracking-widest">Đang tải cửa hàng...</p>
+      <p className="mt-4  text-gray-400 font-bold text-sm animate-pulse uppercase tracking-widest">Đang tải cửa hàng...</p>
     </div>
   );
 
   if (!shop) return (
-    <div className="h-[60vh] flex flex-col items-center justify-center text-slate-500 gap-4">
-      <div className="text-6xl text-slate-200 font-bold tracking-tighter italic">404</div>
+    <div className="h-[60vh] flex flex-col items-center justify-center  text-gray-500 gap-4">
+      <div className="text-6xl  text-gray-200 font-bold tracking-tighter italic">404</div>
       <p className="font-bold uppercase text-xs tracking-[0.3em]">Cửa hàng này không còn tồn tại</p>
     </div>
   );

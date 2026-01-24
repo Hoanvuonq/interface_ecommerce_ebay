@@ -174,7 +174,7 @@ export const ProductPromotionForm: React.FC<ProductPromotionFormProps> = ({
           <div className="p-2 bg-orange-100 rounded-xl text-orange-600">
             <Gift size={20} />
           </div>
-          <span className="font-bold text-slate-800">
+          <span className="font-bold  text-gray-800">
             {isEdit ? "Chỉnh sửa khuyến mãi" : "Tạo khuyến mãi điểm"}
           </span>
         </div>
@@ -184,7 +184,7 @@ export const ProductPromotionForm: React.FC<ProductPromotionFormProps> = ({
       {loading ? (
         <div className="py-20 flex flex-col items-center justify-center gap-3">
           <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
-          <span className="text-sm font-medium text-slate-500">
+          <span className="text-sm font-medium  text-gray-500">
             Đang tải sản phẩm...
           </span>
         </div>
@@ -193,7 +193,7 @@ export const ProductPromotionForm: React.FC<ProductPromotionFormProps> = ({
           {/* Apply Mode Selector */}
           {!isEdit && (
             <div className="space-y-3">
-              <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400 ml-1">
+              <label className="text-[11px] font-bold uppercase tracking-wider  text-gray-400 ml-1">
                 Áp dụng cho
               </label>
               <div className="grid grid-cols-3 gap-2 p-1 bg-slate-100 rounded-2xl">
@@ -209,7 +209,7 @@ export const ProductPromotionForm: React.FC<ProductPromotionFormProps> = ({
                       "flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold transition-all",
                       applyMode === mode
                         ? "bg-white text-orange-600 shadow-sm"
-                        : "text-slate-500 hover:text-slate-700"
+                        : " text-gray-500 hover:text-gray-700"
                     )}
                   >
                     {mode === "single" && <CheckCircle2 size={14} />}
@@ -242,7 +242,7 @@ export const ProductPromotionForm: React.FC<ProductPromotionFormProps> = ({
             <div className="space-y-3">
               <div className="relative">
                 <Search
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                  className="absolute left-3 top-1/2 -translate-y-1/2  text-gray-400"
                   size={16}
                 />
                 <input
@@ -276,7 +276,7 @@ export const ProductPromotionForm: React.FC<ProductPromotionFormProps> = ({
                       className="w-8 h-8 rounded-lg object-cover bg-slate-100"
                       alt=""
                     />
-                    <span className="text-sm font-medium text-slate-700 truncate">
+                    <span className="text-sm font-medium  text-gray-700 truncate">
                       {product.name}
                     </span>
                   </div>
@@ -288,7 +288,7 @@ export const ProductPromotionForm: React.FC<ProductPromotionFormProps> = ({
           {/* Single Product Select */}
           {(applyMode === "single" || isEdit) && (
             <div className="space-y-2">
-              <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400 ml-1">
+              <label className="text-[11px] font-bold uppercase tracking-wider  text-gray-400 ml-1">
                 Chọn sản phẩm
               </label>
               <select
@@ -320,7 +320,7 @@ export const ProductPromotionForm: React.FC<ProductPromotionFormProps> = ({
             />
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="text-xs font-bold text-slate-500 ml-1">
+                <label className="text-xs font-bold  text-gray-500 ml-1">
                   Loại quy tắc
                 </label>
                 <div className="flex bg-slate-100 p-1 rounded-xl">
@@ -333,7 +333,7 @@ export const ProductPromotionForm: React.FC<ProductPromotionFormProps> = ({
                       "flex-1 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-all",
                       formData.ruleType === "PERCENT"
                         ? "bg-white text-orange-600 shadow-sm"
-                        : "text-slate-400"
+                        : " text-gray-400"
                     )}
                   >
                     Phần trăm
@@ -347,7 +347,7 @@ export const ProductPromotionForm: React.FC<ProductPromotionFormProps> = ({
                       "flex-1 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-all",
                       formData.ruleType === "FIXED"
                         ? "bg-white text-orange-600 shadow-sm"
-                        : "text-slate-400"
+                        : " text-gray-400"
                     )}
                   >
                     Cố định
@@ -370,7 +370,7 @@ export const ProductPromotionForm: React.FC<ProductPromotionFormProps> = ({
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <label className="text-xs font-bold text-slate-500 ml-1">
+              <label className="text-xs font-bold  text-gray-500 ml-1">
                 Ngày bắt đầu
               </label>
               <input
@@ -384,7 +384,7 @@ export const ProductPromotionForm: React.FC<ProductPromotionFormProps> = ({
               />
             </div>
             <div className="space-y-2">
-              <label className="text-xs font-bold text-slate-500 ml-1">
+              <label className="text-xs font-bold  text-gray-500 ml-1">
                 Ngày kết thúc
               </label>
               <input
@@ -401,10 +401,10 @@ export const ProductPromotionForm: React.FC<ProductPromotionFormProps> = ({
 
           <div className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
             <div>
-              <p className="text-sm font-bold text-slate-700">
+              <p className="text-sm font-bold  text-gray-700">
                 Kích hoạt khuyến mãi
               </p>
-              <p className="text-[10px] text-slate-400 uppercase font-bold tracking-tighter">
+              <p className="text-[10px]  text-gray-400 uppercase font-bold tracking-tighter">
                 Áp dụng ngay sau khi lưu
               </p>
             </div>
@@ -431,7 +431,7 @@ export const ProductPromotionForm: React.FC<ProductPromotionFormProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="px-6 py-2.5 text-xs font-bold text-slate-500 hover:bg-slate-100 rounded-xl transition-all"
+              className="px-6 py-2.5 text-xs font-bold  text-gray-500 hover:bg-slate-100 rounded-xl transition-all"
             >
               Hủy bỏ
             </button>

@@ -10,7 +10,7 @@ export const WeeklyPerformance = () => {
           <TrendingUp className="text-orange-500" size={20} />
         </div>
         <div className="flex flex-col">
-          <span className="text-[10px] font-semibold text-orange-500 uppercase tracking-[0.2em] leading-none mb-1">
+          <span className="text-[10px] font-semibold text-orange-500 uppercase  leading-none mb-1">
             Analytics
           </span>
           <span className="font-semibold text-gray-800 tracking-tight text-sm">

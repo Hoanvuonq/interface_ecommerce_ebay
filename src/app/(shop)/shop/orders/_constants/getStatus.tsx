@@ -3,7 +3,7 @@ import { cn } from "@/utils/cn";
 
 export const renderStatus = (status: OrderStatus) => {
   const configs: Record<OrderStatus, string> = {
-    [OrderStatus.CREATED]: "bg-slate-100 text-slate-700 border-slate-200",
+    [OrderStatus.CREATED]: "bg-slate-100  text-gray-700 border-slate-200",
     [OrderStatus.AWAITING_PAYMENT]:"bg-amber-50 text-amber-700 border-amber-200",
     [OrderStatus.PAID]: "bg-emerald-50 text-emerald-700 border-emerald-200",
     [OrderStatus.FULFILLING]: "bg-cyan-50 text-cyan-700 border-cyan-200",

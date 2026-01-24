@@ -76,16 +76,16 @@ export const ProductListForReviews =({
                   className="object-cover"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-slate-300">
+                <div className="w-full h-full flex items-center justify-center  text-gray-300">
                   <Package size={20} />
                 </div>
               )}
             </div>
             <div className="flex flex-col min-w-0">
-              <span className="font-bold text-slate-800 truncate leading-tight">
+              <span className="font-bold  text-gray-800 truncate leading-tight">
                 {record.name}
               </span>
-              <span className="text-[11px] font-medium text-slate-400 uppercase tracking-wider mt-1">
+              <span className="text-[11px] font-medium  text-gray-400 uppercase tracking-wider mt-1">
                 {record.category?.name || "Chưa phân loại"}
               </span>
             </div>
@@ -97,7 +97,7 @@ export const ProductListForReviews =({
       header: "Giá niêm yết",
       className: "w-40",
       render: (record) => (
-        <span className="font-bold text-slate-700 tracking-tight">
+        <span className="font-bold  text-gray-700 tracking-tight">
           {new Intl.NumberFormat("vi-VN", {
             style: "currency",
             currency: "VND",
@@ -152,10 +152,10 @@ export const ProductListForReviews =({
             <ShoppingBag size={28} />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-slate-800 tracking-tight leading-none">
+            <h2 className="text-xl font-bold  text-gray-800 tracking-tight leading-none">
               Quản lý Đánh giá
             </h2>
-            <p className="text-sm text-slate-400 font-medium mt-2 italic">
+            <p className="text-sm  text-gray-400 font-medium mt-2 italic">
               Chọn sản phẩm để phản hồi và chăm sóc khách hàng
             </p>
           </div>
@@ -164,7 +164,7 @@ export const ProductListForReviews =({
           <button
             onClick={fetchProducts}
             disabled={loading}
-            className="p-3 text-slate-500 hover:bg-slate-50 rounded-xl border border-slate-200 transition-all active:scale-95 group"
+            className="p-3  text-gray-500 hover:bg-slate-50 rounded-xl border border-slate-200 transition-all active:scale-95 group"
             title="Làm mới dữ liệu"
           >
             <RefreshCw size={20} className={cn(loading && "animate-spin")} />
@@ -188,13 +188,13 @@ export const ProductListForReviews =({
         headerContent={
           <div className="relative group w-full sm:w-87.5">
             <Search
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-orange-500 transition-colors"
+              className="absolute left-3 top-1/2 -translate-y-1/2  text-gray-400 group-focus-within:text-orange-500 transition-colors"
               size={18}
             />
             <input
               type="text"
               placeholder="Tìm tên sản phẩm nhanh..."
-              className="w-full pl-11 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-bold placeholder:text-slate-400 focus:outline-none focus:border-orange-500 focus:bg-white transition-all shadow-inner"
+              className="w-full pl-11 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-bold placeholder: text-gray-400 focus:outline-none focus:border-orange-500 focus:bg-white transition-all shadow-inner"
               value={searchKeyword}
               onChange={(e) => setSearchKeyword(e.target.value)}
             />

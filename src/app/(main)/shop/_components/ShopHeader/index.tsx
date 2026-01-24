@@ -43,7 +43,7 @@ export const ShopHeader = ({ shop, isFollowing, onFollow, onChat, totalProducts 
         {/* Content Section */}
         <div className="flex-1 text-center md:text-left pt-2">
           <div className="flex flex-col md:flex-row items-center gap-3 mb-3">
-            <h1 className="text-3xl md:text-4xl font-bold text-slate-800 tracking-tight leading-none">
+            <h1 className="text-3xl md:text-4xl font-bold  text-gray-800 tracking-tight leading-none">
               {shop.shopName}
             </h1>
             <div className="flex items-center gap-1 bg-blue-500 text-white text-[9px] font-bold px-2 py-1 rounded-md uppercase tracking-widest shadow-lg shadow-blue-200">
@@ -51,14 +51,14 @@ export const ShopHeader = ({ shop, isFollowing, onFollow, onChat, totalProducts 
             </div>
           </div>
 
-          <div className="flex flex-wrap justify-center md:justify-start gap-y-2 gap-x-6 text-slate-500 font-bold text-xs uppercase tracking-tight">
+          <div className="flex flex-wrap justify-center md:justify-start gap-y-2 gap-x-6  text-gray-500 font-bold text-xs uppercase tracking-tight">
             <div className="flex items-center gap-1.5">
               <Star size={14} className="text-yellow-500 fill-yellow-500" /> 
-              <span className="text-slate-800">4.9</span> (2.1k đánh giá)
+              <span className=" text-gray-800">4.9</span> (2.1k đánh giá)
             </div>
             <div className="flex items-center gap-1.5">
               <LayoutGrid size={14} className="text-orange-500" /> 
-              <span className="text-slate-800">{totalProducts}</span> Sản phẩm
+              <span className=" text-gray-800">{totalProducts}</span> Sản phẩm
             </div>
             <div className="flex items-center gap-1.5">
               <MapPin size={14} className="text-red-500" /> Hà Nội, VN
@@ -66,7 +66,7 @@ export const ShopHeader = ({ shop, isFollowing, onFollow, onChat, totalProducts 
           </div>
 
           <div className="mt-4 flex flex-wrap justify-center md:justify-start gap-3">
-            <div className="px-4 py-1.5 bg-slate-50 border border-slate-100 rounded-full text-[11px] font-bold text-slate-400 flex items-center gap-2">
+            <div className="px-4 py-1.5 bg-slate-50 border border-slate-100 rounded-full text-[11px] font-bold  text-gray-400 flex items-center gap-2">
               <Clock size={12} /> Đã tham gia {shop.createdDate ? new Date(shop.createdDate).getFullYear() : '2024'}
             </div>
           </div>
@@ -79,7 +79,7 @@ export const ShopHeader = ({ shop, isFollowing, onFollow, onChat, totalProducts 
             className={`flex-1 md:flex-none px-8 py-3.5 rounded-2xl font-bold text-sm uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-2 border-2 ${
               isFollowing
                 ? "bg-slate-800 border-slate-800 text-white shadow-xl shadow-slate-200"
-                : "bg-transparent border-slate-200 text-slate-400 hover:border-orange-500 hover:text-orange-500"
+                : "bg-transparent border-slate-200  text-gray-400 hover:border-orange-500 hover:text-orange-500"
             }`}
           >
             <Heart size={18} fill={isFollowing ? "white" : "none"} className={isFollowing ? "animate-bounce" : ""} />

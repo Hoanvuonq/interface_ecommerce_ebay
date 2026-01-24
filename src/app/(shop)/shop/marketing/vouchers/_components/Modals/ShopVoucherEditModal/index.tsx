@@ -131,7 +131,7 @@ export default function ShopVoucherEditModal({
             <h2 className="text-xl font-bold text-gray-900 uppercase tracking-tight leading-none italic">
               Chỉnh sửa Voucher
             </h2>
-            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mt-1.5">
+            <p className="text-[10px] font-bold text-gray-400 uppercase  mt-1.5">
               Mã hệ thống: {voucher?.id}
             </p>
           </div>
@@ -147,7 +147,7 @@ export default function ShopVoucherEditModal({
       >
         {/* Section: Basic Info */}
         <section className="space-y-5">
-          <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] ml-1">
+          <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase  ml-1">
             <Info size={14} strokeWidth={3} /> Thông tin chiến dịch
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -244,7 +244,7 @@ export default function ShopVoucherEditModal({
         {/* Section: Time & Limit */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-10">
           <div className="space-y-5">
-            <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] ml-1">
+            <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase  ml-1">
               <Calendar size={14} strokeWidth={3} /> Thời gian áp dụng
             </div>
             <div className="space-y-3">
@@ -268,7 +268,7 @@ export default function ShopVoucherEditModal({
           </div>
 
           <div className="space-y-5">
-            <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] ml-1">
+            <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase  ml-1">
               <Users size={14} strokeWidth={3} /> Quản lý phát hành
             </div>
             <FormInput
@@ -285,7 +285,7 @@ export default function ShopVoucherEditModal({
 
         {/* Section: Scope */}
         <section className="space-y-5">
-          <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] ml-1">
+          <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase  ml-1">
             <CheckCircle2 size={14} strokeWidth={3} /> Đối tượng áp dụng
           </div>
 

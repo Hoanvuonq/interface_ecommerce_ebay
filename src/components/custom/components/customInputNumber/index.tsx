@@ -48,8 +48,8 @@ export const CustomInputNumber: React.FC<IInputProps> = ({
         onBlur={handleBlur}
         disabled={disabled}
         className={cn(
-          "w-12 h-10 text-center font-bold text-slate-800 bg-transparent focus:outline-none transition-all tabular-nums",
-          disabled && "text-slate-400"
+          "w-12 h-10 text-center font-bold  text-gray-800 bg-transparent focus:outline-none transition-all tabular-nums",
+          disabled && " text-gray-400"
         )}
       />
       <style jsx>{`

@@ -28,7 +28,7 @@ type StatusType = "DRAFT" | "PENDING" | "APPROVED" | "REJECTED";
 const APPROVAL_CONFIGS = {
   DRAFT: {
     bg: "bg-slate-100/80",
-    text: "text-slate-500",
+    text: " text-gray-500",
     label: "BẢN NHÁP",
     icon: <FileText size={12} strokeWidth={2.5} />,
   },
@@ -80,11 +80,11 @@ export const getProductColumns = (
             )}
           </div>
           <div className="flex flex-col min-w-0">
-            <Link href={`/shop/products/${record.id}`} className="text-slate-800 font-bold hover:text-orange-500 truncate transition-colors text-[13px] uppercase tracking-tight italic">
+            <Link href={`/shop/products/${record.id}`} className=" text-gray-800 font-bold hover:text-orange-500 truncate transition-colors text-[13px] uppercase tracking-tight italic">
               {record.name}
             </Link>
             <div className="flex flex-wrap items-center gap-2 mt-1.5">
-              <span className="text-[11px] text-slate-500 font-semibold bg-slate-50 px-2 py-0.5 rounded-md border border-slate-200/40">
+              <span className="text-[11px]  text-gray-500 font-semibold bg-slate-50 px-2 py-0.5 rounded-md border border-slate-200/40">
                 #: {record.slug?.split("-")[0] || "N/A"}
               </span>
               <span className="flex items-center gap-1 text-[10px] text-orange-500 font-bold uppercase tracking-tight">
@@ -110,10 +110,10 @@ export const getProductColumns = (
         <div className="flex flex-col items-center gap-1">
           <div className="flex items-center text-xs font-bold px-3 py-1 bg-white rounded-full border border-orange-100 shadow-sm">
             <span className="text-orange-600">{totalSold}</span>
-            <span className="mx-1.5 text-slate-300">/</span>
+            <span className="mx-1.5  text-gray-300">/</span>
             <span className="text-blue-500">{totalQuantity}</span>
           </div>
-          <span className="text-[9px] text-slate-400 uppercase tracking-widest font-semibold italic">Đã bán / Tổng</span>
+          <span className="text-[9px]  text-gray-400 uppercase tracking-widest font-semibold italic">Đã bán / Tổng</span>
         </div>
       );
     },
@@ -123,7 +123,7 @@ export const getProductColumns = (
     align: "right",
     render: (record) => (
       <div className="flex flex-col items-end pr-2">
-        <div className="font-bold text-slate-700 text-lg tabular-nums flex items-baseline gap-1">
+        <div className="font-bold  text-gray-700 text-lg tabular-nums flex items-baseline gap-1">
           {record.basePrice?.toLocaleString("vi-VN")}
           <span className="text-[10px] text-orange-500 uppercase font-bold italic tracking-tighter">Vnđ</span>
         </div>
@@ -146,7 +146,7 @@ export const getProductColumns = (
     header: "Hiển thị",
     align: "center",
     render: (record) => (
-      <div className={cn("inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-[9px] font-bold uppercase transition-all border", record.active ? "text-blue-600 bg-blue-50/50 border-blue-100" : "text-slate-400 bg-slate-50 border-slate-100")}>
+      <div className={cn("inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-[9px] font-bold uppercase transition-all border", record.active ? "text-blue-600 bg-blue-50/50 border-blue-100" : " text-gray-400 bg-slate-50 border-slate-100")}>
         <div className={cn("w-1.5 h-1.5 rounded-full", record.active ? "bg-blue-600 animate-pulse" : "bg-slate-300")} />
         {record.active ? "Đang hoạt động" : "Tạm dừng"}
       </div>

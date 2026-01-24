@@ -100,8 +100,8 @@ export const ReviewResponseModal =({
         {/* Lời khuyên UI hiện đại hơn */}
         <div className="bg-slate-50 border border-slate-100 p-4 rounded-xl mb-6 flex gap-3 items-start">
           <Lightbulb className="text-amber-500 shrink-0 mt-0.5" size={18} />
-          <p className="text-slate-600 text-sm leading-relaxed">
-            <span className="font-bold text-slate-800">Lời khuyên:</span> Trả
+          <p className=" text-gray-600 text-sm leading-relaxed">
+            <span className="font-bold  text-gray-800">Lời khuyên:</span> Trả
             lời chuyên nghiệp giúp xây dựng niềm tin và cải thiện uy tín của
             shop trong mắt khách hàng tiềm năng.
           </p>
@@ -109,7 +109,7 @@ export const ReviewResponseModal =({
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <label className="text-sm font-bold text-slate-700 ml-1 uppercase tracking-wider">
+            <label className="text-sm font-bold  text-gray-700 ml-1 uppercase tracking-wider">
               Nội dung phản hồi <span className="text-red-500">*</span>
             </label>
             <textarea
@@ -118,7 +118,7 @@ export const ReviewResponseModal =({
               onChange={(e) => setResponseValue(e.target.value)}
               maxLength={1000}
               placeholder="Ví dụ: Cảm ơn bạn đã đánh giá! Chúng tôi rất vui khi sản phẩm đáp ứng được mong đợi của bạn..."
-              className={`w-full p-4 text-slate-700 bg-slate-50 border rounded-xl focus:outline-none focus:ring-4 transition-all resize-none ${
+              className={`w-full p-4  text-gray-700 bg-slate-50 border rounded-xl focus:outline-none focus:ring-4 transition-all resize-none ${
                 error
                   ? "border-red-400 focus:ring-red-100"
                   : "border-slate-200 focus:border-indigo-500 focus:ring-indigo-100"
@@ -131,7 +131,7 @@ export const ReviewResponseModal =({
                 className={`text-xs font-bold ${
                   responseValue.length > 900
                     ? "text-orange-500"
-                    : "text-slate-400"
+                    : " text-gray-400"
                 }`}
               >
                 {responseValue.length}/1000
@@ -144,7 +144,7 @@ export const ReviewResponseModal =({
             <button
               type="button"
               onClick={handleClose}
-              className="px-6 py-2.5 rounded-xl font-bold text-slate-500 hover:bg-slate-100 transition-colors"
+              className="px-6 py-2.5 rounded-xl font-bold  text-gray-500 hover:bg-slate-100 transition-colors"
             >
               Hủy
             </button>

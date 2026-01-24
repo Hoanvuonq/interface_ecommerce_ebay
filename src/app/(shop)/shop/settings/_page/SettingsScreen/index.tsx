@@ -55,7 +55,7 @@ export const SettingsShopScreen = () => {
     switch (activeTab) {
       case "account":
         return (
-          <div key="acc" className="py-10 text-center text-slate-400 italic">
+          <div key="acc" className="py-10 text-center  text-gray-400 italic">
             Giao diện Tài khoản...
           </div>
         );
@@ -65,7 +65,7 @@ export const SettingsShopScreen = () => {
         return (
           <div
             key={activeTab}
-            className="py-10 text-center text-slate-400 italic"
+            className="py-10 text-center  text-gray-400 italic"
           >
             Tính năng {pageMeta.title} đang được cập nhật...
           </div>
@@ -92,7 +92,7 @@ export const SettingsShopScreen = () => {
                 exit={{ opacity: 0, x: -10 }}
                 transition={{ duration: 0.3 }}
               >
-                <h1 className="text-2xl font-bold text-slate-800 italic uppercase leading-tight">
+                <h1 className="text-2xl font-bold  text-gray-800 italic uppercase leading-tight">
                   {pageMeta.title}
                 </h1>
                 <p className="text-[10px] font-bold uppercase tracking-wider text-orange-500 mt-1">

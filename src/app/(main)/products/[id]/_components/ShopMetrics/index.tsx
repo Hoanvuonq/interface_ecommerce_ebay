@@ -24,7 +24,7 @@ export const ShopMetrics = ({ shop, reviewSummary, soldCount, followerCount }: a
     <div className="flex-1 grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-6 lg:gap-x-10">
       {metrics.map((metric) => (
         <div key={metric.label} className="group flex flex-col items-center transition-all">
-          <span className="text-[11px] text-slate-600 font-semibold uppercase mb-1">
+          <span className="text-[11px]  text-gray-600 font-semibold uppercase mb-1">
             {metric.label}
           </span>
           <div className="flex items-baseline gap-1">

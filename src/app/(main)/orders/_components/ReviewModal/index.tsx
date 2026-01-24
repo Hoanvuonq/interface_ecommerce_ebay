@@ -88,7 +88,7 @@ export const ReviewModal: React.FC<ReviewModalProps> = (props) => {
         </div>
       }
     >
-      <div className="space-y-8 py-2 font-sans">
+      <div className="space-y-8 py-2 ">
         <div className="flex gap-4 p-2 bg-gray-50/50 rounded-2xl border border-gray-100 items-center">
           <div className="w-16 h-16 bg-white rounded-xl border border-gray-100 flex items-center justify-center overflow-hidden shrink-0 relative shadow-sm">
             {productImage ? (
@@ -119,7 +119,7 @@ export const ReviewModal: React.FC<ReviewModalProps> = (props) => {
         </div>
 
         <div className="flex flex-col items-center py-6 bg-white rounded-3xl border border-gray-50 shadow-sm shadow-orange-100/30">
-          <label className="text-[11px] font-bold text-gray-500 uppercase tracking-[0.2em] mb-4">
+          <label className="text-[11px] font-bold text-gray-500 uppercase  mb-4">
             Chất lượng sản phẩm
           </label>
           <div className="flex items-center gap-3">

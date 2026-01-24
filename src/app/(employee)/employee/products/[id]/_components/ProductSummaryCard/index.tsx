@@ -51,14 +51,14 @@ export const ProductSummaryCard =({
         <div className="flex items-center justify-between mb-6">
           {getStatusBadge(product.approvalStatus)}
           <div className="flex items-center gap-1.5 px-3 py-1 bg-slate-50 rounded-lg border border-slate-100">
-            <Fingerprint size={12} className="text-slate-400" />
-            <span className="text-[10px] text-slate-500 font-bold tracking-tighter uppercase">
+            <Fingerprint size={12} className=" text-gray-400" />
+            <span className="text-[10px]  text-gray-500 font-bold tracking-tighter uppercase">
               ID: {product.id.substring(0, 8)}
             </span>
           </div>
         </div>
 
-        <h1 className="text-3xl font-bold text-slate-900 mb-4 leading-tight uppercase italic tracking-tighter group-hover:text-orange-600 transition-colors">
+        <h1 className="text-3xl font-bold  text-gray-900 mb-4 leading-tight uppercase italic tracking-tighter group-hover:text-orange-600 transition-colors">
           {product.name}
         </h1>
 
@@ -67,10 +67,10 @@ export const ProductSummaryCard =({
             <Coins size={24} className="text-white" />
           </div>
           <div className="flex flex-col">
-            <span className="text-[10px] font-bold text-orange-400 uppercase tracking-[0.2em] leading-none mb-1">
+            <span className="text-[10px] font-bold text-orange-400 uppercase  leading-none mb-1">
               Giá niêm yết
             </span>
-            <span className="text-4xl font-bold text-slate-900 tracking-tighter italic">
+            <span className="text-4xl font-bold  text-gray-900 tracking-tighter italic">
               {product.basePrice?.toLocaleString("vi-VN")}
               <span className="text-xl ml-1">₫</span>
             </span>
@@ -85,10 +85,10 @@ export const ProductSummaryCard =({
                 <Tag size={18} />
               </div>
               <div>
-                <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">
+                <p className="text-[9px] font-bold  text-gray-400 uppercase tracking-widest">
                   Phân loại
                 </p>
-                <p className="text-sm font-bold text-slate-800">
+                <p className="text-sm font-bold  text-gray-800">
                   {product.category?.name || "N/A"}
                 </p>
               </div>
@@ -102,7 +102,7 @@ export const ProductSummaryCard =({
                 <Store size={18} />
               </div>
               <div>
-                <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">
+                <p className="text-[9px] font-bold  text-gray-400 uppercase tracking-widest">
                   Cửa hàng
                 </p>
                 <Link
@@ -120,7 +120,7 @@ export const ProductSummaryCard =({
         {/* Slug Metadata */}
         <div className="mt-6 flex items-center gap-2 px-2">
           <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
-          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest truncate">
+          <span className="text-[10px] font-bold  text-gray-400 uppercase tracking-widest truncate">
             Asset: /{product.slug}
           </span>
         </div>

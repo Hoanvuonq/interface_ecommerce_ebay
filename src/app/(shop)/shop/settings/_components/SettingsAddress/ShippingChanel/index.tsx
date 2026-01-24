@@ -28,7 +28,7 @@ export const ShippingChanel = () => {
       ))}
 
       {shippingChannels.length === 0 && (
-        <div className="p-10 text-center text-slate-400 italic bg-white rounded-[2.5rem] border border-dashed border-slate-200">
+        <div className="p-10 text-center  text-gray-400 italic bg-white rounded-[2.5rem] border border-dashed border-slate-200">
           Không tìm thấy kênh vận chuyển nào khả dụng.
         </div>
       )}

@@ -48,10 +48,10 @@ export const CreateCampaignProduction: React.FC<
             <Layers size={18} />
           </div>
           <div>
-            <span className="font-bold text-sm text-slate-700 uppercase tracking-tight block">
+            <span className="font-bold text-sm  text-gray-700 uppercase tracking-tight block">
               Biến thể khả dụng
             </span>
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+            <p className="text-[10px]  text-gray-400 font-bold uppercase tracking-wider">
               {flatVariants.length} mục được tìm thấy
             </p>
           </div>
@@ -60,7 +60,7 @@ export const CreateCampaignProduction: React.FC<
         <button
           type="button"
           onClick={onRefreshProducts}
-          className="flex items-center gap-2 px-4 py-1.5 bg-slate-50 hover:bg-slate-100 text-slate-600 rounded-lg border border-slate-200 text-[11px] font-bold transition-all active:scale-95"
+          className="flex items-center gap-2 px-4 py-1.5 bg-slate-50 hover:bg-slate-100  text-gray-600 rounded-lg border border-slate-200 text-[11px] font-bold transition-all active:scale-95"
         >
           <RefreshCw
             size={12}

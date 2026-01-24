@@ -123,7 +123,7 @@ export default function ShopVoucherPurchaseModal({
 
         {/* Checkout Summary */}
         <div className="space-y-4">
-          <div className="flex items-center gap-2 text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] ml-2">
+          <div className="flex items-center gap-2 text-[10px] font-bold text-gray-500 uppercase  ml-2">
             <Info size={14} /> Chi tiết thanh toán
           </div>
           
@@ -161,14 +161,14 @@ export default function ShopVoucherPurchaseModal({
       <div className="px-8 py-6 border-t border-gray-100 bg-gray-50/50 flex items-center gap-4">
         <button
           onClick={onClose}
-          className="flex-1 py-4 rounded-2xl text-[11px] font-bold uppercase tracking-[0.2em] text-gray-500 hover:bg-gray-100 transition-all active:scale-95 border border-transparent"
+          className="flex-1 py-4 rounded-2xl text-[11px] font-bold uppercase  text-gray-500 hover:bg-gray-100 transition-all active:scale-95 border border-transparent"
         >
           Để sau
         </button>
         <button
           onClick={handleConfirmPurchase}
           disabled={loading}
-          className="flex-[2] py-4 bg-gray-900 text-white rounded-2xl text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-orange-600 shadow-xl shadow-gray-200 transition-all flex items-center justify-center gap-3 active:scale-95 disabled:opacity-50"
+          className="flex-[2] py-4 bg-gray-900 text-white rounded-2xl text-[11px] font-bold uppercase  hover:bg-orange-600 shadow-xl shadow-gray-200 transition-all flex items-center justify-center gap-3 active:scale-95 disabled:opacity-50"
         >
           {loading ? (
             <Loader2 className="animate-spin" size={18} />

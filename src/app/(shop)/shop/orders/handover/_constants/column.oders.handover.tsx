@@ -143,7 +143,7 @@ export const getHandoverColumns = ({
     header: "Thanh toán",
     render: (record) => (
       <div className="flex flex-col items-end">
-        <span className="text-[14px] font-bold text-slate-900">
+        <span className="text-[14px] font-bold  text-gray-900">
           {record.pricing.grandTotal.toLocaleString()}
         </span>
         <span className="text-[10px] font-bold text-gray-400 uppercase">

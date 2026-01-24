@@ -42,7 +42,7 @@ export default function ReviewCard({
             className={cn(
               s <= rating
                 ? "text-orange-400 fill-orange-400"
-                : "text-slate-200 fill-slate-100"
+                : " text-gray-200 fill-slate-100"
             )}
           />
         ))}
@@ -65,7 +65,7 @@ export default function ReviewCard({
                   className="relative w-16 h-16 rounded-2xl object-cover border-2 border-white shadow-sm"
                 />
               ) : (
-                <div className="relative w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400 border-2 border-white shadow-sm">
+                <div className="relative w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center  text-gray-400 border-2 border-white shadow-sm">
                   <User size={32} />
                 </div>
               )}
@@ -85,13 +85,13 @@ export default function ReviewCard({
           <div className="flex-1 min-w-0">
             <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
               <div>
-                <h4 className="text-lg font-bold text-slate-800 tracking-tight leading-none mb-2">
+                <h4 className="text-lg font-bold  text-gray-800 tracking-tight leading-none mb-2">
                   {review.username || review.buyerName}
                 </h4>
                 <div className="flex items-center gap-3">
                   {renderStars(review.rating)}
                   <span className="w-1 h-1 rounded-full bg-slate-200"></span>
-                  <span className="text-[11px] font-bold text-slate-400 uppercase tracking-tighter italic">
+                  <span className="text-[11px] font-bold  text-gray-400 uppercase tracking-tighter italic">
                     {dayjs(review.createdDate).fromNow()}
                   </span>
                 </div>
@@ -99,7 +99,7 @@ export default function ReviewCard({
             </div>
 
             {review.comment && (
-              <p className="text-slate-600 leading-relaxed text-sm mb-6 bg-slate-50/50 p-4 rounded-2xl italic border border-slate-50">
+              <p className=" text-gray-600 leading-relaxed text-sm mb-6 bg-slate-50/50 p-4 rounded-2xl italic border border-slate-50">
                 "{review.comment}"
               </p>
             )}
@@ -110,10 +110,10 @@ export default function ReviewCard({
                 <div className="p-2 bg-slate-50 rounded-lg group-hover:bg-emerald-50 transition-colors">
                   <ThumbsUp
                     size={14}
-                    className="text-slate-400 group-hover:text-emerald-500"
+                    className=" text-gray-400 group-hover:text-emerald-500"
                   />
                 </div>
-                <span className="text-xs font-bold text-slate-600 group-hover:text-emerald-600">
+                <span className="text-xs font-bold  text-gray-600 group-hover:text-emerald-600">
                   {review.helpfulCount}
                 </span>
               </div>
@@ -121,10 +121,10 @@ export default function ReviewCard({
                 <div className="p-2 bg-slate-50 rounded-lg group-hover:bg-rose-50 transition-colors">
                   <ThumbsDown
                     size={14}
-                    className="text-slate-400 group-hover:text-rose-500"
+                    className=" text-gray-400 group-hover:text-rose-500"
                   />
                 </div>
-                <span className="text-xs font-bold text-slate-600 group-hover:text-rose-600">
+                <span className="text-xs font-bold  text-gray-600 group-hover:text-rose-600">
                   {review.notHelpfulCount}
                 </span>
               </div>
@@ -142,7 +142,7 @@ export default function ReviewCard({
                   </div>
                 </div>
 
-                <p className="text-sm text-slate-700 leading-relaxed font-medium">
+                <p className="text-sm  text-gray-700 leading-relaxed font-medium">
                   {review.sellerResponse}
                 </p>
 

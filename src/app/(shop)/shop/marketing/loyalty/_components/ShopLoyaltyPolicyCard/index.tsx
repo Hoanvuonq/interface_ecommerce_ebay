@@ -110,7 +110,7 @@ const ShopLoyaltyPolicyCard: React.FC<ShopLoyaltyPolicyCardProps> = ({
     return (
       <div className="bg-white rounded-3xl p-12 border border-slate-100 flex flex-col items-center justify-center gap-4 shadow-sm">
         <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
-        <p className="text-slate-400 font-medium italic text-sm">
+        <p className=" text-gray-400 font-medium italic text-sm">
           Đang tải cấu hình...
         </p>
       </div>
@@ -150,14 +150,14 @@ const ShopLoyaltyPolicyCard: React.FC<ShopLoyaltyPolicyCardProps> = ({
       <div className="bg-white rounded-4xl border border-slate-100 shadow-sm overflow-hidden animate-in fade-in duration-500">
         <div className="px-8 py-6 border-b border-slate-50 flex items-center justify-between bg-slate-50/50">
           <div className="flex items-center gap-3">
-            <Settings className="w-5 h-5 text-slate-400" />
-            <h2 className="font-bold text-slate-800 tracking-tight">
+            <Settings className="w-5 h-5  text-gray-400" />
+            <h2 className="font-bold  text-gray-800 tracking-tight">
               Cấu hình Tích điểm
             </h2>
           </div>
           <button
             onClick={() => setIsEditing(false)}
-            className="text-slate-400 hover:text-slate-600 transition-colors"
+            className=" text-gray-400 hover:text-gray-600 transition-colors"
           >
             <X size={20} />
           </button>
@@ -167,7 +167,7 @@ const ShopLoyaltyPolicyCard: React.FC<ShopLoyaltyPolicyCardProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Rule Type */}
             <div className="space-y-3">
-              <label className="text-[11px] font-bold uppercase tracking-widest text-slate-400 ml-1">
+              <label className="text-[11px] font-bold uppercase tracking-widest  text-gray-400 ml-1">
                 Loại quy tắc
               </label>
               <div className="grid grid-cols-2 gap-2 p-1.5 bg-slate-100 rounded-2xl">
@@ -180,7 +180,7 @@ const ShopLoyaltyPolicyCard: React.FC<ShopLoyaltyPolicyCardProps> = ({
                       "flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-bold transition-all",
                       formData.ruleType === type
                         ? "bg-white text-orange-600 shadow-sm"
-                        : "text-slate-500 hover:text-slate-700"
+                        : " text-gray-500 hover:text-gray-700"
                     )}
                   >
                     {type === "PERCENT" ? (
@@ -196,7 +196,7 @@ const ShopLoyaltyPolicyCard: React.FC<ShopLoyaltyPolicyCardProps> = ({
 
             {/* Rule Value */}
             <div className="space-y-3">
-              <label className="text-[11px] font-bold uppercase tracking-widest text-slate-400 ml-1">
+              <label className="text-[11px] font-bold uppercase tracking-widest  text-gray-400 ml-1">
                 Giá trị tích lũy
               </label>
               <div className="relative">
@@ -212,7 +212,7 @@ const ShopLoyaltyPolicyCard: React.FC<ShopLoyaltyPolicyCardProps> = ({
                   className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-bold focus:outline-none focus:border-orange-500 transition-all"
                   placeholder="VD: 5"
                 />
-                <span className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 font-bold">
+                <span className="absolute right-5 top-1/2 -translate-y-1/2  text-gray-400 font-bold">
                   {formData.ruleType === "PERCENT" ? "%" : "điểm"}
                 </span>
               </div>
@@ -220,7 +220,7 @@ const ShopLoyaltyPolicyCard: React.FC<ShopLoyaltyPolicyCardProps> = ({
 
             {/* Expiry Days */}
             <div className="space-y-3">
-              <label className="text-[11px] font-bold uppercase tracking-widest text-slate-400 ml-1 flex items-center gap-2">
+              <label className="text-[11px] font-bold uppercase tracking-widest  text-gray-400 ml-1 flex items-center gap-2">
                 <Calendar size={12} /> Thời hạn sử dụng điểm
               </label>
               <div className="relative">
@@ -235,7 +235,7 @@ const ShopLoyaltyPolicyCard: React.FC<ShopLoyaltyPolicyCardProps> = ({
                   }
                   className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-bold focus:outline-none focus:border-orange-500 transition-all"
                 />
-                <span className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-bold">
+                <span className="absolute right-5 top-1/2 -translate-y-1/2  text-gray-400 text-xs font-bold">
                   NGÀY
                 </span>
               </div>
@@ -243,7 +243,7 @@ const ShopLoyaltyPolicyCard: React.FC<ShopLoyaltyPolicyCardProps> = ({
 
             {/* Max Discount */}
             <div className="space-y-3">
-              <label className="text-[11px] font-bold uppercase tracking-widest text-slate-400 ml-1">
+              <label className="text-[11px] font-bold uppercase tracking-widest  text-gray-400 ml-1">
                 % Giảm tối đa / đơn
               </label>
               <input
@@ -265,7 +265,7 @@ const ShopLoyaltyPolicyCard: React.FC<ShopLoyaltyPolicyCardProps> = ({
             <button
               type="button"
               onClick={() => setIsEditing(false)}
-              className="px-6 py-3 text-slate-500 font-bold text-xs uppercase tracking-widest hover:bg-slate-50 rounded-2xl transition-all"
+              className="px-6 py-3  text-gray-500 font-bold text-xs uppercase tracking-widest hover:bg-slate-50 rounded-2xl transition-all"
             >
               Hủy
             </button>
@@ -302,7 +302,7 @@ const ShopLoyaltyPolicyCard: React.FC<ShopLoyaltyPolicyCardProps> = ({
           </div>
           <div>
             <div className="flex items-center gap-3">
-              <h2 className="text-xl font-bold text-slate-800 tracking-tight">
+              <h2 className="text-xl font-bold  text-gray-800 tracking-tight">
                 Chính sách Điểm thưởng
               </h2>
               <span
@@ -310,13 +310,13 @@ const ShopLoyaltyPolicyCard: React.FC<ShopLoyaltyPolicyCardProps> = ({
                   "px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border",
                   policy.enabled
                     ? "bg-emerald-50 text-emerald-600 border-emerald-100"
-                    : "bg-slate-100 text-slate-400 border-slate-200"
+                    : "bg-slate-100  text-gray-400 border-slate-200"
                 )}
               >
                 {policy.enabled ? "Đang hoạt động" : "Tạm ngắt"}
               </span>
             </div>
-            <p className="text-sm text-slate-400 font-medium mt-0.5 italic">
+            <p className="text-sm  text-gray-400 font-medium mt-0.5 italic">
               Cấu hình cách khách hàng nhận và dùng điểm
             </p>
           </div>
@@ -324,7 +324,7 @@ const ShopLoyaltyPolicyCard: React.FC<ShopLoyaltyPolicyCardProps> = ({
 
         <div className="flex items-center gap-3 self-end md:self-center">
           <div className="flex items-center gap-3 bg-white px-4 py-2 rounded-2xl border border-slate-100 shadow-sm">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+            <span className="text-[10px] font-bold  text-gray-400 uppercase tracking-widest">
               Trạng thái
             </span>
             <button
@@ -356,7 +356,7 @@ const ShopLoyaltyPolicyCard: React.FC<ShopLoyaltyPolicyCardProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Stat 1 */}
           <div className="p-6 bg-slate-50/50 rounded-3xl border border-slate-100 group hover:border-orange-200 transition-colors">
-            <div className="flex items-center gap-3 text-slate-400 mb-3 group-hover:text-orange-500 transition-colors">
+            <div className="flex items-center gap-3  text-gray-400 mb-3 group-hover:text-orange-500 transition-colors">
               {policy.ruleType === "FIXED" ? (
                 <Hash size={18} />
               ) : (
@@ -367,56 +367,56 @@ const ShopLoyaltyPolicyCard: React.FC<ShopLoyaltyPolicyCardProps> = ({
               </span>
             </div>
             <div className="flex items-baseline gap-1">
-              <span className="text-3xl font-bold text-slate-800">
+              <span className="text-3xl font-bold  text-gray-800">
                 {policy.ruleValue}
               </span>
-              <span className="text-sm font-bold text-slate-400 uppercase">
+              <span className="text-sm font-bold  text-gray-400 uppercase">
                 {policy.ruleType === "FIXED" ? "điểm / đơn" : "% đơn hàng"}
               </span>
             </div>
-            <p className="text-[11px] text-slate-400 mt-2 font-medium">
+            <p className="text-[11px]  text-gray-400 mt-2 font-medium">
               Mỗi đơn hàng thành công sẽ nhận được số điểm này.
             </p>
           </div>
 
           {/* Stat 2 */}
           <div className="p-6 bg-slate-50/50 rounded-3xl border border-slate-100 group hover:border-orange-200 transition-colors">
-            <div className="flex items-center gap-3 text-slate-400 mb-3 group-hover:text-orange-500 transition-colors">
+            <div className="flex items-center gap-3  text-gray-400 mb-3 group-hover:text-orange-500 transition-colors">
               <Calendar size={18} />
               <span className="text-[10px] font-bold uppercase tracking-[0.2em]">
                 Hiệu lực điểm
               </span>
             </div>
             <div className="flex items-baseline gap-1">
-              <span className="text-3xl font-bold text-slate-800">
+              <span className="text-3xl font-bold  text-gray-800">
                 {policy.expiryDays}
               </span>
-              <span className="text-sm font-bold text-slate-400 uppercase">
+              <span className="text-sm font-bold  text-gray-400 uppercase">
                 Ngày
               </span>
             </div>
-            <p className="text-[11px] text-slate-400 mt-2 font-medium">
+            <p className="text-[11px]  text-gray-400 mt-2 font-medium">
               Điểm sẽ tự động bị xóa sau thời gian này nếu không dùng.
             </p>
           </div>
 
           {/* Stat 3 */}
           <div className="p-6 bg-slate-50/50 rounded-3xl border border-slate-100 group hover:border-orange-200 transition-colors">
-            <div className="flex items-center gap-3 text-slate-400 mb-3 group-hover:text-orange-500 transition-colors">
+            <div className="flex items-center gap-3  text-gray-400 mb-3 group-hover:text-orange-500 transition-colors">
               <ShieldCheck size={18} />
               <span className="text-[10px] font-bold uppercase tracking-[0.2em]">
                 Giới hạn dùng
               </span>
             </div>
             <div className="flex items-baseline gap-1">
-              <span className="text-3xl font-bold text-slate-800">
+              <span className="text-3xl font-bold  text-gray-800">
                 {policy.maxDiscountPercent || 100}
               </span>
-              <span className="text-sm font-bold text-slate-400 uppercase">
+              <span className="text-sm font-bold  text-gray-400 uppercase">
                 % tối đa
               </span>
             </div>
-            <p className="text-[11px] text-slate-400 mt-2 font-medium">
+            <p className="text-[11px]  text-gray-400 mt-2 font-medium">
               Tỷ lệ giảm giá tối đa khách có thể áp dụng bằng điểm.
             </p>
           </div>

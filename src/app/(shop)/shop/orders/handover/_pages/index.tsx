@@ -170,10 +170,10 @@ export const HandoverScreen = () => {
               <ShoppingBag size={28} className="text-white" strokeWidth={2.5} />
             </div>
             <div>
-              <h1 className="text-4xl font-bold text-slate-900 uppercase tracking-tighter italic leading-none">
+              <h1 className="text-4xl font-bold  text-gray-900 uppercase tracking-tighter italic leading-none">
                 Bàn Giao <span className="text-orange-500">Đơn Hàng</span>
               </h1>
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.3em] mt-2 ml-1">
+              <p className="text-[10px] font-bold  text-gray-400 uppercase tracking-[0.3em] mt-2 ml-1">
                 Commerce Management Protocol
               </p>
             </div>

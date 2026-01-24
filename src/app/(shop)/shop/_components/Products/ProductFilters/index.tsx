@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Search, RefreshCcw } from "lucide-react";
-import {  ButtonField } from "@/components";
+import { ButtonField, FormInput } from "@/components";
 import { Button } from "@/components/button/button";
 
 export interface FilterState {
@@ -32,20 +32,18 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
       <div className="md:col-span-5 relative group">
         <Search
           size={18}
-          className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-orange-500 transition-colors"
+          className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-orange-500 transition-colors z-10"
         />
-        <input
-          type="text"
+        <FormInput
           placeholder="Tìm kiếm sản phẩm theo tên, SKU..."
           value={filters.keyword}
           onChange={(e) =>
             setFilters((p) => ({ ...p, keyword: e.target.value }))
           }
           onKeyDown={(e) => e.key === "Enter" && onSearch()}
-          className="w-full h-12 pl-12 pr-4 bg-white border border-gray-200 rounded-2xl text-sm font-bold text-gray-700 outline-none focus:border-gray-500 focus:ring-4 focus:ring-orange-500/10 transition-all shadow-sm placeholder:font-normal placeholder:text-gray-500"
+          className="w-full h-12 pl-10 pr-4 transition-all"
         />
       </div>
-
       <div className="md:col-span-3 flex gap-2">
         <div className="relative w-1/2">
           <input
@@ -58,7 +56,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                 minPrice: e.target.value ? Number(e.target.value) : null,
               }))
             }
-            className="w-full h-12 px-4 bg-white border border-gray-200 rounded-2xl text-sm font-bold outline-none focus:border-gray-500 transition-all placeholder:font-normal"
+            className="w-full h-12 px-4 bg-white border border-gray-200 rounded-2xl text-sm font-bold outline-none  transition-all placeholder:font-normal"
           />
         </div>
         <div className="relative w-1/2">
@@ -84,14 +82,11 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
           onClick={onReset}
         >
           <span className="flex gap-2 items-center">
-            <RefreshCcw
-              size={14}
-              className={isLoading ? "animate-spin" : ""}
-            />
+            <RefreshCcw size={14} className={isLoading ? "animate-spin" : ""} />
             Đặt lại
           </span>
         </Button>
-        
+
         <ButtonField
           type="login"
           onClick={onSearch}

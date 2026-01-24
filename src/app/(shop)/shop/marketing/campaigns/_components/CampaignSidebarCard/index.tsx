@@ -71,7 +71,7 @@ export const CampaignSidebarCard = ({
                   ? "bg-red-50 text-red-500 border-red-100"
                   : isActive
                   ? "bg-emerald-50 text-emerald-600 border-emerald-100"
-                  : "bg-slate-50 text-slate-400 border-slate-100",
+                  : "bg-slate-50  text-gray-400 border-slate-100",
               )}
             >
               {campaign.status === "CANCELLED" ? "Đã huỷ" : status.label}
@@ -87,15 +87,15 @@ export const CampaignSidebarCard = ({
           <h3
             className={cn(
               "font-bold truncate text-[14px] tracking-tight transition-colors duration-300",
-              isSelected ? "text-orange-600" : "text-slate-700",
+              isSelected ? "text-orange-600" : " text-gray-700",
             )}
           >
             {campaign.name}
           </h3>
 
           <div className="flex items-center gap-1.5 mt-2">
-            <Calendar size={12} className="text-slate-300" />
-            <span className="text-[10px] font-medium text-slate-400 uppercase tracking-tighter">
+            <Calendar size={12} className=" text-gray-300" />
+            <span className="text-[10px] font-medium  text-gray-400 uppercase tracking-tighter">
               {new Date(campaign.startDate).toLocaleDateString("vi-VN")}
             </span>
           </div>
@@ -124,7 +124,7 @@ export const CampaignSidebarCard = ({
             <div className="p-1 opacity-0 group-hover:opacity-100 transition-all duration-300">
               <ChevronRight
                 size={16}
-                className="text-slate-300 translate-x-1 group-hover:translate-x-0"
+                className=" text-gray-300 translate-x-1 group-hover:translate-x-0"
               />
             </div>
           )}

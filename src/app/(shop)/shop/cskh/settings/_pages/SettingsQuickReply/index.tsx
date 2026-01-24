@@ -31,10 +31,10 @@ export const SettingsQuickReply = () => {
               <ChevronLeft size={24} />
             </button>
             <div>
-              <h1 className="text-3xl font-bold text-slate-800 tracking-tight italic uppercase leading-none">
+              <h1 className="text-3xl font-bold  text-gray-800 tracking-tight italic uppercase leading-none">
                 Tin nhắn nhanh
               </h1>
-              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-orange-400 mt-2">
+              <p className="text-[10px] font-bold uppercase  text-orange-400 mt-2">
                 Personalized Response Templates
               </p>
             </div>
@@ -43,7 +43,7 @@ export const SettingsQuickReply = () => {
           {/* Nút Tạo tin nhắn mới - Kích hoạt Modal */}
           <button
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-2 px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white rounded-4xl text-[10px] font-bold uppercase tracking-[0.2em] shadow-xl shadow-orange-500/20 transition-all active:scale-95"
+            className="flex items-center gap-2 px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white rounded-4xl text-[10px] font-bold uppercase  shadow-xl shadow-orange-500/20 transition-all active:scale-95"
           >
             <Plus size={18} strokeWidth={3} /> Tạo tin nhắn mới
           </button>
@@ -53,7 +53,7 @@ export const SettingsQuickReply = () => {
         <div className="flex items-center justify-between gap-4">
           <div className="relative flex-1 max-w-md group">
             <Search
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-orange-500 transition-colors"
+              className="absolute left-4 top-1/2 -translate-y-1/2  text-gray-400 group-focus-within:text-orange-500 transition-colors"
               size={18}
             />
             <input
@@ -62,7 +62,7 @@ export const SettingsQuickReply = () => {
               className="w-full pl-12 pr-4 py-4 bg-white border border-slate-100 rounded-3xl text-[10px] font-bold tracking-widest outline-none focus:border-orange-200 focus:ring-4 focus:ring-orange-50 shadow-sm transition-all"
             />
           </div>
-          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest italic">
+          <div className="text-[10px] font-bold  text-gray-400 uppercase tracking-widest italic">
             Đã dùng:{" "}
             <span className="text-orange-500 text-sm font-bold">01</span> / 25
             nhóm
@@ -78,10 +78,10 @@ export const SettingsQuickReply = () => {
                 <MessageSquare size={22} />
               </div>
               <div className="space-y-1">
-                <h2 className="text-xl font-bold text-slate-800 uppercase tracking-tight">
+                <h2 className="text-xl font-bold  text-gray-800 uppercase tracking-tight">
                   Nhóm tin nhắn chung
                 </h2>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest italic">
+                <p className="text-[10px] font-bold  text-gray-400 uppercase tracking-widest italic">
                   05 mẫu tin nhắn có sẵn
                 </p>
               </div>
@@ -143,7 +143,7 @@ export const SettingsQuickReply = () => {
                   ].map((text, idx) => (
                     <div
                       key={idx}
-                      className="px-6 py-4 rounded-2xl bg-slate-50/50 border border-transparent hover:border-orange-100 hover:bg-white text-xs font-semibold text-slate-600 transition-all cursor-default flex items-center gap-3 group/item"
+                      className="px-6 py-4 rounded-2xl bg-slate-50/50 border border-transparent hover:border-orange-100 hover:bg-white text-xs font-semibold  text-gray-600 transition-all cursor-default flex items-center gap-3 group/item"
                     >
                       <div className="w-1.5 h-1.5 bg-orange-200 group-hover/item:bg-orange-500 rounded-full transition-colors" />
                       {text}
@@ -167,7 +167,7 @@ export const SettingsQuickReply = () => {
                         key={item}
                         className="grid grid-cols-1 md:grid-cols-[40px_1fr_200px_40px] items-start gap-4 p-6 bg-white rounded-4xl shadow-xl shadow-slate-200/20 border border-transparent hover:border-orange-200 transition-all group/item"
                       >
-                        <div className="mt-4 text-slate-300 cursor-grab active:cursor-grabbing flex justify-center">
+                        <div className="mt-4  text-gray-300 cursor-grab active:cursor-grabbing flex justify-center">
                           <GripVertical size={18} />
                         </div>
 
@@ -179,7 +179,7 @@ export const SettingsQuickReply = () => {
                         />
 
                         <div className="space-y-2">
-                          <label className="text-[10px] font-bold uppercase text-slate-400 ml-1 tracking-widest">
+                          <label className="text-[10px] font-bold uppercase  text-gray-400 ml-1 tracking-widest">
                             Phím tắt (Tag)
                           </label>
                           <input
@@ -189,14 +189,14 @@ export const SettingsQuickReply = () => {
                           />
                         </div>
 
-                        <button className="mt-10 p-2 text-slate-300 hover:text-red-500 transition-all opacity-0 group-hover/item:opacity-100">
+                        <button className="mt-10 p-2  text-gray-300 hover:text-red-500 transition-all opacity-0 group-hover/item:opacity-100">
                           <Trash2 size={16} />
                         </button>
                       </div>
                     ))}
                   </div>
 
-                  <button className="w-full py-5 border-2 border-dashed border-slate-200 rounded-4xl text-[10px] font-bold uppercase tracking-widest text-slate-400 hover:border-orange-300 hover:text-orange-500 hover:bg-white transition-all">
+                  <button className="w-full py-5 border-2 border-dashed border-slate-200 rounded-4xl text-[10px] font-bold uppercase tracking-widest  text-gray-400 hover:border-orange-300 hover:text-orange-500 hover:bg-white transition-all">
                     + Thêm mẫu tin nhắn mới (Tối đa 20)
                   </button>
 

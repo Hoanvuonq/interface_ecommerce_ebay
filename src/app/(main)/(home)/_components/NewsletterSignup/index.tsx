@@ -122,7 +122,7 @@ const SubscribeForm = ({ email, loading, onChange, onSubmit }: any) => (
     <button
       type="submit"
       disabled={loading}
-      className="w-full py-5 bg-linear-to-r from-orange-500 to-orange-600 hover:to-orange-700 disabled:grayscale text-white rounded-2xl font-semibold uppercase tracking-[0.2em] text-xs md:text-sm transition-all active:scale-95 flex items-center justify-center gap-3 shadow-lg shadow-orange-500/20"
+      className="w-full py-5 bg-linear-to-r from-orange-500 to-orange-600 hover:to-orange-700 disabled:grayscale text-white rounded-2xl font-semibold uppercase  text-xs md:text-sm transition-all active:scale-95 flex items-center justify-center gap-3 shadow-lg shadow-orange-500/20"
     >
       {loading ? <Loader2 size={20} className="animate-spin" /> : <>Đăng ký nhận quà <ArrowRight size={18} strokeWidth={3} /></>}
     </button>

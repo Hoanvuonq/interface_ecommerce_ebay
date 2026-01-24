@@ -88,7 +88,7 @@ export function TopCategoriesList({ categories, loading = false }: TopCategories
             </div>
 
             <div className="p-4 bg-gray-50/50 border-t border-gray-100 text-center">
-                <button className="text-[10px] font-semibold text-blue-600 uppercase tracking-[0.2em] hover:opacity-70 transition-opacity">
+                <button className="text-[10px] font-semibold text-blue-600 uppercase  hover:opacity-70 transition-opacity">
                     Xem báo cáo ngành →
                 </button>
             </div>

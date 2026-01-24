@@ -290,7 +290,7 @@ const [activeTab, setActiveTab] = useState('overview');
                             </span>
                         </div>
                         {statusPieData.length ? (
-                            <div className="h-[300px]">
+                            <div className="h-75">
                                 <ResponsiveContainer width="100%" height="100%">
                                     <PieChart>
                                         <Pie data={statusPieData} dataKey="value" nameKey="name" outerRadius={100} innerRadius={60} paddingAngle={5}>
@@ -328,7 +328,7 @@ const [activeTab, setActiveTab] = useState('overview');
 
                         {/* Analysis Card */}
                         <div className="bg-linear-to-br from-indigo-500 to-blue-600 p-8 rounded-3xl text-white shadow-xl">
-                            <h4 className="font-semibold text-white uppercase tracking-[0.2em] text-[10px] mb-4 opacity-80">Insights</h4>
+                            <h4 className="font-semibold text-white uppercase  text-[10px] mb-4 opacity-80">Insights</h4>
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
                                     <p className="text-3xl font-semibold tracking-tight">{totalUsers > 0 ? ((overview?.status?.ACTIVE / totalUsers) * 100).toFixed(1) : 0}%</p>
@@ -378,7 +378,7 @@ const [activeTab, setActiveTab] = useState('overview');
             )}
 
             {/* TAB CONTENT */}
-            <div className="min-h-[500px]">
+            <div className="min-h-125">
                 {activeTab === 'overview' && (
                     loadingOverview ? <div className="flex justify-center py-20"><Loader2 className="animate-spin text-orange-500" size={40} /></div> : renderOverviewContent()
                 )}
@@ -497,7 +497,7 @@ const [activeTab, setActiveTab] = useState('overview');
 
                         <div className="bg-white p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-50">
                              <div className="flex justify-between items-center mb-10">
-                                <h4 className="font-semibold text-gray-800 uppercase tracking-[0.2em] text-xs">Biểu đồ tăng trưởng đăng nhập</h4>
+                                <h4 className="font-semibold text-gray-800 uppercase  text-xs">Biểu đồ tăng trưởng đăng nhập</h4>
                                 <LogIn className="text-orange-500" size={20} />
                             </div>
                             {loadingBehavior ? <div className="flex justify-center py-20"><Loader2 className="animate-spin text-orange-500" /></div> : (

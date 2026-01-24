@@ -116,7 +116,6 @@ export const ShopOrderFilters: React.FC<ShopOrderFiltersProps> = ({
           />
         </div>
 
-        {/* Dropdowns - 4 selects */}
         {[
           {
             label: "Đơn vị vận chuyển",

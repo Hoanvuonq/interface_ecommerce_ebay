@@ -50,10 +50,10 @@ export const ProductVideoCard: React.FC<ProductVideoCardProps> = ({
             <Clapperboard size={24} />
           </div>
           <div>
-            <h5 className="text-lg font-bold text-slate-800 tracking-tight leading-none">
+            <h5 className="text-lg font-bold  text-gray-800 tracking-tight leading-none">
               Video sản phẩm
             </h5>
-            <p className="text-xs text-slate-400 mt-1 font-medium italic">
+            <p className="text-xs  text-gray-400 mt-1 font-medium italic">
               Tối đa 1 video • Giúp tăng tỷ lệ chốt đơn
             </p>
           </div>
@@ -96,7 +96,7 @@ export const ProductVideoCard: React.FC<ProductVideoCardProps> = ({
                 <Trash2 size={14} />
               </button>
             </div>
-            <span className="mt-1.5 text-[9px] text-slate-400 truncate px-1 text-center font-medium italic">
+            <span className="mt-1.5 text-[9px]  text-gray-400 truncate px-1 text-center font-medium italic">
               {file.name}
             </span>
           </div>
@@ -112,9 +112,9 @@ export const ProductVideoCard: React.FC<ProductVideoCardProps> = ({
               onChange={handleFileChange}
             />
             <div className="p-3 bg-slate-50 rounded-xl group-hover:scale-110 group-hover:bg-white transition-all shadow-sm group-hover:shadow-orange-100">
-              <Plus className="text-slate-400 group-hover:text-orange-500 w-5 h-5 transition-colors" />
+              <Plus className=" text-gray-400 group-hover:text-orange-500 w-5 h-5 transition-colors" />
             </div>
-            <span className="mt-3 text-[10px] font-bold text-slate-400 uppercase tracking-tighter group-hover:text-orange-600 transition-colors">
+            <span className="mt-3 text-[10px] font-bold  text-gray-400 uppercase tracking-tighter group-hover:text-orange-600 transition-colors">
               Tải Video
             </span>
           </label>
@@ -124,7 +124,7 @@ export const ProductVideoCard: React.FC<ProductVideoCardProps> = ({
       <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100">
         <div className="flex items-center gap-2 mb-2">
           <Info size={14} className="text-orange-500" />
-          <span className="text-[11px] font-bold text-slate-700 uppercase tracking-wider">
+          <span className="text-[11px] font-bold  text-gray-700 uppercase tracking-wider">
             Tiêu chuẩn:
           </span>
         </div>
@@ -137,7 +137,7 @@ export const ProductVideoCard: React.FC<ProductVideoCardProps> = ({
           ].map((text, i) => (
             <div
               key={i}
-              className="flex items-center gap-2 text-[10px] text-slate-500 font-bold italic"
+              className="flex items-center gap-2 text-[10px]  text-gray-500 font-bold italic"
             >
               <div className="w-1 h-1 rounded-full bg-orange-400" />
               {text}

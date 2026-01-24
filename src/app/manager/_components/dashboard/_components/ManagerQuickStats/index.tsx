@@ -44,7 +44,7 @@ export function ManagerQuickStats() {
                     <h2 className="text-2xl font-semibold text-gray-800 tracking-tighter uppercase">
                         Tổng Quan <span className="text-orange-500">Hôm Nay</span>
                     </h2>
-                    <p className="text-xs font-bold text-gray-600 uppercase tracking-[0.2em] mt-1">
+                    <p className="text-xs font-bold text-gray-600 uppercase  mt-1">
                         Cập nhật dữ liệu thời gian thực
                     </p>
                 </div>

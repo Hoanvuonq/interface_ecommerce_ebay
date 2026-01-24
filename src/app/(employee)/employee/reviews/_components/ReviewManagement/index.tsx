@@ -138,7 +138,7 @@ export default function ReviewManagement() {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-gray-50/50 text-[10px] uppercase font-semibold tracking-[0.2em] text-gray-600 border-b border-gray-50">
+              <tr className="bg-gray-50/50 text-[10px] uppercase font-semibold  text-gray-600 border-b border-gray-50">
                 <th className="px-8 py-5">STT</th>
                 <th className="px-6 py-5">Người đánh giá</th>
                 <th className="px-6 py-5">Đánh giá</th>

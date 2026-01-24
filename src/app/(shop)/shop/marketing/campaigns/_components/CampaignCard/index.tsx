@@ -51,7 +51,7 @@ export const CampaignCard: React.FC<CampaignCardProps> = ({
                 "px-2 py-0.5 rounded-lg text-[9px] font-bold uppercase tracking-wider",
                 isSelected
                   ? "bg-orange-50 text-orange-600"
-                  : "bg-slate-50 text-slate-400",
+                  : "bg-slate-50  text-gray-400",
               )}
             >
               {campaign.campaignType}
@@ -61,14 +61,14 @@ export const CampaignCard: React.FC<CampaignCardProps> = ({
           <h3
             className={cn(
               "font-bold truncate text-[14px] tracking-tight transition-colors duration-300",
-              isSelected ? "text-slate-900" : "text-slate-700",
+              isSelected ? " text-gray-900" : " text-gray-700",
             )}
           >
             {campaign.name}
           </h3>
 
           <div className="flex items-center gap-3 mt-2">
-            <div className="flex items-center gap-1.5 text-[10px] font-medium text-slate-400">
+            <div className="flex items-center gap-1.5 text-[10px] font-medium  text-gray-400">
               <Calendar className="w-3.5 h-3.5" />
               {formatDateTime(campaign.startDate)}
             </div>
@@ -85,7 +85,7 @@ export const CampaignCard: React.FC<CampaignCardProps> = ({
             "w-8 h-8 rounded-2xl flex items-center justify-center transition-all duration-300",
             isSelected
               ? "bg-orange-500 text-white shadow-lg shadow-orange-200"
-              : "bg-slate-50 text-slate-300 group-hover:bg-orange-50 group-hover:text-orange-400",
+              : "bg-slate-50  text-gray-300 group-hover:bg-orange-50 group-hover:text-orange-400",
           )}
         >
           <ChevronRight

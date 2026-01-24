@@ -57,12 +57,12 @@ export const CampaignDetailCard: React.FC<CampaignDetailCardProps> = ({
         {selectedCampaign.campaignType === "SHOP_SALE" ? (
           <div className="space-y-6">
             <div className="flex items-center justify-between border-b border-slate-50 pb-5">
-              <h3 className="font-bold text-xl text-slate-800 uppercase tracking-tight italic flex items-center gap-3">
+              <h3 className="font-bold text-xl  text-gray-800 uppercase tracking-tight italic flex items-center gap-3">
                 <div className="p-2 bg-orange-50 rounded-xl">
                   <Package className="text-orange-500 w-5 h-5" />
                 </div>
                 Sản phẩm tham gia
-                <span className="text-slate-300 ml-1">
+                <span className=" text-gray-300 ml-1">
                   ({selectedCampaignProducts.length})
                 </span>
               </h3>
@@ -70,8 +70,8 @@ export const CampaignDetailCard: React.FC<CampaignDetailCardProps> = ({
 
             {selectedCampaignProducts.length === 0 ? (
               <div className="text-center py-20 bg-slate-50/50 rounded-4xl border-2 border-dashed border-slate-200">
-                <Package className="w-12 h-12 mx-auto mb-4 text-slate-300" />
-                <p className="text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em]">
+                <Package className="w-12 h-12 mx-auto mb-4  text-gray-300" />
+                <p className="text-[11px] font-bold  text-gray-400 uppercase tracking-[0.2em]">
                   Chưa có sản phẩm được kích hoạt
                 </p>
               </div>
@@ -97,14 +97,14 @@ export const CampaignDetailCard: React.FC<CampaignDetailCardProps> = ({
                       />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h4 className="font-bold text-slate-800 text-sm truncate uppercase tracking-tight mb-1">
+                      <h4 className="font-bold  text-gray-800 text-sm truncate uppercase tracking-tight mb-1">
                         {prod.productName}
                       </h4>
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-[15px] font-bold text-orange-500 italic">
                           {formatPrice(prod.salePrice)}
                         </span>
-                        <span className="text-[9px] font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-lg border border-slate-100 uppercase">
+                        <span className="text-[9px] font-bold  text-gray-400 bg-slate-50 px-2 py-0.5 rounded-lg border border-slate-100 uppercase">
                           {prod.status}
                         </span>
                       </div>
@@ -117,9 +117,9 @@ export const CampaignDetailCard: React.FC<CampaignDetailCardProps> = ({
                         />
                       </div>
                       <div className="flex justify-between items-center">
-                        <p className="text-[9px] font-bold text-slate-400 uppercase">
+                        <p className="text-[9px] font-bold  text-gray-400 uppercase">
                           Đã bán:{" "}
-                          <span className="text-slate-900">
+                          <span className=" text-gray-900">
                             {prod.stockSold}
                           </span>
                           /{prod.stockLimit}
@@ -164,7 +164,7 @@ export const CampaignDetailCard: React.FC<CampaignDetailCardProps> = ({
                         "px-3 py-1 text-[9px] font-bold rounded-lg uppercase tracking-widest transition-colors",
                         slot.status === "ACTIVE"
                           ? "bg-orange-500 text-white shadow-md shadow-orange-500/20"
-                          : "bg-slate-100 text-slate-500",
+                          : "bg-slate-100  text-gray-500",
                       )}
                     >
                       {slot.status}
@@ -176,11 +176,11 @@ export const CampaignDetailCard: React.FC<CampaignDetailCardProps> = ({
                     )}
                   </div>
 
-                  <p className="font-bold text-slate-800 uppercase italic tracking-tighter text-lg mb-1 group-hover:text-orange-600 transition-colors">
+                  <p className="font-bold  text-gray-800 uppercase italic tracking-tighter text-lg mb-1 group-hover:text-orange-600 transition-colors">
                     {slot.slotName || "Khung giờ vàng"}
                   </p>
 
-                  <div className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-tighter">
+                  <div className="flex items-center gap-2 text-xs font-bold  text-gray-400 uppercase tracking-tighter">
                     <Clock size={14} className="text-orange-400" />
                     {new Date(slot.startTime).toLocaleTimeString("vi-VN", {
                       hour: "2-digit",
@@ -195,14 +195,14 @@ export const CampaignDetailCard: React.FC<CampaignDetailCardProps> = ({
 
                   <div className="mt-5 pt-5 border-t border-slate-50 flex items-center justify-between">
                     <div className="flex flex-col">
-                      <span className="text-[9px] font-bold text-slate-400 uppercase mb-1">
+                      <span className="text-[9px] font-bold  text-gray-400 uppercase mb-1">
                         Dung lượng
                       </span>
-                      <span className="text-xs font-bold text-slate-700 uppercase">
+                      <span className="text-xs font-bold  text-gray-700 uppercase">
                         {slot.approvedProducts}
-                        <span className="text-slate-300 mx-1">/</span>
+                        <span className=" text-gray-300 mx-1">/</span>
                         {slot.maxProducts}{" "}
-                        <span className="text-[10px] text-slate-400">
+                        <span className="text-[10px]  text-gray-400">
                           Items
                         </span>
                       </span>

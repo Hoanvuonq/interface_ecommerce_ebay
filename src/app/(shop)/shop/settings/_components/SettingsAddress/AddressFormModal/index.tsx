@@ -97,10 +97,10 @@ export const AddressFormModal = ({
       onClose={onClose}
       title={
         <div className="flex flex-col">
-          <span className="text-sm font-bold uppercase text-slate-800 tracking-tight">
+          <span className="text-sm font-bold uppercase  text-gray-800 tracking-tight">
             {editingAddress ? "Cấu hình địa chỉ" : "Thiết lập điểm mới"}
           </span>
-          <span className="text-[10px] text-slate-400 font-bold uppercase italic">
+          <span className="text-[10px]  text-gray-400 font-bold uppercase italic">
             Thông tin định vị kho hàng
           </span>
         </div>
@@ -128,7 +128,7 @@ export const AddressFormModal = ({
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <label className="text-[11px] font-bold text-slate-700 uppercase ml-1">
+            <label className="text-[11px] font-bold  text-gray-700 uppercase ml-1">
               Tỉnh/Thành phố
             </label>
             <SelectComponent
@@ -153,7 +153,7 @@ export const AddressFormModal = ({
             />
           </div>
           <div className="space-y-2">
-            <label className="text-[11px] font-bold text-slate-700 uppercase ml-1">
+            <label className="text-[11px] font-bold  text-gray-700 uppercase ml-1">
               Phường/Xã
             </label>
             <SelectComponent
@@ -183,7 +183,7 @@ export const AddressFormModal = ({
         />
 
         <div className="bg-slate-50 p-5 rounded-4xl space-y-4 border border-slate-100 shadow-inner">
-          <p className="text-[10px] font-bold uppercase text-slate-500 tracking-widest">
+          <p className="text-[10px] font-bold uppercase  text-gray-500 tracking-widest">
             Thiết lập trạng thái
           </p>
           <div className="grid grid-cols-1 gap-3">
@@ -213,7 +213,7 @@ export const AddressFormModal = ({
 
         <div className="flex gap-3 pt-4 border-t border-slate-100">
           <ButtonField
-            className="flex-1 rounded-2xl! bg-slate-100! text-slate-600! border-none font-bold uppercase text-[11px]"
+            className="flex-1 rounded-2xl! bg-slate-100!  text-gray-600! border-none font-bold uppercase text-[11px]"
             onClick={onClose}
           >
             Hủy bỏ

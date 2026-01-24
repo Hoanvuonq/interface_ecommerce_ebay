@@ -33,10 +33,10 @@ export const ShopLoyaltyScreen: React.FC = () => {
               <Trophy size={32} strokeWidth={2.5} />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-slate-800 uppercase tracking-tight">
+              <h1 className="text-2xl font-bold  text-gray-800 uppercase tracking-tight">
                 Chương trình Điểm thưởng
               </h1>
-              <p className="text-sm text-slate-400 font-medium italic mt-1">
+              <p className="text-sm  text-gray-400 font-medium italic mt-1">
                 Gia tăng lòng trung thành và thúc đẩy doanh số bằng tích lũy
                 điểm
               </p>
@@ -65,7 +65,7 @@ export const ShopLoyaltyScreen: React.FC = () => {
                 "relative pb-4 flex items-center gap-2 text-sm font-bold uppercase tracking-widest transition-all",
                 activeTab === "policy"
                   ? "text-orange-600"
-                  : "text-slate-400 hover:text-slate-600"
+                  : " text-gray-400 hover:text-gray-600"
               )}
             >
               <Settings size={16} />
@@ -84,7 +84,7 @@ export const ShopLoyaltyScreen: React.FC = () => {
                 "relative pb-4 flex items-center gap-2 text-sm font-bold uppercase tracking-widest transition-all",
                 activeTab === "products"
                   ? "text-orange-600"
-                  : "text-slate-400 hover:text-slate-600"
+                  : " text-gray-400 hover:text-gray-600"
               )}
             >
               <Gift size={16} />

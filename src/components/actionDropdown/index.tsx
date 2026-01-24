@@ -6,7 +6,7 @@ import { createPortal } from "react-dom";
 
 export interface DropdownItem {
   key: string;
-  label: string;
+  label?: string;
   icon?: React.ReactNode;
   danger?: boolean;
   onClick?: () => void;
@@ -135,7 +135,7 @@ export const ActionDropdown = ({
                       "group flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left transition-all duration-200",
                       item.danger
                         ? "text-red-500 hover:bg-red-50"
-                        : "text-slate-600 hover:bg-orange-50 hover:text-orange-600"
+                        : " text-gray-600 hover:bg-orange-50 hover:text-orange-600"
                     )}
                   >
                     <div className="flex items-center gap-3">

@@ -82,11 +82,11 @@ const ProductPromotionList: React.FC<ProductPromotionListProps> = ({ onCountUpda
       case "SCHEDULED":
         return "bg-blue-50 text-blue-600 border-blue-100";
       case "ENDED":
-        return "bg-slate-50 text-slate-500 border-slate-100";
+        return "bg-slate-50  text-gray-500 border-slate-100";
       case "DISABLED":
         return "bg-rose-50 text-rose-600 border-rose-100";
       default:
-        return "bg-slate-50 text-slate-500";
+        return "bg-slate-50  text-gray-500";
     }
   };
 
@@ -108,14 +108,14 @@ const ProductPromotionList: React.FC<ProductPromotionListProps> = ({ onCountUpda
             {record.productThumbnail ? (
               <Image src={record.productThumbnail} alt="" fill className="object-cover" />
             ) : (
-              <div className="w-full h-full flex items-center justify-center"><Gift className="text-slate-300" size={20} /></div>
+              <div className="w-full h-full flex items-center justify-center"><Gift className=" text-gray-300" size={20} /></div>
             )}
           </div>
           <div className="flex flex-col min-w-0">
-            <span className="font-bold text-slate-800 truncate leading-tight">
+            <span className="font-bold  text-gray-800 truncate leading-tight">
               {record.productName || "N/A"}
             </span>
-            {record.name && <span className="text-[11px] text-slate-400 truncate italic">{record.name}</span>}
+            {record.name && <span className="text-[11px]  text-gray-400 truncate italic">{record.name}</span>}
           </div>
         </div>
       ),
@@ -124,11 +124,11 @@ const ProductPromotionList: React.FC<ProductPromotionListProps> = ({ onCountUpda
       header: "Quy tắc",
       render: (record) => (
         <div className="flex flex-col">
-          <div className="flex items-center gap-1.5 text-slate-700 font-bold">
+          <div className="flex items-center gap-1.5  text-gray-700 font-bold">
             {record.ruleType === "FIXED" ? <Hash size={14} className="text-blue-500" /> : <Percent size={14} className="text-emerald-500" />}
             <span>{record.ruleType === "FIXED" ? `+${record.ruleValue} điểm` : `+${record.ruleValue}% giá`}</span>
           </div>
-          <span className="text-[10px] text-slate-400 uppercase font-medium tracking-tighter">Mỗi sản phẩm</span>
+          <span className="text-[10px]  text-gray-400 uppercase font-medium tracking-tighter">Mỗi sản phẩm</span>
         </div>
       ),
     },
@@ -136,11 +136,11 @@ const ProductPromotionList: React.FC<ProductPromotionListProps> = ({ onCountUpda
       header: "Thời gian",
       render: (record) => (
         <div className="flex flex-col gap-0.5 text-[11px] font-bold">
-          <div className="flex items-center gap-1 text-slate-600">
-            <Calendar size={12} className="text-slate-400" />
+          <div className="flex items-center gap-1  text-gray-600">
+            <Calendar size={12} className=" text-gray-400" />
             {new Date(record.startDate).toLocaleDateString("vi-VN")}
           </div>
-          <div className="flex items-center gap-1 text-slate-400">
+          <div className="flex items-center gap-1  text-gray-400">
             <div className="w-3" />
             <span className="font-medium italic">đến</span>
             {new Date(record.endDate).toLocaleDateString("vi-VN")}
@@ -176,10 +176,10 @@ const ProductPromotionList: React.FC<ProductPromotionListProps> = ({ onCountUpda
       align: "right",
       render: (record) => (
         <div className="flex items-center justify-end gap-1">
-          <button onClick={() => { setEditingPromotion(record); setIsFormOpen(true); }} className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all">
+          <button onClick={() => { setEditingPromotion(record); setIsFormOpen(true); }} className="p-2  text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all">
             <Edit2 size={16} />
           </button>
-          <button onClick={() => handleDelete(record.id)} className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all">
+          <button onClick={() => handleDelete(record.id)} className="p-2  text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all">
             <Trash2 size={16} />
           </button>
         </div>
@@ -194,12 +194,12 @@ const ProductPromotionList: React.FC<ProductPromotionListProps> = ({ onCountUpda
         <div className="flex items-center gap-4">
           <div className="p-3 bg-orange-50 rounded-2xl text-orange-500 shadow-sm"><Gift size={24} /></div>
           <div>
-            <h2 className="text-lg font-bold text-slate-800 leading-tight">Khuyến mãi sản phẩm</h2>
-            <p className="text-xs text-slate-400 font-medium italic mt-1">Tích điểm thưởng khi mua các sản phẩm cụ thể</p>
+            <h2 className="text-lg font-bold  text-gray-800 leading-tight">Khuyến mãi sản phẩm</h2>
+            <p className="text-xs  text-gray-400 font-medium italic mt-1">Tích điểm thưởng khi mua các sản phẩm cụ thể</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <button onClick={fetchPromotions} disabled={loading} className="p-2.5 text-slate-500 hover:bg-slate-50 rounded-xl border border-slate-200 transition-all active:scale-95">
+          <button onClick={fetchPromotions} disabled={loading} className="p-2.5  text-gray-500 hover:bg-slate-50 rounded-xl border border-slate-200 transition-all active:scale-95">
             <RefreshCw size={18} className={cn(loading && "animate-spin")} />
           </button>
           <button onClick={() => setIsFormOpen(true)} className="flex items-center gap-2 px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold uppercase tracking-widest rounded-xl shadow-lg shadow-orange-200 transition-all active:scale-95">
@@ -221,7 +221,7 @@ const ProductPromotionList: React.FC<ProductPromotionListProps> = ({ onCountUpda
         headerContent={
           <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
             <div className="relative group min-w-70">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-orange-500 transition-colors" size={16} />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2  text-gray-400 group-focus-within:text-orange-500 transition-colors" size={16} />
               <input
                 type="text"
                 placeholder="Tìm kiếm sản phẩm hoặc tên CT..."
@@ -231,7 +231,7 @@ const ProductPromotionList: React.FC<ProductPromotionListProps> = ({ onCountUpda
               />
             </div>
             <select
-              className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-600 focus:outline-none focus:border-orange-500 transition-all"
+              className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold  text-gray-600 focus:outline-none focus:border-orange-500 transition-all"
               value={statusFilter}
               onChange={e => setStatusFilter(e.target.value as any)}
             >
@@ -242,7 +242,7 @@ const ProductPromotionList: React.FC<ProductPromotionListProps> = ({ onCountUpda
               <option value="DISABLED">Đã tắt</option>
             </select>
             <div className="h-6 w-px bg-slate-200 mx-2 hidden sm:block" />
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-slate-50 px-3 py-1 rounded-lg border border-slate-100">
+            <span className="text-[10px] font-bold  text-gray-400 uppercase tracking-widest bg-slate-50 px-3 py-1 rounded-lg border border-slate-100">
               Tổng: {filteredData.length}
             </span>
           </div>

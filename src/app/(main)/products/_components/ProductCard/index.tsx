@@ -232,13 +232,13 @@ export const ProductCard = ({
                   {currentType.icon}
                   {currentType.text}
                 </div>
-                <span className="text-[11px] text-slate-400 font-bold truncate">
+                <span className="text-[11px]  text-gray-400 font-bold truncate">
                   {(product as any).shop?.shopName || "CanoX Store"}
                 </span>
               </div>
               <button
                 onClick={handleAddToWishlist}
-                className="p-1.5 rounded-full hover:bg-rose-50 text-slate-300 hover:text-rose-500 transition-all active:scale-75"
+                className="p-1.5 rounded-full hover:bg-rose-50  text-gray-300 hover:text-rose-500 transition-all active:scale-75"
               >
                 {loadingProductDetail ? (
                   <Loader2 size={16} className="animate-spin" />
@@ -252,7 +252,7 @@ export const ProductCard = ({
 
             <h3
               className={cn(
-                "font-bold text-slate-800 group-hover:text-orange-600 transition-colors leading-snug tracking-tight mb-2",
+                "font-bold  text-gray-800 group-hover:text-orange-600 transition-colors leading-snug tracking-tight mb-2",
                 isList ? "text-lg line-clamp-1" : "text-sm line-clamp-2 h-10",
               )}
             >
@@ -273,7 +273,7 @@ export const ProductCard = ({
             </div>
 
             {/* {hasDiscount && (
-              <span className="text-[11px] text-slate-400 line-through font-medium italic block -mt-0.5">
+              <span className="text-[11px]  text-gray-400 line-through font-medium italic block -mt-0.5">
                 {formatPrice(originalPrice)}
               </span>
             )} */}
@@ -290,7 +290,7 @@ export const ProductCard = ({
 
               <div className="w-px h-3 bg-slate-200" />
 
-              <span className="text-[10px] font-bold text-slate-500 tracking-tighter whitespace-nowrap">
+              <span className="text-[10px] font-bold  text-gray-500 tracking-tighter whitespace-nowrap">
                 Đã bán 1.2k+
               </span>
 
@@ -315,7 +315,7 @@ export const ProductCard = ({
               </div>
             </div>
 
-            <div className="flex items-center gap-1 text-slate-400 group-hover:text-orange-500 transition-colors">
+            <div className="flex items-center gap-1  text-gray-400 group-hover:text-orange-500 transition-colors">
               <MapPin size={10} className="shrink-0" />
               <span className="text-[10px] font-bold truncate uppercase tracking-tight opacity-70">
                 {shopLocation}

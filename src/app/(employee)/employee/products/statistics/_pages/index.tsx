@@ -53,14 +53,14 @@ export const ProductStatisticsScreen = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div className="space-y-1">
-          <h1 className="text-slate-900 dark:text-white text-3xl font-black tracking-tight">
+          <h1 className=" text-gray-900 dark:text-white text-3xl font-bold tracking-tight">
             Thống kê Sản phẩm
           </h1>
-          <p className="text-slate-500 dark:text-slate-400 font-medium">
+          <p className=" text-gray-500 dark: text-gray-400 font-medium">
             Phân tích dữ liệu sản phẩm trên toàn hệ thống
           </p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-slate-700 bg-white border border-slate-200 rounded-xl shadow-sm hover:bg-slate-50 transition-all">
+        <button className="flex items-center gap-2 px-4 py-2.5 text-sm font-bold  text-gray-700 bg-white border border-slate-200 rounded-xl shadow-sm hover:bg-slate-50 transition-all">
           <Calendar size={18} className="text-[#f25536]" />
           <span>7 ngày qua</span>
           <ChevronDown size={16} />
@@ -99,7 +99,7 @@ export const ProductStatisticsScreen = () => {
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         {/* Donut Chart */}
         <div className="lg:col-span-2 bg-white dark:bg-slate-900 rounded-[2rem] p-8 border border-slate-100 shadow-xl shadow-slate-200/50 flex flex-col">
-          <h3 className="text-slate-800 dark:text-white text-lg font-bold mb-8">
+          <h3 className=" text-gray-800 dark:text-white text-lg font-bold mb-8">
             Tỉ lệ trạng thái
           </h3>
           <div className="relative flex-1 flex flex-col items-center justify-center">
@@ -154,10 +154,10 @@ export const ProductStatisticsScreen = () => {
               />
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="text-3xl font-black text-slate-800">
+              <span className="text-3xl font-bold  text-gray-800">
                 {total}
               </span>
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+              <span className="text-xs font-bold  text-gray-400 uppercase tracking-widest">
                 Sản phẩm
               </span>
             </div>
@@ -186,10 +186,10 @@ export const ProductStatisticsScreen = () => {
         <div className="lg:col-span-3 bg-white dark:bg-slate-900 rounded-[2rem] p-8 border border-slate-100 shadow-xl shadow-slate-200/50">
           <div className="flex justify-between items-center mb-10">
             <div>
-              <h3 className="text-slate-800 dark:text-white text-lg font-bold">
+              <h3 className=" text-gray-800 dark:text-white text-lg font-bold">
                 Tăng trưởng sản phẩm
               </h3>
-              <p className="text-sm text-slate-400 font-medium text-emerald-500 flex items-center gap-1 mt-1">
+              <p className="text-sm  text-gray-400 font-medium text-emerald-500 flex items-center gap-1 mt-1">
                 <TrendingUp size={14} /> +15.8% so với tuần trước
               </p>
             </div>
@@ -207,7 +207,7 @@ export const ProductStatisticsScreen = () => {
                     style={{ height: `${h}%` }}
                   />
                 </div>
-                <span className="text-xs font-bold text-slate-400 group-hover:text-[#f25536] transition-colors uppercase">
+                <span className="text-xs font-bold  text-gray-400 group-hover:text-[#f25536] transition-colors uppercase">
                   {["T2", "T3", "T4", "T5", "T6", "T7", "CN"][i]}
                 </span>
               </div>
@@ -241,10 +241,10 @@ const StatCard = ({ label, value, icon, color }: any) => {
         </div>
       </div>
       <div className="space-y-1">
-        <p className="text-sm font-bold text-slate-400 uppercase tracking-wider">
+        <p className="text-sm font-bold  text-gray-400 uppercase tracking-wider">
           {label}
         </p>
-        <p className="text-3xl font-black text-slate-800 dark:text-white tracking-tight">
+        <p className="text-3xl font-bold  text-gray-800 dark:text-white tracking-tight">
           {value.toLocaleString("vi-VN")}
         </p>
       </div>
@@ -256,9 +256,9 @@ const LegendItem = ({ color, label, percent }: any) => (
   <div className="flex items-center justify-between">
     <div className="flex items-center gap-3">
       <div className={cn("size-2.5 rounded-full", color)} />
-      <span className="text-sm font-bold text-slate-500">{label}</span>
+      <span className="text-sm font-bold  text-gray-500">{label}</span>
     </div>
-    <span className="text-sm font-black text-slate-700">{percent}%</span>
+    <span className="text-sm font-bold  text-gray-700">{percent}%</span>
   </div>
 );
 

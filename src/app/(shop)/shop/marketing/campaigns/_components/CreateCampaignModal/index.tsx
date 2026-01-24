@@ -121,7 +121,7 @@ export const CreateCampaignModal: React.FC<ICreateCampaignModal> = ({
       onClose={onClose}
       title={
         <div className="flex items-center gap-3">
-          <span className="font-bold text-slate-800">{getStepTitle()}</span>
+          <span className="font-bold  text-gray-800">{getStepTitle()}</span>
           <div className="flex items-center gap-1">
             {["INFO", "PRODUCTS", "CONFIRM"].map((s, idx) => (
               <div

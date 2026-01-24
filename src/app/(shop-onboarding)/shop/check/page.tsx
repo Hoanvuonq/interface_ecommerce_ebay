@@ -48,10 +48,10 @@ export default function ShopCheckPage() {
               <Store className="w-12 h-12 text-orange-600 relative z-10" strokeWidth={1.5} />
             </div>
 
-            <h1 className="text-2xl font-bold text-slate-900 mb-3 tracking-tight">
+            <h1 className="text-2xl font-bold  text-gray-900 mb-3 tracking-tight">
               Bắt đầu hành trình kinh doanh
             </h1>
-            <p className="text-slate-500 leading-relaxed mb-8 text-sm md:text-base">
+            <p className=" text-gray-500 leading-relaxed mb-8 text-sm md:text-base">
               Bạn chưa có cửa hàng nào. Hãy tạo hồ sơ ngay để bắt đầu đăng bán sản phẩm và tiếp cận hàng triệu khách hàng.
             </p>
 
@@ -65,7 +65,7 @@ export default function ShopCheckPage() {
               </Link>
               
               <Link href="/" className="block">
-                <button className="w-full py-4 text-slate-500 hover:text-orange-600 hover:bg-orange-50/50 rounded-2xl font-medium transition-all text-sm flex items-center justify-center gap-2">
+                <button className="w-full py-4  text-gray-500 hover:text-orange-600 hover:bg-orange-50/50 rounded-2xl font-medium transition-all text-sm flex items-center justify-center gap-2">
                   <ArrowLeft size={16} /> Quay lại trang chủ
                 </button>
               </Link>
@@ -81,17 +81,17 @@ export default function ShopCheckPage() {
               <Clock className="w-12 h-12 text-orange-500 relative z-10" strokeWidth={1.5} />
             </div>
 
-            <h1 className="text-2xl font-bold text-slate-900 mb-3 tracking-tight">
+            <h1 className="text-2xl font-bold  text-gray-900 mb-3 tracking-tight">
               Đang chờ phê duyệt
             </h1>
-            <p className="text-slate-500 leading-relaxed mb-8 text-sm md:text-base bg-orange-50/50 p-4 rounded-2xl border border-gray-100/50">
+            <p className=" text-gray-500 leading-relaxed mb-8 text-sm md:text-base bg-orange-50/50 p-4 rounded-2xl border border-gray-100/50">
               {verificationInfo?.message ||
                 "Hồ sơ của bạn đang được đội ngũ admin xem xét. Quá trình này thường mất từ 1-2 ngày làm việc. Vui lòng kiểm tra lại sau."}
             </p>
 
             <Link href="/" className="block">
-                <button className="w-full py-4 bg-white border border-slate-200 text-slate-600 hover:text-orange-600 hover:border-gray-200 hover:bg-orange-50/30 rounded-2xl font-semibold transition-all flex items-center justify-center gap-2 group shadow-sm hover:shadow-md">
-                  <Home size={18} className="text-slate-400 group-hover:text-orange-500 transition-colors" /> 
+                <button className="w-full py-4 bg-white border border-slate-200  text-gray-600 hover:text-orange-600 hover:border-gray-200 hover:bg-orange-50/30 rounded-2xl font-semibold transition-all flex items-center justify-center gap-2 group shadow-sm hover:shadow-md">
+                  <Home size={18} className=" text-gray-400 group-hover:text-orange-500 transition-colors" /> 
                   Về trang chủ
                 </button>
             </Link>
@@ -106,10 +106,10 @@ export default function ShopCheckPage() {
                   <FileWarning className="w-10 h-10 text-red-500" strokeWidth={1.5} />
                 </div>
                 
-                <h1 className="text-xl md:text-2xl font-bold text-slate-900 mb-2 tracking-tight">
+                <h1 className="text-xl md:text-2xl font-bold  text-gray-900 mb-2 tracking-tight">
                   Cần bổ sung thông tin
                 </h1>
-                <p className="text-slate-500 text-sm">
+                <p className=" text-gray-500 text-sm">
                   {verificationInfo?.message || "Vui lòng cập nhật lại hồ sơ theo yêu cầu bên dưới để tiếp tục."}
                 </p>
             </div>
@@ -134,7 +134,7 @@ export default function ShopCheckPage() {
                                 {section === "TAX_INFO" && "Thuế"}
                                 {section === "SHOP" && "Thông tin chung"}
                             </span>
-                            <span className="text-sm text-slate-700 leading-snug pl-3 border-l-2 border-red-100">{reason}</span>
+                            <span className="text-sm  text-gray-700 leading-snug pl-3 border-l-2 border-red-100">{reason}</span>
                         </div>
                         )
                     )}
@@ -150,7 +150,7 @@ export default function ShopCheckPage() {
                 </button>
               </Link>
               <Link href="/" className="block">
-                <button className="w-full py-3.5 text-slate-500 hover:text-orange-600 hover:bg-orange-50/30 rounded-xl font-medium transition-colors text-sm">
+                <button className="w-full py-3.5  text-gray-500 hover:text-orange-600 hover:bg-orange-50/30 rounded-xl font-medium transition-colors text-sm">
                   Để sau, về trang chủ
                 </button>
               </Link>

@@ -112,7 +112,7 @@ export const WorkingHoursConfig = ({
                 "w-9 h-9 rounded-full text-[10px] font-bold transition-all active:scale-90 border flex items-center justify-center uppercase tracking-tighter",
                 day.isActive
                   ? "bg-orange-500 border-orange-400 text-white shadow-lg shadow-orange-200"
-                  : "bg-transparent border-transparent text-slate-400 hover:bg-slate-50 hover:text-orange-500",
+                  : "bg-transparent border-transparent  text-gray-400 hover:bg-slate-50 hover:text-orange-500",
               )}
             >
               {day.shortLabel}
@@ -137,7 +137,7 @@ export const WorkingHoursConfig = ({
         <div className="px-5 py-3 border-b border-slate-50 flex justify-between items-center bg-slate-50/30">
           <div className="flex items-center gap-2">
             <Clock className="text-orange-500" size={14} strokeWidth={3} />
-            <span className="text-[11px] font-bold uppercase text-slate-800 tracking-widest italic">
+            <span className="text-[11px] font-bold uppercase  text-gray-800 tracking-widest italic">
               Timeline Settings
             </span>
           </div>
@@ -164,7 +164,7 @@ export const WorkingHoursConfig = ({
                   className="flex items-center gap-4 p-3 rounded-2xl bg-slate-50/30 hover:bg-white transition-all group border border-transparent hover:border-orange-100 hover:shadow-sm"
                 >
                   <div className="w-20 shrink-0">
-                    <span className="text-[11px] font-bold text-slate-700 uppercase tracking-widest italic">
+                    <span className="text-[11px] font-bold  text-gray-700 uppercase tracking-widest italic">
                       {day.label}
                     </span>
                   </div>
@@ -186,7 +186,7 @@ export const WorkingHoursConfig = ({
                         selectClassName="h-10 rounded-xl border-slate-100 text-[12px] font-bold shadow-xs focus:ring-orange-100 cursor-pointer"
                       />
                     </div>
-                    <span className="text-[10px] font-bold text-slate-300 uppercase italic">
+                    <span className="text-[10px] font-bold  text-gray-300 uppercase italic">
                       to
                     </span>
                     <div className="flex-1">
@@ -210,7 +210,7 @@ export const WorkingHoursConfig = ({
                   <button
                     type="button"
                     onClick={() => toggleDay(day.dayId)}
-                    className="p-2 text-slate-300 hover:text-red-500 transition-all opacity-0 group-hover:opacity-100 hover:bg-red-50 rounded-lg"
+                    className="p-2  text-gray-300 hover:text-red-500 transition-all opacity-0 group-hover:opacity-100 hover:bg-red-50 rounded-lg"
                   >
                     <Trash2 size={16} />
                   </button>
@@ -221,11 +221,11 @@ export const WorkingHoursConfig = ({
           {schedule.every((d) => !d.isActive) && (
             <div className="py-12 text-center border-2 border-dashed border-slate-100 rounded-4xl bg-slate-50/20">
               <Clock
-                className="mx-auto text-slate-200 mb-2"
+                className="mx-auto  text-gray-200 mb-2"
                 size={32}
                 strokeWidth={1}
               />
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">
+              <p className="text-[10px] font-bold  text-gray-400 uppercase tracking-[0.2em]">
                 No active working days
               </p>
             </div>

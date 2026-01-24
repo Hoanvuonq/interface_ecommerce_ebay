@@ -84,7 +84,7 @@ export const OrderCancelModal: React.FC<OrderCancelModalProps> = ({
       width="max-w-lg"
       preventCloseOnClickOverlay={isCancelling}
     >
-      <div className="space-y-6 py-2 font-sans">
+      <div className="space-y-6 py-2">
         {/* Warning Banner */}
         <div className="p-4 bg-orange-50/50 rounded-2xl border border-gray-100 flex gap-3">
           <div className="w-1.5 h-auto bg-orange-400 rounded-full shrink-0" />
@@ -96,7 +96,7 @@ export const OrderCancelModal: React.FC<OrderCancelModalProps> = ({
 
         {/* Reasons List */}
         <div className="space-y-3">
-          <label className="text-[11px] font-bold text-gray-500 uppercase tracking-[0.2em] px-1">Vui lòng chọn lý do</label>
+          <label className="text-[11px] font-bold text-gray-500 uppercase  px-1">Vui lòng chọn lý do</label>
           <div className="grid gap-2">
             {PREDEFINED_REASONS.map((reason) => (
               <label

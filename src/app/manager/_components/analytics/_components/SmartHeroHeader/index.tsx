@@ -57,7 +57,7 @@ export function SmartHeroHeader({
                             <Clock className="w-6 h-6 text-white" strokeWidth={2.5} />
                         </div>
                         <div>
-                            <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-white/80">Doanh Số Hiện Tại</h2>
+                            <h2 className="text-sm font-semibold uppercase  text-white/80">Doanh Số Hiện Tại</h2>
                             <p className="text-sm font-bold font-mono opacity-90">
                                 {formatDateTime(currentTime)}
                             </p>

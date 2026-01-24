@@ -22,7 +22,7 @@ export const getOrderColumns = (
     render: (order) => (
       <div className="flex flex-col gap-1 group/id">
         <div className="flex items-center gap-2">
-          <span className="font-mono text-[13px] font-bold text-slate-800 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700">
+          <span className="font-mono text-[13px] font-bold  text-gray-800 dark: text-gray-200 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700">
             #{(order.orderNumber || order.orderId.substring(0, 8)).toUpperCase()}
           </span>
           <button
@@ -32,10 +32,10 @@ export const getOrderColumns = (
             }}
             className="opacity-0 group-hover/id:opacity-100 p-1 rounded hover:bg-slate-200 transition-all"
           >
-            <Copy size={12} className="text-slate-400" />
+            <Copy size={12} className=" text-gray-400" />
           </button>
         </div>
-        <span className="text-[10px] text-slate-400 font-bold ml-1 uppercase">
+        <span className="text-[10px]  text-gray-400 font-bold ml-1 uppercase">
           {order.createdAt ? format(new Date(order.createdAt), "HH:mm - dd/MM/yyyy") : "--"}
         </span>
       </div>
@@ -60,7 +60,7 @@ export const getOrderColumns = (
         <div className="flex flex-col gap-2.5">
           <div className="flex items-center gap-1.5 text-orange-600">
             <Store size={14} strokeWidth={2.5} />
-            <span className="text-[11px] font-black uppercase tracking-tight truncate max-w-45">
+            <span className="text-[11px] font-bold uppercase tracking-tight truncate max-w-45">
               {order.shopInfo?.shopName || "N/A"}
             </span>
           </div>
@@ -82,15 +82,15 @@ export const getOrderColumns = (
               )}
             </div>
             <div className="flex flex-col min-w-0">
-              <span className="text-sm font-bold text-slate-800 dark:text-slate-200 truncate max-w-55">
+              <span className="text-sm font-bold  text-gray-800 dark: text-gray-200 truncate max-w-55">
                 {firstItem?.productName}
               </span>
               <div className="flex items-center gap-2 mt-0.5">
-                <span className="text-[10px] bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded font-black border border-blue-100">
+                <span className="text-[10px] bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded font-bold border border-blue-100">
                   SKU: {firstItem?.sku || "N/A"}
                 </span>
                 {order.itemCount > 1 && (
-                  <span className="text-[10px] text-slate-400 font-bold italic">
+                  <span className="text-[10px]  text-gray-400 font-bold italic">
                     +{order.itemCount - 1} món khác
                   </span>
                 )}
@@ -111,10 +111,10 @@ export const getOrderColumns = (
     align: "right",
     render: (order) => (
       <div className="flex flex-col items-end gap-0.5">
-        <span className="font-black text-[15px] text-orange-600 font-mono">
+        <span className="font-bold text-[15px] text-orange-600 font-mono">
           {new Intl.NumberFormat("vi-VN").format(order.pricing.grandTotal)}₫
         </span>
-        <div className="flex items-center gap-1 text-[10px] font-bold text-slate-400">
+        <div className="flex items-center gap-1 text-[10px] font-bold  text-gray-400">
           <span>{order.payment.method}</span>
           <span>•</span>
           <span>{order.totalQuantity} SP</span>
@@ -130,7 +130,7 @@ export const getOrderColumns = (
         <ActionBtn
           onClick={() => onView(order.orderId)}
           icon={<Eye size={14} />}
-          color="bg-slate-100 text-slate-700 hover:bg-slate-200 border-0"
+          color="bg-slate-100  text-gray-700 hover:bg-slate-200 border-0"
           tooltip="Xem chi tiết"
         />
         <ActionBtn

@@ -110,7 +110,7 @@ export const MessageItem = ({
                 "relative px-4 py-3 rounded-2xl shadow-md text-[14px] wrap-break-words transition-all duration-200 leading-relaxed",
                 isMine
                   ? "bg-slate-800 text-white rounded-tr-none shadow-slate-200"
-                  : "bg-white border border-gray-200 text-slate-900 rounded-tl-none shadow-gray-100",
+                  : "bg-white border border-gray-200  text-gray-900 rounded-tl-none shadow-gray-100",
                 isDeleted &&
                   "opacity-50 bg-gray-50 border-dashed border-gray-300 text-gray-500 shadow-none"
               )}
@@ -121,7 +121,7 @@ export const MessageItem = ({
                     "mb-2 pl-3 border-l-4 text-[12px] py-1.5 px-3 rounded-r-lg transition-opacity",
                     isMine
                       ? "border-gray-400 bg-white/10 text-gray-200"
-                      : "border-slate-300 bg-slate-50 text-slate-600"
+                      : "border-slate-300 bg-slate-50  text-gray-600"
                   )}
                 >
                   <span className="font-bold block text-[9px] uppercase mb-0.5 opacity-70 tracking-tight">
@@ -148,7 +148,7 @@ export const MessageItem = ({
               <div
                 className={cn(
                   "flex items-center justify-end gap-1.5 mt-2 text-[10px] font-bold select-none opacity-80",
-                  isMine ? "text-slate-400" : "text-gray-500"
+                  isMine ? " text-gray-400" : "text-gray-500"
                 )}
               >
                 <span>{formatTime(message.sentAt)}</span>
@@ -209,7 +209,7 @@ export const MessageItem = ({
                           "w-full text-left px-4 py-2.5 text-[12px] font-bold flex items-center gap-3 hover:bg-orange-50 transition-colors uppercase tracking-wide",
                           item.danger
                             ? "text-red-500 hover:bg-red-50"
-                            : "text-slate-700 hover:text-orange-600"
+                            : " text-gray-700 hover:text-orange-600"
                         )}
                       >
                         {item.key === "reply" && (

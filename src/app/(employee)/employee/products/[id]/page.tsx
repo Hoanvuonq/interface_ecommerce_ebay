@@ -1,6 +1,7 @@
 "use client";
 
 import { ProductGallery, SectionLoading } from "@/components";
+import ProductsGalleyFix from "./_components/ProductsGalleyFix";
 import { useToast } from "@/hooks/useToast";
 import {
   ArrowLeft,
@@ -46,15 +47,17 @@ export default function ProductDetailPage() {
       }
     } catch (error) {
       console.error("Error fetching product:", error);
+      // Tránh spam request: chỉ gọi toastError trực tiếp, không đưa vào deps
       toastError("Không thể tải thông tin sản phẩm");
     } finally {
       setLoading(false);
     }
-  }, [id, toastError]);
+  }, [id]);
 
   useEffect(() => {
     if (id) fetchProductDetail();
-  }, [fetchProductDetail]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
 
   const handleApprove = async () => {
     if (!product) return;
@@ -112,10 +115,10 @@ export default function ProductDetailPage() {
         <div className="w-24 h-24 bg-red-50 rounded-[2.5rem] flex items-center justify-center mb-6">
           <Box className="text-red-400 w-10 h-10" />
         </div>
-        <h2 className="text-2xl font-bold text-slate-900 uppercase tracking-tighter mb-2">
+        <h2 className="text-2xl font-bold  text-gray-900 uppercase tracking-tighter mb-2">
           Sản phẩm không tồn tại
         </h2>
-        <p className="text-slate-500 text-sm mb-8 max-w-xs">
+        <p className=" text-gray-500 text-sm mb-8 max-w-xs">
           Dữ liệu sản phẩm không được tìm thấy hoặc đã bị xóa khỏi hệ thống mạng
           lưới.
         </p>
@@ -137,7 +140,7 @@ export default function ProductDetailPage() {
           <div className="flex items-center gap-6">
             <Link
               href="/employee/products"
-              className="p-3 bg-slate-50 rounded-2xl text-slate-400 hover:text-orange-500 hover:bg-orange-50 transition-all group"
+              className="p-3 bg-slate-50 rounded-2xl  text-gray-400 hover:text-orange-500 hover:bg-orange-50 transition-all group"
             >
               <ArrowLeft
                 size={20}
@@ -147,22 +150,22 @@ export default function ProductDetailPage() {
             </Link>
             <div className="h-8 w-px bg-slate-100" />
             <div className="hidden md:block">
-              <nav className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+              <nav className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest  text-gray-400">
                 <Link
                   href="/employee"
                   className="hover:text-orange-500 transition-colors"
                 >
                   Admin
                 </Link>
-                <ChevronRight size={12} className="text-slate-300" />
+                <ChevronRight size={12} className=" text-gray-300" />
                 <Link
                   href="/employee/products"
                   className="hover:text-orange-500 transition-colors"
                 >
                   Catalog
                 </Link>
-                <ChevronRight size={12} className="text-slate-300" />
-                <span className="text-slate-900 italic">
+                <ChevronRight size={12} className=" text-gray-300" />
+                <span className=" text-gray-900 italic">
                   #{product.id.substring(0, 8)}
                 </span>
               </nav>
@@ -175,7 +178,7 @@ export default function ProductDetailPage() {
               target="_blank"
               className={cn(
                 "flex items-center gap-2 px-6 py-2.5 bg-white",
-                "text-slate-900 font-bold rounded-xl border border-slate-200 hover:border-orange-500",
+                " text-gray-900 font-bold rounded-xl border border-slate-200 hover:border-orange-500",
                 "hover:text-orange-500 transition-all text-[10px] uppercase tracking-widest shadow-sm active:scale-95",
               )}
             >
@@ -192,10 +195,10 @@ export default function ProductDetailPage() {
             <ShieldCheck size={24} className="text-white" />
           </div>
           <div>
-            <h1 className="text-4xl font-bold text-slate-900 uppercase tracking-tighter italic leading-none">
+            <h1 className="text-4xl font-bold  text-gray-900 uppercase tracking-tighter italic leading-none">
               Review <span className="text-orange-500">Asset</span>
             </h1>
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mt-1">
+            <p className="text-[10px] font-bold  text-gray-400 uppercase  mt-1">
               Product Verification Protocol
             </p>
           </div>
@@ -204,9 +207,8 @@ export default function ProductDetailPage() {
         <div className="grid grid-cols-12 gap-10">
           <div className="col-span-12 lg:col-span-5 space-y-8">
             <div className="bg-white p-4 rounded-[3rem] border border-orange-50 shadow-custom-lg overflow-hidden group">
-              <ProductGallery
+              <ProductsGalleyFix
                 media={product.media || []} 
-                product={product} 
               />
             </div>
           </div>
@@ -231,8 +233,8 @@ export default function ProductDetailPage() {
       </main>
 
       <div className="mt-20 flex flex-col items-center justify-center opacity-30 gap-2">
-        <LayoutDashboard size={24} className="text-slate-400" />
-        <span className="text-[9px] font-bold uppercase tracking-[0.5em] text-slate-500">
+        <LayoutDashboard size={24} className=" text-gray-400" />
+        <span className="text-[9px] font-bold uppercase tracking-[0.5em]  text-gray-500">
           Secure Admin Terminal v2.1.0
         </span>
       </div>

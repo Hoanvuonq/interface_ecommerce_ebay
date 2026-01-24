@@ -50,15 +50,15 @@ export const ReviewStatistics = ({
         <div className={cn("p-3 rounded-2xl", colorClass)}>
           <Icon size={20} />
         </div>
-        <button className="text-slate-300 hover:text-slate-500 transition-colors">
+        <button className=" text-gray-300 hover:text-gray-500 transition-colors">
           <HelpCircle size={16} />
         </button>
       </div>
       <div>
-        <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-1">
+        <p className="text-[11px] font-bold uppercase tracking-widest  text-gray-400 mb-1">
           {title}
         </p>
-        <h3 className="text-2xl font-bold text-slate-800 tracking-tight">
+        <h3 className="text-2xl font-bold  text-gray-800 tracking-tight">
           {value}
         </h3>
         <div className="flex items-center gap-1.5 mt-2">
@@ -71,7 +71,7 @@ export const ReviewStatistics = ({
               <ArrowDownRight size={12} className="mr-0.5" /> {Math.abs(trend)}%
             </span>
           )}
-          <span className="text-[10px] text-slate-400 font-medium italic">
+          <span className="text-[10px]  text-gray-400 font-medium italic">
             so với 30 ngày trước
           </span>
         </div>
@@ -114,22 +114,22 @@ export const ReviewStatistics = ({
               <AlertCircle size={28} />
             </div>
             <div>
-              <h4 className="text-sm font-bold text-slate-800 uppercase tracking-tight">
+              <h4 className="text-sm font-bold  text-gray-800 uppercase tracking-tight">
                 Cần phản hồi tiêu cực
               </h4>
-              <p className="text-xs text-slate-400 font-medium mt-0.5">
+              <p className="text-xs  text-gray-400 font-medium mt-0.5">
                 Đánh giá 1 & 2 sao chưa được trả lời
               </p>
               <div className="mt-2 flex items-center gap-2">
                 <span className="text-xl font-bold text-rose-600">0</span>
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter bg-slate-50 px-2 py-0.5 rounded-md italic">
+                <span className="text-[10px] font-bold  text-gray-400 uppercase tracking-tighter bg-slate-50 px-2 py-0.5 rounded-md italic">
                   Xem chi tiết
                 </span>
               </div>
             </div>
           </div>
           <ArrowUpRight
-            className="text-slate-200 group-hover:text-rose-400 transition-colors"
+            className=" text-gray-200 group-hover:text-rose-400 transition-colors"
             size={24}
           />
         </div>
@@ -140,22 +140,22 @@ export const ReviewStatistics = ({
               <History size={28} />
             </div>
             <div>
-              <h4 className="text-sm font-bold text-slate-800 uppercase tracking-tight">
+              <h4 className="text-sm font-bold  text-gray-800 uppercase tracking-tight">
                 Đánh giá mới
               </h4>
-              <p className="text-xs text-slate-400 font-medium mt-0.5">
+              <p className="text-xs  text-gray-400 font-medium mt-0.5">
                 Cập nhật trong 7 ngày gần đây
               </p>
               <div className="mt-2 flex items-center gap-2">
                 <span className="text-xl font-bold text-blue-600">0</span>
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter bg-slate-50 px-2 py-0.5 rounded-md italic">
+                <span className="text-[10px] font-bold  text-gray-400 uppercase tracking-tighter bg-slate-50 px-2 py-0.5 rounded-md italic">
                   Xem ngay
                 </span>
               </div>
             </div>
           </div>
           <ArrowUpRight
-            className="text-slate-200 group-hover:text-blue-400 transition-colors"
+            className=" text-gray-200 group-hover:text-blue-400 transition-colors"
             size={24}
           />
         </div>

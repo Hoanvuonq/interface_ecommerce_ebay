@@ -76,7 +76,7 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
             <AlertCircle size={24} strokeWidth={2.5} />
           </div>
           <div className="flex-1 min-w-0">
-            <h4 className="text-[11px] font-bold text-orange-600 uppercase tracking-[0.2em] mb-1">
+            <h4 className="text-[11px] font-bold text-orange-600 uppercase  mb-1">
               Thông tin hủy đơn
             </h4>
             <div className="flex flex-wrap items-center gap-2">
@@ -124,7 +124,7 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
 
           <div className="bg-white rounded-4xl border border-gray-100 overflow-hidden shadow-sm">
             <div className="px-6 py-5 bg-gray-50/30 border-b border-gray-100 flex justify-between items-center">
-              <h3 className="font-bold text-gray-900 uppercase text-[10px] tracking-[0.2em] flex items-center gap-2">
+              <h3 className="font-bold text-gray-900 uppercase text-[10px]  flex items-center gap-2">
                 <Package size={18} className="text-orange-500" />
                 Danh sách sản phẩm ({order.items.length})
               </h3>

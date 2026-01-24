@@ -73,14 +73,14 @@ export const AddToCartButton: React.FC<
         onClick={() => updateQuantity(quantity - 1)}
         disabled={quantity <= 1 || !!loading || disabled || maxQuantity === 0}
         className={cn(
-          "w-10 h-full flex items-center justify-center text-slate-500 hover:bg-slate-50",
+          "w-10 h-full flex items-center justify-center  text-gray-500 hover:bg-slate-50",
           "hover:text-orange-600 disabled:opacity-30 transition-all active:scale-90",
         )}
       >
         <Minus className="w-4 h-4" strokeWidth={3} />
       </button>
 
-      <div className="flex-1 h-full font-bold text-slate-800 italic">
+      <div className="flex-1 h-full font-bold  text-gray-800 italic">
         <CustomInputNumber
           min={maxQuantity > 0 ? 1 : 0}
           max={maxQuantity}
@@ -97,7 +97,7 @@ export const AddToCartButton: React.FC<
           quantity >= maxQuantity || !!loading || disabled || maxQuantity === 0
         }
         className={cn(
-          "w-10 h-full flex items-center justify-center text-slate-500",
+          "w-10 h-full flex items-center justify-center  text-gray-500",
           "hover:bg-slate-50 hover:text-orange-600 disabled:opacity-30 transition-all active:scale-90",
         )}
       >

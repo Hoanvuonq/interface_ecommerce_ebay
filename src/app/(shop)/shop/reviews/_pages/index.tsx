@@ -91,7 +91,7 @@ export default function ShopReviewsScreen() {
       render: (record) => (
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-slate-700">
+            <span className="font-bold  text-gray-700">
               {record.username || record.buyerName}
             </span>
             {record.verifiedPurchase && (
@@ -100,7 +100,7 @@ export default function ShopReviewsScreen() {
               </span>
             )}
           </div>
-          <span className="text-[10px] text-slate-400 font-medium italic">
+          <span className="text-[10px]  text-gray-400 font-medium italic">
             ID: {record.id.slice(0, 8)}...
           </span>
         </div>
@@ -113,7 +113,7 @@ export default function ShopReviewsScreen() {
       render: (record) => (
         <div className="flex items-center justify-center gap-1.5 bg-slate-50 py-1.5 px-3 rounded-xl border border-slate-100">
           <Star size={14} className="text-orange-400 fill-orange-400" />
-          <span className="font-bold text-slate-700">{record.rating}</span>
+          <span className="font-bold  text-gray-700">{record.rating}</span>
         </div>
       ),
     },
@@ -121,7 +121,7 @@ export default function ShopReviewsScreen() {
       header: "Nội dung phản hồi",
       render: (record) => (
         <div className="max-w-md">
-          <p className="text-sm text-slate-600 leading-relaxed line-clamp-2 italic">
+          <p className="text-sm  text-gray-600 leading-relaxed line-clamp-2 italic">
             "{record.comment || "Không có nội dung bình luận"}"
           </p>
         </div>
@@ -137,7 +137,7 @@ export default function ShopReviewsScreen() {
             "px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border",
             record.hasResponse
               ? "bg-emerald-50 text-emerald-600 border-emerald-100"
-              : "bg-slate-100 text-slate-400 border-slate-200",
+              : "bg-slate-100  text-gray-400 border-slate-200",
           )}
         >
           {record.hasResponse ? "Đã phản hồi" : "Chưa trả lời"}
@@ -148,7 +148,7 @@ export default function ShopReviewsScreen() {
       header: "Thời gian",
       className: "w-40",
       render: (record) => (
-        <div className="flex items-center gap-2 text-slate-400">
+        <div className="flex items-center gap-2  text-gray-400">
           <Calendar size={14} />
           <span className="text-xs font-bold">
             {new Date(record.createdDate).toLocaleDateString("vi-VN")}
@@ -167,7 +167,7 @@ export default function ShopReviewsScreen() {
               record.reviewType === "PRODUCT" &&
               setSelectedProductId(record.reviewableId)
             }
-            className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all"
+            className="p-2  text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all"
             title="Xem chi tiết"
           >
             <Eye size={18} />
@@ -178,7 +178,7 @@ export default function ShopReviewsScreen() {
                 setSelectedReviewId(record.id);
                 setResponseModalOpen(true);
               }}
-              className="p-2 text-slate-400 hover:text-orange-600 hover:bg-orange-50 rounded-xl transition-all"
+              className="p-2  text-gray-400 hover:text-orange-600 hover:bg-orange-50 rounded-xl transition-all"
               title="Gửi phản hồi"
             >
               <MessageSquare size={18} />
@@ -197,10 +197,10 @@ export default function ShopReviewsScreen() {
             <MessageSquare size={32} strokeWidth={2.5} />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-slate-800 leading-none">
+            <h1 className="text-2xl font-bold  text-gray-800 leading-none">
               Trung tâm Đánh giá
             </h1>
-            <p className="text-sm text-slate-400 font-medium mt-2 italic">
+            <p className="text-sm  text-gray-400 font-medium mt-2 italic">
               Quản lý và tương tác với ý kiến từ khách hàng
             </p>
           </div>
@@ -214,7 +214,7 @@ export default function ShopReviewsScreen() {
               "px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest transition-all flex items-center gap-2",
               activeTab === "products"
                 ? "bg-white text-orange-600 shadow-sm"
-                : "text-slate-400 hover:text-slate-600",
+                : " text-gray-400 hover:text-gray-600",
             )}
           >
             <Package size={14} /> Sản phẩm
@@ -225,7 +225,7 @@ export default function ShopReviewsScreen() {
               "px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest transition-all flex items-center gap-2",
               activeTab === "shop"
                 ? "bg-white text-orange-600 shadow-sm"
-                : "text-slate-400 hover:text-slate-600",
+                : " text-gray-400 hover:text-gray-600",
             )}
           >
             <Store size={14} /> Cửa hàng
@@ -241,7 +241,7 @@ export default function ShopReviewsScreen() {
               <div className="space-y-4">
                 <button
                   onClick={() => setSelectedProductId(null)}
-                  className="flex items-center gap-2 px-5 py-2.5 bg-white text-slate-600 rounded-2xl border border-slate-100 text-xs font-bold uppercase tracking-widest hover:bg-slate-50 transition-all shadow-sm active:scale-95"
+                  className="flex items-center gap-2 px-5 py-2.5 bg-white  text-gray-600 rounded-2xl border border-slate-100 text-xs font-bold uppercase tracking-widest hover:bg-slate-50 transition-all shadow-sm active:scale-95"
                 >
                   <ChevronLeft size={16} /> Quay lại danh sách
                 </button>
@@ -273,7 +273,7 @@ export default function ShopReviewsScreen() {
                 <div className="flex flex-wrap items-center gap-4 w-full">
                   <div className="relative group flex-1 max-w-md">
                     <Search
-                      className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-orange-500 transition-colors"
+                      className="absolute left-3 top-1/2 -translate-y-1/2  text-gray-400 group-focus-within:text-orange-500 transition-colors"
                       size={18}
                     />
                     <input
@@ -283,7 +283,7 @@ export default function ShopReviewsScreen() {
                   </div>
                   <button
                     onClick={fetchShopData}
-                    className="p-3 bg-white border border-slate-200 text-slate-500 rounded-2xl hover:bg-slate-50 transition-all active:scale-90"
+                    className="p-3 bg-white border border-slate-200  text-gray-500 rounded-2xl hover:bg-slate-50 transition-all active:scale-90"
                   >
                     <RefreshCw
                       size={20}

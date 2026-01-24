@@ -129,7 +129,7 @@ export default function EditWishlistItemModal({
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Quantity Picker */}
                     <div className="space-y-2">
-                        <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-600 ml-1">Số lượng</label>
+                        <label className="text-[10px] font-semibold uppercase  text-gray-600 ml-1">Số lượng</label>
                         <div className="flex items-center bg-gray-50 border border-gray-200 rounded-2xl p-1 shadow-inner">
                             <button 
                                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -154,7 +154,7 @@ export default function EditWishlistItemModal({
 
                     {/* Priority Selector */}
                     <div className="space-y-2">
-                        <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-600 ml-1">Độ ưu tiên</label>
+                        <label className="text-[10px] font-semibold uppercase  text-gray-600 ml-1">Độ ưu tiên</label>
                         <div className="flex bg-gray-50 border border-gray-200 rounded-2xl p-1 gap-1 shadow-inner">
                             {[0, 1, 2].map((p) => (
                                 <button
@@ -179,7 +179,7 @@ export default function EditWishlistItemModal({
                 {/* Desired Price */}
                 <div className="space-y-2">
                     <div className="flex items-center justify-between ml-1">
-                        <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-600">Giá mong muốn (VND)</label>
+                        <label className="text-[10px] font-semibold uppercase  text-gray-600">Giá mong muốn (VND)</label>
                         <div className="group relative">
                             <HelpCircle size={14} className="text-gray-500 cursor-help" />
                             <div className="absolute bottom-full right-0 mb-2 w-48 p-2 bg-gray-800 text-white text-[9px] rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20 font-medium">
@@ -204,7 +204,7 @@ export default function EditWishlistItemModal({
 
                 {/* Notes */}
                 <div className="space-y-2">
-                    <label className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-600 ml-1">Ghi chú</label>
+                    <label className="text-[10px] font-semibold uppercase  text-gray-600 ml-1">Ghi chú</label>
                     <textarea 
                         value={notes}
                         onChange={(e) => setNotes(e.target.value)}

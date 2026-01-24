@@ -94,10 +94,10 @@ export const ProductImageCard: React.FC<ProductImageCardProps> = ({
             <LucideImageIcon size={24} />
           </div>
           <div>
-            <h5 className="text-lg font-bold text-slate-800 tracking-tight leading-none">
+            <h5 className="text-lg font-bold  text-gray-800 tracking-tight leading-none">
               Hình ảnh sản phẩm <span className="text-red-500">*</span>
             </h5>
-            <p className="text-xs text-slate-400 mt-1 font-medium italic">
+            <p className="text-xs  text-gray-400 mt-1 font-medium italic">
               Tối đa 9 ảnh • Định dạng JPG, PNG
             </p>
           </div>
@@ -108,7 +108,7 @@ export const ProductImageCard: React.FC<ProductImageCardProps> = ({
             <button
               type="button"
               onClick={() => setShowListPreview(true)}
-              className="group flex items-center gap-2 rounded-xl bg-slate-50 px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest text-slate-600 transition-all hover:bg-slate-100 active:scale-95"
+              className="group flex items-center gap-2 rounded-xl bg-slate-50 px-4 py-2.5 text-[11px] font-bold uppercase tracking-widest  text-gray-600 transition-all hover:bg-slate-100 active:scale-95"
             >
               <Grid3X3 size={14} className="group-hover:text-blue-500" />
               Tổng quan ({fileList.length})
@@ -184,7 +184,7 @@ export const ProductImageCard: React.FC<ProductImageCardProps> = ({
               )}
             </div>
 
-            <span className="mt-1.5 text-[9px] text-slate-400 truncate px-1 text-center font-medium">
+            <span className="mt-1.5 text-[9px]  text-gray-400 truncate px-1 text-center font-medium">
               {file.name}
             </span>
           </div>
@@ -201,9 +201,9 @@ export const ProductImageCard: React.FC<ProductImageCardProps> = ({
               ref={fileInputRef}
             />
             <div className="p-3 bg-slate-50 rounded-xl group-hover:scale-110 group-hover:bg-white transition-all shadow-sm group-hover:shadow-orange-100">
-              <Plus className="text-slate-400 group-hover:text-orange-500 w-5 h-5 transition-colors" />
+              <Plus className=" text-gray-400 group-hover:text-orange-500 w-5 h-5 transition-colors" />
             </div>
-            <span className="mt-3 text-[10px] font-bold text-slate-400 uppercase tracking-tighter group-hover:text-orange-600 transition-colors">
+            <span className="mt-3 text-[10px] font-bold  text-gray-400 uppercase tracking-tighter group-hover:text-orange-600 transition-colors">
               Thêm ảnh
             </span>
           </label>
@@ -242,7 +242,7 @@ export const ProductImageCard: React.FC<ProductImageCardProps> = ({
                         "px-3 py-1 rounded-lg text-[9px] font-bold tracking-widest uppercase",
                         index === 0
                           ? "bg-orange-500 text-white"
-                          : "bg-white text-slate-900"
+                          : "bg-white  text-gray-900"
                       )}
                     >
                       {index === 0 ? "Ảnh chính" : `Vị trí ${index + 1}`}

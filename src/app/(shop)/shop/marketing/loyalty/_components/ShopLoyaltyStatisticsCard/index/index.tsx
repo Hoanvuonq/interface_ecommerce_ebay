@@ -92,7 +92,7 @@ export const ShopLoyaltyStatisticsCard = () => {
       {/* Header */}
       <div className="px-6 py-4 border-b border-slate-100 bg-slate-50/50 flex items-center gap-2">
         <Trophy className="w-5 h-5 text-amber-500" />
-        <h2 className="font-bold text-slate-800 tracking-tight">
+        <h2 className="font-bold  text-gray-800 tracking-tight">
           Thống kê điểm thưởng
         </h2>
       </div>
@@ -109,7 +109,7 @@ export const ShopLoyaltyStatisticsCard = () => {
                   {item.icon}
                 </div>
                 <div className="flex flex-col min-w-0">
-                  <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">
+                  <span className="text-xs font-semibold  text-gray-500 uppercase tracking-wider truncate">
                     {item.title}
                   </span>
                   <span

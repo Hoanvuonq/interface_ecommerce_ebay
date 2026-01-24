@@ -110,10 +110,10 @@ export const SettingsAutoMessage = ({ onSave }: ShopChatSettingsProps) => {
           <Info size={22} />
         </div>
         <div className="space-y-2 relative z-10">
-          <p className="text-xs font-bold uppercase text-slate-800 tracking-wider italic">
+          <p className="text-xs font-bold uppercase  text-gray-800 tracking-wider italic">
             Giao thức phản hồi tự động
           </p>
-          <ul className="text-[11px] font-bold text-slate-500 uppercase leading-relaxed space-y-1.5 tracking-tight">
+          <ul className="text-[11px] font-bold  text-gray-500 uppercase leading-relaxed space-y-1.5 tracking-tight">
             <li className="flex items-center gap-2">
               <span className="w-1 h-1 bg-orange-400 rounded-full" />
               Tin nhắn tiêu chuẩn giúp giữ chân khách hàng khi nhân viên chưa

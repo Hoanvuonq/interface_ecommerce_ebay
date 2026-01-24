@@ -34,7 +34,7 @@ export const ActiveCampaignBanner: React.FC<ActiveCampaignBannerProps> = ({
                 HOT SALE
               </div>
             </div>
-            <h3 className="text-[15px] font-bold text-slate-700 leading-tight uppercase italic tracking-tight">
+            <h3 className="text-[15px] font-bold  text-gray-700 leading-tight uppercase italic tracking-tight">
               {campaign.campaignName}
             </h3>
           </div>

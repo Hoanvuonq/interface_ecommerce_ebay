@@ -39,10 +39,10 @@ export const AdminActionsCard = ({
           <ShieldCheck size={24} strokeWidth={2.5} />
         </div>
         <div>
-          <h3 className="text-xl font-bold uppercase tracking-tighter text-slate-800 italic leading-none">
+          <h3 className="text-xl font-bold uppercase tracking-tighter  text-gray-800 italic leading-none">
             Trung tâm kiểm duyệt
           </h3>
-          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mt-1">
+          <p className="text-[10px] font-bold  text-gray-400 uppercase  mt-1">
             Admin Approval Protocol
           </p>
         </div>
@@ -120,7 +120,7 @@ export const AdminActionsCard = ({
       {!isApproved && (
         <div className="mt-6 flex items-start gap-2 px-2 opacity-60 italic">
           <AlertTriangle size={12} className="text-amber-500 mt-0.5 shrink-0" />
-          <p className="text-[10px] text-slate-500 leading-tight">
+          <p className="text-[10px]  text-gray-500 leading-tight">
             Vui lòng nhập lý do cụ thể trước khi chọn "Từ chối" hoặc "Yêu cầu
             chỉnh sửa" để Shop có thể nắm bắt thông tin.
           </p>

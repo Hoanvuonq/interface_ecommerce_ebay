@@ -28,7 +28,7 @@ export const ReviewItem: React.FC<ReviewItemProps> = ({
             className="bg-slate-100 border border-slate-200 shadow-sm rounded-xl transition-transform group-hover:scale-105"
           />
           <div className="sm:hidden">
-            <h4 className="font-semibold text-slate-900 text-[14px] tracking-tight">
+            <h4 className="font-semibold  text-gray-900 text-[14px] tracking-tight">
               {review.username || review.buyerName || "Ẩn danh"}
             </h4>
             <CustomRate value={Number(review.rating)} size={10} disabled className="text-amber-400" />
@@ -39,7 +39,7 @@ export const ReviewItem: React.FC<ReviewItemProps> = ({
           <div className="hidden sm:flex flex-wrap items-center justify-between gap-4 mb-3">
             <div className="space-y-1">
               <div className="flex items-center gap-2.5">
-                <span className="font-semibold text-slate-900 text-[14px] tracking-tight">
+                <span className="font-semibold  text-gray-900 text-[14px] tracking-tight">
                   {review.username || review.buyerName || "Người dùng ẩn danh"}
                 </span>
                 {review.verifiedPurchase && (
@@ -50,13 +50,13 @@ export const ReviewItem: React.FC<ReviewItemProps> = ({
               </div>
               <CustomRate value={Number(review.rating)} size={10} disabled className="text-amber-400" />
             </div>
-            <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-widest">
+            <span className="text-[10px]  text-gray-400 font-semibold uppercase tracking-widest">
               {new Date(review.createdDate).toLocaleDateString("vi-VN")}
             </span>
           </div>
 
           {/* Comment của khách */}
-          <p className="text-slate-600 text-[14px] leading-relaxed mb-4 antialiased whitespace-pre-line">
+          <p className=" text-gray-600 text-[14px] leading-relaxed mb-4 antialiased whitespace-pre-line">
             {review.comment || "Khách hàng không để lại nội dung."}
           </p>
 
@@ -85,11 +85,11 @@ export const ReviewItem: React.FC<ReviewItemProps> = ({
             <div className="mt-3 pl-4 border-l-2 border-gray-200">
               <div className="flex items-center gap-1.5 mb-1">
                 <MessageSquareText size={12} className="text-orange-500" />
-                <span className="text-[11px] font-semibold text-slate-800 uppercase tracking-wider">
+                <span className="text-[11px] font-semibold  text-gray-800 uppercase tracking-wider">
                   Phản hồi từ Shop
                 </span>
               </div>
-              <p className="text-[13px] text-slate-500 leading-normal italic">
+              <p className="text-[13px]  text-gray-500 leading-normal italic">
                 {review.sellerResponse}
               </p>
             </div>

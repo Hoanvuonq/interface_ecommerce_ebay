@@ -20,12 +20,12 @@ export const MyRegistrationsScreen: React.FC<MyRegistrationsTabProps> = ({
     return (
       <div className="flex flex-col items-center justify-center bg-white rounded-[3rem] p-24 border border-slate-100 shadow-sm animate-in fade-in zoom-in-95 duration-700">
         <div className="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mb-6 ring-8 ring-slate-50/50">
-          <Package className="w-12 h-12 text-slate-200" />
+          <Package className="w-12 h-12  text-gray-200" />
         </div>
-        <h3 className="text-slate-900 font-bold text-2xl tracking-tight">
+        <h3 className=" text-gray-900 font-bold text-2xl tracking-tight">
           Kho đăng ký trống
         </h3>
-        <p className="text-slate-400 max-w-sm text-center mt-3 font-medium text-sm leading-relaxed">
+        <p className=" text-gray-400 max-w-sm text-center mt-3 font-medium text-sm leading-relaxed">
           Bạn chưa có sản phẩm nào tham gia chiến dịch. Hãy khám phá các sự kiện
           mới nhất ngay!
         </p>

@@ -184,7 +184,7 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ category, onSuccess, onC
             <form onSubmit={handleSubmit} className="p-10 space-y-10 bg-[#fffcf9]">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
                     <div className="lg:col-span-4 space-y-4">
-                        <label className="text-[10px] font-semibold text-gray-600 uppercase tracking-[0.2em] flex items-center gap-2">
+                        <label className="text-[10px] font-semibold text-gray-600 uppercase  flex items-center gap-2">
                             <ImageIcon size={14} /> Visual Asset
                         </label>
                         <div 
@@ -214,7 +214,7 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ category, onSuccess, onC
                     {/* Metadata Fields */}
                     <div className="lg:col-span-8 space-y-6">
                         <div className="space-y-4">
-                            <label className="text-[10px] font-semibold text-gray-600 uppercase tracking-[0.2em] flex items-center gap-2">
+                            <label className="text-[10px] font-semibold text-gray-600 uppercase  flex items-center gap-2">
                                 <Layout size={14} /> Metadata Configuration
                             </label>
                             <input 
@@ -240,7 +240,7 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ category, onSuccess, onC
                 {/* Section 2: Hierarchy & Logic */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6 border-t border-gray-100">
                     <div className="space-y-4">
-                        <label className="text-[10px] font-semibold text-gray-600 uppercase tracking-[0.2em] flex items-center gap-2">
+                        <label className="text-[10px] font-semibold text-gray-600 uppercase  flex items-center gap-2">
                             <Layers size={14} /> Node Hierarchy
                         </label>
                         <div className="relative">
@@ -256,7 +256,7 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ category, onSuccess, onC
                     </div>
 
                     <div className="space-y-4">
-                        <label className="text-[10px] font-semibold text-gray-600 uppercase tracking-[0.2em] flex items-center gap-2">
+                        <label className="text-[10px] font-semibold text-gray-600 uppercase  flex items-center gap-2">
                             <Activity size={14} /> Network State
                         </label>
                         <button 
@@ -284,7 +284,7 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ category, onSuccess, onC
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white p-8 rounded-[40px] border-2 border-gray-100 shadow-sm">
                         <div className="space-y-2">
-                            <label className="text-[9px] font-semibold text-gray-600 uppercase tracking-[0.2em] ml-2 leading-none mb-1.5">Restriction Type</label>
+                            <label className="text-[9px] font-semibold text-gray-600 uppercase  ml-2 leading-none mb-1.5">Restriction Type</label>
                             <select 
                                 value={formData.defaultShippingRestrictions?.restrictionType}
                                 onChange={(e) => setFormData(p => ({ ...p, defaultShippingRestrictions: { ...p.defaultShippingRestrictions!, restrictionType: e.target.value as any }}))}
@@ -298,7 +298,7 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ category, onSuccess, onC
 
                         {formData.defaultShippingRestrictions?.restrictionType === 'LOCAL_RADIUS' && (
                             <div className="space-y-2 animate-in slide-in-from-right">
-                                <label className="text-[9px] font-semibold text-gray-600 uppercase tracking-[0.2em] ml-2 leading-none mb-1.5">Radius Threshold (KM)</label>
+                                <label className="text-[9px] font-semibold text-gray-600 uppercase  ml-2 leading-none mb-1.5">Radius Threshold (KM)</label>
                                 <input 
                                     type="number" placeholder="Enter KM..."
                                     value={formData.defaultShippingRestrictions?.maxShippingRadiusKm || ""}
@@ -314,13 +314,13 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ category, onSuccess, onC
                 <div className="flex flex-col sm:flex-row items-center justify-end gap-4 pt-10 border-t border-gray-100">
                     <button 
                         type="button" onClick={handleCancelAction}
-                        className="w-full sm:w-auto px-10 py-4 bg-gray-50 text-gray-600 rounded-2xl font-semibold uppercase tracking-[0.2em] text-[10px] hover:bg-gray-200 transition-all active:scale-95"
+                        className="w-full sm:w-auto px-10 py-4 bg-gray-50 text-gray-600 rounded-2xl font-semibold uppercase  text-[10px] hover:bg-gray-200 transition-all active:scale-95"
                     >
                         Discard Revisions
                     </button>
                     <button 
                         type="submit" disabled={loading}
-                        className="w-full sm:w-auto px-12 py-4 bg-gray-900 text-white rounded-2xl font-semibold uppercase tracking-[0.2em] text-[10px] hover:bg-indigo-600 transition-all shadow-xl shadow-indigo-100 active:scale-95 disabled:opacity-50 flex items-center justify-center gap-3"
+                        className="w-full sm:w-auto px-12 py-4 bg-gray-900 text-white rounded-2xl font-semibold uppercase  text-[10px] hover:bg-indigo-600 transition-all shadow-xl shadow-indigo-100 active:scale-95 disabled:opacity-50 flex items-center justify-center gap-3"
                     >
                         {loading ? <Loader2 className="animate-spin w-5 h-5" /> : <><CheckCircle2 size={16}/> Push Revisions</>}
                     </button>

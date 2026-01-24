@@ -273,7 +273,7 @@ const VoucherHistory: React.FC<VoucherHistoryProps> = ({ onCountUpdate }) => {
 
               {/* Status Timeline Section */}
               <div className="pt-6 border-t border-gray-100">
-                <h4 className="text-xs font-bold text-gray-900 uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
+                <h4 className="text-xs font-bold text-gray-900 uppercase  mb-6 flex items-center gap-2">
                    <Clock size={14} className="text-blue-500" /> Tiến trình xử lý
                 </h4>
                 

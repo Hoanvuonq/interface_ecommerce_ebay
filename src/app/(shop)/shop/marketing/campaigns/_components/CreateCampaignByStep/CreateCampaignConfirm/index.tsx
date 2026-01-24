@@ -27,10 +27,10 @@ export const CreateCampaignConfirm: React.FC<ICreateCampaignConfirmProps> = ({
                 <CheckCircle size={24} />
               </div>
               <div>
-                <h3 className="text-xl font-bold text-slate-800 uppercase tracking-tight">
+                <h3 className="text-xl font-bold  text-gray-800 uppercase tracking-tight">
                   Xác nhận cấu hình
                 </h3>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">
+                <p className="text-xs font-bold  text-gray-400 uppercase tracking-widest mt-1">
                   Kiểm tra thông tin trước khi kích hoạt
                 </p>
               </div>
@@ -63,7 +63,7 @@ export const CreateCampaignConfirm: React.FC<ICreateCampaignConfirmProps> = ({
                       Tên chiến dịch
                     </p>
                   </div>
-                  <p className="text-base font-bold text-slate-700 leading-tight">
+                  <p className="text-base font-bold  text-gray-700 leading-tight">
                     {form.name}
                   </p>
                 </div>
@@ -75,9 +75,9 @@ export const CreateCampaignConfirm: React.FC<ICreateCampaignConfirmProps> = ({
                       Thời gian áp dụng
                     </p>
                   </div>
-                  <div className="text-[13px] font-bold text-slate-600 italic">
+                  <div className="text-[13px] font-bold  text-gray-600 italic">
                     <p>{new Date(form.startDate).toLocaleString("vi-VN")}</p>
-                    <p className="text-slate-300 ml-4 font-normal">đến</p>
+                    <p className=" text-gray-300 ml-4 font-normal">đến</p>
                     <p>{new Date(form.endDate).toLocaleString("vi-VN")}</p>
                   </div>
                 </div>
@@ -93,7 +93,7 @@ export const CreateCampaignConfirm: React.FC<ICreateCampaignConfirmProps> = ({
 
                 <div className="relative z-10 flex flex-col h-full justify-between">
                   <div>
-                    <p className="text-[11px] font-bold text-slate-400 uppercase tracking-[0.3em] mb-1">
+                    <p className="text-[11px] font-bold  text-gray-400 uppercase tracking-[0.3em] mb-1">
                       Quy mô Items
                     </p>
                     <div className="h-1 w-12 bg-orange-500 rounded-full mb-6" />
@@ -107,7 +107,7 @@ export const CreateCampaignConfirm: React.FC<ICreateCampaignConfirmProps> = ({
                       <span className="text-xs font-bold uppercase italic leading-none">
                         Biến thể
                       </span>
-                      <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+                      <span className="text-[10px]  text-gray-400 font-bold uppercase tracking-wider">
                         Được lựa chọn
                       </span>
                     </div>

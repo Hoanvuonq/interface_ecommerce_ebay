@@ -1,6 +1,6 @@
 "use client";
 
-import { ShopAddressForm } from "../../address/_components/ShopAddressForm";
+import { ShopAddressForm } from "../../../settings/_components/SettingsAddress";
 
 export default function ShopAddressScreen() {
   return <ShopAddressForm />;

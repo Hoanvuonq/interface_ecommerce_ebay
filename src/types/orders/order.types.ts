@@ -253,3 +253,4 @@ export interface ReturnOrderRequest {
   videoUrls: string[];
   bankAccountId?: string;
 }
+

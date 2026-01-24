@@ -172,7 +172,7 @@ export const TaxInfo = ({
                 },
               ].map((item, idx) => (
                 <div key={idx} className="grid grid-cols-1 md:grid-cols-[280px_1fr] bg-white p-5 group/row hover:bg-gray-50 transition-colors">
-                  <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-500 self-center">{item.label}</span>
+                  <span className="text-[11px] font-bold uppercase  text-gray-500 self-center">{item.label}</span>
                   <span className={cn(
                     "text-sm font-bold text-gray-800",
                     item.isMasked && "tracking-[0.3em] text-gray-500"

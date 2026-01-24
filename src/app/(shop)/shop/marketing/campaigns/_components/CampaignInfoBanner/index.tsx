@@ -18,17 +18,17 @@ export const CampaignInfoBanner: React.FC = () => {
         <h4 className="text-white font-bold text-xl tracking-tight">
           Chế độ vận hành chiến dịch
         </h4>
-        <p className="text-slate-400 text-sm mt-2 max-w-3xl leading-relaxed">
+        <p className=" text-gray-400 text-sm mt-2 max-w-3xl leading-relaxed">
           Chương trình Flash Sale yêu cầu sự chính xác về kho hàng. Sản phẩm sau
           khi được <span className="text-orange-400 font-bold">APPROVED</span>
           sẽ được khóa số lượng tồn kho để đảm bảo quyền lợi người mua.
         </p>
         <div className="flex flex-wrap gap-4 mt-5">
-          <div className="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-white/5 px-3 py-1.5 rounded-full border border-white/10">
+          <div className="flex items-center gap-2 text-[10px] font-bold  text-gray-400 uppercase tracking-widest bg-white/5 px-3 py-1.5 rounded-full border border-white/10">
             <div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
             Chờ duyệt: Có thể hủy
           </div>
-          <div className="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-white/5 px-3 py-1.5 rounded-full border border-white/10">
+          <div className="flex items-center gap-2 text-[10px] font-bold  text-gray-400 uppercase tracking-widest bg-white/5 px-3 py-1.5 rounded-full border border-white/10">
             <div className="w-2 h-2 rounded-full bg-emerald-500" /> Đã duyệt:
             Khóa dữ liệu
           </div>

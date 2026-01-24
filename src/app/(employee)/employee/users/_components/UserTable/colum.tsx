@@ -20,10 +20,10 @@ export const getUserColumns = (logic: any): Column<User>[] => [
     header: "Người dùng",
     render: (user) => (
       <div className="flex flex-col gap-0.5">
-        <span className="font-bold text-slate-800 text-[14px] tracking-tight ">
+        <span className="font-bold  text-gray-800 text-[14px] tracking-tight ">
           {user.username}
         </span>
-        <span className="text-[11px] text-slate-500 font-medium italic">
+        <span className="text-[11px]  text-gray-500 font-medium italic">
           {user.email}
         </span>
       </div>
@@ -69,7 +69,7 @@ export const getUserColumns = (logic: any): Column<User>[] => [
     header: "Ngày tạo",
     align: "center",
     render: (user) => (
-      <span className="text-[11px] font-bold text-slate-500 font-mono">
+      <span className="text-[11px] font-bold  text-gray-500 font-mono">
         {dayjs(user.createdDate).format("DD/MM/YYYY")}
       </span>
     ),

@@ -117,13 +117,13 @@ export const ProductReviewsSection = ({
                 <MessageCircle size={24} />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-slate-800 uppercase tracking-tight">Chi tiết đánh giá</h3>
-                <p className="text-xs text-slate-400 font-medium italic">Lọc và quản lý các phản hồi từ khách hàng</p>
+                <h3 className="text-lg font-bold  text-gray-800 uppercase tracking-tight">Chi tiết đánh giá</h3>
+                <p className="text-xs  text-gray-400 font-medium italic">Lọc và quản lý các phản hồi từ khách hàng</p>
               </div>
             </div>
             <button 
               onClick={fetchData}
-              className="flex items-center gap-2 px-5 py-2.5 text-slate-500 hover:bg-slate-50 rounded-xl border border-slate-200 transition-all active:scale-95"
+              className="flex items-center gap-2 px-5 py-2.5  text-gray-500 hover:bg-slate-50 rounded-xl border border-slate-200 transition-all active:scale-95"
             >
               <RefreshCw size={16} className={cn(getReviews.loading && "animate-spin")} />
               <span className="text-xs font-bold uppercase tracking-widest">Làm mới</span>
@@ -145,7 +145,7 @@ export const ProductReviewsSection = ({
                     "px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest transition-all flex items-center gap-2 border",
                     responseFilter === filter.id 
                       ? "bg-slate-900 text-white border-slate-900 shadow-lg shadow-slate-200 scale-105" 
-                      : "bg-white text-slate-400 border-slate-200 hover:border-slate-400 hover:text-slate-600"
+                      : "bg-white  text-gray-400 border-slate-200 hover:border-slate-400 hover:text-gray-600"
                   )}
                 >
                   {filter.label}
@@ -162,7 +162,7 @@ export const ProductReviewsSection = ({
             {/* Star Rating Filter */}
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-slate-800">
+                <div className="flex items-center gap-2  text-gray-800">
                   <Filter size={14} className="text-orange-500" />
                   <span className="text-[11px] font-bold uppercase tracking-[0.2em]">Lọc theo số sao</span>
                 </div>
@@ -187,11 +187,11 @@ export const ProductReviewsSection = ({
                         "flex items-center gap-2 px-4 py-2 rounded-xl border transition-all",
                         isActive 
                           ? "bg-orange-50 border-orange-200 text-orange-600 ring-2 ring-orange-100 shadow-sm" 
-                          : "bg-white border-slate-100 text-slate-400 hover:border-slate-300"
+                          : "bg-white border-slate-100  text-gray-400 hover:border-slate-300"
                       )}
                     >
                       <div className="flex gap-0.5">
-                        <Star size={14} className={cn(isActive ? "fill-orange-500" : "fill-slate-200 text-slate-200")} />
+                        <Star size={14} className={cn(isActive ? "fill-orange-500" : "fill-slate-200  text-gray-200")} />
                       </div>
                       <span className="text-xs font-bold">{rating}</span>
                       <span className="text-[10px] font-bold opacity-60">({getRatingCount(rating)})</span>

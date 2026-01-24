@@ -18,7 +18,7 @@ export const ShopShippingSelector: React.FC<ShopShippingSelectorProps> = ({
     <div className="bg-slate-50/50 rounded-2xl border border-slate-100 overflow-hidden relative">
       <div className="px-4 py-2.5 border-b border-slate-100 flex items-center gap-2 bg-white/50">
         <Truck size={14} className="text-orange-500" />
-        <h4 className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+        <h4 className="text-[10px] font-bold uppercase tracking-wider  text-gray-500">
           Đơn vị vận chuyển
         </h4>
       </div>
@@ -70,7 +70,7 @@ export const ShopShippingSelector: React.FC<ShopShippingSelectorProps> = ({
                       <span
                         className={cn(
                           "text-[12px] font-bold truncate transition-colors uppercase tracking-tight",
-                          isSelected ? "text-slate-900" : "text-slate-600"
+                          isSelected ? " text-gray-900" : " text-gray-600"
                         )}
                       >
                         {option.displayName}
@@ -80,7 +80,7 @@ export const ShopShippingSelector: React.FC<ShopShippingSelectorProps> = ({
                     <span
                       className={cn(
                         "text-[13px] font-bold shrink-0 tabular-nums",
-                        isSelected ? "text-orange-600" : "text-slate-700"
+                        isSelected ? "text-orange-600" : " text-gray-700"
                       )}
                     >
                       {formatPrice(option.fee)}

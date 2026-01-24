@@ -35,11 +35,11 @@ export const getProductSelectionColumns = (
     className: "min-w-[220px]",
     render: (variant: any) => (
       <div className="flex flex-col gap-1">
-        <p className="text-[12px] font-bold text-slate-700 line-clamp-2 uppercase leading-snug">
+        <p className="text-[12px] font-bold  text-gray-700 line-clamp-2 uppercase leading-snug">
           {variant.productName}
         </p>
         <div className="flex items-center gap-2">
-          <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tighter bg-slate-100 px-1.5 py-0.5 rounded">
+          <span className="text-[9px]  text-gray-400 font-bold uppercase tracking-tighter bg-slate-100 px-1.5 py-0.5 rounded">
             SKU: {variant.sku}
           </span>
           {variant.optionName && (
@@ -56,7 +56,7 @@ export const getProductSelectionColumns = (
     align: "right",
     className: "w-[120px]",
     render: (variant: any) => (
-      <span className="text-xs font-bold text-slate-400 line-through decoration-slate-300">
+      <span className="text-xs font-bold  text-gray-400 line-through decoration-slate-300">
         {variant.price.toLocaleString()}đ
       </span>
     ),
@@ -145,7 +145,7 @@ export const getProductSelectionColumns = (
         <FormInput
           type="number"
           disabled={!selectedVariants[variant.id]?.selected}
-          className="h-8 text-center font-bold text-slate-600 bg-white border-slate-200"
+          className="h-8 text-center font-bold  text-gray-600 bg-white border-slate-200"
           value={selectedVariants[variant.id]?.stockLimit ?? ""}
           onChange={(e) => {
             const val = e.target.value === "" ? "" : parseInt(e.target.value);

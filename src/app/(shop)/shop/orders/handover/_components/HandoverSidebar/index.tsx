@@ -23,7 +23,7 @@ export const HandoverSidebar: React.FC<HandoverSidebarProps> = ({
     <aside className="flex flex-col gap-5 w-full">
       {/* Card: Statistics */}
       <div className="bg-white rounded-4xl p-6 border border-gray-100 shadow-sm transition-all hover:shadow-md">
-        <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-4">
+        <h3 className="text-[11px] font-bold text-gray-400 uppercase  mb-4">
           Thông tin lấy hàng
         </h3>
         <div className="flex flex-col">
@@ -133,7 +133,7 @@ export const HandoverSidebar: React.FC<HandoverSidebarProps> = ({
           disabled={selectedCount === 0 || isLoading}
           onClick={onConfirm}
           className={cn(
-            "w-full py-4 rounded-2xl font-bold uppercase text-xs tracking-[0.2em] transition-all flex items-center justify-center gap-2 shadow-xl active:scale-[0.98]",
+            "w-full py-4 rounded-2xl font-bold uppercase text-xs  transition-all flex items-center justify-center gap-2 shadow-xl active:scale-[0.98]",
             selectedCount > 0 && !isLoading
               ? "bg-gray-900 text-white hover:bg-orange-600 shadow-orange-100"
               : "bg-gray-100 text-gray-400 cursor-not-allowed shadow-none",

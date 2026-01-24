@@ -64,7 +64,7 @@ export const MyShopSaleScreen = ({
       {/* Sidebar List */}
       <div className="lg:col-span-4 space-y-6">
         <div className="flex items-center justify-between px-2">
-          <h2 className="font-bold text-2xl text-slate-900 uppercase tracking-tighter flex items-center gap-3 italic">
+          <h2 className="font-bold text-2xl  text-gray-900 uppercase tracking-tighter flex items-center gap-3 italic">
             Shop Sales
             <span className="text-xs bg-orange-500 text-white px-3 py-1 rounded-full font-bold shadow-lg">
               {shopSales.length}
@@ -84,8 +84,8 @@ export const MyShopSaleScreen = ({
         <div className="space-y-4 max-h-[70vh] overflow-y-auto pr-2 custom-scrollbar p-1">
           {shopSales.length === 0 ? (
             <div className="bg-white rounded-4xl p-12 text-center border-2 border-dashed border-slate-100">
-              <Tag className="w-12 h-12 mx-auto mb-4 text-slate-200" />
-              <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">
+              <Tag className="w-12 h-12 mx-auto mb-4  text-gray-200" />
+              <p className=" text-gray-400 font-bold uppercase tracking-widest text-xs">
                 Mạng lưới trống
               </p>
             </div>
@@ -127,7 +127,7 @@ export const MyShopSaleScreen = ({
               <div className="absolute inset-0 bg-linear-to-t from-slate-950 via-slate-950/40 to-transparent" />
               <div className="absolute bottom-8 left-10 right-10 flex items-end justify-between">
                 <div className="text-white space-y-2">
-                  <span className="bg-orange-500 text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-[0.2em] shadow-lg shadow-orange-500/40">
+                  <span className="bg-orange-500 text-[9px] font-bold px-3 py-1 rounded-full uppercase  shadow-lg shadow-orange-500/40">
                     Active Node
                   </span>
                   <h2 className="text-4xl font-bold uppercase tracking-tighter italic">
@@ -136,7 +136,7 @@ export const MyShopSaleScreen = ({
                 </div>
                 <button
                   onClick={() => onAddProducts(selectedCampaign.id)}
-                  className="bg-white text-slate-900 hover:bg-orange-500 hover:text-white px-8 py-4 rounded-3xl font-bold text-xs uppercase tracking-widest transition-all shadow-2xl active:scale-95 flex items-center gap-3"
+                  className="bg-white  text-gray-900 hover:bg-orange-500 hover:text-white px-8 py-4 rounded-3xl font-bold text-xs uppercase tracking-widest transition-all shadow-2xl active:scale-95 flex items-center gap-3"
                 >
                   <Plus size={16} strokeWidth={4} /> Thêm sản phẩm
                 </button>
@@ -149,8 +149,8 @@ export const MyShopSaleScreen = ({
               </div>
               {selectedCampaignProducts.length === 0 ? (
                 <div className="py-24 text-center bg-white rounded-[2.5rem] border-2 border-dashed border-slate-200">
-                  <PackageOpen className="w-12 h-12 mx-auto mb-4 text-slate-200" />
-                  <p className="text-slate-400 font-bold uppercase tracking-widest text-[10px]">
+                  <PackageOpen className="w-12 h-12 mx-auto mb-4  text-gray-200" />
+                  <p className=" text-gray-400 font-bold uppercase tracking-widest text-[10px]">
                     Chưa có tài sản đăng ký
                   </p>
                 </div>
@@ -181,10 +181,10 @@ export const MyShopSaleScreen = ({
             <div className="w-32 h-32 bg-orange-50 rounded-[2.5rem] flex items-center justify-center mb-8 ring-8 ring-orange-50 transition-all group-hover:scale-110 shadow-xl">
               <MousePointerClick className="w-16 h-16 text-orange-500" />
             </div>
-            <h3 className="text-slate-900 font-bold uppercase tracking-widest text-2xl italic">
+            <h3 className=" text-gray-900 font-bold uppercase tracking-widest text-2xl italic">
               Protocol Offline
             </h3>
-            <p className="max-w-xs mt-4 text-slate-400 text-sm font-medium">
+            <p className="max-w-xs mt-4  text-gray-400 text-sm font-medium">
               Chọn một chiến dịch từ bảng điều khiển bên trái để kích hoạt
               module quản lý.
             </p>

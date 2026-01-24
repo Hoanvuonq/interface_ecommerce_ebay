@@ -206,7 +206,7 @@ export const CheckoutPreview: React.FC<CheckoutPreviewProps> = ({
                 </div>
 
                 <div className="bg-gray-900 rounded-3xl p-6 text-white shadow-xl shadow-gray-200">
-                  <h4 className="text-xs font-semibold text-gray-600 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                  <h4 className="text-xs font-semibold text-gray-600 uppercase  mb-4 flex items-center gap-2">
                     <CreditCard size={14} /> Tổng kết đơn hàng
                   </h4>
                   <div className="space-y-3">

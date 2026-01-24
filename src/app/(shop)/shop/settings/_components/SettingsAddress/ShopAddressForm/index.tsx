@@ -144,10 +144,10 @@ export const ShopAddressForm = () => {
     <div className="space-y-3">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-slate-800 uppercase tracking-tight">
+          <h2 className="text-2xl font-bold  text-gray-800 uppercase tracking-tight">
             Địa chỉ Shop
           </h2>
-          <p className="text-slate-500 text-xs font-medium">
+          <p className=" text-gray-500 text-xs font-medium">
             Quản lý các điểm lấy hàng và trả hàng chính thức
           </p>
         </div>
@@ -170,19 +170,19 @@ export const ShopAddressForm = () => {
       {loading ? (
         <div className="flex flex-col items-center justify-center py-20 gap-4">
           <Loader2 size={40} className="text-orange-500 animate-spin" />
-          <span className="text-slate-400 font-bold text-xs uppercase tracking-widest">
+          <span className=" text-gray-400 font-bold text-xs uppercase tracking-widest">
             Đang đồng bộ dữ liệu...
           </span>
         </div>
       ) : addresses.length === 0 ? (
         <div className="bg-slate-50/50 border-2 border-dashed border-slate-200 rounded-[2.5rem] p-16 text-center">
           <div className="bg-white w-16 h-16 rounded-3xl shadow-sm flex items-center justify-center mx-auto mb-4 border border-slate-100">
-            <MapPin size={28} className="text-slate-300" />
+            <MapPin size={28} className=" text-gray-300" />
           </div>
-          <h3 className="text-slate-800 font-bold uppercase text-sm">
+          <h3 className=" text-gray-800 font-bold uppercase text-sm">
             Kho hàng chưa có tọa độ
           </h3>
-          <p className="text-slate-500 text-xs mt-1">
+          <p className=" text-gray-500 text-xs mt-1">
             Hãy thiết lập địa chỉ để bắt đầu kinh doanh ngay
           </p>
         </div>

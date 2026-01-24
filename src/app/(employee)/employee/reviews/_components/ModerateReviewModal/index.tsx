@@ -148,7 +148,7 @@ export default function ModerateReviewModal({
           type="login"
           disabled={isSubmitting}
           className={cn(
-            "flex-[1.5] py-3.5 rounded-2xl font-semibold uppercase text-[11px] tracking-[0.2em] text-white shadow-xl transition-all active:scale-95 flex items-center justify-center gap-2",
+            "flex-[1.5] py-3.5 rounded-2xl font-semibold uppercase text-[11px]  text-white shadow-xl transition-all active:scale-95 flex items-center justify-center gap-2",
             currentStatus === ReviewStatus.REJECTED
               ? "bg-red-500 hover:bg-red-600 shadow-red-500/20"
               : "bg-orange-500 hover:bg-orange-600 shadow-orange-500/20",

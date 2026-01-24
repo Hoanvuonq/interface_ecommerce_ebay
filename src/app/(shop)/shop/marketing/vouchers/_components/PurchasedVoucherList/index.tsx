@@ -131,7 +131,7 @@ const PurchasedVoucherList: React.FC<PurchasedVoucherListProps> = ({
                     <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse">
                             <thead>
-                                <tr className="bg-gray-50/50 text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] border-b border-gray-50">
+                                <tr className="bg-gray-50/50 text-[10px] font-bold text-gray-500 uppercase  border-b border-gray-50">
                                     <th className="px-6 py-5">Thông tin Voucher</th>
                                     <th className="px-6 py-5 text-right">Mức giảm</th>
                                     <th className="px-6 py-5">Sử dụng</th>
@@ -211,7 +211,7 @@ const PurchasedVoucherList: React.FC<PurchasedVoucherListProps> = ({
                                                 <td className="px-6 py-5 text-right">
                                                     <button 
                                                         disabled={item.remainingQuantity === 0 || dayjs(item.expiryDate).isBefore(dayjs())}
-                                                        className="px-6 py-2.5 bg-gray-900 text-white text-[10px] font-bold uppercase tracking-[0.2em] rounded-2xl hover:bg-orange-500 transition-all active:scale-95 disabled:opacity-20 disabled:hover:bg-gray-900 shadow-lg shadow-gray-200"
+                                                        className="px-6 py-2.5 bg-gray-900 text-white text-[10px] font-bold uppercase  rounded-2xl hover:bg-orange-500 transition-all active:scale-95 disabled:opacity-20 disabled:hover:bg-gray-900 shadow-lg shadow-gray-200"
                                                     >
                                                         Sử dụng
                                                     </button>

@@ -46,7 +46,7 @@ export const NotificationRemoveModal: React.FC<
           <button
             onClick={onClose}
             disabled={isLoading}
-            className="px-5 py-2.5 rounded-2xl text-[13px] font-bold text-slate-500 hover:bg-slate-100 transition-all disabled:opacity-50 uppercase tracking-tight"
+            className="px-5 py-2.5 rounded-2xl text-[13px] font-bold  text-gray-500 hover:bg-slate-100 transition-all disabled:opacity-50 uppercase tracking-tight"
           >
             Hủy bỏ
           </button>
@@ -75,11 +75,11 @@ export const NotificationRemoveModal: React.FC<
         </div>
 
         <div className="space-y-2">
-          <h4 className="font-bold text-slate-800 text-lg leading-tight uppercase italic tracking-tight">
+          <h4 className="font-bold  text-gray-800 text-lg leading-tight uppercase italic tracking-tight">
             Bạn muốn xóa {isBulk ? "các" : ""} {entityName}?
           </h4>
 
-          <div className="text-[13px] text-slate-500 leading-relaxed font-medium">
+          <div className="text-[13px]  text-gray-500 leading-relaxed font-medium">
             {isBulk ? (
               <p>
                 Hành động này sẽ xóa vĩnh viễn{" "}
@@ -98,7 +98,7 @@ export const NotificationRemoveModal: React.FC<
               </p>
             )}
             {description && (
-              <p className="mt-1 text-slate-400">{description}</p>
+              <p className="mt-1  text-gray-400">{description}</p>
             )}
             <p className="mt-2 text-red-400 font-bold text-[11px] uppercase tracking-widest flex items-center justify-center sm:justify-start gap-1">
               <span className="w-1 h-1 rounded-full bg-red-400 animate-pulse" />
