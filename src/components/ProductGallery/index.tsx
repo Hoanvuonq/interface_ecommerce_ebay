@@ -4,15 +4,12 @@ import { cn } from "@/utils/cn";
 import { Box, Maximize2, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useState, useMemo } from "react";
-import { ImageWithPreview } from "../imageWithPreview";
+// import { ImageWithPreview } from "../ImagePreviewModal2";
 import { GalleryItem, ProductGalleryProps } from "./type";
 
-// Import Swiper React components và styles
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, FreeMode } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/free-mode";
-import "swiper/css/navigation";
+
 
 const PLACEHOLDER_IMAGE = "https://picsum.photos/600/600";
 
@@ -64,7 +61,7 @@ export const ProductGallery = ({
       {/* Ảnh Chính lớn */}
       <div className="rounded-4xl border border-slate-100 bg-white p-1.5 shadow-custom transition-all duration-500 hover:border-orange-200 group relative">
         <div className="relative aspect-square w-full overflow-hidden rounded-[1.8rem] bg-slate-50">
-          <ImageWithPreview
+          {/* <ImageWithPreview
             src={currentImg}
             alt={product?.name || "Product Image"}
             fill
@@ -72,7 +69,7 @@ export const ProductGallery = ({
             sizes="(max-width: 768px) 100vw, 600px"
             className="object-cover cursor-zoom-in transition-transform duration-700 group-hover:scale-105"
             onClick={() => onZoomClick && onZoomClick(currentImg)}
-          />
+          /> */}
 
           <div className="absolute inset-0 flex items-end justify-center pb-6 opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none">
             <div className="bg-white/80 backdrop-blur-md text-slate-700 px-4 py-2 rounded-xl text-[10px] flex items-center gap-2 font-black uppercase tracking-widest border border-white shadow-xl translate-y-2 group-hover:translate-y-0 transition-transform">

@@ -1,24 +1,23 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { adminOrderService } from "../../_services/adminOrder.service";
 import { OrderResponseAdmin } from "@/api/_types/adminOrder.types";
-import {
-  QuickActionsCard,
-  SellerInfoCard,
-  ShippingInfoCard,
-  BuyerInfoCard,
-  CustomerNoteCard,
-  PaymentInfoCard,
-  FinancialInfoCard,
-  OrderDetailHeader,
-  ProductListCard,
-} from "../_components";
-import { ArrowLeft, AlertCircle, ShieldAlert, Sparkles } from "lucide-react";
-import { SectionLoading } from "@/components";
 import { EmptyProductState } from "@/app/(main)/products/_components/EmptyProductState";
-import { cn } from "@/utils/cn";
+import { SectionLoading } from "@/components";
+import { AlertCircle, ArrowLeft, ShieldAlert } from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { adminOrderService } from "../../_services/adminOrder.service";
+import {
+    BuyerInfoCard,
+    CustomerNoteCard,
+    FinancialInfoCard,
+    OrderDetailHeader,
+    PaymentInfoCard,
+    ProductListCard,
+    QuickActionsCard,
+    SellerInfoCard,
+    ShippingInfoCard,
+} from "../_components";
 
 export const OrderDetailScreen: React.FC = () => {
   const params = useParams();
@@ -128,38 +127,25 @@ export const OrderDetailScreen: React.FC = () => {
           </div>
         </div>
 
-        {/* Master Content Grid */}
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
-          {/* LEFT COLUMN: Main Transaction Details */}
           <div className="xl:col-span-8 space-y-8 animate-in slide-in-from-bottom-4 duration-700">
-            {/* Items Card */}
-            <div className="bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/50 overflow-hidden border border-white">
-              <ProductListCard items={order.items || []} />
-            </div>
+            <ProductListCard items={order.items || []} />
 
-            {/* Financial Details Section */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="bg-white rounded-[2.5rem] p-8 shadow-lg shadow-slate-200/40 border border-slate-50">
-                <FinancialInfoCard
-                  subtotal={order.pricing.subtotal || 0}
-                  discount={order.pricing.totalDiscount || 0}
-                  shippingFee={order.pricing.shippingFee || 0}
-                  total={order.pricing.grandTotal || 0}
-                />
-              </div>
-              <div className="bg-white rounded-[2.5rem] p-8 shadow-lg shadow-slate-200/40 border border-slate-50 relative overflow-hidden">
-                <div className="absolute top-0 right-0 p-6 opacity-5">
-                  <Sparkles size={100} />
-                </div>
-                <PaymentInfoCard
-                  paymentMethod={order.paymentMethod || "N/A"}
-                  paymentIntentId={order.paymentIntentId}
-                  isPaid={order.status === "COMPLETED"}
-                />
-              </div>
+              <FinancialInfoCard
+                subtotal={order.pricing.subtotal || 0}
+                discount={order.pricing.totalDiscount || 0}
+                shippingFee={order.pricing.shippingFee || 0}
+                total={order.pricing.grandTotal || 0}
+              />
+             
+              <PaymentInfoCard
+                paymentMethod={order.paymentMethod || "N/A"}
+                paymentIntentId={order.paymentIntentId}
+                isPaid={order.status === "COMPLETED"}
+              />
             </div>
 
-            {/* Note Card */}
             {order.customerNote && (
               <div className="bg-orange-50/30 rounded-4xl border border-orange-100/50">
                 <CustomerNoteCard note={order.customerNote} />
@@ -168,23 +154,18 @@ export const OrderDetailScreen: React.FC = () => {
           </div>
 
           <div className="xl:col-span-4 space-y-8 sticky top-8 animate-in slide-in-from-right-4 duration-700 delay-200">
-            <div className="p-1 rounded-[2.5rem] bg-linear-to-br from-orange-400 to-rose-500 shadow-2xl shadow-orange-200">
-              <div className="bg-white rounded-[2.4rem] p-2">
-                <QuickActionsCard
-                  customerName={order.shippingAddress.recipientName || "N/A"}
-                  customerPhone={order.shippingAddress.phoneNumber || "N/A"}
-                  customerEmail={order.shippingAddress.email || "N/A"}
-                  shippingAddress={shippingAddress}
-                  shopId={order.shopInfo?.shopId}
-                  shopName={order.shopInfo?.shopName}
-                />
-              </div>
-            </div>
+            <QuickActionsCard
+              customerName={order.shippingAddress.recipientName || "N/A"}
+              customerPhone={order.shippingAddress.phoneNumber || "N/A"}
+              customerEmail={order.shippingAddress.email || "N/A"}
+              shippingAddress={shippingAddress}
+              shopId={order.shopInfo?.shopId}
+              shopName={order.shopInfo?.shopName}
+            />
 
             {/* Identification Blocks */}
             <div className="space-y-6 px-2">
               <div className="relative group">
-                <div className="absolute -inset-2 bg-linear-to-r from-blue-50 to-indigo-50 rounded-4xl opacity-0 group-hover:opacity-100 transition-opacity" />
                 <BuyerInfoCard
                   name={order.shippingAddress.recipientName || "N/A"}
                   email={order.shippingAddress.email || "N/A"}

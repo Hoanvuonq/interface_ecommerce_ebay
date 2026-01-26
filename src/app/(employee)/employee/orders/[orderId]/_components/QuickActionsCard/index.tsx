@@ -40,7 +40,7 @@ export const QuickActionsCard: React.FC<QuickActionsCardProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-5">
+    <div className="bg-white rounded-xl border border-gray-200 shadow-custom p-5">
       <h3 className="text-base font-semibold text-gray-900 mb-4 flex items-center gap-2">
         <CheckCircle size={18} className="text-blue-600" />
         Thao tác nhanh

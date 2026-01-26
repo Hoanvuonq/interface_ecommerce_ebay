@@ -5,6 +5,9 @@ import ClientProviders from "@/providers/ClientProviders";
 import "./employee-layout.css";
 import "./globals.css";
 import "react-loading-skeleton/dist/skeleton.css";
+import "swiper/css";
+import "swiper/css/free-mode";
+import "swiper/css/navigation";
 export default function RootLayout({
   children,
 }: {

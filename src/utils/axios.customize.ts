@@ -92,9 +92,7 @@ instance.interceptors.request.use(
   (config) => {
     const isPublic = isPublicEndpoint(config.url);
 
-    // [UPDATE] Logic xử lý Localhost dùng localStorage
     if (isLocalhost() && !isPublic) {
-      // Giả sử key bạn lưu là 'accessToken', sửa lại nếu tên khác
       const token = localStorage.getItem("accessToken"); 
       
       if (token) {

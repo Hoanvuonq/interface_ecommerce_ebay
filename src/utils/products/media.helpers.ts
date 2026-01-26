@@ -1,11 +1,4 @@
 import { toPublicUrl } from "../storage/url";
-/**
- * Convert a path to sized variant
- *
- * @param path - Original path
- * @param size - Variant size (_thumb, _medium, _large, _orig)
- * @returns Path with size suffix added
- */
 
 export const getCleanUrl = (
   url: string | null | undefined,
@@ -13,9 +6,7 @@ export const getCleanUrl = (
 ) => {
   if (!url || url.trim() === "") return fallback;
   let clean = url.trim();
-  // Bỏ chữ public/ nếu có ở đầu
   if (clean.startsWith("public/")) clean = clean.replace("public/", "/");
-  // Đảm bảo có dấu / ở đầu cho đường dẫn nội bộ
   if (!clean.startsWith("http") && !clean.startsWith("/")) clean = `/${clean}`;
   return clean;
 };
@@ -26,7 +17,6 @@ export const toSizedVariant = (
 ): string => {
   if (!path) return "";
 
-  // Videos don't have variants
   const isVideo =
     path.includes("/videos/") ||
     path.endsWith(".mp4") ||
@@ -58,13 +48,6 @@ export const toSizedVariant = (
   return path.replace(/(\.[a-zA-Z0-9]+)$/i, `${size}$1`);
 };
 
-/**
- * Resolve media URL to public CDN URL with proper variant
- *
- * @param media - Media object with url/basePath/extension
- * @param size - Variant size
- * @returns Full public CDN URL
- */
 export const resolveMediaUrl = (
   media: any,
   size: "_thumb" | "_medium" | "_large" | "_orig" = "_large",
@@ -108,13 +91,6 @@ export const resolveMediaUrl = (
   return toPublicUrl(raw || "");
 };
 
-/**
- * Resolve variant image URL to public CDN URL
- *
- * @param variant - Product variant with imageUrl/imageBasePath/imageExtension
- * @param size - Variant size
- * @returns Full public CDN URL
- */
 export const resolveVariantImageUrl = (
   variant: any,
   size: "_thumb" | "_medium" | "_large" | "_orig" = "_thumb",
@@ -151,14 +127,6 @@ export const resolveVariantImageUrl = (
   return toPublicUrl(raw || "");
 };
 
-/**
- * Resolve banner image URL from basePath and extension to public CDN URL
- *
- * @param basePath - Base path of the banner image
- * @param extension - Extension of the banner image (with or without leading dot)
- * @param size - Variant size (default: _orig for banners)
- * @returns Full public CDN URL
- */
 export const resolveBannerImageUrl = (
   basePath?: string | null,
   extension?: string | null,
@@ -175,12 +143,6 @@ export const resolveBannerImageUrl = (
   return toPublicUrl(sizedPath);
 };
 
-/**
- * Get original media URL for API (without variants)
- *
- * @param media - Media object
- * @returns Original URL for API calls
- */
 export const getOriginalMediaUrl = (media: any): string => {
   if (!media) return "";
 

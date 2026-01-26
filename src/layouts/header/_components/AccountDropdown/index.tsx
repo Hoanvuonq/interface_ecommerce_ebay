@@ -84,7 +84,7 @@ export const AccountDropdown = () => {
         items.push({
           key: "go_admin",
           label: "Trang quản trị",
-          href: "/admin/dashboard",
+          href: "/employee/dashboard",
           icon: <ShieldCheck size={16} />,
         });
       }

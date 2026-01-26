@@ -1,7 +1,7 @@
 "use client";
 
 import { ProductGallery, SectionLoading } from "@/components";
-import ProductsGalleyFix from "./_components/ProductsGalleyFix";
+import { ProductGalleryFix } from "./_components/ProductGalleryFix";
 import { useToast } from "@/hooks/useToast";
 import {
   ArrowLeft,
@@ -27,6 +27,7 @@ import {
   VariantTable,
 } from "./_components";
 import { cn } from "@/utils/cn";
+import { ProductBreadcrumb } from "./_components/ProductBreadcrumb";
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -47,7 +48,6 @@ export default function ProductDetailPage() {
       }
     } catch (error) {
       console.error("Error fetching product:", error);
-      // Tránh spam request: chỉ gọi toastError trực tiếp, không đưa vào deps
       toastError("Không thể tải thông tin sản phẩm");
     } finally {
       setLoading(false);
@@ -56,7 +56,6 @@ export default function ProductDetailPage() {
 
   useEffect(() => {
     if (id) fetchProductDetail();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const handleApprove = async () => {
@@ -104,14 +103,12 @@ export default function ProductDetailPage() {
   };
 
   if (loading) {
-    return (
-     <SectionLoading message="Đang tải thông tin sản phẩm..." />
-    );
+    return <SectionLoading message="Đang tải thông tin sản phẩm..." />;
   }
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6 text-center">
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center text-center">
         <div className="w-24 h-24 bg-red-50 rounded-[2.5rem] flex items-center justify-center mb-6">
           <Box className="text-red-400 w-10 h-10" />
         </div>
@@ -134,43 +131,10 @@ export default function ProductDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FDFBFB] pb-24">
-      <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-orange-50 mb-8">
-        <div className="max-w-360 mx-auto px-8 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <Link
-              href="/employee/products"
-              className="p-3 bg-slate-50 rounded-2xl  text-gray-400 hover:text-orange-500 hover:bg-orange-50 transition-all group"
-            >
-              <ArrowLeft
-                size={20}
-                strokeWidth={3}
-                className="group-hover:-translate-x-1 transition-transform"
-              />
-            </Link>
-            <div className="h-8 w-px bg-slate-100" />
-            <div className="hidden md:block">
-              <nav className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest  text-gray-400">
-                <Link
-                  href="/employee"
-                  className="hover:text-orange-500 transition-colors"
-                >
-                  Admin
-                </Link>
-                <ChevronRight size={12} className=" text-gray-300" />
-                <Link
-                  href="/employee/products"
-                  className="hover:text-orange-500 transition-colors"
-                >
-                  Catalog
-                </Link>
-                <ChevronRight size={12} className=" text-gray-300" />
-                <span className=" text-gray-900 italic">
-                  #{product.id.substring(0, 8)}
-                </span>
-              </nav>
-            </div>
-          </div>
+    <div className="min-h-screen bg-[#FDFBFB]">
+      <div className="sticky top-0 z-50 bg-white rounded-2xl shadow-custom mb-8">
+        <div className=" mx-auto px-8 h-20 flex items-center justify-between">
+          <ProductBreadcrumb productId={product.id} />
 
           <div className="flex items-center gap-4">
             <Link
@@ -189,7 +153,7 @@ export default function ProductDetailPage() {
         </div>
       </div>
 
-      <main className="max-w-360 mx-auto px-8">
+      <main className="px-8">
         <div className="mb-10 flex items-center gap-4">
           <div className="p-3 bg-orange-500 rounded-2xl shadow-lg shadow-orange-200">
             <ShieldCheck size={24} className="text-white" />
@@ -207,9 +171,10 @@ export default function ProductDetailPage() {
         <div className="grid grid-cols-12 gap-10">
           <div className="col-span-12 lg:col-span-5 space-y-8">
             <div className="bg-white p-4 rounded-[3rem] border border-orange-50 shadow-custom-lg overflow-hidden group">
-              <ProductsGalleyFix
-                media={product.media || []} 
-              />
+              <ProductGalleryFix
+                product={product}
+                media={product.media || []}
+              />{" "}
             </div>
           </div>
 
@@ -231,13 +196,6 @@ export default function ProductDetailPage() {
           <VariantTable variants={product.variants || []} />
         </div>
       </main>
-
-      <div className="mt-20 flex flex-col items-center justify-center opacity-30 gap-2">
-        <LayoutDashboard size={24} className=" text-gray-400" />
-        <span className="text-[9px] font-bold uppercase tracking-[0.5em]  text-gray-500">
-          Secure Admin Terminal v2.1.0
-        </span>
-      </div>
     </div>
   );
 }

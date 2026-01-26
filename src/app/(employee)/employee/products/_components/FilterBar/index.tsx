@@ -33,16 +33,15 @@ export const FilterBar = ({
 
   return (
     <div className="bg-white rounded-[2.5rem] p-8 mb-8 shadow-custom animate-in fade-in slide-in-from-top-4 duration-500">
-      {/* Header */}
       <div className="flex items-center gap-3 mb-8">
         <div className="p-3 bg-orange-50 rounded-2xl text-orange-500 shadow-inner">
           <Filter size={22} strokeWidth={2.5} />
         </div>
         <div>
-          <h3 className="text-xl font-bold uppercase tracking-tighter  text-gray-800 italic leading-none">
+          <h3 className="text-2xl font-bold uppercase tracking-tighter text-gray-800 italic leading-none">
             Bộ lọc thông minh
           </h3>
-          <p className="text-[10px] font-bold  text-gray-400 uppercase  mt-1">
+          <p className="text-[10px] font-semibold tracking-wider text-gray-400 uppercase mt-1">
             Search & Filter Protocol
           </p>
         </div>

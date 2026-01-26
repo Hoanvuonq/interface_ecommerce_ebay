@@ -11,24 +11,23 @@ import { toPublicUrl } from "@/utils/storage/url";
 import { toSizedVariant } from "@/utils/products/media.helpers";
 import Image from "next/image";
 
-// Nhận thêm hàm success từ useToast thông qua tham số
 export const getOrderColumns = (
   onView: (id: string) => void,
   onEdit: (id: string) => void,
-  success: (msg: string) => void // Thêm tham số này
+  success: (msg: string) => void
 ): Column<OrderResponseAdmin>[] => [
   {
     header: "Mã đơn hàng",
     render: (order) => (
       <div className="flex flex-col gap-1 group/id">
         <div className="flex items-center gap-2">
-          <span className="font-mono text-[13px] font-bold  text-gray-800 dark: text-gray-200 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700">
+          <span className="font-mono text-[13px] font-bold  text-gray-800 bg-slate-100 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700">
             #{(order.orderNumber || order.orderId.substring(0, 8)).toUpperCase()}
           </span>
           <button
             onClick={() => {
               navigator.clipboard.writeText(order.orderId);
-              success("Đã copy ID đơn hàng"); // Sử dụng hàm success được truyền vào
+              success("Đã copy ID đơn hàng"); 
             }}
             className="opacity-0 group-hover/id:opacity-100 p-1 rounded hover:bg-slate-200 transition-all"
           >
@@ -46,12 +45,11 @@ export const getOrderColumns = (
     render: (order) => {
       const firstItem = order.items?.[0];
       
-      // FIX: Sử dụng helper để build URL hình ảnh
       const imgPath = firstItem?.imageBasePath && firstItem?.imageExtension
         ? toPublicUrl(
             toSizedVariant(
               `${firstItem.imageBasePath}${firstItem.imageExtension}`,
-              "_thumb" // Hoặc kích thước khác tùy UI của bạn
+              "_thumb" 
             )
           )
         : null;
@@ -82,7 +80,7 @@ export const getOrderColumns = (
               )}
             </div>
             <div className="flex flex-col min-w-0">
-              <span className="text-sm font-bold  text-gray-800 dark: text-gray-200 truncate max-w-55">
+              <span className="text-sm font-bold  text-gray-800 truncate max-w-55">
                 {firstItem?.productName}
               </span>
               <div className="flex items-center gap-2 mt-0.5">

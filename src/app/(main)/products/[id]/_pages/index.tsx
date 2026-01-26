@@ -1,6 +1,6 @@
 "use client";
 
-import { CustomSpinner, ImageWithPreview } from "@/components";
+import { CustomSpinner,  } from "@/components";
 import { CardComponents } from "@/components/card";
 import { CustomVideoModal } from "@/components/custom/components/customVideoModal";
 import { formatCompactNumber } from "@/hooks/format";
@@ -318,7 +318,7 @@ export const ProductDetailPage = ({
             className="overflow-hidden rounded-lg bg-gray-100 border border-gray-200"
             style={{ width: THUMB_SIZE, height: THUMB_SIZE }}
           >
-            <ImageWithPreview
+            {/* <ImageWithPreview
               src={
                 resolveReviewMediaUrl(img) &&
                 resolveReviewMediaUrl(img) !== "/placeholder-product.png"
@@ -336,7 +336,7 @@ export const ProductDetailPage = ({
                   img.onerror = null;
                 }
               }}
-            />
+            /> */}
           </div>
         ))}
         {videoMedia.map((vid) => {

@@ -128,7 +128,6 @@ export function RelatedProducts({ shopId, excludeProductId }: RelatedProductsPro
           <FiChevronLeft className="text-2xl" />
         </button>
 
-        {/* CONTAINER CHỨA CARD */}
         <div
           ref={scrollContainerRef}
           className="flex gap-4 overflow-x-auto pb-4 hide-scrollbar scroll-smooth snap-x"
@@ -147,7 +146,6 @@ export function RelatedProducts({ shopId, excludeProductId }: RelatedProductsPro
           )}
         </div>
 
-        {/* NÚT ĐIỀU HƯỚNG PHẢI */}
         <button
           onClick={() => scroll("right")}
           className={cn(

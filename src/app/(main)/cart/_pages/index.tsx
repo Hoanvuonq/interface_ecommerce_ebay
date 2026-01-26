@@ -24,6 +24,7 @@ import {
 } from "../_components";
 import { HeaderCart } from "../_layouts/headerCart";
 import { CartItemPromotion } from "@/types/cart/cart.types";
+import { cn } from "@/utils/cn";
 
 export const CartScreen = () => {
   const [showCheckoutPreview, setShowCheckoutPreview] = useState(false);
@@ -95,7 +96,7 @@ export const CartScreen = () => {
         removeCartItems({
           itemIds: selectedItemIds,
           etag: version,
-        })
+        }),
       ).unwrap();
       setShowDeleteModal(false);
       dispatch(fetchCart());
@@ -106,7 +107,7 @@ export const CartScreen = () => {
     if (!cart) return;
 
     const hasSelectedItems = cart.shops.some((shop) =>
-      shop.items.some((item) => item.selectedForCheckout)
+      shop.items.some((item) => item.selectedForCheckout),
     );
 
     if (!hasSelectedItems) {
@@ -129,12 +130,12 @@ export const CartScreen = () => {
 
     try {
       const previewData = await dispatch(
-        checkoutPreview(checkoutRequest as any)
+        checkoutPreview(checkoutRequest as any),
       ).unwrap();
       sessionStorage.setItem("checkoutPreview", JSON.stringify(previewData));
       sessionStorage.setItem(
         "checkoutRequest",
-        JSON.stringify(checkoutRequest)
+        JSON.stringify(checkoutRequest),
       );
       window.location.href = "/checkout";
     } catch (error) {
@@ -204,12 +205,14 @@ export const CartScreen = () => {
                 <button
                   onClick={handleDeleteClick}
                   disabled={selectedCount === 0}
-                  className={`flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-xl transition-all uppercase tracking-tighter
-                        ${
-                          selectedCount > 0
-                            ? "text-red-500 hover:bg-red-50 active:scale-95 cursor-pointer"
-                            : "text-gray-500 cursor-not-allowed"
-                        }`}
+                  className={cn(
+                    "flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-xl transition-all uppercase tracking-tighter",
+                    `${
+                      selectedCount > 0
+                        ? "text-red-500 hover:bg-red-50 active:scale-95 cursor-pointer"
+                        : "text-gray-500 cursor-not-allowed"
+                    }`,
+                  )}
                 >
                   <Trash2 size={16} />
                   <span className="hidden sm:inline">

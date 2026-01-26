@@ -97,7 +97,7 @@ export const DataTable = <T,>({
                           <FiLoader className="w-8 h-8 text-orange-500 animate-spin" />
                         </div>
                         <span className="text-[12px] font-bold uppercase tracking-[0.3em] text-orange-500 animate-pulse">
-                          Syncing Data...
+                          Đang tải dữ liệu...
                         </span>
                       </div>
                     </td>
