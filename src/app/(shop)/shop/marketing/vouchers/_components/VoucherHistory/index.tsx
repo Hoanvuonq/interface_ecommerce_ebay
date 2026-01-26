@@ -277,7 +277,7 @@ const VoucherHistory: React.FC<VoucherHistoryProps> = ({ onCountUpdate }) => {
                    <Clock size={14} className="text-blue-500" /> Tiến trình xử lý
                 </h4>
                 
-                <div className="space-y-8 relative before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-gray-100">
+                <div className="space-y-8 relative before:absolute before:left-2.75 before:top-2 before:bottom-2 before:w-0.5 before:bg-gray-100">
                    <TimelineStep 
                     active={true} 
                     title="Tạo giao dịch" 

@@ -1,26 +1,20 @@
 "use client";
 
 import { cn } from "@/utils/cn";
-import React from "react";
 
 export const SectionHeader = ({
-  icon, 
+  icon: Icon,
   title,
-  isLight = false,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  isLight?: boolean;
-}) => (
-  <div className="flex items-center gap-2 mb-3">
-    <div className="p-1.5 bg-orange-50 rounded-lg text-orange-500">
-      {icon} 
+  colorClass = "text-orange-500",
+  bgClass = "bg-orange-100",
+}: any) => (
+  <div className="flex items-center gap-3 mb-5 px-2">
+    <div className={cn("p-2 rounded-xl", bgClass, colorClass)}>
+      <Icon size={18} strokeWidth={2.5} />
     </div>
-    <span className={cn(
-      "text-xs font-semibold uppercase tracking-[0.2em]", 
-      isLight ? "text-white/80" : "text-gray-800"
-    )}>
+    <h3 className="font-bold text-gray-800 uppercase text-xs tracking-widest">
       {title}
-    </span>
+    </h3>
+    <div className="flex-1 h-px bg-linear-to-r from-gray-100 to-transparent" />
   </div>
 );

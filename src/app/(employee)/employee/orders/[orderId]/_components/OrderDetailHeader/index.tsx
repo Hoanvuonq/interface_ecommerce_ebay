@@ -142,7 +142,7 @@ export const OrderDetailHeader: React.FC<OrderDetailHeaderProps> = ({
             </span>
           </div>
           <p className="text-[11px] font-bold  text-gray-400 uppercase tracking-widest ml-1">
-            Giao thức khởi tạo:{" "}
+            Giao thức khởi tạo:
             {format(new Date(createdAt), "dd/MM/yyyy • HH:mm")}
           </p>
         </div>

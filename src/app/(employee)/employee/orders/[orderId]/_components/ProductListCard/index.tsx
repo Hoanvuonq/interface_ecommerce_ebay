@@ -10,8 +10,7 @@ interface ProductListCardProps {
 
 export const ProductListCard: React.FC<ProductListCardProps> = ({ items }) => {
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-      {/* Header */}
+    <div className="bg-white rounded-2xl shadow-custom overflow-hidden">
       <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
         <h3 className="text-sm font-bold text-gray-800 flex items-center gap-2">
           <Package size={20} className="text-orange-600" />

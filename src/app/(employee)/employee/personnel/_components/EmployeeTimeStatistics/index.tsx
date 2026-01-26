@@ -1,82 +1,87 @@
 "use client";
 
-import { StatCardComponents } from "@/components";
+import {
+  CustomTooltip,
+  SectionLoading,
+  SelectComponent,
+  StatCardComponents,
+} from "@/components";
 import { ChartBox, GrowthCard } from "@/components/chart";
-import { SelectComponent } from "@/components";
-import { CalendarDays, RotateCw, TrendingUp, Trophy, UserPlus } from "lucide-react";
+import {
+  CalendarDays,
+  TrendingUp,
+  Trophy,
+  UserPlus
+} from "lucide-react";
 import { useState } from "react";
 import {
-  Area, AreaChart,
+  Area,
+  AreaChart,
   Bar,
   BarChart,
   CartesianGrid,
-  Tooltip as RechartsTooltip, ResponsiveContainer,
-  XAxis, YAxis,
+  Tooltip as RechartsTooltip,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
 } from "recharts";
 import { useEmployeeStatistics } from "../../_hooks/useEmployeeStatistics";
-import { CustomTooltip } from "@/components";
 
 export default function EmployeeTimeStatistics() {
   const [selectedYear, setSelectedYear] = useState<number>(
-    new Date().getFullYear()
+    new Date().getFullYear(),
   );
   const [selectedMonth, setSelectedMonth] = useState<number>(
-    new Date().getMonth() + 1
+    new Date().getMonth() + 1,
   );
 
   const { timeStats, chartData, filterOptions, isLoading, isRefetching } =
     useEmployeeStatistics(selectedYear, selectedMonth);
 
   if (isLoading)
-    return (
-      <div className="flex flex-col items-center justify-center h-96 gap-4">
-        <RotateCw className="animate-spin text-orange-500" size={40} />
-        <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-gray-500 italic">
-          Đang đồng bộ dòng thời gian...
-        </span>
-      </div>
-    );
+    return <SectionLoading message=" Đang tải số liệu thống kê nhân sự..." />;
 
   return (
-    <div className="p-8 bg-[#F8FAFC] min-h-screen space-y-10 animate-in fade-in duration-500">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-        <div className="relative">
-          <h1 className="text-4xl font-semibold text-gray-900 tracking-tighter uppercase italic leading-none">
-            Tăng trưởng <span className="text-orange-500">Nhân sự</span>
+    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 px-2">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <TrendingUp size={16} className="text-orange-500" />
+            <span className="text-[10px] font-bold uppercase tracking-widest text-orange-500/60">
+              Analytics Engine
+            </span>
+          </div>
+          <h1 className="text-4xl font-bold text-gray-900 tracking-tight uppercase italic leading-none">
+            Tăng trưởng <span className="text-orange-600">Nhân sự</span>
           </h1>
-          {isRefetching && (
-            <RotateCw
-              size={12}
-              className="absolute -right-6 top-0 animate-spin text-orange-400"
-            />
-          )}
         </div>
 
-        <div className="flex gap-3 bg-white p-2 rounded-3xl border border-gray-100 shadow-sm shadow-orange-500/5">
+        <div className="flex gap-2 rounded-2xlw-full lg:w-auto">
           <SelectComponent
             options={filterOptions.years}
             value={String(selectedYear)}
             onChange={(v) => setSelectedYear(Number(v))}
-            className="w-32"
+            className="w-full lg:w-40 h-10 border-0 shadow-none bg-transparent"
           />
           <SelectComponent
             options={filterOptions.months}
             value={String(selectedMonth)}
             onChange={(v) => setSelectedMonth(Number(v))}
-            className="w-36"
+            className="w-full lg:w-40 h-10 border-0 shadow-none bg-transparent"
           />
         </div>
       </div>
 
       {timeStats && (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <StatCardComponents
               label="Hôm nay"
               value={timeStats.todayNewEmployees}
               icon={<UserPlus />}
-              color="text-blue-600"
+              color="text-orange-600"
               size="sm"
+              trend={timeStats.todayGrowthRate || 0}
             />
             <GrowthCard
               label="Tuần này"
@@ -95,14 +100,18 @@ export default function EmployeeTimeStatistics() {
             />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <ChartBox
-              title={`Biến động Năm ${selectedYear}`}
+              title={`Biến động ${selectedYear}`}
+              subTitle="Lưu lượng nhân sự theo tháng"
               icon={<TrendingUp className="text-orange-500" />}
             >
-              <div className="h-75 mt-6">
+              <div className="h-62.5 mt-4">
                 <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={chartData?.monthlyGrowth}>
+                  <AreaChart
+                    data={chartData?.monthlyGrowth}
+                    margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                  >
                     <defs>
                       <linearGradient
                         id="colorCount"
@@ -114,7 +123,7 @@ export default function EmployeeTimeStatistics() {
                         <stop
                           offset="5%"
                           stopColor="#f97316"
-                          stopOpacity={0.3}
+                          stopOpacity={0.2}
                         />
                         <stop
                           offset="95%"
@@ -132,16 +141,12 @@ export default function EmployeeTimeStatistics() {
                       dataKey="name"
                       axisLine={false}
                       tickLine={false}
-                      tick={{
-                        fontSize: 10,
-                        fontWeight: "bold",
-                        fill: "#94a3b8",
-                      }}
+                      tick={{ fontSize: 9, fontWeight: 800, fill: "#94a3b8" }}
                     />
                     <YAxis
                       axisLine={false}
                       tickLine={false}
-                      tick={{ fontSize: 10, fill: "#94a3b8" }}
+                      tick={{ fontSize: 9, fill: "#cbd5e1" }}
                     />
                     <RechartsTooltip content={<CustomTooltip />} />
                     <Area
@@ -151,6 +156,7 @@ export default function EmployeeTimeStatistics() {
                       strokeWidth={3}
                       fillOpacity={1}
                       fill="url(#colorCount)"
+                      animationDuration={1500}
                     />
                   </AreaChart>
                 </ResponsiveContainer>
@@ -158,12 +164,16 @@ export default function EmployeeTimeStatistics() {
             </ChartBox>
 
             <ChartBox
-              title="Mật độ theo thứ"
+              title="Mật độ hàng tuần"
+              subTitle="Phân bổ tuyển dụng theo thứ"
               icon={<CalendarDays className="text-blue-500" />}
             >
-              <div className="h-75 mt-6">
+              <div className="h-62.5 mt-4">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={chartData?.weeklyDist}>
+                  <BarChart
+                    data={chartData?.weeklyDist}
+                    margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                  >
                     <CartesianGrid
                       strokeDasharray="3 3"
                       vertical={false}
@@ -173,26 +183,22 @@ export default function EmployeeTimeStatistics() {
                       dataKey="name"
                       axisLine={false}
                       tickLine={false}
-                      tick={{
-                        fontSize: 10,
-                        fontWeight: "bold",
-                        fill: "#94a3b8",
-                      }}
+                      tick={{ fontSize: 9, fontWeight: 800, fill: "#94a3b8" }}
                     />
                     <YAxis
                       axisLine={false}
                       tickLine={false}
-                      tick={{ fontSize: 10, fill: "#94a3b8" }}
+                      tick={{ fontSize: 9, fill: "#cbd5e1" }}
                     />
                     <RechartsTooltip
-                      cursor={{ fill: "#f8fafc" }}
+                      cursor={{ fill: "#fff7ed" }}
                       content={<CustomTooltip />}
                     />
                     <Bar
                       dataKey="count"
                       fill="#3b82f6"
                       radius={[6, 6, 0, 0]}
-                      barSize={32}
+                      barSize={24}
                     />
                   </BarChart>
                 </ResponsiveContainer>
@@ -202,29 +208,33 @@ export default function EmployeeTimeStatistics() {
             <ChartBox
               className="lg:col-span-2"
               title="Kỷ lục tuyển dụng"
-              subTitle="Top các ngày ghi nhận lượng nhân sự mới đột phá"
-              icon={<Trophy className="text-yellow-500" />}
+              subTitle="Top 5 ngày có lượng nhân sự mới cao nhất"
+              icon={<Trophy className="text-amber-500" />}
             >
-              <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mt-8">
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mt-6">
                 {chartData?.top5Days.map((item: any, idx: number) => (
                   <div
                     key={idx}
-                    className="bg-gray-50/50 p-5 rounded-4xl border border-gray-100 relative overflow-hidden group hover:border-gray-200 transition-all"
+                    className="group bg-white p-4 rounded-3xl border border-gray-100 relative overflow-hidden transition-all hover:border-orange-200 hover:shadow-lg hover:shadow-orange-500/5"
                   >
-                    <span className="absolute -right-2 -bottom-2 text-5xl opacity-[0.03] font-semibold italic group-hover:opacity-10 transition-opacity">
-                      #{idx + 1}
-                    </span>
-                    <p className="text-[10px] font-semibold uppercase text-gray-600 mb-1">
+                    <div className="absolute -right-1 -top-1 w-8 h-8 bg-orange-50 rounded-full flex items-center justify-center border border-orange-100 group-hover:bg-orange-500 transition-colors duration-500">
+                      <span className="text-[10px] font-bold text-orange-600 group-hover:text-white">
+                        #{idx + 1}
+                      </span>
+                    </div>
+                    <p className="text-[9px] font-bold uppercase text-gray-400 mb-1 tracking-tighter">
                       {item.date
                         ? new Date(item.date).toLocaleDateString("vi-VN")
                         : `Ngày ${item.day}`}
                     </p>
-                    <p className="text-3xl font-semibold text-gray-800 italic leading-none">
-                      {item.count}{" "}
-                      <span className="text-[10px] not-italic text-gray-500 uppercase font-bold tracking-tighter">
-                        New
+                    <div className="flex items-baseline gap-1">
+                      <p className="text-2xl font-bold text-gray-800 italic leading-none group-hover:text-orange-600 transition-colors">
+                        {item.count}
+                      </p>
+                      <span className="text-[8px] font-bold text-gray-300 uppercase tracking-tighter">
+                        Staffs
                       </span>
-                    </p>
+                    </div>
                   </div>
                 ))}
               </div>

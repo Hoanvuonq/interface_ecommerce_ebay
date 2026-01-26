@@ -4,7 +4,11 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/useToast";
 import categoryService from "../_services/category.service";
 import _ from "lodash";
-import type { CategoryResponse, CreateCategoryRequest, UpdateCategoryRequest } from "../_types/dto/category.dto";
+import type {
+  CategoryResponse,
+  CreateCategoryRequest,
+  UpdateCategoryRequest,
+} from "../_types/dto/category.dto";
 import { useMemo } from "react";
 
 export function useCategory(page: number = 0, size: number = 20) {
@@ -25,7 +29,6 @@ export function useCategory(page: number = 0, size: number = 20) {
     },
   });
 
-  // Logic Statistics gom vào hook
   const stats = useMemo(() => {
     const flatten = (nodes: CategoryResponse[]): CategoryResponse[] => {
       return nodes.reduce((acc: CategoryResponse[], node) => {
@@ -35,12 +38,11 @@ export function useCategory(page: number = 0, size: number = 20) {
     const all = flatten(categoryTreeQuery.data || []);
     return {
       total: all.length,
-      active: all.filter(c => c.active).length,
-      inactive: all.filter(c => !c.active).length,
+      active: all.filter((c) => c.active).length,
+      inactive: all.filter((c) => !c.active).length,
     };
   }, [categoryTreeQuery.data]);
 
-  // Mutations logic
   const handleConcurrencyError = (err: any) => {
     if (err.response?.status === 409) {
       toastError("Dữ liệu đã bị thay đổi bởi người khác. Vui lòng tải lại!");
@@ -59,8 +61,15 @@ export function useCategory(page: number = 0, size: number = 20) {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data, etag }: { id: string; data: UpdateCategoryRequest; etag: string }) =>
-      categoryService.update(id, data, etag),
+    mutationFn: ({
+      id,
+      data,
+      etag,
+    }: {
+      id: string;
+      data: UpdateCategoryRequest;
+      etag: string;
+    }) => categoryService.update(id, data, etag),
     onSuccess: () => {
       toastSuccess("Cập nhật thành công!");
       queryClient.invalidateQueries({ queryKey: ["categories"] });
@@ -74,7 +83,8 @@ export function useCategory(page: number = 0, size: number = 20) {
         categoryService.hasChildren(id),
         categoryService.hasProducts(id),
       ]);
-      if (hasChildren) throw new Error("Danh mục có danh mục con, không thể xóa!");
+      if (hasChildren)
+        throw new Error("Danh mục có danh mục con, không thể xóa!");
       if (hasProducts) throw new Error("Danh mục có sản phẩm, không thể xóa!");
       return categoryService.delete(id, etag);
     },
@@ -93,6 +103,9 @@ export function useCategory(page: number = 0, size: number = 20) {
     createCategory: createMutation.mutateAsync,
     updateCategory: updateMutation.mutateAsync,
     deleteCategory: deleteMutation.mutateAsync,
-    isSubmitting: createMutation.isPending || updateMutation.isPending || deleteMutation.isPending
+    isSubmitting:
+      createMutation.isPending ||
+      updateMutation.isPending ||
+      deleteMutation.isPending,
   };
 }

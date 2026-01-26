@@ -26,7 +26,7 @@ export type User = {
   status: UserStatus;
   deleted: boolean;
   roleName: string;
-  roles?: string[]; // Danh sách tất cả roles của user
+  roles?: string[]; 
   createdBy: string;
   createdDate: string;
   lastModifiedBy: string;
@@ -45,7 +45,7 @@ export type BaseUserDetail = {
   isDeleted?: boolean;
   deleted: boolean;
   roleName: string;
-  roles?: string[]; // Danh sách tất cả roles của user
+  roles?: string[]; 
   createdBy?: string;
   createdDate?: string;
   lastModifiedBy?: string;

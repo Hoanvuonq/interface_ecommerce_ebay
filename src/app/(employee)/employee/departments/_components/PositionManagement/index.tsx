@@ -166,7 +166,7 @@ export default function PositionManagement({
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center bg-white p-4 rounded-3xl border border-gray-100 shadow-sm shadow-gray-200/50">
-        <SectionHeader icon={<Briefcase />} title="Danh sách chức vụ" />
+        <SectionHeader icon={Briefcase} title="Danh sách chức vụ" />
         <button
           onClick={() => setAddModalOpen(true)}
           className="flex items-center gap-2 px-6 py-2.5 bg-gray-900 hover:bg-orange-500 text-white rounded-2xl font-semibold uppercase text-[10px] tracking-widest transition-all duration-300 shadow-lg shadow-gray-200 active:scale-95"

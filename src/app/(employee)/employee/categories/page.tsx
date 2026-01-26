@@ -1,5 +1,5 @@
-import CategoryManagementSreen from "./_pages";
+import { CategoryManagementScreen } from "./_pages";
 
 export default function EmployeeCategoriesPage() {
-  return <CategoryManagementSreen />;
+  return <CategoryManagementScreen />;
 }

@@ -8,15 +8,15 @@ import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { adminOrderService } from "../../_services/adminOrder.service";
 import {
-    BuyerInfoCard,
-    CustomerNoteCard,
-    FinancialInfoCard,
-    OrderDetailHeader,
-    PaymentInfoCard,
-    ProductListCard,
-    QuickActionsCard,
-    SellerInfoCard,
-    ShippingInfoCard,
+  BuyerInfoCard,
+  CustomerNoteCard,
+  FinancialInfoCard,
+  OrderDetailHeader,
+  PaymentInfoCard,
+  ProductListCard,
+  QuickActionsCard,
+  SellerInfoCard,
+  ShippingInfoCard,
 } from "../_components";
 
 export const OrderDetailScreen: React.FC = () => {
@@ -69,27 +69,30 @@ export const OrderDetailScreen: React.FC = () => {
       />
     );
 
-  const shippingAddress = `${order.shippingAddress.recipientName}\n${order.shippingAddress.phoneNumber}\n${order.shippingAddress.addressLine1}${
-    order.shippingAddress.addressLine2
-      ? `\n${order.shippingAddress.addressLine2}`
-      : ""
-  }\n${order.shippingAddress.city}, ${order.shippingAddress.province}`;
+  const addr = order?.shippingAddress;
+
+  const shippingAddress = addr
+    ? `${addr.recipientName || "N/A"}\n${addr.phoneNumber || "N/A"}\n${addr.addressLine1 || ""}${
+        addr.addressLine2 ? `\n${addr.addressLine2}` : ""
+      }\n${addr.city || ""}, ${addr.province || ""}`
+    : "N/A";
 
   const isOverdue =
     order.status === "PENDING" &&
-    (new Date().getTime() - new Date(order.createdAt).getTime()) /
+    order.createdDate &&
+    (new Date().getTime() - new Date(order.createdDate).getTime()) /
       (1000 * 60 * 60) >
       24;
-  const isHighValue = order.pricing.grandTotal > 10000000;
+
+  const isHighValue = (order.pricing?.grandTotal || 0) > 10000000;
 
   return (
-    <div className="min-h-screen bg-slate-50 pb-20 animate-in fade-in duration-700">
-      {/* Header Profile */}
+    <div className="min-h-screen animate-in fade-in duration-700">
       <OrderDetailHeader
         orderId={order.orderId}
         orderNumber={order.orderNumber || order.orderId.substring(0, 8)}
         status={order.status}
-        createdAt={order.createdAt as string}
+        createdAt={order.createdDate as string}
         onCancelOrder={handleCancelOrder}
         onUpdateStatus={handleUpdateStatus}
       />
@@ -98,7 +101,7 @@ export const OrderDetailScreen: React.FC = () => {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <button
             onClick={() => router.back()}
-            className="group flex items-center gap-2 text-[11px] font-bold uppercase   text-gray-400 hover:text-orange-500 transition-all"
+            className="group flex items-center gap-2 text-[11px] font-bold uppercase text-gray-400 hover:text-orange-500 transition-all"
           >
             <ArrowLeft
               size={14}
@@ -138,7 +141,7 @@ export const OrderDetailScreen: React.FC = () => {
                 shippingFee={order.pricing.shippingFee || 0}
                 total={order.pricing.grandTotal || 0}
               />
-             
+
               <PaymentInfoCard
                 paymentMethod={order.paymentMethod || "N/A"}
                 paymentIntentId={order.paymentIntentId}
@@ -155,28 +158,27 @@ export const OrderDetailScreen: React.FC = () => {
 
           <div className="xl:col-span-4 space-y-8 sticky top-8 animate-in slide-in-from-right-4 duration-700 delay-200">
             <QuickActionsCard
-              customerName={order.shippingAddress.recipientName || "N/A"}
-              customerPhone={order.shippingAddress.phoneNumber || "N/A"}
-              customerEmail={order.shippingAddress.email || "N/A"}
+              customerName={order?.shippingAddress?.recipientName || "N/A"} 
+              customerPhone={order?.shippingAddress?.phoneNumber || "N/A"}
+              customerEmail={order?.shippingAddress?.email || "N/A"}
               shippingAddress={shippingAddress}
-              shopId={order.shopInfo?.shopId}
-              shopName={order.shopInfo?.shopName}
+              shopId={order?.shopInfo?.shopId}
+              shopName={order?.shopInfo?.shopName}
             />
 
-            {/* Identification Blocks */}
             <div className="space-y-6 px-2">
               <div className="relative group">
                 <BuyerInfoCard
-                  name={order.shippingAddress.recipientName || "N/A"}
-                  email={order.shippingAddress.email || "N/A"}
-                  phone={order.shippingAddress.phoneNumber || "N/A"}
+                  name={order.shippingAddress?.recipientName || "N/A"}
+                  email={order.shippingAddress?.email || "N/A"}
+                  phone={order.shippingAddress?.phoneNumber || "N/A"}
                 />
               </div>
 
               <ShippingInfoCard
                 carrier={order.shipment.carrier || "Standard Carrier"}
                 trackingNumber={
-                  order.shipment.trackingNumber || "Standard Tracking"
+                  order.shipment?.trackingNumber || "Chưa có mã vận đơn"
                 }
                 shippingAddress={shippingAddress}
               />

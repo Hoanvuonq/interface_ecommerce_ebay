@@ -25,13 +25,13 @@ export default function CategoryForm({
   onCancel,
 }: CategoryFormProps) {
   const isEditMode = !!category;
-  
-  const { 
-    createCategory, 
-    updateCategory, 
-    categoryTree, 
+
+  const {
+    createCategory,
+    updateCategory,
+    categoryTree,
     isLoading, // Lấy isLoading từ hook để xử lý trạng thái tree
-    isSubmitting
+    isSubmitting,
   } = useCategory();
 
   const {
@@ -51,14 +51,14 @@ export default function CategoryForm({
 
   const selectOptions = useMemo(() => {
     const options: { label: string; value: string }[] = [];
-    
+
     const generateOptions = (nodes: CategoryResponse[], level = 0) => {
       nodes.forEach((node) => {
         if (node.id !== category?.id) {
           const prefix = "\u00A0".repeat(level * 4) + (level > 0 ? "└─ " : "");
-          options.push({ 
-            label: prefix + node.name, 
-            value: node.id 
+          options.push({
+            label: prefix + node.name,
+            value: node.id,
           });
           if (node.children && node.children.length > 0) {
             generateOptions(node.children, level + 1);
@@ -66,7 +66,7 @@ export default function CategoryForm({
         }
       });
     };
-    
+
     generateOptions(categoryTree || []);
     return options;
   }, [categoryTree, category?.id]);
@@ -104,22 +104,31 @@ export default function CategoryForm({
           Tên danh mục <span className="text-orange-500">*</span>
         </label>
         <input
-          {...register("name", { required: "Tên danh mục không được để trống", maxLength: 255 })}
+          {...register("name", {
+            required: "Tên danh mục không được để trống",
+            maxLength: 255,
+          })}
           className={cn(
             "w-full h-11 px-4 rounded-xl border bg-white outline-none transition-all text-sm shadow-sm",
-            errors.name 
-              ? "border-red-500 focus:ring-4 focus:ring-red-50" 
-              : "border-gray-200 focus:border-gray-500 focus:ring-4 focus:ring-orange-50"
+            errors.name
+              ? "border-red-500 focus:ring-4 focus:ring-red-50"
+              : "border-gray-200 focus:border-gray-500 focus:ring-4 focus:ring-orange-50",
           )}
           placeholder="Nhập tên danh mục..."
           disabled={isSubmitting}
         />
-        {errors.name && <p className="text-[11px] font-medium text-red-500 ml-1">{errors.name.message}</p>}
+        {errors.name && (
+          <p className="text-[11px] font-medium text-red-500 ml-1">
+            {errors.name.message}
+          </p>
+        )}
       </div>
 
       {/* Danh mục cha */}
       <div className="space-y-1.5">
-        <label className="text-sm font-bold text-gray-700 ml-1">Danh mục cha</label>
+        <label className="text-sm font-bold text-gray-700 ml-1">
+          Danh mục cha
+        </label>
         <Controller
           name="parentId"
           control={control}
@@ -128,7 +137,9 @@ export default function CategoryForm({
               options={selectOptions}
               value={field.value}
               onChange={field.onChange}
-              placeholder={isLoading ? "Đang tải dữ liệu..." : "Chọn danh mục cha (Gốc)"}
+              placeholder={
+                isLoading ? "Đang tải dữ liệu..." : "Chọn danh mục cha (Gốc)"
+              }
               disabled={isSubmitting || isLoading}
               className="w-full"
             />
@@ -151,8 +162,13 @@ export default function CategoryForm({
       <div className="flex items-center justify-between py-2 border-t border-gray-50 pt-4">
         <div className="flex items-center gap-3">
           <label className="relative inline-flex items-center cursor-pointer group">
-            <input type="checkbox" {...register("active")} className="sr-only peer" disabled={isSubmitting} />
-            <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-500 shadow-inner" />
+            <input
+              type="checkbox"
+              {...register("active")}
+              className="sr-only peer"
+              disabled={isSubmitting}
+            />
+            <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-500 shadow-inner" />
           </label>
           <span className="text-sm font-bold text-gray-600">Hoạt động</span>
         </div>
@@ -181,8 +197,9 @@ export default function CategoryForm({
         <div className="flex gap-3 p-4 bg-amber-50 border border-amber-100 rounded-2xl animate-in fade-in duration-300">
           <Info className="w-5 h-5 text-amber-600 shrink-0" />
           <p className="text-[11px] text-amber-800 leading-relaxed font-medium">
-            Hệ thống đang bảo vệ dữ liệu bằng <strong>ETag (v{category?.version})</strong>. 
-            Nếu dữ liệu đã bị thay đổi bởi người khác, vui lòng làm mới trang trước khi lưu.
+            Hệ thống đang bảo vệ dữ liệu bằng
+            <strong>ETag (v{category?.version})</strong>. Nếu dữ liệu đã bị thay
+            đổi bởi người khác, vui lòng làm mới trang trước khi lưu.
           </p>
         </div>
       )}

@@ -99,7 +99,7 @@ export default function PayrollDetail({
         </div>
 
         <div className="bg-white rounded-4xl border border-gray-100 p-6 space-y-4">
-          <SectionHeader icon={<Clock size={16}/>} title="Lịch trình thanh toán" />
+          <SectionHeader icon={Clock} title="Lịch trình thanh toán" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <PaymentStep 
               label="Ngày dự kiến" 
@@ -116,7 +116,7 @@ export default function PayrollDetail({
         <div className="bg-gray-900 rounded-4xl p-6 text-white relative overflow-hidden">
           <Calculator className="absolute -right-4 -top-4 text-white/5 rotate-12" size={120} />
           <div className="relative z-10">
-            <SectionHeader icon={<Calculator size={16} className="text-orange-400" />} title="Minh bạch tài chính" isLight />
+            <SectionHeader icon={Calculator} title="Minh bạch tài chính" isLight />
             <div className="mt-4 font-mono text-sm flex flex-wrap items-center gap-2">
               <span className="bg-white/10 px-2 py-1 rounded-lg">{formatCurrency(payroll.baseSalary)}</span>
               <span className="text-emerald-400 font-bold">+</span>

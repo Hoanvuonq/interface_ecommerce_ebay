@@ -1,17 +1,12 @@
 "use client";
 
-import React, { useEffect, useMemo } from "react";
-import { Edit3, Eye, Lock, Unlock } from "lucide-react";
-import dayjs from "dayjs";
+import { DataTable } from "@/components";
+import { useEffect, useMemo } from "react";
 import { useUserTableLogic } from "../../_hooks/useUserTableLogic";
-import { statusLabelMap, User } from "@/types/user/user.type"; 
-import { cn } from "@/utils/cn";
 import UserDetailModal from "../UserDetailModal";
-import UserUpdateForm from "../UserUpdateForm";
-import { UserTableFilter } from "../UserTableFilter";
 import { UserLockModal } from "../UserLockModal";
-import { ActionBtn, DataTable } from "@/components";
-import { Column } from "@/components/DataTable/type";
+import { UserTableFilter } from "../UserTableFilter";
+import UserUpdateForm from "../UserUpdateForm";
 import { getUserColumns } from "./colum";
 
 export default function UserTable() {
@@ -27,17 +22,10 @@ export default function UserTable() {
     logic.pagination.pageSize,
   ]);
 
-  const getRoleColorClass = (role: string) => {
-    const r = role?.toUpperCase();
-    if (r === "ADMIN") return "bg-rose-100 text-rose-600 border-rose-200";
-    if (r === "SHOP") return "bg-blue-100 text-blue-600 border-blue-200";
-    return "bg-purple-100 text-purple-600 border-purple-200";
-  };
-
   const columns = useMemo(() => getUserColumns(logic), [logic]);
 
   return (
-    <div className="p-8 animate-in fade-in duration-500 font-sans space-y-6">
+    <div className="animate-in fade-in duration-500 font-sans space-y-4">
       <UserTableFilter logic={logic} />
       <DataTable
         data={logic.users as any}
@@ -46,9 +34,9 @@ export default function UserTable() {
         page={logic.pagination.current - 1}
         size={logic.pagination.pageSize}
         totalElements={logic.pagination.total}
-        onPageChange={(newPage) => 
-          logic.updateState({ 
-            pagination: { ...logic.pagination, current: newPage + 1 } 
+        onPageChange={(newPage) =>
+          logic.updateState({
+            pagination: { ...logic.pagination, current: newPage + 1 },
           })
         }
       />
@@ -56,12 +44,16 @@ export default function UserTable() {
       <UserDetailModal
         open={logic.detailModal.open}
         userId={logic.detailModal.userId}
-        onClose={() => logic.updateState({ detailModal: { open: false, userId: null } })}
+        onClose={() =>
+          logic.updateState({ detailModal: { open: false, userId: null } })
+        }
       />
       <UserUpdateForm
         open={logic.updateModal.open}
         user={logic.updateModal.user}
-        onClose={() => logic.updateState({ updateModal: { open: false, user: null } })}
+        onClose={() =>
+          logic.updateState({ updateModal: { open: false, user: null } })
+        }
         onUpdated={logic.fetchUsers}
       />
       <UserLockModal logic={logic} />

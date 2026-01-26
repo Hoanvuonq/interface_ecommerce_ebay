@@ -101,7 +101,7 @@ export const ProductGalleryFix = ({
           />
           {/* Overlay hướng dẫn khi hover */}
           <div className="absolute inset-0 flex items-end justify-center pb-8 opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none z-20">
-            <div className="bg-white/90 backdrop-blur-md text-slate-900 px-5 py-2.5 rounded-2xl text-[10px] flex items-center gap-2 font-black uppercase tracking-widest border border-white shadow-2xl translate-y-4 group-hover:translate-y-0 transition-transform">
+            <div className="bg-white/90 backdrop-blur-md text-slate-900 px-5 py-2.5 rounded-2xl text-[10px] flex items-center gap-2 font-bold uppercase tracking-widest border border-white shadow-2xl translate-y-4 group-hover:translate-y-0 transition-transform">
               <Maximize2
                 size={12}
                 strokeWidth={3}

@@ -186,7 +186,7 @@ const ContentTable: React.FC<ContentTableProps> = ({
       </div>
 
       {/* Data Table */}
-      <div className="bg-white rounded-[32px] border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.02)] overflow-hidden transition-all hover:shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
+      <div className="bg-white rounded-4xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.02)] overflow-hidden transition-all hover:shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-left">
             <thead>

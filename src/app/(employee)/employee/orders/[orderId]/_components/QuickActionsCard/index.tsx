@@ -1,6 +1,15 @@
 import React from "react";
-import { Phone, Mail, Copy, Store, CheckCircle } from "lucide-react";
+import {
+  Phone,
+  Mail,
+  Copy,
+  Store,
+  Zap,
+  User,
+  ArrowUpRight,
+} from "lucide-react";
 import { useToast } from "@/hooks/useToast";
+import { cn } from "@/utils/cn";
 
 interface QuickActionsCardProps {
   customerName: string;
@@ -20,85 +29,120 @@ export const QuickActionsCard: React.FC<QuickActionsCardProps> = ({
   shopName,
 }) => {
   const { success } = useToast();
-  const handleCallCustomer = () => {
-    window.location.href = `tel:${customerPhone}`;
-  };
 
-  const handleEmailCustomer = () => {
-    window.location.href = `mailto:${customerEmail}`;
+  const handleAction = (type: "tel" | "mailto", value: string) => {
+    window.location.href = `${type}:${value}`;
   };
 
   const handleCopyAddress = () => {
     navigator.clipboard.writeText(shippingAddress);
-    success("Đã copy địa chỉ giao hàng!");
+    success("Đã sao chép địa chỉ giao hàng");
   };
 
-  const handleViewShop = () => {
-    if (shopId) {
-      window.open(`/employee/shops/${shopId}`, "_blank");
-    }
-  };
+  const ActionButton = ({ onClick, icon: Icon, label, colorClass }: any) => (
+    <button
+      onClick={onClick}
+      className={cn(
+        "group flex flex-col items-center justify-center gap-2 p-4 rounded-2xl transition-all duration-300",
+        "bg-white border border-gray-100 shadow-custom active:scale-95",
+      )}
+    >
+      <div
+        className={cn(
+          "p-2.5 rounded-xl transition-colors bg-gray-50 group-hover:bg-orange-50",
+          colorClass,
+        )}
+      >
+        <Icon size={18} strokeWidth={2} />
+      </div>
+      <span className="text-[12px] font-black uppercase tracking-widest text-gray-500 group-hover:text-gray-900 transition-colors">
+        {label}
+      </span>
+    </button>
+  );
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow-custom p-5">
-      <h3 className="text-base font-semibold text-gray-900 mb-4 flex items-center gap-2">
-        <CheckCircle size={18} className="text-blue-600" />
-        Thao tác nhanh
-      </h3>
+    <div className="bg-white rounded-3xl shadow-custom p-4 relative overflow-hidden animate-in fade-in slide-in-from-right-4 duration-700 delay-300">
+      <div className="flex items-center justify-between mb-8 pb-5 border-b border-gray-50">
+        <div className="flex items-center gap-3">
+          <div className="p-2.5 bg-gray-900 text-white rounded-xl shadow-lg shadow-gray-200">
+            <Zap size={18} fill="currentColor" />
+          </div>
+          <div>
+            <h3 className="text-sm font-black uppercase tracking-[0.2em] text-gray-800 leading-none">
+              Thao tác <span className="text-orange-500">Nhanh</span>
+            </h3>
+            <p className="text-[9px] font-bold text-gray-600 uppercase mt-1.5 tracking-widest italic">
+              Quick Response Protocol
+            </p>
+          </div>
+        </div>
+      </div>
 
-      <div className="grid grid-cols-2 gap-3">
-        {/* Call Customer */}
-        <button
-          onClick={handleCallCustomer}
-          className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-green-50 hover:bg-green-100 border border-green-200 text-green-700 text-sm font-medium transition-colors"
-        >
-          <Phone size={16} />
-          <span>Gọi khách</span>
-        </button>
-
-        {/* Email Customer */}
-        <button
-          onClick={handleEmailCustomer}
-          className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 text-sm font-medium transition-colors"
-        >
-          <Mail size={16} />
-          <span>Email</span>
-        </button>
-
-        {/* Copy Address */}
-        <button
+      <div className="grid grid-cols-4 gap-4">
+        <ActionButton
+          onClick={() => handleAction("tel", customerPhone)}
+          icon={Phone}
+          label="Gọi điện"
+          colorClass="text-emerald-500"
+        />
+        <ActionButton
+          onClick={() => handleAction("mailto", customerEmail)}
+          icon={Mail}
+          label="Gửi Email"
+          colorClass="text-blue-500"
+        />
+        <ActionButton
           onClick={handleCopyAddress}
-          className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-700 text-sm font-medium transition-colors"
-        >
-          <Copy size={16} />
-          <span>Copy địa chỉ</span>
-        </button>
-
-        {/* View Shop */}
+          icon={Copy}
+          label="Địa chỉ"
+          colorClass="text-amber-500"
+        />
         {shopId && (
-          <button
-            onClick={handleViewShop}
-            className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-orange-50 hover:bg-orange-100 border border-orange-200 text-orange-700 text-sm font-medium transition-colors"
-          >
-            <Store size={16} />
-            <span>Xem shop</span>
-          </button>
+          <ActionButton
+            onClick={() => window.open(`/employee/shops/${shopId}`, "_blank")}
+            icon={Store}
+            label="Cửa hàng"
+            colorClass="text-purple-500"
+          />
         )}
       </div>
 
-      {/* Customer Info Display */}
-      <div className="mt-4 pt-4 border-t border-gray-200 space-y-2">
-        <p className="text-xs text-gray-500">Thông tin liên hệ:</p>
-        <div className="space-y-1">
-          <p className="text-sm text-gray-700">
-            <span className="text-gray-500">Tên:</span> {customerName}
-          </p>
-          <p className="text-sm text-gray-700">
-            <span className="text-gray-500">SĐT:</span> {customerPhone}
-          </p>
-          <p className="text-sm text-gray-700 break-all">
-            <span className="text-gray-500">Email:</span> {customerEmail}
-          </p>
+      <div className="mt-8 pt-6 border-t border-gray-100 space-y-4">
+        <div className="flex items-center gap-2 px-1">
+          <User size={14} className="text-orange-500" />
+          <span className="text-[12px] font-black uppercase tracking-widest text-gray-600">
+            Nhân dạng liên hệ
+          </span>
+        </div>
+
+        <div className="space-y-3 bg-gray-50 p-4 rounded-2xl border border-gray-200 shadow-inner">
+          <div className="flex justify-between items-center group/item cursor-default">
+            <span className="text-[12px] font-bold text-gray-600 uppercase italic">
+              Họ tên
+            </span>
+            <span className="text-xs font-medium text-gray-800 tracking-tight">
+              {customerName}
+            </span>
+          </div>
+
+          <div className="flex justify-between items-center group/item cursor-default">
+            <span className="text-[12px] font-bold text-gray-600 uppercase italic">
+              Liên lạc
+            </span>
+            <span className="text-xs font-medium text-gray-700 underline decoration-gray-200 underline-offset-4">
+              {customerPhone}
+            </span>
+          </div>
+
+          <div className="flex justify-between items-start group/item cursor-default gap-4">
+            <span className="text-[12px] font-bold text-gray-600 uppercase italic shrink-0">
+              Hòm thư
+            </span>
+            <span className="text-xs font-medium text-gray-700 break-all text-right leading-relaxed">
+              {customerEmail}
+            </span>
+          </div>
         </div>
       </div>
     </div>

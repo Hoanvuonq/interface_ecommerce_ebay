@@ -1,34 +1,33 @@
 "use client";
 
-import React from "react";
-import dayjs from "dayjs";
-import { 
-  User, 
-  Mail, 
-  Shield, 
-  UserCheck, 
-  Phone, 
-  MapPin, 
-  Calendar, 
-  Briefcase, 
-  Building2, 
-  Clock,
-  ExternalLink
-} from "lucide-react";
+import { FormInput, SectionHeader } from "@/components";
+import { PortalModal } from "@/features/PortalModal";
 import {
-  genderLabelMap,
-  workerTypeLabelMap,
-  statusLabelMap,
-  statusColorMap,
   Employee,
+  genderLabelMap,
+  statusLabelMap,
   userStatusLabelMap,
-  userStatusColorMap,
+  workerTypeLabelMap,
 } from "../../_types/employee.type";
+import { cn } from "@/utils/cn";
 import { toSizedVariant } from "@/utils/products/media.helpers";
 import { toPublicUrl } from "@/utils/storage/url";
-import { PortalModal } from "@/features/PortalModal";
-import { cn } from "@/utils/cn";
-import { SectionHeader } from "@/components";
+import dayjs from "dayjs";
+import {
+  Briefcase,
+  Building2,
+  Calendar,
+  Clock,
+  Hash,
+  Mail,
+  MapPin,
+  Phone,
+  Shield,
+  ShieldCheck,
+  User as UserIcon,
+} from "lucide-react";
+import Image from "next/image";
+import React from "react";
 
 interface EmployeeDetailModalProps {
   open: boolean;
@@ -39,18 +38,22 @@ interface EmployeeDetailModalProps {
 const getEmployeeRoles = (employee: Employee | null | undefined): string[] => {
   if (!employee) return [];
   const rawEmployee = employee as any;
-  if (rawEmployee.roles?.length > 0) return rawEmployee.roles.map((r: string) => r.toUpperCase());
-  if (rawEmployee.roleNames?.length > 0) return rawEmployee.roleNames.map((r: string) => r.toUpperCase());
-  if (employee.roleName) return employee.roleName.split(", ").map((r) => r.toUpperCase());
+  if (rawEmployee.roles?.length > 0)
+    return rawEmployee.roles.map((r: string) => r.toUpperCase());
+  if (rawEmployee.roleNames?.length > 0)
+    return rawEmployee.roleNames.map((r: string) => r.toUpperCase());
+  if (employee.roleName)
+    return employee.roleName.split(", ").map((r) => r.toUpperCase());
   return [];
 };
 
 const getRoleStyle = (role: string) => {
   const roleUpper = role.toUpperCase();
-  if (roleUpper === "ADMIN") return "bg-red-50 text-red-600 border-red-100";
-  if (roleUpper === "SHOP") return "bg-blue-50 text-blue-600 border-blue-100";
-  if (roleUpper === "BUYER") return "bg-emerald-50 text-emerald-600 border-emerald-100";
-  return "bg-purple-50 text-purple-600 border-purple-100";
+  if (roleUpper === "ADMIN") return "bg-rose-500 text-white shadow-rose-200";
+  if (roleUpper === "SHOP") return "bg-blue-500 text-white shadow-blue-200";
+  if (roleUpper === "BUYER")
+    return "bg-emerald-500 text-white shadow-emerald-200";
+  return "bg-orange-500 text-white shadow-orange-200";
 };
 
 export default function EmployeeDetail({
@@ -66,94 +69,205 @@ export default function EmployeeDetail({
     <PortalModal
       isOpen={open}
       onClose={onClose}
-      title="Chi tiết nhân sự"
+      title={
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-orange-100 text-orange-600 rounded-xl shadow-sm">
+            <UserIcon size={20} strokeWidth={2.5} />
+          </div>
+          <span className="font-bold tracking-tight text-xl text-gray-800 uppercase italic">
+            Hồ sơ <span className="text-orange-500">nhân sự</span>
+          </span>
+        </div>
+      }
       width="max-w-4xl"
     >
-      <div className="space-y-8 pb-4">
-        <div className="flex flex-col md:flex-row gap-6 items-start md:items-center p-6 bg-gray-50/50 rounded-4xl border border-gray-100">
-          <div className="relative shrink-0 group">
-            <div className="w-24 h-24 rounded-4xl overflow-hidden border-4 border-white shadow-xl bg-white">
+      <div className="space-y-8 pb-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="relative overflow-hidden p-4 rounded-4xl bg-linear-to-br from-gray-900 via-gray-800 to-orange-950 flex flex-col md:flex-row items-center md:items-start gap-8 shadow-2xl">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/10 rounded-full -mr-32 -mt-32 blur-3xl" />
+
+          <div className="relative group shrink-0">
+            <div className="w-32 h-32 rounded-[3rem] overflow-hidden border-4 border-whi  te/10 shadow-2xl bg-white/5 relative z-10">
               {employee.imageUrl ? (
-                <img
+                <Image
                   src={toPublicUrl(toSizedVariant(employee.imageUrl, "_orig"))}
                   alt={employee.fullName}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  unoptimized
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center bg-orange-50 text-orange-500 font-semibold text-3xl">
+                <div className="w-full h-full flex items-center justify-center bg-orange-500/20 text-orange-500 font-bold text-5xl italic">
                   {employee.fullName?.charAt(0)}
                 </div>
               )}
             </div>
-            <div className={cn(
-              "absolute -bottom-2 -right-2 px-3 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider border-2 border-white shadow-sm",
-              employee.userStatus === "ACTIVE" ? "bg-emerald-500 text-white" : "bg-gray-400 text-white"
-            )}>
-              {employee.userStatus === "ACTIVE" ? "Hoạt động" : "Bị khóa/Ẩn"}
+            <div
+              className={cn(
+                "absolute -bottom-2 right-4 z-20 px-4 py-1.5 rounded-full border-4 border-gray-900 text-[10px] font-bold text-white shadow-xl uppercase tracking-tighter",
+                employee.userStatus === "ACTIVE"
+                  ? "bg-emerald-500"
+                  : "bg-rose-500",
+              )}
+            >
+              {employee.userStatus === "ACTIVE" ? "Hoạt động" : "Tạm khóa"}
             </div>
           </div>
 
-          <div className="flex-1 space-y-2">
-            <h3 className="text-3xl font-semibold text-gray-900 tracking-tighter uppercase italic leading-none">
-              {employee.fullName}
-            </h3>
-            <div className="flex flex-wrap gap-2">
+          <div className="flex-1 text-center md:text-left space-y-4 pt-2 relative z-10">
+            <div className="flex flex-wrap justify-center md:justify-start gap-2">
               {roles.map((role, idx) => (
-                <span key={idx} className={cn("px-3 py-0.5 rounded-lg text-[10px] font-semibold uppercase tracking-widest border", getRoleStyle(role))}>
+                <span
+                  key={idx}
+                  className={cn(
+                    "px-4 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest shadow-lg",
+                    getRoleStyle(role),
+                  )}
+                >
                   {role}
                 </span>
               ))}
             </div>
+            <div>
+              <h3 className="text-4xl md:text-5xl font-bold text-white tracking-tighter uppercase italic leading-none">
+                {employee.fullName}
+              </h3>
+              <p className="text-orange-400 font-bold text-sm flex items-center justify-center md:justify-start gap-2 mt-2">
+                <Hash size={14} strokeWidth={3} /> UID:{" "}
+                {employee.employeeId.slice(-8).toUpperCase()}
+              </p>
+            </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 px-2">
+        {/* --- DETAILS CONTENT --- */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-10 px-2">
+          {/* Section 1: Tài khoản */}
           <div className="space-y-6">
-            <SectionHeader icon={<Shield size={16}/>} title="Tài khoản & Liên hệ" />
+            <SectionHeader icon={ShieldCheck} title="Thông tin hệ thống" />
             <div className="space-y-4">
-              <DetailBox icon={<User size={14}/>} label="Tên đăng nhập" value={employee.username} />
-              <DetailBox icon={<Mail size={14}/>} label="Email hệ thống" value={employee.email} />
-              <DetailBox icon={<Phone size={14}/>} label="Số điện thoại" value={employee.phone} />
-              <div className="space-y-1.5">
-                <p className="text-[10px] font-semibold text-gray-600 uppercase tracking-widest ml-1">Trạng thái tài khoản</p>
-                <span className={cn(
-                  "inline-block px-4 py-1.5 rounded-xl text-xs font-bold border shadow-xs",
-                  userStatusColorMap[employee.userStatus] === "green" ? "bg-emerald-50 text-emerald-700 border-emerald-100" : "bg-red-50 text-red-700 border-red-100"
-                )}>
-                  {userStatusLabelMap[employee.userStatus]}
-                </span>
+              <FormInput
+                label="Tên đăng nhập"
+                value={employee.username}
+                disabled
+                readOnly
+              />
+              <FormInput
+                label="Email liên kết"
+                value={employee.email}
+                disabled
+                readOnly
+              />
+              <div className="grid grid-cols-2 gap-4">
+                <FormInput
+                  label="Mã nhân sự"
+                  value={`EMP-${employee.employeeId.slice(0, 5).toUpperCase()}`}
+                  disabled
+                  readOnly
+                />
+                <div className="space-y-2">
+                  <label className="text-[12px] font-bold text-gray-700 ml-1 uppercase tracking-widest">
+                    Trạng thái tài khoản
+                  </label>
+                  <div
+                    className={cn(
+                      "h-12 flex items-center px-5 rounded-2xl border font-bold text-sm",
+                      employee.userStatus === "ACTIVE"
+                        ? "bg-emerald-50 border-emerald-100 text-emerald-600"
+                        : "bg-rose-50 border-rose-100 text-rose-600",
+                    )}
+                  >
+                    {userStatusLabelMap[employee.userStatus]}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
+          {/* Section 2: Công việc */}
           <div className="space-y-6">
-            <SectionHeader icon={<Briefcase size={16}/>} title="Vận hành & Công việc" />
+            <SectionHeader icon={Briefcase} title="Vận hành chuyên môn" />
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
-                <DetailBox icon={<Building2 size={14}/>} label="Phòng ban" value={employee.departmentName} />
-                <DetailBox icon={<UserCheck size={14}/>} label="Chức vụ" value={employee.positionName} />
+                <FormInput
+                  label="Phòng ban"
+                  value={employee.departmentName}
+                  disabled
+                  readOnly
+                />
+                <FormInput
+                  label="Chức vụ"
+                  value={employee.positionName}
+                  disabled
+                  readOnly
+                />
               </div>
-              <DetailBox icon={<Clock size={14}/>} label="Hình thức" value={workerTypeLabelMap[employee.type]} />
-              <div className="space-y-1.5">
-                <p className="text-[10px] font-semibold text-gray-600 uppercase tracking-widest ml-1">Trạng thái làm việc</p>
-                <span className={cn(
-                  "inline-block px-4 py-1.5 rounded-xl text-xs font-bold border",
-                  employee.status === "ACTIVE" ? "bg-blue-50 text-blue-700 border-blue-100" : "bg-orange-50 text-orange-700 border-gray-100"
-                )}>
+              <FormInput
+                label="Loại hình nhân sự"
+                value={workerTypeLabelMap[employee.type]}
+                disabled
+                readOnly
+              />
+              <div className="space-y-2">
+                <label className="text-[12px] font-bold text-gray-700 ml-1 uppercase tracking-widest">
+                  Tình trạng làm việc
+                </label>
+                <div
+                  className={cn(
+                    "h-12 flex items-center px-5 rounded-2xl border font-bold text-sm shadow-sm",
+                    employee.status === "ACTIVE"
+                      ? "bg-blue-50 border-blue-100 text-blue-600"
+                      : "bg-orange-50 border-orange-100 text-orange-600",
+                  )}
+                >
                   {statusLabelMap[employee.status]}
-                </span>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="md:col-span-2 space-y-6">
-            <SectionHeader icon={<User size={16}/>} title="Thông tin cá nhân" />
+          {/* Section 3: Cá nhân (Full Width) */}
+          <div className="md:col-span-2 p-8 rounded-[3rem] bg-gray-50/50 border border-gray-100 space-y-8">
+            <SectionHeader icon={UserIcon} title="Dữ liệu định danh cá nhân" />
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <DetailBox icon={<Calendar size={14}/>} label="Ngày sinh" value={employee.dateOfBirth ? dayjs(employee.dateOfBirth).format("DD/MM/YYYY") : "-"} />
-              <DetailBox icon={<User size={14}/>} label="Giới tính" value={genderLabelMap[employee.gender]} />
-              <DetailBox icon={<Clock size={14}/>} label="Ngày bắt đầu" value={employee.startDate ? dayjs(employee.startDate).format("DD/MM/YYYY") : "-"} />
+              <FormInput
+                label="Ngày sinh"
+                value={
+                  employee.dateOfBirth
+                    ? dayjs(employee.dateOfBirth).format("DD/MM/YYYY")
+                    : "Chưa cập nhật"
+                }
+                disabled
+                readOnly
+              />
+              <FormInput
+                label="Giới tính"
+                value={genderLabelMap[employee.gender]}
+                disabled
+                readOnly
+              />
+              <FormInput
+                label="Ngày gia nhập"
+                value={
+                  employee.startDate
+                    ? dayjs(employee.startDate).format("DD/MM/YYYY")
+                    : "-"
+                }
+                disabled
+                readOnly
+              />
+              <div className="md:col-span-3">
+                <FormInput
+                  isTextArea
+                  label="Địa chỉ thường trú"
+                  value={
+                    employee.addressDetail || "Chưa có thông tin địa chỉ cụ thể"
+                  }
+                  disabled
+                  readOnly
+                  className="min-h-20"
+                />
+              </div>
             </div>
-            <DetailBox icon={<MapPin size={14}/>} label="Địa chỉ chi tiết" value={employee.addressDetail} isFullWidth />
           </div>
         </div>
       </div>
@@ -161,16 +275,20 @@ export default function EmployeeDetail({
   );
 }
 
-
-const DetailBox = ({ icon, label, value, isFullWidth = false }: { icon: React.ReactNode; label: string; value?: string; isFullWidth?: boolean }) => (
-  <div className={cn("space-y-1.5", isFullWidth ? "w-full" : "")}>
-    <p className="text-[10px] font-semibold text-gray-600 uppercase  ml-1 flex items-center gap-1">
-      {icon} {label}
-    </p>
-    <div className="px-4 py-3 rounded-2xl bg-white border border-gray-100 shadow-sm transition-all hover:border-gray-200 group">
-      <span className="text-sm font-bold text-gray-700 leading-none group-hover:text-gray-900">
-        {value || "—"}
-      </span>
-    </div>
-  </div>
+// Giữ lại Activity cho Icon nếu cần dùng
+const Activity = ({ size, className }: any) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="3"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+  </svg>
 );

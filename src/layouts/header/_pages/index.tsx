@@ -72,7 +72,6 @@ export const Header = () => {
                     width={120}
                     height={40}
                     className="object-contain w-28 h-auto md:w-38 md:h-10"
-                    priority
                   />
                 </Link>
               </div>

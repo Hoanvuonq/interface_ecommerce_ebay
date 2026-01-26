@@ -25,7 +25,7 @@ export const UserTableFilter: React.FC<UserTableFilterProps> = ({ logic }) => {
   }, [logic.statistics]);
 
   return (
-    <div className="bg-white p-6 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-50 mb-8 space-y-6">
+    <div className="bg-white p-6 rounded-3xl shadow-custom border border-gray-50 mb-8 space-y-4">
       <div className="flex flex-col lg:flex-row justify-between gap-4">
         <div className="flex flex-wrap gap-4 flex-1">
           <div className="relative group flex-1 min-w-75">
@@ -49,10 +49,13 @@ export const UserTableFilter: React.FC<UserTableFilterProps> = ({ logic }) => {
 
           <div className="min-w-50">
             <SelectComponent
-              options={logic.roles.map((r: any) => ({
-                label: r.roleName,
-                value: r.roleName,
-              }))}
+              isMulti={true}
+              options={
+                logic.roles?.data?.content?.map((r: any) => ({
+                  label: `${r.description || ""} (${r.roleName})`.trim(),
+                  value: r.roleName,
+                })) || []
+              }
               value={logic.selectedRoles}
               onChange={(selected) =>
                 logic.updateState({ selectedRoles: selected })

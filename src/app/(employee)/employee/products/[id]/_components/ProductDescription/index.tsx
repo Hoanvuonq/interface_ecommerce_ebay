@@ -34,7 +34,7 @@ export const ProductDescription = ({
   ];
 
   return (
-    <div className="bg-white rounded-[2.5rem] p-8 shadow-custom-lg border border-orange-50 mt-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div className="bg-white rounded-[2.5rem] p-8 shadow-custom mt-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
       {/* Header Section */}
       <div className="flex items-center gap-3 mb-8">
         <div className="p-3 bg-orange-50 rounded-2xl text-orange-500 shadow-inner">

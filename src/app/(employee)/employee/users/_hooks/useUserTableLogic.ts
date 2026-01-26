@@ -1,17 +1,17 @@
 "use client";
 
-import _ from "lodash";
-import { useMemo, useCallback } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useUserTableStore } from "../_store/userTableStore";
-import { 
-  useGetAllUsers, 
-  useGetAllRoles, 
-  useGetUserStatistics, 
-  useLockUser, 
-  useUnLockUser 
-} from "./useUser";
 import { useToast } from "@/hooks/useToast";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import _ from "lodash";
+import { useCallback, useEffect } from "react";
+import { useUserTableStore } from "../_store/userTableStore";
+import {
+  useGetAllRoles,
+  useGetAllUsers,
+  useGetUserStatistics,
+  useLockUser,
+  useUnLockUser,
+} from "./useUser";
 
 export const useUserTableLogic = () => {
   const store = useUserTableStore();
@@ -24,60 +24,99 @@ export const useUserTableLogic = () => {
   const { handleLockUser } = useLockUser();
   const { handleUnLockUser } = useUnLockUser();
 
-
   const usersQuery = useQuery({
-    queryKey: ["users", store.searchKeyword, store.activeTab, store.selectedRoles, store.pagination.current, store.pagination.pageSize],
+    queryKey: [
+      "users",
+      store.searchKeyword,
+      store.activeTab,
+      store.selectedRoles,
+      store.pagination.current,
+      store.pagination.pageSize,
+    ],
+    // Sửa lại đoạn queryFn trong useUserTableLogic.ts
     queryFn: async () => {
-      const payload = _.pickBy({
-        username: store.searchKeyword,
-        email: store.searchKeyword,
-        statuses: store.activeTab !== "ALL" ? [store.activeTab] : undefined,
-        roleNames: !_.isEmpty(store.selectedRoles) ? store.selectedRoles : undefined,
+      const params: any = {
         page: store.pagination.current - 1,
         size: store.pagination.pageSize,
         sort: "asc",
-      }, (val) => !_.isNil(val) && val !== "");
+      };
 
-      const res = await handleGetAllUsers(payload as any);
+      if (store.searchKeyword) params.username = store.searchKeyword;
+
+      // Xử lý Status: Swagger không ghi cụ thể mảng hay đơn,
+      // nhưng an toàn nhất là truyền đơn nếu chỉ chọn 1 tab
+      if (store.activeTab !== "ALL") {
+        params.statuses = store.activeTab;
+      }
+
+      if (!_.isEmpty(store.selectedRoles)) {
+        params.roleNames = store.selectedRoles.join(",");
+      }
+
+      const res = await handleGetAllUsers(params);
+
       if (res?.data) {
+        // Theo Swagger, kết quả trả về là ApiResponseObject
+        // Bạn cần trỏ đúng vào content của Spring Boot Paging
+        const userList = res.data.content || [];
         store.updateState({
-          users: res.data.users,
-          pagination: { ...store.pagination, total: res.data.totalElements || 0 }
+          users: userList,
+          pagination: {
+            ...store.pagination,
+            total: res.data.totalElements || 0,
+          },
         });
       }
       return res?.data;
     },
-    placeholderData: (prev) => prev, 
   });
 
-  // Lấy Metadata (Roles & Stats)
+  // Đồng bộ hóa dữ liệu từ Query vào Store để Table hiển thị
+  useEffect(() => {
+    if (usersQuery.data) {
+      const userList = usersQuery.data.content || usersQuery.data.users || [];
+      store.updateState({
+        users: userList,
+        pagination: {
+          ...store.pagination,
+          total: usersQuery.data.totalElements || 0,
+        },
+      });
+    }
+  }, [usersQuery.data]);
+
   const metadataQuery = useQuery({
     queryKey: ["user-metadata"],
     queryFn: async () => {
       const [resRoles, resStats] = await Promise.all([
         handleGetAllRoles(),
-        handleGetUserStatistics()
+        handleGetUserStatistics(),
       ]);
-      const roles = resRoles?.data?.roles || [];
+
+      const roles = resRoles?.data?.content || [];
       const stats = resStats?.data || null;
-      
-      store.updateState({ roles, statistics: stats });
+
+      store.updateState({
+        roles: { data: { content: roles } },
+        statistics: stats,
+      });
       return { roles, stats };
     },
-    staleTime: 1000 * 60 * 5, // Cache dữ liệu thống kê 5 phút
+    staleTime: 1000 * 60 * 5,
   });
 
-  // --- 2. Mutations (Thao tác dữ liệu) ---
-
+  // --- 2. Mutations ---
   const lockMutation = useMutation({
-    mutationFn: ({ id, reason }: { id: string, reason: string }) => handleLockUser(id, reason),
+    mutationFn: ({ id, reason }: { id: string; reason: string }) =>
+      handleLockUser(id, reason),
     onSuccess: () => {
       toast.success("Đã khóa tài khoản thành công");
-      store.updateState({ lockModal: { open: false, userId: null, reason: "" } });
+      store.updateState({
+        lockModal: { open: false, userId: null, reason: "" },
+      });
       queryClient.invalidateQueries({ queryKey: ["users"] });
-      queryClient.invalidateQueries({ queryKey: ["user-metadata"] });
     },
-    onError: () => toast.error("Khóa tài khoản thất bại")
+    onError: () => toast.error("Khóa tài khoản thất bại"),
   });
 
   const unlockMutation = useMutation({
@@ -85,42 +124,36 @@ export const useUserTableLogic = () => {
     onSuccess: () => {
       toast.success("Tài khoản đã được mở khóa");
       queryClient.invalidateQueries({ queryKey: ["users"] });
-      queryClient.invalidateQueries({ queryKey: ["user-metadata"] });
     },
-    onError: () => toast.error("Mở khóa thất bại")
+    onError: () => toast.error("Mở khóa thất bại"),
   });
-
-  // --- 3. Handlers (Logic cho UI) ---
 
   const debouncedSearch = useCallback(
     _.debounce((value: string) => {
-      store.updateState({ searchKeyword: value, pagination: { ...store.pagination, current: 1 } });
+      store.updateState({
+        searchKeyword: value,
+        pagination: { ...store.pagination, current: 1 },
+      });
     }, 500),
-    []
+    [],
   );
 
   const lockUserAction = async () => {
     const { userId, reason } = store.lockModal;
-    if (!userId || _.isEmpty(_.trim(reason))) return toast.warning("Vui lòng nhập lý do khóa");
+    if (!userId || _.isEmpty(_.trim(reason)))
+      return toast.warning("Lý do không được để trống");
     lockMutation.mutate({ id: userId, reason });
   };
 
-  const unlockUserAction = (id: string) => unlockMutation.mutate(id);
-
-  // --- 4. Trả về cho Component ---
-
   return {
     ...store,
-    // Status
     usersLoading: usersQuery.isLoading,
     isProcessing: lockMutation.isPending || unlockMutation.isPending,
     isRefetching: usersQuery.isRefetching,
-    
-    // Actions
     fetchUsers: usersQuery.refetch,
     fetchMetadata: metadataQuery.refetch,
     lockUserAction,
-    unlockUserAction,
-    debouncedSearch
+    unlockUserAction: (id: string) => unlockMutation.mutate(id),
+    debouncedSearch,
   };
 };

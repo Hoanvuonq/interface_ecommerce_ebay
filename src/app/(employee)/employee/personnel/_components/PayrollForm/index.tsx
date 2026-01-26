@@ -146,7 +146,7 @@ export default function PayrollForm({
 
         {/* Section 2: Con số tài chính */}
         <div className="bg-gray-50/50 p-8 rounded-[2.5rem] border border-gray-100 space-y-6">
-          <SectionHeader icon={<Calculator className="text-orange-500" />} title="Chi tiết thu nhập" />
+          <SectionHeader icon={Calculator} title="Chi tiết thu nhập" />
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <InputField label="Lương cơ bản (VND)" type="number" {...register("baseSalary", { required: true, min: 0 })} icon={<DollarSign size={14}/>} />
@@ -185,7 +185,7 @@ export default function PayrollForm({
 
         {/* Section 3: Hồ sơ chứng từ */}
         <div className="space-y-4">
-          <SectionHeader icon={<FileText className="text-blue-500" />} title="Minh chứng thanh toán" />
+          <SectionHeader icon={FileText} title="Minh chứng thanh toán" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="md:col-span-1">
               <Controller

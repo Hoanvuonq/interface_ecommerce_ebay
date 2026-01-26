@@ -255,7 +255,6 @@ export const ShopVouchersScreen: React.FC = () => {
   );
 };
 
-// --- HELPER COMPONENTS ---
 
 const MiniStat = ({ label, value, icon }: any) => (
   <div className="flex flex-col items-end">

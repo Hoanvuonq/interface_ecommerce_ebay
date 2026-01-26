@@ -10,7 +10,6 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/utils/cn";
 import { DataTableProps } from "./type";
-
 export const DataTable = <T,>({
   data,
   columns,
@@ -58,7 +57,7 @@ export const DataTable = <T,>({
         </div>
       )}
 
-      <div className="flex flex-col overflow-hidden bg-white border border-gray-100 rounded-[2.5rem] shadow-custom">
+      <div className="flex flex-col overflow-hidden bg-white border border-gray-100 rounded-2xl shadow-custom">
         <div className="overflow-x-auto custom-scrollbar">
           <table className="min-w-full border-collapse">
             <thead className="bg-[#f5f5f5] border-b border-gray-200">

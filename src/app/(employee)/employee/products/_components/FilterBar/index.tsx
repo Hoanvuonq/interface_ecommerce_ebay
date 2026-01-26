@@ -17,8 +17,6 @@ export const FilterBar = ({
   onApply,
   onClear,
 }: FilterBarProps) => {
-  // Giả sử bạn truyền danh sách options từ Props hoặc Fetch
-  // Đây là ví dụ format dữ liệu cho SelectComponent
   const categoryOptions = [
     { label: "Điện tử", value: "1" },
     { label: "Thời trang", value: "2" },

@@ -5,7 +5,6 @@ import { useIsomorphicLayoutEffect } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { FaChevronDown, FaSearch, FaCheck } from "react-icons/fa";
-import { useLayoutEffect } from "react";
 
 export interface Option {
   label: string;
@@ -14,12 +13,12 @@ export interface Option {
 
 export interface SelectProps {
   options: Option[];
-  value?: string | string[]; 
+  value?: string | string[];
   onChange: (value: any) => void;
   placeholder?: string;
   disabled?: boolean;
   className?: string;
-  isMulti?: boolean; 
+  isMulti?: boolean;
 }
 
 export const SelectComponent = ({
@@ -37,9 +36,13 @@ export const SelectComponent = ({
     useState<React.CSSProperties | null>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const filteredOptions = options.filter((opt) =>
-    opt.label.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredOptions = options.filter((opt) => {
+  const label = String(opt.label || "").toLowerCase();
+  const value = String(opt.value || "").toLowerCase();
+  const searchStr = search.toLowerCase();
+  
+  return label.includes(searchStr) || value.includes(searchStr);
+});
 
   const getDisplayLabel = () => {
     if (isMulti) {
@@ -138,7 +141,7 @@ export const SelectComponent = ({
             disabled
               ? "opacity-50 cursor-not-allowed bg-gray-100"
               : "hover:border-gray-400 hover:bg-white",
-            isOpen && "border-gray-500 ring-4 ring-orange-500/10 bg-white"
+            isOpen && "border-gray-500 ring-4 ring-orange-500/10 bg-white",
           )}
           onClick={() => !disabled && setIsOpen(!isOpen)}
         >
@@ -147,7 +150,7 @@ export const SelectComponent = ({
               "text-xs font-semibold truncate",
               !value || (Array.isArray(value) && value.length === 0)
                 ? "text-gray-500"
-                : "text-gray-700"
+                : "text-gray-700",
             )}
           >
             {getDisplayLabel()}
@@ -155,7 +158,7 @@ export const SelectComponent = ({
           <FaChevronDown
             className={cn(
               "text-[10px] text-gray-600 transition-transform duration-300",
-              isOpen && "rotate-180 text-orange-500"
+              isOpen && "rotate-180 text-orange-500",
             )}
           />
         </div>
@@ -169,7 +172,7 @@ export const SelectComponent = ({
             id="select-dropdown-portal"
             className={cn(
               "bg-white border border-gray-100 rounded-2xl shadow-2xl flex flex-col overflow-hidden",
-              "animate-in fade-in zoom-in-95 duration-200 ease-out"
+              "animate-in fade-in zoom-in-95 duration-200 ease-out",
             )}
             style={dropdownStyle}
           >
@@ -200,7 +203,7 @@ export const SelectComponent = ({
                         "px-4 py-3 text-sm cursor-pointer rounded-xl transition-all flex items-center justify-between mb-1 group",
                         isSelected
                           ? "bg-orange-50 text-orange-600 font-bold"
-                          : "text-gray-600 hover:bg-gray-50 hover:text-orange-500"
+                          : "text-gray-600 hover:bg-gray-50 hover:text-orange-500",
                       )}
                       onClick={() => handleSelect(opt.value)}
                     >
@@ -223,7 +226,7 @@ export const SelectComponent = ({
               )}
             </div>
           </div>,
-          document.body
+          document.body,
         )}
     </>
   );

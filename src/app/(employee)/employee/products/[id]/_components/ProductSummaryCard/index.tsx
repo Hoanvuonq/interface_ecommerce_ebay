@@ -43,8 +43,7 @@ export const ProductSummaryCard =({
   };
 
   return (
-    <div className="bg-white rounded-[2.5rem] p-8 shadow-custom-lg border border-orange-50 relative overflow-hidden group transition-all duration-500 hover:shadow-orange-500/10 hover:border-orange-100">
-      {/* Nền trang trí chuẩn Web3 */}
+    <div className="bg-white rounded-[2.5rem] p-8 shadow-custom relative overflow-hidden group transition-all duration-500 hover:shadow-orange-500/10 hover:border-orange-100">
       <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/5 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-orange-500/10 transition-colors" />
 
       <div className="relative z-10">
@@ -78,7 +77,6 @@ export const ProductSummaryCard =({
         </div>
 
         <div className="grid grid-cols-1 gap-4 pt-6 border-t border-slate-50">
-          {/* Category Section */}
           <div className="flex items-center justify-between p-4 bg-slate-50/50 rounded-3xl border border-slate-100 group/item hover:bg-white hover:border-orange-200 transition-all">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 flex items-center justify-center bg-white rounded-2xl shadow-sm group-hover/item:text-orange-500 transition-colors">

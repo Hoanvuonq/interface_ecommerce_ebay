@@ -19,8 +19,6 @@ export const VariantTable = ({ variants }: VariantTableProps) => {
         header: "Thông tin biến thể",
         className: "min-w-62.5",
         render: (variant) => {
-          // Bước 1: Fix lỗi "Empty string passed to src"
-          // resolveMediaUrl có thể trả về "" nếu variant.imageUrl không hợp lệ.
           const imageUrl = variant.imageUrl
             ? resolveMediaUrl(variant.imageUrl, "_thumb")
             : null;
@@ -145,7 +143,7 @@ export const VariantTable = ({ variants }: VariantTableProps) => {
         </div>
       </div>
 
-      <div className="bg-white rounded-[2.5rem] border border-orange-50 shadow-custom-lg overflow-hidden">
+      <div className="bg-white rounded-[2.5rem]shadow-custom">
         <DataTable
           data={variants}
           columns={columns}

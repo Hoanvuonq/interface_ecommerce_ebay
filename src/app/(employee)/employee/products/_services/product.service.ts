@@ -20,7 +20,7 @@ export async function approveProduct(id: string, etag: string): Promise<any> {
 export async function rejectProduct(
   id: string,
   etag: string,
-  payload: RejectProductRequest
+  payload: RejectProductRequest,
 ): Promise<any> {
   return request<ApiResponse<any>>({
     url: `/${API_ENDPOINT_PRODUCTS}/${id}/reject`,
@@ -31,7 +31,7 @@ export async function rejectProduct(
 }
 
 export async function getPendingApprovalProducts(
-  params?: GetAllProductsAdmin
+  params?: GetAllProductsAdmin,
 ): Promise<any> {
   return request<ApiResponse<any>>({
     url: `/${API_ENDPOINT_PRODUCTS}/pending`,
@@ -42,7 +42,7 @@ export async function getPendingApprovalProducts(
 
 export async function getProductsByApprovalStatus(
   status: string,
-  params?: GetAllProductsAdmin
+  params?: GetAllProductsAdmin,
 ): Promise<any> {
   return request<ApiResponse<any>>({
     url: `/${API_ENDPOINT_PRODUCTS}/status/${status}`,
@@ -54,7 +54,7 @@ export async function getProductsByApprovalStatus(
 export async function setProductActiveStatus(
   id: string,
   etag: string,
-  active: boolean
+  active: boolean,
 ): Promise<any> {
   return request<ApiResponse<any>>({
     url: `/${API_ENDPOINT_PRODUCTS}/${id}/active`,
@@ -79,7 +79,7 @@ export async function restoreProduct(id: string): Promise<any> {
 }
 
 export async function getAllProducts(
-  params?: GetAllProductsAdmin
+  params?: GetAllProductsAdmin,
 ): Promise<any> {
   return request<ApiResponse<any>>({
     url: `/${API_ENDPOINT_PRODUCTS}`,
@@ -113,7 +113,7 @@ export async function getDeletedProducts(params?: ParamRequest): Promise<any> {
 }
 
 export async function getAllProductsAdmin(
-  payload: GetAllProductsAdmin
+  payload: GetAllProductsAdmin,
 ): Promise<any> {
   return request<ApiResponse<any>>({
     url: `/${API_ENDPOINT_PRODUCTS}/search`,
@@ -124,7 +124,7 @@ export async function getAllProductsAdmin(
 
 export async function getProductsByUser(
   userId: string,
-  params?: ParamRequest
+  params?: ParamRequest,
 ): Promise<any> {
   return request<ApiResponse<any>>({
     url: `/${API_ENDPOINT_PRODUCTS}/user/${userId}`,
@@ -135,7 +135,7 @@ export async function getProductsByUser(
 
 export async function getProductsByShop(
   shopId: string,
-  params?: ParamRequest
+  params?: ParamRequest,
 ): Promise<any> {
   return request<ApiResponse<any>>({
     url: `/${API_ENDPOINT_PRODUCTS}/shop/${shopId}`,
@@ -161,9 +161,12 @@ export async function getApprovalStatistics(): Promise<any> {
 export async function getProductsRequiringAttention(
   params?: ParamRequest
 ): Promise<any> {
+  // Bóc tách sort ra để không gửi lên server nếu nó gây lỗi 500
+  const { sort, ...restParams } = params || {};
+
   return request<ApiResponse<any>>({
     url: `/${API_ENDPOINT_PRODUCTS}/attention`,
     method: "GET",
-    params,
+    params: restParams, // Chỉ gửi page, size và filter khác
   });
 }

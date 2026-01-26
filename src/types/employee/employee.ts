@@ -42,6 +42,8 @@ export const workerTypeLabelMap: Record<WorkerType, string> = {
   PROBATION: "Thử việc",
   INTERN: "Thực tập",
   CONTRACTUAL: "Hợp đồng",
+  
+
 };
 
 export type Employee = {

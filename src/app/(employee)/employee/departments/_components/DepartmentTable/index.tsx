@@ -1,151 +1,176 @@
 "use client";
 
-import React, { useState } from "react";
-import { 
-  Edit2, Eye, RotateCw, Eraser, Plus, Search, 
-  Building2, Briefcase, Users, ChevronRight 
+import React, { useState, useMemo } from "react";
+import {
+  RotateCw,
+  Eraser,
+  Plus,
+  Search,
+  Building2,
+  Briefcase,
+  Users,
 } from "lucide-react";
-import dayjs from "dayjs";
 import { useDepartmentTable } from "../../_hooks/useDepartmentTable";
 import { Department } from "../../_types/department.type";
 import DepartmentDetail from "../DepartmentDetail";
 import DepartmentForm from "../DepartmentForm";
-import { DataTable, ActionBtn, StatCardComponents } from "@/components";
-import { SelectComponent } from "@/components";
-import { Column } from "@/components/DataTable/type";
+import {
+  DataTable,
+  StatCardComponents,
+  ButtonField,
+  FormInput,
+  SelectComponent,
+} from "@/components";
 import { cn } from "@/utils/cn";
+import { getDepartmentColumns } from "./colum";
 
 export default function DepartmentTable() {
   const logic = useDepartmentTable();
-  const [detailModal, setDetailModal] = useState<{ open: boolean; id: string | null }>({ open: false, id: null });
-  const [formModal, setFormModal] = useState<{ open: boolean; data: Department | null }>({ open: false, data: null });
 
-  const columns: Column<Department>[] = [
-    {
-      header: "Phòng ban",
-      render: (row) => (
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-500 shadow-sm">
-            <Building2 size={20} />
-          </div>
-          <div>
-            <p className="font-semibold text-gray-900 tracking-tight leading-none">{row.departmentName}</p>
-            <p className="text-[10px] text-gray-600 font-bold uppercase tracking-widest mt-1.5 flex items-center gap-1">
-               ID: {row.departmentId.split('-')[0]}
-            </p>
-          </div>
-        </div>
-      )
-    },
-    {
-      header: "Mô tả",
-      render: (row) => (
-        <p className="text-xs text-gray-500 line-clamp-1 max-w-75 italic">
-          {row.description || "Chưa có mô tả..."}
-        </p>
-      )
-    },
-    {
-      header: "Ngày khởi tạo",
-      align: "center",
-      render: (row) => (
-        <span className="text-[11px] font-semibold text-gray-600 uppercase tracking-tighter">
-          {dayjs(row.createdDate).format("DD/MM/YYYY")}
-        </span>
-      )
-    },
-    {
-      header: "Quản trị",
-      align: "right",
-      render: (row) => (
-        <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0">
-          <ActionBtn 
-            onClick={() => setFormModal({ open: true, data: row })} 
-            icon={<Edit2 size={14}/>} 
-            color="hover:text-blue-500" 
-          />
-          <ActionBtn 
-            onClick={() => setDetailModal({ open: true, id: row.departmentId })} 
-            icon={<Eye size={14}/>} 
-            color="hover:text-orange-500" 
-          />
-        </div>
-      )
-    }
-  ];
+  const [detailModal, setDetailModal] = useState<{
+    open: boolean;
+    id: string | null;
+  }>({
+    open: false,
+    id: null,
+  });
+  const [formModal, setFormModal] = useState<{
+    open: boolean;
+    data: Department | null;
+  }>({
+    open: false,
+    data: null,
+  });
+
+  const columns = useMemo(
+    () =>
+      getDepartmentColumns({
+        onEdit: (row) => setFormModal({ open: true, data: row }),
+        onView: (id) => setDetailModal({ open: true, id: id }),
+      }),
+    [],
+  );
 
   const tableHeader = (
     <div className="w-full space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="relative group flex-1 max-w-md">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-orange-500 transition-colors" size={18} />
-          <input
-            type="text"
-            placeholder="Truy vấn tên phòng ban..."
-            className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl focus:bg-white focus:ring-4 focus:ring-orange-500/5 outline-none transition-all text-sm font-bold shadow-inner"
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        {/* Search Bar */}
+        <div className="relative group flex-1 max-w-lg">
+          <Search
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-orange-500 transition-colors z-10"
+            size={18}
+          />
+          <FormInput
+            placeholder="Truy vấn mã định danh hoặc tên phòng ban..."
             value={logic.searchText}
             onChange={(e) => logic.setSearchText(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && logic.fetchList(logic.searchText, 0)}
+            onKeyDown={(e) =>
+              e.key === "Enter" && logic.fetchList(logic.searchText, 0)
+            }
+            className="pl-12 h-14 bg-gray-50/80 rounded-[1.25rem] border-transparent focus:bg-white focus:ring-4 focus:ring-orange-500/10 transition-all shadow-custom font-bold"
           />
         </div>
-        
-        <div className="flex gap-3">
-          <SelectComponent 
-            options={[10, 20, 50].map(v => ({ label: `Hiện ${v}`, value: String(v) }))}
+
+        {/* Actions & PageSize */}
+        <div className="flex items-center gap-2">
+          <SelectComponent
+            options={[10, 20, 50].map((v) => ({
+              label: `Hiện ${v} bản ghi`,
+              value: String(v),
+            }))}
             value={String(logic.pagination.pageSize)}
             onChange={(v) => logic.fetchList(logic.searchText, 0, Number(v))}
-            className="w-32"
+            className="w-44 h-12 rounded-2xl border-gray-100 shadow-sm"
           />
-          <button onClick={logic.refresh} className="p-3.5 bg-white text-gray-600 hover:text-orange-500 rounded-2xl border border-gray-100 shadow-sm transition-all active:scale-90">
-            <RotateCw size={20} className={cn(logic.loading && "animate-spin")} />
-          </button>
-          <button onClick={() => { logic.setSearchText(""); logic.fetchList("", 0); }} className="p-3.5 bg-white text-gray-600 hover:text-red-500 rounded-2xl border border-gray-100 shadow-sm transition-all active:scale-90">
-            <Eraser size={20} />
-          </button>
+
+          <div className="flex p-1 bg-white rounded-2xl border border-gray-100 shadow-sm">
+            <button
+              onClick={logic.refresh}
+              className="p-2.5 text-gray-500 hover:text-orange-500 hover:bg-orange-50 rounded-xl transition-all"
+              title="Làm mới"
+            >
+              <RotateCw
+                size={18}
+                className={cn(logic.loading && "animate-spin")}
+              />
+            </button>
+            <button
+              onClick={() => {
+                logic.setSearchText("");
+                logic.fetchList("", 0);
+              }}
+              className="p-2.5 text-gray-500 hover:text-rose-500 hover:bg-rose-50 rounded-xl transition-all"
+              title="Xóa bộ lọc"
+            >
+              <Eraser size={18} />
+            </button>
+          </div>
         </div>
       </div>
     </div>
   );
 
   return (
-    <div className="p-8 bg-[#F8FAFC] min-h-screen space-y-10 animate-in fade-in duration-700">
-      {/* 1. Header Area */}
+    <div className="min-h-screen space-y-8 animate-in fade-in duration-700">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
         <div className="space-y-1">
-          <h1 className="text-5xl font-semibold text-gray-900 tracking-tighter uppercase italic leading-none">
-            Phòng <span className="text-orange-500 underline decoration-4 underline-offset-8">Ban</span>
+          <h1 className="text-5xl font-bold text-gray-900 tracking-tighter uppercase italic leading-none">
+            Phòng <span className="text-orange-500">Ban</span>
           </h1>
-          <p className="text-gray-600 text-xs font-bold uppercase tracking-[0.3em] mt-3">Cấu trúc tổ chức hệ thống Calatha</p>
+          <p className="text-gray-400 text-[10px] font-bold uppercase tracking-[0.4em] mt-3">
+            Hệ thống quản trị nhân sự tập trung Calatha
+          </p>
         </div>
-        <button 
+
+        <ButtonField
+          type="login"
+          className="w-56! h-14 text-sm font-bold rounded-[1.25rem] shadow-xl shadow-orange-500/20 transition-all active:scale-95 border-0"
           onClick={() => setFormModal({ open: true, data: null })}
-          className="bg-gray-900 hover:bg-orange-500 text-white px-8 py-4 rounded-2xl font-semibold uppercase text-xs tracking-widest transition-all duration-500 shadow-2xl shadow-gray-200 flex items-center gap-2 active:scale-95"
         >
-          <Plus size={18} strokeWidth={3} /> Thêm phòng ban
-        </button>
+          <span className="flex gap-2 items-center">
+            <Plus size={20} strokeWidth={4} /> KHỞI TẠO PHÒNG BAN
+          </span>
+        </ButtonField>
       </div>
 
-      {/* 2. Quick Statistics */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <StatCardComponents label="Tổng phòng ban" value={logic.statistics?.totalDepartments ?? 0} icon={<Building2 />} color="text-gray-900" />
-        <StatCardComponents label="Tổng chức vụ" value={logic.statistics?.totalPositions ?? 0} icon={<Briefcase />} color="text-blue-500" />
-        <StatCardComponents label="Tổng nhân sự" value={logic.statistics?.totalEmployees ?? 0} icon={<Users />} color="text-emerald-500" />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <StatCardComponents
+          label="Tổng phòng ban"
+          value={logic.statistics?.totalDepartments ?? 0}
+          icon={<Building2 />}
+          color="text-orange-600"
+          trend={5}
+        />
+        <StatCardComponents
+          label="Tổng chức vụ"
+          value={logic.statistics?.totalPositions ?? 0}
+          icon={<Briefcase />}
+          color="text-gray-900"
+          trend={12}
+        />
+        <StatCardComponents
+          label="Tổng nhân sự"
+          value={logic.statistics?.totalEmployees ?? 0}
+          icon={<Users />}
+          color="text-emerald-600"
+          trend={8}
+        />
       </div>
 
-      {/* 3. Main Data Workspace */}
-      <DataTable
-        data={logic.departments}
-        columns={columns}
-        loading={logic.loading}
-        rowKey="departmentId"
-        page={logic.pagination.current}
-        size={logic.pagination.pageSize}
-        totalElements={logic.pagination.total}
-        onPageChange={(p) => logic.fetchList(logic.searchText, p)}
-        headerContent={tableHeader}
-      />
+      <div className="bg-white rounded-3xl p-4 border border-gray-100 shadow-custom overflow-hidden">
+        <DataTable
+          data={logic.departments}
+          columns={columns}
+          loading={logic.loading}
+          rowKey="departmentId"
+          page={logic.pagination.current}
+          size={logic.pagination.pageSize}
+          totalElements={logic.pagination.total}
+          onPageChange={(p) => logic.fetchList(logic.searchText, p)}
+          headerContent={tableHeader}
+        />
+      </div>
 
-      {/* 4. Modals */}
       <DepartmentDetail
         open={detailModal.open}
         departmentId={detailModal.id}

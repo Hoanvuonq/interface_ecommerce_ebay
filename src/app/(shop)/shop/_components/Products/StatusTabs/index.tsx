@@ -25,8 +25,8 @@ export const StatusTabs = <T extends string>({
   className,
 }: StatusTabsProps<T>) => {
   return (
-    <div className={cn("w-full overflow-x-auto no-scrollbar pb-2", className)}>
-      <div className="relative inline-flex bg-white p-1.5 rounded-2xl border border-gray-200 gap-1">
+    <div className={cn("w-full overflow-x-auto no-scrollbar pb-2 px-1", className)}>
+      <div className="relative shadow-custom inline-flex bg-white p-1.5 rounded-2xl gap-1">
         {tabs.map((tab) => {
           const isActive = current === tab.key;
           const Icon = tab.icon;

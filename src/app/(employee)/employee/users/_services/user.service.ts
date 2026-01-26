@@ -1,12 +1,34 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { GetUsersByRoleEmployeeRequest, GetUsersRequest, UpdateUserRequest } from "../_types/dto/user.dto";
+import {
+  GetUsersByRoleEmployeeRequest,
+  GetUsersRequest,
+  UpdateUserRequest,
+} from "../_types/dto/user.dto";
 import { request } from "@/utils/axios.customize";
 import { ApiResponse } from "@/api/_types/api.types";
 
 const API_ENDPOINT_ACCOUNT = "v1/users";
 const API_ENDPOINT_ROLE = "v1/roles";
 
-export async function getAllUsers(payload: GetUsersRequest): Promise<ApiResponse<any>> {
+export const generateIdempotencyKey = () => {
+  if (
+    typeof crypto !== "undefined" &&
+    typeof crypto.randomUUID === "function"
+  ) {
+    try {
+      return crypto.randomUUID();
+    } catch (e) {}
+  }
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+};
+
+export async function getAllUsers(
+  payload: GetUsersRequest,
+): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
     url: `/${API_ENDPOINT_ACCOUNT}`,
     method: "GET",
@@ -14,33 +36,41 @@ export async function getAllUsers(payload: GetUsersRequest): Promise<ApiResponse
   });
 }
 
-export async function getUserDetailById(userId: string): Promise<ApiResponse<any>> {
+export async function getUserDetailById(
+  userId: string,
+): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
     url: `/${API_ENDPOINT_ACCOUNT}/${userId}`,
-    method: "GET"
+    method: "GET",
   });
 }
 
 export async function unLockUser(userId: string): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
     url: `/${API_ENDPOINT_ACCOUNT}/${userId}/unlock`,
-    method: "PATCH"
+    method: "PATCH",
   });
 }
 
-export async function lockUser(userId: string, reason: string): Promise<ApiResponse<any>> {
+export async function lockUser(
+  userId: string,
+  reason: string,
+): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
     url: `/${API_ENDPOINT_ACCOUNT}/${userId}/lock`,
     method: "PATCH",
-    params: { reason }
+    params: { reason },
   });
 }
 
-export async function updateUser(userId: string, payload: UpdateUserRequest): Promise<ApiResponse<any>> {
+export async function updateUser(
+  userId: string,
+  payload: UpdateUserRequest,
+): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
     url: `/${API_ENDPOINT_ACCOUNT}/${userId}`,
-    method: "PATCH",
-    data: payload
+    method: "PUT",
+    data: payload,
   });
 }
 
@@ -58,7 +88,10 @@ export async function getUserStatistics(): Promise<ApiResponse<any>> {
   });
 }
 
-export async function getUserStatisticsTime(year: number, month: number): Promise<ApiResponse<any>> {
+export async function getUserStatisticsTime(
+  year: number,
+  month: number,
+): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
     url: `/${API_ENDPOINT_ACCOUNT}/statistics/time`,
     method: "GET",
@@ -66,29 +99,41 @@ export async function getUserStatisticsTime(year: number, month: number): Promis
   });
 }
 
-export async function getUserStatisticsBehavior(year: number, month: number): Promise<ApiResponse<any>> {
+export async function getUserStatisticsBehavior(
+  year: number,
+  month: number,
+): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
     url: `/${API_ENDPOINT_ACCOUNT}/statistics/behavior`,
     method: "GET",
     params: { year, month },
+    headers: {
+      "Idempotency-Key": generateIdempotencyKey(),
+    },
   });
 }
 
-export async function getUserStatisticsAvailableLogins(): Promise<ApiResponse<any>> {
+export async function getUserStatisticsAvailableLogins(): Promise<
+  ApiResponse<any>
+> {
   return request<ApiResponse<any>>({
     url: `/${API_ENDPOINT_ACCOUNT}/statistics/available-logins`,
     method: "GET",
   });
 }
 
-export async function getUserStatisticsAvailableUsers(): Promise<ApiResponse<any>> {
+export async function getUserStatisticsAvailableUsers(): Promise<
+  ApiResponse<any>
+> {
   return request<ApiResponse<any>>({
     url: `/${API_ENDPOINT_ACCOUNT}/statistics/available-users`,
     method: "GET",
   });
 }
 
-export async function getAllUsersByRoleEmployee(payload: GetUsersByRoleEmployeeRequest): Promise<ApiResponse<any>> {
+export async function getAllUsersByRoleEmployee(
+  payload: GetUsersByRoleEmployeeRequest,
+): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
     url: `/${API_ENDPOINT_ACCOUNT}/roles`,
     method: "GET",

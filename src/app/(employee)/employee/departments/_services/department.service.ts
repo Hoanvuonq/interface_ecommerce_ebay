@@ -7,12 +7,13 @@ import {
 } from "../_types/dto/department.dto";
 import { request } from "@/utils/axios.customize";
 import { ApiResponse } from "@/api/_types/api.types";
+import { generateIdempotencyKey } from "../../users/_services/user.service";
 
 const API_ENDPOINT_DEPARTMENT = "v1/departments";
 
 // Department APIs
 export async function getAllDepartments(
-  payload?: GetAllDepartmentsRequest
+  payload?: GetAllDepartmentsRequest,
 ): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
     url: `/${API_ENDPOINT_DEPARTMENT}`,
@@ -22,16 +23,19 @@ export async function getAllDepartments(
 }
 
 export async function getDepartmentDetailById(
-  departmentId: string
+  departmentId: string,
 ): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
     url: `/${API_ENDPOINT_DEPARTMENT}/${departmentId}`,
     method: "GET",
+    headers: {
+      "Idempotency-Key": generateIdempotencyKey(),
+    },
   });
 }
 
 export async function createDepartment(
-  payload: CreateDepartmentRequest
+  payload: CreateDepartmentRequest,
 ): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
     url: `/${API_ENDPOINT_DEPARTMENT}`,
@@ -42,7 +46,7 @@ export async function createDepartment(
 
 export async function updateDepartment(
   departmentId: string,
-  payload: UpdateDepartmentRequest
+  payload: UpdateDepartmentRequest,
 ): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
     url: `/${API_ENDPOINT_DEPARTMENT}/${departmentId}`,
@@ -53,7 +57,7 @@ export async function updateDepartment(
 
 // Position APIs
 export async function getAllPositionsByDepartment(
-  departmentId: string
+  departmentId: string,
 ): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
     url: `/${API_ENDPOINT_DEPARTMENT}/${departmentId}/positions`,
@@ -63,7 +67,7 @@ export async function getAllPositionsByDepartment(
 
 export async function addPositionToDepartment(
   departmentId: string,
-  payload: CreatePositionRequest
+  payload: CreatePositionRequest,
 ): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
     url: `/${API_ENDPOINT_DEPARTMENT}/${departmentId}/positions`,
@@ -74,7 +78,7 @@ export async function addPositionToDepartment(
 
 export async function addListPositionToDepartment(
   departmentId: string,
-  payload: CreatePositionRequest[]
+  payload: CreatePositionRequest[],
 ): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
     url: `/${API_ENDPOINT_DEPARTMENT}/${departmentId}/positions/list`,
@@ -85,7 +89,7 @@ export async function addListPositionToDepartment(
 
 export async function removePositionFromDepartment(
   departmentId: string,
-  positionId: string
+  positionId: string,
 ): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
     url: `/${API_ENDPOINT_DEPARTMENT}/${departmentId}/positions/${positionId}`,

@@ -12,6 +12,7 @@ import {
   ShoppingBag,
   ChevronDown,
   ArrowLeft,
+  Info,
 } from "lucide-react";
 import Image from "next/image";
 import { useWishlist } from "@/app/(main)/wishlist/_hooks/useWishlist";
@@ -23,15 +24,17 @@ import {
 } from "@/utils/products/media.helpers";
 import { cn } from "@/utils/cn";
 import { PRIORITY_TEXT } from "@/types/wishlist/wishlist.types";
-import { CustomButton } from "@/components/button";
 import { PortalModal } from "@/features/PortalModal";
-import { SelectComponent } from "@/components";
+import {
+  SelectComponent,
+  SectionHeader,
+  FormInput,
+  ButtonField,
+} from "@/components";
 import {
   AddToWishlistModalProps,
   WishlistFormData,
 } from "../../_types/modalAddWishList";
-import { SectionHeader } from "@/components";
-import { ButtonField } from "@/components";
 import { Button } from "@/components/button/button";
 import { useToast } from "@/hooks/useToast";
 
@@ -52,7 +55,7 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
     desiredPrice: "",
     notes: "",
   });
-  const { success, error ,warning} = useToast();
+  const { success, error, warning } = useToast();
   const [creatingWishlist, setCreatingWishlist] = useState(false);
   const [wishlists, setWishlists] = useState<any[]>([]);
   const [showCreateForm, setShowCreateForm] = useState(false);
@@ -63,7 +66,6 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
   const [previewImage, setPreviewImage] = useState<string>("");
   const [assetId, setAssetId] = useState<string>("");
 
-  // Hooks
   const {
     getBuyerWishlists,
     createWishlist,
@@ -123,7 +125,6 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
   const handleCreateWishlist = async () => {
     if (!formData.newWishlistName)
       return warning("Vui lòng nhập tên danh sách");
-
     setCreatingWishlist(true);
     try {
       const res = await createWishlist({
@@ -152,7 +153,6 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
     if (!formData.wishlistId || !selectedVariantId) {
       return error("Vui lòng chọn biến thể và danh sách lưu trữ");
     }
-
     setSubmitting(true);
     try {
       const res = await addToWishlist(formData.wishlistId, {
@@ -164,7 +164,6 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
           ? parseFloat(formData.desiredPrice)
           : undefined,
       });
-
       if (res.success) {
         success("Đã thêm vào wishlist!");
         onSuccess?.();
@@ -177,111 +176,100 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
 
   if (!product) return null;
 
-  const renderHeader = (
-    <div className="flex items-center gap-4">
-      <div className="p-3 bg-linear-to-br from-orange-100 to-amber-50 rounded-2xl text-orange-600 shadow-inner">
-        <Heart size={24} className="fill-orange-500/20" />
-      </div>
-      <div>
-        <h4 className="text-lg font-semibold uppercase tracking-tight text-gray-900">
-          Thêm vào Wishlist
-        </h4>
-        <p className="text-xs text-gray-500 font-medium flex items-center gap-1">
-          <Sparkles size={12} className="text-orange-400" />
-          Lưu lại sản phẩm bạn yêu thích
-        </p>
-      </div>
-    </div>
-  );
-
-  const renderFooter = (
-    <>
-      <Button variant="edit" onClick={onCancel} className="text-base!">
-        Đóng
-      </Button>
-      <ButtonField
-        htmlType="submit"
-        type="login"
-        form="add-to-wishlist-form"
-        loading={submitting || wishlistLoading}
-        className="w-50 text-base!"
-      >
-        <span className="flex items-center gap-2">
-          <Heart size={18} className="fill-white/20" />
-          Lưu Ngay
-        </span>
-      </ButtonField>
-    </>
-  );
-
   return (
     <PortalModal
       isOpen={open}
       onClose={onCancel}
-      title={renderHeader}
-      footer={renderFooter}
-      width="max-w-xl"
-      className="rounded-4xl"
+      title={
+        <div className="flex items-center gap-4">
+          <div className="p-3 bg-orange-100 text-orange-600 rounded-2xl">
+            <Heart size={22} className="fill-orange-500/20" />
+          </div>
+          <div>
+            <h4 className="text-lg font-bold uppercase tracking-tight text-gray-900">
+              Wishlist
+            </h4>
+            <p className="text-[10px] text-gray-500 font-bold uppercase flex items-center gap-1">
+              <Sparkles size={10} className="text-orange-500 animate-pulse" />
+              Bộ sưu tập cá nhân
+            </p>
+          </div>
+        </div>
+      }
+      footer={
+        <div className="flex justify-end gap-3 w-full border-t border-gray-100 pt-4 mt-2">
+          <Button
+            variant="edit"
+            onClick={onCancel}
+            className="rounded-xl px-8 border-gray-200"
+          >
+            Hủy bỏ
+          </Button>
+          <ButtonField
+            htmlType="submit"
+            type="login"
+            form="add-to-wishlist-form"
+            loading={submitting || wishlistLoading}
+            className="w-52 rounded-xl h-11 text-sm font-bold shadow-lg shadow-orange-500/20 border-0"
+          >
+            <span className="flex items-center gap-2">
+              <Heart size={18} className="fill-white/20" /> Lưu vào danh sách
+            </span>
+          </ButtonField>
+        </div>
+      }
+      width="max-w-2xl"
     >
       <form
         id="add-to-wishlist-form"
         onSubmit={handleSubmit}
         className="space-y-8 py-2"
       >
-        <section>
-          <SectionHeader
-            icon={<ShoppingBag size={14} />}
-            title="Chọn Phiên Bản"
-          />
-          <div className="grid grid-cols-3 gap-3">
+        {/* SECTION 1: VARIANT SELECTION */}
+        <div className="space-y-4">
+          <SectionHeader icon={ShoppingBag} title="Chọn Phiên Bản" />
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
             {product.variants?.map((v: any) => {
               const isSelected = selectedVariantId === v.id;
               const img =
                 resolveVariantImageUrl(v, "_thumb") ||
                 resolveMediaUrl(product.media?.[0], "_thumb");
-
               return (
                 <div
                   key={v.id}
                   onClick={() => setSelectedVariantId(v.id)}
                   className={cn(
-                    "group relative p-2 rounded-2xl border transition-all cursor-pointer bg-white overflow-hidden text-left",
+                    "group relative p-2.5 rounded-2xl border transition-all cursor-pointer bg-white overflow-hidden",
                     isSelected
-                      ? "border-gray-500 bg-orange-50/10 ring-2 ring-orange-500/20 shadow-md"
-                      : "border-gray-100 hover:border-gray-200 hover:shadow-sm",
+                      ? "border-orange-500 ring-4 ring-orange-500/10 shadow-xl shadow-orange-500/5 translate-y-0.5"
+                      : "border-gray-100 hover:border-orange-200 hover:shadow-md",
                   )}
                 >
-                  <div className="aspect-square rounded-xl overflow-hidden bg-gray-50 mb-2 relative">
-                    {img ? (
-                      <Image
-                        src={img}
-                        alt="variant"
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                        unoptimized
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-gray-500">
-                        <ShoppingBag size={20} />
-                      </div>
-                    )}
+                  <div className="aspect-square rounded-2xl overflow-hidden bg-gray-50 mb-2 relative">
+                    <Image
+                      src={img}
+                      alt="v"
+                      fill
+                      className="object-cover"
+                      unoptimized
+                    />
                     {isSelected && (
-                      <div className="absolute top-1 right-1 bg-orange-500 text-white p-1 rounded-full shadow-lg animate-in zoom-in duration-300">
-                        <CheckCircle2 size={10} strokeWidth={4} />
+                      <div className="absolute top-2 right-2 bg-orange-500 text-white p-1 rounded-full shadow-lg">
+                        <CheckCircle2 size={12} strokeWidth={3} />
                       </div>
                     )}
                   </div>
-                  <div className="space-y-0.5 px-1">
+                  <div className="space-y-1 px-1">
                     <p
                       className={cn(
-                        "text-[10px] font-bold line-clamp-1",
-                        isSelected ? "text-orange-700" : "text-gray-600",
+                        "text-[10px] font-bold truncate uppercase tracking-tight",
+                        isSelected ? "text-orange-600" : "text-gray-500",
                       )}
                     >
                       {v.optionValues?.map((o: any) => o.name).join(" / ") ||
                         "Default"}
                     </p>
-                    <p className="text-xs font-semibold text-gray-900">
+                    <p className="text-xs font-bold text-gray-900">
                       {new Intl.NumberFormat("vi-VN").format(v.price)}đ
                     </p>
                   </div>
@@ -289,17 +277,18 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
               );
             })}
           </div>
-        </section>
+        </div>
 
-        <section className="bg-gray-50/50 p-4 rounded-3xl border border-gray-100">
+        {/* SECTION 2: WISHLIST SELECTION */}
+        <div className="p-6 rounded-[2.5rem] bg-orange-50/40 border border-orange-100/50 space-y-6">
           {!showCreateForm ? (
-            <div className="space-y-3">
-              <SectionHeader
-                icon={<Heart size={14} />}
-                title="Lưu vào danh sách"
-              />
-              <div className="flex gap-3">
-                <div className="relative flex-1 group">
+            <div className="space-y-4">
+              <SectionHeader icon={Heart} title="Danh mục lưu trữ" />
+              <div className="flex gap-3 items-end">
+                <div className="flex-1">
+                  <label className="text-[11px] font-bold uppercase text-gray-500 ml-1 mb-2 block">
+                    Chọn danh sách sẵn có
+                  </label>
                   <SelectComponent
                     options={wishlistOptions}
                     value={formData.wishlistId}
@@ -307,55 +296,54 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
                       setFormData({ ...formData, wishlistId: val })
                     }
                     placeholder="-- Chọn danh sách --"
+                    className="rounded-2xl border-gray-200 h-12 shadow-sm"
                   />
                 </div>
-
                 <button
                   type="button"
                   onClick={() => setShowCreateForm(true)}
-                  className="aspect-square h-11 flex items-center justify-center bg-white border border-dashed border-gray-300 text-orange-500 rounded-xl hover:bg-orange-50 hover:border-gray-500 transition-all active:scale-95 shadow-sm"
-                  title="Tạo danh sách mới"
+                  className="w-12 h-12 flex items-center justify-center bg-orange-500 text-white rounded-2xl hover:bg-orange-600 transition-all active:scale-95 shadow-lg shadow-orange-200"
                 >
-                  <Plus size={24} />
+                  <Plus size={24} strokeWidth={3} />
                 </button>
               </div>
             </div>
           ) : (
-            <div className="animate-in slide-in-from-right-8 duration-300">
-              <div className="flex items-center justify-between mb-4">
+            <div className="animate-in slide-in-from-right-4 duration-300">
+              <div className="flex items-center justify-between mb-4 border-b border-orange-100 pb-2">
                 <button
                   type="button"
                   onClick={() => setShowCreateForm(false)}
-                  className="flex items-center gap-1 text-xs font-bold text-gray-500 hover:text-gray-800 transition-colors"
+                  className="flex items-center gap-1 text-[11px] font-bold text-gray-500 hover:text-orange-600"
                 >
-                  <ArrowLeft size={14} /> Quay lại
+                  <ArrowLeft size={14} strokeWidth={3} /> QUAY LẠI
                 </button>
-                <span className="text-xs font-semibold uppercase text-orange-500 tracking-wider">
-                  Tạo Mới
-                </span>
+                <SectionHeader
+                  icon={Plus}
+                  title="Danh sách mới"
+                  className="mb-0!"
+                />
               </div>
-
-              <div className="flex gap-4">
-                {/* Upload Ảnh Bìa */}
-                <label className="shrink-0 w-20 h-20 rounded-2xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center bg-white cursor-pointer hover:border-gray-500 hover:bg-orange-50/30 transition-all group relative overflow-hidden">
+              <div className="flex flex-col sm:flex-row gap-5 items-start">
+                <label className="shrink-0 w-24 h-24 rounded-4xl border-2 border-dashed border-orange-200 flex flex-col items-center justify-center bg-white cursor-pointer hover:bg-orange-50 transition-all group overflow-hidden relative shadow-inner">
                   {previewImage ? (
                     <Image
                       src={previewImage}
-                      alt="Cover"
+                      alt="C"
                       fill
                       className="object-cover"
                       unoptimized
                     />
                   ) : (
-                    <>
+                    <div className="text-center p-2">
                       <Camera
                         size={20}
-                        className="text-gray-600 group-hover:text-orange-500 mb-1"
+                        className="text-orange-400 mx-auto mb-1"
                       />
-                      <span className="text-[9px] font-bold text-gray-600 group-hover:text-orange-500">
+                      <span className="text-[8px] font-bold uppercase text-gray-400">
                         Ảnh bìa
                       </span>
-                    </>
+                    </div>
                   )}
                   <input
                     type="file"
@@ -366,11 +354,10 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
                     }
                   />
                 </label>
-
-                <div className="flex-1 space-y-2">
-                  <input
-                    placeholder="Tên danh sách mới..."
-                    className="w-full bg-white border border-gray-200 p-3 rounded-xl text-sm font-bold outline-none focus:border-gray-500 focus:ring-2 focus:ring-orange-100 placeholder:font-normal"
+                <div className="flex-1 w-full space-y-4">
+                  <FormInput
+                    label="Tên danh sách"
+                    placeholder="Ví dụ: Đồ decor phòng ngủ..."
                     value={formData.newWishlistName}
                     onChange={(e) =>
                       setFormData({
@@ -378,103 +365,93 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
                         newWishlistName: e.target.value,
                       })
                     }
-                    autoFocus
+                    required
                   />
-
                   <ButtonField
-                    htmlType="submit"
                     type="login"
-                    form="add-to-wishlist-form"
                     loading={creatingWishlist}
                     onClick={handleCreateWishlist}
-                    className="w-30 m-auto text-xs! rounded-full!"
+                    className="w-full sm:w-32 h-10 text-[10px] uppercase font-bold rounded-full border-0"
                   >
-                    Tạo Ngay
+                    Tạo & Chọn
                   </ButtonField>
                 </div>
               </div>
             </div>
           )}
-        </section>
+        </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <SectionHeader icon={<Plus size={14} />} title="Số lượng" />
-            <input
-              type="number"
-              min={1}
-              className="w-full h-11 px-3 bg-white border border-gray-200 rounded-xl outline-none focus:border-gray-500 focus:ring-2 focus:ring-orange-100 text-sm font-bold text-center transition-all"
-              value={formData.quantity}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  quantity: parseInt(e.target.value) || 1,
-                })
-              }
-            />
-          </div>
-          <div>
-            <SectionHeader
-              icon={<CheckCircle2 size={14} />}
-              title="Mức độ ưu tiên"
-            />
+        {/* SECTION 3: QUANTITY & PRIORITY */}
+        <div className="grid grid-cols-2 gap-5">
+          <FormInput
+            type="number"
+            label="Số lượng muốn lưu"
+            min={1}
+            value={formData.quantity}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                quantity: parseInt(e.target.value) || 1,
+              })
+            }
+          />
+          <div className="space-y-2">
+            <label className="text-[12px] font-bold text-gray-700 ml-1">
+              Mức độ ưu tiên
+            </label>
             <SelectComponent
               options={priorityOptions}
               value={formData.priority.toString()}
               onChange={(val) =>
                 setFormData({ ...formData, priority: parseInt(val) || 0 })
               }
-              placeholder="-- Mức độ ưu tiên --"
+              placeholder="Ưu tiên thấp"
+              className="rounded-2xl border-gray-200 h-12 shadow-sm"
             />
           </div>
         </div>
 
-        <details className="group border border-gray-100 rounded-2xl overflow-hidden bg-white shadow-sm transition-all open:ring-2 open:ring-orange-50 open:border-gray-200">
-          <summary className="p-4 cursor-pointer list-none flex justify-between items-center bg-gray-50/50 hover:bg-gray-50 transition-colors">
-            <div className="flex items-center gap-2">
-              <div className="bg-white p-1 rounded-md shadow-sm text-orange-500">
-                <FileText size={14} />
+        {/* SECTION 4: ADVANCED INFO (Collapsible) */}
+        <details className="group border border-orange-100 rounded-4xl overflow-hidden bg-white shadow-sm transition-all open:ring-4 open:ring-orange-500/5">
+          <summary className="p-4 cursor-pointer list-none flex justify-between items-center bg-gray-50/50 hover:bg-orange-50 transition-colors">
+            <div className="flex items-center gap-3">
+              <div className="bg-orange-100 p-2 rounded-xl text-orange-600">
+                <FileText size={16} strokeWidth={2.5} />
               </div>
-              <span className="text-[10px] font-semibold uppercase tracking-widest text-gray-500">
-                Ghi chú & Giá mục tiêu
+              <span className="text-[11px] font-bold uppercase tracking-widest text-gray-600">
+                Thông tin bổ sung
               </span>
             </div>
             <ChevronDown
-              size={16}
-              className="text-gray-600 group-open:rotate-180 transition-transform duration-300"
+              size={18}
+              className="text-gray-400 group-open:rotate-180 transition-transform duration-500"
             />
           </summary>
-
-          <div className="p-4 space-y-4 bg-white animate-in slide-in-from-top-2">
-            <div>
-              <label className="text-xs font-bold text-gray-500 mb-1.5 flex items-center gap-1">
-                <DollarSign size={12} /> Giá mong muốn săn được
-              </label>
-              <div className="relative">
-                <input
-                  type="number"
-                  placeholder="Nhập giá (VNĐ)"
-                  className="w-full pl-3 pr-3 py-2.5 bg-gray-50 border-0 rounded-xl text-sm font-bold focus:ring-2 focus:ring-orange-500/20 text-orange-600 placeholder:text-gray-500"
-                  value={formData.desiredPrice}
-                  onChange={(e) =>
-                    setFormData({ ...formData, desiredPrice: e.target.value })
-                  }
-                />
-              </div>
-            </div>
-            <div>
-              <label className="text-xs font-bold text-gray-500 mb-1.5 block">
-                Ghi chú cá nhân
-              </label>
-              <textarea
-                rows={2}
-                className="w-full p-3 bg-gray-50 border-0 rounded-xl text-sm focus:ring-2 focus:ring-orange-500/20 resize-none"
-                placeholder="Ví dụ: Mua tặng sinh nhật..."
-                value={formData.notes}
-                onChange={(e) =>
-                  setFormData({ ...formData, notes: e.target.value })
-                }
-              />
+          <div className="p-6 space-y-6 bg-white animate-in slide-in-from-top-2 duration-500">
+            <FormInput
+              label="Giá mục tiêu chờ săn (VNĐ)"
+              placeholder="Ví dụ: 200,000"
+              type="number"
+              value={formData.desiredPrice}
+              onChange={(e) =>
+                setFormData({ ...formData, desiredPrice: e.target.value })
+              }
+              maxLengthNumber={12}
+            />
+            <FormInput
+              isTextArea
+              label="Ghi chú cá nhân"
+              placeholder="Lý do bạn muốn mua sản phẩm này..."
+              value={formData.notes}
+              onChange={(e) =>
+                setFormData({ ...formData, notes: (e.target as any).value })
+              }
+            />
+            <div className="flex gap-2 items-center p-3 bg-blue-50 rounded-2xl border border-blue-100">
+              <Info size={16} className="text-blue-500 shrink-0" />
+              <p className="text-[10px] font-bold text-blue-600/80 leading-relaxed uppercase">
+                Chúng tôi sẽ thông báo cho bạn khi sản phẩm chạm mức giá này.
+              </p>
             </div>
           </div>
         </details>

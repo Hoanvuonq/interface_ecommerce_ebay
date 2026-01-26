@@ -90,6 +90,7 @@ export interface OrderResponseAdmin {
   shipment: OrderShipmentResponse;
   paymentMethod: string;
   paymentUrl: string;
+  createdDate: string;
   paymentIntentId: string;
   conkinBillId: string;
   conkinShippingCost: number;

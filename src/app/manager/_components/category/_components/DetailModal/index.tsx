@@ -5,17 +5,17 @@ import { CategoryResponse } from "@/types/categories/category.detail";
 import { cn } from "@/utils/cn";
 import { toPublicUrl } from "@/utils/storage/url";
 import {
-    Activity,
-    Box,
-    Calendar,
-    ChevronDown,
-    Edit3,
-    Image as ImageIcon,
-    Layers,
-    ShieldCheck,
-    Trash2,
-    User,
-    X
+  Activity,
+  Box,
+  Calendar,
+  ChevronDown,
+  Edit3,
+  Image as ImageIcon,
+  Layers,
+  ShieldCheck,
+  Trash2,
+  User,
+  X,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
@@ -34,7 +34,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
 }) => {
   const [children, setChildren] = useState<CategoryResponse[]>([]);
   const [expandedChildren, setExpandedChildren] = useState<Set<string>>(
-    new Set()
+    new Set(),
   );
   const [previewVisible, setPreviewVisible] = useState(false);
   const { handleGetAllChildren, loading: loadingChildren } =
@@ -75,15 +75,12 @@ export const DetailModal: React.FC<DetailModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-150 flex justify-end">
-      {/* Backdrop Layer */}
       <div
         className="absolute inset-0 bg-gray-900/60 backdrop-blur-md animate-in fade-in duration-300"
         onClick={onClose}
       />
 
-      {/* Main Side Drawer */}
       <div className="relative h-full w-full max-w-2xl bg-white shadow-2xl flex flex-col animate-in slide-in-from-right duration-500">
-        {/* Protocol Header */}
         <div className="p-6 border-b border-gray-100 flex items-center justify-between bg-white shrink-0">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-orange-500 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-200">
@@ -106,9 +103,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
           </button>
         </div>
 
-        {/* Explorer Body */}
         <div className="flex-1 overflow-y-auto custom-scrollbar p-8 space-y-10">
-          {/* Visual Asset Section */}
           <div className="flex flex-col md:flex-row gap-8 items-start">
             <div className="relative group shrink-0 mx-auto md:mx-0">
               <div className="absolute inset-0 bg-orange-500 rounded-[40px] blur-2xl opacity-10 group-hover:opacity-20 transition-opacity" />
@@ -138,7 +133,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                     "px-4 py-1.5 rounded-full text-[10px] font-semibold uppercase tracking-widest border shadow-sm",
                     category.active
                       ? "bg-emerald-50 text-emerald-600 border-emerald-100"
-                      : "bg-rose-50 text-rose-600 border-rose-100"
+                      : "bg-rose-50 text-rose-600 border-rose-100",
                   )}
                 >
                   {category.active ? "● Operational" : "○ Offline"}
@@ -154,7 +149,6 @@ export const DetailModal: React.FC<DetailModalProps> = ({
             </div>
           </div>
 
-          {/* Metadata Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <InfoCard
               icon={<Activity />}
@@ -182,7 +176,6 @@ export const DetailModal: React.FC<DetailModalProps> = ({
             />
           </div>
 
-          {/* Children Entities Accordion */}
           <div className="space-y-4">
             <div className="flex items-center justify-between border-l-4 border-gray-500 pl-4 py-1">
               <h4 className="text-sm font-semibold text-gray-800 uppercase tracking-[0.2em]">
@@ -197,7 +190,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
               {children.map((child) => (
                 <div
                   key={child.id}
-                  className="bg-white rounded-[24px] border border-gray-100 shadow-sm overflow-hidden group hover:border-blue-200 transition-all"
+                  className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden group hover:border-blue-200 transition-all"
                 >
                   <div
                     className="p-4 flex items-center justify-between cursor-pointer hover:bg-blue-50/30 transition-colors"
@@ -214,7 +207,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                     <ChevronDown
                       className={cn(
                         "text-gray-500 transition-transform duration-300",
-                        expandedChildren.has(child.id) && "rotate-180"
+                        expandedChildren.has(child.id) && "rotate-180",
                       )}
                       size={20}
                     />
@@ -236,7 +229,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                           </p>
                           <p className="text-xs font-bold text-gray-600">
                             {new Date(
-                              child.lastModifiedDate
+                              child.lastModifiedDate,
                             ).toLocaleDateString("vi-VN")}
                           </p>
                         </div>
@@ -288,7 +281,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
 
       {/* Custom Image Preview Overlay */}
       {previewVisible && imageUrl && (
-        <div className="fixed inset-0 z-[200] bg-gray-900/90 backdrop-blur-xl flex items-center justify-center p-10 animate-in fade-in duration-300">
+        <div className="fixed inset-0 z-200 bg-gray-900/90 backdrop-blur-xl flex items-center justify-center p-10 animate-in fade-in duration-300">
           <button
             onClick={() => setPreviewVisible(false)}
             className="absolute top-10 right-10 p-4 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all"
@@ -316,12 +309,12 @@ interface InfoCardProps {
 
 function InfoCard({ icon, label, value, color }: InfoCardProps) {
   return (
-    <div className="bg-white p-5 rounded-[24px] border border-gray-100 shadow-sm group hover:border-gray-100 transition-colors">
+    <div className="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm group hover:border-gray-100 transition-colors">
       <div className="flex items-center gap-3">
         <div
           className={cn(
             "p-2.5 rounded-xl bg-gray-50 group-hover:bg-white transition-colors",
-            color
+            color,
           )}
         >
           {React.cloneElement(icon, {

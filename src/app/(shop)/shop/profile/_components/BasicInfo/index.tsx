@@ -23,14 +23,18 @@ import { useState } from "react";
 import { useUpdateShop } from "../../_hooks/useShop";
 import Image from "next/image";
 import { cn } from "@/utils/cn";
-
-export const BasicInfo =({
+interface BasicInfoProps {
+  shop?: any;
+  setShop?: any;
+  parentForm?: any;
+  formData?: any;
+  setFormData?: (values: any) => void;
+}
+export const BasicInfo = ({
   shop,
   setShop,
-}: {
-  shop: any;
-  setShop: any;
-}) =>{
+  parentForm,
+}: BasicInfoProps) => {
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -77,28 +81,28 @@ export const BasicInfo =({
       if (fileToUpload) {
         const res = await uploadPresigned(
           fileToUpload,
-          UploadContext.SHOP_LOGO
+          UploadContext.SHOP_LOGO,
         );
         logoPath =
           res.finalUrl ||
           toPublicUrl(
             res.path.replace(/^pending\//, "public/") +
               "_orig." +
-              (fileToUpload.name.split(".").pop() || "jpg")
+              (fileToUpload.name.split(".").pop() || "jpg"),
           );
       }
 
       if (bannerToUpload) {
         const res = await uploadPresigned(
           bannerToUpload,
-          UploadContext.SHOP_BANNER
+          UploadContext.SHOP_BANNER,
         );
         bannerPath =
           res.finalUrl ||
           toPublicUrl(
             res.path.replace(/^pending\//, "public/") +
               "_orig." +
-              (bannerToUpload.name.split(".").pop() || "jpg")
+              (bannerToUpload.name.split(".").pop() || "jpg"),
           );
       }
 
@@ -128,7 +132,7 @@ export const BasicInfo =({
     <div
       className={cn(
         "flex items-center justify-center bg-linear-to-br from-gray-50 to-gray-100 border border-gray-200 rounded-3xl text-gray-500",
-        type === "logo" ? "w-24 h-24" : "w-48 h-24"
+        type === "logo" ? "w-24 h-24" : "w-48 h-24",
       )}
     >
       {type === "logo" ? (
@@ -347,4 +351,4 @@ export const BasicInfo =({
       </PortalModal>
     </>
   );
-}
+};

@@ -1,26 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
+import { ButtonField, FormInput, SelectComponent } from "@/components";
+import { Button } from "@/components/button/button";
+import { PortalModal } from "@/features/PortalModal";
 import { statusLabelMap, User, UserStatus } from "@/types/user/user.type";
+import { cn } from "@/utils/cn";
 import dayjs from "dayjs";
-import { ButtonField } from "@/components";
+import _ from "lodash";
+import { Loader2, Settings2, ShieldCheck } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useGetAllRoles, useUpdateUser } from "../../_hooks/useUser";
-import {
-  Loader2,
-  UserCircle2,
-  ShieldCheck,
-  Calendar,
-  Hash,
-  Mail,
-  User as UserIcon,
-  Settings2,
-} from "lucide-react";
-import { cn } from "@/utils/cn";
-import _ from "lodash";
-import { PortalModal } from "@/features/PortalModal";
-import { SelectComponent, FormInput } from "@/components";
-import { Button } from "@/components/button/button";
+import { UpdateUserRequest } from "../../_types/dto/user.dto";
+import { RoleEnum } from "@/auth/_types/auth";
 
 interface UserUpdateFormProps {
   open: boolean;
@@ -36,7 +28,7 @@ export default function UserUpdateForm({
   onUpdated,
 }: UserUpdateFormProps) {
   const { handleUpdateUser, loading, error: updateError } = useUpdateUser();
-  const { handleGetAllRoles, error: rolesError } = useGetAllRoles();
+  const { handleGetAllRoles } = useGetAllRoles();
 
   const [formData, setFormData] = useState({
     status: undefined as UserStatus | undefined,
@@ -45,18 +37,25 @@ export default function UserUpdateForm({
   const [roles, setRoles] = useState<any[]>([]);
   const [errors, setErrors] = useState<{ status?: string; role?: string }>({});
 
+  // Lấy danh sách Roles khi mở Modal
   useEffect(() => {
     const fetchRoles = async () => {
       try {
         const res = await handleGetAllRoles();
-        if (res?.data?.roles) setRoles(res.data.roles);
+        // API trả về content cho danh sách vai trò
+        if (res?.data?.content) {
+          setRoles(res.data.content);
+        } else if (res?.data?.roles) {
+          setRoles(res.data.roles);
+        }
       } catch (err: any) {
-        console.error(rolesError || err?.message);
+        console.error("Lỗi lấy roles:", err);
       }
     };
     if (open) fetchRoles();
   }, [open]);
 
+  // Reset form khi user thay đổi
   useEffect(() => {
     if (open && user) {
       setFormData({
@@ -75,36 +74,32 @@ export default function UserUpdateForm({
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleOk = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validate() || !user) return;
+ const handleOk = async (e: React.FormEvent) => {
+  e.preventDefault();
+  if (!validate() || !user) return;
 
-    try {
-      const payload = _.pickBy(
-        {
-          status: formData.status,
-          role: formData.role,
-        },
-        _.identity,
-      );
+  try {
+    const payload: UpdateUserRequest = {
+      status: formData.status,
+      role: formData.role as RoleEnum, 
+    };
 
-      const res = await handleUpdateUser(user.userId, payload);
-      if (res) {
-        onUpdated();
-        onClose();
-      }
-    } catch (err: any) {
-      console.error(updateError || err?.message);
+    const res = await handleUpdateUser(user.userId, payload);
+    if (res) {
+      onUpdated();
+      onClose();
     }
-  };
-
+  } catch (err: any) {
+    console.error(err);
+  }
+};
   return (
     <PortalModal
       isOpen={open}
       onClose={onClose}
       title={
         <div className="flex items-center gap-3">
-          <div className="p-2.5 bg-orange-100 text-orange-600 rounded-2xl shadow-sm shadow-orange-100">
+          <div className="p-2.5 bg-orange-100 text-orange-600 rounded-2xl shadow-sm">
             <Settings2 size={22} strokeWidth={2.5} />
           </div>
           <span className="font-bold text-gray-800 uppercase text-lg tracking-tight">
@@ -127,7 +122,7 @@ export default function UserUpdateForm({
             htmlType="submit"
             type="login"
             disabled={loading || !user}
-            className="flex w-44 items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-orange-500/20 transition-all active:scale-95 border-0 h-auto"
+            className="flex w-44 items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold shadow-lg transition-all active:scale-95 border-0 h-auto"
           >
             {loading ? (
               <Loader2 className="animate-spin" size={18} />
@@ -152,7 +147,7 @@ export default function UserUpdateForm({
             onSubmit={handleOk}
             className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500 pb-2"
           >
-            {/* Section: Thông tin định danh */}
+            {/* Thông tin tài khoản (Read-only) */}
             <div className="space-y-5">
               <div className="flex items-center gap-2 border-b border-gray-50 pb-2">
                 <ShieldCheck size={18} className="text-orange-500" />
@@ -160,19 +155,16 @@ export default function UserUpdateForm({
                   Thông tin tài khoản
                 </h3>
               </div>
-
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <FormInput
                   label="Tên đăng nhập"
                   value={user.username}
                   disabled
-                  className="bg-gray-50/80 border-gray-100 font-bold text-gray-500"
                 />
                 <FormInput
                   label="Email liên kết"
                   value={user.email}
                   disabled
-                  className="bg-gray-50/80 border-gray-100 font-bold text-gray-500"
                 />
                 <FormInput
                   label="Ngày khởi tạo"
@@ -182,27 +174,25 @@ export default function UserUpdateForm({
                       : "-"
                   }
                   disabled
-                  className="bg-gray-50/80 border-gray-100 font-bold text-gray-500"
                 />
                 <FormInput
                   label="Mã định danh (UID)"
                   value={`#${user.userId.slice(-12).toUpperCase()}`}
                   disabled
-                  className="bg-gray-50/80 border-gray-100 font-mono text-[13px] font-bold text-gray-400"
                 />
               </div>
             </div>
 
-            {/* Section: Cập nhật */}
+            {/* Phần cập nhật */}
             <div className="p-6 rounded-[2.5rem] bg-orange-50/40 border border-orange-100/50 space-y-6 shadow-sm">
               <div className="flex justify-center -mt-9 mb-2">
-                <span className="bg-orange-500 text-white px-5 py-1 rounded-full text-[10px] font-bold uppercase  shadow-md shadow-orange-200">
-                  Cấu hình mới
+                <span className="bg-orange-500 text-white px-5 py-1 rounded-full text-[10px] font-bold uppercase shadow-md shadow-orange-200">
+                  Thiết lập mới
                 </span>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-                {/* Trạng thái */}
+                {/* Chọn Trạng thái */}
                 <div className="space-y-2.5">
                   <label className="block text-[11px] font-bold uppercase tracking-wider text-gray-700 ml-1">
                     Trạng thái hiện tại{" "}
@@ -215,27 +205,25 @@ export default function UserUpdateForm({
                         value: key,
                       }),
                     )}
-                    value={formData.status ? [formData.status] : []}
+                    // FIX: Truyền giá trị đơn (string), không truyền mảng []
+                    value={formData.status}
                     onChange={(val) =>
-                      setFormData({
-                        ...formData,
-                        status: (val && val[0]) as UserStatus,
-                      })
+                      setFormData({ ...formData, status: val as UserStatus })
                     }
                     placeholder="Chọn trạng thái..."
                     className={cn(
                       "rounded-2xl border-gray-200 h-12 shadow-sm",
-                      errors.status && "border-red-500 focus:ring-red-100",
+                      errors.status && "border-red-500",
                     )}
                   />
                   {errors.status && (
-                    <span className="text-[10px] font-bold text-red-500 ml-1 animate-pulse uppercase tracking-tight">
+                    <span className="text-[10px] font-bold text-red-500 ml-1 uppercase">
                       {errors.status}
                     </span>
                   )}
                 </div>
 
-                {/* Vai trò */}
+                {/* Chọn Vai trò */}
                 <div className="space-y-2.5">
                   <label className="block text-[11px] font-bold uppercase tracking-wider text-gray-700 ml-1">
                     Vai trò hệ thống{" "}
@@ -243,21 +231,23 @@ export default function UserUpdateForm({
                   </label>
                   <SelectComponent
                     options={roles.map((r) => ({
-                      label: r.roleName,
+                      // Gộp description và roleName để search "admin" hay "quan tri" đều ra
+                      label: r.description
+                        ? `${r.description} (${r.roleName})`
+                        : r.roleName,
                       value: r.roleName,
                     }))}
-                    value={formData.role ? [formData.role] : []}
-                    onChange={(val) =>
-                      setFormData({ ...formData, role: val[0] || "" })
-                    }
+                    // FIX: Truyền giá trị đơn
+                    value={formData.role}
+                    onChange={(val) => setFormData({ ...formData, role: val })}
                     placeholder="Chọn vai trò..."
                     className={cn(
                       "rounded-2xl border-gray-200 h-12 shadow-sm",
-                      errors.role && "border-red-500 focus:ring-red-100",
+                      errors.role && "border-red-500",
                     )}
                   />
                   {errors.role && (
-                    <span className="text-[10px] font-bold text-red-500 ml-1 animate-pulse uppercase tracking-tight">
+                    <span className="text-[10px] font-bold text-red-500 ml-1 uppercase">
                       {errors.role}
                     </span>
                   )}
