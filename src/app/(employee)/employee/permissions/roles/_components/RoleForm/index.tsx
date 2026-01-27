@@ -1,7 +1,7 @@
 "use client";
 
 import { ButtonField, FormInput, SectionHeader } from "@/components";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import { PortalModal } from "@/features/PortalModal";
 import { useToast } from "@/hooks/useToast";
 import { Info, Loader2, Save, ShieldCheck, UserCircle2 } from "lucide-react";
@@ -149,7 +149,7 @@ export const RoleForm = ({
         <div className="space-y-6">
           <SectionHeader icon={ShieldCheck} title="Thông tin vai trò" />
 
-          <div className="p-6 rounded-[2.5rem] bg-gray-50/50 border border-gray-100 space-y-6 shadow-inner">
+          <div className="p-6 rounded-4xl bg-gray-50/50 border border-gray-100 space-y-6 shadow-inner">
             <FormInput
               label="Tên vai trò hệ thống"
               placeholder="VD: ADMIN, MANAGER, EDITOR..."

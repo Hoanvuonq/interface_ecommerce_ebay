@@ -13,7 +13,7 @@ export const ProductGeneralInfo = ({
   onOpenRichText: () => void;
 }) => {
   return (
-    <div className="bg-white rounded-[2.5rem] shadow-custom border border-gray-50 overflow-hidden transition-all duration-300 hover:shadow-orange-100/50">
+    <div className="bg-white rounded-4xl shadow-custom border border-gray-50 overflow-hidden transition-all duration-300 hover:shadow-orange-100/50">
       {/* Header tinh tế */}
       <div className="px-8 py-4 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
         <div className="flex items-center gap-3">

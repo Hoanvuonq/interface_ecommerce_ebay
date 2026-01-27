@@ -56,7 +56,7 @@ export const ShopLoyaltyScreen: React.FC = () => {
         <ShopLoyaltyStatisticsCard />
       </div>
 
-      <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden min-h-150">
+      <div className="bg-white rounded-4xl border border-slate-100 shadow-sm overflow-hidden min-h-150">
         <div className="flex border-b border-slate-50 px-8 pt-6">
           <div className="flex gap-8">
             <button

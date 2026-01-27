@@ -11,6 +11,8 @@ import {
   removeCartItems,
   selectAllItemsLocal,
 } from "@/store/theme/cartSlice";
+import { CartItemPromotion } from "@/types/cart/cart.types";
+import { cn } from "@/utils/cn";
 import { isAuthenticated } from "@/utils/local.storage";
 import { AlertTriangle, Trash2 } from "lucide-react";
 import Link from "next/link";
@@ -23,8 +25,6 @@ import {
   ShopCartSection,
 } from "../_components";
 import { HeaderCart } from "../_layouts/headerCart";
-import { CartItemPromotion } from "@/types/cart/cart.types";
-import { cn } from "@/utils/cn";
 
 export const CartScreen = () => {
   const [showCheckoutPreview, setShowCheckoutPreview] = useState(false);
@@ -115,18 +115,24 @@ export const CartScreen = () => {
       return;
     }
 
+    // --- SỬA Ở ĐÂY ---
     const checkoutRequest = {
       shops: cart.shops
         .filter((shop) => shop.items.some((item) => item.selectedForCheckout))
         .map((shop) => ({
           shopId: shop.shopId,
-          itemIds: shop.items
+          // Thay đổi từ itemIds sang items object có quantity
+          items: shop.items
             .filter((item) => item.selectedForCheckout)
-            .map((item) => item.id),
+            .map((item) => ({
+              itemId: item.id,
+              quantity: item.quantity,
+            })),
           vouchers: [],
         })),
       promotion: [] as CartItemPromotion[],
     };
+    // -----------------
 
     try {
       const previewData = await dispatch(

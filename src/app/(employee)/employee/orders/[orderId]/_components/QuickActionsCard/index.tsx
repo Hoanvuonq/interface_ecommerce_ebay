@@ -55,7 +55,7 @@ export const QuickActionsCard: React.FC<QuickActionsCardProps> = ({
       >
         <Icon size={18} strokeWidth={2} />
       </div>
-      <span className="text-[12px] font-black uppercase tracking-widest text-gray-500 group-hover:text-gray-900 transition-colors">
+      <span className="text-[12px] font-bold uppercase tracking-widest text-gray-500 group-hover:text-gray-900 transition-colors">
         {label}
       </span>
     </button>
@@ -69,7 +69,7 @@ export const QuickActionsCard: React.FC<QuickActionsCardProps> = ({
             <Zap size={18} fill="currentColor" />
           </div>
           <div>
-            <h3 className="text-sm font-black uppercase tracking-[0.2em] text-gray-800 leading-none">
+            <h3 className="text-sm font-bold uppercase tracking-[0.2em] text-gray-800 leading-none">
               Thao tác <span className="text-orange-500">Nhanh</span>
             </h3>
             <p className="text-[9px] font-bold text-gray-600 uppercase mt-1.5 tracking-widest italic">
@@ -111,7 +111,7 @@ export const QuickActionsCard: React.FC<QuickActionsCardProps> = ({
       <div className="mt-8 pt-6 border-t border-gray-100 space-y-4">
         <div className="flex items-center gap-2 px-1">
           <User size={14} className="text-orange-500" />
-          <span className="text-[12px] font-black uppercase tracking-widest text-gray-600">
+          <span className="text-[12px] font-bold uppercase tracking-widest text-gray-600">
             Nhân dạng liên hệ
           </span>
         </div>

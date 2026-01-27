@@ -1,6 +1,6 @@
 "use client";
 
-import { CustomButton } from "@/components/button";
+import { CustomButton } from "@/components/custom/components/customButton";
 import { CardComponents } from "@/components/card";
 import { voucherService } from "@/components/voucher/_service/voucher.service";
 import type { PublicProductDetailDTO } from "@/types/product/public-product.dto";

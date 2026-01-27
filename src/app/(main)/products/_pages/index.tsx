@@ -1,7 +1,7 @@
 "use client";
 
 import { PriceRange } from "@/components";
-import { CustomButton } from "@/components/button";
+import { CustomButton } from "@/components/custom/components/customButton";
 import { CardComponents } from "@/components/card";
 import { SectionPageComponents } from "@/features/SectionPageComponents"; // Đảm bảo import đúng đường dẫn
 import { cn } from "@/utils/cn";

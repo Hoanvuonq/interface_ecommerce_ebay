@@ -15,7 +15,7 @@ import {
   StatCardComponents,
 } from "@/components";
 import { StatusTabs } from "@/app/(shop)/shop/_components/Products/StatusTabs";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import {
   ArrowLeft,
   RotateCw,
@@ -212,7 +212,7 @@ export const UserPermissionsDetailScreen = () => {
 
   return (
     <div className="min-h-screen space-y-8 animate-in fade-in duration-700 p-2">
-      <div className="relative p-6 rounded-[2.5rem] bg-linear-to-br from-gray-900 via-gray-800 to-orange-950 overflow-hidden shadow-2xl">
+      <div className="relative p-6 rounded-4xl bg-linear-to-br from-gray-900 via-gray-800 to-orange-950 overflow-hidden shadow-2xl">
         <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/10 rounded-full -mr-32 -mt-32 blur-3xl" />
         <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
           <div className="w-24 h-24 rounded-4xl bg-orange-500/20 border-4 border-white/10 flex items-center justify-center text-orange-500 shadow-2xl">

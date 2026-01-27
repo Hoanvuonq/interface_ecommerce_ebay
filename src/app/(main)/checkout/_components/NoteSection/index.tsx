@@ -1,3 +1,4 @@
+"use client";
 export const NoteSection = ({ value, onChange }: any) => (
   <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
     <h3 className="text-sm font-bold text-gray-900 mb-2">Ghi chú đơn hàng</h3>

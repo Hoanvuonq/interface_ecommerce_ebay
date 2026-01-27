@@ -81,7 +81,7 @@ export const WishlistItemCard = memo<WishlistItemCardProps>(
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         whileHover={{ y: -6 }}
-        className="group relative h-full flex flex-col bg-white rounded-[2.5rem] border border-gray-100 overflow-hidden hover:shadow-[0_30px_60px_-15px_rgba(249,115,22,0.15)] transition-all duration-500"
+        className="group relative h-full flex flex-col bg-white rounded-4xl border border-gray-100 overflow-hidden hover:shadow-[0_30px_60px_-15px_rgba(249,115,22,0.15)] transition-all duration-500"
       >
         {/* Image Section */}
         <div className="relative aspect-square overflow-hidden bg-[#fafafa]">

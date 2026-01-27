@@ -8,6 +8,7 @@ export const useCartActions = () => {
   const { cart, checkoutLoading } = useAppSelector((state) => state.cart);
   const [isProcessing, setIsProcessing] = useState(false);
   const { error } = useToast();
+
   const handleCheckout = async () => {
     if (!cart || cart.itemCount === 0) {
       error("Giỏ hàng của bạn đang trống");
@@ -21,7 +22,10 @@ export const useCartActions = () => {
       const checkoutRequest = {
         shops: cart.shops.map((shop) => ({
           shopId: shop.shopId,
-          itemIds: shop.items.map((item) => item.id),
+          items: shop.items.map((item) => ({
+            itemId: item.id,
+            quantity: item.quantity, 
+          })),
           vouchers: [],
         })),
         promotion: [],
@@ -35,7 +39,8 @@ export const useCartActions = () => {
         JSON.stringify(checkoutRequest)
       );
       window.location.href = "/checkout";
-    } catch (error: any) {
+    } catch (err: any) {
+      console.error(err);
       error("Không thể tạo đơn hàng. Vui lòng thử lại");
     } finally {
       setIsProcessing(false);

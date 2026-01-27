@@ -199,7 +199,7 @@ export const ShopFeeReportScreen: React.FC = () => {
             </div>
 
             {/* Fee Breakdown Table */}
-            <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-custom overflow-hidden">
+            <div className="bg-white rounded-4xl border border-gray-100 shadow-custom overflow-hidden">
               <div className="px-8 py-6 border-b border-gray-50 flex items-center justify-between bg-gray-50/50">
                 <h3 className="font-bold text-gray-800 tracking-tight">
                   Chi tiết từng loại phí

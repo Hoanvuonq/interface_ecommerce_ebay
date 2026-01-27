@@ -34,6 +34,11 @@ const nextConfig: NextConfig = {
         pathname: "/**",
       },
       {
+        protocol: 'https',
+        hostname: 'api.calatha.com', // Thay bằng domain server thật của bạn
+        pathname: '**',
+      },
+      {
         protocol: "https",
         hostname: "*.r2.dev",
         pathname: "/**",

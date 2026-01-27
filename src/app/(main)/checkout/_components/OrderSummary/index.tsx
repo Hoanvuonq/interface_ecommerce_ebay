@@ -34,7 +34,6 @@ export const OrderSummary = ({ onSubmit }: OrderSummaryProps) => {
 
   return (
     <div className="bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden sticky top-30 transition-all duration-300">
-      {/* Header */}
       <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50">
         <div className="flex items-center gap-2">
           <Info size={18} className="text-gray-900" />
@@ -51,7 +50,7 @@ export const OrderSummary = ({ onSubmit }: OrderSummaryProps) => {
               size={20}
               className={cn(
                 "transition-transform duration-300",
-                !isExpanded && "-rotate-180"
+                !isExpanded && "-rotate-180",
               )}
             />
           </button>
@@ -84,7 +83,7 @@ export const OrderSummary = ({ onSubmit }: OrderSummaryProps) => {
                   <div className="text-right space-y-0.5">
                     <span className="font-bold text-gray-800 block">
                       {formatPrice(
-                        shop.shopTotal || shop.summary?.shopTotal || 0
+                        shop.shopTotal || shop.summary?.shopTotal || 0,
                       )}
                     </span>
                     <div className="flex flex-col gap-0">

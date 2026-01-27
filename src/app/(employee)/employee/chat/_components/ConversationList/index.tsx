@@ -135,7 +135,7 @@ export const ConversationList: React.FC<ConversationListProps> = ({
 
   return (
     <div
-      className="bg-white rounded-[2.5rem] border border-gray-100 shadow-custom flex flex-col overflow-hidden"
+      className="bg-white rounded-4xl border border-gray-100 shadow-custom flex flex-col overflow-hidden"
       style={{ height }}
     >
       {/* Header */}

@@ -79,7 +79,7 @@ export const CalathaMallSection = () => {
           initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
-          className="lg:col-span-4 relative group min-h-100 rounded-[2.5rem] overflow-hidden shadow-2xl"
+          className="lg:col-span-4 relative group min-h-100 rounded-4xl overflow-hidden shadow-2xl"
         >
           <Image
             src="https://images.unsplash.com/photo-1627384113743-6bd5a479fffd?q=80&w=2070"

@@ -11,7 +11,7 @@ export const CustomResult: React.FC<CustomResultProps> = ({
   subTitle,
   extra,
 }) => (
-  <div className="relative bg-white dark:bg-gray-800 p-10 sm:p-14 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] max-w-2xl w-full text-center overflow-hidden">
+  <div className="relative bg-white dark:bg-gray-800 p-10 sm:p-14 rounded-4xl shadow-[0_20px_50px_rgba(0,0,0,0.05)] max-w-2xl w-full text-center overflow-hidden">
     <div className="absolute -top-24 -right-24 w-48 h-48 bg-orange-100 rounded-full blur-3xl opacity-50" />
     <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-amber-100 rounded-full blur-3xl opacity-50" />
 

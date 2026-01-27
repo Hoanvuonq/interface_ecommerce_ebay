@@ -22,7 +22,7 @@ export const ShopHeader = ({ shop, isFollowing, onFollow, onChat, totalProducts 
       </div>
 
       {/* Info Card Floating */}
-      <div className="relative -mt-16 md:-mt-20 mx-4 md:mx-10 bg-white/80 backdrop-blur-xl border border-white rounded-[2.5rem] p-6 shadow-xl shadow-slate-200/50 flex flex-col md:flex-row items-center md:items-start gap-6">
+      <div className="relative -mt-16 md:-mt-20 mx-4 md:mx-10 bg-white/80 backdrop-blur-xl border border-white rounded-4xl p-6 shadow-xl shadow-slate-200/50 flex flex-col md:flex-row items-center md:items-start gap-6">
         
         {/* Avatar với viền Neon nhẹ */}
         <div className="relative shrink-0 group">

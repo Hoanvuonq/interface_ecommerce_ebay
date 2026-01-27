@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Flame, DollarSign } from 'lucide-react';
-import { CustomButton } from '@/components/button'; 
+import { CustomButton } from '@/components/custom/components/customButton'; 
 import { ProductFilterValues } from '@/app/(main)/products/_components/productFilters/type';
 import { cn } from '@/utils/cn';
 

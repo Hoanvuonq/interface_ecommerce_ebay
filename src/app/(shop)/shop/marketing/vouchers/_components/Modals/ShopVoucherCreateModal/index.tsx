@@ -7,7 +7,7 @@ import {
   VoucherScope,
 } from "@/app/(main)/shop/_types/dto/shop.voucher.dto";
 import { ButtonField, FormInput } from "@/components";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import { PortalModal } from "@/features/PortalModal";
 import { useToast } from "@/hooks/useToast";
 import { userProductService } from "@/services/products/product.service";
@@ -169,7 +169,7 @@ export default function ShopVoucherCreateModal({
               <FileText size={14} /> 01. Thông tin định danh
             </div>
 
-            <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-6">
+            <div className="bg-white p-8 rounded-4xl border border-gray-100 shadow-sm space-y-6">
               <div className="space-y-2">
                 <label className="text-[11px] font-bold text-gray-500 uppercase ml-1">
                   Chế độ tạo mã
@@ -248,7 +248,7 @@ export default function ShopVoucherCreateModal({
               <DollarSign size={14} /> 02. Cấu hình mức giảm
             </div>
 
-            <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-8">
+            <div className="bg-white p-8 rounded-4xl border border-gray-100 shadow-sm space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-3">
                   <p className="text-[11px] font-bold text-gray-500 uppercase ml-1">
@@ -333,7 +333,7 @@ export default function ShopVoucherCreateModal({
               <Clock size={14} /> 03. Thời gian & Giới hạn
             </div>
 
-            <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-8">
+            <div className="bg-white p-8 rounded-4xl border border-gray-100 shadow-sm space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormInput
                   label="Thời điểm bắt đầu"
@@ -378,7 +378,7 @@ export default function ShopVoucherCreateModal({
               <MousePointer2 size={14} /> 04. Đối tượng áp dụng
             </div>
 
-            <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm space-y-6">
+            <div className="bg-white p-8 rounded-4xl border border-gray-100 shadow-sm space-y-6">
               <div className="space-y-3">
                 <p className="text-[11px] font-bold text-gray-500 uppercase ml-1">
                   Áp dụng sản phẩm

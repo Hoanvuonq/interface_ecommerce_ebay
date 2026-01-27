@@ -120,7 +120,7 @@ export default function NotificationList({ recipientRole }: Props) {
   };
 
   return (
-    <div className="flex flex-col h-full bg-white rounded-[2.5rem] border border-gray-200 shadow-[0_12px_40px_rgba(0,0,0,0.03)] overflow-hidden">
+    <div className="flex flex-col h-full bg-white rounded-4xl border border-gray-200 shadow-[0_12px_40px_rgba(0,0,0,0.03)] overflow-hidden">
       <div className="sticky top-0 z-30 bg-white/95 backdrop-blur-xl border-b border-gray-100 p-6 flex flex-col sm:flex-row justify-between items-center gap-4">
         <div className="flex bg-gray-100 p-1.5 rounded-2xl border border-gray-200 shadow-inner">
           {["ALL", "UNREAD", "READ"].map((s) => (

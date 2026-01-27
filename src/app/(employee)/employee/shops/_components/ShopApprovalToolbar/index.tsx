@@ -6,7 +6,7 @@ import { Search, RotateCw, Brush } from "lucide-react";
 import { ButtonField, FormInput } from "@/components";
 import { SelectComponent } from "@/components";
 import { cn } from "@/utils/cn";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import { ShopApprovalToolbarProps } from "./type";
 import { debounce } from "lodash";
 export const ShopApprovalToolbar: React.FC<ShopApprovalToolbarProps> = ({

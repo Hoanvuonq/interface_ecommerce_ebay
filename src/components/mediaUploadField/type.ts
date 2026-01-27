@@ -1,0 +1,36 @@
+export interface CustomFile {
+  uid: string;
+  assetId?: string | number; 
+  id?: string | number;
+  name: string;
+  url?: string;
+  preview?: string;
+  originFileObj?: File;
+  status?: "uploading" | "done" | "error" | "removed";
+  type?: string;
+  percent?: number;
+  isLoading?: boolean;
+  isPublic?: boolean;
+  isPrivate?: boolean;
+}
+
+export interface MediaUploadFieldProps {
+  value?: CustomFile[];
+  onChange: (files: CustomFile[]) => void;
+
+  onUpload?: (
+    file: File,
+    onProgress: (p: number) => void,
+  ) => Promise<{ url: string; id?: string | number }>;
+
+  maxCount?: number;
+  size?: "sm" | "md" | "lg";
+  allowedTypes?: string[];
+  maxSizeMB?: number;
+  className?: string;
+
+  disabled?: boolean;
+  label?: string;
+  error?: string;
+  isPrivateMode?: boolean;
+}

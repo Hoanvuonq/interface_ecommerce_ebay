@@ -23,7 +23,7 @@ import {
 } from "@/components";
 import { PortalModal } from "@/features/PortalModal";
 import { useToast } from "@/hooks/useToast";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 
 interface PositionManagementProps {
   departmentId: string;

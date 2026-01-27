@@ -1,19 +1,12 @@
 "use client";
 
-import { ButtonField, CustomButtonActions } from "@/components";
-import { Button } from "@/components/button/button";
+import { CustomButtonActions } from "@/components";
 import { formatPrice } from "@/hooks/useFormatPrice";
 import { cn } from "@/utils/cn";
 import { CheckCircle2, Loader2, X } from "lucide-react";
 import React from "react";
+import { ShippingMethodModalProps } from "./type";
 
-interface ShippingMethodModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onConfirm: () => void;
-  loadingPrice: boolean;
-  priceData: any;
-}
 
 export const ShippingMethodModal: React.FC<ShippingMethodModalProps> = ({
   isOpen,

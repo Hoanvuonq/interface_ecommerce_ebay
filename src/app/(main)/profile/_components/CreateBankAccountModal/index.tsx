@@ -5,7 +5,7 @@ import BankSelector from "../BankSelector";
 import { CreateBankAccountModalProps } from "./type";
 import { PortalModal } from "@/features/PortalModal";
 import { Loader2 } from "lucide-react";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import { ButtonField } from "@/components";
 import { FormInput } from "@/components/formInput";
 import { Checkbox } from "@/components/checkbox";

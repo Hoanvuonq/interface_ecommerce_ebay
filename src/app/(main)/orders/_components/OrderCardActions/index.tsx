@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { Eye } from "lucide-react";
 import { FaEdit } from "react-icons/fa";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import { formatPrice } from "@/hooks/useFormatPrice";
 import { ActionsProps } from "./type";
 

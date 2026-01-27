@@ -88,7 +88,7 @@ export default function ShopDashboardForm() {
         </div>
 
         <div className="space-y-8">
-          <div className="bg-orange-50/50 p-8 rounded-[2.5rem] border border-gray-100 shadow-custom">
+          <div className="bg-orange-50/50 p-8 rounded-4xl border border-gray-100 shadow-custom">
             <div className="flex items-center gap-3 mb-6 text-(--color-mainColor)">
               <AlertTriangle size={20} />
               <h2 className="text-lg font-bold uppercase italic tracking-tighter">

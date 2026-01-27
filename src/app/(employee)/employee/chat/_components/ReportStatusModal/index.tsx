@@ -9,7 +9,7 @@ import {
   ButtonField,
   SectionHeader,
 } from "@/components";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import {
   RefreshCw,
   ClipboardEdit,
@@ -153,8 +153,7 @@ export const ReportStatusModal: React.FC<ReportStatusModalProps> = ({
         <div className="space-y-6">
           <SectionHeader icon={ClipboardEdit} title="Điều chỉnh trạng thái" />
 
-          <div className="p-6 rounded-[2.5rem] bg-gray-50/50 border border-gray-100 space-y-6 shadow-inner">
-            {/* Status Select */}
+          <div className="p-6 rounded-4xl bg-gray-50/50 border border-gray-100 space-y-6 shadow-inner">
             <div className="space-y-2">
               <label className="text-[12px] font-bold text-gray-700 ml-1 uppercase tracking-widest">
                 Trạng thái mới <span className="text-red-500">*</span>

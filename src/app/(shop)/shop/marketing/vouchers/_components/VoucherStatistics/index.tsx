@@ -176,7 +176,7 @@ const VoucherStatistics: React.FC = () => {
   return (
     <div className="space-y-8 animate-in fade-in duration-700">
       {/* Action Bar */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 bg-white p-6 rounded-[2.5rem] shadow-sm border border-gray-100">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 bg-white p-6 rounded-4xl shadow-sm border border-gray-100">
         <div className="flex items-center gap-4">
           <div className="p-3 bg-gray-900 rounded-2xl text-white shadow-lg">
             <BarChart3 size={24} />
@@ -288,7 +288,7 @@ const VoucherStatistics: React.FC = () => {
 const OverviewCard = ({ label, value, icon, color, isCurrency }: any) => (
   <div
     className={cn(
-      "p-6 rounded-[2.5rem] border bg-linear-to-br shadow-sm transition-all hover:shadow-md",
+      "p-6 rounded-4xl border bg-linear-to-br shadow-sm transition-all hover:shadow-md",
       color === "emerald"
         ? "from-emerald-50 to-white border-emerald-100"
         : color === "rose"
@@ -314,7 +314,7 @@ const OverviewCard = ({ label, value, icon, color, isCurrency }: any) => (
 );
 
 const TopBox = ({ title, icon, data, type }: any) => (
-  <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-custom overflow-hidden">
+  <div className="bg-white rounded-4xl border border-gray-100 shadow-custom overflow-hidden">
     <div className="px-8 py-6 border-b border-gray-50 flex items-center gap-3 bg-gray-50/30">
       {icon}
       <h3 className="font-bold text-gray-800 tracking-tight uppercase text-sm">

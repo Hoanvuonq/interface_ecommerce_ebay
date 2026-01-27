@@ -175,7 +175,7 @@ export const ShopAddressForm = () => {
           </span>
         </div>
       ) : addresses.length === 0 ? (
-        <div className="bg-slate-50/50 border-2 border-dashed border-slate-200 rounded-[2.5rem] p-16 text-center">
+        <div className="bg-slate-50/50 border-2 border-dashed border-slate-200 rounded-4xl p-16 text-center">
           <div className="bg-white w-16 h-16 rounded-3xl shadow-sm flex items-center justify-center mx-auto mb-4 border border-slate-100">
             <MapPin size={28} className=" text-gray-300" />
           </div>

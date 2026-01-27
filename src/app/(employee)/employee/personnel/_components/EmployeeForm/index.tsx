@@ -6,7 +6,7 @@ import {
   FormInput,
   SectionHeader,
 } from "@/components";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import { PortalModal } from "@/features/PortalModal";
 import { toSizedVariant } from "@/utils/products/media.helpers";
 import { toPublicUrl } from "@/utils/storage/url";
@@ -164,7 +164,7 @@ export default function EmployeeForm(props: EmployeeFormProps) {
         {/* SECTION 1: IDENTITY */}
         <div className="space-y-6">
           <SectionHeader icon={Shield} title="Thông tin tài khoản & Bảo mật" />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 bg-gray-50/50 p-6 rounded-[2.5rem] border border-gray-100">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 bg-gray-50/50 p-6 rounded-4xl border border-gray-100">
             <FormInput
               label="Tên đăng nhập"
               disabled={mode === "update"}
@@ -262,7 +262,7 @@ export default function EmployeeForm(props: EmployeeFormProps) {
             icon={Briefcase}
             title="Hợp đồng & Phân cấp vận hành"
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 p-6 bg-orange-50/30 rounded-[2.5rem] border border-orange-100/50">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 p-6 bg-orange-50/30 rounded-4xl border border-orange-100/50">
             <FormSelectWrapper
               label="Phòng ban trực thuộc"
               name="departmentId"
@@ -321,7 +321,7 @@ export default function EmployeeForm(props: EmployeeFormProps) {
         {/* SECTION 4: IMAGE */}
         <div className="space-y-6">
           <SectionHeader icon={ImageIcon} title="Hình ảnh định danh" />
-          <div className="p-8 bg-gray-50 rounded-[2.5rem] border-2 border-dashed border-gray-200 hover:border-orange-300 transition-colors">
+          <div className="p-8 bg-gray-50 rounded-4xl border-2 border-dashed border-gray-200 hover:border-orange-300 transition-colors">
             <Controller
               name="imageUrl"
               control={control}

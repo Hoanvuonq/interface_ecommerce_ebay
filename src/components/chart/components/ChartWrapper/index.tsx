@@ -3,7 +3,7 @@ import { cn } from "@/utils/cn";
 export const ChartWrapper = ({ title, sub, children, className }: any) => (
   <div
     className={cn(
-      "bg-white p-4 rounded-[2.5rem] border border-gray-100 relative overflow-hidden",
+      "bg-white p-4 rounded-4xl border border-gray-100 relative overflow-hidden",
       "transition-all shadow-sm hover:shadow-md",
       className,
     )}

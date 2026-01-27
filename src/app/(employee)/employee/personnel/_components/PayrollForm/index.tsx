@@ -145,7 +145,7 @@ export default function PayrollForm({
         </div>
 
         {/* Section 2: Con số tài chính */}
-        <div className="bg-gray-50/50 p-8 rounded-[2.5rem] border border-gray-100 space-y-6">
+        <div className="bg-gray-50/50 p-8 rounded-4xl border border-gray-100 space-y-6">
           <SectionHeader icon={Calculator} title="Chi tiết thu nhập" />
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

@@ -24,7 +24,7 @@ import { Permission } from "../../_types/dto/rbac.dto";
 import { PermissionDetailModal, PermissionForm } from "../_components";
 import { getPermissionColumns } from "./colum";
 
-export const PermissionTable = () => {
+export const PermissionManagementScreen = () => {
   const { handleGetPermissions, loading } = useGetPermissions();
   const { handleDeletePermission } = useDeletePermission();
 

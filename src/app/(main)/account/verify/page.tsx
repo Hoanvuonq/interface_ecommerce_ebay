@@ -2,7 +2,7 @@
 
 import { VerifyForm } from "@/app/(auth)/_components/VerifyForm";
 import { Design } from "@/components";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense } from "react";
 import { FaExclamationTriangle } from "react-icons/fa";

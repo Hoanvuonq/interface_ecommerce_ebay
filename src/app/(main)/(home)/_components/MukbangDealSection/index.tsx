@@ -51,7 +51,7 @@ export const MukbangDealSection: React.FC = () => {
           return (
             <div key={product.id} className="group relative">
                {/* Glow effect dưới chân mỗi card */}
-               <div className="absolute inset-0 bg-orange-500/0 group-hover:bg-orange-500/10 rounded-[2.5rem] blur-2xl transition-all duration-500" />
+               <div className="absolute inset-0 bg-orange-500/0 group-hover:bg-orange-500/10 rounded-4xl blur-2xl transition-all duration-500" />
                
                <div className="relative bg-white border border-slate-100 rounded-[2.25rem] overflow-hidden transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-2xl group-hover:shadow-orange-500/20">
                   <ProductCard

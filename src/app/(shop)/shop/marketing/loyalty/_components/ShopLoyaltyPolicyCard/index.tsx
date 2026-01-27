@@ -293,7 +293,7 @@ const ShopLoyaltyPolicyCard: React.FC<ShopLoyaltyPolicyCardProps> = ({
   }
 
   return (
-    <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden animate-in fade-in duration-500">
+    <div className="bg-white rounded-4xl border border-slate-100 shadow-sm overflow-hidden animate-in fade-in duration-500">
       {/* Header View */}
       <div className="px-8 py-7 flex flex-col md:flex-row md:items-center justify-between gap-6 bg-slate-50/30 border-b border-slate-50">
         <div className="flex items-center gap-4">

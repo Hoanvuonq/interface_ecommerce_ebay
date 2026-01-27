@@ -36,7 +36,7 @@ export const ReturnFilterHeader = ({
   const currentActions = ACTIONS_BY_TAB[activeMainTab] || ACTIONS_BY_TAB.all;
 
   return (
-    <div className="space-y-6 bg-white p-7 rounded-[2.5rem] border border-gray-100 shadow-xl shadow-gray-200/40 animate-in fade-in slide-in-from-top-4 duration-500">
+    <div className="space-y-6 bg-white p-7 rounded-4xl border border-gray-100 shadow-xl shadow-gray-200/40 animate-in fade-in slide-in-from-top-4 duration-500">
       <div className="flex items-center gap-8 border-b border-gray-100 overflow-x-auto no-scrollbar">
         {subTabs.map((tab) => (
           <button

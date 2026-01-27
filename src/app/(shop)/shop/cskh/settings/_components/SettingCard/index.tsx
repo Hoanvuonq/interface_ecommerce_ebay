@@ -44,7 +44,7 @@ export const SettingCard = ({
   };
 
   return (
-    <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-xl shadow-custom overflow-hidden transition-all group">
+    <div className="bg-white rounded-4xl border border-gray-100 shadow-xl shadow-custom overflow-hidden transition-all group">
       <div className="p-8 flex items-center justify-between gap-6">
         <div className="space-y-1.5 flex-1">
           <div className="flex items-center gap-2">

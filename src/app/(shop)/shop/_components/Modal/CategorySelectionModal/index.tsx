@@ -5,7 +5,7 @@ import { Search, ChevronRight, Check, X, Layers, Hash } from "lucide-react";
 import { PortalModal } from "@/features/PortalModal";
 import { CategorySummaryResponse } from "@/types/categories/category.summary";
 import { cn } from "@/utils/cn";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import { ButtonField } from "@/components";
 
 interface CategorySelectionModalProps {
@@ -195,7 +195,7 @@ export const CategorySelectionModal: React.FC<CategorySelectionModalProps> = ({
           )}
         </div>
 
-        <div className="grid grid-cols-4 gap-5 h-120 p-2 bg-gray-50/50 rounded-[2.5rem] border border-gray-100">
+        <div className="grid grid-cols-4 gap-5 h-120 p-2 bg-gray-50/50 rounded-4xl border border-gray-100">
           {[
             { title: "Cấp 1", data: categoryTree, selected: selectedLevel1, onSelect: onSelectLevel1, loading: loading },
             { title: "Cấp 2", data: selectedLevel1?.children, selected: selectedLevel2, onSelect: onSelectLevel2 },

@@ -3,7 +3,7 @@
 import React from "react";
 import { MapPin, MapPinPen } from "lucide-react";
 import { ShippingAddressCardProps } from "../../_types/address";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import _ from "lodash";
 import { cn } from "@/utils/cn";
 

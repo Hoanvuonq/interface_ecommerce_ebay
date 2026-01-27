@@ -279,7 +279,7 @@ const SummaryCard = ({ label, value, icon, color }: any) => {
   return (
     <div
       className={cn(
-        "p-6 rounded-[2.5rem] border bg-linear-to-br shadow-sm group hover:shadow-md transition-all duration-300",
+        "p-6 rounded-4xl border bg-linear-to-br shadow-sm group hover:shadow-md transition-all duration-300",
         colors[color],
       )}
     >

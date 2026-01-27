@@ -179,6 +179,7 @@ export const ProductPurchaseActions: React.FC<ProductPurchaseActionsProps> = ({
             variantId={selectedVariant?.id ?? ""}
             productName={product.name}
             block
+            shopId={product.shop?.shopId ?? ""}
             showQuantityInput={true}
             maxQuantity={selectedVariant?.inventory?.stock ?? 0}
             onQuantityChange={setCurrentQuantity}

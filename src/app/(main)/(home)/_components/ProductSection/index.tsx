@@ -94,7 +94,7 @@ export const ProductSection: React.FC<ProductSectionProps> = ({
           <div className={cn("relative", sidebar ? "grid grid-cols-1 lg:grid-cols-4 gap-10" : "")}>
             {sidebar && (
               <div className="lg:col-span-1 hidden lg:block sticky top-24 h-fit group">
-                <div className="bg-white border border-gray-100 rounded-[2.5rem] p-4 shadow-sm group-hover:shadow-xl transition-all duration-500">
+                <div className="bg-white border border-gray-100 rounded-4xl p-4 shadow-sm group-hover:shadow-xl transition-all duration-500">
                   {sidebar}
                 </div>
               </div>

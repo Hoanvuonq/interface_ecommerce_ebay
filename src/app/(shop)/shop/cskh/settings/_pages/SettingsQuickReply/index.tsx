@@ -70,7 +70,7 @@ export const SettingsQuickReply = () => {
         </div>
 
         {/* Nhóm tin nhắn chính */}
-        <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/40 overflow-hidden transition-all group/card">
+        <div className="bg-white rounded-4xl border border-slate-100 shadow-xl shadow-slate-200/40 overflow-hidden transition-all group/card">
           {/* Header Nhóm */}
           <div className="p-8 flex items-center justify-between gap-6 bg-linear-to-r from-orange-50/30 to-transparent border-b border-slate-50">
             <div className="flex items-center gap-4">

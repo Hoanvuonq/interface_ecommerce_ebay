@@ -41,7 +41,7 @@ export function SmartHeroHeader({
   }, [revenue]);
 
   return (
-    <div className="relative overflow-hidden rounded-[2.5rem] bg-white border border-gray-100 shadow-custom transition-all duration-500">
+    <div className="relative overflow-hidden rounded-4xl bg-white border border-gray-100 shadow-custom transition-all duration-500">
       <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 rounded-full bg-orange-50/50 blur-3xl" />
       <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 rounded-full bg-blue-50/50 blur-2xl" />
 

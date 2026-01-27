@@ -41,7 +41,7 @@ export const CustomVideoModal: React.FC<CustomVideoModalProps> = ({
           </div>
         </div>
 
-        <div className="relative w-full group rounded-[2.5rem] bg-black p-2 shadow-2xl border border-white/10 overflow-hidden transition-transform duration-500 hover:scale-[1.01]">
+        <div className="relative w-full group rounded-4xl bg-black p-2 shadow-2xl border border-white/10 overflow-hidden transition-transform duration-500 hover:scale-[1.01]">
           <video
             src={videoUrl}
             controls

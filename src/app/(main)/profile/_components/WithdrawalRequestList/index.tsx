@@ -2,7 +2,7 @@
 
 import { DataTable } from "@/components";
 import { Column } from "@/components/DataTable/type";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import { getStatusStyle, getWithdrawalLabel } from "@/constants/status";
 import walletService from "@/services/wallet/wallet.service";
 import type { WalletWithdrawalResponse } from "@/types/wallet/wallet.types";

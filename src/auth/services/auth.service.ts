@@ -278,7 +278,7 @@ class AuthService {
    */
   async changePassword(
     userId: string,
-    payload: ChangePasswordRequest
+    payload: ChangePasswordRequest,
   ): Promise<any> {
     const response = await request<ApiResponse<any>>({
       url: `${API_ENDPOINT_USERS}/${userId}/password`,
@@ -288,7 +288,7 @@ class AuthService {
         "Content-Type": "application/json",
       },
     });
-    return (response as any).data;
+    return response;
   }
 
   /**
@@ -320,7 +320,7 @@ class AuthService {
    */
   async updateEmployeeClient(
     employeeId: string,
-    payload: UpdateEmployeeClientRequest
+    payload: UpdateEmployeeClientRequest,
   ): Promise<any> {
     const response = await request<ApiResponse<any>>({
       url: `${API_ENDPOINT_EMPLOYEES}/${employeeId}/client`,
@@ -335,7 +335,7 @@ class AuthService {
    */
   async updateBuyerClient(
     buyerId: string,
-    payload: UpdateBuyerClientRequest
+    payload: UpdateBuyerClientRequest,
   ): Promise<any> {
     const response = await request<ApiResponse<any>>({
       url: `${API_ENDPOINT_BUYERS}/${buyerId}`,
@@ -350,7 +350,7 @@ class AuthService {
    */
   async updateUserClient(
     userId: string,
-    payload: UpdateUserClientRequest
+    payload: UpdateUserClientRequest,
   ): Promise<any> {
     const response = await request<ApiResponse<any>>({
       url: `${API_ENDPOINT_USERS}/${userId}/client`,
@@ -434,7 +434,7 @@ class AuthService {
     if (userData) {
       try {
         localStorage.setItem("users", JSON.stringify(userData));
-        document.cookie = "isLoggedIn=true; path=/; max-age=86400"
+        document.cookie = "isLoggedIn=true; path=/; max-age=86400";
         console.log("✅ User info stored from login response");
       } catch (error) {
         console.error("Error storing user info:", error);

@@ -11,7 +11,7 @@ import { DataTable } from "@/components";
 import { Column } from "@/components/DataTable/type";
 import { getStatusStyle, getTransactionLabel } from "@/constants/status";
 import { RefreshCcw } from "lucide-react";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 
 export const DepositHistoryList: React.FC<{ walletType: WalletType }> = ({
   walletType,

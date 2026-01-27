@@ -6,7 +6,7 @@ import { Lock, AlertTriangle, Loader2 } from "lucide-react";
 import { PortalModal } from "@/features/PortalModal";
 import { cn } from "@/utils/cn";
 import { ButtonField } from "@/components";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 
 interface UserLockModalProps {
   logic: any;

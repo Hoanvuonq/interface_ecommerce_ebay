@@ -13,7 +13,7 @@ export const AssistantCard = ({
   <motion.div
     variants={itemVariants}
     whileHover={{ y: -8, transition: { duration: 0.2 } }}
-    className="relative bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-xl shadow-gray-200/50 flex flex-col justify-between group overflow-hidden"
+    className="relative bg-white p-8 rounded-4xl border border-gray-100 shadow-xl shadow-gray-200/50 flex flex-col justify-between group overflow-hidden"
   >
     <div
       className={`absolute -top-10 -right-10 w-32 h-32 bg-linear-to-br ${gradient} opacity-5 blur-3xl group-hover:opacity-10 transition-opacity`}

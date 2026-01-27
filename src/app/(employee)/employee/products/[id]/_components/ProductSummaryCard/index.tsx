@@ -43,7 +43,7 @@ export const ProductSummaryCard =({
   };
 
   return (
-    <div className="bg-white rounded-[2.5rem] p-8 shadow-custom relative overflow-hidden group transition-all duration-500 hover:shadow-orange-500/10 hover:border-orange-100">
+    <div className="bg-white rounded-4xl p-8 shadow-custom relative overflow-hidden group transition-all duration-500 hover:shadow-orange-500/10 hover:border-orange-100">
       <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/5 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-orange-500/10 transition-colors" />
 
       <div className="relative z-10">

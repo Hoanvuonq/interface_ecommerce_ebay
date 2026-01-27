@@ -5,7 +5,7 @@ import { Info } from "lucide-react";
 
 export const CampaignInfoBanner: React.FC = () => {
   return (
-    <div className="bg-slate-900 rounded-[2.5rem] p-8 flex flex-col md:flex-row items-start md:items-center gap-6 shadow-2xl relative overflow-hidden group border border-slate-800">
+    <div className="bg-slate-900 rounded-4xl p-8 flex flex-col md:flex-row items-start md:items-center gap-6 shadow-2xl relative overflow-hidden group border border-slate-800">
       <div className="absolute top-0 right-0 p-12 opacity-5 group-hover:rotate-12 transition-transform duration-700">
         <Info className="w-32 h-32 text-white" />
       </div>

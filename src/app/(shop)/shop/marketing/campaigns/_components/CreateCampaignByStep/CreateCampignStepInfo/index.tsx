@@ -175,7 +175,7 @@ export const CreateCampignStepInfo: React.FC<IStepInfo> = ({
       </div>
 
       {/* SECTION 2: BASIC INFO */}
-      <div className="grid grid-cols-12 gap-6 bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
+      <div className="grid grid-cols-12 gap-6 bg-white p-8 rounded-4xl border border-slate-100 shadow-sm">
         <div className="col-span-12 md:col-span-7 space-y-5">
           <FormInput
             label="Tên chiến dịch"

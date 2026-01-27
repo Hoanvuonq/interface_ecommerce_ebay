@@ -68,7 +68,7 @@ export const PlatformVoucherMarket: React.FC<PlatformVoucherMarketProps> = ({
   return (
     <div className="p-6 space-y-8 animate-in fade-in duration-700">
       {/* Header & Search */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 bg-white p-6 rounded-[2.5rem] shadow-sm border border-gray-100">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 bg-white p-6 rounded-4xl shadow-sm border border-gray-100">
         <div className="space-y-1">
           <h2 className="text-xl font-bold text-gray-900 flex items-center gap-3 uppercase tracking-tight">
             <Flame className="text-orange-500 animate-pulse" />
@@ -149,7 +149,7 @@ export const PlatformVoucherMarket: React.FC<PlatformVoucherMarketProps> = ({
               <p className="text-sm text-gray-500 font-medium">Voucher sẽ được kích hoạt ngay sau khi thanh toán thành công</p>
             </div>
 
-            <div className="bg-linear-to-br from-gray-900 to-slate-800 p-6 rounded-[2.5rem] text-white relative overflow-hidden shadow-2xl">
+            <div className="bg-linear-to-br from-gray-900 to-slate-800 p-6 rounded-4xl text-white relative overflow-hidden shadow-2xl">
               <div className="relative z-10 space-y-4">
                 <div className="flex justify-between items-start">
                   <div className="bg-orange-500 px-3 py-1 rounded-lg text-[10px] font-bold uppercase tracking-widest">Platform Exclusive</div>
@@ -203,7 +203,7 @@ const VoucherCard = ({ voucher, onBuy }: { voucher: VoucherTemplate; onBuy: () =
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.9 }}
-      className="bg-white rounded-[2.5rem] border border-gray-100 p-5 shadow-sm hover:shadow-xl transition-all group flex flex-col justify-between"
+      className="bg-white rounded-4xl border border-gray-100 p-5 shadow-sm hover:shadow-xl transition-all group flex flex-col justify-between"
     >
       <div className="space-y-4">
         {/* Discount Badge */}

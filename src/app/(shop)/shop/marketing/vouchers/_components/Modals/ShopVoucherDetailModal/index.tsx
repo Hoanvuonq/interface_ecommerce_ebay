@@ -140,7 +140,7 @@ export default function ShopVoucherDetailModal({
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="md:col-span-2 space-y-8">
                 {/* Main Info */}
-                <div className="bg-white rounded-[2.5rem] border border-gray-100 p-8 shadow-sm space-y-6">
+                <div className="bg-white rounded-4xl border border-gray-100 p-8 shadow-sm space-y-6">
                   <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">
                     <Info size={14} strokeWidth={3} /> Thông tin chiến dịch
                   </div>
@@ -188,7 +188,7 @@ export default function ShopVoucherDetailModal({
               </div>
 
               <div className="space-y-6">
-                <div className="bg-gray-900 rounded-[2.5rem] p-8 text-white shadow-2xl shadow-gray-300 relative overflow-hidden group">
+                <div className="bg-gray-900 rounded-4xl p-8 text-white shadow-2xl shadow-gray-300 relative overflow-hidden group">
                   <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:scale-110 transition-transform">
                     <DollarSign size={80} />
                   </div>
@@ -223,7 +223,7 @@ export default function ShopVoucherDetailModal({
                   </div>
                 </div>
 
-                <div className="bg-orange-50/50 rounded-[2.5rem] border border-orange-100 p-8 space-y-5 shadow-sm">
+                <div className="bg-orange-50/50 rounded-4xl border border-orange-100 p-8 space-y-5 shadow-sm">
                    <div className="text-[10px] font-bold text-orange-600 uppercase  flex items-center gap-2">
                      <CheckCircle2 size={14} strokeWidth={3} /> Phạm vi áp dụng
                    </div>

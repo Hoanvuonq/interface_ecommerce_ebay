@@ -10,7 +10,7 @@ import TransactionDetailModal from "../TransactionDetailModal";
 import { DataTable} from "@/components";
 import { Column } from "@/components/DataTable/type";
 import { getStatusStyle, getTransactionLabel } from "@/constants/status";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import { RefreshCcw } from "lucide-react";
 
 interface WithdrawTransactionListProps {

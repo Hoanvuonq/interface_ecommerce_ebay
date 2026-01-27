@@ -14,7 +14,7 @@ import { motion } from "framer-motion";
 import { Edit3, Loader2, Lock, Plus, Save, Trash2, Unlock } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useToast } from "@/hooks/useToast";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import { ButtonField } from "@/components";
 import { FormInput } from "@/components/formInput";
 
@@ -167,7 +167,7 @@ export default function EditWishlistModal({
       title={modalTitle}
       footer={modalFooter}
       width="max-w-xl"
-      className="rounded-[2.5rem]"
+      className="rounded-4xl"
     >
       <div className="space-y-6">
         <div className="space-y-3">

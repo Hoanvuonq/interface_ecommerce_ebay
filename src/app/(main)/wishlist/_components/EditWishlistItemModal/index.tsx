@@ -122,7 +122,7 @@ export default function EditWishlistItemModal({
             title={modalTitle}
             footer={modalFooter}
             width="max-w-lg"
-            className="rounded-[2.5rem]"
+            className="rounded-4xl"
         >
             <div className="space-y-6">
                 {/* Quantity & Priority Row */}

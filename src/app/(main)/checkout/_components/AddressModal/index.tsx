@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { CheckCircle2, Plus, Info } from "lucide-react";
 import { AddressModalProps } from "../../_types/address";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import { PortalModal } from "@/features/PortalModal";
 import { AddressFormModal } from "@/app/(main)/profile/_components/AddressModal";
 import { getStoredUserDetail } from "@/utils/jwt";
@@ -12,8 +12,9 @@ import { useToast } from "@/hooks/useToast";
 import { SectionLoading } from "@/components/loading";
 import { FaCheckCircle } from "react-icons/fa";
 import { CustomButtonActions } from "@/components";
+import { cn } from "@/utils/cn";
 
-const AddressModal: React.FC<AddressModalProps> = ({
+export const AddressModal: React.FC<AddressModalProps> = ({
   isOpen,
   onClose,
   savedAddresses,
@@ -123,7 +124,10 @@ const AddressModal: React.FC<AddressModalProps> = ({
                       <span className="mx-2 text-gray-500">|</span> {addr.phone}
                     </div>
                     {addr.isDefault && (
-                      <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-(--color-mainColor) text-white text-[9px] font-bold uppercase tracking-widest shadow-sm animate-fade-in">
+                      <div className={cn(
+                        "flex items-center gap-1 px-2.5 py-1 rounded-full bg-(--color-mainColor)",
+                        "text-white text-[9px] font-bold uppercase tracking-widest shadow-sm animate-fade-in"
+                      )}>
                         <FaCheckCircle size={10} />
                         <span>Mặc định</span>
                       </div>
@@ -173,4 +177,3 @@ const AddressModal: React.FC<AddressModalProps> = ({
   );
 };
 
-export default AddressModal;

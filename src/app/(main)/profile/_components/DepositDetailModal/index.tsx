@@ -1,7 +1,7 @@
 "use client";
 
 import { SectionLoading } from "@/components";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import { getStatusStyle, getTransactionLabel } from "@/constants/status";
 import { PortalModal } from "@/features/PortalModal";
 import walletService from "@/services/wallet/wallet.service";

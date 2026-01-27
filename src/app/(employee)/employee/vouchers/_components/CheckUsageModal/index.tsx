@@ -124,7 +124,7 @@ export const CheckUsageModal = ({
           <div className="animate-in fade-in zoom-in-95 duration-500 space-y-6">
             <div
               className={cn(
-                "p-8 rounded-[2.5rem] border flex flex-col items-center text-center gap-5 transition-all shadow-2xl",
+                "p-8 rounded-4xl border flex flex-col items-center text-center gap-5 transition-all shadow-2xl",
                 result.isUsable
                   ? "bg-emerald-50/50 border-emerald-100 shadow-emerald-100/50"
                   : "bg-orange-50/50 border-orange-100 shadow-orange-100/50",

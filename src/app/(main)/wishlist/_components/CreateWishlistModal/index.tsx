@@ -146,7 +146,7 @@ export default function CreateWishlistModal({
             title={modalTitle}
             footer={modalFooter}
             width="max-w-xl"
-            className="rounded-[2.5rem]"
+            className="rounded-4xl"
         >
             <div className="space-y-6">
                 <div className="space-y-3">

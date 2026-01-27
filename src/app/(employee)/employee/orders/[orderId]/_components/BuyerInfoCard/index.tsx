@@ -37,7 +37,7 @@ export const BuyerInfoCard: React.FC<BuyerInfoCardProps> = ({
           className={cn(
             "text-sm truncate tracking-tight ",
             isBold
-              ? "font-black text-gray-900 uppercase"
+              ? "font-bold text-gray-900 uppercase"
               : "font-medium text-gray-900",
           )}
         >
@@ -61,7 +61,7 @@ export const BuyerInfoCard: React.FC<BuyerInfoCardProps> = ({
               <User size={20} strokeWidth={2.5} />
             </div>
             <div>
-              <h3 className="text-sm font-black uppercase tracking-[0.2em] text-gray-800 leading-none">
+              <h3 className="text-sm font-bold uppercase tracking-[0.2em] text-gray-800 leading-none">
                 Hồ sơ <span className="text-orange-500">Người mua</span>
               </h3>
               <p className="text-[9px] font-bold text-gray-600 uppercase mt-1.5 tracking-widest italic">
@@ -71,7 +71,7 @@ export const BuyerInfoCard: React.FC<BuyerInfoCardProps> = ({
           </div>
           <div className="flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full border border-emerald-100 shadow-sm">
             <BadgeCheck size={12} strokeWidth={3} />
-            <span className="text-[9px] font-black uppercase tracking-tighter">
+            <span className="text-[9px] font-bold uppercase tracking-tighter">
               Hợp lệ
             </span>
           </div>
@@ -80,7 +80,7 @@ export const BuyerInfoCard: React.FC<BuyerInfoCardProps> = ({
         <div className="mb-4 flex flex-col items-center justify-center p-3 bg-gray-100 rounded-4xl border border-gray-200 shadow-custom group">
           <div className="relative mb-4">
             <div className="w-20 h-20 rounded-3xl bg-orange-100 border-4 border-white shadow-xl flex items-center justify-center transition-transform duration-500 group-hover:scale-105 group-hover:rotate-3">
-              <span className="text-3xl font-black text-orange-500 italic uppercase">
+              <span className="text-3xl font-bold text-orange-500 italic uppercase">
                 {name?.charAt(0) || "U"}
               </span>
             </div>
@@ -88,7 +88,7 @@ export const BuyerInfoCard: React.FC<BuyerInfoCardProps> = ({
               <ShieldCheck size={12} strokeWidth={3} />
             </div>
           </div>
-          <h4 className="text-base font-black text-gray-900 uppercase tracking-tighter italic text-center leading-tight">
+          <h4 className="text-base font-bold text-gray-900 uppercase tracking-tighter italic text-center leading-tight">
             {name}
           </h4>
           <span className="text-[10px] font-bold text-gray-600 uppercase tracking-[0.3em] mt-2">

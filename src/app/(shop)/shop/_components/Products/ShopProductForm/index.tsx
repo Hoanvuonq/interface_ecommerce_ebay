@@ -1,7 +1,7 @@
 "use client";
 
 import { ButtonField, DataTable } from "@/components";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import { useToast } from "@/hooks/useToast";
 import { userProductService } from "@/services/products/product.service";
 import {
@@ -416,7 +416,7 @@ export const ShopProductForm = () => {
       </div>
 
       <div className="space-y-4">
-        <div className="bg-white p-4 rounded-[2.5rem] border border-gray-100 space-y-4 shadow-custom">
+        <div className="bg-white p-4 rounded-4xl border border-gray-100 space-y-4 shadow-custom">
           <ProductFilters
             filters={filters}
             setFilters={setFilters}

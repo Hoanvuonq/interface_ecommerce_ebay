@@ -109,7 +109,7 @@ const PurchasedVoucherList: React.FC<PurchasedVoucherListProps> = ({
             </div>
 
             {/* List Container */}
-            <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-custom overflow-hidden min-h-100">
+            <div className="bg-white rounded-4xl border border-gray-100 shadow-custom overflow-hidden min-h-100">
                 {loading ? (
                     <div className="flex flex-col items-center justify-center h-100 gap-3">
                         <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />

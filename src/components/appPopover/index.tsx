@@ -4,7 +4,6 @@ import { cn } from "@/utils/cn";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AppPopoverProps } from "./type";
 
-
 export const AppPopover = ({
   trigger,
   children,
@@ -28,7 +27,7 @@ export const AppPopover = ({
       setIsOpen(open);
       if (onOpenChange) onOpenChange(open);
     },
-    [onOpenChange]
+    [onOpenChange],
   );
 
   const handleClickOutside = useCallback(
@@ -40,7 +39,7 @@ export const AppPopover = ({
         toggleOpen(false);
       }
     },
-    [toggleOpen]
+    [toggleOpen],
   );
 
   useEffect(() => {
@@ -73,18 +72,18 @@ export const AppPopover = ({
                 align === "right"
                   ? "md:right-0"
                   : align === "left"
-                  ? "md:left-0"
-                  : "md:left-1/2 md:-translate-x-1/2",
+                    ? "md:left-0"
+                    : "md:left-1/2 md:-translate-x-1/2",
               ]
             : [
                 "absolute top-full pt-3 w-max",
                 align === "right"
                   ? "right-0"
                   : align === "left"
-                  ? "left-0"
-                  : "left-1/2 -translate-x-1/2",
+                    ? "left-0"
+                    : "left-1/2 -translate-x-1/2",
               ],
-          className
+          className,
         )}
       >
         <div
@@ -94,9 +93,9 @@ export const AppPopover = ({
             align === "right"
               ? "right-6"
               : align === "left"
-              ? "left-6"
-              : "left-1/2 -translate-x-1/2",
-            arrowClassName
+                ? "left-6"
+                : "left-1/2 -translate-x-1/2",
+            arrowClassName,
           )}
         />
 

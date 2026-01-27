@@ -43,7 +43,7 @@ export const ShippingInfoCard: React.FC<ShippingInfoCardProps> = ({
               <PackageCheck size={20} strokeWidth={2.5} />
             </div>
             <div>
-              <h3 className="text-sm font-black uppercase tracking-[0.2em] text-gray-800 leading-none">
+              <h3 className="text-sm font-bold uppercase tracking-[0.2em] text-gray-800 leading-none">
                 Lộ trình <span className="text-orange-500">Vận chuyển</span>
               </h3>
               <p className="text-[9px] font-bold text-gray-400 uppercase mt-1.5 tracking-widest italic">
@@ -60,10 +60,10 @@ export const ShippingInfoCard: React.FC<ShippingInfoCardProps> = ({
               <Box size={18} strokeWidth={2.5} />
             </div>
             <div>
-              <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-0.5">
+              <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">
                 Đơn vị đảm nhiệm
               </p>
-              <p className="text-sm font-black text-gray-800 uppercase italic tracking-tight">
+              <p className="text-sm font-bold text-gray-800 uppercase italic tracking-tight">
                 {carrier}
               </p>
             </div>
@@ -73,12 +73,12 @@ export const ShippingInfoCard: React.FC<ShippingInfoCardProps> = ({
             <div className="space-y-2">
               <div className="flex items-center gap-2 ml-1">
                 <Navigation size={12} className="text-orange-500" />
-                <span className="text-[11px] font-black uppercase  text-gray-600">
+                <span className="text-[11px] font-bold uppercase  text-gray-600">
                   Vận đơn số (AWB)
                 </span>
               </div>
               <div className="flex items-center gap-2 p-4 rounded-2xl bg-white border-2 border-dashed border-gray-200 hover:border-orange-200 transition-colors group/tracking">
-                <p className="text-sm font-mono font-black text-blue-600 flex-1 tracking-tighter uppercase italic leading-none">
+                <p className="text-sm font-mono font-bold text-blue-600 flex-1 tracking-tighter uppercase italic leading-none">
                   {trackingNumber}
                 </p>
                 <button
@@ -95,19 +95,19 @@ export const ShippingInfoCard: React.FC<ShippingInfoCardProps> = ({
           <div className="space-y-3">
             <div className="flex items-center gap-2 ml-1">
               <MapPin size={12} className="text-orange-500" />
-              <span className="text-[10px] font-black uppercase tracking-widest text-gray-500">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500">
                 Tọa độ giao nhận
               </span>
             </div>
             <div className="relative p-5 rounded-[1.8rem] bg-gray-900 shadow-2xl shadow-gray-200 group/address overflow-hidden">
               <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] bg-size-[16px_16px]" />
 
-              <p className="relative z-10 text-xs font-semibold text-white leading-relaxed tracking-tight  first-letter:text-lg first-letter:text-orange-500 first-letter:font-black">
+              <p className="relative z-10 text-xs font-semibold text-white leading-relaxed tracking-tight  first-letter:text-lg first-letter:text-orange-500 first-letter:font-bold">
                 {shippingAddress}
               </p>
 
               <div className="mt-4 pt-4 border-t border-white/10 flex items-center justify-between relative z-10">
-                <span className="text-[8px] font-black text-white/30 uppercase tracking-[0.2em]">
+                <span className="text-[8px] font-bold text-white/30 uppercase tracking-[0.2em]">
                   Final Destination Verified
                 </span>
                 <div className="flex gap-1">

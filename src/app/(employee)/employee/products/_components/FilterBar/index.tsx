@@ -30,7 +30,7 @@ export const FilterBar = ({
   ];
 
   return (
-    <div className="bg-white rounded-[2.5rem] p-8 mb-8 shadow-custom animate-in fade-in slide-in-from-top-4 duration-500">
+    <div className="bg-white rounded-4xl p-8 mb-8 shadow-custom animate-in fade-in slide-in-from-top-4 duration-500">
       <div className="flex items-center gap-3 mb-8">
         <div className="p-3 bg-orange-50 rounded-2xl text-orange-500 shadow-inner">
           <Filter size={22} strokeWidth={2.5} />

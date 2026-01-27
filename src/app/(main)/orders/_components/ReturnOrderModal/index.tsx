@@ -1,7 +1,7 @@
 "use client";
 
 import { ButtonField } from "@/components";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import { PortalModal } from "@/features/PortalModal";
 import { useToast } from "@/hooks/useToast";
 import { bankAccountService } from "@/services/bank/bank-account.service"; 

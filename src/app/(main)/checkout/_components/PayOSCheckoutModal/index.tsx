@@ -46,7 +46,7 @@ export const PayOSCheckoutModal: React.FC<PayOSCheckoutModalProps> = ({
       onClose={onClose}
       title={modalTitle}
       width="max-w-lg"
-      className="rounded-[2.5rem]"
+      className="rounded-4xl"
     >
       {payosInfo ? (
         <div className="space-y-6">

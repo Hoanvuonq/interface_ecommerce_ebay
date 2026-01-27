@@ -3,7 +3,7 @@
 import React from "react";
 import { Search, RefreshCcw } from "lucide-react";
 import { ButtonField, FormInput } from "@/components";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 
 export interface FilterState {
   keyword: string;

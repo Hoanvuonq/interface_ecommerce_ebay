@@ -143,7 +143,7 @@ export const VariantTable = ({ variants }: VariantTableProps) => {
         </div>
       </div>
 
-      <div className="bg-white rounded-[2.5rem]shadow-custom">
+      <div className="bg-white rounded-4xlshadow-custom">
         <DataTable
           data={variants}
           columns={columns}

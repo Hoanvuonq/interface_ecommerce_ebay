@@ -57,6 +57,7 @@ export interface PresignUploadRequest {
 
 export interface PresignedUploadResponse {
   url: string; // Presigned URL để upload
+  id?: string | number;
   method: string; // "PUT"
   headers: Record<string, string>; // Headers cần gửi kèm (Content-MD5, Content-Type, etc.)
   expiresAtEpochSeconds: number; // Timestamp khi URL hết hạn

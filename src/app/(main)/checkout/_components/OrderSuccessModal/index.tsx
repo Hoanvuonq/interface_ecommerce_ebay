@@ -48,7 +48,7 @@ export const OrderSuccessModal: React.FC<OrderSuccessModalProps> = ({
       onClose={onClose}
       footer={modalFooter}
       width="max-w-md"
-      className="rounded-[2.5rem] overflow-hidden"
+      className="rounded-4xl overflow-hidden"
       preventCloseOnClickOverlay={true}
     >
       <div className="text-center py-6 px-4">

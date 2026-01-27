@@ -127,7 +127,7 @@ export default function UserDetailModal({
       width="max-w-4xl"
     >
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-32 bg-white rounded-[2.5rem]">
+        <div className="flex flex-col items-center justify-center py-32 bg-white rounded-4xl">
           <div className="relative">
             <Loader2
               className="animate-spin text-orange-500"
@@ -164,7 +164,7 @@ export default function UserDetailModal({
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-8">
-              <div className="p-6 rounded-[2.5rem] bg-white border border-gray-100 shadow-sm">
+              <div className="p-6 rounded-4xl bg-white border border-gray-100 shadow-sm">
                 <SectionHeader icon={ShieldCheck} title="Cấu hình thực thể" />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <InfoCard
@@ -194,7 +194,7 @@ export default function UserDetailModal({
               </div>
 
               {user.buyer && (
-                <div className="p-6 rounded-[2.5rem] bg-white border border-gray-100 shadow-sm border-l-4 border-l-blue-500">
+                <div className="p-6 rounded-4xl bg-white border border-gray-100 shadow-sm border-l-4 border-l-blue-500">
                   <SectionHeader
                     icon={UserIcon}
                     title="Thông tin người mua"
@@ -232,7 +232,7 @@ export default function UserDetailModal({
               )}
 
               {user.shop && (
-                <div className="p-6 rounded-[2.5rem] bg-white border border-gray-100 shadow-sm border-l-4 border-l-emerald-500">
+                <div className="p-6 rounded-4xl bg-white border border-gray-100 shadow-sm border-l-4 border-l-emerald-500">
                   <SectionHeader
                     icon={Store}
                     title="Thông tin đối tác"
@@ -266,7 +266,7 @@ export default function UserDetailModal({
               )}
 
               {user.employee && (
-                <div className="p-6 rounded-[2.5rem] bg-white border border-gray-100 shadow-sm border-l-4 border-l-purple-500">
+                <div className="p-6 rounded-4xl bg-white border border-gray-100 shadow-sm border-l-4 border-l-purple-500">
                   <SectionHeader
                     icon={Briefcase}
                     title="Hồ sơ nhân sự"
@@ -322,7 +322,7 @@ export default function UserDetailModal({
               {/* Penalty Section */}
               <div
                 className={cn(
-                  "p-6 rounded-[2.5rem] border transition-all duration-500",
+                  "p-6 rounded-4xl border transition-all duration-500",
                   user.lockedAt
                     ? "bg-rose-50 border-rose-200 shadow-lg shadow-rose-500/10"
                     : "bg-gray-50 border-gray-100 opacity-60",
@@ -367,7 +367,7 @@ export default function UserDetailModal({
               </div>
 
               {/* Permissions Section */}
-              <div className="p-6 rounded-[2.5rem] bg-gray-900 shadow-2xl relative overflow-hidden group">
+              <div className="p-6 rounded-4xl bg-gray-900 shadow-2xl relative overflow-hidden group">
                 <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:rotate-12 transition-transform duration-700">
                   <ShieldCheck size={120} className="text-white" />
                 </div>

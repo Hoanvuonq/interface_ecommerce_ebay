@@ -77,7 +77,7 @@ export const BehaviorStatistics = ({
 
       <div className="grid grid-cols-1 gap-8">
         {/* Growth Line Chart */}
-        <div className="bg-white rounded-[2.5rem] p-8 border border-gray-100 shadow-custom">
+        <div className="bg-white rounded-4xl p-8 border border-gray-100 shadow-custom">
           <div className="flex items-center gap-3 mb-8">
             <div className="p-2 bg-emerald-50 rounded-xl text-emerald-500">
               <MousePointer2 size={20} />
@@ -124,7 +124,7 @@ export const BehaviorStatistics = ({
         </div>
 
         {/* Weekly Bar Chart */}
-        <div className="bg-white rounded-[2.5rem] p-8 border border-gray-100 shadow-custom">
+        <div className="bg-white rounded-4xl p-8 border border-gray-100 shadow-custom">
           <div className="flex items-center gap-3 mb-8">
             <div className="p-2 bg-blue-50 rounded-xl text-blue-500">
               <CalendarDays size={20} />

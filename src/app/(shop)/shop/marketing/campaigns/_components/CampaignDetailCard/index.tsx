@@ -24,7 +24,7 @@ export const CampaignDetailCard: React.FC<CampaignDetailCardProps> = ({
   setShowRegisterModal,
 }) => {
   return (
-    <div className="bg-white rounded-[2.5rem] overflow-hidden border border-slate-100 shadow-custom transition-all animate-in fade-in zoom-in-95 duration-500">
+    <div className="bg-white rounded-4xl overflow-hidden border border-slate-100 shadow-custom transition-all animate-in fade-in zoom-in-95 duration-500">
       <div className="relative h-64 group/banner overflow-hidden">
         <Image
           src={

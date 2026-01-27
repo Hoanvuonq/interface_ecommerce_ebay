@@ -6,7 +6,7 @@ import { AlertTriangle, Ban, CheckCircle2, Loader2 } from "lucide-react";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { ModerateReviewRequest, ReviewStatus } from "../../_types/review.type";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import { ButtonField } from "@/components";
 
 interface ModerateReviewModalProps {

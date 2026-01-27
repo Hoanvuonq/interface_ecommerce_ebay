@@ -42,7 +42,7 @@ export const TemplateTable = ({
   );
 
   return (
-    <div className="animate-in fade-in duration-700 shadow-custom rounded-[2.5rem] overflow-hidden border border-gray-100">
+    <div className="animate-in fade-in duration-700 shadow-custom rounded-4xl overflow-hidden border border-gray-100">
       <DataTable<VoucherTemplate>
         data={data}
         columns={columns}

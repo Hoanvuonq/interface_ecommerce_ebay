@@ -16,7 +16,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
       checked,
       ...props
     },
-    ref
+    ref,
   ) => {
     const reactId = useId();
     const checkboxId = id || reactId;
@@ -26,7 +26,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
         htmlFor={checkboxId}
         className={cn(
           "flex items-center gap-2.5 group cursor-pointer select-none w-fit",
-          containerClassName
+          containerClassName,
         )}
       >
         <div className="relative flex items-center justify-center">
@@ -48,7 +48,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
                 ? "bg-orange-500 border-orange-500 shadow-[0_2px_8px_rgba(249,115,22,0.3)]"
                 : "bg-white border-gray-300",
               "group-hover:border-orange-400",
-              className
+              className,
             )}
           >
             <Check
@@ -56,7 +56,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
               strokeWidth={4.5}
               className={cn(
                 "text-white transition-all duration-200 transform",
-                checked ? "scale-100 opacity-100" : "scale-0 opacity-0"
+                checked ? "scale-100 opacity-100" : "scale-0 opacity-0",
               )}
             />
           </div>
@@ -66,7 +66,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
           <span
             className={cn(
               "text-[13px] font-bold tracking-tight transition-all duration-200",
-              checked ? "text-gray-800" : "text-gray-500"
+              checked ? "text-gray-800" : "text-gray-500",
             )}
           >
             {label}
@@ -74,7 +74,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
         )}
       </label>
     );
-  }
+  },
 );
 
 Checkbox.displayName = "Checkbox";

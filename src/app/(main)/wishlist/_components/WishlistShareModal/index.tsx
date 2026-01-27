@@ -102,7 +102,7 @@ export default function WishlistShareModal({
             title={modalTitle}
             footer={modalFooter}
             width="max-w-lg"
-            className="rounded-[2.5rem]"
+            className="rounded-4xl"
         >
             <div className="space-y-8">
                 {!shareToken ? (

@@ -58,7 +58,7 @@ export const OverviewCards = ({
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 bg-white rounded-[2.5rem] p-8 border border-gray-100 shadow-xl shadow-custom relative overflow-hidden">
+        <div className="lg:col-span-2 bg-white rounded-4xl p-8 border border-gray-100 shadow-xl shadow-custom relative overflow-hidden">
           <div className="flex items-center justify-between mb-8">
             <div className="space-y-1">
               <h3 className="text-xl font-bold text-gray-800 uppercase italic tracking-tight">
@@ -119,7 +119,7 @@ export const OverviewCards = ({
           </div>
         </div>
 
-        <div className="bg-white rounded-[2.5rem] p-8 border border-gray-100 shadow-custom">
+        <div className="bg-white rounded-4xl p-8 border border-gray-100 shadow-custom">
           <h3 className="text-lg font-bold text-gray-800 uppercase italic tracking-tight mb-8">
             Chỉ số nhanh
           </h3>

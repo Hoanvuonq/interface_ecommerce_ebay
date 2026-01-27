@@ -86,7 +86,7 @@ export const TimeStatistics = ({
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main Area Chart */}
-        <div className="lg:col-span-2 bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-custom">
+        <div className="lg:col-span-2 bg-white rounded-4xl p-8 border border-slate-100 shadow-custom">
           <div className="flex items-center justify-between mb-8 px-2">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-orange-50 rounded-xl text-orange-500">
@@ -143,7 +143,7 @@ export const TimeStatistics = ({
         </div>
 
         {/* Top 5 Days List */}
-        <div className="bg-white rounded-[2.5rem] p-8 shadow-custom">
+        <div className="bg-white rounded-4xl p-8 shadow-custom">
           <h3 className="text-lg font-bold text-slate-800 uppercase italic mb-6">
             Cao điểm tạo Voucher
           </h3>

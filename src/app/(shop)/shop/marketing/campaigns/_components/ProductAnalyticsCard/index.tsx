@@ -38,7 +38,7 @@ export const ProductAnalyticsCard = ({ prod, formatPrice }: any) => {
   return (
     <div
       className={cn(
-        "group relative flex flex-col gap-5 p-5 bg-white border border-slate-100 rounded-[2.5rem]",
+        "group relative flex flex-col gap-5 p-5 bg-white border border-slate-100 rounded-4xl",
         "shadow-custom transition-all duration-500 hover:-translate-y-2 overflow-hidden",
       )}
     >

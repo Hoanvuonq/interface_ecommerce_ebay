@@ -57,7 +57,7 @@ export default function ShopVoucherPurchaseModal({
       isOpen={open} 
       onClose={onClose} 
       width="max-w-2xl"
-      className="rounded-[2.5rem] p-0 overflow-hidden"
+      className="rounded-4xl p-0 overflow-hidden"
     >
       {/* Header */}
       <div className="px-8 py-6 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
@@ -127,7 +127,7 @@ export default function ShopVoucherPurchaseModal({
             <Info size={14} /> Chi tiết thanh toán
           </div>
           
-          <div className="bg-gray-50 rounded-[2.5rem] p-8 space-y-4 border border-gray-100/50">
+          <div className="bg-gray-50 rounded-4xl p-8 space-y-4 border border-gray-100/50">
             <div className="flex justify-between items-center">
               <span className="text-sm font-bold text-gray-500 uppercase tracking-tight">Giá Voucher</span>
               <span className="text-sm font-bold text-gray-900">{formatCurrency(voucher.price || 0)}</span>

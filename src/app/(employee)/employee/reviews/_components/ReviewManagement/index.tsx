@@ -97,7 +97,7 @@ export default function ReviewManagement() {
       </div>
 
       {/* 2. Main Content Card */}
-      <div className="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden">
+      <div className="bg-white rounded-4xl shadow-sm border border-gray-100 overflow-hidden">
         {/* Toolbar */}
         <div className="p-6 border-b border-gray-50 flex flex-wrap justify-between items-center gap-4 bg-white/50 backdrop-blur-md">
           <div className="flex bg-gray-100/80 p-1.5 rounded-2xl">

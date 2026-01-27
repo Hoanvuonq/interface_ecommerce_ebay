@@ -148,7 +148,7 @@ export const MyShopSaleScreen = ({
                 <TrendingUp size={18} /> PERFORMANCE HUB
               </div>
               {selectedCampaignProducts.length === 0 ? (
-                <div className="py-24 text-center bg-white rounded-[2.5rem] border-2 border-dashed border-slate-200">
+                <div className="py-24 text-center bg-white rounded-4xl border-2 border-dashed border-slate-200">
                   <PackageOpen className="w-12 h-12 mx-auto mb-4  text-gray-200" />
                   <p className=" text-gray-400 font-bold uppercase tracking-widest text-[10px]">
                     Chưa có tài sản đăng ký
@@ -178,7 +178,7 @@ export const MyShopSaleScreen = ({
           </div>
         ) : (
           <div className="h-full bg-white rounded-[3rem] border-2 border-dashed border-slate-100 flex flex-col items-center justify-center p-12 text-center group">
-            <div className="w-32 h-32 bg-orange-50 rounded-[2.5rem] flex items-center justify-center mb-8 ring-8 ring-orange-50 transition-all group-hover:scale-110 shadow-xl">
+            <div className="w-32 h-32 bg-orange-50 rounded-4xl flex items-center justify-center mb-8 ring-8 ring-orange-50 transition-all group-hover:scale-110 shadow-xl">
               <MousePointerClick className="w-16 h-16 text-orange-500" />
             </div>
             <h3 className=" text-gray-900 font-bold uppercase tracking-widest text-2xl italic">

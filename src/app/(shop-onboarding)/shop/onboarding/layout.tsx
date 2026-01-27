@@ -1,50 +1,79 @@
 "use client";
 
-import Image from "next/image";
-import { AccountDropdown } from "@/layouts/header/_components";
 import PageTransition from "@/features/PageTransition";
 import { Footer } from "@/layouts";
+import { AccountDropdown } from "@/layouts/header/_components";
 import { isAuthenticated } from "@/utils/local.storage";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function ShopOnboardingLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+
+  useEffect(() => {
+    setIsUserLoggedIn(isAuthenticated());
+  }, []);
+
   return (
-    <div className="min-h-screen flex flex-col bg-linear-to-br from-orange-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
-      <header className="w-full border-b border-gray-200 dark:border-slate-700 bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm shadow-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-linear-to-br from-orange-500 via-indigo-500 to-purple-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg">
+    <div className="min-h-screen flex flex-col font-sans bg-linear-to-br from-orange-50 via-white to-indigo-50transition-colors duration-300">
+      <header className="sticky top-0 z-50 w-full backdrop-blur-md background-main-gradient">
+        <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 h-16 sm:h-20">
+          <div className="flex items-center gap-4 sm:gap-6">
+            <Link
+              href="/"
+              className="flex items-center shrink-0 hover:opacity-80 transition-opacity"
+            >
               <Image
-                src="/globe.svg"
-                alt="Globe Icon"
-                width={24}
-                height={24}
-                className="sm:w-8 sm:h-8"
+                src="/icon/cano-v4.png"
+                alt="CaLaTha Logo"
+                width={140}
+                height={40}
+                className="w-24 sm:w-32 md:w-36 h-auto object-contain"
+                priority
               />
+            </Link>
+
+            <div className="hidden sm:block h-8 w-px bg-gray-300 " />
+
+            <div className="flex flex-col">
+              <span className="text-sm sm:text-lg md:text-xl font-bold text-white">
+                Kênh Người Bán
+              </span>
+              <span className="text-[10px] sm:text-xs text-gray-200 font-medium tracking-wide hidden sm:block">
+                Đăng ký & Quản lý cửa hàng
+              </span>
             </div>
-            <span className="text-base sm:text-lg lg:text-xl font-bold bg-linear-to-r from-orange-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent hidden sm:block">
-              Đăng ký trở thành Người bán hàng
-            </span>
-            <span className="text-sm font-bold bg-linear-to-r from-orange-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent sm:hidden">
-              Đăng ký Shop
-            </span>
           </div>
-          
-          {isAuthenticated() && (
-            <div className="hidden sm:block">
-              <AccountDropdown />
-            </div>
-          )}
+
+          <div className="flex items-center gap-4">
+            {isUserLoggedIn ? (
+              <div className="pl-4 border-l border-gray-200">
+                <AccountDropdown />
+              </div>
+            ) : (
+              <Link
+                href="/auth/login"
+                className="text-sm font-medium text-gray-600 hover:text-orange-600transition-colors"
+              >
+                Đăng nhập
+              </Link>
+            )}
+          </div>
         </div>
       </header>
 
-      <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
-        <PageTransition>
-          {children}
-        </PageTransition>
+      <main className="flex-1 w-full max-w-7xl mx-auto py-6 relative">
+        <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-orange-200/20 rounded-full blur-3xl mix-blend-multiply" />
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-indigo-200/20 rounded-full blur-3xl mix-blend-multiply" />
+        </div>
+
+        <PageTransition>{children}</PageTransition>
       </main>
 
       <Footer />

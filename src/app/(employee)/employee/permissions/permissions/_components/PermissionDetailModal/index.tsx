@@ -17,7 +17,7 @@ import {
 import { Permission } from "../../../_types/dto/rbac.dto";
 import { PortalModal } from "@/features/PortalModal";
 import { cn } from "@/utils/cn";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 
 interface PermissionDetailModalProps {
   permission: Permission | null;
@@ -109,7 +109,7 @@ export const PermissionDetailModal = ({
     >
       <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
         {/* --- SECTION 1: IDENTITY CARD --- */}
-        <div className="relative p-6 rounded-[2.5rem] bg-linear-to-br from-gray-900 via-gray-800 to-orange-950 overflow-hidden shadow-2xl">
+        <div className="relative p-6 rounded-4xl bg-linear-to-br from-gray-900 via-gray-800 to-orange-950 overflow-hidden shadow-2xl">
           <div className="absolute top-0 right-0 w-48 h-48 bg-orange-500/10 rounded-full -mr-24 -mt-24 blur-3xl" />
 
           <div className="relative z-10 space-y-4">

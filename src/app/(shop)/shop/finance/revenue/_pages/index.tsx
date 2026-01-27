@@ -115,7 +115,7 @@ export default function ShopRevenueScreen() {
       </div>
 
       {/* Main Chart Section */}
-      <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-custom p-8">
+      <div className="bg-white rounded-4xl border border-gray-100 shadow-custom p-8">
         <div className="flex items-center justify-between mb-8">
           <div>
             <h3 className="text-lg font-bold text-gray-900 tracking-tight uppercase">Biểu đồ tăng trưởng</h3>
@@ -170,7 +170,7 @@ export default function ShopRevenueScreen() {
       </div>
 
       {/* Recent Transactions List */}
-      <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-custom overflow-hidden">
+      <div className="bg-white rounded-4xl border border-gray-100 shadow-custom overflow-hidden">
          <div className="px-8 py-6 border-b border-gray-50 flex items-center justify-between bg-gray-50/50">
             <h3 className="font-bold text-gray-800 tracking-tight uppercase text-sm">Giao dịch gần đây</h3>
             <button className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest flex items-center gap-2 hover:gap-3 transition-all">

@@ -79,7 +79,7 @@ export default function PublicWishlistClient({ shareToken }: Props) {
       breadcrumbItems={breadcrumbData}
     >
       {error ? (
-        <div className="max-w-xl mx-auto bg-white border border-gray-200 rounded-[2.5rem] p-12 text-center shadow-xl shadow-gray-200/50">
+        <div className="max-w-xl mx-auto bg-white border border-gray-200 rounded-4xl p-12 text-center shadow-xl shadow-gray-200/50">
           <div className="w-20 h-20 bg-red-50 rounded-3xl flex items-center justify-center mx-auto mb-6 text-red-500">
             <Lock size={40} />
           </div>
@@ -96,7 +96,7 @@ export default function PublicWishlistClient({ shareToken }: Props) {
         </div>
       ) : wishlist ? (
         <div className="space-y-10">
-          <div className="bg-white border border-gray-100 rounded-[2.5rem] p-8 md:p-10 shadow-sm relative overflow-hidden">
+          <div className="bg-white border border-gray-100 rounded-4xl p-8 md:p-10 shadow-sm relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/5 rounded-full blur-3xl -mr-32 -mt-32" />
 
             <div className="flex flex-col md:flex-row gap-8 items-start md:items-center relative z-10">
@@ -183,7 +183,7 @@ export default function PublicWishlistClient({ shareToken }: Props) {
                 ))}
               </div>
             ) : (
-              <div className="bg-white border border-dashed border-gray-200 rounded-[2.5rem] py-20 text-center">
+              <div className="bg-white border border-dashed border-gray-200 rounded-4xl py-20 text-center">
                 <Package className="w-16 h-16 text-gray-200 mx-auto mb-4" />
                 <p className="text-gray-600 font-medium">
                   Wishlist này hiện đang trống

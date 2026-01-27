@@ -35,7 +35,7 @@ import {
   AddToWishlistModalProps,
   WishlistFormData,
 } from "../../_types/modalAddWishList";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import { useToast } from "@/hooks/useToast";
 
 export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
@@ -280,7 +280,7 @@ export const AddToWishlistModal: React.FC<AddToWishlistModalProps> = ({
         </div>
 
         {/* SECTION 2: WISHLIST SELECTION */}
-        <div className="p-6 rounded-[2.5rem] bg-orange-50/40 border border-orange-100/50 space-y-6">
+        <div className="p-6 rounded-4xl bg-orange-50/40 border border-orange-100/50 space-y-6">
           {!showCreateForm ? (
             <div className="space-y-4">
               <SectionHeader icon={Heart} title="Danh mục lưu trữ" />

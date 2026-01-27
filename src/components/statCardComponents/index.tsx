@@ -61,7 +61,7 @@ export const StatCardComponents: React.FC<StatCardProps> = ({
       iconContainer: "w-12 h-12",
     },
     lg: {
-      container: "p-8 rounded-[2.5rem] min-h-[200px]",
+      container: "p-8 rounded-4xl min-h-[200px]",
       label: "text-xs",
       value: "text-7xl",
       decorSize: 120,

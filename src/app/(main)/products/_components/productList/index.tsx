@@ -24,7 +24,7 @@ import { useCart } from "../../_hooks/useCart";
 import { requireAuthentication } from "@/utils/cart/cart-auth.utils";
 import { useRouter } from "next/navigation";
 import { cn } from "@/utils/cn";
-import { CustomButton } from "@/components/button";
+import { CustomButton } from "@/components/custom/components/customButton";
 import { TabsChangeLayout } from "../TabsChangeLayout";
 import { useToast } from "@/hooks/useToast";
 import { EmptyProductState } from "../EmptyProductState";

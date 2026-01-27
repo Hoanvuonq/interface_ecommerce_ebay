@@ -1,7 +1,7 @@
 "use client";
 
 import { ButtonField, FormInput } from "@/components";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import { PortalModal } from "@/features/PortalModal";
 import { useToast } from "@/hooks/useToast";
 import {
@@ -158,7 +158,7 @@ export const RolePermissionsModal = ({
         </div>
 
         {loading && allPermissions.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-24 gap-4 bg-gray-50/50 rounded-[2.5rem] border border-dashed border-gray-200">
+          <div className="flex flex-col items-center justify-center py-24 gap-4 bg-gray-50/50 rounded-4xl border border-dashed border-gray-200">
             <Loader2
               className="animate-spin text-orange-500"
               size={40}

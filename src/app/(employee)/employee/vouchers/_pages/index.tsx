@@ -26,7 +26,7 @@ export default function AdminVoucherV2Page() {
 
   return (
     <div className="min-h-screen space-y-4 animate-in fade-in duration-700">
-      <div className="relative overflow-hidden bg-white rounded-[2.5rem] p-8 border border-gray-100 shadow-xl shadow-slate-200/50">
+      <div className="relative overflow-hidden bg-white rounded-4xl p-8 border border-gray-100 shadow-xl shadow-slate-200/50">
         <div className="absolute top-0 right-0 p-8 opacity-5">
           <Zap size={160} className="text-orange-500" />
         </div>
@@ -126,7 +126,7 @@ export default function AdminVoucherV2Page() {
         </div>
       </div>
 
-      <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-2xl shadow-slate-200/60 overflow-hidden">
+      <div className="bg-white rounded-4xl border border-gray-100 shadow-2xl shadow-slate-200/60 overflow-hidden">
         <TemplateTable
           data={logic.templates}
           loading={logic.isLoading}

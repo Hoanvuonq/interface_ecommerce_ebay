@@ -30,7 +30,6 @@ export const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Hàm chuyển file sang Base64
   const getBase64 = (file: File): Promise<string> =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();

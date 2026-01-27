@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
 import { cn } from "@/utils/cn";
+import React, { useState } from "react";
 import { Checkbox } from "../checkbox";
 
 interface BaseProps {
@@ -39,34 +39,51 @@ export const FormInput = React.forwardRef<
       onCheckboxChange,
       maxLengthNumber = 10,
       onChange,
+      onBlur,
       ...props
     },
     ref,
   ) => {
     const [isShaking, setIsShaking] = useState(false);
     const [localError, setLocalError] = useState(false);
+    const [emptyError, setEmptyError] = useState(false); 
 
     const isDate = type === "date" || type === "datetime-local";
 
+    const triggerShake = () => {
+      if (!isShaking) {
+        setIsShaking(true);
+        setTimeout(() => setIsShaking(false), 400);
+      }
+    };
+
     const handleInputChange = (e: React.ChangeEvent<any>) => {
       let val = e.target.value;
+
+      if (val.trim() !== "") {
+        setEmptyError(false);
+      }
 
       if (type === "number" || props.inputMode === "numeric") {
         const digitsOnly = val.replace(/\D/g, "");
 
         if (digitsOnly.length > maxLengthNumber) {
-          if (!isShaking) {
-            setIsShaking(true);
-            setLocalError(true);
-            setTimeout(() => {
-              setIsShaking(false);
-              setLocalError(false);
-            }, 400);
-          }
+          triggerShake();
+          setLocalError(true);
+          setTimeout(() => setLocalError(false), 400);
           return;
         }
       }
       onChange?.(e);
+    };
+
+    // Xử lý khi người dùng thoát khỏi ô nhập liệu
+    const handleBlur = (e: React.FocusEvent<any>) => {
+      if (required && e.target.value.trim() === "") {
+        setEmptyError(true);
+        triggerShake();
+      }
+      onBlur?.(e); // Vẫn gọi onBlur từ props nếu có
     };
 
     const commonStyles = cn(
@@ -75,7 +92,8 @@ export const FormInput = React.forwardRef<
       "transition-all duration-200 shadow-sm",
       "focus:outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 focus:bg-white",
       isDate && "cursor-pointer uppercase text-[11px]",
-      (externalError || localError) &&
+      // Báo đỏ nếu có lỗi bên ngoài, lỗi độ dài hoặc lỗi bỏ trống
+      (externalError || localError || emptyError) &&
         "border-red-400 focus:border-red-500 focus:ring-red-500/10 bg-red-50/30",
       isShaking && "animate-shake",
     );
@@ -102,6 +120,7 @@ export const FormInput = React.forwardRef<
                 className,
               )}
               onChange={handleInputChange}
+              onBlur={handleBlur} // Thêm xử lý blur
               {...(props as any)}
             />
           ) : (
@@ -116,6 +135,7 @@ export const FormInput = React.forwardRef<
                 className,
               )}
               onChange={handleInputChange}
+              onBlur={handleBlur} // Thêm xử lý blur
               {...props}
             />
           )}
@@ -131,9 +151,10 @@ export const FormInput = React.forwardRef<
           )}
         </div>
 
-        {externalError && (
+        {/* Hiện thông báo lỗi nếu có */}
+        {(externalError || emptyError) && (
           <p className="text-[10px] font-medium text-red-500 ml-1 animate-in fade-in slide-in-from-top-1">
-            {externalError}
+            {externalError || "Trường này không được để trống"}
           </p>
         )}
       </div>

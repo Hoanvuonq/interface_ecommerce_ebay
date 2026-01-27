@@ -1,7 +1,7 @@
 "use client";
 
 import { ButtonField, FormInput, SectionHeader } from "@/components";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import { useToast } from "@/hooks/useToast";
 import {
   CheckCircle2,
@@ -171,7 +171,7 @@ export const PermissionForm = ({
         <div className="space-y-6">
           <SectionHeader icon={KeyRound} title="Định cấu hình chi tiết" />
 
-          <div className="p-6 rounded-[2.5rem] bg-gray-50/50 border border-gray-100 space-y-6 shadow-inner">
+          <div className="p-6 rounded-4xl bg-gray-50/50 border border-gray-100 space-y-6 shadow-inner">
             <FormInput
               label="Mã định danh (Key)"
               placeholder="VD: PRODUCT_EXPORT, ORDER_CANCEL..."

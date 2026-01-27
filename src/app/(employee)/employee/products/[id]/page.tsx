@@ -109,7 +109,7 @@ export default function ProductDetailPage() {
   if (!product) {
     return (
       <div className="min-h-screen bg-white flex flex-col items-center justify-center text-center">
-        <div className="w-24 h-24 bg-red-50 rounded-[2.5rem] flex items-center justify-center mb-6">
+        <div className="w-24 h-24 bg-red-50 rounded-4xl flex items-center justify-center mb-6">
           <Box className="text-red-400 w-10 h-10" />
         </div>
         <h2 className="text-2xl font-bold  text-gray-900 uppercase tracking-tighter mb-2">

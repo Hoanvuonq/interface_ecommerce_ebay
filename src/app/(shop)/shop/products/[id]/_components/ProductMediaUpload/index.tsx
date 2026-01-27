@@ -196,7 +196,7 @@ export default function ProductMediaUpload({
 
       {/* Lưới hiển thị Media */}
       {mediaItems.length > 0 && (
-        <div className="bg-white/50 backdrop-blur-xl border border-gray-100 rounded-[2.5rem] p-6 shadow-xl shadow-gray-100/50">
+        <div className="bg-white/50 backdrop-blur-xl border border-gray-100 rounded-4xl p-6 shadow-xl shadow-gray-100/50">
           <div className="flex items-center justify-between mb-6 px-2">
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-orange-500" />

@@ -1,7 +1,7 @@
 "use client";
 
 import { ButtonField } from "@/components";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import { MessageSquare, Store } from "lucide-react";
 import { useRouter } from "next/navigation";
 

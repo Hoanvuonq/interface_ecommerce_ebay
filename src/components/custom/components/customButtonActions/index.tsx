@@ -1,7 +1,7 @@
 "use client";
 
 import { ButtonField } from "@/components";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import { cn } from "@/utils/cn";
 import { Loader2, Save } from "lucide-react";
 import React from "react";

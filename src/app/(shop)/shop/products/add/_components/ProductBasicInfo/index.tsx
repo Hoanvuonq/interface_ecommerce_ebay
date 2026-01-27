@@ -96,7 +96,7 @@ export const ProductBasicTabs: React.FC<ProductBasicTabsProps> = ({
   return (
     <div className="flex flex-col lg:flex-row gap-8 w-full animate-in fade-in duration-500 items-start">
       <div className="flex-1 space-y-3 w-full">
-        <div className="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden animate-in fade-in slide-in-from-top-4 duration-500">
+        <div className="bg-white rounded-4xl shadow-sm border border-gray-100 overflow-hidden animate-in fade-in slide-in-from-top-4 duration-500">
           <div className="bg-gray-50 px-4 py-2 border-b border-gray-100">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">

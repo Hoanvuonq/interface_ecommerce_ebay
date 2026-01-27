@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { FiAlertCircle, FiCheck, FiLock } from "react-icons/fi";
 import { ButtonField } from "@/components";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import { FormInput } from "@/components/formInput";
 import { PortalModal } from "@/features/PortalModal";
 import walletService from "@/services/wallet/wallet.service";

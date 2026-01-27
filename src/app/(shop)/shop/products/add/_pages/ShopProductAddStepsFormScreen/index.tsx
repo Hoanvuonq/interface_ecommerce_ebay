@@ -17,7 +17,7 @@ import { useToast } from "@/hooks/useToast";
 import { useProductStore } from "../../../../_stores/product.store";
 
 import { ButtonField, CustomVideoModal, ImagePreviewModal } from "@/components";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import {
   AddOptionGroupModal,
   CategorySelectionModal,

@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ApiErrorResponse } from "@/api/_types/api.types";
 import { ERROR_CODES, getErrorMessageByCode } from "@/constants/error.codes";
-import { toast } from "sonner"; 
+import { useToast } from "@/hooks/useToast";
 
 /**
  * Custom API Error class
  */
+
 export class ApiError extends Error {
   code: number;
   originalError?: any;
@@ -15,7 +16,7 @@ export class ApiError extends Error {
     code: number,
     message: string,
     originalError?: any,
-    response?: ApiErrorResponse
+    response?: ApiErrorResponse,
   ) {
     super(message);
     this.name = "ApiError";
@@ -145,14 +146,15 @@ export function handleApiError(error: any): ApiError {
  */
 export function showErrorNotification(
   error: any,
-  customMessage?: string
+  customMessage?: string,
 ): void {
   const apiError = handleApiError(error);
   const displayMessage = customMessage || apiError.message;
-  
+const { error: ToastError } = useToast();
+
   // ✅ THAY THẾ: Dùng toast.error từ Sonner
   // Dùng toast.error(title, { description }) để tận dụng cấu hình theme của bạn
-  toast.error("Lỗi API", {
+  ToastError("Lỗi API", {
     description: displayMessage,
     duration: 5000,
   });
@@ -173,7 +175,7 @@ export function showErrorNotification(
  */
 export function isErrorCode(
   error: any,
-  errorCode: { code: number; message: string }
+  errorCode: { code: number; message: string },
 ): boolean {
   const apiError = handleApiError(error);
   return apiError.code === errorCode.code;
@@ -209,7 +211,7 @@ export function isValidationError(error: any): boolean {
  */
 export function getUserFriendlyMessage(
   error: any,
-  fallbackMessage?: string
+  fallbackMessage?: string,
 ): string {
   try {
     const apiError = handleApiError(error);

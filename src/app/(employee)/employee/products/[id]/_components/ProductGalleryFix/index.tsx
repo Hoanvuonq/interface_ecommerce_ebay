@@ -92,7 +92,7 @@ export const ProductGalleryFix = ({
   return (
     <section className="space-y-5 animate-in fade-in slide-in-from-left-4 duration-700">
       {/* Ảnh Chính lớn - Sử dụng Component Preview bạn vừa fix ở trên */}
-      <div className="rounded-[2.5rem] border border-slate-100 bg-white p-2 shadow-custom-lg transition-all duration-500 hover:border-orange-200 group relative">
+      <div className="rounded-4xl border border-slate-100 bg-white p-2 shadow-custom-lg transition-all duration-500 hover:border-orange-200 group relative">
         <div className="relative aspect-square w-full overflow-hidden rounded-[2rem] bg-slate-50 flex items-center justify-center">
           <ImageWithPreview
             src={currentImg || "/placeholder-product.png"}

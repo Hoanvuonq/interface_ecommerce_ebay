@@ -3,7 +3,7 @@
 import { useUpdateUserClient } from "@/auth/_hooks/useAuth";
 import authService from "@/auth/services/auth.service";
 import { ButtonField } from "@/components";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import { SectionPageComponents } from "@/features/SectionPageComponents";
 import { usePresignedUpload } from "@/hooks/usePresignedUpload";
 import { buyerService } from "@/services/buyer/buyer.service";
@@ -30,7 +30,7 @@ import {
   FaUser,
   FaUserCircle,
 } from "react-icons/fa";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/useToast";
 import { menuItems } from "../../_types/menu";
 import AddressManagement from "../Address";
 import BankAccountManagement from "../BankAccount";
@@ -42,9 +42,21 @@ export default function ProfilePage() {
   const [user, setUser] = useState<any>(getStoredUserDetail());
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
+
+  // State mới cho việc upload ảnh
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+
   const [isEditing, setIsEditing] = useState(false);
   const [activeTab, setActiveTab] = useState("info");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const {
+    success,
+    error,
+    warning,
+    dismiss,
+    loading: showLoadingToast,
+  } = useToast();
 
   const [editorData, setEditorData] = useState({
     username: "",
@@ -88,8 +100,8 @@ export default function ProfilePage() {
           dateOfBirth: buyerDetail?.dateOfBirth
             ? dayjs(buyerDetail.dateOfBirth).format("YYYY-MM-DD")
             : userData?.dateOfBirth
-            ? dayjs(userData.dateOfBirth).format("YYYY-MM-DD")
-            : "",
+              ? dayjs(userData.dateOfBirth).format("YYYY-MM-DD")
+              : "",
           gender: buyerDetail?.gender || userData?.gender || "MALE",
         });
       } catch (e) {
@@ -102,7 +114,7 @@ export default function ProfilePage() {
 
   const handleToggleEdit = () => {
     if (!user?.buyerId) {
-      toast.warning("Bạn cần có tài khoản người mua để chỉnh sửa thông tin");
+      warning("Bạn cần có tài khoản người mua để chỉnh sửa thông tin");
       return;
     }
     setIsEditing(true);
@@ -127,10 +139,10 @@ export default function ProfilePage() {
       setUser(res);
       setEditorData((prev) => ({ ...prev, ...formData }));
 
-      toast.success("Cập nhật thông tin thành công");
+      success("Cập nhật thông tin thành công");
       setIsEditing(false);
     } catch (error: any) {
-      toast.error(error?.message || "Có lỗi xảy ra");
+      error(error?.message || "Có lỗi xảy ra");
     } finally {
       setSaving(false);
     }
@@ -141,12 +153,19 @@ export default function ProfilePage() {
     if (!file) return;
 
     if (file.size / 1024 / 1024 > 5) {
-      toast.error("File quá lớn! Vui lòng chọn ảnh dưới 5MB.");
+      error("File quá lớn! Vui lòng chọn ảnh dưới 5MB.");
       return;
     }
 
+    // Tạo preview ảnh ngay lập tức
+    const objectUrl = URL.createObjectURL(file);
+    setPreviewImage(objectUrl);
+    setIsUploadingAvatar(true); // Bắt đầu loading trên UI ảnh
+
+    let loadingToastId;
+
     try {
-      const loadingToast = toast.loading("Đang tải ảnh lên...");
+      loadingToastId = showLoadingToast("Đang tải ảnh lên...");
       const res = await uploadPresigned(file, UploadContext.USER_AVATAR);
 
       let imageUrl = "";
@@ -157,7 +176,7 @@ export default function ProfilePage() {
         const ext = extension === "jpeg" ? "jpg" : extension;
         const imagePath = `${res.path.replace(
           /^pending\//,
-          "public/"
+          "public/",
         )}_orig.${ext}`;
         imageUrl = toPublicUrl(imagePath);
       }
@@ -167,20 +186,30 @@ export default function ProfilePage() {
         updateUserImageInStorage(imageUrl);
         setUser((prev: any) => ({ ...prev, image: imageUrl }));
 
-        toast.dismiss(loadingToast);
-        toast.success("Đổi ảnh đại diện thành công!");
+        if (loadingToastId) dismiss(loadingToastId);
+        success("Đổi ảnh đại diện thành công!");
       }
     } catch (error: any) {
-      toast.dismiss();
+      if (loadingToastId) dismiss(loadingToastId);
       console.error("Upload error:", error);
-      toast.error("Lỗi tải ảnh: " + (error?.message || "Vui lòng thử lại"));
+      error("Lỗi tải ảnh: " + (error?.message || "Vui lòng thử lại"));
+
+      // Nếu lỗi, reset preview để quay về ảnh cũ
+      setPreviewImage(null);
     } finally {
+      setIsUploadingAvatar(false); // Tắt loading trên UI ảnh
+
+      // Cleanup object url để tránh memory leak
+      URL.revokeObjectURL(objectUrl);
+
+      // Clear preview image sau khi đã có user.image mới (hoặc giữ null nếu lỗi)
+      setPreviewImage(null);
+
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
     }
   };
- 
 
   const renderContent = () => {
     switch (activeTab) {
@@ -247,29 +276,45 @@ export default function ProfilePage() {
               <div className="lg:col-span-1 border-l border-gray-100 pl-0 lg:pl-8 flex flex-col items-center justify-start pt-4">
                 <div
                   className="relative group cursor-pointer mb-4"
-                  onClick={() => isEditing && fileInputRef.current?.click()}
+                  onClick={() => {
+                    // Cho phép click cả khi đang edit HOẶC khi chưa edit (tùy logic của bạn, ở đây giữ nguyên logic cũ là phải edit mới click đc)
+                    if (isEditing && !isUploadingAvatar)
+                      fileInputRef.current?.click();
+                  }}
                 >
                   <div
                     className={cn(
-                      "w-36 h-36 rounded-full overflow-hidden border-4 border-white shadow-lg flex items-center justify-center bg-gray-50 transition-all duration-300",
+                      "w-36 h-36 rounded-full overflow-hidden border-4 border-white shadow-lg flex items-center justify-center bg-gray-50 transition-all duration-300 relative",
                       isEditing
                         ? "ring-2 ring-orange-100 scale-105 cursor-pointer"
-                        : "border-gray-100"
+                        : "border-gray-100",
                     )}
                   >
-                    {user?.image ? (
+                    {/* Hiển thị Preview Image nếu có, không thì hiển thị User Image */}
+                    {previewImage || user?.image ? (
                       <img
-                        src={user.image}
+                        src={previewImage || user.image}
                         alt="Avatar"
                         className="w-full h-full object-cover"
                       />
                     ) : (
                       <FaUserCircle className="text-gray-200 text-[144px]" />
                     )}
+
+                    {/* OVERLAY LOADING: Hiển thị khi đang upload */}
+                    {isUploadingAvatar && (
+                      <div className="absolute inset-0 bg-black/50 z-20 flex flex-col items-center justify-center animate-fade-in">
+                        <FaSpinner className="text-white text-3xl animate-spin mb-2" />
+                        <span className="text-white text-[10px] font-semibold tracking-wide">
+                          UPLOADING...
+                        </span>
+                      </div>
+                    )}
                   </div>
 
-                  {isEditing && (
-                    <div className="absolute inset-0 bg-black/30 rounded-full flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 backdrop-blur-[1px]">
+                  {/* OVERLAY EDIT: Chỉ hiện khi đang Edit và KHÔNG đang upload */}
+                  {isEditing && !isUploadingAvatar && (
+                    <div className="absolute inset-0 bg-black/30 rounded-full flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 backdrop-blur-[1px] z-10">
                       <div className="p-2 bg-white/20 rounded-full mb-1 backdrop-blur-sm">
                         <FaCamera className="text-white text-lg" />
                       </div>
@@ -360,7 +405,7 @@ export default function ProfilePage() {
                     "w-full flex cursor-pointer items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 text-left group disabled:opacity-50",
                     activeTab === item.key
                       ? "text-orange-600 bg-orange-50"
-                      : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                      : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
                   )}
                 >
                   <item.icon
@@ -368,7 +413,7 @@ export default function ProfilePage() {
                       "text-base transition-colors",
                       activeTab === item.key
                         ? "text-orange-500"
-                        : "text-gray-600 group-hover:text-gray-500"
+                        : "text-gray-600 group-hover:text-gray-500",
                     )}
                   />
                   {item.label}

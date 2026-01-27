@@ -182,7 +182,7 @@ export default function ShopVoucherEditModal({
         </section>
 
         {/* Section: Discount Config */}
-        <section className="p-7 bg-orange-50/50 rounded-[2.5rem] border border-orange-100 space-y-6 shadow-inner">
+        <section className="p-7 bg-orange-50/50 rounded-4xl border border-orange-100 space-y-6 shadow-inner">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-[10px] font-bold text-orange-600 uppercase tracking-[0.2em]">
               <DollarSign size={14} strokeWidth={3} /> Cơ chế ưu đãi

@@ -183,7 +183,7 @@ export default function ShopOrderTable() {
           onChange={(key) => actions.setActiveTab(key)}
         />
 
-        <div className=" rounded-[2.5rem] border border-orange-50 shadow-custom-lg overflow-hidden p-2">
+        <div className=" rounded-4xl border border-orange-50 shadow-custom-lg overflow-hidden p-2">
           <DataTable
             columns={columns}
             data={state.orders}

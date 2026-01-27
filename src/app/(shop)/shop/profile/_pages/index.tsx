@@ -14,11 +14,10 @@ import { useEffect, useState, useMemo } from "react";
 import { BasicInfo, LegalInfo, TaxInfo, AddressInfo } from "../_components";
 import { useGetShopInfo } from "../_hooks/useShop";
 import { getStoredUserDetail } from "@/utils/jwt";
-
 import {
-  StatusTabsVoucher,
+  StatusTabs,
   StatusTabItem,
-} from "../../marketing/vouchers/_components/StatusTabsVoucher";
+} from "../../_components/Products/StatusTabs";
 
 type TabKey = "basic" | "tax" | "legal" | "address";
 
@@ -68,14 +67,14 @@ export default function ShopProfileScreen() {
     </div>
   );
 
-  const shopTabs: StatusTabItem[] = [
-    { id: "basic", label: "Thông tin cơ bản", icon: <Store size={16} /> },
-    { id: "address", label: "Địa chỉ", icon: <MapPin size={16} /> },
-    { id: "tax", label: "Thông tin Thuế", icon: <FileText size={16} /> },
+  const shopTabs: StatusTabItem<TabKey>[] = [
+    { key: "basic", label: "Thông tin cơ bản", icon: Store },
+    { key: "address", label: "Địa chỉ", icon: MapPin },
+    { key: "tax", label: "Thông tin Thuế", icon: FileText },
     {
-      id: "legal",
+      key: "legal",
       label: "Thông tin Định Danh",
-      icon: <ShieldCheck size={16} />,
+      icon: ShieldCheck,
     },
   ];
 
@@ -111,8 +110,8 @@ export default function ShopProfileScreen() {
 
   return (
     <div className="max-w-8xl mx-auto space-y-6 animate-in fade-in duration-500">
-      <div className="flex items-center justify-between border-b border-gray-100 pb-4 overflow-x-auto no-scrollbar">
-        <StatusTabsVoucher
+      <div className="flex items-center justify-between overflow-x-auto no-scrollbar">
+        <StatusTabs
           tabs={shopTabs}
           current={activeTab}
           onChange={(id) => setActiveTab(id as TabKey)}
@@ -120,7 +119,7 @@ export default function ShopProfileScreen() {
         />
       </div>
 
-      <div className="min-h-125 transition-all duration-300">
+      <div className="transition-all duration-300">
         {renderTabContent}
       </div>
     </div>

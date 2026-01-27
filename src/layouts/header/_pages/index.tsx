@@ -56,7 +56,7 @@ export const Header = () => {
       <div className="hidden md:block">
         <TopHeader />
       </div>
-      <div className="backdrop-blur-md  background-main-gradient">
+      <div className="backdrop-blur-md background-main-gradient">
         <div className="container mx-auto px-3 sm:px-4 lg:px-30">
           <div className="flex flex-col md:flex-row items-center justify-between py-3 md:h-18 h-auto gap-3">
             <div className="flex items-center justify-between w-full md:w-auto gap-4">

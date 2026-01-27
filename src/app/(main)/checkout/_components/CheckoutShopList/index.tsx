@@ -29,10 +29,9 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
 }) => {
   const { syncPreview } = useCheckoutActions();
 
-  // 1. Xử lý Voucher RIÊNG của Shop
   const handleSelectShopVoucher = async (
     shopId: string,
-    selected: any
+    selected: any,
   ): Promise<boolean> => {
     if (!request || !request.shops) return false;
 
@@ -55,7 +54,6 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
     });
 
     try {
-      // Gửi đi payload mới, Mapper sẽ lo phần còn lại
       const payload = { ...request, shops: updatedShops };
       await syncPreview(payload);
       return true;
@@ -64,10 +62,9 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
     }
   };
 
-  // 2. Xử lý Voucher SÀN (Platform) cho từng Shop
   const handleSelectPlatformVoucher = async (
     shopId: string,
-    selected: any
+    selected: any,
   ): Promise<boolean> => {
     if (!request || !request.shops) return false;
 
@@ -76,7 +73,6 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
       selected?.shipping?.code || selected?.shipping?.voucherCode;
     const newGlobalCodes = [orderCode, shipCode].filter(Boolean) as string[];
 
-    // Cập nhật globalVouchers cho từng shop
     const updatedShops = request.shops.map((s: any) => {
       if (s.shopId === shopId) {
         return {
@@ -89,7 +85,6 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
     });
 
     try {
-      // Gửi payload với globalVouchers ở root cũng là newGlobalCodes
       await syncPreview({
         ...request,
         globalVouchers: newGlobalCodes,
@@ -106,7 +101,6 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
   return (
     <div className="space-y-6">
       {shops.map((shop) => {
-        // ... (Phần tính toán hiển thị giữ nguyên)
         const shopSummary = _.get(shop, "summary", {});
         const subtotal = Number(shopSummary.subtotal || 0);
         const shippingFee = Number(shopSummary.shippingFee || 0);
@@ -114,13 +108,13 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
         const totalDiscount = Number(voucherResult.totalDiscount || 0);
         const discountDetails = _.get(voucherResult, "discountDetails", []);
 
-        // ... (Logic tính discount hiển thị giữ nguyên)
         const shipDiscount =
           _.chain(discountDetails)
             .filter(
               (d: any) =>
                 d.valid &&
-                (d.discountTarget === "SHIPPING" || d.discountTarget === "SHIP")
+                (d.discountTarget === "SHIPPING" ||
+                  d.discountTarget === "SHIP"),
             )
             .sumBy("discountAmount")
             .value() || 0;
@@ -128,37 +122,36 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
         const productOrOrderDiscount = totalDiscount - shipDiscount;
         const originalShopPrice = subtotal + shippingFee;
         const finalShopTotal = Number(
-          shopSummary.shopTotal || originalShopPrice - totalDiscount
+          shopSummary.shopTotal || originalShopPrice - totalDiscount,
         );
 
-        // Map voucher đã áp dụng để hiển thị lên UI
         const appliedShopOrder = _.find(
           discountDetails,
           (d: any) =>
             d.voucherType === "SHOP" &&
             ["ORDER", "PRODUCT"].includes(d.discountTarget) &&
-            d.valid
+            d.valid,
         );
         const appliedShopShip = _.find(
           discountDetails,
           (d: any) =>
             d.voucherType === "SHOP" &&
             ["SHIPPING", "SHIP"].includes(d.discountTarget) &&
-            d.valid
+            d.valid,
         );
         const appliedPlatformOrder = _.find(
           discountDetails,
           (d: any) =>
             d.voucherType === "PLATFORM" &&
             ["ORDER", "PRODUCT"].includes(d.discountTarget) &&
-            d.valid
+            d.valid,
         );
         const appliedPlatformShip = _.find(
           discountDetails,
           (d: any) =>
             d.voucherType === "PLATFORM" &&
             ["SHIPPING", "SHIP"].includes(d.discountTarget) &&
-            d.valid
+            d.valid,
         );
 
         return (
@@ -166,7 +159,6 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
             key={shop.shopId}
             className="bg-white rounded-xl shadow-custom border border-gray-100 overflow-hidden"
           >
-            {/* ... (Header Shop và List Items giữ nguyên) */}
             <div className="px-5 py-2 border-b border-gray-50 flex items-center justify-between bg-gray-50">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-white rounded-xl shadow-sm text-orange-600">
@@ -182,7 +174,7 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
               <div className="divide-y divide-gray-50">
                 {shop.items.map((item: any, idx: number) => (
                   <div
-                   key={`${item.itemId}-${idx}`}
+                    key={`${item.itemId}-${idx}`}
                     className="flex gap-4 items-center py-2 group"
                   >
                     <ItemImage

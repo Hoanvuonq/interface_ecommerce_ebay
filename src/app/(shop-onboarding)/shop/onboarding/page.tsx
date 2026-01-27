@@ -1,4 +1,4 @@
-import ShopInfoScreen from "./_pages";
+import { ShopInfoScreen } from "./_pages";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

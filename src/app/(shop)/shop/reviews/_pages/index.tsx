@@ -191,7 +191,7 @@ export default function ShopReviewsScreen() {
 
   return (
     <div className="min-h-screen space-y-6 animate-in fade-in duration-500 pb-10">
-      <div className="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div className="bg-white rounded-4xl p-8 border border-slate-100 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="flex items-center gap-5">
           <div className="p-4 bg-orange-500 rounded-3xl text-white shadow-lg shadow-orange-200">
             <MessageSquare size={32} strokeWidth={2.5} />

@@ -28,7 +28,7 @@ export * from "./ProductGallery";
 export * from "./rating";
 export * from "./Search";
 export * from "./sectionHeader";
-// Use direct file export to bypass folder resolution issues
+export * from "./mediaUploadField";
 export * from "./SelectComponent";
 export * from "./selectField";
 export * from "./simpleModal";

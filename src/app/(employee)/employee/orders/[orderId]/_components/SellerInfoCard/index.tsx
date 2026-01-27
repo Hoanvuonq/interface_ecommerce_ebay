@@ -31,7 +31,7 @@ export const SellerInfoCard: React.FC<SellerInfoCardProps> = ({
               <Store size={20} strokeWidth={2.5} />
             </div>
             <div>
-              <h3 className="text-sm font-black uppercase tracking-[0.2em] text-gray-800 leading-none">
+              <h3 className="text-sm font-bold uppercase tracking-[0.2em] text-gray-800 leading-none">
                 Thương hiệu <span className="text-orange-500">Đối tác</span>
               </h3>
               <p className="text-[9px] font-bold text-gray-600 uppercase mt-1.5 tracking-widest italic">
@@ -41,7 +41,7 @@ export const SellerInfoCard: React.FC<SellerInfoCardProps> = ({
           </div>
           <div className="flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-blue-600 rounded-full border border-blue-100 shadow-sm animate-pulse">
             <Verified size={12} strokeWidth={3} />
-            <span className="text-[9px] font-black uppercase tracking-tighter">
+            <span className="text-[9px] font-bold uppercase tracking-tighter">
               Official
             </span>
           </div>
@@ -68,7 +68,7 @@ export const SellerInfoCard: React.FC<SellerInfoCardProps> = ({
             </div>
           </div>
 
-          <h4 className="text-lg font-black text-gray-900 uppercase tracking-tighter italic text-center leading-tight">
+          <h4 className="text-lg font-bold text-gray-900 uppercase tracking-tighter italic text-center leading-tight">
             {shopName}
           </h4>
           <div className="mt-3 flex items-center gap-2">
@@ -83,7 +83,7 @@ export const SellerInfoCard: React.FC<SellerInfoCardProps> = ({
         <div className="space-y-3 px-1">
           <div className="flex items-center gap-2 ml-1 text-gray-700">
             <MapPin size={12} className="text-orange-500" />
-            <span className="text-[10px] font-black uppercase tracking-widest leading-none">
+            <span className="text-[10px] font-bold uppercase tracking-widest leading-none">
               Cơ sở đăng ký
             </span>
           </div>

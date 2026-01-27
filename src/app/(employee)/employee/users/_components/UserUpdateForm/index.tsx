@@ -2,7 +2,7 @@
 "use client";
 
 import { ButtonField, FormInput, SelectComponent } from "@/components";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import { PortalModal } from "@/features/PortalModal";
 import { statusLabelMap, User, UserStatus } from "@/types/user/user.type";
 import { cn } from "@/utils/cn";
@@ -184,7 +184,7 @@ export default function UserUpdateForm({
             </div>
 
             {/* Phần cập nhật */}
-            <div className="p-6 rounded-[2.5rem] bg-orange-50/40 border border-orange-100/50 space-y-6 shadow-sm">
+            <div className="p-6 rounded-4xl bg-orange-50/40 border border-orange-100/50 space-y-6 shadow-sm">
               <div className="flex justify-center -mt-9 mb-2">
                 <span className="bg-orange-500 text-white px-5 py-1 rounded-full text-[10px] font-bold uppercase shadow-md shadow-orange-200">
                   Thiết lập mới

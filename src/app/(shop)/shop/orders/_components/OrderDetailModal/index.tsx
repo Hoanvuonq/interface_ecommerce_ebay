@@ -280,7 +280,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
               Inventory Line Items
             </h4>
           </div>
-          <div className="bg-white rounded-[2.5rem] border border-orange-50 shadow-custom-lg overflow-hidden p-1">
+          <div className="bg-white rounded-4xl border border-orange-50 shadow-custom-lg overflow-hidden p-1">
             <DataTable
               columns={productColumns}
               data={order.items || []}

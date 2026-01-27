@@ -37,7 +37,7 @@ export const NotificationScreen = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-6 md:py-10">
-      <div className="bg-white rounded-[2.5rem] border border-gray-100/50 shadow-[0_20px_50px_rgba(0,0,0,0.04)] overflow-hidden">
+      <div className="bg-white rounded-4xl border border-gray-100/50 shadow-[0_20px_50px_rgba(0,0,0,0.04)] overflow-hidden">
         <div className="flex flex-col lg:flex-row items-center justify-between border-b border-gray-50 px-6 py-2 gap-4">
           <div className="flex items-center gap-3 shrink-0">
             <div className="p-2 bg-(--color-mainColor) rounded-xl shadow-md shadow-orange-100">

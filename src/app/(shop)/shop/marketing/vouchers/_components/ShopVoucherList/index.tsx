@@ -391,7 +391,7 @@ export default function ShopVoucherList() {
       </div>
 
       <div className="space-y-6">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-white/60 backdrop-blur-xl p-6 rounded-[2.5rem] shadow-sm border border-gray-100">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-white/60 backdrop-blur-xl p-6 rounded-4xl shadow-sm border border-gray-100">
           <div className="flex items-center gap-2 bg-white p-1.5 rounded-2xl border border-gray-200 w-full lg:w-auto focus-within:ring-8 focus-within:ring-orange-500/5 focus-within:border-orange-200 transition-all duration-300">
             <Search
               size={18}

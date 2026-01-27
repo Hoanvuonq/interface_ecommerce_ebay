@@ -2,7 +2,7 @@
 "use client";
 
 import { getShopDetail } from "@/app/(main)/shop/_service/shop.service";
-import { PortalModal } from "@/features/PortalModal"; //
+import { PortalModal } from "@/features/PortalModal";
 import { useToast } from "@/hooks/useToast";
 import { cn } from "@/utils/cn";
 import { getStoredUserDetail } from "@/utils/jwt";
@@ -20,7 +20,7 @@ import {
 import { useState } from "react";
 import { statusTagMap, StatusType } from "../../../_utils/status";
 import { useUpdateShopTax } from "../../_hooks/useShop";
-import { StepTaxInfo } from "../StepTaxInfo";
+import { StepTaxInfo } from "@/app/(shop-onboarding)/shop/onboarding/_components";
 
 export const TaxInfo = ({
   shop,
@@ -97,8 +97,7 @@ export const TaxInfo = ({
 
   return (
     <>
-      <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden mt-6 transition-all">
-        {/* Header Section */}
+      <div className="bg-white rounded-4xl border border-gray-100 shadow-sm overflow-hidden mt-6 transition-all">
         <div className="px-8 py-6 border-b border-gray-50 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gray-50/30">
           <div className="flex items-center gap-3">
             <div className="p-2.5 bg-orange-500 rounded-2xl text-white shadow-lg shadow-orange-100">
@@ -203,7 +202,9 @@ export const TaxInfo = ({
       >
         <form onSubmit={handleSave} className="space-y-8 py-2">
           <div className="max-h-[70vh] overflow-y-auto custom-scrollbar px-1">
-             <StepTaxInfo formData={formData} setFormData={setFormData} />
+             {/* <StepTaxInfo formData={formData} setFormData={setFormData} /> */}
+
+             // mai fix sau
           </div>
           
           <div className="flex items-center justify-end gap-3 pt-6 border-t border-gray-100">

@@ -85,7 +85,7 @@ export const CreateCampaignConfirm: React.FC<ICreateCampaignConfirmProps> = ({
             </div>
 
             <div className="lg:col-span-5 flex flex-col gap-4">
-              <div className="relative flex-1 bg-linear-to-br from-slate-900 to-slate-800 p-8 rounded-[2.5rem] overflow-hidden text-white shadow-2xl shadow-slate-900/20">
+              <div className="relative flex-1 bg-linear-to-br from-slate-900 to-slate-800 p-8 rounded-4xl overflow-hidden text-white shadow-2xl shadow-slate-900/20">
                 <Package
                   size={180}
                   className="absolute -right-10 -bottom-10 text-white/5 rotate-12"

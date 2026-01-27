@@ -155,7 +155,7 @@ const VoucherHistory: React.FC<VoucherHistoryProps> = ({ onCountUpdate }) => {
   return (
     <div className="space-y-6 animate-in fade-in duration-700">
       {/* Search & Filter Bar */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-[2.5rem] shadow-sm border border-gray-100">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-4xl shadow-sm border border-gray-100">
         <div className="flex items-center gap-3">
           <div className="p-3 bg-gray-900 rounded-2xl text-white shadow-lg">
             <History size={20} />

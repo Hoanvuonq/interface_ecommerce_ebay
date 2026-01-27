@@ -5,7 +5,7 @@ import type { WalletResponse, WalletType } from "@/types/wallet/wallet.types";
 import React, { useEffect, useState } from "react";
 import { WalletPageProps } from "../../_types/wallet";
 
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import {
   FiAlertCircle,
   FiClock,

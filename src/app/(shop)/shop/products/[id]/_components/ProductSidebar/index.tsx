@@ -23,7 +23,7 @@ export const ProductSidebar = ({
 
   return (
     <div className="w-100 space-y-6 sticky top-24 self-start animate-in fade-in slide-in-from-bottom-4 duration-700">
-        <div className="bg-white rounded-[2.5rem] shadow-custom p-6 border border-gray-50">
+        <div className="bg-white rounded-4xl shadow-custom p-6 border border-gray-50">
         <div className="flex items-center gap-3 mb-6">
           <div className="p-2.5 bg-orange-50 rounded-2xl text-orange-600">
             <Store size={20} strokeWidth={2} />
@@ -69,7 +69,7 @@ export const ProductSidebar = ({
       </div>
 
       {/* 2. Card: Giá niêm yết */}
-      <div className="bg-white rounded-[2.5rem] shadow-custom p-6 border border-gray-50 overflow-hidden relative group">
+      <div className="bg-white rounded-4xl shadow-custom p-6 border border-gray-50 overflow-hidden relative group">
         {/* Trang trí góc card */}
         <div className="absolute -top-6 -right-6 w-16 h-16 bg-orange-50 rounded-full group-hover:scale-150 transition-transform duration-700" />
         
@@ -98,7 +98,7 @@ export const ProductSidebar = ({
         </div>
       </div>
 
-      <div className="bg-white rounded-[2.5rem] shadow-custom p-6 border border-gray-50">
+      <div className="bg-white rounded-4xl shadow-custom p-6 border border-gray-50">
         <div className="flex items-center gap-3 mb-6">
           <div className="p-2.5 bg-gray-50 rounded-2xl text-gray-600">
             <Box size={20} strokeWidth={2} />

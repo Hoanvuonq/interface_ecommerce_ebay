@@ -149,7 +149,7 @@ export const ChatStatistics: React.FC<ChatStatisticsProps> = ({
 
   if (loading && !statistics) {
     return (
-      <div className="w-full flex flex-col items-center justify-center py-40 bg-white rounded-[2.5rem] border border-gray-100 shadow-sm">
+      <div className="w-full flex flex-col items-center justify-center py-40 bg-white rounded-4xl border border-gray-100 shadow-sm">
         <RotateCw className="w-10 h-10 text-orange-500 animate-spin" />
         <span className="mt-4 text-[10px] font-bold uppercase tracking-[0.3em] text-gray-400">
           Đang khởi tạo dữ liệu...
@@ -277,7 +277,7 @@ export const ChatStatistics: React.FC<ChatStatisticsProps> = ({
       {/* 4. Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Conversation Pie */}
-        <div className="bg-white p-6 rounded-[2.5rem] border border-gray-100 shadow-sm">
+        <div className="bg-white p-6 rounded-4xl border border-gray-100 shadow-sm">
           <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-gray-800 mb-8 flex items-center gap-2">
             <div className="w-1.5 h-1.5 bg-orange-500 rounded-full" /> Phân bố
             loại hội thoại
@@ -315,7 +315,7 @@ export const ChatStatistics: React.FC<ChatStatisticsProps> = ({
         </div>
 
         {/* Message Bar */}
-        <div className="bg-white p-6 rounded-[2.5rem] border border-gray-100 shadow-sm">
+        <div className="bg-white p-6 rounded-4xl border border-gray-100 shadow-sm">
           <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-gray-800 mb-8 flex items-center gap-2">
             <div className="w-1.5 h-1.5 bg-blue-500 rounded-full" /> Phân bố
             loại tin nhắn
@@ -356,7 +356,7 @@ export const ChatStatistics: React.FC<ChatStatisticsProps> = ({
       </div>
 
       {/* 5. Daily Activity Area Chart */}
-      <div className="bg-white p-6 rounded-[2.5rem] border border-gray-100 shadow-sm">
+      <div className="bg-white p-6 rounded-4xl border border-gray-100 shadow-sm">
         <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-gray-800 mb-8 flex items-center gap-2">
           <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full" /> Biểu đồ
           hoạt động hàng ngày

@@ -11,7 +11,7 @@ import { createPortal } from "react-dom";
 import QRCode from "react-qr-code";
 import { FiX, FiCheck, FiInfo, FiCopy, FiLoader } from "react-icons/fi";
 import { toast } from "sonner";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import { ButtonField } from "@/components";
 
 interface DepositModalProps {

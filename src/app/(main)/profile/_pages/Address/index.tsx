@@ -14,7 +14,7 @@ import {
 
 import { buyerAddressService } from "@/services/buyer/buyer-address.service";
 import { cn } from "@/utils/cn";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import { ButtonField, SectionLoading } from "@/components";
 
 import { AddressFormModal } from "../../_components/AddressModal";

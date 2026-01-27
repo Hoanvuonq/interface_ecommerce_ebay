@@ -1,7 +1,7 @@
 "use client";
 
 import { CustomTabs } from "@/components";
-import { CustomButton } from "@/components/button";
+import { CustomButton } from "@/components/custom/components/customButton";
 import { useWishlist } from "@/app/(main)/wishlist/_hooks/useWishlist";
 import { publicProductService } from "@/services/products/product.service";
 import { PublicProductListItemDTO } from "@/types/product/public-product.dto";

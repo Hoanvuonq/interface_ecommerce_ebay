@@ -59,7 +59,7 @@ export const ReviewPreviewModal: React.FC<ReviewPreviewModalProps> = ({
           </div>
         }
         width="max-w-xl"
-        className="rounded-[2.5rem]"
+        className="rounded-4xl"
       >
         <div className="space-y-8 py-2 font-sans px-1">
           <div className="flex gap-4 p-4 bg-gray-50/40 rounded-3xl border border-gray-100 items-center transition-colors hover:bg-gray-50">

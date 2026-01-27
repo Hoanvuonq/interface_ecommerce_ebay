@@ -21,7 +21,7 @@ import {
   Fingerprint,
 } from "lucide-react";
 import { getRolePermissionColumns } from "./colum";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 
 export const RolePermissionsDetailScreen = () => {
   const params = useParams();

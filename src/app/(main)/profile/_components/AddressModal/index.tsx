@@ -10,7 +10,7 @@ import { cn } from "@/utils/cn";
 import { menuAddressItems } from "../../_types/menu";
 import { PortalModal } from "@/features/PortalModal";
 import { SelectComponent } from "@/components";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import { ButtonField } from "@/components";
 import { useToast } from "@/hooks/useToast";
 import { FormInput } from "@/components/formInput";

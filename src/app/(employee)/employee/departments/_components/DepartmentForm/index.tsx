@@ -1,7 +1,7 @@
 "use client";
 
 import { ButtonField, FormInput, SectionHeader } from "@/components";
-import { Button } from "@/components/button/button";
+import { Button } from "@/components/button";
 import { PortalModal } from "@/features/PortalModal";
 import _ from "lodash";
 import { Building2Icon, Info, Loader2, Sparkles } from "lucide-react";
@@ -113,7 +113,7 @@ export default function DepartmentForm({
         <div className="space-y-8">
           <SectionHeader icon={Building2Icon} title="Thông tin định danh" />
 
-          <div className="p-6 rounded-[2.5rem] bg-orange-50/40 border border-orange-100/50 space-y-6">
+          <div className="p-6 rounded-4xl bg-orange-50/40 border border-orange-100/50 space-y-6">
             <FormInput
               label="Tên phòng ban"
               placeholder="Ví dụ: Phòng Kỹ Thuật, Ban Điều Hành..."

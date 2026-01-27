@@ -67,7 +67,7 @@ export const PrivacyPolicyScreen = () => {
             </aside>
 
             {/* Main Content */}
-            <main className="lg:col-span-9 bg-white border border-gray-100 rounded-[2.5rem] p-8 md:p-12 shadow-sm prose prose-gray prose-orange max-w-none">
+            <main className="lg:col-span-9 bg-white border border-gray-100 rounded-4xl p-8 md:p-12 shadow-sm prose prose-gray prose-orange max-w-none">
               
               <section id="intro">
                 <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">

@@ -11,13 +11,13 @@ import {
   generateSecurePassword,
   copyToClipboard,
 } from "@/utils/passwordGenerator";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/useToast";
 
 export default function ChangePasswordFormCompact() {
   const { handleChangePassword, loading } = useChangePassword();
   const userId: string = getUserId() || "";
   const oldPasswordRef = useRef<HTMLInputElement>(null);
-
+  const { success, error, warning } = useToast();
   const [formData, setFormData] = useState<ChangePasswordRequest>({
     oldPassword: "",
     newPassword: "",
@@ -75,23 +75,23 @@ export default function ChangePasswordFormCompact() {
     }));
     setErrors((prev) => ({ ...prev, newPassword: "", confirmPassword: "" }));
 
-    toast.success("Đã tạo mật khẩu mạnh!", {
+    success("Đã tạo mật khẩu mạnh!", {
       description: "Hãy lưu lại mật khẩu này nhé.",
     });
   };
 
   const handleCopyPassword = async () => {
     if (formData.newPassword) {
-      const success = await copyToClipboard(formData.newPassword);
-      if (success) {
-        toast.success("Đã sao chép!", {
+      const copySuccess = await copyToClipboard(formData.newPassword);
+      if (copySuccess) {
+        success("Đã sao chép!", {
           description: "Mật khẩu đã được lưu vào clipboard.",
         });
       } else {
-        toast.error("Lỗi sao chép!");
+        error("Lỗi sao chép!");
       }
     } else {
-      toast.warning("Chưa có mật khẩu", {
+      warning("Chưa có mật khẩu", {
         description: "Vui lòng nhập hoặc tạo mật khẩu mới trước.",
       });
     }
@@ -104,16 +104,16 @@ export default function ChangePasswordFormCompact() {
     try {
       const res = await handleChangePassword(userId, formData);
       if (res) {
-        toast.success("Thành công", {
+        success("Thành công", {
           description: "Đổi mật khẩu thành công!",
         });
         setFormData({ oldPassword: "", newPassword: "", confirmPassword: "" });
       } else {
-        toast.error("Thất bại", { description: "Đổi mật khẩu thất bại!" });
+        error("Thất bại", { description: "Đổi mật khẩu thất bại!" });
       }
     } catch (err: any) {
       const errorMessage = err?.message || "Đổi mật khẩu thất bại!";
-      toast.error("Lỗi", { description: errorMessage });
+      error("Lỗi", { description: errorMessage });
     }
   };
 
@@ -215,7 +215,7 @@ export default function ChangePasswordFormCompact() {
             className="w-45  rounded-xl text-sm font-bold shadow-lg shadow-orange-500/20 hover:shadow-orange-500/30 active:scale-[0.99] transition-all bg-orange-600 hover:bg-orange-700 border-none text-white"
           >
             <span className="flex items-center gap-2">
-               <FaCheckCircle />
+              <FaCheckCircle />
               <span>đổi mật khẩu</span>
             </span>
           </ButtonField>

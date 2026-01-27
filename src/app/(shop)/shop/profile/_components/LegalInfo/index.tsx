@@ -39,7 +39,7 @@ export const LegalInfo = ({ shop, setShop }: { shop: any; setShop: any }) => {
   ];
 
   return (
-    <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-custom overflow-hidden mt-6 animate-in fade-in duration-500">
+    <div className="bg-white rounded-4xl border border-gray-100 shadow-custom overflow-hidden mt-6 animate-in fade-in duration-500">
       <div className="px-8 py-6 border-b border-gray-50 flex items-center justify-between bg-gray-50/30">
         <div className="flex items-center gap-3">
           <div className="p-2.5 bg-blue-500 rounded-2xl text-white shadow-lg shadow-blue-100">
