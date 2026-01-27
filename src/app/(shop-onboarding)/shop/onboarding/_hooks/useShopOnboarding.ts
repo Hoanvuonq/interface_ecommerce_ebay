@@ -198,9 +198,26 @@ export const useShopOnboarding = () => {
         logoPath,
         legalAssetIds,
       );
+
+      // Ensure legalInfo includes fontImageUrl, backImageUrl, faceImageUrl
+      if (payload.legalInfo) {
+        
+      } else {
+        payload.legalInfo = {
+          nationality: finalValues.nationality,
+          identityType: finalValues.idType,
+          identityNumber: finalValues.idNumber,
+          fullName: finalValues.fullName,
+          frontImageAssetId: legalAssetIds.frontImageAssetId,
+          backImageAssetId: legalAssetIds.backImageAssetId,
+          faceImageAssetId: legalAssetIds.faceImageAssetId,
+       
+        };
+      }
+
       const res = isUpdateMode
-        ? await handleUpdateCompleteShop(payload)
-        : await handleCreateCompleteShop(payload);
+        ? await handleUpdateCompleteShop(payload as any)
+        : await handleCreateCompleteShop(payload as any);
 
       if (res?.data) {
         await localforage.removeItem(STORAGE_KEY);
