@@ -1,24 +1,41 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
-import {
-  identityMap,
-  nationalityMap,
-  type,
-  verifyStatusMap,
-  VerifiedStatus,
-  labelMap,
-  ShopStatus,
-  colorMap,
-  verifyStatusColorMap,
-} from "../../_types/manager.shop.type";
-import { useShopApprovalStore } from "../../_store/useShopApprovalStore";
-import { TextAreaField } from "@/components";
+"use client";
+
+import { Button, FormInput, SectionLoading } from "@/components";
+import { PortalModal } from "@/features/PortalModal";
 import { toSizedVariant } from "@/utils/products/media.helpers";
 import { toPublicUrl } from "@/utils/storage/url";
+import {
+  BadgeAlert,
+  BadgeCheck,
+  CreditCard,
+  ExternalLink,
+  FileText,
+  History,
+  Store,
+  ShieldCheck,
+  User,
+  Calendar,
+  Globe,
+  MapPin,
+  Mail,
+} from "lucide-react";
+import Image from "next/image";
+import React, { useState } from "react";
+import {
+  ShopStatus,
+  colorMap,
+  labelMap,
+  nationalityMap,
+  type as businessTypeMap,
+  VerifiedStatus,
+  verifyStatusMap,
+  verifyStatusColorMap,
+} from "../../_types/manager.shop.type";
+import { RejectShopModal } from "../RejectShopModal";
 import { ShopDetailModalProps } from "./type";
-import { PortalModal } from "@/features/PortalModal";
 
-const ShopDetailModal: React.FC<ShopDetailModalProps> = ({
+export const ShopDetailModal: React.FC<ShopDetailModalProps> = ({
   open,
   shop,
   detailData,
@@ -31,312 +48,391 @@ const ShopDetailModal: React.FC<ShopDetailModalProps> = ({
   onApproveTax,
   onRejectTax,
 }) => {
-  const [rejectLegalModal, setRejectLegalModal] = useState<{
+  const [rejectModal, setRejectModal] = useState<{
     open: boolean;
-    legalId?: string;
+    type?: "legal" | "tax";
+    id?: string;
   }>({ open: false });
-
-  const [rejectTaxModal, setRejectTaxModal] = useState<{
-    open: boolean;
-    taxId?: string;
-  }>({ open: false });
-
-  const [rejectReason, setRejectReason] = useState("");
 
   const shopId = shop?.shopId || detailData?.shopId;
 
+  const handleOpenReject = (type: "legal" | "tax", id: string) => {
+    setRejectModal({ open: true, type, id });
+  };
+
+  const handleConfirmReject = async (reason: string) => {
+    if (!shopId || !rejectModal.id) return;
+    if (rejectModal.type === "legal") {
+      await onRejectLegal(shopId, rejectModal.id, reason);
+    } else {
+      await onRejectTax(shopId, rejectModal.id, reason);
+    }
+    setRejectModal({ open: false });
+  };
+
   if (!open) return null;
+
+  // Extract legal info for easier access
+  const legal = detailData?.legalInfo;
+  const tax = detailData?.taxInfo;
 
   return (
     <PortalModal
       isOpen={open}
       onClose={onClose}
-      title={`🏪 Chi tiết Shop: ${shop?.shopName || detailData?.shopName}`}
-      width="max-w-4xl"
+      title={
+        <div className="flex items-center gap-4">
+          <div className="p-3 bg-orange-500 rounded-2xl text-white shadow-lg shadow-orange-200">
+            <Store size={22} strokeWidth={2.5} />
+          </div>
+          <div>
+            <h3 className="text-xl font-black uppercase tracking-tight text-gray-800 leading-none">
+              Thẩm định hồ sơ
+            </h3>
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mt-1.5">
+              Shop Management • ID: {shopId}
+            </p>
+          </div>
+        </div>
+      }
+      width="max-w-5xl"
       footer={
-        <button
+        <Button
+          variant="edit"
+          type="button"
           onClick={onClose}
-          className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg transition-colors font-medium"
+          className="px-10 h-12 rounded-2xl font-black uppercase text-[11px] tracking-widest border-gray-200"
         >
-          Đóng
-        </button>
+          Đóng cửa sổ
+        </Button>
       }
     >
-      <div className="relative min-h-75">
-        {loading && (
-          <div className="absolute inset-0 z-50 bg-white/60 backdrop-blur-[2px] flex items-center justify-center rounded-xl">
-            <div className="flex flex-col items-center gap-2">
-              <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-              <span className="text-blue-600 font-medium italic">Đang tải dữ liệu...</span>
-            </div>
-          </div>
-        )}
+      <div className="relative min-h-[500px] pb-10">
+        {loading && <SectionLoading message="Đang đồng bộ dữ liệu hồ sơ..." />}
 
         {detailData ? (
-          <div className="space-y-8 animate-in fade-in duration-500">
-            <section className="bg-gray-50/50 p-6 rounded-2xl border border-gray-100 shadow-sm">
-              <h3 className="font-bold text-lg mb-4 flex items-center gap-2 text-gray-800 border-b border-gray-200 pb-2">
-                <span className="text-blue-500">🧾</span> Thông tin cơ bản
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="space-y-3 text-sm">
-                  <p className="flex items-center gap-2">
-                    <strong className="text-gray-500 min-w-35">Tên shop:</strong> 
-                    <span className="text-gray-900 font-semibold">{detailData.shopName}</span>
-                  </p>
-                  <p className="flex items-start gap-2">
-                    <strong className="text-gray-500 min-w-35">Mô tả:</strong> 
-                    <span className="text-gray-700">{detailData.description || "--"}</span>
-                  </p>
-                  <p className="flex items-center gap-2">
-                    <strong className="text-gray-500 min-w-35">Trạng thái:</strong>
-                    <span 
-                      className="px-3 py-1 rounded-full text-[11px] font-bold text-white shadow-sm"
-                      style={{ backgroundColor: colorMap[detailData.status as ShopStatus] }}
-                    >
-                      {labelMap[detailData.status as ShopStatus] ?? "--"}
-                    </span>
-                  </p>
-                  <p className="flex items-center gap-2">
-                    <strong className="text-gray-500 min-w-35">Người duyệt:</strong> 
-                    <span className="font-medium">{detailData.verifyBy || "--"}</span>
-                  </p>
-                  <div className="pt-2 border-t border-gray-100 space-y-2 italic text-gray-600 text-xs">
-                    <p>Ngày tạo: {detailData.createdDate ? new Date(detailData.createdDate).toLocaleString("vi-VN") : "--"}</p>
-                    <p>Cập nhật: {detailData.lastModifiedDate ? new Date(detailData.lastModifiedDate).toLocaleString("vi-VN") : "--"}</p>
-                  </div>
+          <div className="space-y-12 animate-in fade-in slide-in-from-bottom-6 duration-700 p-2">
+            {/* --- SECTION 1: SHOP BRANDING --- */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+              <div className="lg:col-span-8 space-y-8">
+                <div className="flex items-center gap-3 pb-2 border-b border-gray-100/60">
+                  <BadgeCheck className="text-blue-500" size={20} />
+                  <h4 className="font-black text-[12px] uppercase tracking-[0.15em] text-gray-500">
+                    Thông tin thương hiệu
+                  </h4>
                 </div>
 
-                <div className="flex flex-col items-center justify-center gap-6 bg-white p-4 rounded-xl border border-gray-100 shadow-inner">
-                  {detailData.logoUrl && (
-                    <div className="group relative">
-                      <img
-                        src={toPublicUrl(toSizedVariant(detailData.logoUrl, "_orig"))}
-                        alt="Logo"
-                        className="w-28 h-28 rounded-full border-4 border-gray-50 object-cover shadow-lg transition-transform group-hover:scale-105"
-                      />
-                      <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-gray-800 text-white text-[10px] rounded uppercase font-bold tracking-tighter">Logo</span>
-                    </div>
-                  )}
-                  {detailData.bannerUrl && (
-                    <div className="w-full relative group">
-                      <img
-                        src={toPublicUrl(toSizedVariant(detailData.bannerUrl, "_orig"))}
-                        alt="Banner"
-                        className="w-full h-24 rounded-lg border object-cover shadow-md transition-transform group-hover:brightness-105"
-                      />
-                      <span className="absolute top-2 right-2 px-2 py-0.5 bg-black/50 text-white text-[10px] rounded uppercase font-bold">Banner</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </section>
-
-            <section className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-              <div className="flex justify-between items-center mb-5 border-b border-gray-100 pb-3">
-                <h3 className="font-bold text-lg text-gray-800 flex items-center gap-2">
-                  <span className="text-purple-500">⚖️</span> Thông tin định danh
-                </h3>
-                {detailData.legalInfo && (detailData.legalInfo.verifiedStatus === "PENDING" || !detailData.legalInfo.verifiedStatus) && (
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => onApproveLegal(shopId, detailData.legalInfo.legalId)}
-                      disabled={legalLoading}
-                      className="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-lg transition-all shadow-md disabled:opacity-50"
-                    >
-                      {legalLoading ? "..." : "Duyệt"}
-                    </button>
-                    <button
-                      onClick={() => setRejectLegalModal({ open: true, legalId: detailData.legalInfo.legalId })}
-                      className="px-4 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 text-sm font-bold rounded-lg border border-red-200 transition-all"
-                    >
-                      Từ chối
-                    </button>
-                  </div>
-                )}
-              </div>
-
-              {detailData.legalInfo ? (
-                <div className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                    <div className="space-y-2">
-                      <p><strong className="text-gray-600">Họ tên:</strong> <span className="font-semibold text-gray-800">{detailData.legalInfo.fullName}</span></p>
-                      <p><strong className="text-gray-600">Quốc tịch:</strong> {nationalityMap[detailData.legalInfo.nationality] || detailData.legalInfo.nationality || "--"}</p>
-                      <p><strong className="text-gray-600">Số giấy tờ:</strong> <span className="font-mono bg-gray-100 px-1.5 py-0.5 rounded">{detailData.legalInfo.identityNumber}</span></p>
-                    </div>
-                    <div className="space-y-2">
-                      <p className="flex items-center gap-2">
-                        <strong className="text-gray-600">Trạng thái:</strong>
-                        <span 
-                          className="px-2 py-0.5 rounded text-[10px] font-semibold uppercase text-white"
-                          style={{ backgroundColor: verifyStatusColorMap[detailData.legalInfo.verifiedStatus as VerifiedStatus] }}
-                        >
-                          {verifyStatusMap[detailData.legalInfo.verifiedStatus as VerifiedStatus]}
-                        </span>
-                      </p>
-                      <p><strong className="text-gray-600">Ngày duyệt:</strong> {detailData.legalInfo.verifyDate ? new Date(detailData.legalInfo.verifyDate).toLocaleString("vi-VN") : "--"}</p>
-                      <p className="text-red-500"><strong className="text-gray-600">Lý do từ chối:</strong> {detailData.legalInfo.rejectedReason || "--"}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex flex-wrap gap-4 pt-2">
-                    {[
-                      { url: detailData.legalInfo.frontImageUrl, label: "Mặt trước" },
-                      { url: detailData.legalInfo.backImageUrl, label: "Mặt sau" },
-                      { url: detailData.legalInfo.faceImageUrl, label: "Khuôn mặt" }
-                    ].map((img, i) => img.url && (
-                      <div key={i} className="group relative cursor-pointer">
-                        <img src={img.url} alt={img.label} className="w-40 h-28 object-cover rounded-lg border-2 border-gray-100 shadow-sm group-hover:border-blue-300 transition-all" />
-                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center rounded-lg transition-all">
-                          <span className="text-white text-xs font-bold">{img.label}</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ) : <p className="text-center italic text-gray-600 py-4">-- Không có dữ liệu định danh --</p>}
-            </section>
-
-            {/* THÔNG TIN THUẾ */}
-            <section className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-              <div className="flex justify-between items-center mb-5 border-b border-gray-100 pb-3">
-                <h3 className="font-bold text-lg text-gray-800 flex items-center gap-2">
-                  <span className="text-emerald-500">💰</span> Thông tin thuế
-                </h3>
-                {detailData.taxInfo && (detailData.taxInfo.verifiedStatus === "PENDING" || !detailData.taxInfo.verifiedStatus) && (
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => onApproveTax(shopId, detailData.taxInfo.taxId)}
-                      disabled={taxLoading}
-                      className="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-lg shadow-md transition-all disabled:opacity-50"
-                    >
-                      Duyệt
-                    </button>
-                    <button
-                      onClick={() => setRejectTaxModal({ open: true, taxId: detailData.taxInfo.taxId })}
-                      className="px-4 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 text-sm font-bold rounded-lg border border-red-200 transition-all"
-                    >
-                      Từ chối
-                    </button>
-                  </div>
-                )}
-              </div>
-
-              {detailData.taxInfo ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <FormInput
+                    label="Tên cửa hàng"
+                    value={detailData.shopName}
+                    readOnly
+                    className="bg-gray-50/50 font-bold italic"
+                  />
                   <div className="space-y-2">
-                    <p><strong className="text-gray-600">Loại hình:</strong> {type[detailData.taxInfo.type] || detailData.taxInfo.type || "--"}</p>
-                    <p><strong className="text-gray-600">Email:</strong> <span className="text-blue-600 underline underline-offset-2">{detailData.taxInfo.email}</span></p>
-                    <p><strong className="text-gray-600">MST:</strong> <span className="font-mono font-bold text-gray-700">{detailData.taxInfo.taxIdentificationNumber}</span></p>
-                  </div>
-                  <div className="space-y-2">
-                    <p className="flex items-center gap-2">
-                      <strong className="text-gray-600">Trạng thái:</strong>
-                      <span 
-                        className="px-2 py-0.5 rounded text-[10px] font-semibold uppercase text-white"
-                        style={{ backgroundColor: verifyStatusColorMap[detailData.taxInfo.verifiedStatus as VerifiedStatus] }}
+                    <label className="text-[12px] font-bold text-gray-700 ml-1">
+                      Trạng thái vận hành
+                    </label>
+                    <div className="h-12 px-5 flex items-center bg-gray-50/50 border border-gray-200 rounded-2xl shadow-sm">
+                      <span
+                        className="px-3 py-1 rounded-lg text-[10px] font-black uppercase text-white shadow-sm"
+                        style={{
+                          backgroundColor:
+                            colorMap[detailData.status as ShopStatus],
+                        }}
                       >
-                        {verifyStatusMap[detailData.taxInfo.verifiedStatus as VerifiedStatus]}
+                        {labelMap[detailData.status as ShopStatus]}
                       </span>
+                    </div>
+                  </div>
+                  <FormInput
+                    label="Người phê duyệt"
+                    value={detailData.verifyBy || "System Admin"}
+                    readOnly
+                    className="bg-gray-50/50"
+                  />
+                  <FormInput
+                    label="Ngày khởi tạo"
+                    value={new Date(detailData.createdDate).toLocaleDateString(
+                      "vi-VN",
+                    )}
+                    readOnly
+                    className="bg-gray-50/50"
+                  />
+                </div>
+                <FormInput
+                  isTextArea
+                  label="Mô tả shop"
+                  value={detailData.description ?? ""}
+                  readOnly
+                  className="bg-gray-50/50 italic text-gray-600 min-h-24"
+                />
+              </div>
+
+              <div className="lg:col-span-4 flex items-center justify-center">
+                <div className="relative w-full aspect-square bg-white rounded-[3rem] border border-gray-100 shadow-2xl p-4 flex items-center justify-center group overflow-hidden">
+                  {detailData.logoUrl ? (
+                    <div className="relative w-full h-full">
+                      <Image
+                        src={toPublicUrl(
+                          toSizedVariant(detailData.logoUrl, "_orig"),
+                        )}
+                        alt="logo"
+                        fill
+                        unoptimized
+                        className="rounded-[2.5rem] object-cover shadow-inner group-hover:scale-110 transition-transform duration-700 p-2"
+                      />
+                    </div>
+                  ) : (
+                    <Store className="text-gray-200" size={100} />
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* --- SECTION 2: IDENTITY (LEGAL) --- */}
+            <section className="bg-white rounded-[3rem] border border-gray-100 shadow-xl p-8 space-y-8 relative overflow-hidden">
+              <div className="absolute -top-10 -right-10 opacity-5 text-purple-900 rotate-12">
+                <ShieldCheck size={220} />
+              </div>
+
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 relative z-10">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-purple-50 text-purple-600 rounded-2xl shadow-sm">
+                    <CreditCard size={24} strokeWidth={2.5} />
+                  </div>
+                  <div>
+                    <h3 className="font-black text-[14px] uppercase tracking-[0.2em] text-gray-800 leading-none">
+                      Thông tin định danh
+                    </h3>
+                    <p className="text-[10px] font-bold text-gray-400 uppercase mt-1 italic">
+                      KYC Verification Data
                     </p>
-                    <p><strong className="text-gray-600">Địa chỉ:</strong> <span className="text-gray-600">{detailData.taxInfo.registeredAddress?.detail}</span></p>
-                    <p className="text-red-500"><strong className="text-gray-600">Lý do từ chối:</strong> {detailData.taxInfo.rejectedReason || "--"}</p>
                   </div>
                 </div>
-              ) : <p className="text-center italic text-gray-600 py-4">-- Không có dữ liệu thuế --</p>}
+
+                {legal && legal.verifiedStatus === "PENDING" && (
+                  <div className="flex gap-2 w-full sm:w-auto">
+                    <button
+                      onClick={() => onApproveLegal(shopId, legal.legalId)}
+                      disabled={legalLoading}
+                      className="flex-1 sm:flex-none h-11 px-8 bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-black uppercase tracking-widest rounded-xl transition-all shadow-lg shadow-blue-100 disabled:opacity-50 active:scale-95"
+                    >
+                      {legalLoading ? "..." : "Duyệt Pháp Lý"}
+                    </button>
+                    <button
+                      onClick={() => handleOpenReject("legal", legal.legalId)}
+                      className="flex-1 sm:flex-none h-11 px-6 bg-rose-50 hover:bg-rose-100 text-rose-600 text-[11px] font-black uppercase tracking-widest rounded-xl transition-all border border-rose-100 active:scale-95"
+                    >
+                      Từ Chối
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {legal ? (
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 relative z-10">
+                  <div className="lg:col-span-4 space-y-6">
+                    <FormInput
+                      label="Họ tên đầy đủ"
+                      value={legal.fullName}
+                      readOnly
+                      className="bg-gray-50 font-bold"
+                    />
+                    <div className="grid grid-cols-2 gap-4">
+                      <FormInput
+                        label="Quốc tịch"
+                        value={
+                          nationalityMap[legal.nationality] || legal.nationality
+                        }
+                        readOnly
+                        className="bg-gray-50"
+                      />
+                      <FormInput
+                        label="Số định danh"
+                        value={legal.identityNumber}
+                        readOnly
+                        className="bg-gray-50 font-mono font-bold text-blue-600"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[9px] font-black text-gray-400 uppercase tracking-widest ml-1">
+                        Trạng thái hồ sơ
+                      </label>
+                      <div className="h-12 px-5 flex items-center bg-gray-50 border border-gray-200 rounded-2xl">
+                        <span
+                          className="px-3 py-1 rounded-lg text-[10px] font-black uppercase text-white shadow-sm"
+                          style={{
+                            backgroundColor:
+                              verifyStatusColorMap[
+                                legal.verifiedStatus as VerifiedStatus
+                              ],
+                          }}
+                        >
+                          {
+                            verifyStatusMap[
+                              legal.verifiedStatus as VerifiedStatus
+                            ]
+                          }
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="lg:col-span-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      {[
+                        {
+                          url: legal.frontImagePreviewUrl,
+                          label: "Mặt trước CCCD",
+                        },
+                        {
+                          url: legal.backImagePreviewUrl,
+                          label: "Mặt sau CCCD",
+                        },
+                        {
+                          url: legal.faceImagePreviewUrl,
+                          label: "Chân dung chủ shop",
+                        },
+                      ].map(
+                        (img, i) =>
+                          img.url && (
+                            <div
+                              key={i}
+                              className="group relative rounded-2xl overflow-hidden border-2 border-gray-100 shadow-sm aspect-square bg-gray-50"
+                            >
+                              <Image
+                                src={img.url}
+                                alt={img.label}
+                                fill
+                                unoptimized
+                                className="object-cover transition-all duration-700 group-hover:scale-110"
+                              />
+                              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center transition-all p-4 text-center">
+                                <span className="text-[10px] font-black text-white uppercase tracking-widest leading-tight mb-2">
+                                  {img.label}
+                                </span>
+                                <a
+                                  href={img.url}
+                                  target="_blank"
+                                  className="p-2 bg-white/20 hover:bg-white/40 rounded-full text-white backdrop-blur-sm transition-transform active:scale-90"
+                                >
+                                  <ExternalLink size={16} />
+                                </a>
+                              </div>
+                            </div>
+                          ),
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <NoDataPlaceholder message="Hồ sơ nhân thân chưa được cung cấp" />
+              )}
+            </section>
+
+            <section className="bg-gray-50/50 rounded-[3rem] border border-gray-100 p-8 space-y-8 relative overflow-hidden">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 relative z-10">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-emerald-50 text-emerald-600 rounded-2xl shadow-sm">
+                    <FileText size={24} strokeWidth={2.5} />
+                  </div>
+                  <div>
+                    <h3 className="font-black text-[14px] uppercase tracking-[0.2em] text-gray-800 leading-none">
+                      Thông tin thuế quan
+                    </h3>
+                    <p className="text-[10px] font-bold text-gray-400 uppercase mt-1 italic">
+                      Tax Compliance Data
+                    </p>
+                  </div>
+                </div>
+
+                {tax && tax.verifiedStatus === "PENDING" && (
+                  <div className="flex gap-2 w-full sm:w-auto">
+                    <button
+                      onClick={() => onApproveTax(shopId, tax.taxId)}
+                      disabled={taxLoading}
+                      className="flex-1 sm:flex-none h-11 px-8 bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-black uppercase tracking-widest rounded-xl transition-all shadow-lg shadow-emerald-100 disabled:opacity-50 active:scale-95"
+                    >
+                      {taxLoading ? "..." : "Xác Thực Thuế"}
+                    </button>
+                    <button
+                      onClick={() => handleOpenReject("tax", tax.taxId)}
+                      className="flex-1 sm:flex-none h-11 px-6 bg-rose-50 hover:bg-rose-100 text-rose-600 text-[11px] font-black uppercase tracking-widest rounded-xl transition-all border border-rose-100 active:scale-95"
+                    >
+                      Từ Chối
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {tax ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10">
+                  <FormInput
+                    label="Loại hình đăng ký"
+                    value={businessTypeMap[tax.type] || tax.type}
+                    readOnly
+                    className="bg-white font-bold"
+                  />
+                  <FormInput
+                    label="Mã số thuế (MST)"
+                    value={tax.taxIdentificationNumber}
+                    readOnly
+                    className="bg-white font-black text-gray-900 text-lg tracking-tighter"
+                  />
+                  <FormInput
+                    label="Email hóa đơn"
+                    value={tax.email}
+                    readOnly
+                    className="bg-white text-blue-600 font-bold border-b-blue-200 border-b"
+                  />
+                  <div className="md:col-span-2 lg:col-span-3">
+                    <FormInput
+                      isTextArea
+                      label="Địa chỉ trụ sở"
+                      value={tax.registeredAddress?.detail}
+                      readOnly
+                      className="bg-white min-h-20 font-medium"
+                    />
+                  </div>
+                </div>
+              ) : (
+                <NoDataPlaceholder message="Chưa khai báo dữ liệu thuế quan" />
+              )}
             </section>
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-20 text-gray-600">
-             <span className="text-4xl mb-2">📭</span>
-             <p className="font-medium">Không có dữ liệu shop</p>
-          </div>
+          <NoDataPlaceholder message="Hệ thống đang đồng bộ dữ liệu shop..." />
         )}
       </div>
 
-      {/* PORTAL MODAL TỪ CHỐI PHÁP LÝ */}
-      <PortalModal
-        isOpen={rejectLegalModal.open}
-        onClose={() => { setRejectLegalModal({ open: false }); setRejectReason(""); }}
-        title="🚫 Từ chối thông tin định danh"
-        width="max-w-md"
-        footer={
-          <div className="flex gap-2">
-            <button 
-              onClick={() => { setRejectLegalModal({ open: false }); setRejectReason(""); }}
-              className="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg"
-            >
-              Hủy
-            </button>
-            <button 
-              disabled={!rejectReason.trim()}
-              onClick={() => {
-                if (!shopId || !rejectLegalModal.legalId) return;
-                onRejectLegal(shopId, rejectLegalModal.legalId!, rejectReason);
-                setRejectLegalModal({ open: false });
-                setRejectReason("");
-              }}
-              className="px-4 py-2 text-sm font-bold bg-red-600 hover:bg-red-700 text-white rounded-lg shadow-md disabled:bg-gray-300"
-            >
-              Xác nhận từ chối
-            </button>
+      <RejectShopModal
+        isOpen={rejectModal.open}
+        onClose={() => setRejectModal({ open: false })}
+        onConfirm={handleConfirmReject}
+        isLoading={legalLoading || taxLoading}
+        shopName={shop?.shopName || detailData?.shopName}
+        title={
+          <div className="flex items-center gap-2 text-rose-600">
+            <BadgeAlert size={20} />
+            <span className="font-black uppercase tracking-tighter text-[13px]">
+              Từ chối hồ sơ {rejectModal.type === "tax" ? "Thuế" : "Định danh"}
+            </span>
           </div>
         }
-      >
-        <TextAreaField
-          label="Lý do từ chối"
-          name="reason"
-          placeholder="Vui lòng nhập lý do cụ thể..."
-          maxLength={500}
-          rows={4}
-          required
-          value={rejectReason}
-          onChange={(e) => setRejectReason(e.target.value)}
-        />
-      </PortalModal>
-
-      {/* PORTAL MODAL TỪ CHỐI THUẾ */}
-      <PortalModal
-        isOpen={rejectTaxModal.open}
-        onClose={() => { setRejectTaxModal({ open: false }); setRejectReason(""); }}
-        title="🚫 Từ chối thông tin thuế"
-        width="max-w-md"
-        footer={
-          <div className="flex gap-2">
-            <button 
-              onClick={() => { setRejectTaxModal({ open: false }); setRejectReason(""); }}
-              className="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg"
-            >
-              Hủy
-            </button>
-            <button 
-              disabled={!rejectReason.trim()}
-              onClick={() => {
-                if (!shopId || !rejectTaxModal.taxId) return;
-                onRejectTax(shopId, rejectTaxModal.taxId!, rejectReason);
-                setRejectTaxModal({ open: false });
-                setRejectReason("");
-              }}
-              className="px-4 py-2 text-sm font-bold bg-red-600 hover:bg-red-700 text-white rounded-lg shadow-md disabled:bg-gray-300"
-            >
-              Xác nhận từ chối
-            </button>
-          </div>
-        }
-      >
-        <TextAreaField
-          label="Lý do từ chối"
-          name="reason"
-          placeholder="Vui lòng nhập lý do cụ thể..."
-          maxLength={500}
-          rows={4}
-          required
-          value={rejectReason}
-          onChange={(e) => setRejectReason(e.target.value)}
-        />
-      </PortalModal>
+        subTitle={`Phê duyệt hồ sơ ${rejectModal.type === "tax" ? "Tài chính" : "Pháp lý"}`}
+      />
     </PortalModal>
   );
 };
 
-export default ShopDetailModal;
+const NoDataPlaceholder = ({ message }: { message: string }) => (
+  <div className="flex flex-col items-center justify-center py-24 bg-gray-50/50 rounded-[3rem] border-2 border-dashed border-gray-100 text-center">
+    <div className="p-6 bg-white rounded-full shadow-lg mb-4 text-gray-200 animate-pulse">
+      <History size={48} />
+    </div>
+    <p className="text-[11px] font-black uppercase tracking-[0.2em] text-gray-300 italic">
+      {message}
+    </p>
+  </div>
+);

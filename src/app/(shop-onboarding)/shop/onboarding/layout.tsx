@@ -14,7 +14,12 @@ export default function ShopOnboardingLayout({
   children: React.ReactNode;
 }) {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
+  useEffect(() => {
+    setMounted(true);
+    setIsUserLoggedIn(isAuthenticated());
+  }, []);
   useEffect(() => {
     setIsUserLoggedIn(isAuthenticated());
   }, []);
@@ -34,6 +39,7 @@ export default function ShopOnboardingLayout({
                 width={140}
                 height={40}
                 className="w-24 sm:w-32 md:w-36 h-auto object-contain"
+                style={{ height: "auto" }}
                 priority
               />
             </Link>
@@ -51,14 +57,16 @@ export default function ShopOnboardingLayout({
           </div>
 
           <div className="flex items-center gap-4">
-            {isUserLoggedIn ? (
+            {!mounted ? (
+              <div className="w-10 h-10 rounded-full bg-gray-200 animate-pulse" />
+            ) : isUserLoggedIn ? (
               <div className="pl-4 border-l border-gray-200">
                 <AccountDropdown />
               </div>
             ) : (
               <Link
                 href="/auth/login"
-                className="text-sm font-medium text-gray-600 hover:text-orange-600transition-colors"
+                className="text-sm font-medium text-white hover:text-orange-200 transition-colors"
               >
                 Đăng nhập
               </Link>

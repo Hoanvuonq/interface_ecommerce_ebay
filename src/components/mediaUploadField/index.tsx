@@ -9,11 +9,9 @@ import {
   CloudUpload,
   Eye,
   Globe,
-  Loader2,
-  Lock,
-  Play,
-  X,
   ImageIcon,
+  Lock,
+  X
 } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
@@ -47,7 +45,7 @@ export const MediaUploadField: React.FC<
 
   const sizeClasses = {
     sm: "w-24 h-24 rounded-2xl",
-    md: "w-32 h-40 rounded-3xl",
+    md: "w-34 h-40 rounded-2xl",
     lg: "w-full h-48 rounded-[2rem]",
   };
 
@@ -90,7 +88,6 @@ export const MediaUploadField: React.FC<
             );
           });
 
-          // Cập nhật trạng thái DONE và lưu assetId (ID từ server)
           onChange(
             currentList.map((f) =>
               f.uid === uid
@@ -98,7 +95,7 @@ export const MediaUploadField: React.FC<
                     ...f,
                     status: "done",
                     url: result.url || result.finalUrl || f.url,
-                    assetId: result.assetId || result.id, // Lưu ID để nộp Step 3
+                    assetId: result.assetId || result.id,
                     percent: 100,
                   }
                 : f,
@@ -108,7 +105,6 @@ export const MediaUploadField: React.FC<
           onChange(currentList.filter((f) => f.uid !== uid));
         }
       } else {
-        // Giả lập loading nếu không truyền API (Dùng cho Step 1 - Logo)
         let p = 0;
         const interval = setInterval(() => {
           p += 25;
@@ -171,7 +167,7 @@ export const MediaUploadField: React.FC<
     if (!mounted || typeof document === "undefined") return null;
     return createPortal(
       <AnimatePresence>
-        {previewMedia && (
+        {previewMedia && previewMedia.url && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -189,6 +185,7 @@ export const MediaUploadField: React.FC<
               >
                 <X size={32} />
               </button>
+
               {previewMedia.type?.includes("video") ? (
                 <video
                   src={previewMedia.url}
@@ -198,10 +195,14 @@ export const MediaUploadField: React.FC<
                 />
               ) : (
                 <div className="relative w-full h-[70vh]">
-                  <img
-                    src={previewMedia.url}
-                    alt="preview"
-                    className="w-full h-full object-contain rounded-2xl"
+                  <Image
+                    src={previewMedia.url as string}
+                    alt={previewMedia.name || "preview"}
+                    fill
+                    unoptimized={previewMedia.url.startsWith("blob:")}
+                    priority
+                    className="object-contain rounded-2xl"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
                   />
                 </div>
               )}
@@ -214,7 +215,12 @@ export const MediaUploadField: React.FC<
   };
 
   return (
-    <div className={cn("flex flex-wrap gap-4", className)}>
+    <div
+      className={cn(
+        "flex items-center justify-center flex-wrap gap-4",
+        className,
+      )}
+    >
       <AnimatePresence mode="popLayout">
         {value
           .filter((f) => f.uid)
@@ -248,7 +254,6 @@ export const MediaUploadField: React.FC<
                         className="w-full h-full object-cover"
                       />
                     )}
-                    {/* Mode Indicator Overlay */}
                     <div className="absolute top-2 right-2 z-20 flex gap-1">
                       <div className="bg-black/50 backdrop-blur-md p-1 rounded-full text-white shadow-sm">
                         {mode === "public" ? (

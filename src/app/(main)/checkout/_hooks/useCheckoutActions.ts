@@ -16,132 +16,94 @@ export const useCheckoutActions = () => {
   const { success: toastSuccess, error: toastError } = useToast();
   const {
     request,
-    preview,
-    savedAddresses,
     setPreview,
     setRequest,
     setLoading,
+    savedAddresses,
+    preview,
   } = useCheckoutStore();
-
   const lastRequestIdRef = useRef<number | null>(null);
 
   const previewMutation = useMutation({
     mutationFn: async (params: any) => {
       const updatedRequest = params?.payload ?? params;
       const finalPayload = preparePreviewCheckoutPayload(updatedRequest);
-      try {
-        const reqStr = JSON.stringify(updatedRequest);
-        const payloadStr = JSON.stringify(finalPayload);
-        console.debug("SYNC_PREVIEW_DEBUG", {
-          updatedRequest: reqStr,
-          finalPayload: payloadStr,
-        });
-      } catch (e) {}
-      return await dispatch(
-        checkoutPreviewAction({
-          ...finalPayload,
-          promotion: finalPayload.promotion || [],
-        }),
-      ).unwrap();
+      return await dispatch(checkoutPreviewAction(finalPayload)).unwrap();
     },
     onMutate: () => setLoading(true),
 
+    // Trong onSuccess của previewMutation
     onSuccess: (result: any, variables: any) => {
-      const respId = variables?._clientRequestId;
-      if (
-        respId &&
-        lastRequestIdRef.current &&
-        respId !== lastRequestIdRef.current
-      ) {
-        console.debug("IGNORED_STALE_PREVIEW", {
-          respId,
-          last: lastRequestIdRef.current,
-        });
-        setLoading(false);
-        return;
-      }
-
       const previewData = result?.data || result;
+      // Store sẽ tự lưu vào sessionStorage nhờ hàm setPreview đã fix ở bước 1
       setPreview(previewData);
 
-      const shopDataFromBackend = _.get(previewData, "shops", []);
+      const variablesReq = variables?.payload ?? variables;
+      const shopsFromBackend = _.get(previewData, "shops", []);
       const backendSummaryGlobals =
         _.get(previewData, "summary.globalVouchers", []) || [];
 
-      const variablesReq = variables?.payload ?? variables;
-
       const updatedShops = (variablesReq?.shops || []).map((s: any) => {
-        const freshShop = _.find(shopDataFromBackend, { shopId: s.shopId });
+        const freshShop = _.find(shopsFromBackend, { shopId: s.shopId });
+        if (!freshShop) return s;
 
-        const validDetails = _.get(
+        const discountDetails = _.get(
           freshShop,
           "voucherResult.discountDetails",
           [],
-        ).filter((d: any) => d.valid);
-
-        const validCodes = validDetails.map((d: any) => d.voucherCode);
-
-        const shopSpecificGlobals = validCodes.filter(
-          (c: string) =>
-            backendSummaryGlobals.includes(c) ||
-            validDetails.find(
-              (d: any) => d.voucherCode === c && d.voucherType === "PLATFORM",
-            ),
         );
 
-        const shopSpecificVouchers = validCodes.filter(
-          (c: string) => !shopSpecificGlobals.includes(c),
-        );
+        // Mã gợi ý từ server
+        const serverShopCodes = _.chain(discountDetails)
+          .filter((d: any) => d.valid && d.voucherType === "SHOP")
+          .map("voucherCode")
+          .value();
 
-        const finalVouchers =
-          s.vouchers !== undefined ? s.vouchers : shopSpecificVouchers;
-        const finalGlobalVouchers =
-          s.globalVouchers !== undefined
-            ? s.globalVouchers
-            : shopSpecificGlobals;
+        const serverPlatformCodes = _.chain(discountDetails)
+          .filter((d: any) => d.valid && d.voucherType === "PLATFORM")
+          .map("voucherCode")
+          .value();
 
-        const serverSelectedMethod = _.get(freshShop, "selectedShippingMethod");
-        const finalServiceCode = serverSelectedMethod
-          ? Number(serverSelectedMethod)
-          : s.serviceCode;
+        // 🟢 ĐIỂM MẤU CHỐT: Kiểm tra xem User có đang truyền mảng lên không
+        // variablesReq là cái User vừa chọn gửi đi
+        const userVouchers = s.vouchers;
+        const userGlobalVouchers = s.globalVouchers;
 
         return {
           ...s,
-          serviceCode: finalServiceCode,
-          shippingFee: _.get(freshShop, "summary.shippingFee", s.shippingFee),
-          vouchers: finalVouchers,
-          globalVouchers: finalGlobalVouchers,
+          serviceCode: _.get(freshShop, "selectedShippingMethod")
+            ? Number(freshShop.selectedShippingMethod)
+            : s.serviceCode,
+          shippingFee: _.get(freshShop, "summary.shippingFee", 0),
+
+          // 🟢 FIX: Nếu userVouchers có length > 0, giữ; else lấy serverShopCodes
+          vouchers: userVouchers !== undefined && userVouchers.length > 0 ? userVouchers : serverShopCodes,
+          // Platform vouchers là global, không set ở shop level
+          globalVouchers: userGlobalVouchers !== undefined && userGlobalVouchers.length > 0 ? userGlobalVouchers : [],
         };
       });
 
-      setRequest({
+      // 🟢 Tính serverGlobalCodes từ shop đầu tiên (giả sử tất cả shops có cùng platform vouchers)
+      const firstShop = shopsFromBackend[0];
+      const serverGlobalCodes = firstShop ? _.chain(_.get(firstShop, "voucherResult.discountDetails", []))
+        .filter((d: any) => d.valid && d.voucherType === "PLATFORM")
+        .map("voucherCode")
+        .value() : [];
+
+      const nextRequest = {
         ...variablesReq,
         shops: updatedShops,
         globalVouchers:
-          backendSummaryGlobals.length > 0
-            ? backendSummaryGlobals
-            : variablesReq?.globalVouchers || [],
-      });
+          variablesReq.globalVouchers !== undefined && variablesReq.globalVouchers.length > 0
+            ? variablesReq.globalVouchers
+            : serverGlobalCodes,
+      };
+
+      // 🟢 setRequest này sẽ tự động lưu vào sessionStorage qua Store
+      setRequest(nextRequest);
     },
     onSettled: () => setLoading(false),
   });
-
-  const updateShippingMethod = async (shopId: string, methodCode: string) => {
-    if (!request || !request.shops) return;
-    const updatedRequest = {
-      ...request,
-      shops: request.shops.map((s: any) =>
-        s.shopId === shopId
-          ? { ...s, serviceCode: methodCode ? Number(methodCode) : null }
-          : s,
-      ),
-    };
-    try {
-      return await syncPreview(updatedRequest);
-    } catch (error) {
-      throw error;
-    }
-  };
 
   const syncPreview = async (req: any) => {
     const id = Date.now();
@@ -150,6 +112,19 @@ export const useCheckoutActions = () => {
       payload: req,
       _clientRequestId: id,
     });
+  };
+
+  const updateShippingMethod = async (shopId: string, methodCode: string) => {
+    if (!request) return;
+    const nextRequest = {
+      ...request,
+      shops: request.shops.map((s: any) =>
+        s.shopId === shopId
+          ? { ...s, serviceCode: Number(methodCode), shippingFee: 0 }
+          : s,
+      ),
+    };
+    return await syncPreview(nextRequest);
   };
 
   const confirmOrder = (note: string, method: string) =>
@@ -163,8 +138,7 @@ export const useCheckoutActions = () => {
       customerNote: string;
       paymentMethod: string;
     }) => {
-      if (!request || !preview)
-        throw new Error("Thông tin đơn hàng không hợp lệ");
+      if (!request || !preview) throw new Error("Dữ liệu không hợp lệ");
       const finalRequest = prepareOrderRequest({
         preview,
         request,
@@ -175,28 +149,20 @@ export const useCheckoutActions = () => {
       return await orderService.createOrder(finalRequest);
     },
     onMutate: () => setLoading(true),
-    onSuccess: (response) => {
+    onSuccess: (res) => {
       sessionStorage.removeItem("checkoutPreview");
       sessionStorage.removeItem("checkoutRequest");
       toastSuccess("Đặt hàng thành công!");
-      return response;
+      return res;
     },
     onError: (err: any) => {
-      const errCode = _.get(err, "response.data.code");
-      if (errCode === 3001) {
-        previewMutation.mutate(request);
-        toastError(
-          "Thông tin vận chuyển vừa cập nhật. Vui lòng nhấn Đặt hàng lần nữa.",
-        );
-      } else {
-        toastError(_.get(err, "response.data.message") || "Đặt hàng thất bại");
-      }
+      toastError(_.get(err, "response.data.message") || "Đặt hàng thất bại");
     },
     onSettled: () => setLoading(false),
   });
 
   return {
-    syncPreview: (req: any) => syncPreview(req),
+    syncPreview,
     updateShippingMethod,
     confirmOrder,
     isLoading: previewMutation.isPending || orderMutation.isPending,

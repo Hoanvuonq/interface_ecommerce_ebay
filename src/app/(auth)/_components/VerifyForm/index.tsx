@@ -7,7 +7,6 @@ import { Design } from "@/components";
 import { ButtonField } from "@/components/buttonField";
 import { FaEnvelopeOpenText, FaShieldAlt } from "react-icons/fa";
 import { MdEmail, MdTimer, MdRefresh } from "react-icons/md"; 
-import { toast } from "sonner"; // Keep for success messages
 import { cn } from "@/utils/cn";
 import { useToast } from "@/hooks/useToast"; 
 import { useVerifyForm } from "../../_hooks/useVerifyForm";
@@ -33,7 +32,7 @@ export function VerifyForm({ email, type, mode = "REGISTRATION", onSuccess }: Ve
   const { handleVerify, loading: verifyLoading, error: verifyError } = useVerify();
   const { handleResendOtp, loading: resendLoading } = useResendOtp();
   const { handleSendOtp } = useSendOtp();
-  const { error: toastError } = useToast();
+  const { error: toastError, success: toastSuccess , warning: toastWarning } = useToast();
   const [submitting, setSubmitting] = useState(false);
 
   const { 
@@ -51,7 +50,7 @@ export function VerifyForm({ email, type, mode = "REGISTRATION", onSuccess }: Ve
     onSendInitialOtp: async () => {
         try {
             await handleSendOtp({ email });
-            toast.success("Mã xác thực mới đã được gửi tới email.");
+            toastSuccess("Mã xác thực mới đã được gửi tới email.");
         } catch (err: any) {
              toastError("Lỗi gửi mã", { description: err?.message });
         }
@@ -62,7 +61,7 @@ export function VerifyForm({ email, type, mode = "REGISTRATION", onSuccess }: Ve
     e.preventDefault();
     const otpCode = otp.join("");
     if (otpCode.length !== 6) {
-        toast.warning("Vui lòng nhập đủ 6 chữ số");
+        toastWarning("Vui lòng nhập đủ 6 chữ số");
         return;
     }
 
@@ -70,7 +69,7 @@ export function VerifyForm({ email, type, mode = "REGISTRATION", onSuccess }: Ve
     try {
       const res = await handleVerify({ email, otpCode });
       if (res) {
-        toast.success("Xác thực thành công!");
+        toastSuccess("Xác thực thành công!");
         
         if (mode === "REGISTRATION") {
             const savedForm = localStorage.getItem(`registerForm_${type}`);
@@ -104,7 +103,7 @@ export function VerifyForm({ email, type, mode = "REGISTRATION", onSuccess }: Ve
     if (countdown > 0) return;
     try {
       await handleResendOtp({ email, otpType: "ACCOUNT_ACTIVATION" });
-      toast.success("Mã mới đã được gửi!");
+      toastSuccess("Mã mới đã được gửi!");
       resetCountdown();
       resetOtp();
     } catch (err: any) {

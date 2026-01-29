@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { cn } from "@/utils/cn";
@@ -7,6 +8,11 @@ import { createPortal } from "react-dom";
 import { FaChevronDown, FaSearch, FaCheck } from "react-icons/fa";
 import { SelectProps } from "./type";
 
+// Thêm prop error vào interface (nếu type.ts chưa có)
+interface ExtendedSelectProps extends SelectProps {
+  error?: string;
+}
+
 export const SelectComponent = ({
   options,
   value,
@@ -15,7 +21,8 @@ export const SelectComponent = ({
   disabled = false,
   className,
   isMulti = false,
-}: SelectProps) => {
+  error, // Nhận prop error ở đây
+}: ExtendedSelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [dropdownStyle, setDropdownStyle] =
@@ -23,12 +30,11 @@ export const SelectComponent = ({
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const filteredOptions = options.filter((opt) => {
-  const label = String(opt.label || "").toLowerCase();
-  const value = String(opt.value || "").toLowerCase();
-  const searchStr = search.toLowerCase();
-  
-  return label.includes(searchStr) || value.includes(searchStr);
-});
+    const label = String(opt.label || "").toLowerCase();
+    const val = String(opt.value || "").toLowerCase();
+    const searchStr = search.toLowerCase();
+    return label.includes(searchStr) || val.includes(searchStr);
+  });
 
   const getDisplayLabel = () => {
     if (isMulti) {
@@ -120,14 +126,20 @@ export const SelectComponent = ({
 
   return (
     <>
-      <div ref={wrapperRef} className={cn("relative w-full", className)}>
+      <div
+        ref={wrapperRef}
+        className={cn("relative w-full space-y-2", className)}
+      >
         <div
           className={cn(
-            "w-full h-12 px-5 rounded-2xl flex items-center justify-between cursor-pointer transition-all select-none shadow-custom",
+            "w-full h-12 px-5 rounded-2xl flex items-center justify-between cursor-pointer transition-all select-none shadow-custom border",
             disabled
-              ? "opacity-50 cursor-not-allowed bg-gray-100"
-              : "hover:border-gray-400 hover:bg-white",
+              ? "opacity-50 cursor-not-allowed bg-gray-100 border-gray-100"
+              : "border-gray-100 bg-gray-50/50 hover:border-gray-400 hover:bg-white",
             isOpen && "border-gray-500 ring-4 ring-orange-500/10 bg-white",
+            // 🟢 Trạng thái lỗi: báo đỏ và rung
+            error &&
+              "border-red-400 bg-red-50/30 animate-shake focus:border-red-500",
           )}
           onClick={() => !disabled && setIsOpen(!isOpen)}
         >
@@ -137,6 +149,7 @@ export const SelectComponent = ({
               !value || (Array.isArray(value) && value.length === 0)
                 ? "text-gray-500"
                 : "text-gray-700",
+              error && "text-red-600",
             )}
           >
             {getDisplayLabel()}
@@ -145,9 +158,17 @@ export const SelectComponent = ({
             className={cn(
               "text-[10px] text-gray-600 transition-transform duration-300",
               isOpen && "rotate-180 text-orange-500",
+              error && "text-red-500",
             )}
           />
         </div>
+
+        {/* 🟢 Hiển thị text lỗi bên dưới */}
+        {error && (
+          <p className="text-[10px] font-medium text-red-500 ml-1 animate-in fade-in slide-in-from-top-1">
+            {error}
+          </p>
+        )}
       </div>
 
       {isOpen &&

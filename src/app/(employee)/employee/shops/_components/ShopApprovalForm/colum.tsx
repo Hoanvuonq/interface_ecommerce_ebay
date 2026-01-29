@@ -7,7 +7,8 @@ import {
 } from "../../_types/manager.shop.type";
 import { cn } from "@/utils/cn";
 import { User, Calendar, CheckCircle, XCircle, Eye } from "lucide-react";
-import Image from "next/image"; // Import component Image chuẩn
+import Image from "next/image";
+import { ActionBtn, Button } from "@/components";
 
 interface ShopColumnProps {
   page: number;
@@ -37,16 +38,15 @@ export const getShopColumns = ({
     header: "Thông tin cửa hàng",
     render: (row) => (
       <div className="flex items-center gap-4">
-        {/* Container cho Image phải có position relative khi dùng layout fill */}
         <div className="w-12 h-12 rounded-2xl bg-gray-50 border-2 border-white shadow-sm overflow-hidden shrink-0 relative group">
           {row.logoUrl ? (
             <Image
               src={row.logoUrl}
               alt={`${row.shopName} logo`}
               fill
-              sizes="48px" // Tối ưu kích thước tải ảnh (w-12 = 48px)
+              sizes="48px"
               className="object-cover transition-transform duration-500 group-hover:scale-110"
-              priority={false} // Ảnh trong table không cần ưu tiên cao trừ khi là hàng đầu tiên
+              priority={false}
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-[10px] text-gray-400 font-bold italic bg-gray-100">
@@ -100,31 +100,34 @@ export const getShopColumns = ({
     header: "Thao tác thực thi",
     align: "right",
     render: (row) => (
-      <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0 pr-2">
+      <div className="flex justify-end gap-2 transition-all duration-300 translate-x-2 ">
         {row.status === "PENDING" && (
           <>
-            <button
+            <ActionBtn
               onClick={() => onApprove(row.shopId)}
-              className="p-2 bg-emerald-50 text-emerald-600 rounded-xl hover:bg-emerald-600 hover:text-white transition-all shadow-sm ring-1 ring-emerald-100"
-              title="Duyệt Shop"
-            >
-              <CheckCircle size={16} strokeWidth={2.5} />
-            </button>
-            <button
+              icon={<CheckCircle size={16} />}
+              tooltip="Duyệt Shop"
+              color="hover:text-emerald-500"
+            />
+            <ActionBtn
               onClick={() => onReject(row)}
-              className="p-2 bg-rose-50 text-rose-600 rounded-xl hover:bg-rose-600 hover:text-white transition-all shadow-sm ring-1 ring-rose-100"
-              title="Từ chối"
-            >
-              <XCircle size={16} strokeWidth={2.5} />
-            </button>
+              icon={<XCircle size={16} />}
+              tooltip="Từ chối"
+              color="hover:text-rose-500"
+            />
           </>
         )}
-        <button
+
+        <Button
+          variant="edit"
+          className="px-4 rounded-xl font-bold uppercase text-[11px] text-gray-600 hover-button hover:bg-gray-100 transition-all border-gray-200"
           onClick={() => onView(row)}
-          className="px-4 py-2 bg-gray-900 text-white rounded-xl hover:bg-orange-600 transition-all font-bold text-[10px] uppercase tracking-widest shadow-lg flex items-center gap-2 active:scale-95"
+          type="button"
         >
-          <Eye size={12} strokeWidth={3} /> Chi tiết
-        </button>
+          <span className="flex gap-2 items-center">
+            <Eye size={12} strokeWidth={3} /> Chi tiết
+          </span>
+        </Button>
       </div>
     ),
   },

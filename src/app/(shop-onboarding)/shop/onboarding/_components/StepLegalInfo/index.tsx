@@ -1,20 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { FormInput, SelectComponent, MediaUploadField } from "@/components";
-import {
-  Globe,
-  Fingerprint,
-  User,
-  CreditCard,
-  Info,
-  ShieldCheck,
-} from "lucide-react";
-import { idTypeOptions, nationalityOptions } from "./type";
-import { useCallback } from "react";
-import { useOnboarding } from "../../_contexts/shop.onboarding.context";
+import { FormInput, SelectComponent } from "@/components";
 import { usePresignedUpload } from "@/hooks/usePresignedUpload";
 import { UploadContext } from "@/types/storage/storage.types";
+import {
+  CreditCard,
+  Fingerprint,
+  Globe,
+  Info,
+  ShieldCheck,
+  User,
+} from "lucide-react";
+import { useCallback } from "react";
+import { useOnboarding } from "../../_contexts/shop.onboarding.context";
+import { PrivateImageUploadField } from "../PrivateImageUploadField";
+import { idTypeOptions, nationalityOptions } from "./type";
 
 export const StepLegalInfo = ({ errors }: { errors?: any }) => {
   const { formData, updateFormField } = useOnboarding();
@@ -27,21 +28,15 @@ export const StepLegalInfo = ({ errors }: { errors?: any }) => {
     [updateFormField],
   );
 
-  const handlePrivateUpload = async (
-    file: File,
-    onProgress: (p: number) => void,
-  ) => {
+  const handlePrivateUpload = async (file: File, options: any) => {
     try {
-      const res = await uploadFile(file, UploadContext.SHOP_LOGO, {
-        onUploadProgress: (progressEvent: any) => {
-          if (progressEvent.total) {
-            const percent = Math.round(
-              (progressEvent.loaded * 100) / progressEvent.total,
-            );
-            onProgress(percent);
-          }
-        },
-      });
+      // 🟢 QUAN TRỌNG: Truyền flag isPrivate = true vào đây
+      const res = await uploadFile(
+        file,
+        UploadContext.DOCUMENT,
+        true, // Tham số isPrivate
+        options, // Chứa onUploadProgress
+      );
       return res;
     } catch (error) {
       throw error;
@@ -120,29 +115,24 @@ export const StepLegalInfo = ({ errors }: { errors?: any }) => {
         </div>
       </div>
 
-      {/* 02. XÁC THỰC HÌNH ẢNH */}
       <div className="space-y-4">
         <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 px-4">
           <CreditCard size={14} /> 02. Hệ thống xác thực sinh trắc học
         </div>
 
         <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-xl shadow-gray-50 space-y-10">
-          {/* Ảnh giấy tờ */}
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-12 items-start">
             <div className="space-y-4">
               <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1 flex items-center gap-2">
                 Ảnh chụp giấy tờ gốc <span className="text-red-500">*</span>
               </label>
               <div className="p-4 bg-gray-50 rounded-[2.5rem] border border-gray-100 shadow-inner inline-block w-full sm:w-auto">
-                <MediaUploadField
-                  mode="private"
-                  maxCount={formData?.idType === "passport" ? 1 : 2}
-                  value={
-                    Array.isArray(formData.idImages) ? formData.idImages : []
-                  }
-                  onUploadApi={handlePrivateUpload}
+                <PrivateImageUploadField
+                  maxCount={2}
+                  value={formData.idImages}
                   onChange={(files) => updateField("idImages", files)}
-                  size="md"
+                  onUploadApi={handlePrivateUpload} 
+                  context={UploadContext.DOCUMENT}
                 />
               </div>
               {errors?.idImages && (
@@ -164,7 +154,6 @@ export const StepLegalInfo = ({ errors }: { errors?: any }) => {
             </div>
           </div>
 
-          {/* Ảnh sinh trắc học */}
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-12 items-start pt-10 border-t border-gray-50">
             <div className="space-y-4">
               <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1 flex items-center gap-2">
@@ -172,8 +161,7 @@ export const StepLegalInfo = ({ errors }: { errors?: any }) => {
                 <span className="text-red-500">*</span>
               </label>
               <div className="p-4 bg-gray-50 rounded-[2.5rem] border border-gray-100 shadow-inner inline-block w-full sm:w-auto">
-                <MediaUploadField
-                  mode="private"
+                <PrivateImageUploadField
                   maxCount={1}
                   value={
                     Array.isArray(formData.faceImages)
@@ -182,7 +170,6 @@ export const StepLegalInfo = ({ errors }: { errors?: any }) => {
                   }
                   onUploadApi={handlePrivateUpload}
                   onChange={(files) => updateField("faceImages", files)}
-                  size="md"
                 />
               </div>
               {errors?.faceImages && (

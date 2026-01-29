@@ -1,3 +1,5 @@
+"use client";
+
 import { buyerService } from "@/services/buyer/buyer.service";
 import { getStoredUserDetail } from "@/utils/jwt";
 import { useQuery } from "@tanstack/react-query";
@@ -35,12 +37,10 @@ export const useCheckoutInitialization = (initialPreview: any) => {
   useEffect(() => {
     const runInit = async () => {
       if (!isSuccess || !buyerData) return;
-
       if (hasInitialized.current) return;
 
       const addresses = _.get(buyerData, "addresses") || [];
-      const defaultAddr =
-        _.find(addresses, { isDefault: true }) || addresses[0];
+      const defaultAddr = _.find(addresses, { isDefault: true }) || addresses[0];
 
       if (!defaultAddr) {
         store.setBuyerData(buyerData, []);
@@ -48,86 +48,65 @@ export const useCheckoutInitialization = (initialPreview: any) => {
         return;
       }
 
-      store.setBuyerData(
-        buyerData,
-        _.orderBy(addresses, ["isDefault"], ["desc"]),
-      );
+      store.setBuyerData(buyerData, _.orderBy(addresses, ["isDefault"], ["desc"]));
+
       let shopsToInit = [];
+      const currentRequest = store.request; // 🟢 Lấy request hiện tại từ Store/Storage
 
-      console.log("🔍 Checkout Init Check:", {
-        isBuyNow,
-        paramVariantId,
-        paramShopId,
-      });
-
-      // CASE A: MUA NGAY (Ưu tiên số 1)
       if (isBuyNow && paramVariantId && paramShopId) {
-        console.log("🚀 DETECTED BUY NOW MODE");
-        shopsToInit = [
-          {
-            shopId: paramShopId,
-            items: [
-              {
-                itemId: paramVariantId,
-                quantity: paramQuantity,
-              },
-            ],
-            // Backend cần cái này để biết chỉ checkout đúng 1 item này
-            itemIds: [paramVariantId],
-            vouchers: [],
-            globalVouchers: [],
-            serviceCode: 0,
-            shippingFee: 0,
-          },
-        ];
-      }
-      // CASE B: TỪ GIỎ HÀNG (Fallback)
+        shopsToInit = [{
+          shopId: paramShopId,
+          items: [{ itemId: paramVariantId, quantity: paramQuantity }],
+          itemIds: [paramVariantId],
+        }];
+      } 
       else {
-        console.log("🛒 DETECTED CART MODE");
         shopsToInit = initialPreview?.shops || [];
       }
 
-      // Nếu không có dữ liệu -> Dừng
       if (!shopsToInit || shopsToInit.length === 0) {
-        console.warn("⚠️ No shops data found to init");
-        hasInitialized.current = true; // Đánh dấu đã chạy để tránh loop
+        hasInitialized.current = true;
         return;
       }
 
-      // Map payload chuẩn format
       const shopsPayload = shopsToInit.map((s: any) => {
         const items = s.items.map((i: any) => ({
           itemId: i.itemId || i.id,
           quantity: Number(i.quantity || 1),
         }));
 
-        const itemIds = s.itemIds || items.map((i: any) => i.itemId);
+        const existingShop = currentRequest?.shops?.find((ex: any) => ex.shopId === s.shopId);
+        
+        const isSameItems = _.isEqual(
+          _.sortBy(items, 'itemId'), 
+          _.sortBy(existingShop?.items || [], 'itemId')
+        );
 
         return {
           shopId: s.shopId,
           items: items,
-          itemIds: itemIds,
-          serviceCode: 400021,
-          vouchers: s.vouchers || [],
-          globalVouchers: s.globalVouchers || [],
+          itemIds: s.itemIds || items.map((i: any) => i.itemId),
+          serviceCode: existingShop?.serviceCode || 400031,
+          vouchers: isSameItems ? (existingShop?.vouchers || []) : [],
+          globalVouchers: isSameItems ? (existingShop?.globalVouchers || []) : [],
         };
       });
 
       const initPayload = {
-        addressId: defaultAddr.addressId,
+        addressId: currentRequest?.addressId || defaultAddr.addressId,
         shippingAddress: {
-          addressId: defaultAddr.addressId,
+          addressId: currentRequest?.addressId || defaultAddr.addressId,
           addressChanged: false,
         },
-        globalVouchers: [],
+        globalVouchers: currentRequest?.globalVouchers || [],
         shops: shopsPayload,
       };
 
       try {
         hasInitialized.current = true;
-
+        // Gọi syncPreview để cập nhật Store và Storage lần đầu
         await syncPreview(initPayload);
-        console.log("✅ Checkout Init Success");
+        console.log("✅ Checkout Initialization Finalized");
       } catch (e) {
         console.error("❌ Init Error:", e);
         hasInitialized.current = false;
@@ -135,12 +114,5 @@ export const useCheckoutInitialization = (initialPreview: any) => {
     };
 
     runInit();
-  }, [
-    isSuccess,
-    buyerData,
-    isBuyNow,
-    paramVariantId,
-    paramQuantity,
-    paramShopId,
-  ]);
+  }, [isSuccess, buyerData, isBuyNow, paramVariantId, paramQuantity, paramShopId]);
 };

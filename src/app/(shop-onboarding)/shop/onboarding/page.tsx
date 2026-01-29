@@ -2,7 +2,7 @@ import { ShopInfoScreen } from "./_pages";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Tạo thông tin shop",
+  title: "Đăng ký shop - Thông tin cơ bản",
   description: "Trang tạo thông tin cơ bản shop",
 };
 

@@ -16,9 +16,15 @@ import { cn } from "@/utils/cn";
 
 interface OrderSummaryProps {
   onSubmit: (e: React.FormEvent) => void;
+  hasAddress?: boolean;
+  openAddressModal?: () => void;
 }
 
-export const OrderSummary = ({ onSubmit }: OrderSummaryProps) => {
+export const OrderSummary = ({
+  onSubmit,
+  hasAddress,
+  openAddressModal,
+}: OrderSummaryProps) => {
   const preview = useCheckoutStore((state) => state.preview);
   const loading = useCheckoutStore((state) => state.loading);
   const summary = preview?.summary || preview;
@@ -163,7 +169,8 @@ export const OrderSummary = ({ onSubmit }: OrderSummaryProps) => {
           htmlType="submit"
           type="login"
           onClick={onSubmit}
-          disabled={loading || !preview.isValid}
+          // Allow click to open address modal when preview invalid due to missing address
+          disabled={loading || (!preview.isValid && !!hasAddress)}
           className="flex w-full items-center justify-center gap-3 px-6 py-4 rounded-full text-[14px] font-bold shadow-xl shadow-orange-500/20 transition-all active:scale-95 border-0 h-12"
         >
           <span className="flex items-center gap-2">
@@ -177,11 +184,38 @@ export const OrderSummary = ({ onSubmit }: OrderSummaryProps) => {
         </ButtonField>
 
         {!preview.isValid && !loading && (
-          <div className="mt-4 flex items-start gap-2 p-3 bg-rose-50 rounded-xl border border-rose-100">
-            <Info size={14} className="text-rose-500 mt-0.5 shrink-0" />
-            <p className="text-[11px] font-bold text-rose-600 leading-tight">
-              VUI LÒNG KIỂM TRA LẠI THÔNG TIN ĐƠN HÀNG
-            </p>
+          <div className="mt-4">
+            {!hasAddress ? (
+              <div className="mt-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                <div className="bg-orange-50 border border-orange-100 rounded-2xl p-4 flex flex-col gap-3">
+                  <div className="flex items-start gap-3">
+                    <Info
+                      className="text-orange-500 shrink-0 mt-0.5"
+                      size={18}
+                    />
+                    <p className="text-sm text-gray-700 font-medium leading-snug">
+                      Bạn chưa có địa chỉ nhận hàng. Vui lòng thêm địa chỉ để
+                      tiếp tục.
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => openAddressModal?.()}
+                    className="w-full py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-sm font-bold shadow-md shadow-orange-200 active:scale-95 transition-all"
+                  >
+                    Chọn địa chỉ giao hàng
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="mt-4 flex items-start gap-2 p-3 bg-rose-50 rounded-xl border border-rose-100">
+                <Info size={14} className="text-rose-500 mt-0.5 shrink-0" />
+                <p className="text-[11px] font-bold text-rose-600 leading-tight">
+                  VUI LÒNG KIỂM TRA LẠI THÔNG TIN ĐƠN HÀNG
+                </p>
+              </div>
+            )}
           </div>
         )}
       </div>

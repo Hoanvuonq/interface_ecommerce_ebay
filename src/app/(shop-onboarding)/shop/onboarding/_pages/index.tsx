@@ -223,7 +223,7 @@ const OnboardingContent = () => {
                 await saveToStorage(current, formData);
                 toastSuccess("Đã lưu bản nháp thành công");
               }}
-              className="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 hover:text-orange-600 transition-all hover:translate-y-[-2px] active:translate-y-0"
+              className="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 hover:text-orange-600 transition-all hover:translate-y-0.5 active:translate-y-0"
             >
               <Save size={14} strokeWidth={2.5} /> Save Progress
             </button>

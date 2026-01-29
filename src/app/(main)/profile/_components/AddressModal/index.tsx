@@ -50,7 +50,6 @@ export const AddressFormModal = ({
     isDefault: false,
   });
 
-  // State quản lý lỗi hiển thị trên FormInput
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
@@ -160,7 +159,6 @@ export const AddressFormModal = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validate form
     const newErrors: Record<string, string> = {};
     if (!formData.recipientName) newErrors.recipientName = "Vui lòng nhập tên người nhận";
     if (!formData.phone) newErrors.phone = "Vui lòng nhập số điện thoại";

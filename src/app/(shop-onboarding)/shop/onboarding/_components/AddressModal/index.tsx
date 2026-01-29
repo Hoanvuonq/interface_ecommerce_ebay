@@ -30,11 +30,10 @@ export const AddressModal: React.FC<AddressModalProps> = ({
   wards,
   isEdit = false,
 }) => {
-  // 🟢 FIX SPAM: Dùng useCallback để hàm không bị khởi tạo lại mỗi lần render
   const updateModalData = useCallback(
     (key: string, value: any) => {
       setModalData((prev: any) => {
-        if (prev[key] === value) return prev; // Nếu giá trị không đổi thì đéo render lại
+        if (prev[key] === value) return prev; 
         return { ...prev, [key]: value };
       });
 
@@ -90,7 +89,6 @@ export const AddressModal: React.FC<AddressModalProps> = ({
       className="rounded-[2.5rem] border-none shadow-2xl"
     >
       <div className="space-y-8 py-6 px-2 animate-in fade-in slide-in-from-bottom-4 duration-500">
-        {/* Khối 1: Thông tin định danh người nhận */}
         <div className="space-y-5">
           <div className="flex items-center gap-2 pb-2 border-b border-gray-100/60">
             <User size={16} className="text-orange-500" />
@@ -218,7 +216,7 @@ export const AddressModal: React.FC<AddressModalProps> = ({
               error={modalErrors.addressDetail}
               required
               maxLengthNumber={200}
-              className="rounded-[1.5rem]! bg-white border-gray-200 focus:border-orange-400!"
+              className="rounded-3xl! bg-white border-gray-200 focus:border-orange-400!"
             />
           </div>
         </div>

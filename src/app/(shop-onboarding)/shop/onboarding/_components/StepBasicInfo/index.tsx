@@ -3,23 +3,31 @@
 
 import { AddressModal } from "@/app/(shop-onboarding)/shop/onboarding/_components/AddressModal";
 import { FormInput, MediaUploadField, SectionHeader } from "@/components";
-import {
-  useGetAllProvinces,
-  useGetWardsByProvinceCode,
-} from "@/hooks/address/useAddress";
 import { usePresignedUpload } from "@/hooks/usePresignedUpload";
 import { UploadContext } from "@/types/storage/storage.types";
 import { ChevronRight, Info, MapPin, Plus, Store } from "lucide-react";
-import { useEffect, useMemo, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useOnboarding } from "../../_contexts/shop.onboarding.context";
 import { cn } from "@/utils/cn";
+import { getStoredUserDetail } from "@/utils/jwt"; // 🟢 Import để lấy thông tin user
 
 export const StepBasicInfo = ({ errors }: { errors?: any }) => {
-  const { formData, updateFormField } = useOnboarding();
+  const { formData, updateFormField, provinces, wards, fetchWardsByProvince } =
+    useOnboarding();
+
   const [open, setOpen] = useState(false);
   const { uploadFile } = usePresignedUpload();
-
   const lastFetchedProvinceCode = useRef<string | null>(null);
+
+  // 🟢 TỰ ĐỘNG LẤY EMAIL KHI TRANG LOAD
+  useEffect(() => {
+    if (!formData.email) {
+      const userDetail = getStoredUserDetail();
+      if (userDetail?.email) {
+        updateFormField("email", userDetail.email);
+      }
+    }
+  }, [formData.email, updateFormField]);
 
   const [modalData, setModalData] = useState({
     fullName: "",
@@ -32,28 +40,13 @@ export const StepBasicInfo = ({ errors }: { errors?: any }) => {
     addressDetail: "",
   });
 
-  const { fetchProvinces, data: provincesData } = useGetAllProvinces();
-  const { fetchWards, data: wardsData } = useGetWardsByProvinceCode();
-
-  const provinces = useMemo(
-    () => provincesData?.content || [],
-    [provincesData],
-  );
-  const wards = useMemo(() => wardsData?.content || [], [wardsData]);
-
-  useEffect(() => {
-    if (open && provinces.length === 0) {
-      fetchProvinces({ page: 0, size: 100 });
-    }
-  }, [open, provinces.length, fetchProvinces]);
-
   useEffect(() => {
     const pCode = modalData.provinceCode;
     if (pCode && pCode !== lastFetchedProvinceCode.current) {
-      fetchWards(pCode, { page: 0, size: 100 });
+      fetchWardsByProvince(pCode);
       lastFetchedProvinceCode.current = pCode;
     }
-  }, [modalData.provinceCode, fetchWards]);
+  }, [modalData.provinceCode, fetchWardsByProvince]);
 
   const handleOpenModal = useCallback(() => {
     const addr = formData.pickupAddress || {};
@@ -67,7 +60,6 @@ export const StepBasicInfo = ({ errors }: { errors?: any }) => {
       wardName: addr.wardName || "",
       addressDetail: addr.addressDetail || "",
     });
-
     lastFetchedProvinceCode.current = addr.provinceCode || null;
     setOpen(true);
   }, [formData.pickupAddress]);
@@ -81,7 +73,7 @@ export const StepBasicInfo = ({ errors }: { errors?: any }) => {
   };
 
   return (
-    <div className="w-full max-w-5xl mx-auto space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div className="w-full max-w-5xl mx-auto space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-10">
       <div className="bg-white rounded-4xl shadow-custom overflow-hidden p-6 space-y-8 border border-gray-50">
         <SectionHeader icon={Store} title="Hồ sơ Cửa hàng" />
 
@@ -96,15 +88,16 @@ export const StepBasicInfo = ({ errors }: { errors?: any }) => {
           />
 
           <FormInput
-            label="Email liên lạc"
+            label="Email liên lạc (Hệ thống)"
+            // 🟢 Bây giờ email sẽ tự hiện ra do logic useEffect ở trên
             value={formData.email || ""}
             disabled
-            className="bg-gray-50/50 opacity-70 rounded-2xl!"
+            className="bg-gray-100 opacity-80 cursor-not-allowed rounded-2xl!"
           />
         </div>
 
+        {/* --- ĐỊA CHỈ LẤY HÀNG --- */}
         <SectionHeader icon={MapPin} title="Địa chỉ lấy hàng" />
-
         {formData.pickupAddress ? (
           <div className="p-6 bg-orange-50/30 border border-orange-100 rounded-4xl relative group transition-all">
             <div className="font-bold text-gray-900 mb-1">
@@ -117,7 +110,6 @@ export const StepBasicInfo = ({ errors }: { errors?: any }) => {
               {formData.pickupAddress.wardName} —{" "}
               {formData.pickupAddress.provinceName}
             </div>
-
             <button
               onClick={handleOpenModal}
               className="mt-4 text-[10px] font-black text-orange-600 flex items-center gap-1 uppercase tracking-tighter hover:underline"
@@ -132,7 +124,7 @@ export const StepBasicInfo = ({ errors }: { errors?: any }) => {
               className={cn(
                 "w-full py-12 border-2 border-dashed rounded-4xl flex flex-col items-center gap-3 transition-all group",
                 errors?.pickupAddress
-                  ? "border-red-400 bg-red-50/30 animate-shake" 
+                  ? "border-red-400 bg-red-50/30 animate-shake"
                   : "border-gray-200 bg-white hover:bg-orange-50/30 hover:border-orange-200",
               )}
             >
@@ -165,13 +157,21 @@ export const StepBasicInfo = ({ errors }: { errors?: any }) => {
           </div>
         )}
 
+        {/* --- LOGO SHOP --- */}
         <div className="pt-8 border-t border-gray-100">
           <div className="flex flex-col lg:flex-row gap-10 items-start">
             <div className="shrink-0 space-y-3">
-              <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-1">
+              <div className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">
                 Shop Branding Logo *
-              </label>
-              <div className="p-2 bg-gray-50/50 rounded-3xl border border-gray-100 shadow-inner">
+              </div>
+              <div
+                className={cn(
+                  "py-2 rounded-2xl border shadow-custom transition-all",
+                  errors?.logoUrl
+                    ? "bg-red-50/30 border-red-200 animate-shake"
+                    : "bg-gray-50/50 border-gray-100",
+                )}
+              >
                 <MediaUploadField
                   mode="public"
                   maxCount={1}
@@ -188,6 +188,11 @@ export const StepBasicInfo = ({ errors }: { errors?: any }) => {
                   onChange={(files) => updateFormField("logoUrl", files)}
                 />
               </div>
+              {errors?.logoUrl && (
+                <p className="text-[10px] font-medium text-red-500 ml-1 italic">
+                  * {errors.logoUrl}
+                </p>
+              )}
             </div>
 
             <div className="flex-1 self-stretch">
@@ -205,6 +210,32 @@ export const StepBasicInfo = ({ errors }: { errors?: any }) => {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* --- MÔ TẢ SHOP (ĐÃ FIX BINDING) --- */}
+        <div className="bg-gray-50/50 rounded-4xl p-6 border border-gray-100 shadow-inner">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="text-sm font-black uppercase tracking-widest text-gray-500">
+              Mô tả Shop
+            </span>
+            <span className="text-[9px] bg-white border border-gray-100 text-gray-400 px-2 py-0.5 rounded-full uppercase font-bold tracking-tighter">
+              Tùy chọn
+            </span>
+          </div>
+
+          <FormInput
+            isTextArea
+            // 🟢 Gán value và onChange để lưu vào Context
+            value={formData.description || ""}
+            onChange={(e) => updateFormField("description", e.target.value)}
+            placeholder="Hãy chia sẻ ngắn gọn về phong cách cửa hàng hoặc câu chuyện của bạn..."
+            rows={4}
+            maxLength={300}
+            className="mb-0 rounded-2xl! bg-white border-white! focus:border-orange-200!"
+          />
+          <p className="mt-3 text-[10px] text-gray-400 font-bold italic text-right px-2">
+            * Tối đa 300 ký tự. Mô tả chất lượng giúp tăng độ tin cậy.
+          </p>
         </div>
       </div>
 

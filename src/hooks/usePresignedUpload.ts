@@ -47,6 +47,8 @@ export type PresignedUploadResult = {
   status?: string;
 };
 
+
+// Hoanvuonq -- Check lại tại sao nó load 1 ảnh tốn 12 requests time lâu 
 export function usePresignedUpload() {
   const [uploading, setUploading] = useState(false);
   const [status, setStatus] = useState<string | undefined>(undefined);
@@ -55,9 +57,11 @@ export function usePresignedUpload() {
     async (
       assetId: string,
       presignPath?: string | null,
-      maxAttempts = 20,
-      intervalMs = 2000,
+      isPrivate: boolean = false,
     ): Promise<string | undefined> => {
+      const maxAttempts = 20;
+      const intervalMs = 2000;
+
       for (let attempt = 1; attempt <= maxAttempts; attempt++) {
         try {
           const resp = await safeApiCall(() =>
@@ -66,11 +70,15 @@ export function usePresignedUpload() {
           const entry: any = resp ? (resp as any)[assetId] : undefined;
           let s: string | undefined;
           let pu: string | undefined | null;
+
           if (typeof entry === "string") s = entry;
           else if (entry) {
             s = entry.status;
-            pu = entry.publicUrl || entry.publicPath;
+            pu = isPrivate
+              ? entry.previewUrl || entry.url
+              : entry.publicUrl || entry.publicPath;
           }
+
           if (s) setStatus(s);
           if (s === "READY")
             return pu
@@ -89,7 +97,8 @@ export function usePresignedUpload() {
     async (
       file: File,
       context: UploadContext,
-      options?: { onUploadProgress?: (progressEvent: any) => void }, // 🟢 Thêm tham số options
+      isPrivate: boolean = false,
+      options?: { onUploadProgress?: (progressEvent: any) => void }, // Nhận progress ở đây
     ): Promise<PresignedUploadResult> => {
       setUploading(true);
       try {
@@ -97,9 +106,12 @@ export function usePresignedUpload() {
         const ext0 = file.name.split(".").pop()?.toLowerCase();
         const ext = ext0 === "jpeg" ? "jpg" : ext0 || "jpg";
 
+        const presignFn = isPrivate
+          ? storageService.presignUploadPrivate
+          : storageService.presignUpload;
         const presign = await safeApiCall(
           () =>
-            storageService.presignUpload({
+            presignFn({
               context,
               extension: ext,
               fileSizeBytes: file.size,
@@ -107,16 +119,14 @@ export function usePresignedUpload() {
             }),
           { errorMessage: "Không thể lấy presigned URL" },
         );
-
         if (!presign) throw new Error("Presign failed");
+
         const { url, headers, assetId, path } = presign as any;
 
-        // 🟢 SỬ DỤNG XMLHttpRequest ĐỂ THEO DÕI TIẾN ĐỘ
         await new Promise((resolve, reject) => {
           const xhr = new XMLHttpRequest();
           xhr.open("PUT", url);
 
-          // Set Headers
           const contentType =
             headers?.["Content-Type"] ??
             headers?.["content-type"] ??
@@ -126,7 +136,7 @@ export function usePresignedUpload() {
           if (contentType) xhr.setRequestHeader("Content-Type", contentType);
           if (contentMd5) xhr.setRequestHeader("Content-MD5", contentMd5);
 
-          // 🟢 FIX TRONG usePresignedUpload.ts
+          // Theo dõi tiến độ
           if (xhr.upload && options?.onUploadProgress) {
             xhr.upload.onprogress = (event) => {
               if (event.lengthComputable) {
@@ -138,32 +148,34 @@ export function usePresignedUpload() {
             };
           }
 
-          xhr.onload = () => {
-            if (xhr.status >= 200 && xhr.status < 300) resolve(xhr.response);
-            else reject(new Error(`PUT failed: ${xhr.status}`));
-          };
+          xhr.onload = () =>
+            xhr.status >= 200 && xhr.status < 300
+              ? resolve(xhr.response)
+              : reject(new Error(`PUT failed: ${xhr.status}`));
           xhr.onerror = () => reject(new Error("XHR Network Error"));
           xhr.send(file);
         });
 
-        const videoContexts = new Set<UploadContext>([
-          UploadContext.PRODUCT_VIDEO,
-          UploadContext.SHOP_VIDEO,
-          UploadContext.REVIEW_VIDEO,
-          UploadContext.CHAT_VIDEO,
-        ]);
-
-        if (videoContexts.has(context)) {
+        if (isPrivate) {
           await safeApiCall(() =>
-            storageService.preCheckVideos({ assetIds: [assetId] }),
+            storageService.confirmPrivateUpload({ assetIds: [assetId] }),
           );
-        } else {
-          await safeApiCall(() =>
-            storageService.preCheckImages({ assetIds: [assetId] }),
-          );
+          const finalUrl = await pollAssetReady(assetId, path, true);
+          return { assetId, path, finalUrl, status: "READY" };
         }
 
-        const finalUrl = await pollAssetReady(assetId, path);
+        // Public logic...
+        const isVideo = [
+          UploadContext.PRODUCT_VIDEO,
+          UploadContext.SHOP_VIDEO,
+        ].includes(context);
+        await safeApiCall(() =>
+          isVideo
+            ? storageService.preCheckVideos({ assetIds: [assetId] })
+            : storageService.preCheckImages({ assetIds: [assetId] }),
+        );
+
+        const finalUrl = await pollAssetReady(assetId, path, false);
         return { assetId, path, finalUrl, status: finalUrl ? "READY" : status };
       } finally {
         setUploading(false);

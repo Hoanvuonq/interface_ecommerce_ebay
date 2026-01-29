@@ -1,69 +1,47 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useEffect, useMemo, useRef } from "react"; // Thêm useRef
+import { useEffect, useRef } from "react";
 import { FormInput, SectionHeader, SelectComponent } from "@/components";
-import {
-  useGetAllProvinces,
-  useGetWardsByProvinceCode,
-} from "@/hooks/address/useAddress";
 import { Briefcase, MapPin, Hash, Globe, CheckCircle2 } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { useOnboarding } from "../../_contexts/shop.onboarding.context";
 
 export const StepTaxInfo = ({ errors }: { errors?: any }) => {
-  const { formData, updateFormField } = useOnboarding();
-  const { fetchProvinces, data: provincesData } = useGetAllProvinces();
-  const { fetchWards, data: wardsData } = useGetWardsByProvinceCode();
-  
-  // 🟢 CHỐNG SPAM: Ref để ghi nhớ mã tỉnh cuối cùng đã gọi API
+  const { formData, updateFormField, provinces, wards, fetchWardsByProvince } =
+    useOnboarding();
+
   const lastFetchedTaxProvinceCode = useRef<string | null>(null);
 
-  const provinces = useMemo(
-    () => provincesData?.content || [],
-    [provincesData],
-  );
-  const wards = useMemo(() => wardsData?.content || [], [wardsData]);
-
-  useEffect(() => {
-    fetchProvinces({ page: 0, size: 100 });
-  }, [fetchProvinces]);
-
-  // 🟢 FIX SPAM: Chỉ gọi API Wards khi mã tỉnh thực sự THAY ĐỔI
   useEffect(() => {
     const pCode = formData.taxProvinceCode;
     if (pCode && pCode !== lastFetchedTaxProvinceCode.current) {
-      fetchWards(pCode, { page: 0, size: 100 });
-      lastFetchedTaxProvinceCode.current = pCode; // Ghi nhớ lại
+      fetchWardsByProvince(pCode);
+      lastFetchedTaxProvinceCode.current = pCode;
     }
-  }, [formData.taxProvinceCode, fetchWards]);
+  }, [formData.taxProvinceCode, fetchWardsByProvince]);
 
   const handleProvinceChange = (val: any) => {
     const selectedOption = provinces.find((p: any) => p.code === val);
-    updateFormField("taxProvinceCode", val);
-    updateFormField(
-      "taxProvinceName",
-      selectedOption ? selectedOption.fullName : "",
-    );
-    // Reset ward khi đổi tỉnh
-    updateFormField("taxWardCode", "");
-    updateFormField("taxWardName", "");
-    // Reset ref để nếu user chọn lại tỉnh cũ vẫn fetch được (nếu cần)
-    // Hoặc giữ nguyên để tiết kiệm data
+
+    updateFormField({
+      taxProvinceCode: val,
+      taxProvinceName: selectedOption ? selectedOption.fullName : "",
+      taxWardCode: "",
+      taxWardName: "",
+    });
   };
 
   const handleWardChange = (val: any) => {
     const selectedOption = wards.find((w: any) => w.code === val);
-    updateFormField("taxWardCode", val);
-    updateFormField(
-      "taxWardName",
-      selectedOption ? selectedOption.fullName : "",
-    );
+    updateFormField({
+      taxWardCode: val,
+      taxWardName: selectedOption ? selectedOption.fullName : "",
+    });
   };
 
   return (
     <div className="w-full max-w-5xl mx-auto space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-10">
-      {/* 01. HÌNH THỨC PHÁP LÝ */}
       <section className="bg-white rounded-[2.5rem] shadow-custom border border-gray-50 p-8 space-y-6">
         <SectionHeader icon={Briefcase} title="01. Hình thức pháp lý" />
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -102,13 +80,12 @@ export const StepTaxInfo = ({ errors }: { errors?: any }) => {
           })}
         </div>
         {errors?.businessType && (
-          <p className="text-[10px] font-medium text-red-500 ml-1 uppercase tracking-tighter">
+          <p className="text-[10px] font-medium text-red-500 ml-1 uppercase tracking-tighter italic">
             * {errors.businessType}
           </p>
         )}
       </section>
 
-      {/* 02. ĐỊA CHỈ ĐĂNG KÝ THUẾ */}
       <section className="bg-white rounded-[2.5rem] shadow-custom border border-gray-50 p-8 space-y-8">
         <SectionHeader icon={MapPin} title="02. Địa chỉ đăng ký doanh nghiệp" />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -128,7 +105,7 @@ export const StepTaxInfo = ({ errors }: { errors?: any }) => {
               }))}
               value={formData.taxProvinceCode || ""}
               onChange={handleProvinceChange}
-              className={cn(errors?.taxProvinceCode && "animate-shake")}
+              error={errors?.taxProvinceCode}
             />
           </div>
           <div className="space-y-2">
@@ -141,7 +118,7 @@ export const StepTaxInfo = ({ errors }: { errors?: any }) => {
               options={wards.map((w) => ({ label: w.fullName, value: w.code }))}
               value={formData.taxWardCode || ""}
               onChange={handleWardChange}
-              className={cn(errors?.taxWardCode && "animate-shake")}
+              error={errors?.taxWardCode}
             />
           </div>
         </div>
@@ -152,11 +129,10 @@ export const StepTaxInfo = ({ errors }: { errors?: any }) => {
           value={formData.taxAddressDetail || ""}
           onChange={(e) => updateFormField("taxAddressDetail", e.target.value)}
           required
-          error={errors?.taxAddressDetail} // Truyền error
+          error={errors?.taxAddressDetail}
         />
       </section>
 
-      {/* 03. LIÊN HỆ & MÃ SỐ THUẾ */}
       <section className="bg-white rounded-[2.5rem] shadow-custom border border-gray-50 p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="md:col-span-2">
           <SectionHeader icon={Hash} title="03. Liên hệ & Mã số thuế" />
@@ -167,7 +143,7 @@ export const StepTaxInfo = ({ errors }: { errors?: any }) => {
           value={formData.billingEmail || ""}
           onChange={(e) => updateFormField("billingEmail", e.target.value)}
           required
-          error={errors?.billingEmail} // Truyền error
+          error={errors?.billingEmail}
         />
         <FormInput
           label="Mã số thuế"
@@ -177,7 +153,7 @@ export const StepTaxInfo = ({ errors }: { errors?: any }) => {
             updateFormField("taxId", e.target.value.replace(/[^0-9]/g, ""))
           }
           required
-          error={errors?.taxId} // Truyền error
+          error={errors?.taxId}
         />
       </section>
     </div>

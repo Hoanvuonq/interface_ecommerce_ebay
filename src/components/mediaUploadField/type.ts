@@ -6,7 +6,7 @@ export interface CustomFile {
   url?: string;
   preview?: string;
   originFileObj?: File;
-  status?: "uploading" | "done" | "error" | "removed";
+  status?: "uploading" | "done" | "error" | "removed" | "pending";
   type?: string;
   percent?: number;
   isLoading?: boolean;

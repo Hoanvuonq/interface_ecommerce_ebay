@@ -10,6 +10,8 @@ import { CustomInputNumber } from "../custom/components/customInputNumber";
 import { IButtonProps } from "./type";
 import { useToast } from "@/hooks/useToast";
 import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/store/store";
+import { fetchCart, checkoutPreview } from "@/store/theme/cartSlice";
 
 export const AddToCartButton: React.FC<
   IButtonProps & {
@@ -29,6 +31,7 @@ export const AddToCartButton: React.FC<
 }) => {
   const router = useRouter();
   const { quickAddToCart } = useCart();
+  const dispatch = useAppDispatch();
   const [quantity, setQuantity] = useState(defaultQuantity);
   const [loading, setLoading] = useState<"cart" | "buy" | null>(null);
   const { error: toastError } = useToast();
@@ -61,30 +64,109 @@ export const AddToCartButton: React.FC<
   };
 
   const handleBuyNow = async () => {
+    // 1. Check Auth
     if (!requireAuthentication(window.location.pathname)) return;
-
     if (!shopId) {
       toastError("Thiếu thông tin cửa hàng.");
       return;
     }
     setLoading("buy");
     try {
-      // 1. Thêm vào giỏ hàng thật (để Backend validate được item tồn tại)
       const result = await quickAddToCart(variantId, quantity);
-
+      console.debug("BuyNow: quickAddToCart result", { variantId, quantity, result });
       if (!result.success) {
         toastError(result.error || "Không thể khởi tạo đơn hàng");
         return;
       }
 
-      // 2. Dọn dẹp localStorage cũ (để tránh logic cũ can thiệp)
-      localStorage.removeItem("checkoutPreview");
-      localStorage.removeItem("checkoutRequest");
+      // Refresh cart to get the newly added item ID
+      const refreshed = await dispatch(fetchCart()).unwrap();
+      console.debug("BuyNow: refreshed cart", refreshed);
 
-      // 3. Chuyển hướng sang trang checkout kèm tham số
-      // Trang checkout sẽ đọc các tham số này để tạo payload thanh toán
-      router.push(`/checkout?type=buy_now&variantId=${variantId}&quantity=${quantity}&shopId=${shopId}&t=${Date.now()}`);
-      
+      // Try to locate the cart item that was just added (match by variantId or other fields)
+      let foundItem: any = null;
+      if (refreshed && Array.isArray(refreshed.shops)) {
+        for (const s of refreshed.shops) {
+          for (const it of s.items || []) {
+            const candidateVariantIds = [
+              it.variantId,
+              // sometimes backend might use different field names
+              (it as any).productVariantId,
+              // nested variant object
+              (it as any).variant?.id,
+            ].filter(Boolean);
+
+            if (candidateVariantIds.includes(variantId)) {
+              foundItem = it;
+              break;
+            }
+          }
+          if (foundItem) {
+            break;
+          }
+        }
+      }
+
+      let checkoutRequest: any = null;
+
+      if (foundItem) {
+        checkoutRequest = {
+          shops: [
+            {
+              shopId: foundItem.shopId,
+              items: [
+                {
+                  itemId: foundItem.id,
+                  quantity: foundItem.quantity,
+                },
+              ],
+              vouchers: [],
+            },
+          ],
+          promotion: [],
+        };
+      } else {
+        console.warn("BuyNow: could not find newly added cart item by variantId, falling back to buy-now style request", { variantId, refreshed });
+        // Fallback: build buy-now style request using variantId (backend accepts this in buy-now flow)
+        checkoutRequest = {
+          shops: [
+            {
+              shopId: shopId,
+              items: [
+                {
+                  // backend buy-now expects itemId to be variantId in this flow
+                  itemId: variantId,
+                  quantity: quantity,
+                },
+              ],
+              itemIds: [variantId],
+              vouchers: [],
+              globalVouchers: [],
+              serviceCode: 0,
+              shippingFee: 0,
+            },
+          ],
+          promotion: [],
+        };
+      }
+
+      // Create preview and store it so /checkout can initialize
+      let previewData: any = null;
+      try {
+        previewData = await dispatch(checkoutPreview(checkoutRequest)).unwrap();
+        console.debug("BuyNow: checkoutPreview result", previewData);
+      } catch (e) {
+        console.error("BuyNow: checkoutPreview failed", e);
+      }
+
+      try {
+        if (previewData) sessionStorage.setItem("checkoutPreview", JSON.stringify(previewData));
+        sessionStorage.setItem("checkoutRequest", JSON.stringify(checkoutRequest));
+      } catch (e) {
+        console.warn("BuyNow: sessionStorage write failed", e);
+      }
+
+      window.location.href = "/checkout";
     } catch (err: any) {
       console.error(err);
       toastError("Lỗi hệ thống.");
@@ -135,6 +217,8 @@ export const AddToCartButton: React.FC<
     <div className={cn("flex flex-col gap-4", block && "w-full")}>
       <div className="flex flex-wrap items-center gap-3">
         {showQuantityInput && QuantitySelector}
+        
+        {/* Nút Thêm vào giỏ */}
         <button
           onClick={handleAddToCart}
           disabled={disabled || !!loading || maxQuantity === 0}
@@ -150,6 +234,8 @@ export const AddToCartButton: React.FC<
           )}
           {maxQuantity === 0 ? "HẾT HÀNG" : "THÊM VÀO GIỎ"}
         </button>
+
+        {/* Nút Mua ngay */}
         <ButtonField
           type="button"
           onClick={handleBuyNow}

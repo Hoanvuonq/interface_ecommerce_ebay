@@ -35,13 +35,13 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
   ): Promise<boolean> => {
     if (!request || !request.shops) return false;
 
-    const orderCode = selected?.order?.code || selected?.order?.voucherCode;
-    const shipCode =
-      selected?.shipping?.code || selected?.shipping?.voucherCode;
-    const newShopCodes = [orderCode, shipCode].filter(Boolean) as string[];
-
     const updatedShops = request.shops.map((s: any) => {
       if (s.shopId === shopId) {
+        // Selected ở đây thường là object { order, shipping } từ VoucherModal handleConfirm
+        const orderCode = selected?.order?.code || selected?.order?.voucherCode;
+        const shipCode =
+          selected?.shipping?.code || selected?.shipping?.voucherCode;
+        const newShopCodes = [orderCode, shipCode].filter(Boolean) as string[];
         return {
           ...s,
           vouchers: newShopCodes,
@@ -53,48 +53,27 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
       return s;
     });
 
-    try {
-      const payload = { ...request, shops: updatedShops };
-      await syncPreview(payload);
-      return true;
-    } catch (error) {
-      return false;
-    }
+    const payload = { ...request, shops: updatedShops };
+    await syncPreview(payload);
+    return true;
   };
 
-  const handleSelectPlatformVoucher = async (
-    shopId: string,
-    selected: any,
-  ): Promise<boolean> => {
+ const handleSelectPlatformVoucher = async (shopId: string, selected: any): Promise<boolean> => {
     if (!request || !request.shops) return false;
 
     const orderCode = selected?.order?.code || selected?.order?.voucherCode;
-    const shipCode =
-      selected?.shipping?.code || selected?.shipping?.voucherCode;
+    const shipCode = selected?.shipping?.code || selected?.shipping?.voucherCode;
     const newGlobalCodes = [orderCode, shipCode].filter(Boolean) as string[];
 
-    const updatedShops = request.shops.map((s: any) => {
-      if (s.shopId === shopId) {
-        return {
-          ...s,
-          globalVouchers: newGlobalCodes,
-          vouchers: Array.isArray(s.vouchers) ? s.vouchers : [],
-        };
-      }
-      return s;
-    });
-
-    try {
-      await syncPreview({
-        ...request,
-        globalVouchers: newGlobalCodes,
-        shops: updatedShops,
-      });
-      return true;
-    } catch (error) {
-      return false;
-    }
-  };
+    // Platform vouchers là global, set ở root level
+    const payload = { 
+      ...request, 
+      globalVouchers: newGlobalCodes,
+      shops: request.shops // Không cần update shops vì platform vouchers không gắn với shop cụ thể
+    };
+    await syncPreview(payload);
+    return true;
+};
 
   if (!shops || !Array.isArray(shops)) return null;
 

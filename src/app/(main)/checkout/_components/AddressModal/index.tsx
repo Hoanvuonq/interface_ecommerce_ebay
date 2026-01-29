@@ -3,13 +3,11 @@
 import React, { useState, useEffect } from "react";
 import { CheckCircle2, Plus, Info } from "lucide-react";
 import { AddressModalProps } from "../../_types/address";
-import { Button } from "@/components/button";
 import { PortalModal } from "@/features/PortalModal";
 import { AddressFormModal } from "@/app/(main)/profile/_components/AddressModal";
 import { getStoredUserDetail } from "@/utils/jwt";
 import { useCheckoutAddress } from "../../_hooks/useCheckoutAddress";
 import { useToast } from "@/hooks/useToast";
-import { SectionLoading } from "@/components/loading";
 import { FaCheckCircle } from "react-icons/fa";
 import { CustomButtonActions } from "@/components";
 import { cn } from "@/utils/cn";
@@ -24,12 +22,13 @@ export const AddressModal: React.FC<AddressModalProps> = ({
   const user = getStoredUserDetail();
   const [activeTab, setActiveTab] = useState<"saved" | "new">("saved");
   const [selectedId, setSelectedId] = useState<string | undefined>(
-    currentAddressId
+    currentAddressId,
   );
   const [isFormOpen, setIsFormOpen] = useState(false);
+
   const [isUpdating, setIsUpdating] = useState(false);
 
-  const { updateAddressList, updateAddress } = useCheckoutAddress();
+  const { updateAddressList } = useCheckoutAddress();
   const { success } = useToast();
 
   useEffect(() => {
@@ -42,9 +41,10 @@ export const AddressModal: React.FC<AddressModalProps> = ({
 
   const handleConfirm = async () => {
     if (selectedId) {
-      setIsUpdating(true);
+      setIsUpdating(true); // 🟢 Bật loading trên nút
       try {
         await onConfirmSaved(selectedId);
+        onClose();
       } finally {
         setIsUpdating(false);
       }
@@ -53,43 +53,44 @@ export const AddressModal: React.FC<AddressModalProps> = ({
     }
   };
 
+  const handleAddressClick = (addrId: string) => {
+    if (isUpdating) return;
+    setSelectedId(addrId);
+  };
+
   return (
     <>
       <PortalModal
         isOpen={isOpen}
         onClose={onClose}
         title={
-          <span className="uppercase font- italic">Địa chỉ giao hàng</span>
+          <span className="uppercase font-bold italic">Địa chỉ giao hàng</span>
         }
         footer={
           <CustomButtonActions
             isLoading={isUpdating}
-            isDisabled={!selectedId}
+            isDisabled={!selectedId || isUpdating}
             cancelText="HỦY BỎ"
             submitText="XÁC NHẬN ĐỊA CHỈ"
             submitIcon={CheckCircle2}
             onCancel={onClose}
             onSubmit={handleConfirm}
             containerClassName="w-full flex gap-3 border-t-0"
-            className="w-50!  rounded-4xl"
+            className="w-50! rounded-4xl"
           />
         }
         width="max-w-2xl"
       >
-        <div className="flex flex-col gap-6 relative min-h-75">
-          {isUpdating && (
-            <div className="absolute inset-0 z-50 bg-white/60 backdrop-blur-[1px] flex items-center justify-center rounded-2xl">
-              <SectionLoading message="Đang cập nhật phí vận chuyển..." />
-            </div>
-          )}
+        <div className="flex flex-col gap-6 min-h-75">
 
           <div className="flex bg-gray-50 p-1.5 gap-2 rounded-2xl border border-gray-100">
             <button
-              className={`flex-1 py-3 text-[10px] font-bold uppercase tracking-widest transition-all rounded-xl ${
+              className={cn(
+                "flex-1 py-3 text-[10px] font-bold uppercase tracking-widest transition-all rounded-xl",
                 activeTab === "saved"
                   ? "bg-white text-orange-600 shadow-sm"
-                  : "text-gray-600"
-              }`}
+                  : "text-gray-600",
+              )}
               onClick={() => setActiveTab("saved")}
               disabled={isUpdating}
             >
@@ -106,43 +107,47 @@ export const AddressModal: React.FC<AddressModalProps> = ({
             </button>
           </div>
 
-          <div className="grid grid-cols-1 gap-3 max-h-100 overflow-y-auto custom-scrollbar pr-2">
+          <div className="grid grid-cols-1 gap-3 max-h-100 overflow-y-auto custom-scrollbar pr-2 pb-2">
             {savedAddresses.length > 0 ? (
               savedAddresses.map((addr) => (
                 <div
                   key={addr.addressId}
-                  onClick={() => !isUpdating && setSelectedId(addr.addressId)}
-                  className={`p-4 rounded-2xl border-2 cursor-pointer transition-all ${
+                  onClick={() => handleAddressClick(addr.addressId)}
+                  className={cn(
+                    "p-4 rounded-2xl border-2 cursor-pointer transition-all relative group",
                     selectedId === addr.addressId
-                      ? "border-gray-500 bg-orange-50/30 ring-4 ring-orange-50"
-                      : "border-gray-100 bg-white hover:border-gray-200"
-                  } ${isUpdating ? "opacity-50 cursor-not-allowed" : ""}`}
+                      ? "border-orange-500 bg-orange-50/30 ring-1 ring-orange-100"
+                      : "border-gray-100 bg-white hover:border-gray-300",
+                    isUpdating && "opacity-50 cursor-wait",
+                  )}
                 >
                   <div className="w-full flex justify-between items-center">
-                    <div className="font-bold text-gray-900 text-sm uppercase italic">
-                      {addr.recipientName}{" "}
-                      <span className="mx-2 text-gray-500">|</span> {addr.phone}
+                    <div className="font-bold text-gray-900 text-sm uppercase italic flex items-center gap-2">
+                      {addr.recipientName}
+                      <span className="text-gray-400 text-xs">|</span>{" "}
+                      {addr.phone}
                     </div>
-                    {addr.isDefault && (
-                      <div className={cn(
-                        "flex items-center gap-1 px-2.5 py-1 rounded-full bg-(--color-mainColor)",
-                        "text-white text-[9px] font-bold uppercase tracking-widest shadow-sm animate-fade-in"
-                      )}>
-                        <FaCheckCircle size={10} />
-                        <span>Mặc định</span>
-                      </div>
+                    {selectedId === addr.addressId && (
+                      <FaCheckCircle className="text-orange-500 text-lg animate-in zoom-in duration-300" />
                     )}
                   </div>
-                  <p className="text-xs text-gray-500 mt-1 font-medium italic">
+
+                  <p className="text-xs text-gray-600 mt-2 font-medium italic leading-relaxed">
                     {addr.detailAddress}, {addr.ward}, {addr.district},{" "}
                     {addr.province}
                   </p>
+
+                  {addr.isDefault && (
+                    <div className="mt-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-gray-100 text-gray-500 text-[9px] font-bold uppercase tracking-wider">
+                      Mặc định
+                    </div>
+                  )}
                 </div>
               ))
             ) : (
-              <div className="text-center py-10 opacity-50">
-                <Info className="mx-auto mb-2" />
-                <p className="text-xs font-bold uppercase">
+              <div className="flex flex-col items-center justify-center py-10 opacity-50">
+                <Info size={40} className="mb-3 text-gray-300" />
+                <p className="text-xs font-bold uppercase text-gray-400">
                   Chưa có địa chỉ nào
                 </p>
               </div>
@@ -157,23 +162,26 @@ export const AddressModal: React.FC<AddressModalProps> = ({
         buyerId={user?.buyerId!}
         onSuccess={async () => {
           setIsFormOpen(false);
-          setIsUpdating(true);
+          setIsUpdating(true); 
 
           try {
             const newAddresses = await updateAddressList();
-
             if (newAddresses && newAddresses.length > 0) {
               const latestAddress = newAddresses[0];
-              await updateAddress(latestAddress.addressId);
+              if (latestAddress) {
+                setSelectedId(latestAddress.addressId);
+                await onConfirmSaved(latestAddress.addressId);
+              }
             }
+            success("Thêm địa chỉ và áp dụng thành công!");
             onClose();
-            success("Đã áp dụng địa chỉ mới thành công!");
+          } catch (err) {
+            console.error(err);
           } finally {
-            setIsUpdating(false);
+            setIsUpdating(false); 
           }
         }}
       />
     </>
   );
 };
-

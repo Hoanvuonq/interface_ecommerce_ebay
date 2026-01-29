@@ -81,6 +81,21 @@ body {
   font-family: "Coiny", system-ui;
 }
 
+.hover-button {
+  transition: transform 0.5s ease;
+  cursor: pointer;
+
+  &:active {
+    box-shadow: none;
+    transform: translateY(5px) scale(1.05);
+  }
+
+  &:hover {
+    box-shadow: none;
+    transform: translateY(2px) scale(1.02);
+  }
+}
+
 .background-main-gradient {
   background: linear-gradient(90deg, #810610 0%, #a52121 100%);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
@@ -342,13 +357,23 @@ body {
 }
 
 @keyframes gradient-x {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 @keyframes shine {
-  100% { left: 125%; }
+  100% {
+    left: 125%;
+  }
 }
 
 .animate-gradient-x {

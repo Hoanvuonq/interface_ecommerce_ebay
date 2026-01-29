@@ -122,6 +122,11 @@ export const SHOP_SIDEBAR_ITEMS = [
         label: "Quản lý chat",
         href: "/shop/cskh/chat",
       },
+       {
+        key: "cskh-conversations",
+        label: "Danh sách cuộc trò chuyện",
+        href: "/shop/cskh/conversations",
+      },
       {
         key: "cskh-settings",
         label: "Thiết lập chat",
@@ -235,6 +240,7 @@ export const SHOP_ROUTE_MAPPINGS = [
 
   { prefix: "/shop/cskh/chat", key: "cskh-chat", parent: "cskh" },
   { prefix: "/shop/reviews", key: "cskh-review", parent: "cskh" },
+  { prefix: "/shop/conversations", key: "cskh-conversations", parent: "cskh" },
   { prefix: "/shop/settings", key: "cskh-settings", parent: "cskh" },
   {
     prefix: "/shop/finance/revenue",

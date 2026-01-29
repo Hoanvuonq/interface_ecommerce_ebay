@@ -72,7 +72,12 @@ export const useCheckoutStore = create<CheckoutState>((set, get) => ({
     }
   },
 
-  setRequest: (nextRequest) => set({ request: nextRequest }),
+  setRequest: (nextRequest) => {
+    set({ request: nextRequest });
+    if (nextRequest) {
+      sessionStorage.setItem("checkoutRequest", JSON.stringify(nextRequest));
+    }
+  },
 
   setAddressMasterData: (p, w) => {
     const { provincesData, allWardsData } = get();

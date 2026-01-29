@@ -1,5 +1,6 @@
 "use client";
 
+import { StatusTabs } from "@/app/(shop)/shop/_components/Products/StatusTabs";
 import {
   ButtonField,
   DataTable,
@@ -7,10 +8,17 @@ import {
   SelectComponent,
   StatCardComponents,
 } from "@/components";
-import { StatusTabs } from "@/app/(shop)/shop/_components/Products/StatusTabs";
 import { PortalModal } from "@/features/PortalModal";
-import { cn } from "@/utils/cn";
-import { useEffect, useState, useMemo } from "react";
+import {
+  AlertCircle,
+  Clock,
+  LayoutList,
+  RotateCw,
+  Search,
+  Store,
+} from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { SHOP_STATUS_TABS } from "../../_constants/tabs.constants";
 import {
   useGetAllShops,
   useGetShopDetail,
@@ -21,21 +29,9 @@ import {
 } from "../../_hooks/useManageShop";
 import { GetShopRequest } from "../../_types/dto/manager.shop.dto";
 import { Shop, ShopDetail } from "../../_types/manager.shop.type";
+import { ShopDetailModal } from "../ShopDetailModal";
 import { getShopColumns } from "./colum";
-import ShopDetailModal from "../ShopDetailModal";
-import {
-  Store,
-  Search,
-  RotateCw,
-  Eraser,
-  AlertCircle,
-  ShoppingBag,
-  ShieldCheck,
-  XOctagon,
-  Archive,
-  Lock,
-} from "lucide-react";
-import { SHOP_STATUS_TABS } from "../../_constants/tabs.constants";
+import { RejectShopModal } from "../RejectShopModal";
 
 export default function ShopApprovalForm() {
   const { handleGetAllShops, loading } = useGetAllShops();
@@ -71,17 +67,16 @@ export default function ShopApprovalForm() {
     const res = await handleGetShopStatistics();
     if (res?.data) setStatistics(res.data);
   };
-  const handleConfirmReject = async () => {
-    if (!rejectModal.shop || !rejectReason) return;
+  const handleConfirmReject = async (reason: string) => {
+    if (!rejectModal.shop) return;
     try {
       const res = await handleVerifyShop(rejectModal.shop.shopId, {
         verifiedStatus: "REJECTED",
-        reason: rejectReason,
+        reason: reason,
       });
       if (res) {
         notify("Đã từ chối shop!");
         setRejectModal({ open: false });
-        setRejectReason("");
         fetchShops();
       }
     } catch (err) {
@@ -104,7 +99,6 @@ export default function ShopApprovalForm() {
 
     const res = await handleGetAllShops(payload);
     if (res && res.data) {
-      // FIX: Dựa trên JSON của bạn, dữ liệu nằm trong res.data.content
       const dataList = res.data.content || res.data.shops || [];
       setShops(dataList.map((s: any) => ({ ...s, id: s.shopId })));
       setPagination((prev) => ({
@@ -223,8 +217,8 @@ export default function ShopApprovalForm() {
           <h1 className="text-4xl font-bold text-gray-900 tracking-tighter uppercase italic leading-none">
             Duyệt <span className="text-orange-500">Cửa hàng</span>
           </h1>
-          <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-gray-400 mt-2">
-            Merchant Approval System
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 mt-2">
+            Hệ thống phê duyệt người bán
           </p>
         </div>
       </div>
@@ -234,17 +228,22 @@ export default function ShopApprovalForm() {
           label="Tổng yêu cầu"
           value={statistics?.totalShops || 0}
           color="text-gray-900"
+          icon={<LayoutList />}
+          trend={12}
         />
         <StatCardComponents
           label="Đang chờ duyệt"
           value={statistics?.byStatus.PENDING || 0}
           color="text-orange-500"
+          icon={<Clock />}
           trend={10}
         />
         <StatCardComponents
           label="Shop hoạt động"
           value={statistics?.byStatus.ACTIVE || 0}
           color="text-emerald-500"
+          icon={<Store />}
+          trend={12}
         />
       </div>
 
@@ -262,45 +261,13 @@ export default function ShopApprovalForm() {
         />
       </div>
 
-      {/* Reject Modal */}
-      <PortalModal
+      <RejectShopModal
         isOpen={rejectModal.open}
+        shopName={rejectModal.shop?.shopName}
         onClose={() => setRejectModal({ open: false })}
-        title="Từ chối cửa hàng"
-      >
-        <div className="space-y-6 py-2">
-          <div className="p-4 bg-rose-50 rounded-2xl border border-rose-100 flex gap-3 items-center">
-            <AlertCircle className="text-rose-500" size={20} />
-            <p className="text-xs font-bold text-rose-700 uppercase italic">
-              Shop: {rejectModal.shop?.shopName}
-            </p>
-          </div>
-          <FormInput
-            isTextArea
-            label="Lý do từ chối"
-            placeholder="Vui lòng nhập lý do cụ thể để người bán sửa đổi..."
-            value={rejectReason}
-            onChange={(e) => setRejectReason(e.target.value)}
-            className="min-h-32"
-          />
-          <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
-            <button
-              onClick={() => setRejectModal({ open: false })}
-              className="px-6 py-2.5 rounded-xl font-bold text-[10px] uppercase tracking-widest text-gray-400 hover:bg-gray-100 transition-all"
-            >
-              Hủy bỏ
-            </button>
-            <ButtonField
-              onClick={handleConfirmReject}
-              type="login"
-              disabled={!rejectReason.trim()}
-              className="w-40! h-11 rounded-xl shadow-lg shadow-orange-500/20"
-            >
-              Xác nhận
-            </ButtonField>
-          </div>
-        </div>
-      </PortalModal>
+        onConfirm={handleConfirmReject}
+        isLoading={loading}
+      />
 
       <ShopDetailModal
         open={detailModal.open}

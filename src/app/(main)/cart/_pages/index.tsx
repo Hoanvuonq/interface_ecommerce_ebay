@@ -115,13 +115,11 @@ export const CartScreen = () => {
       return;
     }
 
-    // --- SỬA Ở ĐÂY ---
     const checkoutRequest = {
       shops: cart.shops
         .filter((shop) => shop.items.some((item) => item.selectedForCheckout))
         .map((shop) => ({
           shopId: shop.shopId,
-          // Thay đổi từ itemIds sang items object có quantity
           items: shop.items
             .filter((item) => item.selectedForCheckout)
             .map((item) => ({
@@ -132,7 +130,6 @@ export const CartScreen = () => {
         })),
       promotion: [] as CartItemPromotion[],
     };
-    // -----------------
 
     try {
       const previewData = await dispatch(
@@ -265,12 +262,15 @@ export const CartScreen = () => {
       )}
 
       {isMobile && cart && cart.itemCount > 0 && (
-        <CartSummary
-          cart={cart}
-          onCheckout={handleCheckout}
-          loading={checkoutLoading}
-          isMobile={true}
-        />
+        <aside className="lg:col-span-1 h-fit sticky top-30">
+          {" "}
+          <CartSummary
+            cart={cart}
+            onCheckout={handleCheckout}
+            loading={checkoutLoading}
+            isMobile={true}
+          />
+        </aside>
       )}
 
       {showCheckoutPreview && preview && (
