@@ -47,7 +47,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
       className: "min-w-[300px]",
       render: (record) => {
         const imageUrl = resolveOrderItemImageUrl(
-          record.imageBasePath,
+          record.imagePath,
           record.imageExtension,
           "_thumb",
         );

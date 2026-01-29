@@ -64,7 +64,7 @@ export interface CartItemDto {
   discountAmount: number;
   quantity: number;
   totalPrice: number;
-  imageBasePath?: string | null;
+  imagePath?: string | null;
   imageExtension?: string | null;
   thumbnailUrl?: string;
   sku?: string;

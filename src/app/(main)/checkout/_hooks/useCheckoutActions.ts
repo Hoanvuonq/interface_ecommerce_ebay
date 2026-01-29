@@ -1,6 +1,6 @@
+"use client";
 import { useMutation } from "@tanstack/react-query";
-import { useRef } from "react";
-import _ from "lodash";
+import { useCallback } from "react";
 import { useCheckoutStore } from "../_store/useCheckoutStore";
 import { checkoutPreview as checkoutPreviewAction } from "@/store/theme/cartSlice";
 import { useAppDispatch } from "@/store/store";
@@ -11,149 +11,110 @@ import {
   prepareOrderRequest,
 } from "../_utils/checkout.mapper";
 
+let globalSyncTimer: NodeJS.Timeout | null = null;
+
 export const useCheckoutActions = () => {
   const dispatch = useAppDispatch();
   const { success: toastSuccess, error: toastError } = useToast();
-  const {
-    request,
-    setPreview,
-    setRequest,
-    setLoading,
-    savedAddresses,
-    preview,
-  } = useCheckoutStore();
-  const lastRequestIdRef = useRef<number | null>(null);
+  const store = useCheckoutStore();
 
   const previewMutation = useMutation({
-    mutationFn: async (params: any) => {
-      const updatedRequest = params?.payload ?? params;
-      const finalPayload = preparePreviewCheckoutPayload(updatedRequest);
-      return await dispatch(checkoutPreviewAction(finalPayload)).unwrap();
+    mutationFn: async (req: any) => {
+      const payload = preparePreviewCheckoutPayload(req);
+      return await dispatch(checkoutPreviewAction(payload)).unwrap();
     },
-    onMutate: () => setLoading(true),
-
-    onSuccess: (result: any, variables: any) => {
+    onMutate: () => store.setIsSyncing(true),
+    onSuccess: (result: any) => {
       const previewData = result?.data || result;
-      setPreview(previewData);
-
-      const variablesReq = variables?.payload ?? variables;
-      const shopsFromBackend = _.get(previewData, "shops", []);
-
-      const updatedShops = (variablesReq?.shops || []).map((s: any) => {
-        const freshShop = _.find(shopsFromBackend, { shopId: s.shopId });
-        if (!freshShop) return s;
-
-        const discountDetails = _.get(
-          freshShop,
-          "voucherResult.discountDetails",
-          [],
-        );
-
- 
-        const serverShopCodes = _.chain(discountDetails)
-          .filter((d: any) => d.valid && d.voucherType === "SHOP")
-          .map("voucherCode")
-          .value();
-
-
-        const serverPlatformCodes = _.chain(discountDetails)
-          .filter((d: any) => d.valid && d.voucherType === "PLATFORM")
-          .map("voucherCode")
-          .value();
-
-        const userVouchers = s.vouchers;
-        const userGlobalVouchers = s.globalVouchers;
-
-        return {
-          ...s,
-          serviceCode: _.get(freshShop, "selectedShippingMethod")
-            ? Number(freshShop.selectedShippingMethod)
-            : s.serviceCode,
-          shippingFee: _.get(freshShop, "summary.shippingFee", 0),
-
-          vouchers:
-            userVouchers !== undefined && userVouchers.length > 0
-              ? userVouchers
-              : serverShopCodes,
-
-          globalVouchers:
-            userGlobalVouchers !== undefined && userGlobalVouchers.length > 0
-              ? userGlobalVouchers
-              : serverPlatformCodes,
-        };
-      });
-
-      const nextRequest = {
-        ...variablesReq,
-        shops: updatedShops,
-        globalVouchers: [],
-      };
-
-      setRequest(nextRequest);
+      store.setPreview(previewData);
+      store.syncRequestFromPreview(result);
     },
-    onSettled: () => setLoading(false),
+    onError: (err: any) => {
+      console.error("Preview Sync Error:", err);
+    },
+    onSettled: () => {
+      store.setIsSyncing(false);
+    },
   });
 
-  const syncPreview = async (req: any) => {
-    const id = Date.now();
-    lastRequestIdRef.current = id;
-    return await previewMutation.mutateAsync({
-      payload: req,
-      _clientRequestId: id,
-    });
-  };
+  const syncPreview = useCallback(
+    (req?: any) => {
+      if (globalSyncTimer) clearTimeout(globalSyncTimer);
+
+      if (req) store.setRequest(req);
+
+      store.setIsSyncing(true);
+
+      return new Promise((resolve, reject) => {
+        globalSyncTimer = setTimeout(async () => {
+          try {
+            const latestRequest = useCheckoutStore.getState().request;
+            if (!latestRequest) return;
+
+            const result = await previewMutation.mutateAsync(latestRequest);
+            resolve(result);
+          } catch (err) {
+            reject(err);
+          } finally {
+            globalSyncTimer = null;
+          }
+        }, 400);
+      });
+    },
+    [previewMutation, store],
+  );
+
+  const orderMutation = useMutation({
+    mutationFn: async (params: any) => {
+      const { request, preview, savedAddresses } = useCheckoutStore.getState();
+
+      if (!request || !preview) throw new Error("Dữ liệu không hợp lệ");
+
+      const finalRequest = prepareOrderRequest({
+        ...params,
+        preview,
+        request,
+        savedAddresses,
+      });
+      return await orderService.createOrder(finalRequest);
+    },
+    onMutate: () => store.setLoading(true),
+    onSuccess: (res) => {
+      sessionStorage.removeItem("checkout-storage");
+      toastSuccess("Đặt hàng thành công!");
+      return res;
+    },
+    onError: (err: any) => {
+      const msg =
+        err?.response?.data?.message || "Đặt hàng thất bại, vui lòng thử lại";
+      toastError(msg);
+    },
+    onSettled: () => store.setLoading(false),
+  });
+
+  const confirmOrder = (customerNote: string, paymentMethod: string) =>
+    orderMutation.mutateAsync({ customerNote, paymentMethod });
 
   const updateShippingMethod = async (shopId: string, methodCode: string) => {
-    if (!request) return;
-    const nextRequest = {
-      ...request,
-      shops: request.shops.map((s: any) =>
+    const current = useCheckoutStore.getState().request;
+    if (!current) return;
+
+    const next = {
+      ...current,
+      shops: current.shops.map((s: any) =>
         s.shopId === shopId
           ? { ...s, serviceCode: Number(methodCode), shippingFee: 0 }
           : s,
       ),
     };
-    return await syncPreview(nextRequest);
+    return await syncPreview(next);
   };
-
-  const confirmOrder = (note: string, method: string) =>
-    orderMutation.mutateAsync({ customerNote: note, paymentMethod: method });
-
-  const orderMutation = useMutation({
-    mutationFn: async ({
-      customerNote,
-      paymentMethod,
-    }: {
-      customerNote: string;
-      paymentMethod: string;
-    }) => {
-      if (!request || !preview) throw new Error("Dữ liệu không hợp lệ");
-      const finalRequest = prepareOrderRequest({
-        preview,
-        request,
-        savedAddresses,
-        customerNote,
-        paymentMethod,
-      });
-      return await orderService.createOrder(finalRequest);
-    },
-    onMutate: () => setLoading(true),
-    onSuccess: (res) => {
-      sessionStorage.removeItem("checkoutPreview");
-      sessionStorage.removeItem("checkoutRequest");
-      toastSuccess("Đặt hàng thành công!");
-      return res;
-    },
-    onError: (err: any) => {
-      toastError(_.get(err, "response.data.message") || "Đặt hàng thất bại");
-    },
-    onSettled: () => setLoading(false),
-  });
 
   return {
     syncPreview,
-    updateShippingMethod,
     confirmOrder,
-    isLoading: previewMutation.isPending || orderMutation.isPending,
+    updateShippingMethod,
+    isLoading:
+      store.isSyncing || previewMutation.isPending || orderMutation.isPending,
   };
 };

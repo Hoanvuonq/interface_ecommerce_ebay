@@ -51,7 +51,7 @@ export const useCheckoutInitialization = (initialPreview: any) => {
       store.setBuyerData(buyerData, _.orderBy(addresses, ["isDefault"], ["desc"]));
 
       let shopsToInit = [];
-      const currentRequest = store.request; // 🟢 Lấy request hiện tại từ Store/Storage
+      const currentRequest = store.request; 
 
       if (isBuyNow && paramVariantId && paramShopId) {
         shopsToInit = [{

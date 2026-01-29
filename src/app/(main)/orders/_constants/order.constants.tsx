@@ -286,7 +286,7 @@ export const resolveOrderItemImageUrl = (
 ): string => {
   if (basePath && extension) {
     const variant = {
-      imageBasePath: basePath,
+      imagePath: basePath,
       imageExtension: extension.startsWith(".") ? extension : `.${extension}`,
     };
     return resolveVariantImageUrl(variant, size);

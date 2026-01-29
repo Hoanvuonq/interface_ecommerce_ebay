@@ -20,51 +20,21 @@ export const VoucherModal: React.FC<VoucherModalProps> = (props) => {
     ...props,
     previewData: preview,
   });
-
   const handleConfirmVouchers = async () => {
-    if (!request) return;
-
+    const { updateShopVouchers } = useCheckoutStore.getState();
     const orderCode = state.selectedOrderVoucherId;
     const shipCode = state.selectedShippingVoucherId;
-    const selectedCodes = [orderCode, shipCode].filter(Boolean) as string[];
 
-    const shopsArray = preview?.data?.shops || preview?.shops || [];
-    const shopPreview = shopsArray.find((s: any) => s.shopId === shopId);
-    const details = shopPreview?.voucherResult?.discountDetails || [];
-
-    const shopOnlyVouchers = selectedCodes.filter((c) =>
-      details.find((d: any) => d.voucherCode === c && d.voucherType === "SHOP"),
-    );
-
-    const platformVouchersForShop = selectedCodes.filter((c) =>
-      details.find(
-        (d: any) => d.voucherCode === c && d.voucherType === "PLATFORM",
-      ),
-    );
-
-    const updatedRequest = _.cloneDeep(request);
-    const shopIdx = updatedRequest.shops.findIndex(
-      (s: any) => s.shopId === shopId,
-    );
-
-    if (shopIdx > -1) {
-      const currentShop = updatedRequest.shops[shopIdx];
-
-      if (isPlatform) {
-        updatedRequest.globalVouchers = _.uniq([
-          ...(updatedRequest.globalVouchers || []),
-          ...platformVouchersForShop,
-        ]);
-      } else {
-        currentShop.vouchers = shopOnlyVouchers;
-        if (platformVouchersForShop.length > 0) {
-          currentShop.globalVouchers = platformVouchersForShop;
-        }
-      }
-    }
+    // 🟢 Cập nhật store ngay lập tức để UI đổi màu/hiện code
+    updateShopVouchers(shopId, {
+      ...(isPlatform
+        ? { platformOrder: orderCode, platformShipping: shipCode }
+        : { order: orderCode, shipping: shipCode }),
+    });
 
     onClose();
-    await syncPreview(updatedRequest);
+    // Gọi sync (sẽ bị gom bởi Singleton Timer)
+    await syncPreview();
   };
   return (
     <PortalModal

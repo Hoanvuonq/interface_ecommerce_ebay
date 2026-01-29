@@ -38,3 +38,4 @@ export * from "./textAreaField";
 export * from "./themeSwitcher";
 export * from "./voucher";
 export * from "./imagePreviewModal";
+export * from "./ImageProductItem"; // Hoanvuonq Note Thay Items All Product Image 

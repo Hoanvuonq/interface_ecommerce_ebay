@@ -27,7 +27,7 @@ export const ProductListCard: React.FC<ProductListCardProps> = ({ items }) => {
           const imageUrl =
             resolveVariantImageUrl(
               {
-                imageBasePath: item.imageBasePath,
+                imagePath: item.imagePath,
                 imageExtension: item.imageExtension,
               },
               "_medium",

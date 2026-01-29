@@ -1,39 +1,40 @@
 "use client";
 
-import React, { useMemo, useState, useEffect } from "react";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
 import _ from "lodash";
 import {
   ArrowRight,
+  Loader2,
   Package,
+  Receipt,
+  RefreshCcw,
+  RotateCcw,
+  Star,
+  Tag,
   Truck,
   Wallet,
-  Star,
-  Loader2,
-  RefreshCcw,
   XCircle,
-  RotateCcw,
-  Tag,
-  Receipt,
 } from "lucide-react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { formatPrice } from "@/hooks/useFormatPrice";
+import { getMyReviews } from "@/services/review/review.service";
 import { cn } from "@/utils/cn";
 import { useOrderDetailView } from "../../_hooks/useOrderDetailView";
-import { getMyReviews } from "@/services/review/review.service";
 
-import { ReviewModal } from "../ReviewModal";
-import { ReviewPreviewModal } from "../ReviewPreviewModal";
-import { ReturnOrderModal } from "../ReturnOrderModal";
-import { OrderCancelModal } from "../OrderCancelModal";
-import { OrderCardProps, OrderStatus } from "../../_types/order";
+import { ImageProductItem } from "@/components";
+import type { OrderResponse } from "@/types/orders/order.types";
 import {
   getOrderStatusConfig,
-  PAYMENT_METHOD_LABELS,
-  resolveOrderItemImageUrl,
+  PAYMENT_METHOD_LABELS
 } from "../../_constants/order.constants";
-import type { OrderResponse } from "@/types/orders/order.types";
+import { OrderCardProps, OrderStatus } from "../../_types/order";
+import { OrderCancelModal } from "../OrderCancelModal";
+import { ReturnOrderModal } from "../ReturnOrderModal";
+import { ReviewModal } from "../ReviewModal";
+import { ReviewPreviewModal } from "../ReviewPreviewModal";
+const STORAGE_BASE_URL = "https://pub-5341c10461574a539df355b9fbe87197.r2.dev/";
 
 const extractPricing = (order: OrderResponse) => {
   if (order.pricing) {
@@ -50,7 +51,6 @@ const extractPricing = (order: OrderResponse) => {
     };
   }
 
-  // Legacy flat structure
   return {
     subtotal: order.subtotal || 0,
     shopDiscount: 0,
@@ -118,14 +118,9 @@ export const OrderCard: React.FC<OrderCardProps> = ({
 
     const firstItem = _.first(order.items);
 
-    const rawImageUrl = resolveOrderItemImageUrl(
-      firstItem?.imageBasePath,
-      firstItem?.imageExtension,
-      "_medium",
-    );
-
-    const productImageUrl =
-      rawImageUrl && rawImageUrl.trim() !== "" ? rawImageUrl : null;
+    const modalImgUrl = firstItem?.imagePath 
+      ? `${STORAGE_BASE_URL}${firstItem.imagePath.replace("*", "medium")}`
+      : "";
 
     const rawLogoUrl = _.get(order, "shopInfo.logoUrl");
     const shopLogo = rawLogoUrl && rawLogoUrl.trim() !== "" ? rawLogoUrl : null;
@@ -142,7 +137,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
       shopLogo,
       itemCount: order.items.length,
       firstItem,
-      productImageUrl,
+      modalImgUrl,
       paymentLabel: PAYMENT_METHOD_LABELS[paymentMethod] || paymentMethod,
       isReviewed: !!dbReview || !!order.reviewed,
       hasFreeship,
@@ -241,20 +236,13 @@ export const OrderCard: React.FC<OrderCardProps> = ({
 
       <div className="flex items-start gap-3 sm:gap-4">
         <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl border border-gray-100 overflow-hidden shrink-0 shadow-sm bg-white">
-          {ui.productImageUrl ? (
-            <Image
-              src={ui.productImageUrl}
-              alt={ui.firstItem?.productName || "Product"}
-              fill
-              sizes="(max-width: 640px) 56px, 64px"
-              priority={order.status === OrderStatus.DELIVERED}
-              className="object-cover"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center bg-gray-50">
-              <Package size={20} className="text-gray-700" />
-            </div>
-          )}
+          <ImageProductItem
+            imagePath={ui.firstItem?.imagePath}
+            productName={ui.firstItem?.productName}
+            size="md"
+            fill
+            priority={order.status === OrderStatus.DELIVERED}
+          />
         </div>
 
         <div className="flex-1 min-w-0">
@@ -434,7 +422,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
         isCancelling={cancelling}
       />
 
-      {isReviewModalOpen && ui.productImageUrl && (
+      {isReviewModalOpen && ui.modalImgUrl && (
         <ReviewModal
           open={isReviewModalOpen}
           onCancel={() => setIsReviewModalOpen(false)}
@@ -445,7 +433,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
           }}
           productId={ui.firstItem?.productId || ""}
           productName={ui.firstItem?.productName || ""}
-          productImage={ui.productImageUrl}
+          productImage={ui.modalImgUrl}
           orderId={order.orderId}
         />
       )}
@@ -456,12 +444,12 @@ export const OrderCard: React.FC<OrderCardProps> = ({
         order={order}
       />
 
-      {isPreviewModalOpen && reviewDisplayData && ui.productImageUrl && (
+      {isPreviewModalOpen && reviewDisplayData && ui.modalImgUrl && (
         <ReviewPreviewModal
           open={isPreviewModalOpen}
           onClose={() => setIsPreviewModalOpen(false)}
           productName={ui.firstItem?.productName || ""}
-          productImage={ui.productImageUrl}
+          productImage={ui.modalImgUrl}
           reviewData={reviewDisplayData}
         />
       )}

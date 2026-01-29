@@ -81,7 +81,7 @@ export interface OrderItemResponse {
   variantId: string;
   sku: string;
   productName: string;
-  imageBasePath?: string;
+  imagePath?: string;
   imageExtension?: string;
   variantAttributes?: string;
   unitPrice: number;

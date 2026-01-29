@@ -28,20 +28,20 @@ export const useCheckoutAddress = () => {
     }
   };
 
- const updateAddress = async (addressId?: string, newAddressData?: any) => {
-    const targetId = addressId || newAddressData?.addressId;
-    if (!targetId || !request) return;
+ const updateAddress = async (addressId?: string, data?: any) => {
+    const targetId = addressId || data?.addressId;
+    const latestReq = useCheckoutStore.getState().request; 
+    
+    if (!targetId || !latestReq) return;
 
-    if (targetId === request.addressId && !newAddressData) return;
-
-    const updatedRequest = {
-      ...request,
+    const next = {
+      ...latestReq,
       addressId: targetId,
-      ...(newAddressData && { shippingAddress: newAddressData })
+      shippingAddress: { addressId: targetId, addressChanged: true, ...data }
     };
 
-    setRequest(updatedRequest);
-    await syncPreview(updatedRequest);
+    setRequest(next);
+    await syncPreview(next);
   };
   return {
     currentAddress,

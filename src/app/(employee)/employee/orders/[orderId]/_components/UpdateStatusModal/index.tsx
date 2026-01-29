@@ -28,7 +28,6 @@ export const UpdateStatusModal: React.FC<UpdateStatusModalProps> = ({
   const [note, setNote] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Cấu hình các trạng thái có thể chuyển đổi
   const getAvailableStatuses = (current: string) => {
     const statusFlow: Record<string, { value: string; label: string }[]> = {
       PENDING: [

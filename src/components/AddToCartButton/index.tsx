@@ -237,7 +237,7 @@ export const AddToCartButton: React.FC<
 
         {/* Nút Mua ngay */}
         <ButtonField
-          type="button"
+          type="login"
           onClick={handleBuyNow}
           disabled={disabled || !!loading || maxQuantity === 0}
           className={cn(

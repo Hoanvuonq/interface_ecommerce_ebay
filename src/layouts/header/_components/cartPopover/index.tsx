@@ -11,7 +11,6 @@ import { cn } from "@/utils/cn";
 import { ShoppingBag } from "lucide-react";
 import Image from "next/image";
 import React, { useState, useMemo } from "react";
-
 const STORAGE_BASE_URL = "https://pub-5341c10461574a539df355b9fbe87197.r2.dev/";
 
 export const CartPopoverContent: React.FC = () => {
@@ -27,12 +26,14 @@ export const CartPopoverContent: React.FC = () => {
     const [imgError, setImgError] = useState(false);
 
     const imageUrl = useMemo(() => {
-      if (!item.imageBasePath || !item.imageExtension) return null;
+      if (!item.imagePath) return null;
 
-      let cleanPath = item.imageBasePath;
+      let cleanPath = item.imagePath;
       if (cleanPath.startsWith("/")) cleanPath = cleanPath.slice(1);
 
-      return `${STORAGE_BASE_URL}${cleanPath}_thumb${item.imageExtension}`;
+      const thumbPath = cleanPath.replace("*", "thumb");
+
+      return `${STORAGE_BASE_URL}${thumbPath}`;
     }, [item]);
 
     const categoryKey = getStandardizedKey(item.productName);
@@ -49,11 +50,12 @@ export const CartPopoverContent: React.FC = () => {
           className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500"
           onError={(e) => {
             const target = e.target as HTMLImageElement;
-            if (target.src.includes("_thumb")) {
-              const cleanPath = item.imageBasePath.startsWith("/")
-                ? item.imageBasePath.slice(1)
-                : item.imageBasePath;
-              target.src = `${STORAGE_BASE_URL}${cleanPath}_orig${item.imageExtension}`;
+            if (target.src.includes("thumb")) {
+              let cleanPath = item.imagePath.startsWith("/")
+                ? item.imagePath.slice(1)
+                : item.imagePath;
+
+              target.src = `${STORAGE_BASE_URL}${cleanPath.replace("*", "orig")}`;
             } else {
               setImgError(true);
             }
@@ -66,7 +68,7 @@ export const CartPopoverContent: React.FC = () => {
       <div
         className={cn(
           "w-full h-full flex items-center justify-center text-xl",
-          categoryUI.bg
+          categoryUI.bg,
         )}
       >
         <span>{categoryEmoji}</span>

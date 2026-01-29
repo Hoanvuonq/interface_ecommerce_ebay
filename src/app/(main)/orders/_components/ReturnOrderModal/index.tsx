@@ -115,11 +115,8 @@ export const ReturnOrderModal: React.FC<ReturnOrderModalProps> = ({
     try {
       setIsSubmitting(true);
 
-      // BƯỚC 1: Chuyển đổi Blob URL thành File object và Upload
-      // Lưu ý: Bạn cần viết một hàm upload thực tế gọi lên server
       const uploadedUrls = await Promise.all(
         selectedImages.map(async (blobUrl) => {
-          // Nếu là link đã upload rồi (http) thì giữ nguyên, nếu là blob thì mới upload
           if (blobUrl.startsWith("http") && !blobUrl.startsWith("blob"))
             return blobUrl;
 
@@ -127,11 +124,8 @@ export const ReturnOrderModal: React.FC<ReturnOrderModalProps> = ({
           const blob = await response.blob();
           const file = new File([blob], "evidence.jpg", { type: "image/jpeg" });
 
-          // Gọi API upload của bạn ở đây
-          // const res = await uploadService.uploadFile(file);
-          // return res.url;
-
-          return "https://your-cdn.com/path-to-image.jpg"; // Link demo sau khi upload thành công
+        
+          return "https://your-cdn.com/path-to-image.jpg"; 
         })
       );
 

@@ -37,7 +37,7 @@ export interface ShopOrderItemResponse {
   variantId: string;
   sku: string;
   productName: string;
-  imageBasePath?: string | null;
+  imagePath?: string | null;
   imageExtension?: string | null;
   variantAttributes?: string | null;
   unitPrice: number;

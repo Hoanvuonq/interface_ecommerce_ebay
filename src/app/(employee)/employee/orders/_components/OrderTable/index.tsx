@@ -29,7 +29,7 @@ export const OrderTable: React.FC<OrderTableProps> = ({
   const { success } = useToast(); 
 
   const handleView = (id: string) => router.push(`/employee/orders/${id}`);
-  const handleEdit = (id: string) => router.push(`/employee/orders/${id}/edit`);
+  const handleEdit = (id: string) => router.push(`/employee/orders/${id}`);
 
   const columns = useMemo(
     () => getOrderColumns(handleView, handleEdit, success),

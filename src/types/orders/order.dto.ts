@@ -110,7 +110,7 @@ export interface OrderItemResponse {
   variantId?: string;
   sku?: string;
   productName: string;
-  imageBasePath?: string; // MediaAsset.basePath
+  imagePath?: string; // MediaAsset.basePath
   imageExtension?: string; // from MediaAsset.getExtension()
   variantAttributes?: string;
   unitPrice: number;
