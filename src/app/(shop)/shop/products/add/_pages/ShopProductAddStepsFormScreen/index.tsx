@@ -267,30 +267,11 @@ export default function ShopProductAddStepsFormScreen() {
         variants.length > 0 ? variants : values.variants || [];
 
       // Debug: Show all variant keys and their image status
-      console.log("📊 Detailed variants analysis:");
       variantsToSubmit.forEach((v, idx) => {
         const variantKey = v.optionValueNames?.join("|") || "no-key";
-        console.log(`  Variant ${idx + 1} (${v.sku}):`, {
-          key: variantKey,
-          optionValues: v.optionValueNames,
-          hasImageAssetId: !!v.imageAssetId,
-          imageAssetId: v.imageAssetId,
-          hasImageUrl: !!v.imageUrl,
-          imageUrl: v.imageUrl?.substring(0, 50) + "...",
-          hasExtension: !!v.imageExtension,
-        });
+        
       });
 
-      console.log(
-        "🔍 Variants to submit:",
-        variantsToSubmit.map((v) => ({
-          sku: v.sku,
-          hasImageAssetId: !!v.imageAssetId,
-          imageAssetId: v.imageAssetId,
-          imageUrl: v.imageUrl,
-          imageExtension: v.imageExtension,
-        })),
-      );
 
       const structuralErrors = validateVariantStructure(variantsToSubmit);
       if (structuralErrors.length > 0) {
@@ -298,31 +279,6 @@ export default function ShopProductAddStepsFormScreen() {
         return;
       }
 
-      // Debug: Check fileList and videoList before building media array
-      console.log(
-        "📸 FileList debug:",
-        fileList.map((f) => ({
-          uid: f.uid,
-          name: f.name,
-          status: f.status,
-          url: f.url,
-          assetId: (f as any).assetId,
-          response: (f as any).response,
-        })),
-      );
-      console.log(
-        "🎥 VideoList debug:",
-        videoList.map((v) => ({
-          uid: v.uid,
-          name: v.name,
-          status: v.status,
-          url: v.url,
-          assetId: (v as any).assetId,
-          response: (v as any).response,
-        })),
-      );
-
-      // Build media array
       const mediaArray = [
         ...fileList
           .filter((file) => file.status === "done" && (file as any).assetId)
@@ -350,7 +306,6 @@ export default function ShopProductAddStepsFormScreen() {
           ),
       ];
 
-      console.log("📦 Media array to submit:", mediaArray);
 
       // Warning if no media
       if (mediaArray.length === 0) {
@@ -520,7 +475,6 @@ export default function ShopProductAddStepsFormScreen() {
                   imageExtension,
                 );
               }
-              console.log(`  ✅ Applied to ${v.sku} (key: ${relatedKey})`);
             });
           }
 

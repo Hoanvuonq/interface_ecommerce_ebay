@@ -177,7 +177,7 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order }) => {
           productId={selectedItem.productId}
           productName={selectedItem.productName}
           productImage={resolveOrderItemImageUrl(
-            selectedItem.imageBasePath,
+            selectedItem.imagePath,
             selectedItem.imageExtension,
             "_medium"
           )}

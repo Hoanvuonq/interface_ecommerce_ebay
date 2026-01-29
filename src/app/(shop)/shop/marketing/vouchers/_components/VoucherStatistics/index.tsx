@@ -31,7 +31,7 @@ interface VoucherStats {
   totalQuantity?: number;
 }
 
-const VoucherStatistics: React.FC = () => {
+export const VoucherStatistics: React.FC = () => {
   const [period, setPeriod] = useState<string>("30days");
   const [searchText, setSearchText] = useState("");
   const [voucherData, setVoucherData] = useState<any>(null);
@@ -369,4 +369,3 @@ const TopBox = ({ title, icon, data, type }: any) => (
   </div>
 );
 
-export default VoucherStatistics;

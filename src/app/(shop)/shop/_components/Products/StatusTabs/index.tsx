@@ -16,6 +16,7 @@ interface StatusTabsProps<T extends string> {
   current: T;
   onChange: (key: T) => void;
   className?: string;
+  layoutId?: string;
 }
 
 export const StatusTabs = <T extends string>({
@@ -23,9 +24,12 @@ export const StatusTabs = <T extends string>({
   current,
   onChange,
   className,
+  layoutId,
 }: StatusTabsProps<T>) => {
   return (
-    <div className={cn("w-full overflow-x-auto no-scrollbar pb-2 px-1", className)}>
+    <div
+      className={cn("w-full overflow-x-auto no-scrollbar pb-2 px-1", className)}
+    >
       <div className="relative shadow-custom inline-flex bg-white p-1.5 rounded-2xl gap-1">
         {tabs.map((tab) => {
           const isActive = current === tab.key;
@@ -34,15 +38,18 @@ export const StatusTabs = <T extends string>({
           return (
             <button
               key={tab.key}
+              type="button"
               onClick={() => onChange(tab.key)}
               className={cn(
                 "relative flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors duration-300 whitespace-nowrap select-none outline-none",
-                isActive ? "text-gray-900" : "text-gray-500 hover:text-gray-700"
+                isActive
+                  ? "text-gray-900"
+                  : "text-gray-500 hover:text-gray-700",
               )}
             >
               {isActive && (
                 <motion.div
-                  layoutId="activeTabIndicator"
+                  layoutId={layoutId}
                   className="absolute inset-0 bg-white rounded-xl shadow-sm ring-1 ring-gray-200"
                   transition={{
                     type: "spring",
@@ -57,7 +64,7 @@ export const StatusTabs = <T extends string>({
                   size={18}
                   className={cn(
                     "transition-colors duration-300",
-                    isActive ? "text-orange-500" : "text-gray-500"
+                    isActive ? "text-orange-500" : "text-gray-500",
                   )}
                 />
                 <span>{tab.label}</span>
@@ -68,7 +75,7 @@ export const StatusTabs = <T extends string>({
                       "ml-1 px-2 py-0.5 rounded-md text-[10px] tabular-nums font-bold transition-colors duration-300",
                       isActive
                         ? "bg-orange-50 text-orange-600"
-                        : "bg-gray-200/50 text-gray-500"
+                        : "bg-gray-200/50 text-gray-500",
                     )}
                   >
                     {tab.count}

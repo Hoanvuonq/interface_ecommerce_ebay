@@ -106,13 +106,13 @@ export const StepBasicInfo = ({ errors }: { errors?: any }) => {
             <div className="text-sm text-gray-600 mb-2 font-medium">
               {formData.pickupAddress.addressDetail}
             </div>
-            <div className="text-[10px] font-black text-orange-500 uppercase tracking-widest">
+            <div className="text-[10px] font-bold text-orange-500 uppercase tracking-widest">
               {formData.pickupAddress.wardName} —{" "}
               {formData.pickupAddress.provinceName}
             </div>
             <button
               onClick={handleOpenModal}
-              className="mt-4 text-[10px] font-black text-orange-600 flex items-center gap-1 uppercase tracking-tighter hover:underline"
+              className="mt-4 text-[10px] font-bold text-orange-600 flex items-center gap-1 uppercase tracking-tighter hover:underline"
             >
               Cập nhật địa chỉ <ChevronRight size={12} strokeWidth={3} />
             </button>
@@ -161,7 +161,7 @@ export const StepBasicInfo = ({ errors }: { errors?: any }) => {
         <div className="pt-8 border-t border-gray-100">
           <div className="flex flex-col lg:flex-row gap-10 items-start">
             <div className="shrink-0 space-y-3">
-              <div className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">
+              <div className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">
                 Shop Branding Logo *
               </div>
               <div
@@ -201,7 +201,7 @@ export const StepBasicInfo = ({ errors }: { errors?: any }) => {
                   <Info className="text-blue-500" size={24} />
                 </div>
                 <div className="space-y-2 uppercase tracking-tighter text-[10px] font-bold text-blue-700/70">
-                  <p className="text-blue-900 text-[11px] mb-1 font-black">
+                  <p className="text-blue-900 text-[11px] mb-1 font-bold">
                     Quy chuẩn dữ liệu hình ảnh
                   </p>
                   <p>• JPG, JPEG, PNG Profile (Max 2.0 MB)</p>
@@ -215,7 +215,7 @@ export const StepBasicInfo = ({ errors }: { errors?: any }) => {
         {/* --- MÔ TẢ SHOP (ĐÃ FIX BINDING) --- */}
         <div className="bg-gray-50/50 rounded-4xl p-6 border border-gray-100 shadow-inner">
           <div className="flex items-center gap-2 mb-4">
-            <span className="text-sm font-black uppercase tracking-widest text-gray-500">
+            <span className="text-sm font-bold uppercase tracking-widest text-gray-500">
               Mô tả Shop
             </span>
             <span className="text-[9px] bg-white border border-gray-100 text-gray-400 px-2 py-0.5 rounded-full uppercase font-bold tracking-tighter">

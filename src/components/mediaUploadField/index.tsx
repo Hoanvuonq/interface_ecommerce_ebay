@@ -332,7 +332,7 @@ export const MediaUploadField: React.FC<
             <div className="w-8 h-8 bg-white rounded-xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform text-gray-400 group-hover:text-orange-500">
               <CloudUpload size={20} />
             </div>
-            <span className="mt-2 text-[9px] font-black text-gray-400 uppercase tracking-widest group-hover:text-orange-600">
+            <span className="mt-2 text-[9px] font-bold text-gray-400 uppercase tracking-widest group-hover:text-orange-600">
               Tải lên
             </span>
           </motion.label>

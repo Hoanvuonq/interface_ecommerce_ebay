@@ -4,13 +4,7 @@ import React from "react";
 import _ from "lodash";
 import { motion, AnimatePresence } from "framer-motion";
 import { AlertTriangle, X, Loader2 } from "lucide-react";
-
-interface DeleteMessageModalProps {
-  isOpen: boolean;
-  onConfirm: () => void;
-  onCancel: () => void;
-  isLoading?: boolean;
-}
+import { DeleteMessageModalProps } from "./type";
 
 export const DeleteMessageModal: React.FC<DeleteMessageModalProps> = ({
   isOpen,
@@ -42,12 +36,18 @@ export const DeleteMessageModal: React.FC<DeleteMessageModalProps> = ({
                   <AlertTriangle size={24} />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-lg font-bold text-gray-900">Thu hồi tin nhắn</h3>
+                  <h3 className="text-lg font-bold text-gray-900">
+                    Thu hồi tin nhắn
+                  </h3>
                   <p className="mt-2 text-sm text-gray-500 leading-relaxed">
-                    Bạn có muốn thu hồi tin nhắn này? (Tin nhắn sẽ bị xóa khỏi cuộc trò chuyện của mọi người).
+                    Bạn có muốn thu hồi tin nhắn này? (Tin nhắn sẽ bị xóa khỏi
+                    cuộc trò chuyện của mọi người).
                   </p>
                 </div>
-                <button onClick={onCancel} className="text-gray-600 hover:text-gray-600">
+                <button
+                  onClick={onCancel}
+                  className="text-gray-600 hover:text-gray-600"
+                >
                   <X size={20} />
                 </button>
               </div>

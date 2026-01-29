@@ -58,7 +58,7 @@ export const StatusTabsTable = ({
   return (
     <div className={cn("w-full overflow-x-auto no-scrollbar pb-2", className)}>
       <LayoutGroup id="voucher-table-tabs">
-        <div className="inline-flex bg-white p-1.5 rounded-2xl border border-gray-100 gap-1 relative">
+        <div className="inline-flex bg-white p-1.5 rounded-2xl shadow-custom border border-gray-100 gap-1 relative">
           {tabs.map((tab) => {
             const isActive = current === tab.id;
             const Icon = tab.icon;

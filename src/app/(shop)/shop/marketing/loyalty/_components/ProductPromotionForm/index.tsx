@@ -1,31 +1,26 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
-import {
-  Gift,
-  Percent,
-  Hash,
-  Search,
-  LayoutGrid,
-  CheckCircle2,
-  X,
-  Calendar,
-  Loader2,
-  AlertTriangle,
-  Plus,
-} from "lucide-react";
-import dayjs from "dayjs";
+import { FormInput } from "@/components";
 import { PortalModal } from "@/features/PortalModal";
-import { FormInput } from "@/components"; // Giả định bạn đã có FormInput custom
-import { loyaltyService } from "../../_services/loyalty.service";
-import { userProductService } from "@/services/products/product.service";
 import { useToast } from "@/hooks/useToast";
+import { userProductService } from "@/services/products/product.service";
 import { cn } from "@/utils/cn";
+import dayjs from "dayjs";
+import {
+  AlertTriangle,
+  CheckCircle2,
+  Gift,
+  LayoutGrid,
+  Loader2,
+  Plus,
+  Search
+} from "lucide-react";
+import React, { useEffect, useMemo, useState } from "react";
+import { loyaltyService } from "../../_services/loyalty.service";
 import type {
-  ProductLoyaltyPromotionRequest,
-  ProductLoyaltyPromotionResponse,
-  LoyaltyRuleType,
   BulkPromotionRequest,
+  LoyaltyRuleType,
+  ProductLoyaltyPromotionResponse
 } from "../../_types/loyalty.types";
 
 interface ProductPromotionFormProps {

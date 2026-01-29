@@ -349,7 +349,7 @@ body {
 
   .animate-shake {
     animation: smooth-shake 0.4s cubic-bezier(.36, .07, .19, .97) both;
-    animation-duration: 500ms;
+    animation-duration: 700ms;
     border-color: #f87171 !important;
     background-color: #fffafb !important;
     box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1) !important;

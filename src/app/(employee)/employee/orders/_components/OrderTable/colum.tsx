@@ -45,10 +45,10 @@ export const getOrderColumns = (
     render: (order) => {
       const firstItem = order.items?.[0];
       
-      const imgPath = firstItem?.imageBasePath && firstItem?.imageExtension
+      const imgPath = firstItem?.imagePath && firstItem?.imageExtension
         ? toPublicUrl(
             toSizedVariant(
-              `${firstItem.imageBasePath}${firstItem.imageExtension}`,
+              `${firstItem.imagePath}${firstItem.imageExtension}`,
               "_thumb" 
             )
           )

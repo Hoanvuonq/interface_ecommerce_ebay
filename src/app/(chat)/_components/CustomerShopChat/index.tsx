@@ -22,7 +22,7 @@ import { DeleteMessageModal } from "../DeleteMessageModal";
 import { MessageList } from "../MessageList";
 import { OrderPicker } from "../OrderPicker";
 import { ProductPicker } from "../ProductPicker";
-import { PortalModal } from "@/features/PortalModal"; // Giả định đường dẫn Portal của bạn
+import { PortalModal } from "@/features/PortalModal"; 
 
 export const CustomerShopChat: React.FC<CustomerShopChatProps> = ({
   open,
@@ -110,7 +110,6 @@ export const CustomerShopChat: React.FC<CustomerShopChatProps> = ({
 
   return (
     <div className="fixed inset-0 z-1000 flex justify-end">
-      {/* Background Overlay */}
       <div
         className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity"
         onClick={onClose}

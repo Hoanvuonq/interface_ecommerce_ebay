@@ -106,7 +106,7 @@ const OnboardingContent = () => {
             size={16}
           />
         </div>
-        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 animate-pulse">
+        <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-400 animate-pulse">
           Khởi tạo hệ thống...
         </p>
       </div>
@@ -126,7 +126,7 @@ const OnboardingContent = () => {
                 <div className="w-2 h-2 bg-orange-500 rounded-full animate-ping" />
               </div>
             </div>
-            <p className="font-black uppercase tracking-[0.25em] text-[11px] text-gray-800">
+            <p className="font-bold uppercase tracking-[0.25em] text-[11px] text-gray-800">
               {uploadingImage ? "Đang xử lý Media" : "Đang đồng bộ dữ liệu"}
             </p>
             <p className="mt-2 text-[10px] font-bold text-gray-400 italic">
@@ -148,7 +148,7 @@ const OnboardingContent = () => {
               strokeWidth={2.5}
               className="animate-bounce"
             />
-            <span className="font-black uppercase text-[10px] tracking-[0.2em]">
+            <span className="font-bold uppercase text-[10px] tracking-[0.2em]">
               Hồ sơ cần điều chỉnh
             </span>
           </div>
@@ -195,7 +195,7 @@ const OnboardingContent = () => {
                   </div>
                   <span
                     className={cn(
-                      "text-[9px] font-black uppercase tracking-[0.2em] transition-colors",
+                      "text-[9px] font-bold uppercase tracking-[0.2em] transition-colors",
                       isActive ? "text-gray-900" : "text-gray-400",
                     )}
                   >
@@ -223,7 +223,7 @@ const OnboardingContent = () => {
                 await saveToStorage(current, formData);
                 toastSuccess("Đã lưu bản nháp thành công");
               }}
-              className="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 hover:text-orange-600 transition-all hover:translate-y-0.5 active:translate-y-0"
+              className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.3em] text-gray-400 hover:text-orange-600 transition-all hover:translate-y-0.5 active:translate-y-0"
             >
               <Save size={14} strokeWidth={2.5} /> Save Progress
             </button>
@@ -254,7 +254,7 @@ const OnboardingContent = () => {
                 }
               }}
               containerClassName="w-full flex justify-between items-center gap-4"
-              className="w-full md:w-64! h-14 rounded-2xl font-black uppercase tracking-widest shadow-lg active:scale-95 transition-transform"
+              className="w-full md:w-64! h-14 rounded-2xl font-bold uppercase tracking-widest shadow-lg active:scale-95 transition-transform"
             />
           </div>
         </div>

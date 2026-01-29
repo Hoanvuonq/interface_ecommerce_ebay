@@ -21,7 +21,7 @@ export const BasePriceSection = ({
     <div
       className={cn(
         "p-8 bg-white rounded-4xl border border-gray-100/50 shadow-sm space-y-6",
-        className
+        className,
       )}
     >
       {/* Tiêu đề */}
@@ -46,12 +46,20 @@ export const BasePriceSection = ({
           name="price"
           required
           placeholder="0"
-          value={value ? value.toLocaleString("vi-VN") : ""}
+          value={
+            value !== undefined && value !== null
+              ? value.toLocaleString("vi-VN")
+              : ""
+          }
           error={error}
           className="pr-12 text-lg font-bold h-14"
           onChange={(e) => {
-            const rawValue = e.target.value.replace(/[^0-9]/g, "");
-            onChange?.(Number(rawValue));
+            const rawValue = e.target.value.replace(/\D/g, "");
+
+            if (rawValue.length <= 10) {
+              onChange?.(rawValue === "" ? 0 : Number(rawValue));
+            } else {
+            }
           }}
         />
       </div>

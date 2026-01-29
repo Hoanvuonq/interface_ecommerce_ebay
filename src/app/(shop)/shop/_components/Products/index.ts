@@ -11,3 +11,4 @@ export * from "./ProductVariantsTable";
 export * from "./ShopProductForm";
 export * from "./SkuHeader";
 export * from "./BasePriceSection";
+export * from "./StatusTabs";

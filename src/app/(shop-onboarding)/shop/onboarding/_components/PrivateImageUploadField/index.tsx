@@ -154,7 +154,7 @@ export const PrivateImageUploadField: React.FC<
 
             {file.status === "uploading" && (
               <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center z-30">
-                <span className="text-[10px] font-black text-white">
+                <span className="text-[10px] font-bold text-white">
                   {file.percent}%
                 </span>
                 <span className="text-[8px] font-bold text-white uppercase mt-1 text-center">
@@ -206,7 +206,7 @@ export const PrivateImageUploadField: React.FC<
               className="text-gray-300 group-hover:text-orange-500 transition-colors"
               size={24}
             />
-            <span className="mt-2 text-[9px] font-black text-gray-400 uppercase tracking-widest">
+            <span className="mt-2 text-[9px] font-bold text-gray-400 uppercase tracking-widest">
               Tải lên
             </span>
           </motion.label>

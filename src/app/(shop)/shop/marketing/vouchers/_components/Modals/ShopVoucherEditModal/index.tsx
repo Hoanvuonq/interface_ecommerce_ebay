@@ -114,7 +114,7 @@ export default function ShopVoucherEditModal({
       isLoading={submitting}
       hasChanges={true}
       className="w-48! rounded-2xl h-11 shadow-xl shadow-orange-500/20"
-      containerClassName="border-t-0 bg-transparent py-6 px-8"
+      containerClassName="border-t-0 bg-transparent"
     />
   );
 
@@ -143,9 +143,8 @@ export default function ShopVoucherEditModal({
     >
       <form
         onSubmit={(e) => e.preventDefault()}
-        className="p-8 space-y-8 max-h-[70vh] overflow-y-auto custom-scrollbar bg-white"
+        className="p-2 space-y-4 "
       >
-        {/* Section: Basic Info */}
         <section className="space-y-5">
           <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase  ml-1">
             <Info size={14} strokeWidth={3} /> Thông tin chiến dịch
@@ -181,7 +180,6 @@ export default function ShopVoucherEditModal({
           />
         </section>
 
-        {/* Section: Discount Config */}
         <section className="p-7 bg-orange-50/50 rounded-4xl border border-orange-100 space-y-6 shadow-inner">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-[10px] font-bold text-orange-600 uppercase tracking-[0.2em]">

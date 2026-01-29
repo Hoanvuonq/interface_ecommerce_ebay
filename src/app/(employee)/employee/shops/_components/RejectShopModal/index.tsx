@@ -45,7 +45,7 @@ export const RejectShopModal: React.FC<RejectShopModalProps> = ({
         title || ( // 🟢 Default title nếu không truyền
           <div className="flex items-center gap-3 text-rose-600">
             <XCircle size={22} strokeWidth={2.5} />
-            <span className="font-black uppercase text-[13px] tracking-widest">
+            <span className="font-bold uppercase text-[13px] tracking-widest">
               Từ chối phê duyệt
             </span>
           </div>
@@ -58,7 +58,7 @@ export const RejectShopModal: React.FC<RejectShopModalProps> = ({
             <AlertCircle size={18} />
           </div>
           <div className="flex flex-col">
-            <span className="text-[9px] font-black text-rose-400 uppercase tracking-tighter">
+            <span className="text-[9px] font-bold text-rose-400 uppercase tracking-tighter">
               {subTitle}
             </span>
             <p className="text-xs font-bold text-rose-900">
@@ -98,7 +98,7 @@ export const RejectShopModal: React.FC<RejectShopModalProps> = ({
             type="login"
             loading={isLoading}
             disabled={!reason.trim() || isLoading}
-            className="w-44! h-12 bg-rose-600! hover:bg-rose-700! border-0 rounded-xl shadow-lg shadow-rose-500/20 text-[11px] font-black uppercase tracking-widest"
+            className="w-44! h-12 bg-rose-600! hover:bg-rose-700! border-0 rounded-xl shadow-lg shadow-rose-500/20 text-[11px] font-bold uppercase tracking-widest"
           >
             Xác nhận từ chối
           </ButtonField>

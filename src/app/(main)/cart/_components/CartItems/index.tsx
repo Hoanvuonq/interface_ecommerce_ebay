@@ -59,7 +59,7 @@ export const CartItem: React.FC<CartItemProps> = ({
             : item.unitPrice,
         imageUrl: resolveVariantImageUrl(
           {
-            imageBasePath: item.imageBasePath,
+            imagePath: item.imagePath,
             imageExtension: item.imageExtension,
             imageUrl: (item as any).thumbnailUrl || (item as any).imageUrl,
           },

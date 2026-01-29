@@ -46,14 +46,14 @@ export const StepLegalInfo = ({ errors }: { errors?: any }) => {
   return (
     <div className="w-full max-w-5xl mx-auto space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-10">
       <div className="space-y-4">
-        <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 px-4">
+        <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 px-4">
           <User size={14} /> 01. Định danh chủ sở hữu
         </div>
 
         <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-xl shadow-gray-50 space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1 flex items-center gap-2">
+              <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-1 flex items-center gap-2">
                 <Globe size={14} className="text-orange-500" /> Quốc tịch
                 <span className="text-red-500">*</span>
               </label>
@@ -72,7 +72,7 @@ export const StepLegalInfo = ({ errors }: { errors?: any }) => {
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1 flex items-center gap-2">
+              <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-1 flex items-center gap-2">
                 <Fingerprint size={14} className="text-orange-500" /> Loại giấy
                 tờ <span className="text-red-500">*</span>
               </label>
@@ -116,14 +116,14 @@ export const StepLegalInfo = ({ errors }: { errors?: any }) => {
       </div>
 
       <div className="space-y-4">
-        <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 px-4">
+        <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 px-4">
           <CreditCard size={14} /> 02. Hệ thống xác thực sinh trắc học
         </div>
 
         <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-xl shadow-gray-50 space-y-10">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-12 items-start">
             <div className="space-y-4">
-              <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1 flex items-center gap-2">
+              <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-1 flex items-center gap-2">
                 Ảnh chụp giấy tờ gốc <span className="text-red-500">*</span>
               </label>
               <div className="p-4 bg-gray-50 rounded-[2.5rem] border border-gray-100 shadow-inner inline-block w-full sm:w-auto">
@@ -143,7 +143,7 @@ export const StepLegalInfo = ({ errors }: { errors?: any }) => {
             </div>
 
             <div className="bg-orange-50/50 p-6 rounded-3xl border border-orange-100/50 space-y-4">
-              <div className="flex items-center gap-2 text-orange-600 font-black text-[10px] uppercase tracking-widest">
+              <div className="flex items-center gap-2 text-orange-600 font-bold text-[10px] uppercase tracking-widest">
                 <Info size={14} /> Hướng dẫn
               </div>
               <ul className="space-y-3 text-[11px] text-orange-800/70 font-bold leading-relaxed tracking-tight">
@@ -156,7 +156,7 @@ export const StepLegalInfo = ({ errors }: { errors?: any }) => {
 
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-12 items-start pt-10 border-t border-gray-50">
             <div className="space-y-4">
-              <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1 flex items-center gap-2">
+              <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-1 flex items-center gap-2">
                 Ảnh sinh trắc học khuôn mặt{" "}
                 <span className="text-red-500">*</span>
               </label>
@@ -180,7 +180,7 @@ export const StepLegalInfo = ({ errors }: { errors?: any }) => {
             </div>
 
             <div className="bg-blue-50/50 p-6 rounded-3xl border border-blue-100/50 space-y-4">
-              <div className="flex items-center gap-2 text-blue-600 font-black text-[10px] uppercase tracking-widest">
+              <div className="flex items-center gap-2 text-blue-600 font-bold text-[10px] uppercase tracking-widest">
                 <ShieldCheck size={14} /> Bảo mật AI
               </div>
               <ul className="space-y-3 text-[11px] text-blue-800/70 font-bold leading-relaxed tracking-tight">

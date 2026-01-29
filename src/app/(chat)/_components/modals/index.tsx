@@ -3,20 +3,9 @@
 import { FormInput, SectionLoading } from "@/components";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { AnimatePresence, motion } from "framer-motion";
-import { LucideIcon, Search, X } from "lucide-react";
+import { Search, X } from "lucide-react";
 import React, { useRef } from "react";
-
-interface PickupModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  title: string;
-  icon: LucideIcon;
-  searchText: string;
-  onSearchChange: (val: string) => void;
-  placeholder?: string;
-  isLoading?: boolean;
-  children: React.ReactNode;
-}
+import { PickupModalProps } from "./type";
 
 export const PickupModal: React.FC<PickupModalProps> = ({
   isOpen,

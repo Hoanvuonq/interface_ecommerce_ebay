@@ -93,7 +93,7 @@ export const getHandoverColumns = ({
           >
             {/* Render Hình ảnh */}
             <ProductImage
-              basePath={item.imageBasePath ?? null}
+              basePath={item.imagePath ?? null}
               extension={item.imageExtension ?? null}
             />
 

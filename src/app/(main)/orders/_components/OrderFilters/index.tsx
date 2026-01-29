@@ -18,7 +18,6 @@ export const OrderFilters = () => {
 
   return (
     <div className="flex flex-col gap-5 w-full">
-      {/* --- Search Bar --- */}
       <div className="relative group w-full">
         <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-orange-500 transition-colors">
           <Search size={18} strokeWidth={2.5} />
@@ -40,14 +39,10 @@ export const OrderFilters = () => {
         )}
       </div>
 
-      {/* --- Status Tabs --- */}
       <div className="w-full overflow-x-auto pb-2 scrollbar-hide">
         <div className="inline-flex items-center gap-2 p-1.5 rounded-full border border-gray-100 bg-gray-50/80 shadow-inner">
           {ORDER_STATUS_TABS.map((tab) => {
-            // Logic so sánh Enum
             const isSelected = statusFilter === tab.value;
-            
-            // Logic lấy số lượng từ API helper
             const countValue = getCountFromApi(tab.value, orderCounts);
 
             return (

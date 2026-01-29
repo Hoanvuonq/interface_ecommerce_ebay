@@ -32,10 +32,10 @@ export const getOrderColumns = (
     render: (record) => {
       const first = record.items?.[0];
       const img =
-        first?.imageBasePath && first?.imageExtension
+        first?.imagePath && first?.imageExtension
           ? toPublicUrl(
               toSizedVariant(
-                `${first.imageBasePath}${first.imageExtension}`,
+                `${first.imagePath}${first.imageExtension}`,
                 "_thumb",
               ),
             )

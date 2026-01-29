@@ -8,6 +8,7 @@ import {
   SelectComponent,
   ActionBtn,
   ActionDropdown,
+  FormInput,
 } from "@/components";
 import { Column } from "@/components/DataTable/type";
 import { formatCurrency } from "@/hooks/format";
@@ -46,7 +47,7 @@ import { StatusTabsTable } from "../StatusTabsTable";
 
 type VoucherScope = "all" | "shop" | "platform" | "applicableForShop";
 
-export default function ShopVoucherList() {
+export const ShopVoucherList = () => {
   const { success, error: toastError } = useToast();
   const [activeTab, setActiveTab] = useState<VoucherScope>("shop");
   const [vouchers, setVouchers] = useState<VoucherTemplate[]>([]);
@@ -81,7 +82,6 @@ export default function ShopVoucherList() {
     { label: "50 mục", value: "50" },
   ];
 
-  // LOGIC GIỮ NGUYÊN
   const fetchStatistics = async () => {
     const [all, shop, platform, applicable] = await Promise.all([
       searchTemplates({ scope: "all", page: 0, size: 1 }),
@@ -137,7 +137,6 @@ export default function ShopVoucherList() {
     fetchVouchers(1, activeTab);
   }, [activeTab]);
 
-  // CỘT TABLE VỚI ACTIONBTN & DROPDOWN
   const columns = useMemo(
     (): Column<VoucherTemplate>[] => [
       {
@@ -392,21 +391,19 @@ export default function ShopVoucherList() {
 
       <div className="space-y-6">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-white/60 backdrop-blur-xl p-6 rounded-4xl shadow-sm border border-gray-100">
-          <div className="flex items-center gap-2 bg-white p-1.5 rounded-2xl border border-gray-200 w-full lg:w-auto focus-within:ring-8 focus-within:ring-orange-500/5 focus-within:border-orange-200 transition-all duration-300">
+          <div className="relative group w-full max-w-md">
             <Search
               size={18}
-              className="ml-4 text-gray-400"
-              strokeWidth={2.5}
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-orange-500 transition-colors z-10"
             />
-            <input
-              type="text"
+            <FormInput
               placeholder="Truy vấn mã hoặc tên chiến dịch..."
-              className="bg-transparent border-none outline-none p-2 text-[13px] font-bold text-gray-700 w-full lg:min-w-87.5 placeholder:text-gray-300 italic"
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
               onKeyDown={(e) =>
                 e.key === "Enter" && fetchVouchers(1, activeTab, searchText)
               }
+              className="w-full h-12 pl-10 pr-4 transition-all"
             />
           </div>
 
@@ -457,7 +454,6 @@ export default function ShopVoucherList() {
         </div>
       </div>
 
-      {/* MODALS GIỮ NGUYÊN LOGIC */}
       <ShopVoucherCreateModal
         open={createModalOpen}
         onClose={() => setCreateModalOpen(false)}
@@ -510,4 +506,4 @@ export default function ShopVoucherList() {
       )}
     </div>
   );
-}
+};

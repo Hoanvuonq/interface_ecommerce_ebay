@@ -78,7 +78,7 @@ export const AddressModal: React.FC<AddressModalProps> = ({
             <h3 className="text-lg font-bold text-gray-800 leading-tight">
               {isEdit ? "Cấu hình" : "Thiết lập"} địa chỉ lấy hàng
             </h3>
-            <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mt-1">
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mt-1">
               Logistics Management System
             </p>
           </div>
@@ -92,7 +92,7 @@ export const AddressModal: React.FC<AddressModalProps> = ({
         <div className="space-y-5">
           <div className="flex items-center gap-2 pb-2 border-b border-gray-100/60">
             <User size={16} className="text-orange-500" />
-            <span className="text-[10px] font-black uppercase tracking-[0.15em] text-gray-500">
+            <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-gray-500">
               Nhân sự phụ trách lấy hàng
             </span>
           </div>
@@ -127,7 +127,7 @@ export const AddressModal: React.FC<AddressModalProps> = ({
         <div className="space-y-5">
           <div className="flex items-center gap-2 pb-2 border-b border-gray-100/60">
             <Navigation size={16} className="text-orange-500" />
-            <span className="text-[10px] font-black uppercase tracking-[0.15em] text-gray-500">
+            <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-gray-500">
               Vị trí định vị kho hàng
             </span>
           </div>
@@ -224,7 +224,7 @@ export const AddressModal: React.FC<AddressModalProps> = ({
         <div className="flex justify-center pt-2">
           <div className="flex items-center gap-2 px-5 py-2 bg-emerald-50/50 rounded-full border border-emerald-100/50 shadow-sm shadow-emerald-50">
             <ShieldCheck size={14} className="text-emerald-500" />
-            <span className="text-[9px] font-black text-emerald-700 uppercase tracking-widest">
+            <span className="text-[9px] font-bold text-emerald-700 uppercase tracking-widest">
               End-to-End Encryption Secured
             </span>
           </div>

@@ -1,46 +1,33 @@
 "use client";
 
-import React, { useState, useEffect, useCallback, useMemo } from "react";
-import {
-  Ticket,
-  ShoppingBag,
-  ShoppingCart,
-  BarChart3,
-  History,
-  Gift,
-  Zap,
-  Loader2,
-  TrendingUp,
-  Activity,
-} from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import ShopVoucherList from "../_components/ShopVoucherList";
-import { PlatformVoucherMarket } from "../_components/PlatformVoucherMarket";
-import VoucherStatistics from "../_components/VoucherStatistics";
-import VoucherHistory from "../_components/VoucherHistory";
-import PurchasedVoucherList from "../_components/PurchasedVoucherList";
 import { searchVoucherTemplates } from "@/app/(main)/shop/_service/shop.voucher.service";
 import { cn } from "@/utils/cn";
-import { useVoucherStore } from "../_store/voucherStore";
+import { AnimatePresence, motion } from "framer-motion";
 import {
-  StatusTabs,
+  Activity,
+  BarChart3,
+  Gift,
+  History,
+  ShoppingCart,
+  Ticket,
+  TrendingUp,
+  Zap,
+} from "lucide-react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import {
   StatusTabItem,
+  StatusTabs,
 } from "../../../_components/Products/StatusTabs";
+import { PlatformVoucherMarket } from "../_components/PlatformVoucherMarket";
+import {
+  PurchasedVoucherList,
+  ShopVoucherList,
+  VoucherHistory,
+  VoucherStatistics,
+} from "../_components";
+import { useVoucherStore } from "../_store/voucherStore";
+import { TabCounts, VoucherTabKey } from "./type";
 
-type VoucherTabKey =
-  | "my-vouchers"
-  | "platform-market"
-  | "purchased"
-  | "statistics"
-  | "history";
-
-interface TabCounts {
-  myVouchers: number;
-  activeVouchers: number;
-  platformAvailable: number;
-  purchasableByShop: number;
-  transactions: number;
-}
 
 export const ShopVouchersScreen: React.FC = () => {
   const [activeTab, setActiveTab] = useState("my-vouchers");
@@ -54,11 +41,9 @@ export const ShopVouchersScreen: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   const { getCache, setCache, isCacheFresh } = useVoucherStore();
-  // Fetch counts with cache
   const fetchCounts = async () => {
     setLoading(true);
     try {
-      // Check cache first (5 min TTL)
       const shopCacheKey = "shop_0_1";
       const platformCacheKey = "platform_0_1";
 
@@ -254,7 +239,6 @@ export const ShopVouchersScreen: React.FC = () => {
     </div>
   );
 };
-
 
 const MiniStat = ({ label, value, icon }: any) => (
   <div className="flex flex-col items-end">

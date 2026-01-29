@@ -67,11 +67,11 @@ export const SHOP_SIDEBAR_ITEMS = [
         label: "Trả hàng / Hoàn tiền / Hủy đơn",
         href: "/shop/orders/returns",
       },
-      {
-        key: "orders-address",
-        label: "Cài đặt vận chuyển",
-        href: "/shop/orders/address",
-      },
+      // {
+      //   key: "orders-address",
+      //   label: "Cài đặt vận chuyển",
+      //   href: "/shop/orders/address",
+      // },
     ],
   },
   // {
@@ -85,21 +85,21 @@ export const SHOP_SIDEBAR_ITEMS = [
     label: "Kênh marketing",
     icon: <Megaphone size={20} />,
     children: [
-      {
-        key: "marketing-promotion",
-        label: "Khuyến mãi của shop",
-        href: "/shop/marketing/promotion",
-      },
+      // {
+      //   key: "marketing-promotion",
+      //   label: "Khuyến mãi của shop",
+      //   href: "/shop/marketing/promotion",
+      // },
       {
         key: "marketing-vouchers",
         label: "Quản lý Voucher",
         href: "/shop/marketing/vouchers",
       },
-      {
-        key: "marketing-coupon",
-        label: "Mã giảm giá của shop",
-        href: "/shop/marketing/coupon",
-      },
+      // {
+      //   key: "marketing-coupon",
+      //   label: "Mã giảm giá của shop",
+      //   href: "/shop/marketing/coupon",
+      // },
       {
         key: "marketing-campaigns",
         label: "Chiến dịch Marketing ",
@@ -166,12 +166,12 @@ export const SHOP_SIDEBAR_ITEMS = [
       },
     ],
   },
-  {
-    key: "data",
-    label: "Dữ liệu",
-    icon: <Database size={20} />,
-    href: "/shop/data",
-  },
+  // {
+  //   key: "data",
+  //   label: "Dữ liệu",
+  //   icon: <Database size={20} />,
+  //   href: "/shop/data",
+  // },
   {
     key: "shop-management",
     label: "Quản lý shop",
@@ -182,11 +182,11 @@ export const SHOP_SIDEBAR_ITEMS = [
         label: "Hồ sơ shop",
         href: "/shop/profile",
       },
-      {
-        key: "shop-decorate",
-        label: "Trang trí shop",
-        href: "/shop/decorate",
-      },
+      // {
+      //   key: "shop-decorate",
+      //   label: "Trang trí shop",
+      //   href: "/shop/decorate",
+      // },
       {
         key: "shop-settings",
         label: "Thiết lập shop",
