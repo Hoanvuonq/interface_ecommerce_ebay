@@ -29,51 +29,66 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
 }) => {
   const { syncPreview } = useCheckoutActions();
 
+
+  // Update vouchers for a specific shop (shop-level vouchers)
   const handleSelectShopVoucher = async (
     shopId: string,
     selected: any,
   ): Promise<boolean> => {
     if (!request || !request.shops) return false;
 
+    const orderCode = selected?.order?.code || selected?.order?.voucherCode;
+    const shipCode = selected?.shipping?.code || selected?.shipping?.voucherCode;
+    const shopOnlyVouchers = [orderCode, shipCode].filter(Boolean) as string[];
+
+    // Only update vouchers for this shop, keep globalVouchers as is
     const updatedShops = request.shops.map((s: any) => {
       if (s.shopId === shopId) {
-        // Selected ở đây thường là object { order, shipping } từ VoucherModal handleConfirm
-        const orderCode = selected?.order?.code || selected?.order?.voucherCode;
-        const shipCode =
-          selected?.shipping?.code || selected?.shipping?.voucherCode;
-        const newShopCodes = [orderCode, shipCode].filter(Boolean) as string[];
         return {
           ...s,
-          vouchers: newShopCodes,
-          globalVouchers: Array.isArray(s.globalVouchers)
-            ? s.globalVouchers
-            : [],
+          vouchers: shopOnlyVouchers,
         };
       }
       return s;
     });
 
-    const payload = { ...request, shops: updatedShops };
+    // request.globalVouchers is a union of all shop globalVouchers
+    const allGlobalVouchers = updatedShops.flatMap((s: any) => s.globalVouchers || []);
+
+    const payload = { ...request, shops: updatedShops, globalVouchers: allGlobalVouchers };
     await syncPreview(payload);
     return true;
   };
 
- const handleSelectPlatformVoucher = async (shopId: string, selected: any): Promise<boolean> => {
+  // Update platform vouchers for a specific shop (platform-level vouchers)
+  const handleSelectPlatformVoucher = async (
+    shopId: string,
+    selected: any,
+  ): Promise<boolean> => {
     if (!request || !request.shops) return false;
 
     const orderCode = selected?.order?.code || selected?.order?.voucherCode;
     const shipCode = selected?.shipping?.code || selected?.shipping?.voucherCode;
-    const newGlobalCodes = [orderCode, shipCode].filter(Boolean) as string[];
+    const platformVouchersForShop = [orderCode, shipCode].filter(Boolean) as string[];
 
-    // Platform vouchers là global, set ở root level
-    const payload = { 
-      ...request, 
-      globalVouchers: newGlobalCodes,
-      shops: request.shops // Không cần update shops vì platform vouchers không gắn với shop cụ thể
-    };
+    // Only update globalVouchers for this shop, keep vouchers as is
+    const updatedShops = request.shops.map((s: any) => {
+      if (s.shopId === shopId) {
+        return {
+          ...s,
+          globalVouchers: platformVouchersForShop,
+        };
+      }
+      return s;
+    });
+
+    // request.globalVouchers is a union of all shop globalVouchers
+    const allGlobalVouchers = updatedShops.flatMap((s: any) => s.globalVouchers || []);
+
+    const payload = { ...request, shops: updatedShops, globalVouchers: allGlobalVouchers };
     await syncPreview(payload);
     return true;
-};
+  };
 
   if (!shops || !Array.isArray(shops)) return null;
 
@@ -87,16 +102,14 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
         const totalDiscount = Number(voucherResult.totalDiscount || 0);
         const discountDetails = _.get(voucherResult, "discountDetails", []);
 
-        const shipDiscount =
-          _.chain(discountDetails)
-            .filter(
-              (d: any) =>
-                d.valid &&
-                (d.discountTarget === "SHIPPING" ||
-                  d.discountTarget === "SHIP"),
-            )
-            .sumBy("discountAmount")
-            .value() || 0;
+        const shipDiscount = _.chain(discountDetails)
+          .filter(
+            (d: any) =>
+              d.valid &&
+              (d.discountTarget === "SHIPPING" || d.discountTarget === "SHIP")
+          )
+          .sumBy("discountAmount")
+          .value() || 0;
 
         const productOrOrderDiscount = totalDiscount - shipDiscount;
         const originalShopPrice = subtotal + shippingFee;

@@ -7,7 +7,7 @@ export const preparePreviewCheckoutPayload = (updatedRequest: any) => {
     addressId: raw.addressId,
     shippingAddress: {
       addressId: raw.addressId,
-      addressChanged: true, 
+      addressChanged: true,
       country: raw.country || "VN",
       taxFee: raw.taxFee || "",
     },
@@ -23,17 +23,19 @@ export const preparePreviewCheckoutPayload = (updatedRequest: any) => {
         shippingFee: Number(shop.shippingFee || 0),
       };
 
+      // 🟢 Voucher riêng của Shop
       if (shop.vouchers && shop.vouchers.length > 0) {
         shopPayload.vouchers = shop.vouchers;
       }
 
+      // 🟢 Voucher sàn (Platform) áp dụng cho shop này
       if (shop.globalVouchers && shop.globalVouchers.length > 0) {
         shopPayload.globalVouchers = shop.globalVouchers;
       }
 
       return shopPayload;
     }),
-    ...(raw.globalVouchers !== undefined && { globalVouchers: raw.globalVouchers }),
+    // 🔴 KHÔNG gửi globalVouchers ở đây nữa
   };
 };
 
@@ -52,9 +54,12 @@ export const prepareOrderRequest = (params: any): any => {
           quantity: Number(item.quantity || 1),
         })),
         vouchers: shopReq?.vouchers || [],
+        // 🟢 Lấy từ shop level trong request
         globalVouchers: shopReq?.globalVouchers || [],
         serviceCode: Number(shopReq?.serviceCode || s.selectedShippingMethod),
-        shippingFee: Number(shopReq?.shippingFee || _.get(s, "summary.shippingFee", 0)),
+        shippingFee: Number(
+          shopReq?.shippingFee || _.get(s, "summary.shippingFee", 0),
+        ),
         loyaltyPoints: Number(_.get(shopReq, "loyaltyPoints", 0)),
       };
     }),

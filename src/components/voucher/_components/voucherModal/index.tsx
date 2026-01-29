@@ -32,10 +32,10 @@ export const VoucherModal: React.FC<VoucherModalProps> = (props) => {
     const shopPreview = shopsArray.find((s: any) => s.shopId === shopId);
     const details = shopPreview?.voucherResult?.discountDetails || [];
 
-    // Bóc tách dựa trên voucherType từ Backend
     const shopOnlyVouchers = selectedCodes.filter((c) =>
       details.find((d: any) => d.voucherCode === c && d.voucherType === "SHOP"),
     );
+
     const platformVouchersForShop = selectedCodes.filter((c) =>
       details.find(
         (d: any) => d.voucherCode === c && d.voucherType === "PLATFORM",
@@ -48,17 +48,22 @@ export const VoucherModal: React.FC<VoucherModalProps> = (props) => {
     );
 
     if (shopIdx > -1) {
+      const currentShop = updatedRequest.shops[shopIdx];
+
       if (isPlatform) {
-        updatedRequest.globalVouchers = selectedCodes;
+        updatedRequest.globalVouchers = _.uniq([
+          ...(updatedRequest.globalVouchers || []),
+          ...platformVouchersForShop,
+        ]);
       } else {
-        // 🟢 Ghi đè chính xác 2 mảng riêng biệt
-        updatedRequest.shops[shopIdx].vouchers = shopOnlyVouchers;
-        updatedRequest.shops[shopIdx].globalVouchers = platformVouchersForShop;
+        currentShop.vouchers = shopOnlyVouchers;
+        if (platformVouchersForShop.length > 0) {
+          currentShop.globalVouchers = platformVouchersForShop;
+        }
       }
     }
 
     onClose();
-    // 🟢 Gửi request đã cập nhật đi sync
     await syncPreview(updatedRequest);
   };
   return (
