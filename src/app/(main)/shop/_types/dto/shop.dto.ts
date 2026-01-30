@@ -56,18 +56,18 @@ export interface CreateShopLegalRequest {
   identityType: "CMND" | "CCCD" | "Passport";
   identityNumber: string;
   fullName: string;
-  fontImageUrl: string;
-  backImageUrl: string;
-  faceImageUrl: string;
+  frontImageAssetId: string; // MediaAsset ID (private bucket)
+  backImageAssetId: string; // MediaAsset ID (private bucket)
+  faceImageAssetId: string; // MediaAsset ID (private bucket)
 }
 export interface UpdateShopLegalRequest {
   nationality: string;
   identityType: "CMND" | "CCCD" | "Passport";
   identityNumber: string;
   fullName: string;
-  fontImageUrl?: string;
-  backImageUrl?: string;
-  faceImageUrl?: string;
+  frontImageAssetId?: string; // MediaAsset ID (private bucket)
+  backImageAssetId?: string; // MediaAsset ID (private bucket)
+  faceImageAssetId?: string; // MediaAsset ID (private bucket)
 }
 export interface CreateShopTaxRequest {
   type: "PERSONAL" | "HOUSEHOLD" | "COMPANY";
@@ -91,6 +91,57 @@ export interface CreateShopComplete {
   address: CreateShopAddressRequest;
 }
 
+export interface ShopLegalInfoResponse {
+  legalId?: string;
+  nationality?: string;
+  identityType?: string;
+  identityNumber?: string;
+  fullName?: string;
+  frontImageAssetId?: string;
+  backImageAssetId?: string;
+  faceImageAssetId?: string;
+
+  frontImagePreviewUrl?: string | null;
+  backImagePreviewUrl?: string | null;
+  faceImagePreviewUrl?: string | null;
+  verifiedStatus?: string;
+  verifyDate?: string;
+  rejectedReason?: string;
+  verifiedBy?: string;
+}
+
+export interface ShopTaxInfoResponse {
+  taxId?: string;
+  type?: string;
+  registeredAddress?: Address;
+  email?: string;
+  taxIdentificationNumber?: string;
+  verifiedStatus?: string;
+  verifyDate?: string;
+  verifiedBy?: string;
+  rejectedReason?: string;
+}
+
+export interface ShopAddressDetailResponse {
+  addressId?: string;
+  address?: Address;
+  type?: string;
+  fullName?: string;
+  phone?: string;
+  default?: boolean;
+  defaultPickup?: boolean;
+  defaultReturn?: boolean;
+}
+
+export interface ShopVerificationInfo {
+  isVerified: boolean;
+  canSell: boolean;
+  missingFields: string[];
+  redirectTo: string;
+  message: string;
+  rejectedReasons?: Record<string, string>;
+}
+
 // ShopDetailResponse từ backend
 export interface ShopDetailResponse {
   shopId: string;
@@ -98,8 +149,8 @@ export interface ShopDetailResponse {
   userId?: string;
   username?: string;
   description?: string;
-  logoUrl?: string;
-  bannerUrl?: string;
+  logoPath: string | null; // API dùng logoPath
+  bannerPath: string | null; // API dùng bannerPath
   status: string;
   rejectedReason?: string;
   verifyBy?: string;
@@ -108,8 +159,8 @@ export interface ShopDetailResponse {
   createdDate?: string;
   lastModifiedBy?: string;
   lastModifiedDate?: string;
-  legalInfo?: any;
-  taxInfo?: any;
-  address?: any;
-  verificationInfo?: any;
+  legalInfo?: ShopLegalInfoResponse;
+  taxInfo?: ShopTaxInfoResponse;
+  address?: ShopAddressDetailResponse;
+  verificationInfo?: ShopVerificationInfo;
 }

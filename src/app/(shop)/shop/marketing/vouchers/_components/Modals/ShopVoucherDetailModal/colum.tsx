@@ -9,7 +9,7 @@ export const voucherInstanceColumns = [
     header: "Mã định danh (Instance ID)",
     render: (item: VoucherInstance) => (
       <div className="flex flex-col">
-        <span className="font-mono text-[11px] font-black text-gray-800 tracking-tighter">
+        <span className="font-mono text-[11px] font-bold text-gray-800 tracking-tighter">
           {item.id}
         </span>
         <span className="text-[9px] text-gray-400 font-medium uppercase tracking-widest mt-0.5">
@@ -30,7 +30,7 @@ export const voucherInstanceColumns = [
           )} />
           <span
             className={cn(
-              "px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tight",
+              "px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-tight",
               isActive
                 ? "bg-emerald-50 text-emerald-600 border border-emerald-100"
                 : "bg-gray-100 text-gray-500 border border-gray-200",

@@ -2,22 +2,21 @@
 "use client";
 
 import { getShopDetail } from "@/app/(main)/shop/_service/shop.service";
-import { Button, ButtonField } from "@/components";
+import { ButtonField } from "@/components";
 import { usePresignedUpload } from "@/hooks/usePresignedUpload";
 import { useToast } from "@/hooks/useToast";
 import { UploadContext } from "@/types/storage/storage.types";
-import { cn } from "@/utils/cn";
 import { getStoredUserDetail } from "@/utils/jwt";
 import { toSizedVariant } from "@/utils/products/media.helpers";
 import { toPublicUrl } from "@/utils/storage/url";
-import { ExternalLink, Layout, Store } from "lucide-react";
+import { Store } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { useUpdateShop } from "../../_hooks/useShop";
 import { EditShopModal } from "../EditShopModal";
 import { BasicInfoProps } from "./type";
 
-export const BasicInfo = ({ shop, setShop, parentForm }: BasicInfoProps) => {
+export const BasicInfo = ({ shop, setShop }: BasicInfoProps) => {
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -36,11 +35,11 @@ export const BasicInfo = ({ shop, setShop, parentForm }: BasicInfoProps) => {
     setFormData({
       name: shop?.shopName || "",
       description: shop?.description || "",
-      logo: shop?.logoUrl
-        ? [{ uid: "-1", url: shop.logoUrl, status: "done" }]
+      logo: shop?.logoPath
+        ? [{ uid: "-1", url: toPublicUrl(shop.logoPath), status: "done" }]
         : [],
-      banner: shop?.bannerUrl
-        ? [{ uid: "-1", url: shop.bannerUrl, status: "done" }]
+      banner: shop?.bannerPath
+        ? [{ uid: "-1", url: toPublicUrl(shop.bannerPath), status: "done" }]
         : [],
     });
     setOpen(true);
@@ -55,50 +54,44 @@ export const BasicInfo = ({ shop, setShop, parentForm }: BasicInfoProps) => {
     }
 
     try {
+      // 1. Kiểm tra xem người dùng có chọn file mới hay không
       const fileToUpload = formData.logo?.[0]?.originFileObj || null;
       const bannerToUpload = formData.banner?.[0]?.originFileObj || null;
 
-      let logoPath = shop?.logoUrl || "";
-      let bannerPath = shop?.bannerUrl || "";
+      // 2. Mặc định lấy AssetId hiện tại của shop
+      let currentLogoAssetId = shop?.logoAssetId || "";
+      let currentBannerAssetId = shop?.bannerAssetId || "";
 
+      // 3. Nếu có file logo mới, upload và lấy assetId mới
       if (fileToUpload) {
         const res = await uploadPresigned(
           fileToUpload,
           UploadContext.SHOP_LOGO,
         );
-        logoPath =
-          res.finalUrl ||
-          toPublicUrl(
-            res.path.replace(/^pending\//, "public/") +
-              "_orig." +
-              (fileToUpload.name.split(".").pop() || "jpg"),
-          );
+        currentLogoAssetId = res.assetId; // Lấy AssetId từ response upload
       }
 
+      // 4. Nếu có file banner mới, upload và lấy assetId mới
       if (bannerToUpload) {
         const res = await uploadPresigned(
           bannerToUpload,
           UploadContext.SHOP_BANNER,
         );
-        bannerPath =
-          res.finalUrl ||
-          toPublicUrl(
-            res.path.replace(/^pending\//, "public/") +
-              "_orig." +
-              (bannerToUpload.name.split(".").pop() || "jpg"),
-          );
+        currentBannerAssetId = res.assetId; // Lấy AssetId từ response upload
       }
 
+      // 5. Tạo payload gửi lên API Update
       const payload = {
         shopName: formData.name,
         description: formData.description,
-        logo: logoPath,
-        banner: bannerPath,
+        logoAssetId: currentLogoAssetId, // Sử dụng ID thay vì URL
+        bannerAssetId: currentBannerAssetId, // Sử dụng ID thay vì URL
       };
 
       const res = await handleUpdateShop(payload);
 
       if (res) {
+        // Reload lại dữ liệu shop từ Server sau khi cập nhật thành công
         const shopRes = await getShopDetail(users.shopId);
         if (shopRes) setShop(shopRes.data);
         toastSuccess("Cập nhật thông tin shop thành công!");
@@ -111,21 +104,7 @@ export const BasicInfo = ({ shop, setShop, parentForm }: BasicInfoProps) => {
 
   const isProcessing = updating || uploadingImage;
 
-  const ImagePlaceholder = ({ type }: { type: "logo" | "banner" }) => (
-    <div
-      className={cn(
-        "flex items-center justify-center bg-linear-to-br from-gray-50 to-gray-100 border border-gray-200 rounded-3xl text-gray-700",
-        type === "logo" ? "w-24 h-24" : "w-48 h-24",
-      )}
-    >
-      {type === "logo" ? (
-        <Store size={32} strokeWidth={1.5} />
-      ) : (
-        <Layout size={32} strokeWidth={1.5} />
-      )}
-    </div>
-  );
-
+  // Render phần hiển thị sử dụng path (vì UI cần URL để hiển thị ảnh)
   return (
     <>
       <div className="bg-white rounded-4xl border border-gray-100 shadow-sm overflow-hidden ">
@@ -138,24 +117,13 @@ export const BasicInfo = ({ shop, setShop, parentForm }: BasicInfoProps) => {
               Thông tin cơ bản
             </h2>
           </div>
-          <div className="flex gap-3 ">
-            <Button
-              variant="edit"
-              className="flex items-center gap-2 px-6 rounded-xl text-xs font-bold uppercase transition-all active:scale-95"
-            >
-              <span className="flex items-center gap-2">
-                <ExternalLink size={14} /> Xem Shop
-              </span>
-            </Button>
-            <ButtonField
-              htmlType="submit"
-              type="login"
-              onClick={handleEdit}
-              className="px-8 w-40 rounded-xl text-xs font-bold uppercase shadow-xl shadow-orange-500/20 border-0 transition-all active:scale-95"
-            >
-              Chỉnh sửa
-            </ButtonField>
-          </div>
+          <ButtonField
+            type="login"
+            onClick={handleEdit}
+            className="px-8 w-40 rounded-xl text-xs font-bold uppercase"
+          >
+            Chỉnh sửa
+          </ButtonField>
         </div>
 
         <div className="p-8 space-y-8">
@@ -173,24 +141,20 @@ export const BasicInfo = ({ shop, setShop, parentForm }: BasicInfoProps) => {
               Logo Shop
             </span>
             <div className="flex items-center gap-6">
-              {shop?.logoUrl ? (
+              {shop?.logoPath ? (
                 <div className="relative w-24 h-24 border-4 border-white shadow-custom ring-1 ring-gray-100 rounded-2xl overflow-hidden">
                   <Image
-                    src={toPublicUrl(toSizedVariant(shop.logoUrl, "_orig"))}
+                    src={toPublicUrl(toSizedVariant(shop.logoPath, "_orig"))}
                     alt="Logo"
                     fill
                     className="object-cover"
-                    sizes="96px"
                   />
                 </div>
               ) : (
-                <ImagePlaceholder type="logo" />
+                <div className="w-24 h-24 bg-gray-100 rounded-2xl flex items-center justify-center">
+                  <Store />
+                </div>
               )}
-              <div className="text-[11px] font-bold text-gray-700 leading-relaxed uppercase space-y-1">
-                <p>• Kích thước: 300x300px</p>
-                <p>• Dung lượng: Tối đa 2MB</p>
-                <p>• Định dạng: JPG, JPEG, PNG</p>
-              </div>
             </div>
           </div>
 
@@ -210,7 +174,9 @@ export const BasicInfo = ({ shop, setShop, parentForm }: BasicInfoProps) => {
                   />
                 </div>
               ) : (
-                <ImagePlaceholder type="banner" />
+                 <div className="w-24 h-24 bg-gray-100 rounded-2xl flex items-center justify-center">
+                  <Store />
+                </div>
               )}
               <div className="text-[10px] font-bold text-gray-700 leading-relaxed uppercase space-y-1">
                 <p>• Tỷ lệ chuẩn: 16:9 hoặc 3:1</p>
@@ -218,7 +184,6 @@ export const BasicInfo = ({ shop, setShop, parentForm }: BasicInfoProps) => {
               </div>
             </div>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-[150px_1fr] gap-4 items-start border-t border-gray-50 pt-8">
             <span className="text-[11px] font-bold uppercase text-gray-700">
               Mô tả Shop

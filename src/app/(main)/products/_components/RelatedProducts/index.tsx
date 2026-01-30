@@ -130,7 +130,7 @@ export function RelatedProducts({ shopId, excludeProductId }: RelatedProductsPro
 
         <div
           ref={scrollContainerRef}
-          className="flex gap-4 overflow-x-auto pb-4 hide-scrollbar scroll-smooth snap-x"
+          className="flex gap-4 overflow-x-auto pb-4 scrollbar-none scroll-smooth snap-x"
         >
           {products.map((p) => (
             <div key={p.id} className="shrink-0 w-45 sm:w-50 md:w-55 snap-start transition-transform duration-300 hover:-translate-y-1">

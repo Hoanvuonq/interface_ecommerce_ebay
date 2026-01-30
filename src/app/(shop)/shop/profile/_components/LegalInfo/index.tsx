@@ -12,7 +12,7 @@ import {
 import { cn } from "@/utils/cn";
 import Image from "next/image";
 
-export const LegalInfo = ({ shop, setShop }: { shop: any; setShop: any }) => {
+export const LegalInfo = ({ shop }: { shop: any; setShop: any }) => {
   const legal = shop?.legalInfo;
 
   const infoRows = [
@@ -36,6 +36,11 @@ export const LegalInfo = ({ shop, setShop }: { shop: any; setShop: any }) => {
       value: legal?.identityNumber,
       icon: <CreditCard size={14} />,
     },
+  ];
+  const images = [
+    { label: "Mặt trước CCCD", url: legal?.frontImagePreviewUrl }, 
+    { label: "Mặt sau CCCD", url: legal?.backImagePreviewUrl }, 
+    { label: "Ảnh chân dung", url: legal?.faceImagePreviewUrl }, 
   ];
 
   return (
@@ -90,11 +95,7 @@ export const LegalInfo = ({ shop, setShop }: { shop: any; setShop: any }) => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              { label: "Mặt trước CCCD", url: legal?.frontImagePreviewUrl },
-              { label: "Mặt sau CCCD", url: legal?.backImagePreviewUrl },
-              { label: "Ảnh chân dung", url: legal?.faceImagePreviewUrl },
-            ].map((img, i) => (
+            {images.map((img, i) => (
               <div key={i} className="space-y-3 group">
                 <div className="aspect-video relative bg-gray-100 rounded-4xl border-2 border-dashed border-gray-200 overflow-hidden flex items-center justify-center transition-all group-hover:border-blue-200 group-hover:bg-blue-50/30">
                   {img.url ? (

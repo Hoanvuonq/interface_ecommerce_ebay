@@ -31,6 +31,7 @@ export const MediaUploadField: React.FC<
   allowedTypes = ["image/png", "image/jpeg", "image/jpg", "video/mp4"],
   maxSizeMB = 10,
   className,
+  classNameSizeUpload,
   onUploadApi,
   mode = "public",
 }) => {
@@ -319,6 +320,7 @@ export const MediaUploadField: React.FC<
             className={cn(
               "border-2 border-dashed border-gray-200 bg-gray-50/50 flex flex-col items-center justify-center cursor-pointer hover:border-orange-400 hover:bg-orange-50/30 transition-all group",
               sizeClasses[size],
+              classNameSizeUpload,
             )}
           >
             <input

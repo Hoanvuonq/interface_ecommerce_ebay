@@ -1,6 +1,6 @@
 export interface CustomFile {
   uid: string;
-  assetId?: string | number; 
+  assetId?: string | number;
   id?: string | number;
   name: string;
   url?: string;
@@ -28,7 +28,7 @@ export interface MediaUploadFieldProps {
   allowedTypes?: string[];
   maxSizeMB?: number;
   className?: string;
-
+  classNameSizeUpload?: string;
   disabled?: boolean;
   label?: string;
   error?: string;

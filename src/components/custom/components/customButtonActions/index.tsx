@@ -19,6 +19,7 @@ export const CustomButtonActions: React.FC<ICustomButtonActions> = ({
   onSubmit,
   formId,
   className,
+  disabled,
   containerClassName,
 }) => {
   return (

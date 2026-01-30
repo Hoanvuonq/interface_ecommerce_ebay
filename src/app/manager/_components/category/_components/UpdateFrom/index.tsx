@@ -231,7 +231,7 @@ export const UpdateForm: React.FC<UpdateFormProps> = ({ category, onSuccess, onC
                                 name="description" value={formData.description} onChange={handleInputChange}
                                 placeholder="Classification details..."
                                 rows={4}
-                                className="w-full px-6 py-4 bg-white border-2 border-gray-100 rounded-[32px] text-sm font-bold outline-none focus:border-indigo-500 shadow-sm resize-none transition-all"
+                                className="w-full px-6 py-4 bg-white border-2 border-gray-100 rounded-4xl text-sm font-bold outline-none focus:border-indigo-500 shadow-sm resize-none transition-all"
                             />
                         </div>
                     </div>

@@ -10,6 +10,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/utils/cn";
 import { DataTableProps } from "./type";
+import { EmptyProductState } from "@/app/(main)/products/_components/EmptyProductState";
 export const DataTable = <T,>({
   data,
   columns,
@@ -108,15 +109,8 @@ export const DataTable = <T,>({
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                   >
-                    <td colSpan={columns.length} className="py-32 text-center">
-                      <div className="flex flex-col items-center gap-4">
-                        <div className="flex items-center justify-center w-20 h-20 bg-gray-50 rounded-4xl ring-8 ring-gray-50/50">
-                          <FiInbox className="w-10 h-10 text-gray-200" />
-                        </div>
-                        <h3 className="text-sm font-bold text-gray-900 uppercase italic tracking-widest">
-                          {emptyMessage}
-                        </h3>
-                      </div>
+                    <td colSpan={columns.length} className="p-2">
+                      <EmptyProductState isShop={true} message={emptyMessage} />
                     </td>
                   </motion.tr>
                 ) : (
@@ -187,7 +181,7 @@ export const DataTable = <T,>({
               <span className="text-orange-500">
                 {fromItem}-{toItem}
               </span>
-              <span className="mx-1 text-gray-300">/</span>
+              <span className="mx-1 text-gray-500">/</span>
               <span>{totalElements} Assets</span>
             </div>
           </div>
@@ -214,7 +208,7 @@ export const DataTable = <T,>({
                       return (
                         <span
                           key={pageNum}
-                          className="px-1 text-gray-300 font-bold"
+                          className="px-1 text-gray-500 font-bold"
                         >
                           ...
                         </span>

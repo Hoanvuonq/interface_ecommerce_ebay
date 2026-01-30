@@ -20,7 +20,6 @@ import {
 import { useState } from "react";
 import { statusTagMap, StatusType } from "../../../_utils/status";
 import { useUpdateShopTax } from "../../_hooks/useShop";
-import { StepTaxInfo } from "@/app/(shop-onboarding)/shop/onboarding/_components";
 
 export const TaxInfo = ({
   shop,

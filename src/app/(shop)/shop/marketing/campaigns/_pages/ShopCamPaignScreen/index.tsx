@@ -137,7 +137,7 @@ export const ShopCamPaignScreen = () => {
   ]);
 
   return (
-    <div className="mx-auto p-4  animate-in fade-in duration-700">
+    <div className="mx-auto p-4 animate-in fade-in duration-700">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-gray-100 pb-6">
         <div className="flex w-full justify-between items-center gap-4">
           <StatusTabs

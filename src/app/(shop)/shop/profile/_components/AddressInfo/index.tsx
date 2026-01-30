@@ -11,30 +11,24 @@ import { PortalModal } from "@/features/PortalModal";
 import { FormInput } from "@/components";
 import { useUpdateAddressShop } from "../../_hooks/useShop";
 
-export const AddressInfo = ({
-  shop,
-  setShop,
-}: {
-  shop: any;
-  setShop: any;
-}) => {
+export const AddressInfo = ({ shop, setShop }: { shop: any; setShop: any }) => {
   const [openModal, setOpenModal] = useState(false);
   const [formData, setFormData] = useState<any>({});
-
-  const address = shop?.address;
+  const addressRecord = shop?.address; // Đây là object bọc ngoài
+  const addressData = addressRecord?.address; // Đây mới là object chứa provinceName, districtName...
   const { handleUpdateAddressShop, loading: updating } = useUpdateAddressShop();
   const users = getStoredUserDetail();
   const { success: toastSuccess, error: toastError } = useToast();
 
   const handleEdit = () => {
     setFormData({
-      fullName: address?.fullName || "",
-      phone: address?.phone || "",
-      country: address?.address?.countryName || "",
-      province: address?.address?.provinceName || "",
-      district: address?.address?.districtName || "",
-      ward: address?.address?.wardName || "",
-      addressDetail: address?.address?.detail || "",
+      fullName: addressRecord?.fullName || "",
+      phone: addressRecord?.phone || "",
+      country: addressRecord?.address?.countryName || "",
+      province: addressRecord?.address?.provinceName || "",
+      district: addressRecord?.address?.districtName || "",
+      ward: addressRecord?.address?.wardName || "",
+      addressDetail: addressRecord?.address?.detail || "",
     });
     setOpenModal(true);
   };
@@ -45,23 +39,29 @@ export const AddressInfo = ({
       const payload = {
         address: {
           countryCode: "VN",
-          countryName: formData.country || address?.address?.countryName,
-          provinceCode: formData.provinceCode || address?.address?.provinceCode,
-          provinceName: formData.province || address?.address?.provinceName,
-          provinceNameOld: formData.province || address?.address?.provinceNameOld,
-          districtCode: formData.districtCode || address?.address?.districtCode,
-          districtName: formData.district || address?.address?.districtName,
-          districtNameOld: formData.districtNameOld || address?.address?.districtNameOld,
-          wardCode: formData.wardCode || address?.address?.wardCode,
-          wardName: formData.ward || address?.address?.wardName,
-          wardNameOld: formData.wardNameOld || address?.address?.wardNameOld,
+          countryName: formData.country ||addressRecord?.address?.countryName,
+          provinceCode: formData.provinceCode ||addressRecord?.address?.provinceCode,
+          provinceName: formData.province ||addressRecord?.address?.provinceName,
+          provinceNameOld:
+            formData.province ||addressRecord?.address?.provinceNameOld,
+          districtCode: formData.districtCode ||addressRecord?.address?.districtCode,
+          districtName: formData.district ||addressRecord?.address?.districtName,
+          districtNameOld:
+            formData.districtNameOld ||addressRecord?.address?.districtNameOld,
+          wardCode: formData.wardCode ||addressRecord?.address?.wardCode,
+          wardName: formData.ward ||addressRecord?.address?.wardName,
+          wardNameOld: formData.wardNameOld ||addressRecord?.address?.wardNameOld,
         },
         detail: formData.addressDetail,
         fullName: formData.fullName,
         phone: formData.phone,
       };
 
-      const res = await handleUpdateAddressShop(users.shopId, address.addressId, payload);
+      const res = await handleUpdateAddressShop(
+        users.shopId,
+        addressRecord.addressId,
+        payload,
+      );
       if (res) {
         const shopRes = await getShopDetail(users.shopId);
         if (shopRes) setShop(shopRes.data);
@@ -73,7 +73,7 @@ export const AddressInfo = ({
     }
   };
 
-  const addressDisplay = address?.address;
+  const addressDisplay = addressRecord?.address;
 
   return (
     <>
@@ -110,7 +110,7 @@ export const AddressInfo = ({
               <User size={14} /> Người nhận
             </span>
             <span className="text-sm font-bold text-gray-800">
-              {address?.fullName || "Chưa cập nhật"}
+              {addressRecord?.fullName || "Chưa cập nhật"}
             </span>
           </div>
 
@@ -120,7 +120,7 @@ export const AddressInfo = ({
               <Phone size={14} /> Số điện thoại
             </span>
             <span className="text-sm font-bold text-gray-800">
-              {address?.phone || "Chưa cập nhật"}
+              {addressRecord?.phone || "Chưa cập nhật"}
             </span>
           </div>
 
@@ -300,4 +300,3 @@ export const AddressInfo = ({
     </>
   );
 };
-

@@ -1,5 +1,11 @@
 
-export type CampaignStatus = 'ACTIVE' | 'PAUSED' | 'ENDED' | 'CANCELLED';
+export type CampaignStatus =
+  | "ACTIVE"
+  | "PAUSED"
+  | "ENDED"
+  | "CANCELLED"
+  | "DRAFT"
+  | "SCHEDULED";
 export type CampaignType = 'FLASH_SALE' | 'DAILY_DEAL' | 'MEGA_SALE' | 'SHOP_SALE';
 export type SlotStatus = 'UPCOMING' | 'ACTIVE' | 'ENDED';
 export type SponsorType = 'PLATFORM' | 'SHOP';

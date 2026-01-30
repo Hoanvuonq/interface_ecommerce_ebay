@@ -10,6 +10,7 @@ export interface ICustomButtonActions {
   onCancel: () => void;
   onSubmit?: () => void; 
   formId?: string;
+  disabled?: boolean;
   className?: string;
   containerClassName?: string;
 }

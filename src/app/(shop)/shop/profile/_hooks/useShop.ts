@@ -305,13 +305,12 @@ export function useGetShopLegalInfo() {
   const [error, setError] = useState<string | null>(null);
 
   const handleGetShopLegalInfo = async (
-    shopId: string,
     legalId: string
   ): Promise<ApiResponse<any> | null> => {
     setLoading(true);
     setError(null);
     try {
-      const res = await getShopLegalInfo(shopId, legalId);
+      const res = await getShopLegalInfo(legalId);
       return res;
     } catch (err: any) {
       setError(err?.message || "Lấy thông tin định danh shop thất bại");

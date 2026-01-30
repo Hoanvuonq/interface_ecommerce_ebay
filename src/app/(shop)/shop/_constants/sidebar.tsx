@@ -27,13 +27,13 @@ export const SHOP_SIDEBAR_ITEMS = [
     icon: <BarChart3 size={20} />,
     href: "/shop/dashboard/analytics",
   },
-  {
-    key: "home-main",
-    label: "Về trang chủ chính",
-    icon: <Globe size={20} />,
-    href: "/",
-    isSpecial: true,
-  },
+  // {
+  //   key: "home-main",
+  //   label: "Về trang chủ chính",
+  //   icon: <Globe size={20} />,
+  //   href: "/",
+  //   isSpecial: true,
+  // },
   {
     key: "products",
     label: "Quản lý sản phẩm",

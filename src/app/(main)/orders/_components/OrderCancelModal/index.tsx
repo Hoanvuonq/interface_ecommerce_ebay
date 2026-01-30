@@ -85,7 +85,6 @@ export const OrderCancelModal: React.FC<OrderCancelModalProps> = ({
       preventCloseOnClickOverlay={isCancelling}
     >
       <div className="space-y-6 py-2">
-        {/* Warning Banner */}
         <div className="p-4 bg-orange-50/50 rounded-2xl border border-gray-100 flex gap-3">
           <div className="w-1.5 h-auto bg-orange-400 rounded-full shrink-0" />
           <p className="text-[13px] text-orange-800 leading-relaxed font-medium">
@@ -94,7 +93,6 @@ export const OrderCancelModal: React.FC<OrderCancelModalProps> = ({
           </p>
         </div>
 
-        {/* Reasons List */}
         <div className="space-y-3">
           <label className="text-[11px] font-bold text-gray-500 uppercase  px-1">Vui lòng chọn lý do</label>
           <div className="grid gap-2">
@@ -132,7 +130,6 @@ export const OrderCancelModal: React.FC<OrderCancelModalProps> = ({
           </div>
         </div>
 
-        {/* Other Reason Input */}
         {selectedReason === "Lý do khác" && (
           <div className="space-y-2 animate-in fade-in zoom-in-95 duration-300">
             <div className="flex items-center gap-2 px-1">

@@ -6,6 +6,7 @@ import { StatusTabs } from "@/app/(shop)/shop/_components";
 import {
   Checkbox,
   CustomButtonActions,
+  DateTimeInput,
   FormInput,
   SectionHeader,
 } from "@/components";
@@ -173,7 +174,7 @@ export default function ShopVoucherCreateModal({
                 Chế độ tạo mã
               </label>
               <StatusTabs
-                layoutId="genModeTab" 
+                layoutId="genModeTab"
                 tabs={generateModeTabs}
                 current={codeGenerateMode}
                 onChange={(key) => setCodeGenerateMode(key as any)}
@@ -287,28 +288,30 @@ export default function ShopVoucherCreateModal({
         <section className="space-y-4">
           <SectionHeader icon={Clock} title="03. Hiệu lực & Giới hạn" />
           <div className="bg-white p-4 rounded-3xl shadow-custom space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <FormInput
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <DateTimeInput
                 label="Bắt đầu từ"
-                type="datetime-local"
                 required
                 value={formData.startDate}
-                onChange={(e) =>
+                onChange={(value: string) =>
                   setFormData((p: any) => ({
                     ...p,
-                    startDate: e.target.value,
+                    startDate: value,
                   }))
                 }
               />
-              <FormInput
+              <DateTimeInput
                 label="Kết thúc vào"
-                type="datetime-local"
                 required
                 value={formData.endDate}
-                onChange={(e) =>
-                  setFormData((p: any) => ({ ...p, endDate: e.target.value }))
+                onChange={(value: string) =>
+                  setFormData((p: any) => ({
+                    ...p,
+                    endDate: value,
+                  }))
                 }
               />
+             
               <FormInput
                 label="Tổng số lượng voucher phát hành"
                 type="number"
@@ -323,19 +326,18 @@ export default function ShopVoucherCreateModal({
                 className="max-w-50"
               />
             </div>
-          
           </div>
         </section>
 
         <section className="pb-10 space-y-4">
           <SectionHeader icon={MousePointer2} title="04. Phạm vi áp dụng" />
-         <div className="bg-white p-4 rounded-3xl shadow-custom space-y-4">
+          <div className="bg-white p-4 rounded-3xl shadow-custom space-y-4">
             <div className="space-y-3">
-            <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest ml-1">
+              <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest ml-1">
                 Sản phẩm áp dụng
               </label>
               <StatusTabs
-                layoutId="prodScopeTab" 
+                layoutId="prodScopeTab"
                 tabs={scopeTabs}
                 current={formData.applyToAllProducts ? "all" : "selective"}
                 onChange={(key) =>

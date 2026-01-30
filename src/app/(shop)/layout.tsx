@@ -1,5 +1,5 @@
-import { BaseShopLayout } from "./_layouts";
-import ShopVerificationGuard from "./_components/ShopVerificationGuard";
+import { BaseShopLayout } from "./shop/_layouts";
+import ShopVerificationGuard from "./shop/_components/ShopVerificationGuard";
 
 export default function ShopLayout({
   children,

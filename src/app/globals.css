@@ -158,14 +158,6 @@ body {
   background: transparent;
 }
 
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-.hide-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
 
 .accent-gradient {
   background: linear-gradient(135deg,
@@ -322,6 +314,8 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+
 
 @layer utilities {
   @keyframes smooth-shake {

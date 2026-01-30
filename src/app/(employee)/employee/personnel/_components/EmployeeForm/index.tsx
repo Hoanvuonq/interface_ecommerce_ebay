@@ -239,6 +239,7 @@ export default function EmployeeForm(props: EmployeeFormProps) {
               })}
               error={errors.dateOfBirth?.message as string}
             />
+            
             <FormInput
               label="Số điện thoại liên lạc"
               {...register("phone", { required: "Số điện thoại là bắt buộc" })}

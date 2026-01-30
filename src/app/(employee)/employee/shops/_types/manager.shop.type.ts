@@ -85,6 +85,14 @@ export type IdentityType = "CCCD" | "CMND" | "PASSPORT";
 
 export type BusinessType = "PERSONAL" | "COMPANY" | "HOUSEHOLD";
 
+export type VerificationInfo = {
+  canSell: boolean;
+  missingFields: string[];
+  redirectTo: string;
+  message: string;
+  rejectedReasons: any;
+  verified: boolean;
+};
 export type ShopDetail = {
   shopId: string;
   shopName: string;
@@ -107,32 +115,49 @@ export type ShopDetail = {
     nationality?: string;
     identityType?: IdentityType;
     identityNumber?: string;
-    fullname?: string;
-    frontImageUrl?: string;
-    backImageUrl?: string;
-    faceImageUrl?: string;
-    verifiedStatus?: VerifiedStatus;
-    verifyDate?: string;
-    rejectedReason?: string;
-    verifiedBy?: string;
-    createdBy?: string;
-    createdDate?: string;
-    lastModifiedBy?: string;
-    lastModifiedDate?: string;
+    fullName: string;
+
+    frontImageAssetId: string;
+    frontImagePreviewUrl: string | null;
+    backImageAssetId: string;
+    backImagePreviewUrl: string | null;
+    faceImageAssetId: string;
+    faceImagePreviewUrl: string | null;
+
+    verifiedStatus: VerifiedStatus;
+    verifyDate: string | null;
+    rejectedReason: string | null;
+    verifiedBy: string | null;
+    createdBy: string;
+    createdDate: string;
+    lastModifiedBy: string;
+    lastModifiedDate: string;
   };
   taxInfo?: {
-    taxId?: string;
-    type?: BusinessType;
-    registeredAddress?: Address;
-    email?: string;
-    taxIdentificationNumber?: string;
-    verifiedStatus?: VerifiedStatus;
-    verifyDate?: string;
-    rejectedReason?: string;
-    verifiedBy?: string;
-    createdBy?: string;
-    createdDate?: string;
-    lastModifiedBy?: string;
-    lastModifiedDate?: string;
-  }
+    taxId: string;
+    type: BusinessType;
+    registeredAddress: Address;
+    email: string;
+    taxIdentificationNumber: string;
+    verifiedStatus: VerifiedStatus;
+    verifyDate: string | null;
+    verifiedBy: string | null;
+    rejectedReason: string | null;
+    createdBy: string;
+    createdDate: string;
+    lastModifiedBy: string;
+    lastModifiedDate: string;
+  };
+
+  address: {
+    addressId: string;
+    address: Address;
+    type: string;
+    fullName: string;
+    phone: string;
+    defaultPickup: boolean;
+    defaultReturn: boolean;
+    default: boolean;
+  };
+  verificationInfo: VerificationInfo;
 };

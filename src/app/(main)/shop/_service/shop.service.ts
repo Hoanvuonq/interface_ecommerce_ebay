@@ -170,7 +170,6 @@ export async function getShopTaxInfo(
 }
 
 export async function getShopLegalInfo(
-  shopId: string,
   legalId: string,
 ): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
@@ -184,7 +183,7 @@ export async function getShopLegalInfo(
 
 export async function getShopDetail(shopId: string): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
-    url: `/${API_GETSHOP_USER}/${shopId}`,
+    url: `/${API_GETSHOP}/${shopId}`,
     method: "GET",
     headers: {
       "Content-Type": "application/json",

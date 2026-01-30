@@ -15,6 +15,109 @@ interface CampaignDetailCardProps {
   setShowRegisterModal: (v: boolean) => void;
 }
 
+export const MOCK_CAMPAIGN_SLOTS = [
+  {
+    id: "slot-1",
+    slotName: "Khung giờ 01",
+    startTime: "2026-01-30T00:00:00.000Z",
+    endTime: "2026-01-30T02:00:00.000Z",
+    maxProducts: 10,
+    approvedProducts: 2,
+    status: "ACTIVE",
+    isFullyBooked: false,
+  },
+  {
+    id: "slot-2",
+    slotName: "Khung giờ 02",
+    startTime: "2026-01-30T02:00:00.000Z",
+    endTime: "2026-01-30T09:00:00.000Z",
+    maxProducts: 10,
+    approvedProducts: 10,
+    status: "ACTIVE",
+    isFullyBooked: true, // Test trạng thái mờ/disable
+  },
+  {
+    id: "slot-3",
+    slotName: "Khung giờ 03",
+    startTime: "2026-01-30T09:00:00.000Z",
+    endTime: "2026-01-30T12:00:00.000Z",
+    maxProducts: 10,
+    approvedProducts: 5,
+    status: "ACTIVE",
+    isFullyBooked: false,
+  },
+  {
+    id: "slot-4",
+    slotName: "Khung giờ 04",
+    startTime: "2026-01-30T12:00:00.000Z",
+    endTime: "2026-01-30T15:00:00.000Z",
+    maxProducts: 10,
+    approvedProducts: 8,
+    status: "ACTIVE",
+    isFullyBooked: false,
+  },
+  {
+    id: "slot-5",
+    slotName: "Khung giờ 05",
+    startTime: "2026-01-30T15:00:00.000Z",
+    endTime: "2026-01-30T17:00:00.000Z",
+    maxProducts: 10,
+    approvedProducts: 1,
+    status: "ACTIVE",
+    isFullyBooked: false,
+  },
+  {
+    id: "slot-6",
+    slotName: "Khung giờ 06",
+    startTime: "2026-01-30T17:00:00.000Z",
+    endTime: "2026-01-30T19:00:00.000Z",
+    maxProducts: 10,
+    approvedProducts: 10,
+    status: "ACTIVE",
+    isFullyBooked: true,
+  },
+  {
+    id: "slot-7",
+    slotName: "Khung giờ 07",
+    startTime: "2026-01-30T19:00:00.000Z",
+    endTime: "2026-01-30T21:00:00.000Z",
+    maxProducts: 10,
+    approvedProducts: 4,
+    status: "ACTIVE",
+    isFullyBooked: false,
+  },
+  {
+    id: "slot-8",
+    slotName: "Khung giờ 08",
+    startTime: "2026-01-30T21:00:00.000Z",
+    endTime: "2026-01-31T00:00:00.000Z",
+    maxProducts: 10,
+    approvedProducts: 0,
+    status: "ACTIVE",
+    isFullyBooked: false,
+  },
+  {
+    id: "slot-9",
+    slotName: "Khung giờ 09",
+    startTime: "2026-01-31T08:00:00.000Z",
+    endTime: "2026-01-31T10:00:00.000Z",
+    maxProducts: 15,
+    approvedProducts: 3,
+    status: "ACTIVE",
+    isFullyBooked: false,
+  },
+  {
+    id: "slot-10",
+    slotName: "Khung giờ 10",
+    startTime: "2026-01-31T10:00:00.000Z",
+    endTime: "2026-01-31T12:00:00.000Z",
+    maxProducts: 15,
+    approvedProducts: 15,
+    status: "ACTIVE",
+    isFullyBooked: true,
+  },
+];
+
 export const CampaignDetailCard: React.FC<CampaignDetailCardProps> = ({
   selectedCampaign,
   selectedCampaignProducts,
@@ -144,7 +247,7 @@ export const CampaignDetailCard: React.FC<CampaignDetailCardProps> = ({
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              {campaignSlots.map((slot) => (
+              {MOCK_CAMPAIGN_SLOTS.map((slot) => (
                 <div
                   key={slot.id}
                   onClick={() =>

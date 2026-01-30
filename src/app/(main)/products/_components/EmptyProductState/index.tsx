@@ -22,7 +22,7 @@ export const EmptyProductState = ({
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="flex flex-col items-center justify-center py-24 px-4 bg-gray-50/50 rounded-4xl border-2 border-dashed border-gray-200 my-4"
+      className="flex flex-col items-center justify-center py-24 px-4 bg-gray-50/50 rounded-3xl border-2 border-dashed border-gray-200 my-4"
     >
       <motion.div
         animate={{ y: [0, -8, 0] }}
