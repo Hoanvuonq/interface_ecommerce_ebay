@@ -1,19 +1,17 @@
 "use client";
 
-import { DataTable, FormInput, StatCardComponents } from "@/components";
 import { StatusTabs } from "@/app/(shop)/shop/_components/Products/StatusTabs";
-import { PortalModal } from "@/features/PortalModal";
+import { DataTable, FormInput, StatCardComponents } from "@/components";
 import {
   CheckCircle,
   Folder,
+  LayoutGrid,
   PauseCircle,
   Plus,
-  RotateCw,
   Search,
-  LayoutGrid,
 } from "lucide-react";
-import React, { useMemo, useState } from "react";
-import CategoryForm from "../_components/CategoryForm";
+import { useMemo, useState } from "react";
+import { CreatCategoriesModal } from "../_components"; // Component Modal mới của bạn
 import { useCategory } from "../_hooks/useCategory";
 import type { CategoryResponse } from "../_types/dto/category.dto";
 import { getCategoryColumns } from "./colum";
@@ -24,9 +22,12 @@ export const CategoryManagementScreen = () => {
   const [activeTab, setActiveTab] = useState<"ALL" | "ACTIVE" | "INACTIVE">(
     "ALL",
   );
+
+  // State quản lý Modal
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] =
     useState<CategoryResponse | null>(null);
+
   const [expandedKeys, setExpandedKeys] = useState<Set<string>>(new Set());
 
   const toggleExpand = (id: string) => {
@@ -35,7 +36,7 @@ export const CategoryManagementScreen = () => {
     setExpandedKeys(next);
   };
 
-  // Logic làm phẳng dữ liệu cây để DataTable có thể render
+  // Logic làm phẳng dữ liệu tree để hiển thị Table
   const flattenData = useMemo(() => {
     const result: any[] = [];
     const traverse = (nodes: CategoryResponse[], level = 0) => {
@@ -47,9 +48,7 @@ export const CategoryManagementScreen = () => {
           activeTab === "ALL" ||
           (activeTab === "ACTIVE" ? node.active : !node.active);
 
-        // Chỉ thêm vào danh sách nếu khớp filter hoặc có con khớp filter
         if (matchesSearch && matchesTab) {
-          // Gắn thêm thông tin level để Column render thụt lề
           result.push({ ...node, level });
         }
 
@@ -62,21 +61,22 @@ export const CategoryManagementScreen = () => {
     return result;
   }, [categoryTree, expandedKeys, searchText, activeTab]);
 
+  // Cấu hình cột Table
   const columns = useMemo(
     () =>
       getCategoryColumns({
         expandedKeys,
         toggleExpand,
         onEdit: (cat) => {
-          setEditingCategory(cat);
+          setEditingCategory(cat); // Gán category đang chọn để edit
           setIsFormModalOpen(true);
         },
         onDelete: (cat) => {
-          if (confirm("Xác nhận xóa?"))
+          if (confirm(`Bạn có chắc chắn muốn xóa danh mục "${cat.name}"?`))
             deleteCategory({ id: cat.id, etag: cat.version.toString() });
         },
       }),
-    [expandedKeys],
+    [expandedKeys, deleteCategory],
   );
 
   const tableHeader = (
@@ -84,12 +84,13 @@ export const CategoryManagementScreen = () => {
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <StatusTabs
           tabs={[
-            { key: "ALL", label: "Tất cả", icon: LayoutGrid },
-            { key: "ACTIVE", label: "Hoạt động", icon: CheckCircle },
-            { key: "INACTIVE", label: "Vô hiệu", icon: PauseCircle },
+            { key: "ALL", label: "Tất cả danh mục", icon: LayoutGrid },
+            { key: "ACTIVE", label: "Đang hoạt động", icon: CheckCircle },
+            { key: "INACTIVE", label: "Đang tạm ngưng", icon: PauseCircle },
           ]}
           current={activeTab}
           onChange={(key) => setActiveTab(key as any)}
+          layoutId="category-status-tabs"
         />
       </div>
 
@@ -99,7 +100,7 @@ export const CategoryManagementScreen = () => {
           size={18}
         />
         <FormInput
-          placeholder="Tìm tên danh mục..."
+          placeholder="Tìm kiếm danh mục theo tên..."
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
           className="pl-12 h-12 rounded-2xl border-transparent focus:bg-white transition-all shadow-custom font-bold"
@@ -109,49 +110,52 @@ export const CategoryManagementScreen = () => {
   );
 
   return (
-    <div className="min-h-screen space-y-4 animate-in fade-in duration-700 p-2">
-      <div className="flex justify-between items-center">
+    <div className="min-h-screen space-y-6 animate-in fade-in duration-700 p-2">
+      {/* HEADER SECTION */}
+      <div className="flex justify-between items-end">
         <div>
-          <h1 className="text-4xl font-bold text-gray-900 tracking-tighter uppercase italic leading-none">
-            Danh mục <span className="text-orange-500">Sản phẩm</span>
+          <h1 className="text-4xl font-black text-gray-900 tracking-tighter uppercase italic leading-none">
+            Quản lý <span className="text-orange-500">Danh mục</span>
           </h1>
-          <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-gray-400 mt-2">
-            Inventory Category Registry
+          <p className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-400 mt-2 ml-1">
+            Product Category Management System
           </p>
         </div>
         <button
           onClick={() => {
-            setEditingCategory(null);
+            setEditingCategory(null); // Reset về null để Modal hiểu là "Thêm mới"
             setIsFormModalOpen(true);
           }}
-          className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-3xl font-bold uppercase text-[10px] tracking-widest shadow-xl shadow-orange-200 transition-all active:scale-95 flex items-center gap-3"
+          className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-[1.8rem] font-black uppercase text-[10px] tracking-widest shadow-xl shadow-orange-200 transition-all active:scale-95 flex items-center gap-3"
         >
-          <Plus size={20} strokeWidth={3} /> Thêm mới
+          <Plus size={20} strokeWidth={3} /> Tạo danh mục
         </button>
       </div>
 
+      {/* STAT CARDS */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <StatCardComponents
-          label="Tổng danh mục"
+          label="Tổng số lượng"
           value={stats.total}
           icon={<Folder />}
           color="text-gray-900"
         />
         <StatCardComponents
-          label="Hoạt động"
+          label="Đang hiển thị"
           value={stats.active}
           icon={<CheckCircle />}
           color="text-emerald-500"
           trend={2}
         />
         <StatCardComponents
-          label="Tạm ngưng"
+          label="Đã ẩn/Lưu trữ"
           value={stats.inactive}
           icon={<PauseCircle />}
           color="text-rose-500"
         />
       </div>
 
+      {/* MAIN DATA TABLE */}
       <DataTable
         data={flattenData}
         columns={columns}
@@ -164,18 +168,17 @@ export const CategoryManagementScreen = () => {
         headerContent={tableHeader}
       />
 
-      <PortalModal
+      {/* MODAL THÊM/SỬA DANH MỤC */}
+      <CreatCategoriesModal
         isOpen={isFormModalOpen}
         onClose={() => setIsFormModalOpen(false)}
-        title={editingCategory ? "Cập nhật danh mục" : "Thêm danh mục mới"}
-        width="max-w-2xl"
-      >
-        <CategoryForm
-          category={editingCategory}
-          onSuccess={() => setIsFormModalOpen(false)}
-          onCancel={() => setIsFormModalOpen(false)}
-        />
-      </PortalModal>
+        onSuccess={() => {
+          setIsFormModalOpen(false);
+          setEditingCategory(null);
+        }}
+        // Truyền thêm prop category để hỗ trợ Edit nếu cần
+        category={editingCategory}
+      />
     </div>
   );
 };

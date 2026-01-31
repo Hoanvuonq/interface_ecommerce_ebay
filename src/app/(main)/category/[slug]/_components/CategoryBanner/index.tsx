@@ -58,7 +58,7 @@ export default function CategoryBanner({ categorySlug, categoryId, className = '
         return toPublicUrl(sizedPath);
     };
 
-    const imageUrl = getImageUrl(banner.basePath, banner.extension);
+    const imageUrl = getImageUrl(banner.imagePath, banner.extension);
 
     return (
         <div className={`mb-4 ${className}`}>

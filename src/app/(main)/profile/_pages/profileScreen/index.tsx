@@ -43,7 +43,6 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
 
-  // State mới cho việc upload ảnh
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
@@ -157,10 +156,9 @@ export default function ProfilePage() {
       return;
     }
 
-    // Tạo preview ảnh ngay lập tức
     const objectUrl = URL.createObjectURL(file);
     setPreviewImage(objectUrl);
-    setIsUploadingAvatar(true); // Bắt đầu loading trên UI ảnh
+    setIsUploadingAvatar(true); 
 
     let loadingToastId;
 

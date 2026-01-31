@@ -49,12 +49,11 @@ export function useGetAllProvinces() {
   const [data, setData] = useState<PageDto<ProvinceResponse> | null>(null);
 
   const fetchProvinces = async (
-    params?: GetProvincesParams
   ): Promise<ApiResponse<PageDto<ProvinceResponse>> | null> => {
     setLoading(true);
     setError(null);
     try {
-      const response = await addressService.getAllProvinces(params);
+      const response = await addressService.getAllProvinces();
       setData(response.data);
       return response;
     } catch (err: any) {
@@ -106,12 +105,11 @@ export function useGetWardsByProvinceCode() {
 
   const fetchWards = async (
     provinceCode: string,
-    params?: GetWardsParams
   ): Promise<ApiResponse<PageDto<WardResponse>> | null> => {
     setLoading(true);
     setError(null);
     try {
-      const response = await addressService.getWardsByProvinceCode(provinceCode, params);
+      const response = await addressService.getWardsByProvinceCode(provinceCode);
       setData(response.data);
       return response;
     } catch (err: any) {

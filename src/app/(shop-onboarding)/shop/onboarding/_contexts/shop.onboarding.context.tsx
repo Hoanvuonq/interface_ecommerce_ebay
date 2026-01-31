@@ -82,7 +82,7 @@ export const ShopOnboardingProvider: React.FC<{ children: React.ReactNode }> = (
   // 🟢 CHỈ FETCH PROVINCES 1 LẦN DUY NHẤT
   useEffect(() => {
     if (!provincesFetched.current) {
-      fetchProvinces({ page: 0, size: 100 });
+      fetchProvinces();
       provincesFetched.current = true;
     }
   }, [fetchProvinces]);
@@ -92,7 +92,7 @@ export const ShopOnboardingProvider: React.FC<{ children: React.ReactNode }> = (
     // Trả về cache nếu đã có để không gọi lại API
     if (wardsCache.current[provinceCode]) return;
     
-    await fetchWards(provinceCode, { page: 0, size: 100 });
+    await fetchWards(provinceCode );
     lastFetchedProvince.current = provinceCode;
   }, [fetchWards]);
 

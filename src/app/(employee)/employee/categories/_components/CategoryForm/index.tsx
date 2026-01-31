@@ -1,10 +1,9 @@
 "use client";
 
 import { SelectComponent } from "@/components";
-import { PortalModal } from "@/features/PortalModal";
 import { cn } from "@/utils/cn";
 import { Info, Loader2 } from "lucide-react";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useCategory } from "../../_hooks/useCategory";
 import type {
@@ -30,7 +29,7 @@ export default function CategoryForm({
     createCategory,
     updateCategory,
     categoryTree,
-    isLoading, // Lấy isLoading từ hook để xử lý trạng thái tree
+    isLoading,
     isSubmitting,
   } = useCategory();
 

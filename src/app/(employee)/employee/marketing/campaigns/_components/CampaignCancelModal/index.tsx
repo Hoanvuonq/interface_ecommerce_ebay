@@ -72,7 +72,7 @@ export const CampaignCancelModal: React.FC<CampaignCancelModalProps> = ({
         onCancel={onClose}
         onSubmit={handleConfirm}
         containerClassName="w-full flex gap-3 border-t-0 p-0"
-        className="w-56! rounded-2xl font-black uppercase text-[11px] h-12 shadow-lg shadow-orange-100"
+        className="w-56! rounded-2xl font-bold uppercase text-[11px] h-12 shadow-lg shadow-orange-100"
         disabled={isButtonDisabled}
       />
     </div>
@@ -94,7 +94,7 @@ export const CampaignCancelModal: React.FC<CampaignCancelModalProps> = ({
           <div className="absolute top-0 left-0 w-1.5 h-full bg-orange-400" />
           <AlertTriangle className="text-orange-500 shrink-0" size={24} />
           <p className="text-[13px] text-orange-900 leading-relaxed font-medium">
-            <span className="font-black uppercase text-[10px] block mb-1 tracking-wider">
+            <span className="font-bold uppercase text-[10px] block mb-1 tracking-wider">
               Cảnh báo hệ thống:
             </span>
             Việc dừng chiến dịch sẽ khiến tất cả các sản phẩm đang tham gia bị{" "}
@@ -106,7 +106,7 @@ export const CampaignCancelModal: React.FC<CampaignCancelModalProps> = ({
         </div>
 
         <div className="space-y-4">
-          <label className="text-[10px] font-black text-gray-400 uppercase px-1 tracking-[0.15em] flex items-center gap-2">
+          <label className="text-[10px] font-bold text-gray-400 uppercase px-1 tracking-[0.15em] flex items-center gap-2">
             <div className="w-1.5 h-1.5 bg-orange-500 rounded-full animate-pulse" />
             Vui lòng chọn lý do dừng
           </label>

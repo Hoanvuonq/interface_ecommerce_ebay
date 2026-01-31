@@ -9,68 +9,58 @@ import {
   FaMapMarkerAlt,
   FaPlus,
   FaTrash,
-  FaCheckCircle, // Thêm icon check cho địa chỉ mặc định
+  FaCheckCircle,
 } from "react-icons/fa";
 
 import { buyerAddressService } from "@/services/buyer/buyer-address.service";
 import { cn } from "@/utils/cn";
 import { Button } from "@/components/button";
 import { ButtonField, SectionLoading } from "@/components";
-
 import { AddressFormModal } from "../../_components/AddressModal";
-import { BuyerAddressResponse } from "@/types/buyer/buyer.types";
+import { BuyerAddressResponseNew } from "@/types/buyer/buyer.types";
 
 interface AddressManagementProps {
   buyerId: string;
 }
 
-type ViewMode = "LIST" | "FORM";
-
 export default function AddressManagement({ buyerId }: AddressManagementProps) {
-  const [addresses, setAddresses] = useState<BuyerAddressResponse[]>([]);
+  const [addresses, setAddresses] = useState<BuyerAddressResponseNew[]>([]);
   const [loading, setLoading] = useState(false);
-
-  const [viewMode, setViewMode] = useState<ViewMode>("LIST");
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingAddress, setEditingAddress] = useState<
-    BuyerAddressResponse | undefined
+    BuyerAddressResponseNew | undefined
   >(undefined);
 
   useEffect(() => {
     if (buyerId) loadAddresses();
   }, [buyerId]);
 
-  const loadAddresses = async () => {
-    setLoading(true);
-    try {
-      const data = await buyerAddressService.getAllAddresses(buyerId);
-      // Sắp xếp để địa chỉ mặc định luôn lên đầu danh sách
-      const sortedData = [...data].sort((a, b) => (b.isDefault ? 1 : 0) - (a.isDefault ? 1 : 0));
-      setAddresses(sortedData);
-    } catch (error: any) {
-      toast.error(error?.message || "Không thể tải địa chỉ");
-    } finally {
-      setLoading(false);
-    }
-  };
+ const loadAddresses = async () => {
+  setLoading(true);
+  try {
+    const response = await buyerAddressService.getAllAddresses(buyerId) as any;
+    
+    const addressList: BuyerAddressResponseNew[] = response?.data || [];
+
+    const sortedData = [...addressList].sort(
+      (a, b) => (b.isDefault ? 1 : 0) - (a.isDefault ? 1 : 0)
+    );
+    setAddresses(sortedData);
+  } catch (error: any) {
+    toast.error(error?.message || "Không thể tải địa chỉ");
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleCreateNew = () => {
     setEditingAddress(undefined);
-    setViewMode("FORM");
+    setIsModalOpen(true);
   };
 
-  const handleEdit = (address: BuyerAddressResponse) => {
+  const handleEdit = (address: BuyerAddressResponseNew) => {
     setEditingAddress(address);
-    setViewMode("FORM");
-  };
-
-  const handleBackToList = () => {
-    setEditingAddress(undefined);
-    setViewMode("LIST");
-  };
-
-  const handleSaveSuccess = () => {
-    handleBackToList();
-    loadAddresses();
+    setIsModalOpen(true);
   };
 
   const handleDelete = async (addressId: string) => {
@@ -84,29 +74,18 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
     }
   };
 
-  const renderIcon = (type: string) => {
-    switch (type) {
-      case "HOME":
-        return <FaHome className="text-blue-500" />;
-      case "OFFICE":
-        return <FaBriefcase className="text-purple-500" />;
-      default:
-        return <FaMapMarkerAlt className="text-gray-500" />;
-    }
-  };
-
   return (
     <div className="h-full w-full animate-fade-in relative">
+      {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 pb-6 border-b border-gray-100 gap-4">
         <div>
-          <h2 className="text-xl font-bold text-gray-800">
+          <h2 className="text-xl font-bold text-gray-800 tracking-tight">
             Địa chỉ giao hàng
           </h2>
-          <p className="text-sm text-gray-500 mt-1">
-            Quản lý danh sách địa chỉ nhận hàng của bạn
+          <p className="text-xs text-gray-500 mt-1 uppercase tracking-widest font-medium opacity-70">
+            Shipping & Delivery points
           </p>
         </div>
-
         <Button variant="edit" onClick={handleCreateNew} icon={<FaPlus />}>
           Thêm địa chỉ mới
         </Button>
@@ -117,101 +96,100 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
           <SectionLoading />
         </div>
       ) : addresses.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-16 bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl">
-          <div className="p-4 bg-white rounded-full mb-3 shadow-sm">
-            <FaMapMarkerAlt className="text-3xl text-gray-500" />
-          </div>
-          <p className="text-gray-500 mb-4 font-medium">
-            Bạn chưa lưu địa chỉ nào
+        <div className="flex flex-col items-center justify-center py-20 bg-gray-50/50 border-2 border-dashed border-gray-200 rounded-[2rem]">
+          <FaMapMarkerAlt className="text-4xl text-gray-300 mb-4" />
+          <p className="text-gray-400 font-bold uppercase text-[10px] tracking-widest">
+            Danh sách trống
           </p>
-          <ButtonField
-            htmlType="submit"
-            type="login"
-            onClick={handleCreateNew}
-            className="h-10 px-6 rounded-full text-sm w-auto"
-          >
-            <span className="flex items-center gap-2">
-              <FaPlus size={16} />
-              Thêm ngay
-            </span>
-          </ButtonField>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4">
+        <div className="grid grid-cols-1 gap-5">
           {addresses.map((addr) => (
             <div
               key={addr.addressId}
               className={cn(
-                "group bg-white border rounded-2xl py-4 px-6 hover:shadow-md transition-all duration-300 relative",
-                addr.isDefault 
-                  ? "border-(--color-mainColor) ring-1 ring-(--color-mainColor)/10" 
-                  : "border-gray-200 hover:border-gray-200"
+                "group bg-white border rounded-[1.8rem] p-6 transition-all duration-300 relative",
+                addr.isDefault
+                  ? "border-orange-500 ring-4 ring-orange-500/5 shadow-xl shadow-orange-500/10"
+                  : "border-gray-100 hover:border-orange-200 hover:shadow-lg",
               )}
             >
-              <div className="flex justify-between items-start">
-                <div className="space-y-2">
-                  <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                    <span className="font-bold text-gray-900 text-lg">
+              <div className="flex flex-col md:flex-row justify-between gap-6">
+                <div className="space-y-4 flex-1">
+                  {/* Tên & Badge */}
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className="font-black text-gray-900 text-lg uppercase italic tracking-tighter">
                       {addr.recipientName}
-                    </span>
-                    <span className="text-gray-500 hidden sm:inline">|</span>
-                    <span className="text-gray-600 font-medium">
-                      {addr.phone}
                     </span>
 
                     {addr.isDefault && (
-                      <span className="text-[10px] font-bold px-2 py-1 rounded-md bg-(--color-mainColor) text-white flex items-center gap-1 uppercase tracking-tighter shadow-sm">
-                        <FaCheckCircle size={10} />
-                        Mặc định
+                      <span className="text-[9px] font-black px-3 py-1 rounded-full bg-orange-500 text-white flex items-center gap-1 uppercase tracking-[0.1em] shadow-md">
+                        <FaCheckCircle size={10} /> Mặc định
                       </span>
                     )}
 
                     <span
                       className={cn(
-                        "text-[10px] font-bold px-2 py-1 rounded-lg border flex items-center gap-1.5 uppercase tracking-wide",
+                        "text-[9px] font-black px-3 py-1 rounded-full border flex items-center gap-1.5 uppercase tracking-[0.1em]",
                         addr.type === "HOME"
                           ? "bg-blue-50 text-blue-600 border-blue-100"
-                          : addr.type === "OFFICE"
-                          ? "bg-purple-50 text-purple-600 border-purple-100"
-                          : "bg-gray-50 text-gray-600 border-gray-200"
+                          : "bg-purple-50 text-purple-600 border-purple-100",
                       )}
                     >
-                      {renderIcon(addr.type || "OTHER")}
-                      {addr.type === "HOME"
-                        ? "Nhà riêng"
-                        : addr.type === "OFFICE"
-                        ? "Văn phòng"
-                        : "Khác"}
+                      {addr.type === "HOME" ? <FaHome /> : <FaBriefcase />}
+                      {addr.type === "HOME" ? "Nhà riêng" : "Văn phòng"}
                     </span>
                   </div>
 
-                  <div className="text-sm text-gray-600 leading-relaxed pl-4 border-l-2 border-gray-100">
-                    <p>{addr.detailAddress}</p>
-                    <p className="text-gray-500">
-                      {[addr.ward, addr.district, addr.province]
+                  {/* Phone */}
+                  <div className="text-gray-500 font-bold text-sm flex items-center gap-2">
+                    <span className="w-8 h-[1px] bg-gray-200"></span>
+                    {addr.phone}
+                  </div>
+
+                  {/* Address Detail - Sử dụng cấu trúc address lồng nhau */}
+                  <div className="space-y-1 pl-4 border-l-2 border-orange-500/20">
+                    <p className="text-gray-800 font-bold text-sm uppercase tracking-tight">
+                      {addr.address?.detail || "N/A"}
+                    </p>
+                    <p className="text-gray-500 text-xs font-medium">
+                      {[
+                        addr.address?.ward,
+                        addr.address?.district,
+                        addr.address?.province,
+                      ]
                         .filter(Boolean)
                         .join(", ")}
                     </p>
+                    <div className="flex gap-4 pt-1">
+                      <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest italic">
+                        {addr.address?.country}
+                      </span>
+                      {addr.address?.zipCode && (
+                        <span className="text-[10px] font-mono text-gray-400">
+                          ZIP: {addr.address.zipCode}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-end sm:items-center gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+                {/* Actions */}
+                <div className="flex items-center gap-2 self-end md:self-center">
                   <Button
                     variant="edit"
                     onClick={() => handleEdit(addr)}
-                    icon={<FaEdit size={16} />}
-                    className="text-xs py-1"
+                    className="h-9 px-4 rounded-xl border-gray-200 hover:border-orange-500 hover:text-orange-500"
                   >
-                    Sửa
+                    <FaEdit size={14} className="mr-2" /> Sửa
                   </Button>
                   {!addr.isDefault && (
                     <Button
                       variant="edit"
                       onClick={() => handleDelete(addr.addressId)}
-                      icon={<FaTrash size={16} />}
-                      className="text-xs py-1 text-red-500 hover:text-red-600"
+                      className="h-9 px-4 rounded-xl text-red-500 border-red-100 hover:bg-red-50"
                     >
-                      Xóa
+                      <FaTrash size={14} className="mr-2" /> Xóa
                     </Button>
                   )}
                 </div>
@@ -221,12 +199,16 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
         </div>
       )}
 
+      {/* Modal */}
       <AddressFormModal
-        isOpen={viewMode === "FORM"}
-        onClose={handleBackToList}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
         buyerId={buyerId}
         initialValues={editingAddress}
-        onSuccess={handleSaveSuccess}
+        onSuccess={() => {
+          setIsModalOpen(false);
+          loadAddresses();
+        }}
       />
     </div>
   );

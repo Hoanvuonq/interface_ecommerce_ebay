@@ -26,9 +26,9 @@ export const mapBannerToDisplay = (
   let imageUrlMobile: string | undefined;
 
   // Legacy/Fallback
-  if (banner.basePath && banner.extension) {
+  if (banner.imagePath && banner.extension) {
     imageUrl = resolveBannerImageUrl(
-      banner.basePath,
+      banner.imagePath,
       banner.extension,
       "_orig"
     );

@@ -7,8 +7,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { FaChevronDown, FaSearch, FaCheck } from "react-icons/fa";
 import { SelectProps } from "./type";
+import { Checkbox } from "../checkbox"; // Import component Checkbox của bạn
 
-// Thêm prop error vào interface (nếu type.ts chưa có)
 interface ExtendedSelectProps extends SelectProps {
   error?: string;
 }
@@ -21,7 +21,7 @@ export const SelectComponent = ({
   disabled = false,
   className,
   isMulti = false,
-  error, // Nhận prop error ở đây
+  error,
 }: ExtendedSelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -118,6 +118,7 @@ export const SelectComponent = ({
         ? currentValues.filter((v) => v !== val)
         : [...currentValues, val];
       onChange(newValue);
+      // Không đóng dropdown khi chọn nhiều mục
     } else {
       onChange(val);
       setIsOpen(false);
@@ -137,7 +138,6 @@ export const SelectComponent = ({
               ? "opacity-50 cursor-not-allowed bg-gray-100 border-gray-100"
               : "border-gray-100 bg-gray-50/50 hover:border-gray-400 hover:bg-white",
             isOpen && "border-gray-500 ring-4 ring-orange-500/10 bg-white",
-            // 🟢 Trạng thái lỗi: báo đỏ và rung
             error &&
               "border-red-400 bg-red-50/30 animate-shake focus:border-red-500",
           )}
@@ -163,7 +163,6 @@ export const SelectComponent = ({
           />
         </div>
 
-        {/* 🟢 Hiển thị text lỗi bên dưới */}
         {error && (
           <p className="text-[10px] font-medium text-red-500 ml-1 animate-in fade-in slide-in-from-top-1">
             {error}
@@ -207,19 +206,38 @@ export const SelectComponent = ({
                     <div
                       key={opt.value}
                       className={cn(
-                        "px-4 py-3 text-sm cursor-pointer rounded-xl transition-all flex items-center justify-between mb-1 group",
-                        isSelected
-                          ? "bg-orange-50 text-orange-600 font-bold"
-                          : "text-gray-600 hover:bg-gray-50 hover:text-orange-500",
+                        "px-4 py-3 text-sm cursor-pointer rounded-xl transition-all flex items-center mb-1 group",
+                        isSelected ? "bg-orange-50/50" : "hover:bg-gray-50",
                       )}
                       onClick={() => handleSelect(opt.value)}
                     >
-                      <span className="truncate">{opt.label}</span>
-                      {isSelected && (
-                        <FaCheck
-                          className="text-orange-500 animate-in zoom-in duration-200"
-                          size={12}
+                      {isMulti ? (
+                        /* TÍCH HỢP COMPONENT CHECKBOX */
+                        <Checkbox
+                          checked={isSelected}
+                          label={opt.label}
+                          containerClassName="w-full pointer-events-none" // pointer-events-none để sự kiện click do div ngoài xử lý
+                          sizeClassName="w-4 h-4"
                         />
+                      ) : (
+                        <div className="flex items-center justify-between w-full">
+                          <span
+                            className={cn(
+                              "truncate transition-colors",
+                              isSelected
+                                ? "text-orange-600 font-bold"
+                                : "text-gray-600 group-hover:text-orange-500",
+                            )}
+                          >
+                            {opt.label}
+                          </span>
+                          {isSelected && (
+                            <FaCheck
+                              className="text-orange-500 animate-in zoom-in duration-200"
+                              size={12}
+                            />
+                          )}
+                        </div>
                       )}
                     </div>
                   );

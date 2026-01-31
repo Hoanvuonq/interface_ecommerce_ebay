@@ -22,8 +22,8 @@ const mapBannerToDisplay = (banner: BannerResponseDTO, index: number) => {
     description: parts[0] || "",
     description2: parts[1] || "",
     href: banner.href || "/products",
-    imageUrl: banner.basePath
-      ? resolveBannerImageUrl(banner.basePath, banner.extension!, "_orig")
+    imageUrl: banner.imagePath
+      ? resolveBannerImageUrl(banner.imagePath, banner.extension!, "_orig")
       : undefined,
     imageUrlDesktop: banner.basePathDesktop
       ? resolveBannerImageUrl(

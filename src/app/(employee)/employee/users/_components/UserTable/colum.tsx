@@ -84,7 +84,6 @@ export const getUserColumns = (logic: any): Column<User>[] => [
             logic.updateState({ updateModal: { open: true, user } })
           }
           icon={<Edit3 size={14} />}
-          // Sử dụng prop color thay vì className để tránh lỗi TS
           color="bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white border-blue-100"
           tooltip="Chỉnh sửa"
         />

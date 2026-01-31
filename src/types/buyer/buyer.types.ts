@@ -40,7 +40,32 @@ export interface BuyerUpdateRequest {
   dateOfBirth: string; // ISO date string (YYYY-MM-DD)
   gender: Gender;
 }
+//==================== BUYER ADDRESS ====================
+export interface AddressResponse {
+  detail: string; // Sửa detai -> detail
+  ward: string;
+  district: string;
+  province: string;
+  country: string;
+  zipCode: string | null;
+  geoinfo: {
+    latitude: number;
+    longitude: number;
+    userVerified: boolean;
+    userAdjusted: boolean;
+    confirmed: boolean;
+  } | null;
+}
 
+export interface BuyerAddressResponseNew {
+  addressId: string;
+  recipientName: string;
+  phone: string;
+  type: "HOME" | "OFFICE" | "OTHER"; 
+  isDefault: boolean;
+  address: AddressResponse; 
+}
+//======================================================================
 /**
  * Buyer Address Response
  */

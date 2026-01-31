@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { cn } from "@/utils/cn";
@@ -14,6 +15,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
       sizeClassName,
       id,
       checked,
+      onChange,
       ...props
     },
     ref,
@@ -35,6 +37,8 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
             id={checkboxId}
             ref={ref}
             checked={checked}
+            onChange={onChange} 
+            readOnly={!onChange}
             className="sr-only"
             {...props}
           />

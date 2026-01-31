@@ -1,74 +1,71 @@
-/**
- * Buyer Address Service - API calls cho quản lý địa chỉ buyer
- */
-
-import { request } from '@/utils/axios.customize';
+import { request } from "@/utils/axios.customize";
 import type {
-    BuyerAddressCreateRequest,
-    BuyerAddressUpdateRequest,
- BuyerAddressResponse } from '@/types/buyer/buyer.types';
-import type { ApiResponse } from '@/api/_types/api.types';
+  BuyerAddressCreateRequest,
+  BuyerAddressUpdateRequest,
+  BuyerAddressResponseNew, // Sử dụng Type mới cho toàn bộ
+} from "@/types/buyer/buyer.types";
+import type { ApiResponse } from "@/api/_types/api.types";
 
 class BuyerAddressService {
-    /**
-     * Tạo địa chỉ mới cho buyer
-     */
-    async createAddress(buyerId: string, addressData: BuyerAddressCreateRequest): Promise<BuyerAddressResponse> {
-        const response: ApiResponse<BuyerAddressResponse> = await request({
-            url: `/v1/buyers/${buyerId}/address`,
-            method: 'POST',
-            data: addressData,
-        });
-        return response.data;
-    }
+  async createAddress(
+    addressData: BuyerAddressCreateRequest,
+  ): Promise<ApiResponse<BuyerAddressResponseNew>> {
+    const response: ApiResponse<BuyerAddressResponseNew> = await request({
+      url: `/v1/buyer/addresses`,
+      method: "POST",
+      data: addressData,
+    });
+    return response; // Trả về nguyên object (có code, success, data)
+  }
 
-    /**
-     * Cập nhật địa chỉ của buyer
-     */
-    async updateAddress(
-        buyerId: string,
-        addressId: string,
-        addressData: BuyerAddressUpdateRequest
-    ): Promise<void> {
-        await request({
-            url: `/v1/buyers/${buyerId}/address/${addressId}`,
-            method: 'PUT',
-            data: addressData,
-        });
-    }
+  // 2. Cập nhật địa chỉ
+  async updateAddress(
+    buyerId: string,
+    addressId: string,
+    addressData: BuyerAddressUpdateRequest,
+  ): Promise<ApiResponse<void>> {
+    const response: ApiResponse<void> = await request({
+      url: `/v1/buyer/${buyerId}/addresses/${addressId}`,
+      method: "PUT",
+      data: addressData,
+    });
+    return response;
+  }
 
-    /**
-     * Lấy tất cả địa chỉ của buyer
-     */
-    async getAllAddresses(buyerId: string): Promise<BuyerAddressResponse[]> {
-        const response: ApiResponse<BuyerAddressResponse[]> = await request({
-            url: `/v1/buyers/${buyerId}/address`,
-            method: 'GET',
-        });
-        return response.data;
-    }
+  // 3. Lấy tất cả: Quan trọng nhất - Trả về ApiResponse chứa mảng data
+  async getAllAddresses(
+    buyerId: string,
+  ): Promise<ApiResponse<BuyerAddressResponseNew[]>> {
+    const response: ApiResponse<BuyerAddressResponseNew[]> = await request({
+      url: `/v1/buyer/addresses`, // Tùy API có cần buyerId trên URL không
+      method: "GET",
+    });
+    return response; // Không return response.data ở đây nữa!
+  }
 
-    /**
-     * Lấy chi tiết một địa chỉ
-     */
-    async getAddressDetail(buyerId: string, addressId: string): Promise<BuyerAddressResponse> {
-        const response: ApiResponse<BuyerAddressResponse> = await request({
-            url: `/v1/buyers/${buyerId}/address/${addressId}`,
-            method: 'GET',
-        });
-        return response.data;
-    }
+  // 4. Chi tiết địa chỉ
+  async getAddressDetail(
+    buyerId: string,
+    addressId: string,
+  ): Promise<ApiResponse<BuyerAddressResponseNew>> {
+    const response: ApiResponse<BuyerAddressResponseNew> = await request({
+      url: `/v1/buyer/${buyerId}/addresses/${addressId}`,
+      method: "GET",
+    });
+    return response;
+  }
 
-    /**
-     * Xóa địa chỉ của buyer
-     */
-    async deleteAddress(buyerId: string, addressId: string): Promise<void> {
-        await request({
-            url: `/v1/buyers/${buyerId}/address/${addressId}`,
-            method: 'DELETE',
-        });
-    }
+  // 5. Xóa địa chỉ
+  async deleteAddress(
+    buyerId: string,
+    addressId: string,
+  ): Promise<ApiResponse<void>> {
+    const response: ApiResponse<void> = await request({
+      url: `/v1/buyer/${buyerId}/addresses/${addressId}`,
+      method: "DELETE",
+    });
+    return response;
+  }
 }
 
 export const buyerAddressService = new BuyerAddressService();
-

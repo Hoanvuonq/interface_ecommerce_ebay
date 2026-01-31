@@ -42,7 +42,7 @@ export const CampaignRegistrationsTab: React.FC<
       {/* HEADER SECTION */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-4xl border border-gray-100 shadow-sm">
         <div>
-          <h2 className="text-xl font-black text-gray-800 uppercase tracking-tighter flex items-center gap-2">
+          <h2 className="text-xl font-bold text-gray-800 uppercase tracking-tighter flex items-center gap-2">
             <Package className="text-orange-500" size={24} />
             Yêu cầu chờ duyệt
             <span className="bg-orange-500 text-white text-xs px-2.5 py-1 rounded-full ml-2">
@@ -62,12 +62,12 @@ export const CampaignRegistrationsTab: React.FC<
               exit={{ opacity: 0, scale: 0.9 }}
               className="flex items-center gap-3 bg-orange-50 p-2 pl-4 rounded-2xl border border-orange-100"
             >
-              <span className="text-[11px] font-black text-orange-600 uppercase tracking-wider">
+              <span className="text-[11px] font-bold text-orange-600 uppercase tracking-wider">
                 Đã chọn {selectedRegistrations.length} mục
               </span>
               <button
                 onClick={onBatchApprove}
-                className="flex items-center gap-2 px-5 py-2.5 bg-gray-900 text-white text-[10px] font-black uppercase rounded-xl hover:bg-orange-600 transition-all shadow-lg active:scale-95 cursor-pointer"
+                className="flex items-center gap-2 px-5 py-2.5 bg-gray-900 text-white text-[10px] font-bold uppercase rounded-xl hover:bg-orange-600 transition-all shadow-lg active:scale-95 cursor-pointer"
               >
                 <CheckCircle size={14} />
                 Duyệt nhanh tất cả
@@ -130,7 +130,7 @@ export const CampaignRegistrationsTab: React.FC<
                     />
                   </div>
                   <div className="flex-1 min-w-0 pr-6">
-                    <h3 className="font-black text-gray-800 truncate text-[14px] leading-tight">
+                    <h3 className="font-bold text-gray-800 truncate text-[14px] leading-tight">
                       {reg.productName}
                     </h3>
                     <div className="flex items-center gap-1 text-[11px] font-bold text-gray-400 mt-1 uppercase tracking-tight">
@@ -147,7 +147,7 @@ export const CampaignRegistrationsTab: React.FC<
                 {/* Pricing Grid */}
                 <div className="mt-5 grid grid-cols-2 gap-3 bg-gray-50/50 p-4 rounded-2xl border border-gray-100">
                   <div className="space-y-0.5">
-                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
                       Giá gốc
                     </p>
                     <p className="text-xs line-through text-gray-400 font-bold">
@@ -155,26 +155,26 @@ export const CampaignRegistrationsTab: React.FC<
                     </p>
                   </div>
                   <div className="space-y-0.5">
-                    <p className="text-[10px] font-black text-orange-400 uppercase tracking-widest flex items-center gap-1">
+                    <p className="text-[10px] font-bold text-orange-400 uppercase tracking-widest flex items-center gap-1">
                       Sale <ArrowRight size={10} />
                     </p>
-                    <p className="text-sm font-black text-orange-600">
+                    <p className="text-sm font-bold text-orange-600">
                       {formatPrice(reg.salePrice)}
                     </p>
                   </div>
                   <div className="space-y-0.5">
-                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
                       Giảm giá
                     </p>
-                    <p className="text-xs font-black text-emerald-600">
+                    <p className="text-xs font-bold text-emerald-600">
                       -{reg.discountPercent}%
                     </p>
                   </div>
                   <div className="space-y-0.5">
-                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
                       Kho hàng
                     </p>
-                    <p className="text-xs font-black text-gray-700">
+                    <p className="text-xs font-bold text-gray-700">
                       {reg.stockLimit} item
                     </p>
                   </div>
@@ -187,7 +187,7 @@ export const CampaignRegistrationsTab: React.FC<
                       e.stopPropagation();
                       onApprove(reg.id);
                     }}
-                    className="flex items-center justify-center gap-1.5 py-2.5 bg-orange-500 text-white rounded-xl hover:bg-orange-600 transition-all cursor-pointer text-[10px] font-black uppercase shadow-lg shadow-orange-100 active:scale-95"
+                    className="flex items-center justify-center gap-1.5 py-2.5 bg-orange-500 text-white rounded-xl hover:bg-orange-600 transition-all cursor-pointer text-[10px] font-bold uppercase shadow-lg shadow-orange-100 active:scale-95"
                   >
                     <CheckCircle size={14} /> Phê duyệt
                   </button>
@@ -196,7 +196,7 @@ export const CampaignRegistrationsTab: React.FC<
                       e.stopPropagation();
                       onReject(reg.id);
                     }}
-                    className="flex items-center justify-center gap-1.5 py-2.5 bg-white text-gray-400 border border-gray-100 rounded-xl hover:bg-rose-50 hover:text-rose-500 hover:border-rose-100 transition-all cursor-pointer text-[10px] font-black uppercase active:scale-95"
+                    className="flex items-center justify-center gap-1.5 py-2.5 bg-white text-gray-400 border border-gray-100 rounded-xl hover:bg-rose-50 hover:text-rose-500 hover:border-rose-100 transition-all cursor-pointer text-[10px] font-bold uppercase active:scale-95"
                   >
                     <XCircle size={14} /> Từ chối
                   </button>

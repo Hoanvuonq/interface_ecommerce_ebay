@@ -39,7 +39,7 @@ export const CampaignStatisticsTab: React.FC<CampaignStatisticsTabProps> = ({
         <div className="w-24 h-24 bg-orange-50 rounded-full flex items-center justify-center mb-6 text-orange-200">
           <Target size={48} strokeWidth={1.5} />
         </div>
-        <h3 className="text-gray-900 font-black uppercase text-sm tracking-[0.2em] mb-2">
+        <h3 className="text-gray-900 font-bold uppercase text-sm tracking-[0.2em] mb-2">
           Chưa chọn tiêu điểm
         </h3>
         <p className="text-gray-400 text-xs font-bold uppercase tracking-wider max-w-xs leading-relaxed">
@@ -114,11 +114,11 @@ export const CampaignStatisticsTab: React.FC<CampaignStatisticsTabProps> = ({
         <div className="relative z-10">
           <div className="flex items-center gap-2 mb-2">
             <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse" />
-            <span className="text-[10px] font-black text-orange-500 uppercase tracking-[0.2em]">
+            <span className="text-[10px] font-bold text-orange-500 uppercase tracking-[0.2em]">
               Báo cáo hiệu năng
             </span>
           </div>
-          <h2 className="text-2xl font-black text-gray-800 uppercase italic tracking-tighter leading-none">
+          <h2 className="text-2xl font-bold text-gray-800 uppercase italic tracking-tighter leading-none">
             {selectedCampaign.name}
           </h2>
           <p className="text-[11px] text-gray-400 font-bold uppercase mt-2 tracking-widest italic leading-none">
@@ -128,18 +128,18 @@ export const CampaignStatisticsTab: React.FC<CampaignStatisticsTabProps> = ({
 
         <div className="flex gap-2 relative z-10">
           <div className="bg-gray-50 px-5 py-3 rounded-2xl border border-gray-100 text-center">
-            <p className="text-[9px] font-black text-gray-400 uppercase mb-1">
+            <p className="text-[9px] font-bold text-gray-400 uppercase mb-1">
               Loại hình
             </p>
-            <p className="text-xs font-black text-gray-800 uppercase leading-none">
+            <p className="text-xs font-bold text-gray-800 uppercase leading-none">
               {selectedCampaign.campaignType}
             </p>
           </div>
           <div className="bg-orange-500 px-5 py-3 rounded-2xl shadow-lg shadow-orange-100 text-center">
-            <p className="text-[9px] font-black text-orange-100 uppercase mb-1">
+            <p className="text-[9px] font-bold text-orange-100 uppercase mb-1">
               Trạng thái
             </p>
-            <p className="text-xs font-black text-white uppercase italic leading-none">
+            <p className="text-xs font-bold text-white uppercase italic leading-none">
               {selectedCampaign.status}
             </p>
           </div>
@@ -159,11 +159,11 @@ export const CampaignStatisticsTab: React.FC<CampaignStatisticsTabProps> = ({
           </div>
           <p className="text-xs text-gray-400 font-medium">
             Dữ liệu này được tổng hợp dựa trên các đơn hàng đã{" "}
-            <span className="text-white font-black italic uppercase">
+            <span className="text-white font-bold italic uppercase">
               Thanh toán thành công
             </span>{" "}
             và{" "}
-            <span className="text-white font-black italic uppercase">
+            <span className="text-white font-bold italic uppercase">
               Giao hàng hoàn tất
             </span>
             .

@@ -97,7 +97,7 @@ export const CreateCampaignSlotsModal: React.FC<
             <Timer size={22} strokeWidth={2.5} />
           </div>
           <div>
-            <h3 className="text-lg font-black text-gray-800 uppercase italic">
+            <h3 className="text-lg font-bold text-gray-800 uppercase italic">
               Khởi tạo khung giờ hàng loạt
             </h3>
             <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">
@@ -117,7 +117,7 @@ export const CreateCampaignSlotsModal: React.FC<
           onCancel={onClose}
           onSubmit={handleSubmitAll}
           disabled={slotList.length === 0 || isProcessing}
-          className="w-64! rounded-2xl font-black uppercase text-[11px] h-12 shadow-lg shadow-orange-100"
+          className="w-64! rounded-2xl font-bold uppercase text-[11px] h-12 shadow-lg shadow-orange-100"
         />
       }
       width="max-w-4xl"
@@ -127,7 +127,7 @@ export const CreateCampaignSlotsModal: React.FC<
         {/* CỘT TRÁI: FORM NHẬP */}
         <div className="lg:col-span-5 space-y-5 border-r border-gray-100 pr-8">
           <div className="p-4 bg-orange-50/50 rounded-3xl border border-orange-100 mb-2">
-            <label className="text-[10px] font-black text-orange-600 uppercase tracking-widest flex items-center gap-2 mb-4">
+            <label className="text-[10px] font-bold text-orange-600 uppercase tracking-widest flex items-center gap-2 mb-4">
               <Plus size={14} strokeWidth={3} /> Thiết lập Slot mới
             </label>
 
@@ -174,7 +174,7 @@ export const CreateCampaignSlotsModal: React.FC<
               <button
                 onClick={handleAddToList}
                 disabled={!currentSlot.slotName || duration <= 0}
-                className="w-full py-4 bg-slate-900 text-white rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-orange-500 transition-all shadow-xl active:scale-95 disabled:opacity-30 disabled:grayscale"
+                className="w-full py-4 bg-slate-900 text-white rounded-2xl font-bold uppercase text-[10px] tracking-widest hover:bg-orange-500 transition-all shadow-xl active:scale-95 disabled:opacity-30 disabled:grayscale"
               >
                 Thêm vào danh sách chờ
               </button>
@@ -185,7 +185,7 @@ export const CreateCampaignSlotsModal: React.FC<
         {/* CỘT PHẢI: DANH SÁCH CHỜ */}
         <div className="lg:col-span-7 flex flex-col">
           <div className="flex items-center justify-between mb-4 px-2">
-            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+            <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
               Danh sách slot đã thêm ({slotList.length})
             </label>
             {slotList.length > 0 && (
@@ -215,11 +215,11 @@ export const CreateCampaignSlotsModal: React.FC<
                   className="group flex items-center justify-between p-4 bg-white border-2 border-gray-50 rounded-2xl hover:border-orange-200 transition-all"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 bg-orange-50 rounded-xl flex items-center justify-center text-orange-500 font-black italic shadow-sm">
+                    <div className="w-10 h-10 bg-orange-50 rounded-xl flex items-center justify-center text-orange-500 font-bold italic shadow-sm">
                       {slotList.indexOf(slot) + 1}
                     </div>
                     <div>
-                      <h4 className="text-sm font-black text-gray-800 uppercase tracking-tighter italic">
+                      <h4 className="text-sm font-bold text-gray-800 uppercase tracking-tighter italic">
                         {slot.slotName}
                       </h4>
                       <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 mt-0.5">

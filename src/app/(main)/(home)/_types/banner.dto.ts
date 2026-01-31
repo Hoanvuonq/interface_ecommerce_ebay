@@ -37,7 +37,7 @@ export interface BannerResponseDTO {
   trackingId?: string;
 
   // Original Media (backward compatibility)
-  basePath?: string;
+  imagePath?: string;
   extension?: string;
   mediaAssetId?: string;
 
