@@ -32,7 +32,7 @@ import {
   DeviceTarget,
   BannerDisplayLocation,
 } from "@/app/(main)/(home)/_types/banner.dto";
-import { useCategoryManager } from "@/app/(employee)/employee/categories/_hooks/useCategoryManager";
+import { useCategoryManager } from "@/app/(employee)/employee/categories/_hooks/useCategoryOperations";
 import { toPublicUrl } from "@/utils/storage/url";
 import { CustomFile } from "@/components/mediaUploadField/type";
 import { cn } from "@/utils/cn";
@@ -222,7 +222,6 @@ export default function BannerForm({ banner, open, onSuccess, onCancel }: any) {
                 />
               </div>
 
-              {/* 2. KHUNG DESKTOP ONLY - HIỆN KHI CHỌN ALL HOẶC DESKTOP */}
               {(formData.deviceTarget === DeviceTarget.ALL ||
                 formData.deviceTarget === DeviceTarget.DESKTOP) && (
                 <div className="space-y-2 animate-in zoom-in-95 duration-300">
@@ -244,7 +243,6 @@ export default function BannerForm({ banner, open, onSuccess, onCancel }: any) {
                 </div>
               )}
 
-              {/* 3. KHUNG MOBILE ONLY - HIỆN KHI CHỌN ALL HOẶC MOBILE */}
               {(formData.deviceTarget === DeviceTarget.ALL ||
                 formData.deviceTarget === DeviceTarget.MOBILE) && (
                 <div className="space-y-2 animate-in zoom-in-95 duration-300">

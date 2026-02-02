@@ -13,11 +13,10 @@ export interface CategoryResponse {
   description?: string; // Mô tả (max 5000 ký tự)
   active: boolean; // Trạng thái hoạt động
 
-  // Relationships
   parent?: CategoryResponse; // Danh mục cha (null nếu là root)
   children?: CategoryResponse[]; // Danh mục con
-
-  // Audit Fields
+  imagePath?: string; // Đường dẫn ảnh đại diện (public path)
+  imageAssetId?: string; // Asset ID của ảnh đại diệnD
   createdBy?: string; // User tạo
   createdDate?: string; // ISO 8601 datetime
   lastModifiedBy?: string; // User sửa cuối

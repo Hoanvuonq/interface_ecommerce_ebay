@@ -18,7 +18,7 @@ import {
   MapPin
 } from "lucide-react";
 import NextImage from "next/image";
-import { useUpdateCategory, useGetAllParents, useGetCategoryById, invalidateParentCategoriesCache } from "@/app/manager/_hooks/useCategory";
+import { useUpdateCategory, useGetAllParents, useGetCategoryById, invalidateParentCategoriesCache } from "@/app/manager/_hooks/useCategoryController";
 import { UpdateCategoryRequest } from "@/types/categories/category.update";
 import { CategoryResponse, ShippingRestrictionsDTO } from "@/types/categories/category.detail";
 import { usePresignedUpload } from "@/hooks/usePresignedUpload";

@@ -17,48 +17,50 @@ import { cn } from "@/utils/cn";
 import { Button } from "@/components/button";
 import { ButtonField, SectionLoading } from "@/components";
 import { AddressFormModal } from "../../_components/AddressModal";
-import { BuyerAddressResponseNew } from "@/types/buyer/buyer.types";
+import { BuyerAddressResponse } from "@/types/buyer/buyer.types";
 
 interface AddressManagementProps {
   buyerId: string;
 }
 
 export default function AddressManagement({ buyerId }: AddressManagementProps) {
-  const [addresses, setAddresses] = useState<BuyerAddressResponseNew[]>([]);
+  const [addresses, setAddresses] = useState<BuyerAddressResponse[]>([]);
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingAddress, setEditingAddress] = useState<
-    BuyerAddressResponseNew | undefined
+    BuyerAddressResponse | undefined
   >(undefined);
 
   useEffect(() => {
     if (buyerId) loadAddresses();
   }, [buyerId]);
 
- const loadAddresses = async () => {
-  setLoading(true);
-  try {
-    const response = await buyerAddressService.getAllAddresses(buyerId) as any;
-    
-    const addressList: BuyerAddressResponseNew[] = response?.data || [];
+  const loadAddresses = async () => {
+    setLoading(true);
+    try {
+      const response = (await buyerAddressService.getAllAddresses(
+        buyerId,
+      )) as any;
 
-    const sortedData = [...addressList].sort(
-      (a, b) => (b.isDefault ? 1 : 0) - (a.isDefault ? 1 : 0)
-    );
-    setAddresses(sortedData);
-  } catch (error: any) {
-    toast.error(error?.message || "Không thể tải địa chỉ");
-  } finally {
-    setLoading(false);
-  }
-};
+      const addressList: BuyerAddressResponse[] = response?.data || [];
+
+      const sortedData = [...addressList].sort(
+        (a, b) => (b.isDefault ? 1 : 0) - (a.isDefault ? 1 : 0),
+      );
+      setAddresses(sortedData);
+    } catch (error: any) {
+      toast.error(error?.message || "Không thể tải địa chỉ");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleCreateNew = () => {
     setEditingAddress(undefined);
     setIsModalOpen(true);
   };
 
-  const handleEdit = (address: BuyerAddressResponseNew) => {
+  const handleEdit = (address: BuyerAddressResponse) => {
     setEditingAddress(address);
     setIsModalOpen(true);
   };
@@ -141,13 +143,11 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
                     </span>
                   </div>
 
-                  {/* Phone */}
                   <div className="text-gray-500 font-bold text-sm flex items-center gap-2">
-                    <span className="w-8 h-[1px] bg-gray-200"></span>
+                    <span className="w-8 h-px bg-gray-200"></span>
                     {addr.phone}
                   </div>
 
-                  {/* Address Detail - Sử dụng cấu trúc address lồng nhau */}
                   <div className="space-y-1 pl-4 border-l-2 border-orange-500/20">
                     <p className="text-gray-800 font-bold text-sm uppercase tracking-tight">
                       {addr.address?.detail || "N/A"}
@@ -174,14 +174,15 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
                   </div>
                 </div>
 
-                {/* Actions */}
                 <div className="flex items-center gap-2 self-end md:self-center">
                   <Button
                     variant="edit"
                     onClick={() => handleEdit(addr)}
                     className="h-9 px-4 rounded-xl border-gray-200 hover:border-orange-500 hover:text-orange-500"
                   >
-                    <FaEdit size={14} className="mr-2" /> Sửa
+                    <span className="flex gap-2 items-center">
+                      <FaEdit size={14} className="mr-2" /> Sửa
+                    </span>
                   </Button>
                   {!addr.isDefault && (
                     <Button
@@ -189,7 +190,9 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
                       onClick={() => handleDelete(addr.addressId)}
                       className="h-9 px-4 rounded-xl text-red-500 border-red-100 hover:bg-red-50"
                     >
-                      <FaTrash size={14} className="mr-2" /> Xóa
+                      <span className="flex gap-2 items-center">
+                        <FaTrash size={14} className="mr-2" /> Xóa
+                      </span>
                     </Button>
                   )}
                 </div>

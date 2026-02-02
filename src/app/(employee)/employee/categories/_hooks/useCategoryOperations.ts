@@ -6,7 +6,7 @@
 
 import { useState, useCallback } from "react";
 import { useToast } from "@/hooks/useToast";
-import categoryService from "../_services/category.service";
+import CategoryServiceManager from "../_services/category.service";
 import type {
   CategoryResponse,
   CreateCategoryRequest,
@@ -26,7 +26,7 @@ export function useCategoryManager() {
     async (page: number = 0, size: number = 20) => {
       setLoading(true);
       try {
-        const data = await categoryService.getAll(page, size);
+        const data = await CategoryServiceManager.getAll(page, size);
         setCategories(data.content);
         setTotalElements(data.totalElements);
         setTotalPages(data.totalPages);
@@ -45,7 +45,7 @@ export function useCategoryManager() {
   const fetchCategoryTree = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await categoryService.getTree();
+      const data = await CategoryServiceManager.getTree();
       setCategoryTree(data);
       return data;
     } catch (error: any) {
@@ -62,7 +62,7 @@ export function useCategoryManager() {
   const fetchRootCategories = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await categoryService.getRootCategories();
+      const data = await CategoryServiceManager.getRootCategories();
       setCategories(data);
       return data;
     } catch (error: any) {
@@ -79,7 +79,7 @@ export function useCategoryManager() {
   const fetchCategoryById = useCallback(async (id: string) => {
     setLoading(true);
     try {
-      const data = await categoryService.getById(id);
+      const data = await CategoryServiceManager.getById(id);
       return data;
     } catch (error: any) {
       messageError(error.message || "Lỗi khi tải thông tin danh mục");
@@ -94,7 +94,7 @@ export function useCategoryManager() {
   const fetchChildren = useCallback(async (id: string) => {
     setLoading(true);
     try {
-      const data = await categoryService.getChildren(id);
+      const data = await CategoryServiceManager.getChildren(id);
       return data;
     } catch (error: any) {
       messageError(error.message || "Lỗi khi tải danh mục con");
@@ -110,7 +110,7 @@ export function useCategoryManager() {
     async (data: CreateCategoryRequest): Promise<boolean> => {
       setLoading(true);
       try {
-        await categoryService.create(data);
+        await CategoryServiceManager.create(data);
         messageSuccess("Tạo danh mục thành công!");
         return true;
       } catch (error: any) {
@@ -133,7 +133,7 @@ export function useCategoryManager() {
     ): Promise<boolean> => {
       setLoading(true);
       try {
-        await categoryService.update(id, data, etag);
+        await CategoryServiceManager.update(id, data, etag);
         messageSuccess("Cập nhật danh mục thành công!");
         return true;
       } catch (error: any) {
@@ -159,7 +159,7 @@ export function useCategoryManager() {
       setLoading(true);
       try {
         // Check có children không
-        const hasChildren = await categoryService.hasChildren(id);
+        const hasChildren = await CategoryServiceManager.hasChildren(id);
         if (hasChildren) {
           messageError(
             "Không thể xóa danh mục có danh mục con. Vui lòng xóa các danh mục con trước!",
@@ -168,7 +168,7 @@ export function useCategoryManager() {
         }
 
         // Check có products không
-        const hasProducts = await categoryService.hasProducts(id);
+        const hasProducts = await CategoryServiceManager.hasProducts(id);
         if (hasProducts) {
           messageError(
             "Không thể xóa danh mục có sản phẩm. Vui lòng chuyển sản phẩm sang danh mục khác trước!",
@@ -176,7 +176,7 @@ export function useCategoryManager() {
           return false;
         }
 
-        await categoryService.delete(id, etag);
+        await CategoryServiceManager.delete(id, etag);
         messageSuccess("Xóa danh mục thành công!");
         return true;
       } catch (error: any) {
@@ -199,7 +199,7 @@ export function useCategoryManager() {
 
   const checkHasChildren = useCallback(async (id: string): Promise<boolean> => {
     try {
-      return await categoryService.hasChildren(id);
+      return await CategoryServiceManager.hasChildren(id);
     } catch (error: any) {
       messageError("Lỗi khi kiểm tra danh mục con");
       return false;
@@ -208,7 +208,7 @@ export function useCategoryManager() {
 
   const checkHasProducts = useCallback(async (id: string): Promise<boolean> => {
     try {
-      return await categoryService.hasProducts(id);
+      return await CategoryServiceManager.hasProducts(id);
     } catch (error: any) {
       messageError("Lỗi khi kiểm tra sản phẩm");
       return false;

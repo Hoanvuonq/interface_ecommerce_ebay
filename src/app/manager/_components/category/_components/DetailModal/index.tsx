@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetAllChildren } from "@/app/manager/_hooks/useCategory";
+import { useGetAllChildren } from "@/app/manager/_hooks/useCategoryController";
 import { CategoryResponse } from "@/types/categories/category.detail";
 import { cn } from "@/utils/cn";
 import { toPublicUrl } from "@/utils/storage/url";

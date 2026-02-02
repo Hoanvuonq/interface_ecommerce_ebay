@@ -1,5 +1,5 @@
 import { Column } from "@/components/DataTable/type";
-import { CategoryResponse } from "../_types/dto/category.dto";
+import { CategoryResponse } from "@/types/categories/category.detail";
 import { cn } from "@/utils/cn";
 import {
   ChevronDown,
@@ -8,8 +8,11 @@ import {
   FileText,
   Edit2,
   Trash2,
+  Image as ImageIcon,
 } from "lucide-react";
 import { ActionBtn } from "@/components";
+import { toPublicUrl } from "@/utils/storage/url"; 
+import Image from "next/image";
 
 interface CategoryColumnProps {
   expandedKeys: Set<string>;
@@ -24,26 +27,59 @@ export const getCategoryColumns = ({
   onEdit,
   onDelete,
 }: CategoryColumnProps): Column<CategoryResponse>[] => [
+   {
+    header: "Ảnh",
+    align: "center",
+    render: (row) => {
+      // Xử lý path có chứa ký tự đại diện '*' từ server
+      const rawPath = row.imagePath;
+      const finalSrc = rawPath
+        ? toPublicUrl(rawPath.replace("*", "thumbnail"))
+        : null;
+
+      return (
+        <div className="flex justify-center">
+          {finalSrc ? (
+            <div className="relative w-10 h-10 rounded-xl overflow-hidden shadow-sm border border-gray-100 group-hover:scale-110 transition-transform duration-300">
+              <Image
+                src={finalSrc}
+                alt={row.name}
+                fill // Dùng fill để fit với div cha
+                sizes="40px"
+                className="object-cover"
+                // Placeholder khi đang load hoặc lỗi
+                blurDataURL="/placeholder-image.png"
+                onError={(e) => {
+                  // Lưu ý: Next Image xử lý lỗi khác img thường,
+                  // bạn có thể dùng state hoặc đơn giản là để nó hiển thị fallback nếu cần
+                }}
+              />
+            </div>
+          ) : (
+            <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center text-gray-300 border border-dashed border-gray-200">
+              <ImageIcon size={16} />
+            </div>
+          )}
+        </div>
+      );
+    },
+  },
   {
     header: "Cấu trúc danh mục",
-    render: (
-      row,
-      index,
-      level = 0, // Giả định row được truyền kèm level
-    ) => (
+    render: (row, index, level = 0) => (
       <div
         className="flex items-center"
-        style={{ paddingLeft: `${level * 28}px` }}
+        style={{ paddingLeft: `${(row as any).level * 28}px` }} // Sử dụng level từ dữ liệu đã flatten
       >
         {row.children && row.children.length > 0 ? (
           <button
             onClick={() => toggleExpand(row.id)}
-            className="mr-2 p-1 hover:bg-gray-100 rounded text-gray-400 transition-colors"
+            className="mr-2 p-1 hover:bg-orange-100 hover:text-orange-600 rounded text-gray-400 transition-colors"
           >
             {expandedKeys.has(row.id) ? (
-              <ChevronDown size={14} />
+              <ChevronDown size={14} strokeWidth={3} />
             ) : (
-              <ChevronRight size={14} />
+              <ChevronRight size={14} strokeWidth={3} />
             )}
           </button>
         ) : (
@@ -51,19 +87,19 @@ export const getCategoryColumns = ({
         )}
         <div
           className={cn(
-            "p-1.5 rounded-lg mr-3 shadow-sm",
+            "p-1.5 rounded-lg mr-3 shadow-sm transition-colors",
             row.children && row.children.length > 0
               ? "bg-orange-50 text-orange-500"
-              : "bg-gray-50 text-gray-400",
+              : "bg-blue-50 text-blue-400",
           )}
         >
           {row.children && row.children.length > 0 ? (
-            <Folder size={15} />
+            <Folder size={15} fill="currentColor" fillOpacity={0.2} />
           ) : (
             <FileText size={15} />
           )}
         </div>
-        <span className="font-bold text-gray-700 tracking-tight">
+        <span className="font-bold text-gray-700 tracking-tight group-hover:text-orange-500 transition-colors">
           {row.name}
         </span>
       </div>
@@ -72,7 +108,8 @@ export const getCategoryColumns = ({
   {
     header: "Định danh (Slug)",
     accessor: "slug",
-    className: "text-xs font-mono text-gray-500",
+    className:
+      "text-[11px] font-mono text-gray-400 bg-gray-50 px-2 py-0.5 rounded-md",
   },
   {
     header: "Trạng thái",
@@ -80,13 +117,13 @@ export const getCategoryColumns = ({
     render: (row) => (
       <span
         className={cn(
-          "px-3 py-1 text-[9px] font-bold uppercase tracking-widest rounded-full border shadow-xs",
+          "px-3 py-1 text-[9px] font-black uppercase tracking-widest rounded-full border shadow-sm transition-all",
           row.active
             ? "bg-emerald-50 text-emerald-600 border-emerald-100"
-            : "bg-gray-50 text-gray-400 border-gray-100",
+            : "bg-rose-50 text-rose-400 border-rose-100",
         )}
       >
-        {row.active ? "Hoạt động" : "Vô hiệu"}
+        {row.active ? "Hoạt động" : "Tạm ngưng"}
       </span>
     ),
   },
@@ -94,16 +131,14 @@ export const getCategoryColumns = ({
     header: "Thao tác",
     align: "right",
     render: (row) => (
-      <div className="flex justify-end gap-2 transition-all duration-300 translate-x-2 group-hover:translate-x-0 pr-2">
+      <div className="flex justify-end gap-1 pr-2">
         <ActionBtn
           onClick={() => onEdit(row)}
           icon={<Edit2 size={14} />}
-          color="hover:text-blue-500"
         />
         <ActionBtn
           onClick={() => onDelete(row)}
           icon={<Trash2 size={14} />}
-          color="hover:text-rose-500"
         />
       </div>
     ),

@@ -11,23 +11,24 @@ import {
   Search,
 } from "lucide-react";
 import { useMemo, useState } from "react";
-import { CreatCategoriesModal } from "../_components"; // Component Modal mới của bạn
+import { CreatCategoriesModal } from "../_components";
 import { useCategory } from "../_hooks/useCategory";
-import type { CategoryResponse } from "../_types/dto/category.dto";
+// Dùng type chuẩn theo ý bạn
+import { CategoryResponse } from "@/types/categories/category.detail"; 
 import { getCategoryColumns } from "./colum";
 
 export const CategoryManagementScreen = () => {
-  const { isLoading, categoryTree, stats, deleteCategory } = useCategory();
+  // Ép kiểu dữ liệu trả về từ hook để đồng bộ với CategoryResponse (detail)
+  const { isLoading, categoryTree: rawTree, stats, deleteCategory } = useCategory();
+  
+  // Cast tree dữ liệu sang type chuẩn
+  const categoryTree = rawTree as unknown as CategoryResponse[];
+
   const [searchText, setSearchText] = useState("");
-  const [activeTab, setActiveTab] = useState<"ALL" | "ACTIVE" | "INACTIVE">(
-    "ALL",
-  );
+  const [activeTab, setActiveTab] = useState<"ALL" | "ACTIVE" | "INACTIVE">("ALL");
 
-  // State quản lý Modal
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
-  const [editingCategory, setEditingCategory] =
-    useState<CategoryResponse | null>(null);
-
+  const [editingCategory, setEditingCategory] = useState<CategoryResponse | null>(null);
   const [expandedKeys, setExpandedKeys] = useState<Set<string>>(new Set());
 
   const toggleExpand = (id: string) => {
@@ -36,9 +37,9 @@ export const CategoryManagementScreen = () => {
     setExpandedKeys(next);
   };
 
-  // Logic làm phẳng dữ liệu tree để hiển thị Table
   const flattenData = useMemo(() => {
     const result: any[] = [];
+    // Khai báo type rõ ràng cho traverse
     const traverse = (nodes: CategoryResponse[], level = 0) => {
       nodes.forEach((node) => {
         const matchesSearch = node.name
@@ -53,22 +54,22 @@ export const CategoryManagementScreen = () => {
         }
 
         if (node.children && (expandedKeys.has(node.id) || searchText)) {
-          traverse(node.children, level + 1);
+          // Ép kiểu children vì có thể lồng nhau
+          traverse(node.children as CategoryResponse[], level + 1);
         }
       });
     };
-    traverse(categoryTree);
+    if (categoryTree) traverse(categoryTree);
     return result;
   }, [categoryTree, expandedKeys, searchText, activeTab]);
 
-  // Cấu hình cột Table
   const columns = useMemo(
     () =>
       getCategoryColumns({
         expandedKeys,
         toggleExpand,
         onEdit: (cat) => {
-          setEditingCategory(cat); // Gán category đang chọn để edit
+          setEditingCategory(cat);
           setIsFormModalOpen(true);
         },
         onDelete: (cat) => {
@@ -76,7 +77,7 @@ export const CategoryManagementScreen = () => {
             deleteCategory({ id: cat.id, etag: cat.version.toString() });
         },
       }),
-    [expandedKeys, deleteCategory],
+    [expandedKeys, deleteCategory]
   );
 
   const tableHeader = (
@@ -111,7 +112,6 @@ export const CategoryManagementScreen = () => {
 
   return (
     <div className="min-h-screen space-y-6 animate-in fade-in duration-700 p-2">
-      {/* HEADER SECTION */}
       <div className="flex justify-between items-end">
         <div>
           <h1 className="text-4xl font-black text-gray-900 tracking-tighter uppercase italic leading-none">
@@ -123,7 +123,7 @@ export const CategoryManagementScreen = () => {
         </div>
         <button
           onClick={() => {
-            setEditingCategory(null); // Reset về null để Modal hiểu là "Thêm mới"
+            setEditingCategory(null);
             setIsFormModalOpen(true);
           }}
           className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-[1.8rem] font-black uppercase text-[10px] tracking-widest shadow-xl shadow-orange-200 transition-all active:scale-95 flex items-center gap-3"
@@ -132,7 +132,6 @@ export const CategoryManagementScreen = () => {
         </button>
       </div>
 
-      {/* STAT CARDS */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <StatCardComponents
           label="Tổng số lượng"
@@ -155,20 +154,18 @@ export const CategoryManagementScreen = () => {
         />
       </div>
 
-      {/* MAIN DATA TABLE */}
       <DataTable
         data={flattenData}
         columns={columns}
         loading={isLoading}
         rowKey="id"
-        page={0}
+        page={1}
         size={flattenData.length}
         totalElements={flattenData.length}
         onPageChange={() => {}}
         headerContent={tableHeader}
       />
 
-      {/* MODAL THÊM/SỬA DANH MỤC */}
       <CreatCategoriesModal
         isOpen={isFormModalOpen}
         onClose={() => setIsFormModalOpen(false)}
@@ -176,8 +173,7 @@ export const CategoryManagementScreen = () => {
           setIsFormModalOpen(false);
           setEditingCategory(null);
         }}
-        // Truyền thêm prop category để hỗ trợ Edit nếu cần
-        category={editingCategory}
+        category={editingCategory} 
       />
     </div>
   );

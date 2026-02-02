@@ -20,6 +20,7 @@ import {
   Globe,
   BarChart3,
   Megaphone,
+  Bell,
 } from "lucide-react";
 import Link from "next/link";
 import { MenuItemSidebar } from "../_types/sidebar";
@@ -217,6 +218,13 @@ export const SIDEBAR_ITEMS: MenuItemSidebar[] = [
       // { key: "vouchers-v2", label: "Voucher V2", href: "/employee/voucher-v2", icon: <Zap size={16}/> },
     ],
   },
+
+  {
+    key: "notification",
+    icon: <Bell size={20} />,
+    label: "Thông báo",
+    href: "/employee/notification",
+  },
   {
     key: "reviews",
     icon: <Star size={20} />,
@@ -277,7 +285,6 @@ export const ROUTE_MAPPINGS = [
   { prefix: "/employee/users/data", key: "users-data", parent: "users" },
   { prefix: "/employee/users", key: "users-all", parent: "users" },
 
-  // Quản lý nhân viên (Lưu ý: dùng parent: "employees" để khớp với SIDEBAR_ITEMS)
   {
     prefix: "/employee/personnel/data",
     key: "employees-data",
@@ -290,6 +297,11 @@ export const ROUTE_MAPPINGS = [
     prefix: "/employee/departments/data",
     key: "departments-data",
     parent: "departments",
+  },
+  {
+    prefix: "/employee/notification",
+    key: "employees-notification",
+    parent: "notification",
   },
   {
     prefix: "/employee/departments",

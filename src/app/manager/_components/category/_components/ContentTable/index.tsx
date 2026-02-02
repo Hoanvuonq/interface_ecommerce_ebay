@@ -16,7 +16,7 @@ import {
   CheckCircle2,
   AlertTriangle,
 } from "lucide-react";
-import { useContentTable } from "@/app/manager/_hooks/useCategory";
+import { useContentTable } from "@/app/manager/_hooks/useCategoryController";
 import { CategoryResponse } from "@/types/categories/category.detail";
 import { CategoryService } from "@/services/categories/category.service";
 import { DetailModal } from "../DetailModal";

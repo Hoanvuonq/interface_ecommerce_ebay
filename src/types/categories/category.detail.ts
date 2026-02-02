@@ -10,9 +10,12 @@ export interface CategoryResponse {
   id: string;
   name: string;
   slug: string;
-  description: string;
+  description?: string;
   active: boolean;
+  parentId?: string;
   imageBasePath?: string;
+  imagePath?: string;
+  imageAssetId?: string;
   imageExtension?: string;
   parent?: CategoryResponse;
   children?: CategoryResponse[];

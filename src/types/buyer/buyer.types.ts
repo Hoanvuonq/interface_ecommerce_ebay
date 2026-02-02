@@ -12,15 +12,6 @@ export enum Gender {
 }
 
 /**
- * Address Type enum
- */
-export enum AddressType {
-  HOME = "HOME", // Nhà riêng
-  OFFICE = "OFFICE", // Văn phòng
-  OTHER = "OTHER", // Khác
-}
-
-/**
  * Buyer Create Request
  */
 export interface BuyerCreateRequest {
@@ -40,52 +31,39 @@ export interface BuyerUpdateRequest {
   dateOfBirth: string; // ISO date string (YYYY-MM-DD)
   gender: Gender;
 }
-//==================== BUYER ADDRESS ====================
-export interface AddressResponse {
-  detail: string; // Sửa detai -> detail
-  ward: string;
-  district: string;
-  province: string;
-  country: string;
-  zipCode: string | null;
-  geoinfo: {
-    latitude: number;
-    longitude: number;
-    userVerified: boolean;
-    userAdjusted: boolean;
-    confirmed: boolean;
-  } | null;
+export enum AddressType {
+  HOME = "HOME",
+  OFFICE = "OFFICE",
+  OTHER = "OTHER",
 }
 
-export interface BuyerAddressResponseNew {
-  addressId: string;
-  recipientName: string;
-  phone: string;
-  type: "HOME" | "OFFICE" | "OTHER"; 
-  isDefault: boolean;
-  address: AddressResponse; 
+export interface GeoInfo {
+  latitude: number;
+  longitude: number;
+  userVerified: boolean;
+  userAdjusted: boolean;
+  confirmed: boolean;
 }
-//======================================================================
-/**
- * Buyer Address Response
- */
+export interface AddressDetail {
+  country: string;
+  zipCode: string;
+  province: string;
+  ward: string;
+  detail: string;
+  district: string;
+  geoinfo: GeoInfo | null;
+  isInternational: boolean;
+}
 export interface BuyerAddressResponse {
   addressId: string;
   recipientName: string;
   phone: string;
-  detailAddress: string;
-  ward: string;
-  district: string;
-  province: string;
-  country: string;
   type: AddressType;
-  createdBy: string;
-  createdDate: string; // ISO datetime string
-  lastModifiedBy: string;
-  lastModifiedDate: string; // ISO datetime string
-  deleted: boolean;
-  version: number;
-  isDefault?: boolean;
+  isDefault: boolean;
+  address: AddressDetail;
+  default: boolean;
+  defaultPickup: boolean;
+  defaultReturn: boolean;
 }
 
 /**
@@ -135,7 +113,6 @@ export interface BuyerAddressCreateRequest {
   province: string;
   country: string;
   type?: AddressType;
-  // Old format address names (from ward_mappings)
   districtNameOld?: string;
   provinceNameOld?: string;
   wardNameOld?: string;

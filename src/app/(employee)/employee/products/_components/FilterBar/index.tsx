@@ -109,7 +109,6 @@ export const FilterBar = ({
           </div>
         </div>
 
-        {/* Actions Button */}
         <div className="w-full md:w-auto pt-4 md:pt-0">
           <CustomButtonActions
             onCancel={onClear}

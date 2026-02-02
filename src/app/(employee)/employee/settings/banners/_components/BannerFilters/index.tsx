@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useCategoryManager } from "@/app/(employee)/employee/categories/_hooks/useCategoryManager";
+import { useCategoryManager } from "@/app/(employee)/employee/categories/_hooks/useCategoryOperations";
 import { Button, FormInput, SelectComponent } from "@/components";
 import _ from "lodash";
 import { Filter, RotateCcw, Search, XCircle } from "lucide-react";

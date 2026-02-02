@@ -1,75 +1,115 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import _ from "lodash";
-import categoryService from "../_services/category.service";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
+
+import { useState, useCallback, useEffect } from "react";
 import { useCategoryFormStore } from "../_store/categoryStore";
+import categoryService from "../_services/category.service";
 import { useToast } from "@/hooks/useToast";
 
 export const useCategoryLogic = (onSuccess?: () => void) => {
-  const { formData, setFormField, setSlug, setErrors, resetForm } =
+  const { formData, setFormField, slug, setSlug, setErrors, resetForm } =
     useCategoryFormStore();
   const { success: toastSuccess, error: toastError } = useToast();
-  const queryClient = useQueryClient();
 
-  // 1. Fetch danh mục cha (Server State)
-  const {
-    data: parentCategories = [],
-    isLoading: loadingParents,
-    error: errorParents,
-  } = useQuery({
-    queryKey: ["categories", "parents"],
-    queryFn: async () => {
-      const res = await categoryService.getAll(0, 1000);
-      return _.get(res, "content") || [];
-    },
-    staleTime: 5 * 60 * 1000,
-  });
+  const [parentCategories, setParentCategories] = useState<any[]>([]);
+  const [loadingParents, setLoadingParents] = useState(false);
+  const [errorParents, setErrorParents] = useState<string | null>(null);
+  const [isCreating, setIsCreating] = useState(false);
 
-  // 2. Mutation tạo danh mục
-  const createMutation = useMutation({
-    mutationFn: (data: any) => categoryService.create(data),
-    onSuccess: () => {
-      toastSuccess("Tạo danh mục thành công!");
-      queryClient.invalidateQueries({ queryKey: ["categories"] });
-      resetForm();
-      onSuccess?.();
-    },
-    onError: (err: any) => {
-      const msg =
-        _.get(err, "response.data.message") || err.message || "Lỗi hệ thống";
-      toastError(msg);
-    },
-  });
+  const generateSlug = (name: string) => {
+    return name
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[đĐ]/g, "d")
+      .replace(/([^0-9a-z-\s])/g, "")
+      .replace(/(\s+)/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-+|-+$/g, "");
+  };
 
-  // 3. Handlers
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // 🟢 FIX TS ERROR: Chấp nhận cả Input và TextArea
+  const handleNameChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const name = e.target.value;
     setFormField("name", name);
-    // Tự động gợi ý slug bằng lodash kebabCase
-    setSlug(_.kebabCase(name));
+    setSlug(generateSlug(name));
+    setErrors({ name: "" });
   };
+
+  const fetchParentCategories = useCallback(async () => {
+    setLoadingParents(true);
+    try {
+      const data = await categoryService.getTree();
+      setParentCategories(data || []);
+    } catch (err: any) {
+      setErrorParents(err.message || "Lỗi tải danh mục");
+    } finally {
+      setLoadingParents(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchParentCategories();
+  }, [fetchParentCategories]);
 
   const validate = () => {
-    const newErrors: Record<string, string> = {};
-    if (_.isEmpty(_.trim(formData.name)))
-      newErrors.name = "Tên danh mục là bắt buộc";
-    if (_.isEmpty(formData.imageAssetId))
-      newErrors.imageAssetId = "Hình ảnh là bắt buộc";
-
+    const newErrors: any = {};
+    if (!formData.name?.trim()) newErrors.name = "Tên bắt buộc";
+    if (!formData.imageAssetId) newErrors.imageAssetId = "Cần ảnh đại diện";
     setErrors(newErrors);
-    return _.isEmpty(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
-  const submitForm = () => {
-    if (validate()) {
-      createMutation.mutate(formData);
+  const submitForm = async (categoryId?: string, etag?: string) => {
+    if (!validate()) return;
+    setIsCreating(true);
+    try {
+      // 🟢 PAYLOAD CHUẨN SWAGGER: Chỉ gửi imageAssetId, KHÔNG gửi imagePath
+      const payload: any = {
+        name: formData.name,
+        description: formData.description,
+        parentId: formData.parentId || null,
+        active: formData.active,
+        imageAssetId: formData.imageAssetId,
+        defaultShippingRestrictions: {
+          restrictionType:
+            formData.defaultShippingRestrictions?.restrictionType || "NONE",
+          maxShippingRadiusKm:
+            formData.defaultShippingRestrictions?.maxShippingRadiusKm || null,
+          countryRestrictionType:
+            formData.defaultShippingRestrictions?.countryRestrictionType ||
+            "ALLOW_ONLY",
+          restrictedCountries:
+            formData.defaultShippingRestrictions?.restrictedCountries || [],
+          restrictedRegions:
+            formData.defaultShippingRestrictions?.restrictedRegions || [],
+        },
+      };
+
+      if (categoryId) {
+        await categoryService.update(categoryId, payload, etag || "");
+        toastSuccess("Cập nhật thành công");
+      } else {
+        await categoryService.create(payload);
+        toastSuccess("Tạo danh mục thành công");
+      }
+
+      resetForm();
+      if (onSuccess) onSuccess();
+    } catch (err: any) {
+      toastError(err.message || "Lỗi hệ thống");
+    } finally {
+      setIsCreating(false);
     }
   };
 
   return {
     parentCategories,
     loadingParents,
-    errorParents: errorParents?.message,
-    isCreating: createMutation.isPending,
+    errorParents,
+    isCreating,
     handleNameChange,
     submitForm,
   };

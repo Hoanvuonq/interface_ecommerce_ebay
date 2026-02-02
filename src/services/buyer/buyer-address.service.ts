@@ -2,15 +2,16 @@ import { request } from "@/utils/axios.customize";
 import type {
   BuyerAddressCreateRequest,
   BuyerAddressUpdateRequest,
-  BuyerAddressResponseNew, // Sử dụng Type mới cho toàn bộ
+  BuyerAddressResponse,
+  
 } from "@/types/buyer/buyer.types";
 import type { ApiResponse } from "@/api/_types/api.types";
 
 class BuyerAddressService {
   async createAddress(
     addressData: BuyerAddressCreateRequest,
-  ): Promise<ApiResponse<BuyerAddressResponseNew>> {
-    const response: ApiResponse<BuyerAddressResponseNew> = await request({
+  ): Promise<ApiResponse<BuyerAddressResponse>> {
+    const response: ApiResponse<BuyerAddressResponse> = await request({
       url: `/v1/buyer/addresses`,
       method: "POST",
       data: addressData,
@@ -35,8 +36,8 @@ class BuyerAddressService {
   // 3. Lấy tất cả: Quan trọng nhất - Trả về ApiResponse chứa mảng data
   async getAllAddresses(
     buyerId: string,
-  ): Promise<ApiResponse<BuyerAddressResponseNew[]>> {
-    const response: ApiResponse<BuyerAddressResponseNew[]> = await request({
+  ): Promise<ApiResponse<BuyerAddressResponse[]>> {
+    const response: ApiResponse<BuyerAddressResponse[]> = await request({
       url: `/v1/buyer/addresses`, // Tùy API có cần buyerId trên URL không
       method: "GET",
     });
@@ -47,8 +48,8 @@ class BuyerAddressService {
   async getAddressDetail(
     buyerId: string,
     addressId: string,
-  ): Promise<ApiResponse<BuyerAddressResponseNew>> {
-    const response: ApiResponse<BuyerAddressResponseNew> = await request({
+  ): Promise<ApiResponse<BuyerAddressResponse>> {
+    const response: ApiResponse<BuyerAddressResponse> = await request({
       url: `/v1/buyer/${buyerId}/addresses/${addressId}`,
       method: "GET",
     });

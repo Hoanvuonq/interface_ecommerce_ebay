@@ -9,7 +9,7 @@ import { GalleryItem, ProductGalleryProps } from "./type";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, FreeMode } from "swiper/modules";
-import { ImageWithPreview } from "../imageWithPreview";
+import { ImageWithPreview } from "../ImageWithPreview";
 
 const PLACEHOLDER_IMAGE = "https://picsum.photos/600/600";
 

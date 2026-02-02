@@ -2,7 +2,7 @@ export interface CustomFile {
   uid: string;
   assetId?: string | number;
   id?: string | number;
-  name: string;
+  name?: string;
   url?: string;
   preview?: string;
   originFileObj?: File;

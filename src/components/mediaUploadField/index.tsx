@@ -11,7 +11,7 @@ import {
   Globe,
   ImageIcon,
   Lock,
-  X
+  X,
 } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
@@ -82,6 +82,7 @@ export const MediaUploadField: React.FC<
       if (onUploadApi) {
         try {
           const result = await onUploadApi(file, (p) => {
+            // 🟢 Cập nhật phần trăm loading vào UI
             onChange(
               currentList.map((f) =>
                 f.uid === uid ? { ...f, percent: p } : f,
@@ -89,13 +90,14 @@ export const MediaUploadField: React.FC<
             );
           });
 
+          // 🟢 Upload hoàn tất
           onChange(
             currentList.map((f) =>
               f.uid === uid
                 ? {
                     ...f,
                     status: "done",
-                    url: result.url || result.finalUrl || f.url,
+                    url: result.url || result.finalUrl || objectUrl, // Ưu tiên URL kết quả hoặc giữ Blob URL
                     assetId: result.assetId || result.id,
                     percent: 100,
                   }
@@ -105,25 +107,6 @@ export const MediaUploadField: React.FC<
         } catch (error) {
           onChange(currentList.filter((f) => f.uid !== uid));
         }
-      } else {
-        let p = 0;
-        const interval = setInterval(() => {
-          p += 25;
-          if (p >= 100) {
-            clearInterval(interval);
-            onChange(
-              currentList.map((f) =>
-                f.uid === uid ? { ...f, status: "done", percent: 100 } : f,
-              ),
-            );
-          } else {
-            onChange(
-              currentList.map((f) =>
-                f.uid === uid ? { ...f, percent: p } : f,
-              ),
-            );
-          }
-        }, 150);
       }
     }
     if (fileInputRef.current) fileInputRef.current.value = "";
@@ -186,7 +169,6 @@ export const MediaUploadField: React.FC<
               >
                 <X size={32} />
               </button>
-
               {previewMedia.type?.includes("video") ? (
                 <video
                   src={previewMedia.url}
@@ -197,13 +179,13 @@ export const MediaUploadField: React.FC<
               ) : (
                 <div className="relative w-full h-[70vh]">
                   <Image
-                    src={previewMedia.url as string}
-                    alt={previewMedia.name || "preview"}
+                    src={previewMedia.url}
+                    alt="preview"
                     fill
-                    unoptimized={previewMedia.url.startsWith("blob:")}
+                    unoptimized
                     priority
                     className="object-contain rounded-2xl"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+                    sizes="(max-width: 768px) 100vw, 80vw"
                   />
                 </div>
               )}
@@ -225,94 +207,89 @@ export const MediaUploadField: React.FC<
       <AnimatePresence mode="popLayout">
         {value
           .filter((f) => f.uid)
-          .map((file) => {
-            const isUploading = file.status === "uploading";
-            const isDone = file.status === "done";
-
-            return (
-              <motion.div
-                key={file.uid}
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                className={cn(
-                  "relative group border-2 border-gray-100 bg-gray-50 overflow-hidden shadow-sm",
-                  sizeClasses[size],
-                )}
-              >
-                {file.url ? (
-                  <div className="relative w-full h-full">
-                    {file.type?.includes("video") ? (
-                      <video
-                        src={file.url}
-                        className="absolute inset-0 w-full h-full object-cover"
-                      />
-                    ) : (
-                      <img
-                        src={file.url}
-                        alt="media"
-                        className="w-full h-full object-cover"
-                      />
-                    )}
-                    <div className="absolute top-2 right-2 z-20 flex gap-1">
-                      <div className="bg-black/50 backdrop-blur-md p-1 rounded-full text-white shadow-sm">
-                        {mode === "public" ? (
-                          <Globe size={10} />
-                        ) : (
-                          <Lock size={10} />
-                        )}
-                      </div>
+          .map((file) => (
+            <motion.div
+              key={file.uid}
+              layout
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className={cn(
+                "relative group border-2 border-gray-100 bg-gray-50 overflow-hidden shadow-sm",
+                sizeClasses[size],
+              )}
+            >
+              {file.url ? (
+                <div className="relative w-full h-full">
+                  {file.type?.includes("video") ? (
+                    <video
+                      src={file.url}
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  ) : (
+                    <img
+                      src={file.url}
+                      alt="media"
+                      className="w-full h-full object-cover"
+                    />
+                  )}
+                  <div className="absolute top-2 right-2 z-20 flex gap-1">
+                    <div className="bg-black/50 backdrop-blur-md p-1 rounded-full text-white shadow-sm">
+                      {mode === "public" ? (
+                        <Globe size={10} />
+                      ) : (
+                        <Lock size={10} />
+                      )}
                     </div>
                   </div>
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-gray-100">
-                    <ImageIcon className="text-gray-300" size={24} />
-                  </div>
-                )}
+                </div>
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                  <ImageIcon className="text-gray-300" size={24} />
+                </div>
+              )}
 
-                {isUploading && (
-                  <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px] flex flex-col items-center justify-center z-10">
-                    <CircularProgress percent={file.percent || 0} />
-                    <span className="text-[8px] font-bold text-white uppercase mt-2 tracking-widest">
-                      Đang tải
-                    </span>
-                  </div>
-                )}
+              {file.status === "uploading" && (
+                <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px] flex flex-col items-center justify-center z-10">
+                  <CircularProgress percent={file.percent || 0} />
+                  <span className="text-[8px] font-bold text-white uppercase mt-2 tracking-widest">
+                    Đang tải
+                  </span>
+                </div>
+              )}
 
-                {isDone && (
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className="absolute top-2 left-2 z-20 bg-emerald-500 text-white rounded-full p-0.5 shadow-lg border border-white"
+              {file.status === "done" && (
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="absolute top-2 left-2 z-20 bg-emerald-500 text-white rounded-full p-0.5 shadow-lg border border-white"
+                >
+                  <CheckCircle2 size={10} strokeWidth={3} />
+                </motion.div>
+              )}
+
+              {file.status !== "uploading" && (
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 z-20">
+                  <button
+                    type="button"
+                    onClick={() => setPreviewMedia(file)}
+                    className="p-1.5 bg-white rounded-lg text-gray-700 hover:text-orange-500 shadow-sm"
                   >
-                    <CheckCircle2 size={10} strokeWidth={3} />
-                  </motion.div>
-                )}
-
-                {!isUploading && (
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 z-20">
-                    <button
-                      type="button"
-                      onClick={() => setPreviewMedia(file)}
-                      className="p-1.5 bg-white rounded-lg text-gray-700 hover:text-orange-500 shadow-sm"
-                    >
-                      <Eye size={14} />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        onChange(value.filter((f) => f.uid !== file.uid))
-                      }
-                      className="p-1.5 bg-white rounded-lg text-gray-700 hover:bg-rose-500 hover:text-white shadow-sm"
-                    >
-                      <X size={14} />
-                    </button>
-                  </div>
-                )}
-              </motion.div>
-            );
-          })}
+                    <Eye size={14} />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      onChange(value.filter((f) => f.uid !== file.uid))
+                    }
+                    className="p-1.5 bg-white rounded-lg text-gray-700 hover:bg-rose-500 hover:text-white shadow-sm"
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
+              )}
+            </motion.div>
+          ))}
 
         {value.filter((f) => f.uid).length < maxCount && (
           <motion.label

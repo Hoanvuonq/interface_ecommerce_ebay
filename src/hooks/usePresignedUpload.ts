@@ -98,7 +98,7 @@ export function usePresignedUpload() {
       file: File,
       context: UploadContext,
       isPrivate: boolean = false,
-      options?: { onUploadProgress?: (progressEvent: any) => void }, // Nhận progress ở đây
+      options?: { onUploadProgress?: (progressEvent: any) => void }, 
     ): Promise<PresignedUploadResult> => {
       setUploading(true);
       try {

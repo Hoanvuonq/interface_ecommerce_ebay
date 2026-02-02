@@ -1,13 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React, { useEffect } from "react";
-import _ from "lodash";
+import React, { useEffect, useState, useCallback } from "react";
 import { Info, Layers } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { usePresignedUpload } from "@/hooks/usePresignedUpload";
 import { UploadContext } from "@/types/storage/storage.types";
 import { toPublicUrl } from "@/utils/storage/url";
-
 import {
   CustomButtonActions,
   SectionHeader,
@@ -18,8 +17,9 @@ import { PortalModal } from "@/features/PortalModal";
 import { CategoryStructureSection } from "../CategoryStructureSection";
 import { ShippingRestrictionsSection } from "../ShippingRestrictionsSection";
 import { useCategoryFormStore } from "../../_store/categoryStore";
+import { CategoryResponse } from "@/types/categories/category.detail";
 import { useCategoryLogic } from "../../_hooks/useCategoryLogic";
-import { CategoryResponse } from "@/app/(employee)/employee/categories/_types/dto/category.dto";
+import { UploadFile } from "@/app/(main)/orders/_types/review";
 
 interface CreatCategoriesModalProps {
   isOpen: boolean;
@@ -27,6 +27,7 @@ interface CreatCategoriesModalProps {
   onSuccess?: () => void;
   category?: CategoryResponse | null;
 }
+
 export const CreatCategoriesModal: React.FC<CreatCategoriesModalProps> = ({
   isOpen,
   onClose,
@@ -36,34 +37,54 @@ export const CreatCategoriesModal: React.FC<CreatCategoriesModalProps> = ({
   const { formData, setFormField, slug, setSlug, errors, resetForm } =
     useCategoryFormStore();
   const {
+    handleNameChange,
+    submitForm,
     parentCategories,
     loadingParents,
     errorParents,
     isCreating,
-    handleNameChange,
-    submitForm,
   } = useCategoryLogic(onSuccess);
   const { uploadFile: uploadPresigned } = usePresignedUpload();
+
+  // 🟢 localPreview giữ ảnh luôn hiển thị bất kể publicPath từ server là null
+  const [localPreview, setLocalPreview] = useState<string | null>(null);
 
   useEffect(() => {
     if (isOpen) {
       if (category) {
         setFormField("name", category.name);
         setSlug(category.slug);
-        setFormField("description", category.description);
-        setFormField("parentId", category.parent?.id);
-        setFormField("imageAssetId", (category as any).imageAssetId);
-        setFormField("imagePath", (category as any).imagePath);
+        setFormField("description", category.description || "");
+        setFormField("active", category.active);
+        setFormField("imageAssetId", category.imageAssetId || "");
+        setFormField("imagePath", category.imagePath || "");
+
+        const pId = (category as any).parentId || category.parent?.id || null;
+        setFormField("parentId", pId);
+
+        if (category.defaultShippingRestrictions) {
+          setFormField("defaultShippingRestrictions", {
+            ...category.defaultShippingRestrictions,
+          });
+        }
+
+        if (category.imagePath) {
+          setLocalPreview(toPublicUrl(category.imagePath));
+        }
       } else {
         resetForm();
+        setLocalPreview(null);
       }
     }
   }, [isOpen, category, setFormField, setSlug, resetForm]);
 
-  const handleCancel = () => {
+  const handleCancel = useCallback(() => {
+    if (localPreview?.startsWith("blob:")) URL.revokeObjectURL(localPreview);
     resetForm();
+    setLocalPreview(null);
     onClose();
-  };
+  }, [localPreview, resetForm, onClose]);
+
   return (
     <PortalModal
       isOpen={isOpen}
@@ -72,6 +93,7 @@ export const CreatCategoriesModal: React.FC<CreatCategoriesModalProps> = ({
       width="max-w-5xl"
     >
       <div className="p-1 space-y-8 animate-in fade-in duration-500">
+        {/* NỘI DUNG Tên/Mô tả */}
         <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 space-y-6 shadow-sm">
           <SectionHeader icon={Info} title="Thông tin hiển thị" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -79,40 +101,36 @@ export const CreatCategoriesModal: React.FC<CreatCategoriesModalProps> = ({
               label="Tên danh mục"
               required
               value={formData.name}
-              onChange={(e) =>
-                handleNameChange(e as React.ChangeEvent<HTMLInputElement>)
-              }
+              onChange={handleNameChange}
               error={errors.name}
-              placeholder="Nhập tên..."
             />
             <FormInput
               label="Đường dẫn (Slug)"
               value={slug}
-              onChange={(e) => setSlug(e.target.value)}
-              placeholder="url-friendly-slug"
+              onChange={(e: any) => setSlug(e.target.value)}
             />
           </div>
           <FormInput
             isTextArea
             label="Mô tả chi tiết"
             value={formData.description}
-            onChange={(e) => setFormField("description", e.target.value)}
+            onChange={(e: any) => setFormField("description", e.target.value)}
             rows={3}
-            placeholder="Mô tả ngắn gọn về danh mục này..."
           />
         </div>
 
+        {/* SECTION HÌNH ẢNH - Fix hiển thị tức thì */}
         <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden relative">
           <div className="flex flex-col lg:flex-row gap-10 items-start">
             <div className="shrink-0 space-y-3">
               <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">
-                Ảnh đại diện <span className="text-red-500">*</span>
+                Ảnh đại diện *
               </div>
               <div
                 className={cn(
                   "p-2 rounded-[2.2rem] border transition-all bg-gray-50/50",
                   errors?.imageAssetId
-                    ? "border-red-200 bg-red-50/30 animate-shake"
+                    ? "border-red-200 bg-red-50/30"
                     : "border-gray-100",
                 )}
               >
@@ -120,36 +138,45 @@ export const CreatCategoriesModal: React.FC<CreatCategoriesModalProps> = ({
                   mode="public"
                   maxCount={1}
                   size="md"
-                  // Dùng logic chọn URL thông minh hơn
+                  // 🟢 FIX: Luôn ưu tiên localPreview để ảnh "lên luôn"
                   value={
-                    formData.imageAssetId
+                    localPreview || formData.imageAssetId
                       ? [
                           {
-                            uid: "-1",
+                            uid: formData.imageAssetId || "-1",
                             name: "category-image",
                             status: "done",
-                            // Ưu tiên dùng path từ formData, nếu chưa có thì dùng tạm preview (nếu bro có lưu)
-                            url: toPublicUrl(formData.imagePath || ""),
+                            url:
+                              localPreview ||
+                              (formData.imagePath
+                                ? toPublicUrl(formData.imagePath)
+                                : ""),
                           },
                         ]
                       : []
                   }
-                  onUploadApi={async (file) => {
+                  onUploadApi={async (file, onProgress) => {
+                    const blobUrl = URL.createObjectURL(file);
+                    setLocalPreview(blobUrl);
+
                     try {
-                      const res = await uploadPresigned(
+                      const res = (await uploadPresigned(
                         file,
                         UploadContext.CATEGORY_IMAGE,
-                        true,
-                      );
+                        false,
+                        { onUploadProgress: onProgress },
+                      )) as any;
 
                       setFormField("imageAssetId", res.assetId);
                       setFormField("imagePath", res.path);
 
-                      const previewUrl =
-                        res.finalUrl || res.path || URL.createObjectURL(file);
-                      return previewUrl;
+                      return {
+                        url: blobUrl,
+                        assetId: res.assetId,
+                        path: res.path,
+                      };
                     } catch (error) {
-                      console.error("Upload failed:", error);
+                      setLocalPreview(null);
                       throw error;
                     }
                   }}
@@ -157,6 +184,7 @@ export const CreatCategoriesModal: React.FC<CreatCategoriesModalProps> = ({
                     if (files.length === 0) {
                       setFormField("imageAssetId", undefined);
                       setFormField("imagePath", undefined);
+                      setLocalPreview(null);
                     }
                   }}
                 />
@@ -202,7 +230,7 @@ export const CreatCategoriesModal: React.FC<CreatCategoriesModalProps> = ({
         <CustomButtonActions
           isLoading={isCreating}
           onCancel={handleCancel}
-          onSubmit={submitForm}
+          onSubmit={() => submitForm(category?.id, (category as any)?.etag)}
           submitText={category ? "Cập nhật thay đổi" : "Kích hoạt danh mục"}
           containerClassName="pt-8 border-t border-gray-100"
         />
