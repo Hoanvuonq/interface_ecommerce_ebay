@@ -1,8 +1,8 @@
 "use client";
 
-import { ButtonField } from "@/components";
+import { ButtonField, FormInput } from "@/components";
 import { SelectComponent } from "@/components";
-import { CategoryService } from "@/services/categories/category.service";
+import { CategoryService } from "@/app/(main)/category/_service/category.service";
 import type { CategoryResponse } from "@/types/categories/category.detail";
 import { cn } from "@/utils/cn";
 import { formatVND } from "@/utils/product.utils";
@@ -44,7 +44,7 @@ export default function ProductFilters({
 
   const categoryOptions = useMemo(
     () => categories.map((c) => ({ label: c.name, value: c.id })),
-    [categories]
+    [categories],
   );
 
   const handleFilterChange = (updates: Partial<ProductFilterValues>) =>
@@ -94,13 +94,13 @@ export default function ProductFilters({
                 <span
                   className={cn(
                     "animate-ping absolute inline-flex h-full w-full rounded-full opacity-75",
-                    hasActiveFilters ? "bg-orange-400" : "hidden"
+                    hasActiveFilters ? "bg-orange-400" : "hidden",
                   )}
                 ></span>
                 <span
                   className={cn(
                     "relative inline-flex rounded-full h-2 w-2",
-                    hasActiveFilters ? "bg-orange-500" : "bg-gray-300"
+                    hasActiveFilters ? "bg-orange-500" : "bg-gray-300",
                   )}
                 ></span>
               </span>
@@ -144,13 +144,13 @@ export default function ProductFilters({
                       className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-orange-500 transition-colors"
                       size={16}
                     />
-                    <input
-                      className="w-full pl-11 pr-4 h-12 text-sm font-medium bg-gray-50 border border-transparent rounded-2xl outline-none focus:bg-white focus:border-gray-200 focus:ring-4 focus:ring-orange-50 transition-all placeholder:text-gray-500 text-gray-700"
+                    <FormInput
                       placeholder="Tìm kiếm sản phẩm..."
                       value={value.keyword || ""}
                       onChange={(e) =>
                         handleFilterChange({ keyword: e.target.value })
                       }
+                      className="pl-11 h-11 bg-white border-transparent shadow-sm rounded-2xl focus:bg-white"
                     />
                   </div>
                 </div>
@@ -250,7 +250,7 @@ export default function ProductFilters({
                             "relative px-5 py-2.5 rounded-xl text-[11px] font-bold uppercase tracking-wide transition-colors whitespace-nowrap shrink-0 z-20 snap-start",
                             isActive
                               ? "text-white"
-                              : "text-gray-500 hover:text-orange-600 bg-white border border-gray-100 hover:border-gray-200"
+                              : "text-gray-500 hover:text-orange-600 bg-white border border-gray-100 hover:border-gray-200",
                           )}
                         >
                           {isActive && (

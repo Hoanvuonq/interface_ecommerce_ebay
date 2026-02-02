@@ -56,7 +56,7 @@ export const  NotificationHistoryTable = ()=> {
           <FaHistory className="text-white w-5 h-5" />
         </div>
         <div>
-          <h1 className="text-xl font-black text-gray-800 tracking-tight">Lịch sử thông báo</h1>
+          <h1 className="text-xl font-bold text-gray-800 tracking-tight">Lịch sử thông báo</h1>
           <p className="text-xs text-gray-400 font-bold uppercase tracking-widest">Broadcast Management</p>
         </div>
       </div>

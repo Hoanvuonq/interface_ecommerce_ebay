@@ -181,7 +181,7 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  if (isDev) console.log(`[Middleware] ✅ Access granted for: ${pathname}`);
+  if (isDev) 
   return NextResponse.next();
 }
 

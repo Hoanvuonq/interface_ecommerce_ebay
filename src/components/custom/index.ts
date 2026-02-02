@@ -14,3 +14,4 @@ export * from "./components/customButtonActions";
 export * from "./components/customHasDiscount";
 export * from "./components/customButton";
 export * from "./components/customDateTimeInput";
+export * from "./components/customSearch";

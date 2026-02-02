@@ -2,20 +2,17 @@
 
 import { StatusTabs } from "@/app/(shop)/shop/_components/Products/StatusTabs";
 import {
-  ButtonField,
   DataTable,
   FormInput,
   SelectComponent,
-  StatCardComponents,
+  StatCardComponents
 } from "@/components";
-import { PortalModal } from "@/features/PortalModal";
 import {
-  AlertCircle,
   Clock,
   LayoutList,
   RotateCw,
   Search,
-  Store,
+  Store
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { SHOP_STATUS_TABS } from "../../_constants/tabs.constants";
@@ -29,9 +26,9 @@ import {
 } from "../../_hooks/useManageShop";
 import { GetShopRequest } from "../../_types/dto/manager.shop.dto";
 import { Shop, ShopDetail } from "../../_types/manager.shop.type";
+import { RejectShopModal } from "../RejectShopModal";
 import { ShopDetailModal } from "../ShopDetailModal";
 import { getShopColumns } from "./colum";
-import { RejectShopModal } from "../RejectShopModal";
 
 export default function ShopApprovalForm() {
   const { handleGetAllShops, loading } = useGetAllShops();
@@ -121,7 +118,10 @@ export default function ShopApprovalForm() {
         size: pagination.pageSize,
         onApprove: async (id) => {
           if (confirm("Duyệt shop này?")) {
-            await handleVerifyShop(id, { verifiedStatus: "VERIFIED" });
+            await handleVerifyShop(id, {
+              verifiedStatus: "VERIFIED",
+              reason: "Hồ sơ hợp lệ",
+            });
             fetchShops();
           }
         },
@@ -187,7 +187,7 @@ export default function ShopApprovalForm() {
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && fetchShops()}
-            className="pl-12 h-12 bg-gray-50/80 rounded-2xl border-transparent focus:bg-white transition-all shadow-sm font-bold"
+            className="pl-12 h-12 rounded-2xl border border-gray-200 focus:bg-white transition-all shadow-cutom font-bold"
           />
         </div>
         <div className="md:col-span-3">

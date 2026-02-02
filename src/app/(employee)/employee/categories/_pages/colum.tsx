@@ -31,7 +31,6 @@ export const getCategoryColumns = ({
     header: "Ảnh",
     align: "center",
     render: (row) => {
-      // Xử lý path có chứa ký tự đại diện '*' từ server
       const rawPath = row.imagePath;
       const finalSrc = rawPath
         ? toPublicUrl(rawPath.replace("*", "thumbnail"))
@@ -117,7 +116,7 @@ export const getCategoryColumns = ({
     render: (row) => (
       <span
         className={cn(
-          "px-3 py-1 text-[9px] font-black uppercase tracking-widest rounded-full border shadow-sm transition-all",
+          "px-3 py-1 text-[9px] font-bold uppercase tracking-widest rounded-full border shadow-sm transition-all",
           row.active
             ? "bg-emerald-50 text-emerald-600 border-emerald-100"
             : "bg-rose-50 text-rose-400 border-rose-100",

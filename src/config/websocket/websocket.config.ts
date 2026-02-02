@@ -191,21 +191,17 @@ export function parseWebSocketMessage<T = any>(
   message: any
 ): WebSocketEventData<T> | null {
   try {
-    console.log("[parseWebSocketMessage] Raw message:", message);
 
     if (typeof message === "string") {
       const parsed = JSON.parse(message);
-      console.log("[parseWebSocketMessage] Parsed from string:", parsed);
       return parsed;
     }
 
     if (message.body) {
       const parsed = JSON.parse(message.body);
-      console.log("[parseWebSocketMessage] Parsed from message.body:", parsed);
       return parsed;
     }
 
-    console.log("[parseWebSocketMessage] Returning message as-is:", message);
     return message;
   } catch (error) {
     console.error(

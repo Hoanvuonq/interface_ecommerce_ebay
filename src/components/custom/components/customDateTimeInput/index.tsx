@@ -144,7 +144,7 @@ export const DateTimeInput = ({
   };
 
   return (
-    <div className="space-y-2.5 w-full relative" ref={containerRef}>
+    <div className="space-y-2.5 w-full relative shadow-custom rounded-4xl" ref={containerRef}>
       {label && (
         <label className="text-[11px] font-bold text-orange-400/80 ml-2 flex items-center gap-2 uppercase tracking-widest italic">
           <Clock size={12} strokeWidth={3} />

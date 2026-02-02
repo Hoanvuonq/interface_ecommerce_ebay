@@ -62,7 +62,7 @@ export const getNotificationColumns = (): Column<BroadcastHistoryRecord>[] => [
     header: "Số người nhận",
     align: "center",
     render: (item) => (
-      <span className="text-orange-500 font-black tabular-nums">
+      <span className="text-orange-500 font-bold tabular-nums">
         {item.recipientCount.toLocaleString()}
       </span>
     ),
@@ -80,7 +80,7 @@ export const getNotificationColumns = (): Column<BroadcastHistoryRecord>[] => [
     render: (item) => (
       <span
         className={cn(
-          "px-2 py-1 rounded-lg text-[10px] font-black border uppercase",
+          "px-2 py-1 rounded-lg text-[10px] font-bold border uppercase",
           priorityStyles[item.priority],
         )}
       >

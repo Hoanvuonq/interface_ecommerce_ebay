@@ -1,7 +1,7 @@
 "use client";
 
 import type { BannerResponseDTO } from "@/app/(main)/(home)/_types/banner.dto";
-import { DataTable } from "@/components";
+import { ButtonField, DataTable } from "@/components";
 import { cn } from "@/utils/cn";
 import { Globe, Layers, Plus } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -93,27 +93,31 @@ export const BannerSettingsScreen = () => {
     <div className="space-y-6 p-6 animate-in fade-in duration-700">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-bold text-gray-800 uppercase italic tracking-tighter leading-none">
-            Banner Management
+         <h1 className="text-5xl font-bold text-gray-900 tracking-tighter uppercase italic leading-none">
+            Quản lý <span className="text-orange-500">Banner</span>
           </h1>
-          <p className="text-[10px] font-bold text-gray-400 uppercase mt-2 tracking-[0.3em] italic opacity-60">
+          <p className="text-[10px] font-bold text-gray-700 uppercase mt-2 tracking-widest italic opacity-60">
             Hệ thống quản trị hiển thị tập trung
           </p>
         </div>
-        <button
+        <ButtonField
+          htmlType="submit"
+          type="login"
+          className="w-50 h-14 text-[12px] font-bold rounded-4xl shadow-custom border-0 bg-linear-to-r"
           onClick={() => {
             setEditingBanner(null);
             setIsFormModalOpen(true);
           }}
-          className="group flex items-center gap-3 bg-slate-900 hover:bg-orange-500 text-white px-10 py-5 rounded-[1.8rem] font-bold uppercase text-xs tracking-widest transition-all shadow-2xl active:scale-95"
         >
-          <Plus
-            size={20}
-            strokeWidth={4}
-            className="group-hover:rotate-90 transition-transform"
-          />{" "}
-          Khởi tạo Banner
-        </button>
+          <span className="flex gap-2 items-center">
+            <Plus
+              size={20}
+              strokeWidth={4}
+              className="group-hover:rotate-90 transition-transform"
+            />{" "}
+            Khởi tạo Banner
+          </span>
+        </ButtonField>
       </div>
 
       <BannerFilters
@@ -123,7 +127,7 @@ export const BannerSettingsScreen = () => {
         onReset={handleResetFilters}
         onRefresh={() => loadBanners()}
         isLoading={bannerLoading}
-        categories={[]} 
+        categories={[]}
         categoryLoading={false}
       />
 
@@ -156,7 +160,7 @@ export const BannerSettingsScreen = () => {
         ))}
       </div>
 
-      <div className="bg-white rounded-[3rem] border border-gray-100 shadow-sm overflow-hidden p-3">
+      <div className="bg-white rounded-4xl border border-gray-100 shadow-sm overflow-hidden p-6">
         <DataTable
           data={banners}
           columns={columns}
@@ -167,13 +171,13 @@ export const BannerSettingsScreen = () => {
           totalElements={totalElements}
           onPageChange={setPage}
           headerContent={
-            <div className="px-4 py-2 flex items-center gap-4 opacity-50 font-bold text-[10px] uppercase italic">
+            <div className="px-4 py-2 flex items-center gap-4 opacity-80 font-bold text-[10px] uppercase italic">
               <div className="flex items-center gap-1.5 text-orange-500">
-                <Globe size={14} /> Live Assets
+                <Globe size={16} /> Live Assets
               </div>
               <div className="w-px h-3 bg-gray-300" />
               <div className="flex items-center gap-1.5 text-blue-500">
-                <Layers size={14} /> Optimized
+                <Layers size={16} /> Optimized
               </div>
             </div>
           }

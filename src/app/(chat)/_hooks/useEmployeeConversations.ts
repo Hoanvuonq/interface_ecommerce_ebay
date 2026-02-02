@@ -54,10 +54,7 @@ export const useEmployeeConversations = () => {
   const loadConversations = useCallback(async () => {
     try {
       setLoadingConversations(true);
-      console.log("[EmployeeConversations] Loading customer support conversations...", {
-        status: filterStatus,
-        keyword: searchKeyword,
-      });
+    
 
       // Gọi API customer-support với status filter
       // Backend sẽ tự động xử lý:
@@ -71,20 +68,14 @@ export const useEmployeeConversations = () => {
         sort: "lastMessageAt,desc",
       });
 
-      console.log(
-        "[EmployeeConversations] Customer support conversations response:",
-        response
-      );
+     
 
       if (response?.success && response?.data) {
         // Response có thể là PageResponse hoặc array
         const items =
           response.data.content || response.data.items || response.data || [];
 
-        console.log(
-          "[EmployeeConversations] Conversations loaded:",
-          items?.length || 0
-        );
+      
 
         if (Array.isArray(items)) {
           // Filter theo keyword nếu có (client-side filtering cho keyword)
@@ -138,14 +129,12 @@ export const useEmployeeConversations = () => {
   const initialize = useCallback(async () => {
     // Ngăn gọi API 2 lần (React Strict Mode issue)
     if (isInitializingRef.current) {
-      console.log("[EmployeeConversations] Already initializing, skipping...");
       return;
     }
 
     try {
       isInitializingRef.current = true;
       setIsInitializing(true);
-      console.log("[EmployeeConversations] Initializing...");
 
       await loadConversations();
     } catch (error) {
@@ -210,7 +199,6 @@ export const useEmployeeConversations = () => {
       clearTimeout(searchDebounceRef.current);
       searchDebounceRef.current = null;
     }
-    console.log("[EmployeeConversations] Filter status changed, reloading...", filterStatus);
     loadConversations();
   }, [filterStatus, loadConversations, isInitializing]);
 
@@ -237,7 +225,6 @@ export const useEmployeeConversations = () => {
       // (nếu đã thay đổi, useEffect sẽ tạo timeout mới)
       if (prevSearchKeywordRef.current !== currentKeyword && hasInitializedRef.current) {
         prevSearchKeywordRef.current = currentKeyword;
-        console.log("[EmployeeConversations] Search keyword changed, reloading...", currentKeyword);
         loadConversations();
       }
     }, 500);
@@ -263,13 +250,10 @@ export const useEmployeeConversations = () => {
    */
   useEffect(() => {
     if (!wsConnected) {
-      console.log(
-        "[EmployeeConversations] WebSocket not connected, skipping subscription"
-      );
+     
       return;
     }
 
-    console.log("[EmployeeConversations] Subscribing to WebSocket topics...");
 
     // Handler để xử lý message updates cho conversation list
     const handleMessageUpdate = (incomingMessage: Message) => {
@@ -280,9 +264,7 @@ export const useEmployeeConversations = () => {
 
         if (convIndex === -1) {
           // Conversation chưa có trong danh sách → load lại
-          console.log(
-            "[EmployeeConversations] New conversation detected from message, reloading..."
-          );
+        
           loadConversationsRef.current();
           return prev;
         }
@@ -311,7 +293,6 @@ export const useEmployeeConversations = () => {
 
     // Handler để xử lý conversation events (NEW_CONVERSATION, CONVERSATION_UPDATED, etc.)
     const handleConversationEvent = (data: unknown) => {
-      console.log("[EmployeeConversations] Received conversation event:", data);
 
       try {
         // Backend payload: { type: "NEW_CONVERSATION" | "CONVERSATION_UPDATED" | "CONVERSATION_STATUS_CHANGED", data: Conversation, timestamp: ... }
@@ -323,21 +304,15 @@ export const useEmployeeConversations = () => {
         };
 
         if (event.type === "NEW_CONVERSATION") {
-          console.log(
-            "[EmployeeConversations] New conversation created, reloading list..."
-          );
+         ;
           // Reload toàn bộ danh sách để lấy conversation mới
           loadConversationsRef.current();
         } else if (event.type === "CONVERSATION_UPDATED") {
-          console.log(
-            "[EmployeeConversations] Conversation updated, reloading list..."
-          );
+        
           // Reload để cập nhật thông tin conversation
           loadConversationsRef.current();
         } else if (event.type === "CONVERSATION_STATUS_CHANGED") {
-          console.log(
-            "[EmployeeConversations] Conversation status changed, reloading list..."
-          );
+         
           // Reload để cập nhật status
           loadConversationsRef.current();
         }
@@ -351,10 +326,7 @@ export const useEmployeeConversations = () => {
 
     // Subscribe to personal messages: /user/queue/messages
     const unsubscribePersonal = subscribeToPersonalMessages((data: unknown) => {
-      console.log(
-        "[EmployeeConversations] Received personal queue message:",
-        data
-      );
+     
 
       try {
         // Backend sends: { data: Message, type: string, timestamp: string }
@@ -385,7 +357,6 @@ export const useEmployeeConversations = () => {
 
     // Handler để xử lý support queue events (NEW_SUPPORT_CONVERSATION, CONVERSATION_ACCEPTED, etc.)
     const handleSupportQueueEvent = (data: unknown) => {
-      console.log("[EmployeeConversations] Received support queue event:", data);
 
       try {
         // Backend payload: { type: "NEW_SUPPORT_CONVERSATION" | "CONVERSATION_ACCEPTED" | "NEW_SUPPORT_MESSAGE" | "CONVERSATION_ASSIGNED", data: Conversation, timestamp: ... }
@@ -399,10 +370,7 @@ export const useEmployeeConversations = () => {
         };
 
         if (event.type === "NEW_SUPPORT_CONVERSATION") {
-          console.log(
-            "[EmployeeConversations] New support conversation created, adding to list..."
-          );
-          
+         
           // Kiểm tra xem conversation có match với filter hiện tại không
           if (event.data) {
             const newConversation = event.data;
@@ -422,33 +390,20 @@ export const useEmployeeConversations = () => {
                 // Kiểm tra xem conversation đã tồn tại chưa (tránh duplicate)
                 const exists = prev.some((c) => c.id === newConversation.id);
                 if (exists) {
-                  console.log(
-                    "[EmployeeConversations] Conversation already exists, updating..."
-                  );
-                  // Update conversation nếu đã tồn tại
+                
                   return prev.map((c) =>
                     c.id === newConversation.id ? newConversation : c
                   );
                 }
-                
-                // Thêm conversation mới vào đầu danh sách
-                console.log(
-                  "[EmployeeConversations] Adding new conversation to list:",
-                  newConversation.id
-                );
+               
                 return [newConversation, ...prev];
               });
             } else {
-              console.log(
-                "[EmployeeConversations] New conversation doesn't match current filter, skipping..."
-              );
+            
             }
           }
         } else if (event.type === "CONVERSATION_ACCEPTED") {
-          console.log(
-            "[EmployeeConversations] Conversation accepted, reloading list..."
-          );
-          // Reload để cập nhật status từ WAITING_FOR_STAFF sang ACTIVE
+         
           loadConversationsRef.current();
         } else if (event.type === "NEW_SUPPORT_MESSAGE") {
           // Tin nhắn mới trong support conversation - update conversation trong list
@@ -459,10 +414,7 @@ export const useEmployeeConversations = () => {
               );
 
               if (convIndex === -1) {
-                // Conversation chưa có trong danh sách → reload
-                console.log(
-                  "[EmployeeConversations] Conversation not in list, reloading..."
-                );
+               
                 loadConversationsRef.current();
                 return prev;
               }
@@ -487,10 +439,7 @@ export const useEmployeeConversations = () => {
             });
           }
         } else if (event.type === "CONVERSATION_ASSIGNED") {
-          console.log(
-            "[EmployeeConversations] Conversation assigned, updating list...",
-            event
-          );
+        
           
           if (event.data && event.toStaffId && currentUserId) {
             const assignedConversation = event.data;
@@ -508,17 +457,11 @@ export const useEmployeeConversations = () => {
                 if (filterStatus === ConversationStatus.ACTIVE) {
                   if (convIndex === -1) {
                     // Conversation chưa có trong danh sách → thêm vào đầu
-                    console.log(
-                      "[EmployeeConversations] Conversation assigned to me, adding to ACTIVE list:",
-                      assignedConversation.id
-                    );
+                   
                     return [assignedConversation, ...prev];
                   } else {
                     // Conversation đã có → update
-                    console.log(
-                      "[EmployeeConversations] Conversation assigned to me, updating in ACTIVE list:",
-                      assignedConversation.id
-                    );
+                   
                     const updatedConversations = [...prev];
                     updatedConversations[convIndex] = assignedConversation;
                     return updatedConversations;
@@ -537,10 +480,7 @@ export const useEmployeeConversations = () => {
               if (!isAssignedToMe && isAssignedFromMe) {
                 // Nếu đang ở tab "Đang xử lý" (ACTIVE) → remove khỏi danh sách
                 if (filterStatus === ConversationStatus.ACTIVE && convIndex !== -1) {
-                  console.log(
-                    "[EmployeeConversations] Conversation assigned to someone else, removing from ACTIVE list:",
-                    assignedConversation.id
-                  );
+                  
                   return prev.filter((c) => c.id !== assignedConversation.id);
                 } else if (filterStatus === undefined) {
                   // Tab "Tất cả" → update nếu đã có (có thể chuyển từ ACTIVE sang WAITING)
@@ -554,10 +494,7 @@ export const useEmployeeConversations = () => {
               
               // Nếu conversation được assign giữa 2 người khác → update nếu đã có trong danh sách
               if (!isAssignedToMe && !isAssignedFromMe && convIndex !== -1) {
-                console.log(
-                  "[EmployeeConversations] Conversation assigned between others, updating:",
-                  assignedConversation.id
-                );
+               
                 const updatedConversations = [...prev];
                 updatedConversations[convIndex] = assignedConversation;
                 return updatedConversations;
@@ -587,18 +524,11 @@ export const useEmployeeConversations = () => {
     // Subscribe to selected conversation topic if available
     let unsubscribeConversation: (() => void) | undefined;
     if (selectedConversationId) {
-      console.log(
-        "[EmployeeConversations] Subscribing to conversation topic:",
-        selectedConversationId
-      );
+     
       unsubscribeConversation = subscribeToConversation(
         selectedConversationId,
         (data: unknown) => {
-          console.log(
-            "[EmployeeConversations] Received conversation topic message:",
-            data
-          );
-
+          
           try {
             // Backend sends: { data: Message, type: string, timestamp: string }
             const messageWrapper = data as { data?: Message; type?: string };
@@ -624,9 +554,7 @@ export const useEmployeeConversations = () => {
     }
 
     return () => {
-      console.log(
-        "[EmployeeConversations] Unsubscribing from WebSocket topics"
-      );
+    
       unsubscribePersonal();
       unsubscribeConversationUpdates();
       unsubscribeSupportQueue();

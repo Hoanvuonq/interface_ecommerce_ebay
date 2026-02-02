@@ -83,7 +83,7 @@ const Pricing: React.FC<PricingProps> = ({
         </div>
 
         {priceAfterVoucher && (
-          <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 bg-orange-100/50 border border-gray-200 rounded-lg w-fit shadow-sm">
+          <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 bg-orange-100 border border-gray-100 rounded-lg w-fit shadow-custom">
             <Tag className="w-3.5 h-3.5 text-orange-600 fill-orange-600" />
             <span className="text-xs font-bold text-orange-700 uppercase tracking-tight">
               Đã áp dụng voucher tốt nhất

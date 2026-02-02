@@ -32,25 +32,30 @@ export function useLogin() {
   const [error, setError] = useState<string | null>(null);
 
   const handleLogin = async (
-    payload: LoginRequest
+    payload: LoginRequest,
   ): Promise<ApiResponse<any> | null> => {
     setLoading(true);
     setError(null);
     try {
       const res = await authService.login(payload);
-      console.log("Login response:", res);
-      
-      if (typeof window !== "undefined" && isLocalhost() && res && res.success && res.data) {
+
+      if (
+        typeof window !== "undefined" &&
+        isLocalhost() &&
+        res &&
+        res.success &&
+        res.data
+      ) {
         if (res.data.accessToken) {
-            localStorage.setItem("accessToken", res.data.accessToken);
+          localStorage.setItem("accessToken", res.data.accessToken);
         }
         if (res.data.refreshToken) {
-            localStorage.setItem("refreshToken", res.data.refreshToken);
+          localStorage.setItem("refreshToken", res.data.refreshToken);
         }
-        
+
         localStorage.setItem("users", JSON.stringify(res.data));
       }
-      
+
       return res;
     } catch (err: any) {
       setError(err?.message || "Đăng nhập thất bại");
@@ -68,13 +73,13 @@ export function useLoginBuyer() {
   const [error, setError] = useState<string | null>(null);
 
   const handleLoginBuyer = async (
-    payload: LoginRequest
+    payload: LoginRequest,
   ): Promise<ApiResponse<any> | null> => {
     setLoading(true);
     setError(null);
     try {
       const res = await authService.loginBuyer(payload);
-      console.log("Buyer login response:", res);
+
       return res;
     } catch (err: any) {
       setError(err?.message || "Đăng nhập thất bại");
@@ -92,13 +97,13 @@ export function useLoginShop() {
   const [error, setError] = useState<string | null>(null);
 
   const handleLoginShop = async (
-    payload: LoginRequest
+    payload: LoginRequest,
   ): Promise<ApiResponse<any> | null> => {
     setLoading(true);
     setError(null);
     try {
       const res = await authService.loginShop(payload);
-      console.log("Shop login response:", res);
+
       return res;
     } catch (err: any) {
       setError(err?.message || "Đăng nhập thất bại");
@@ -116,13 +121,13 @@ export function useLoginStaff() {
   const [error, setError] = useState<string | null>(null);
 
   const handleLoginStaff = async (
-    payload: LoginRequest
+    payload: LoginRequest,
   ): Promise<ApiResponse<any> | null> => {
     setLoading(true);
     setError(null);
     try {
       const res = await authService.loginStaff(payload);
-      console.log("Staff login response:", res);
+
       return res;
     } catch (err: any) {
       setError(err?.message || "Đăng nhập thất bại");
@@ -140,7 +145,7 @@ export function useRegisterBuyer() {
   const [error, setError] = useState<string | null>(null);
 
   const handleRegisterBuyer = async (
-    payload: RegisterRequest
+    payload: RegisterRequest,
   ): Promise<ApiResponse<any> | null> => {
     setLoading(true);
     setError(null);
@@ -148,7 +153,6 @@ export function useRegisterBuyer() {
       const res = await authService.registerBuyer(payload);
       return res;
     } catch (err: any) {
-      console.log("Error register buyer:", err);
       setError(err?.message || "Đăng ký thất bại");
       throw err;
     } finally {
@@ -164,7 +168,7 @@ export function useRegisterShop() {
   const [error, setError] = useState<string | null>(null);
 
   const handleRegisterShop = async (
-    payload: RegisterRequest
+    payload: RegisterRequest,
   ): Promise<ApiResponse<any> | null> => {
     setLoading(true);
     setError(null);
@@ -187,7 +191,7 @@ export function useVerify() {
   const [error, setError] = useState<string | null>(null);
 
   const handleVerify = async (
-    payload: VerifyRequest
+    payload: VerifyRequest,
   ): Promise<ApiResponse<any> | null> => {
     setLoading(true);
     setError(null);
@@ -233,7 +237,7 @@ export function useResendOtp() {
   const [error, setError] = useState<string | null>(null);
 
   const handleResendOtp = async (
-    payload: ResendOtpRequest
+    payload: ResendOtpRequest,
   ): Promise<ApiResponse<any> | null> => {
     setLoading(true);
     setError(null);
@@ -256,7 +260,7 @@ export function useForgotPassword() {
   const [error, setError] = useState<string | null>(null);
 
   const handleForgotPassword = async (
-    payload: ForgotPasswordRequest
+    payload: ForgotPasswordRequest,
   ): Promise<ApiResponse<any> | null> => {
     setLoading(true);
     setError(null);
@@ -279,7 +283,7 @@ export function useVerifyPassword() {
   const [error, setError] = useState<string | null>(null);
 
   const handleVerifyPassword = async (
-    payload: VerifyPasswordRequest
+    payload: VerifyPasswordRequest,
   ): Promise<ApiResponse<any> | null> => {
     setLoading(true);
     setError(null);
@@ -302,7 +306,7 @@ export function useResetPassword() {
   const [error, setError] = useState<string | null>(null);
 
   const handleResetPassword = async (
-    payload: ResetPasswordRequest
+    payload: ResetPasswordRequest,
   ): Promise<ApiResponse<any> | null> => {
     setLoading(true);
     setError(null);
@@ -326,7 +330,7 @@ export function useChangePassword() {
 
   const handleChangePassword = async (
     userId: string,
-    payload: ChangePasswordRequest
+    payload: ChangePasswordRequest,
   ): Promise<ApiResponse<any> | null> => {
     setLoading(true);
     setError(null);
@@ -349,7 +353,7 @@ export function useGetUserDetail() {
   const [error, setError] = useState<string | null>(null);
 
   const handleGetUserDetail = async (
-    userId: string
+    userId: string,
   ): Promise<ApiResponse<any> | null> => {
     setLoading(true);
     setError(null);
@@ -372,7 +376,7 @@ export function useRefreshToken() {
   const [error, setError] = useState<string | null>(null);
 
   const handleRefreshToken = async (
-    payload: RefreshTokenRequest
+    payload: RefreshTokenRequest,
   ): Promise<ApiResponse<any> | null> => {
     setLoading(true);
     setError(null);
@@ -395,20 +399,20 @@ export function useLogout() {
   const [error, setError] = useState<string | null>(null);
 
   const handleLogout = async (
-    payload: LogoutRequest
+    payload: LogoutRequest,
   ): Promise<ApiResponse<any> | null> => {
     setLoading(true);
     setError(null);
     try {
       const res = await authService.logout(payload);
-      
+
       // Clear localStorage if on localhost
       if (typeof window !== "undefined" && isLocalhost()) {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
         localStorage.removeItem("users");
       }
-      
+
       return res;
     } catch (err: any) {
       setError(err?.message || "Đăng xuất thất bại");
@@ -427,7 +431,7 @@ export function useUpdateEmployeeClient() {
 
   const handleUpdateEmployeeClient = async (
     employeeId: string,
-    payload: UpdateEmployeeClientRequest
+    payload: UpdateEmployeeClientRequest,
   ): Promise<ApiResponse<any> | null> => {
     setLoading(true);
     setError(null);
@@ -451,7 +455,7 @@ export function useUpdateBuyerClient() {
 
   const handleUpdateBuyerClient = async (
     buyerId: string,
-    payload: UpdateBuyerClientRequest
+    payload: UpdateBuyerClientRequest,
   ): Promise<ApiResponse<any> | null> => {
     setLoading(true);
     setError(null);
@@ -475,7 +479,7 @@ export function useUpdateUserClient() {
 
   const handleUpdateUserClient = async (
     userId: string,
-    payload: UpdateUserClientRequest
+    payload: UpdateUserClientRequest,
   ): Promise<ApiResponse<any> | null> => {
     setLoading(true);
     setError(null);
@@ -498,7 +502,7 @@ export function useUploadImage() {
   const [error, setError] = useState<string | null>(null);
 
   const handleUploadImage = async (
-    payload: CreateImageRequest
+    payload: CreateImageRequest,
   ): Promise<ApiResponse<any> | null> => {
     setLoading(true);
     setError(null);
@@ -521,7 +525,7 @@ export function useLoginSocial() {
   const [error, setError] = useState<string | null>(null);
 
   const handleLoginSocial = async (
-    payload: Oauth2LoginRequest
+    payload: Oauth2LoginRequest,
   ): Promise<ApiResponse<any> | null> => {
     setLoading(true);
     setError(null);
@@ -544,7 +548,7 @@ export function useLoginSocialCallback() {
   const [error, setError] = useState<string | null>(null);
 
   const handleLoginSocialCallback = async (
-    payload: Oauth2LoginCallBackRequest
+    payload: Oauth2LoginCallBackRequest,
   ): Promise<ApiResponse<any> | null> => {
     setLoading(true);
     setError(null);
@@ -553,7 +557,7 @@ export function useLoginSocialCallback() {
       return res;
     } catch (err: any) {
       setError(
-        err?.message || "Xử lý đăng nhập thông qua mạng xã hội thất bại"
+        err?.message || "Xử lý đăng nhập thông qua mạng xã hội thất bại",
       );
       throw err;
     } finally {

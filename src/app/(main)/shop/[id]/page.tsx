@@ -5,11 +5,10 @@ import dynamic from "next/dynamic";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useState, useMemo } from "react";
 
-// Services & Utils
 import { createConversation } from "@/app/(chat)/_services";
 import { ConversationType } from "@/app/(chat)/_types/chat.dto";
 import { useToast } from "@/hooks/useToast";
-import { CategoryService } from "@/services/categories/category.service";
+import { CategoryService } from "../../category/_service/category.service";
 import { publicProductService } from "@/services/products/product.service";
 import { getShopDetail } from "@/app/(main)/shop/_service/shop.service";
 import { getStoredUserDetail } from "@/utils/jwt";
@@ -29,8 +28,11 @@ import HomeShopLayout from "../_components/HomeShopLayout";
 import ProductListLayout from "../_components/ProductListLayout";
 
 const CustomerShopChat = dynamic(
-  () => import("@/app/(chat)/_components/CustomerShopChat").then((mod) => mod.CustomerShopChat),
-  { ssr: false }
+  () =>
+    import("@/app/(chat)/_components/CustomerShopChat").then(
+      (mod) => mod.CustomerShopChat,
+    ),
+  { ssr: false },
 );
 
 export default function ShopPage() {
@@ -48,16 +50,19 @@ export default function ShopPage() {
   const [isFollowing, setIsFollowing] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [sortBy, setSortBy] = useState("createdDate,desc");
-  const [selectedCategory, setSelectedCategory] = useState<string | undefined>();
+  const [selectedCategory, setSelectedCategory] = useState<
+    string | undefined
+  >();
   const [loadingProducts, setLoadingProducts] = useState(false);
   const [shopChatOpen, setShopChatOpen] = useState(false);
 
   const pageSize = 20;
   const user = getStoredUserDetail();
 
-  const isShopHome = useMemo(() => 
-    activeTab === "all" && !searchKeyword && !selectedCategory,
-  [activeTab, searchKeyword, selectedCategory]);
+  const isShopHome = useMemo(
+    () => activeTab === "all" && !searchKeyword && !selectedCategory,
+    [activeTab, searchKeyword, selectedCategory],
+  );
 
   // --- FETCH INITIAL DATA ---
   useEffect(() => {
@@ -67,15 +72,19 @@ export default function ShopPage() {
         setLoading(true);
         const [shopRes, catRes] = await Promise.all([
           getShopDetail(shopId),
-          CategoryService.getAllParents()
+          CategoryService.getAllParents(),
         ]);
 
         const shopData = _.get(shopRes, "data");
         if (shopData) {
           setShop({
             ...shopData,
-            logoUrl: shopData.logoUrl ? toPublicUrl(shopData.logoUrl) : undefined,
-            bannerUrl: shopData.bannerUrl ? toPublicUrl(shopData.bannerUrl) : undefined,
+            logoUrl: shopData.logoUrl
+              ? toPublicUrl(shopData.logoUrl)
+              : undefined,
+            bannerUrl: shopData.bannerUrl
+              ? toPublicUrl(shopData.bannerUrl)
+              : undefined,
           });
         }
 
@@ -96,19 +105,29 @@ export default function ShopPage() {
     const fetchProducts = async () => {
       setLoadingProducts(true);
       try {
-        const res = await publicProductService.getByShop(shopId, currentPage, pageSize);
+        const res = await publicProductService.getByShop(
+          shopId,
+          currentPage,
+          pageSize,
+        );
         let list = _.get(res, "data.content", []);
 
         // Client-side filtering as secondary (Server-side should be preferred if API supports)
         if (searchKeyword) {
-          list = _.filter(list, (p) => _.toLower(p.name).includes(_.toLower(searchKeyword)));
+          list = _.filter(list, (p) =>
+            _.toLower(p.name).includes(_.toLower(searchKeyword)),
+          );
         }
         if (selectedCategory) {
-          list = _.filter(list, (p) => _.get(p, "category.id") === selectedCategory);
+          list = _.filter(
+            list,
+            (p) => _.get(p, "category.id") === selectedCategory,
+          );
         }
 
         if (sortBy === "price_asc") list = _.orderBy(list, ["price"], ["asc"]);
-        if (sortBy === "price_desc") list = _.orderBy(list, ["price"], ["desc"]);
+        if (sortBy === "price_desc")
+          list = _.orderBy(list, ["price"], ["desc"]);
 
         setProducts(list);
         setTotalProducts(_.get(res, "data.totalElements", 0));
@@ -120,7 +139,8 @@ export default function ShopPage() {
   }, [shopId, currentPage, searchKeyword, selectedCategory, sortBy]);
 
   const handleChat = useCallback(async () => {
-    if (!user?.userId) return warning("Vui lòng đăng nhập để trao đổi với shop!");
+    if (!user?.userId)
+      return warning("Vui lòng đăng nhập để trao đổi với shop!");
     if (shop?.userId) {
       const res = await createConversation({
         conversationType: ConversationType.BUYER_TO_SHOP,
@@ -131,22 +151,30 @@ export default function ShopPage() {
     }
   }, [shop, user, warning]);
 
-  if (loading) return (
-    <div className="h-screen flex flex-col items-center justify-center bg-white">
-      <div className="relative flex items-center justify-center">
-        <div className="w-16 h-16 border-4 border-orange-100 rounded-full" />
-        <div className="absolute w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin" />
+  if (loading)
+    return (
+      <div className="h-screen flex flex-col items-center justify-center bg-white">
+        <div className="relative flex items-center justify-center">
+          <div className="w-16 h-16 border-4 border-orange-100 rounded-full" />
+          <div className="absolute w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin" />
+        </div>
+        <p className="mt-4  text-gray-400 font-bold text-sm animate-pulse uppercase tracking-widest">
+          Đang tải cửa hàng...
+        </p>
       </div>
-      <p className="mt-4  text-gray-400 font-bold text-sm animate-pulse uppercase tracking-widest">Đang tải cửa hàng...</p>
-    </div>
-  );
+    );
 
-  if (!shop) return (
-    <div className="h-[60vh] flex flex-col items-center justify-center  text-gray-500 gap-4">
-      <div className="text-6xl  text-gray-200 font-bold tracking-tighter italic">404</div>
-      <p className="font-bold uppercase text-xs tracking-[0.3em]">Cửa hàng này không còn tồn tại</p>
-    </div>
-  );
+  if (!shop)
+    return (
+      <div className="h-[60vh] flex flex-col items-center justify-center  text-gray-500 gap-4">
+        <div className="text-6xl  text-gray-200 font-bold tracking-tighter italic">
+          404
+        </div>
+        <p className="font-bold uppercase text-xs tracking-[0.3em]">
+          Cửa hàng này không còn tồn tại
+        </p>
+      </div>
+    );
 
   return (
     <div className="min-h-screen bg-[#F8F9FB]">
@@ -167,8 +195,9 @@ export default function ShopPage() {
         />
 
         <main className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
-          <div className={`flex flex-col gap-8 transition-all duration-500 ${!isShopHome ? "lg:flex-row" : ""}`}>
-            
+          <div
+            className={`flex flex-col gap-8 transition-all duration-500 ${!isShopHome ? "lg:flex-row" : ""}`}
+          >
             {/* Sidebar chỉ hiện ở tab Sản phẩm hoặc khi có Filter */}
             {!isShopHome && (
               <aside className="hidden lg:block w-72 space-y-6 shrink-0 sticky top-20 pb-4 h-fit animate-in fade-in slide-in-from-left-4 duration-700">
@@ -189,10 +218,12 @@ export default function ShopPage() {
             <section className="flex-1">
               <div className="transition-all duration-700 ease-in-out">
                 {isShopHome ? (
-                  <HomeShopLayout 
+                  <HomeShopLayout
                     products={products}
-                    onViewAll={() => setActiveTab('new')}
-                    onSaveVoucher={(code) => success(`Đã lưu mã ${code} thành công!`)}
+                    onViewAll={() => setActiveTab("new")}
+                    onSaveVoucher={(code) =>
+                      success(`Đã lưu mã ${code} thành công!`)
+                    }
                   />
                 ) : (
                   <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">

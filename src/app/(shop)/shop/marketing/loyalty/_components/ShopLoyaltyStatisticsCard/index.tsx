@@ -1,22 +1,20 @@
-
-import React, { useState, useEffect } from "react";
-import {
-  Trophy,
-  Gift,
-  User,
-  Clock,
-  CheckCircle2,
-  DollarSign,
-  Loader2,
-  TrendingUp,
-} from "lucide-react";
-import { loyaltyService } from "../../../_services/loyalty.service";
-import type { ShopLoyaltyStatisticsResponse } from "../../../_types/loyalty.types";
 import { SectionLoading } from "@/components";
+import {
+  CheckCircle2,
+  Clock,
+  DollarSign,
+  Gift,
+  TrendingUp,
+  Trophy,
+  User,
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import { loyaltyService } from "../../_services/loyalty.service";
+import type { ShopLoyaltyStatisticsResponse } from "../../_types/loyalty.types";
 
 export const ShopLoyaltyStatisticsCard = () => {
   const [stats, setStats] = useState<ShopLoyaltyStatisticsResponse | null>(
-    null
+    null,
   );
   const [loading, setLoading] = useState(true);
 
@@ -89,7 +87,6 @@ export const ShopLoyaltyStatisticsCard = () => {
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-6">
-      {/* Header */}
       <div className="px-6 py-4 border-b border-slate-100 bg-slate-50/50 flex items-center gap-2">
         <Trophy className="w-5 h-5 text-amber-500" />
         <h2 className="font-bold  text-gray-800 tracking-tight">
@@ -97,7 +94,6 @@ export const ShopLoyaltyStatisticsCard = () => {
         </h2>
       </div>
 
-      {/* Grid Content */}
       <div className="p-6">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
           {statItems.map((item, index) => (

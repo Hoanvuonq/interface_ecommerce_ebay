@@ -12,7 +12,7 @@ import {
   Info,
 } from "lucide-react";
 import { cn } from "@/utils/cn";
-import { InputField, SelectComponent } from "@/components";
+import { FormInput, InputField, SelectComponent } from "@/components";
 import { ButtonField } from "@/components";
 
 type TabKey = "preferred" | "intellectual";
@@ -79,7 +79,7 @@ export const ComplaintScreen = () => {
                   "pb-4 text-sm font-bold transition-all relative uppercase tracking-tight",
                   activeTab === tab.id
                     ? "text-orange-600 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-1 after:bg-orange-500 after:rounded-full"
-                    : "text-gray-500 hover:text-gray-700"
+                    : "text-gray-500 hover:text-gray-700",
                 )}
               >
                 {tab.label}
@@ -98,7 +98,7 @@ export const ComplaintScreen = () => {
                   "px-6 py-2 text-sm font-medium rounded-xl transition-all whitespace-nowrap",
                   filterStatus === sub.status
                     ? "text-orange-600 bg-orange-50 font-bold"
-                    : "text-gray-600 hover:bg-gray-50"
+                    : "text-gray-600 hover:bg-gray-50",
                 )}
               >
                 {sub.label} {sub.count > 0 && `(${sub.count})`}
@@ -106,17 +106,15 @@ export const ComplaintScreen = () => {
             ))}
           </div>
 
-          {/* Search & Filter Inputs */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="relative md:col-span-1">
               <Search
                 className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
                 size={18}
               />
-              <input
-                type="text"
-                placeholder="Tìm kiếm mã khiếu nại"
-                className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-orange-500/20 focus:border-gray-500 outline-none transition-all"
+              <FormInput
+                placeholder="TTìm kiếm mã khiếu nại"
+                className="pl-11 h-11 w-full bg-white border-transparent shadow-sm rounded-2xl focus:bg-white"
               />
             </div>
             <SelectComponent
@@ -124,7 +122,7 @@ export const ComplaintScreen = () => {
               options={typeOptions}
               value={selectedType}
               onChange={(val) => setSelectedType(val)}
-              className="h-12" 
+              className="h-12"
             />
 
             <SelectComponent

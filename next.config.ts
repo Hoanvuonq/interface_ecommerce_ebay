@@ -49,20 +49,18 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "down-vn.img.susercontent.com", // Domain ảnh thật từ Shopee (có trong mock data)
+        hostname: "down-vn.img.susercontent.com",
       },
       {
         protocol: "https",
-        hostname: "dummyimage.com", // Domain ảnh placeholder
+        hostname: "dummyimage.com",
       },
-      {
-        protocol: "https",
-        hostname: "**", // (Tùy chọn) Dùng dòng này nếu muốn chấp nhận mọi ảnh (chỉ dùng khi dev)
-      },
+     
       {
         protocol: 'https',
         hostname: 'images.unsplash.com',
-      }
+      },
+      
     ],
     formats: ["image/avif", "image/webp"],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],

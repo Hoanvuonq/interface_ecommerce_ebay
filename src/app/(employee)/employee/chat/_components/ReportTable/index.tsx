@@ -24,6 +24,7 @@ import {
 import {
   DataTable,
   FormInput,
+  SearchComponent,
   SelectComponent,
   StatCardComponents,
 } from "@/components";
@@ -327,18 +328,13 @@ export const ReportTable: React.FC<ReportTableProps> = ({ onViewReport }) => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
-            <div className="md:col-span-6 relative group">
-              <Search
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-orange-500 transition-colors z-10"
-                size={18}
-              />
-              <FormInput
-                placeholder="Tìm mã báo cáo hoặc mô tả vi phạm..."
-                value={filters.keyword || ""}
-                onChange={(e) => handleFilterChange("keyword", e.target.value)}
-                className="pl-12 h-12 bg-gray-50/80 rounded-2xl border-transparent focus:bg-white transition-all shadow-sm font-bold text-sm"
-              />
-            </div>
+            <SearchComponent
+              value={filters.keyword || ""}
+              onChange={(value) => handleFilterChange("keyword", value)}
+              placeholder="Tìm mã báo cáo hoặc mô tả vi phạm..."
+              size="md"
+              className="md:col-span-6"
+            />
 
             <div className="md:col-span-3">
               <SelectComponent

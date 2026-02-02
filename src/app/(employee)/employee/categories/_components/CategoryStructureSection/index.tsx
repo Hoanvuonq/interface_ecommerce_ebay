@@ -43,7 +43,7 @@ export const CategoryStructureSection: React.FC<
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
         <div className="space-y-2">
-          <div className="text-[11px] font-black text-slate-500 uppercase ml-2 tracking-widest flex items-center gap-2">
+          <div className="text-[11px] font-bold text-slate-500 uppercase ml-2 tracking-widest flex items-center gap-2">
             Danh mục cha
             <span className="text-[10px] lowercase font-medium opacity-60">
               (Tùy chọn)
@@ -71,7 +71,7 @@ export const CategoryStructureSection: React.FC<
 
         {/* TRẠNG THÁI HOẠT ĐỘNG */}
         <div className="space-y-2">
-          <label className="text-[11px] font-black text-slate-500 uppercase ml-2 tracking-widest">
+          <label className="text-[11px] font-bold text-slate-500 uppercase ml-2 tracking-widest">
             Trạng thái hiển thị
           </label>
           <div

@@ -49,13 +49,13 @@ export const AddressFormModal = ({
     if (open) {
       if (editingAddress) {
         setFormData({
-          fullName: editingAddress.fullName || "",
+          fullName: editingAddress.recipientName || "", // recipientName -> fullName
           phone: editingAddress.phone || "",
           country: "Vietnam",
-          provinceCode: editingAddress.address?.provinceCode || "",
-          provinceName: editingAddress.address?.provinceName || "",
+          provinceCode: editingAddress.address?.provinceCode || "", // Giữ code nếu backend có trả về
+          provinceName: editingAddress.address?.province || "", // province -> provinceName
           wardCode: editingAddress.address?.wardCode || "",
-          wardName: editingAddress.address?.wardName || "",
+          wardName: editingAddress.address?.ward || "", // ward -> wardName
           addressDetail: editingAddress.address?.detail || "",
           default: editingAddress.default || false,
           defaultPickup: editingAddress.defaultPickup || false,

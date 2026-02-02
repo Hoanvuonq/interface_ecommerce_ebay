@@ -25,12 +25,7 @@ export const SkuHeader = ({
         const detectedPrefix = firstSku.substring(0, firstDashIndex);
         const suffixPart = firstSku.substring(firstDashIndex + 1);
         
-        console.log("Detected SKU parts:", {
-          original: firstSku,
-          prefix: detectedPrefix,
-          suffix: suffixPart,
-          dashIndex: firstDashIndex
-        });
+      
 
         setBulkValues((prev: any) => ({
           ...prev,
@@ -100,13 +95,7 @@ export const SkuHeader = ({
                     
                     const currentSuffix = bulkValues[`${field}_suffix`] || "";
                     const newSku = currentSuffix ? `${newPrefix}-${currentSuffix}` : newPrefix;
-                    
-                    console.log("Prefix changed:", {
-                      newPrefix,
-                      currentSuffix,
-                      newSku
-                    });
-                    
+                  
                     setBulkValues((prev: any) => ({
                       ...prev,
                       [`${field}_prefix`]: newPrefix,

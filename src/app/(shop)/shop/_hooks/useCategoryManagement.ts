@@ -58,7 +58,6 @@ export const useCategoryManagement = (
 
       const response = await CategoryService.getAllParents();
 
-      console.log("📊 Categories Tree API Response:", response);
 
       let categoriesData: CategoryResponse[] = [];
 
@@ -98,10 +97,7 @@ export const useCategoryManagement = (
 
       const flatCategories = flattenCategories(categoriesData);
       setCategories(flatCategories);
-      console.log(
-        "✅ Loaded categories with hierarchy:",
-        flatCategories.length
-      );
+    
     } catch (err: any) {
       console.error("Failed to fetch categories:", err);
       onError(err?.response?.data?.message || "Không thể tải danh mục");

@@ -18,6 +18,7 @@ import {
   X,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom"; 
 
 interface DetailModalProps {
   category: CategoryResponse;
@@ -32,6 +33,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
   onEdit,
   onDelete,
 }) => {
+  const [mounted, setMounted] = useState(false);
   const [children, setChildren] = useState<CategoryResponse[]>([]);
   const [expandedChildren, setExpandedChildren] = useState<Set<string>>(
     new Set(),
@@ -40,9 +42,12 @@ export const DetailModal: React.FC<DetailModalProps> = ({
   const { handleGetAllChildren, loading: loadingChildren } =
     useGetAllChildren();
 
+  // Xử lý Mounted cho SSR & Khóa Scroll body
   useEffect(() => {
+    setMounted(true);
     document.body.style.overflow = "hidden";
     if (category.id) loadChildren();
+
     return () => {
       document.body.style.overflow = "unset";
     };
@@ -73,8 +78,10 @@ export const DetailModal: React.FC<DetailModalProps> = ({
 
   const imageUrl = getImageUrl(category);
 
-  return (
-    <div className="fixed inset-0 z-150 flex justify-end">
+  if (!mounted) return null;
+
+  return createPortal(
+    <div className="fixed inset-0 z-999 flex justify-end">
       <div
         className="absolute inset-0 bg-gray-900/60 backdrop-blur-md animate-in fade-in duration-300"
         onClick={onClose}
@@ -103,6 +110,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
           </button>
         </div>
 
+        {/* Content Section */}
         <div className="flex-1 overflow-y-auto custom-scrollbar p-8 space-y-10">
           <div className="flex flex-col md:flex-row gap-8 items-start">
             <div className="relative group shrink-0 mx-auto md:mx-0">
@@ -115,7 +123,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                   <img
                     src={imageUrl}
                     className="w-full h-full object-cover transition-transform group-hover:scale-110"
-                    alt=""
+                    alt={category.name}
                   />
                 ) : (
                   <ImageIcon size={64} className="text-gray-200" />
@@ -139,12 +147,11 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                   {category.active ? "● Operational" : "○ Offline"}
                 </span>
                 <span className="px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 border border-blue-100 text-[10px] font-semibold uppercase tracking-widest shadow-sm">
-                  v{category.version}.0
+                  v{category.version || 1}.0
                 </span>
               </div>
               <p className="text-sm font-bold text-gray-500 leading-relaxed italic bg-gray-50 p-4 rounded-2xl border border-gray-100">
-                {category.description ||
-                  "No encrypted metadata provided for this asset."}
+                {category.description || "No metadata provided for this asset."}
               </p>
             </div>
           </div>
@@ -165,7 +172,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
             <InfoCard
               icon={<User />}
               label="Genesis Creator"
-              value={category.createdBy}
+              value={category.createdBy || "System"}
               color="text-orange-600"
             />
             <InfoCard
@@ -176,6 +183,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
             />
           </div>
 
+          {/* Nested Entities List */}
           <div className="space-y-4">
             <div className="flex items-center justify-between border-l-4 border-gray-500 pl-4 py-1">
               <h4 className="text-sm font-semibold text-gray-800 uppercase tracking-[0.2em]">
@@ -187,76 +195,88 @@ export const DetailModal: React.FC<DetailModalProps> = ({
             </div>
 
             <div className="space-y-3">
-              {children.map((child) => (
-                <div
-                  key={child.id}
-                  className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden group hover:border-blue-200 transition-all"
-                >
+              {loadingChildren ? (
+                <p className="text-xs text-gray-400 italic">
+                  Scanning nodes...
+                </p>
+              ) : (
+                children.map((child) => (
                   <div
-                    className="p-4 flex items-center justify-between cursor-pointer hover:bg-blue-50/30 transition-colors"
-                    onClick={() => toggleChildExpansion(child.id)}
+                    key={child.id}
+                    className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden group hover:border-blue-200 transition-all"
                   >
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center text-gray-600 group-hover:text-blue-500 transition-colors">
-                        <Box size={20} />
+                    <div
+                      className="p-4 flex items-center justify-between cursor-pointer hover:bg-blue-50/30 transition-colors"
+                      onClick={() => toggleChildExpansion(child.id)}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center text-gray-600 group-hover:text-blue-500 transition-colors">
+                          <Box size={20} />
+                        </div>
+                        <span className="text-sm font-semibold text-gray-700 uppercase tracking-tight">
+                          {child.name}
+                        </span>
                       </div>
-                      <span className="text-sm font-semibold text-gray-700 uppercase tracking-tight">
-                        {child.name}
-                      </span>
+                      <ChevronDown
+                        className={cn(
+                          "text-gray-500 transition-transform duration-300",
+                          expandedChildren.has(child.id) && "rotate-180",
+                        )}
+                        size={20}
+                      />
                     </div>
-                    <ChevronDown
-                      className={cn(
-                        "text-gray-500 transition-transform duration-300",
-                        expandedChildren.has(child.id) && "rotate-180",
-                      )}
-                      size={20}
-                    />
+                    {expandedChildren.has(child.id) && (
+                      <div className="px-6 pb-6 pt-2 bg-gray-50/50 space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="space-y-1">
+                            <p className="text-[9px] font-semibold text-gray-600 uppercase tracking-widest leading-none">
+                              Slug
+                            </p>
+                            <p className="text-xs font-bold text-gray-600">
+                              /{child.slug}
+                            </p>
+                          </div>
+                          <div className="space-y-1 text-right">
+                            <p className="text-[9px] font-semibold text-gray-600 uppercase tracking-widest leading-none">
+                              Modified
+                            </p>
+                            <p className="text-xs font-bold text-gray-600">
+                              {new Date(
+                                child.lastModifiedDate,
+                              ).toLocaleDateString("vi-VN")}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex gap-2 pt-2 border-t border-gray-100">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onEdit?.(child);
+                            }}
+                            className="flex-1 py-2.5 bg-white border border-gray-200 rounded-xl text-[10px] font-semibold uppercase text-gray-600 hover:text-orange-500 transition-all flex items-center justify-center gap-2"
+                          >
+                            <Edit3 size={12} /> Edit
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onDelete?.(child.id);
+                            }}
+                            className="flex-1 py-2.5 bg-white border border-gray-200 rounded-xl text-[10px] font-semibold uppercase text-gray-600 hover:text-rose-500 transition-all flex items-center justify-center gap-2"
+                          >
+                            <Trash2 size={12} /> Purge
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  {expandedChildren.has(child.id) && (
-                    <div className="px-6 pb-6 pt-2 bg-gray-50/50 space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-1">
-                          <p className="text-[9px] font-semibold text-gray-600 uppercase tracking-widest leading-none">
-                            Slug
-                          </p>
-                          <p className="text-xs font-bold text-gray-600">
-                            /{child.slug}
-                          </p>
-                        </div>
-                        <div className="space-y-1 text-right">
-                          <p className="text-[9px] font-semibold text-gray-600 uppercase tracking-widest leading-none">
-                            Modified
-                          </p>
-                          <p className="text-xs font-bold text-gray-600">
-                            {new Date(
-                              child.lastModifiedDate,
-                            ).toLocaleDateString("vi-VN")}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex gap-2 pt-2 border-t border-gray-100">
-                        <button
-                          onClick={() => onEdit?.(child)}
-                          className="flex-1 py-2.5 bg-white border border-gray-200 rounded-xl text-[10px] font-semibold uppercase text-gray-600 hover:text-orange-500 hover:border-gray-200 transition-all flex items-center justify-center gap-2"
-                        >
-                          <Edit3 size={12} /> Edit
-                        </button>
-                        <button
-                          onClick={() => onDelete?.(child.id)}
-                          className="flex-1 py-2.5 bg-white border border-gray-200 rounded-xl text-[10px] font-semibold uppercase text-gray-600 hover:text-rose-500 hover:border-rose-200 transition-all flex items-center justify-center gap-2"
-                        >
-                          <Trash2 size={12} /> Purge
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
         </div>
 
-        {/* Protocol Footer Actions */}
+        {/* Action Footer */}
         <div className="p-6 bg-gray-50/50 border-t border-gray-100 flex items-center gap-3 shrink-0">
           <button
             onClick={() => {
@@ -277,37 +297,39 @@ export const DetailModal: React.FC<DetailModalProps> = ({
             <Trash2 size={20} />
           </button>
         </div>
-      </div>
 
-      {/* Custom Image Preview Overlay */}
-      {previewVisible && imageUrl && (
-        <div className="fixed inset-0 z-200 bg-gray-900/90 backdrop-blur-xl flex items-center justify-center p-10 animate-in fade-in duration-300">
-          <button
-            onClick={() => setPreviewVisible(false)}
-            className="absolute top-10 right-10 p-4 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all"
-          >
-            <X size={32} />
-          </button>
-          <img
-            src={imageUrl}
-            className="max-w-full max-h-full object-contain rounded-3xl shadow-2xl animate-in zoom-in-95 duration-500"
-            alt=""
-          />
-        </div>
-      )}
-    </div>
+        {previewVisible && imageUrl && (
+          <div className="fixed inset-0 z-1000 bg-gray-900/90 backdrop-blur-xl flex items-center justify-center p-10 animate-in fade-in duration-300">
+            <button
+              onClick={() => setPreviewVisible(false)}
+              className="absolute top-10 right-10 p-4 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all"
+            >
+              <X size={32} />
+            </button>
+            <img
+              src={imageUrl}
+              className="max-w-full max-h-full object-contain rounded-3xl shadow-2xl animate-in zoom-in-95 duration-500"
+              alt="Preview"
+            />
+          </div>
+        )}
+      </div>
+    </div>,
+    document.body, 
   );
 };
 
-// Helper Sub-component
-interface InfoCardProps {
-  icon: React.ReactElement<any>;
+function InfoCard({
+  icon,
+  label,
+  value,
+  color,
+}: {
+  icon: React.ReactElement;
   label: string;
   value: string;
   color?: string;
-}
-
-function InfoCard({ icon, label, value, color }: InfoCardProps) {
+}) {
   return (
     <div className="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm group hover:border-gray-100 transition-colors">
       <div className="flex items-center gap-3">
@@ -316,12 +338,7 @@ function InfoCard({ icon, label, value, color }: InfoCardProps) {
             "p-2.5 rounded-xl bg-gray-50 group-hover:bg-white transition-colors",
             color,
           )}
-        >
-          {React.cloneElement(icon, {
-            size: 18,
-            strokeWidth: 2.5,
-          })}
-        </div>
+        ></div>
         <div>
           <p className="text-[9px] font-semibold text-gray-600 uppercase tracking-widest leading-none mb-1.5">
             {label}

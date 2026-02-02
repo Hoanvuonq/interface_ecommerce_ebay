@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import {
@@ -10,13 +11,12 @@ import {
   Undo2,
   User,
 } from "lucide-react";
-import { ShopAddress } from "../ShopAddressForm/type";
 import { cn } from "@/utils/cn";
 
 interface Props {
-  item: ShopAddress;
+  item: any; // ShopAddress theo JSON mới
   index: number;
-  onEdit: (item: ShopAddress) => void;
+  onEdit: (item: any) => void;
   onDelete: (id: string) => void;
 }
 
@@ -30,24 +30,14 @@ export const ShopAddressCard = ({ item, index, onEdit, onDelete }: Props) => {
         "rounded-4xl p-6 hover:border-orange-400 transition-all duration-500 overflow-hidden",
       )}
     >
-      <div
-        className={cn(
-          "absolute top-0 right-0 w-24 h-24 bg-orange-50/50 rounded-bl-[4rem] ",
-          "-mr-8 -mt-8 group-hover:bg-orange-100/50 transition-colors duration-500",
-        )}
-      />
+      <div className="absolute top-0 right-0 w-24 h-24 bg-orange-50/50 rounded-bl-[4rem] -mr-8 -mt-8 group-hover:bg-orange-100/50 transition-colors duration-500" />
 
-      <span
-        className={cn(
-          "absolute -bottom-4 -right-2 text-[80px] font-bold  text-gray-50 opacity-[0.05]",
-          "select-none group-hover:text-orange-500 group-hover:opacity-[0.08] transition-all duration-700 italic leading-none",
-        )}
-      >
+      <span className="absolute -bottom-4 -right-2 text-[80px] font-bold text-gray-50 opacity-[0.05] select-none group-hover:text-orange-500 group-hover:opacity-[0.08] transition-all duration-700 italic leading-none">
         {index + 1}
       </span>
 
-      <div className="w-full flex items-center mb-5 justify-between">
-        <div className="flex flex-wrap gap-1.5  relative z-10">
+      <div className="w-full flex items-center mb-5 justify-between relative z-10">
+        <div className="flex flex-wrap gap-1.5">
           {item.default && (
             <span className="flex items-center gap-1 px-3 py-1 bg-emerald-50 text-emerald-600 text-[10px] font-bold uppercase rounded-full border border-emerald-100 shadow-sm">
               <CheckCircle2 size={10} strokeWidth={3} /> Mặc định
@@ -64,17 +54,18 @@ export const ShopAddressCard = ({ item, index, onEdit, onDelete }: Props) => {
             </span>
           )}
         </div>
+
         <div className="flex gap-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-500 ease-out">
           <button
             onClick={() => onEdit(item)}
-            className="flex items-center gap-1.5 px-4 py-2 bg-slate-900 text-white rounded-xl hover:bg-orange-500 transition-all font-bold text-[10px] uppercase tracking-wider shadow-md active:scale-95"
+            className="flex items-center gap-1.5 px-4 py-2 bg-slate-900 text-white rounded-xl hover:bg-orange-500 transition-all font-bold text-[10px] uppercase shadow-md"
           >
             <PencilLine size={12} strokeWidth={3} /> Hiệu chỉnh
           </button>
           {!isProtected && (
             <button
               onClick={() => onDelete(item.addressId)}
-              className="flex items-center gap-1.5 px-4 py-2 bg-red-50 text-red-500 hover:bg-red-500 hover:text-white rounded-xl transition-all font-bold text-[10px] uppercase tracking-wider active:scale-95"
+              className="flex items-center gap-1.5 px-4 py-2 bg-red-50 text-red-500 hover:bg-red-500 hover:text-white rounded-xl transition-all font-bold text-[10px] uppercase"
             >
               <Trash2 size={12} strokeWidth={3} /> Loại bỏ
             </button>
@@ -84,44 +75,46 @@ export const ShopAddressCard = ({ item, index, onEdit, onDelete }: Props) => {
 
       <div className="space-y-4 relative z-10">
         <div className="flex items-center gap-3.5">
-          <div className="w-11 h-11 rounded-xl bg-slate-50 flex items-center justify-center  text-gray-400 group-hover:bg-orange-50 group-hover:text-orange-500 transition-all duration-500 shadow-inner shrink-0">
+          <div className="w-11 h-11 rounded-xl bg-slate-50 flex items-center justify-center text-gray-400 group-hover:text-orange-500 transition-all duration-500 shadow-inner shrink-0">
             <User size={18} />
           </div>
           <div>
-            <p className="text-[10px] font-bold  text-gray-400 uppercase  leading-none mb-1.5">
+            <p className="text-[10px] font-bold text-gray-400 uppercase leading-none mb-1.5">
               Người phụ trách
             </p>
-            <span className="font-bold  text-gray-800 text-sm uppercase tracking-tight italic leading-none">
-              {item.fullName}
+            {/* FIX: recipientName thay vì fullName */}
+            <span className="font-bold text-gray-800 text-sm uppercase italic leading-none">
+              {item.recipientName || "Chưa cập nhật"}
             </span>
           </div>
         </div>
 
         <div className="flex items-center gap-3.5">
-          <div className="w-11 h-11 rounded-xl bg-slate-50 flex items-center justify-center  text-gray-400 group-hover:bg-blue-50 group-hover:text-blue-500 transition-all duration-500 shadow-inner shrink-0">
+          <div className="w-11 h-11 rounded-xl bg-slate-50 flex items-center justify-center text-gray-400 group-hover:text-blue-500 transition-all duration-500 shadow-inner shrink-0">
             <Phone size={18} />
           </div>
           <div>
-            <p className="text-[10px] font-bold  text-gray-400 uppercase  leading-none mb-1.5">
+            <p className="text-[10px] font-bold text-gray-400 uppercase leading-none mb-1.5">
               Đường dây nóng
             </p>
-            <span className="text-sm font-bold  text-gray-700 tracking-tighter leading-none">
+            <span className="text-sm font-bold text-gray-700 tracking-tighter leading-none">
               {item.phone}
             </span>
           </div>
         </div>
 
         <div className="flex items-start gap-3.5">
-          <div className="w-11 h-11 rounded-xl bg-slate-50 flex items-center justify-center  text-gray-400 group-hover:bg-emerald-50 group-hover:text-emerald-500 transition-all duration-500 shrink-0 shadow-inner">
+          <div className="w-11 h-11 rounded-xl bg-slate-50 flex items-center justify-center text-gray-400 group-hover:text-emerald-500 transition-all duration-500 shrink-0 shadow-inner">
             <MapPin size={18} />
           </div>
           <div>
-            <p className="text-[10px] font-bold  text-gray-400 uppercase  leading-none mb-1.5">
+            <p className="text-[10px] font-bold text-gray-400 uppercase leading-none mb-1.5">
               Tọa độ vận hành
             </p>
-            <span className="text-[12px] font-medium  text-gray-500 leading-snug italic block line-clamp-2 pr-2">
-              {item.address.detail}, {item.address.wardName},{" "}
-              {item.address.provinceName}
+            {/* FIX: province và ward thay vì provinceName/wardName */}
+            <span className="text-[12px] font-medium text-gray-500 leading-snug italic block line-clamp-2 pr-2">
+              {item.address?.detail}, {item.address?.ward},{" "}
+              {item.address?.province}
             </span>
           </div>
         </div>

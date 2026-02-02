@@ -16,6 +16,7 @@ import { FilterRequest } from "@/app/(chat)/_types/chat.dto";
 
 const API_GETSHOP_USER = "v1/public/shops";
 const API_GETSHOP = "v1/shops";
+const API_GETSHOP2 = "v1/shop";
 
 export async function createShop(
   payload: CreateShopRequest,
@@ -74,7 +75,7 @@ export async function createShopAddress(
   payload: CreateShopAddressRequest,
 ): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
-    url: `/${API_GETSHOP}/me/address`,
+    url: `/${API_GETSHOP2}/addresses`,
     method: "POST",
     data: payload,
     headers: {
@@ -191,10 +192,6 @@ export async function getShopDetail(shopId: string): Promise<ApiResponse<any>> {
   });
 }
 
-/**
- * Lấy shop detail của user hiện tại (tự động từ Security Context)
- * Dùng để check shop verification status
- */
 export async function getCurrentUserShopDetail(): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
     url: `/${API_GETSHOP}/me/check`,
@@ -209,7 +206,7 @@ export async function getAllShopAddresses(
   shopId: string,
 ): Promise<ApiResponse<any>> {
   return request<ApiResponse<any>>({
-    url: `/${API_GETSHOP}/addresses`,
+    url: `/${API_GETSHOP2}/addresses`,
     method: "GET",
     headers: {
       "Content-Type": "application/json",

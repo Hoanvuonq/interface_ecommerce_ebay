@@ -2,11 +2,11 @@
 
 import { CategoryResponse } from "@/types/categories/category.detail";
 import { cn } from "@/utils/cn";
+import { toPublicUrl } from "@/utils/storage/url";
 import Image from "next/image";
 import Link from "next/link";
-import { categoryIcons } from "../../_types/categories";
-import { resolveVariantImageUrl } from "@/utils/products/media.helpers";
 import React, { useState } from "react";
+import { categoryIcons } from "../../_types/categories";
 
 interface CategoryItemProps {
   category: CategoryResponse;
@@ -21,16 +21,13 @@ export const CategoryItem: React.FC<CategoryItemProps> = ({
 }) => {
   const [imgError, setImgError] = useState(false);
 
-  const hasImage = category.imageBasePath && !imgError;
-  const imageUrl = hasImage
-    ? resolveVariantImageUrl(
-        {
-          imageBasePath: category.imageBasePath,
-          imageExtension: category.imageExtension!,
-        },
-        "_thumb"
-      )
-    : null;
+  const imageUrl = React.useMemo(() => {
+    if (!category.imagePath || imgError) return null;
+    
+    const formattedPath = category.imagePath.replace("*", "orig"); 
+    
+    return toPublicUrl(formattedPath);
+  }, [category.imagePath, imgError]);
 
   return (
     <Link
@@ -47,14 +44,14 @@ export const CategoryItem: React.FC<CategoryItemProps> = ({
           "group-hover/item:border-gray-200 group-hover/item:shadow-lg group-hover/item:shadow-orange-500/10 transition-all duration-300"
         )}
       >
-        <div className="w-full h-full p-1 flex items-center justify-center transition-transform duration-500 group-hover/item:scale-110">
-          {hasImage ? (
+        <div className="w-full h-full flex items-center justify-center transition-transform duration-500 group-hover/item:scale-110">
+          {imageUrl ? (
             <Image
               src={imageUrl!}
               alt={category.name}
               width={56}
               height={56}
-              className="object-contain w-full h-full"
+              className="object-cover w-full h-full"
               onError={() => setImgError(true)}
               unoptimized={imageUrl?.includes(".svg")}
             />

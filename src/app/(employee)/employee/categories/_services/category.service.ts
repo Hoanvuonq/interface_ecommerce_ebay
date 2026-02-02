@@ -10,14 +10,15 @@ import type {
 const CATEGORY_API_BASE = "/v1/categories";
 
 class CategoryService {
+
+  private getIfMatchHeader(etag?: string) {
+    if (!etag) return "";
+    return `"${etag.replace(/"/g, "")}"`;
+  }
   async create(
     data: CreateCategoryRequest,
   ): Promise<ApiResponse<CategoryResponse>> {
-    return request({
-      url: CATEGORY_API_BASE,
-      method: "POST",
-      data,
-    });
+    return request({ url: CATEGORY_API_BASE, method: "POST", data });
   }
 
   async getById(id: string): Promise<CategoryResponse> {
@@ -51,7 +52,10 @@ class CategoryService {
     const response: ApiResponse<PageDto<CategoryResponse>> = await request({
       url: CATEGORY_API_BASE,
       method: "GET",
-      params: { page, size },
+      params: {
+        page,
+        size,
+      },
     });
     return response.data!;
   }
@@ -72,31 +76,31 @@ class CategoryService {
     return response.data || [];
   }
 
-  async update(
-    id: string,
-    data: UpdateCategoryRequest,
-    etag: string,
-  ): Promise<ApiResponse<CategoryResponse>> {
+ async update(id: string, data: UpdateCategoryRequest, etag: string) {
+    const ifMatch = this.getIfMatchHeader(etag);
+    if (ifMatch === '""' || !ifMatch) {
+      throw new Error("Mã phiên bản (ETag) bị thiếu hoặc không hợp lệ");
+    }
+
     return request({
       url: `${CATEGORY_API_BASE}/${id}`,
       method: "PUT",
       data,
       headers: {
-        "If-Match": `"${etag}"`,
+        "If-Match": ifMatch,
       },
     });
   }
 
-  async delete(id: string, etag: string): Promise<ApiResponse<void>> {
+  async delete(id: string, etag: string) {
     return request({
       url: `${CATEGORY_API_BASE}/${id}`,
       method: "DELETE",
       headers: {
-        "If-Match": `"${etag}"`,
+        "If-Match": this.getIfMatchHeader(etag),
       },
     });
   }
-
   async hasChildren(id: string): Promise<boolean> {
     const response: ApiResponse<boolean> = await request({
       url: `${CATEGORY_API_BASE}/${id}/has-children`,
@@ -114,11 +118,16 @@ class CategoryService {
   }
 
   buildTree(categories: CategoryResponse[]): CategoryResponse[] {
-    const map: { [key: string]: CategoryResponse } = {};
+    const map: {
+      [key: string]: CategoryResponse;
+    } = {};
     const roots: CategoryResponse[] = [];
 
     categories.forEach((cat) => {
-      map[cat.id] = { ...cat, children: [] };
+      map[cat.id] = {
+        ...cat,
+        children: [],
+      };
     });
 
     categories.forEach((cat) => {

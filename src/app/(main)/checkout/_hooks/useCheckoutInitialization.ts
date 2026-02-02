@@ -106,7 +106,6 @@ export const useCheckoutInitialization = (initialPreview: any) => {
         hasInitialized.current = true;
         // Gọi syncPreview để cập nhật Store và Storage lần đầu
         await syncPreview(initPayload);
-        console.log("✅ Checkout Initialization Finalized");
       } catch (e) {
         console.error("❌ Init Error:", e);
         hasInitialized.current = false;

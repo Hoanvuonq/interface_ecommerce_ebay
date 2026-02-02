@@ -39,7 +39,7 @@ export const ShippingRestrictionsSection: React.FC<
         >
           {/* Loại giới hạn */}
           <div className="space-y-2">
-            <label className="text-[11px] font-black text-slate-500 uppercase ml-2 tracking-widest">
+            <label className="text-[11px] font-bold text-slate-500 uppercase ml-2 tracking-widest">
               Phạm vi áp dụng
             </label>
             <SelectComponent
@@ -67,7 +67,7 @@ export const ShippingRestrictionsSection: React.FC<
 
           {restrictionType === "COUNTRIES" && (
             <div className="space-y-2 animate-in slide-in-from-left-4 duration-300">
-              <label className="text-[11px] font-black text-slate-500 uppercase ml-2 tracking-widest">
+              <label className="text-[11px] font-bold text-slate-500 uppercase ml-2 tracking-widest">
                 Chế độ giới hạn
               </label>
               <SelectComponent
@@ -114,7 +114,7 @@ export const ShippingRestrictionsSection: React.FC<
           {/* Danh sách Quốc gia */}
           {restrictionType === "COUNTRIES" && (
             <div className="p-5 bg-blue-50/50 rounded-3xl border border-blue-100 animate-in fade-in duration-500 space-y-3">
-              <label className="text-[11px] font-black text-indigo-500 uppercase ml-2 tracking-widest">
+              <label className="text-[11px] font-bold text-indigo-500 uppercase ml-2 tracking-widest">
                 Chọn danh sách quốc gia
               </label>
               <SelectComponent
@@ -134,7 +134,7 @@ export const ShippingRestrictionsSection: React.FC<
           {/* Danh sách Khu vực */}
           {restrictionType === "REGIONS" && (
             <div className="p-5 bg-blue-50/50 rounded-3xl border border-blue-100 animate-in fade-in duration-500 space-y-3">
-              <label className="text-[11px] font-black text-indigo-500 uppercase ml-2 tracking-widest">
+              <label className="text-[11px] font-bold text-indigo-500 uppercase ml-2 tracking-widest">
                 Chọn danh sách khu vực
               </label>
               <SelectComponent

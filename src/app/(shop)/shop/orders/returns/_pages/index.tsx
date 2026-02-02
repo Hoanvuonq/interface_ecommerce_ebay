@@ -124,7 +124,8 @@ export default function ReturnsScreen() {
             </div>
             <div>
               <h1 className="text-4xl font-bold  text-gray-900 uppercase tracking-tighter italic leading-none">
-                Trả Hàng / Hoàn Tiền  <span className="text-orange-500">Hủy Đơn</span>
+                Trả Hàng / Hoàn Tiền{" "}
+                <span className="text-orange-500">Hủy Đơn</span>
               </h1>
               <p className="text-[10px] font-bold  text-gray-400 uppercase tracking-[0.3em] mt-2 ml-1">
                 Returns & Cancellations System

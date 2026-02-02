@@ -62,7 +62,6 @@ class AuthService {
     const url = isLocalhost()
       ? `${API_ENDPOINT_AUTH}/login`
       : `${API_ENDPOINT_AUTH}/login/buyer`;
-    console.log("[LOGIN] Call URL:", url);
     const response = await request<ApiResponse<any>>({
       url,
       method: "POST",
@@ -417,7 +416,6 @@ class AuthService {
       if (response?.success && response?.data) {
         localStorage.setItem("users", JSON.stringify(response.data));
         localStorage.setItem("users", JSON.stringify(response.data));
-        console.log("User saved to localStorage:", response.data);
         return response.data;
       } else {
         return null;
@@ -435,7 +433,6 @@ class AuthService {
       try {
         localStorage.setItem("users", JSON.stringify(userData));
         document.cookie = "isLoggedIn=true; path=/; max-age=86400";
-        console.log("✅ User info stored from login response");
       } catch (error) {
         console.error("Error storing user info:", error);
       }

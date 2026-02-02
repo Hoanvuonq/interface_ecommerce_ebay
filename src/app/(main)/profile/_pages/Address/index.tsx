@@ -98,7 +98,7 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
           <SectionLoading />
         </div>
       ) : addresses.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 bg-gray-50/50 border-2 border-dashed border-gray-200 rounded-[2rem]">
+        <div className="flex flex-col items-center justify-center py-20 bg-gray-50/50 border-2 border-dashed border-gray-200 rounded-4xl">
           <FaMapMarkerAlt className="text-4xl text-gray-300 mb-4" />
           <p className="text-gray-400 font-bold uppercase text-[10px] tracking-widest">
             Danh sách trống
@@ -120,19 +120,19 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
                 <div className="space-y-4 flex-1">
                   {/* Tên & Badge */}
                   <div className="flex flex-wrap items-center gap-3">
-                    <span className="font-black text-gray-900 text-lg uppercase italic tracking-tighter">
+                    <span className="font-bold text-gray-900 text-lg uppercase italic tracking-tighter">
                       {addr.recipientName}
                     </span>
 
                     {addr.isDefault && (
-                      <span className="text-[9px] font-black px-3 py-1 rounded-full bg-orange-500 text-white flex items-center gap-1 uppercase tracking-[0.1em] shadow-md">
+                      <span className="text-[9px] font-bold px-3 py-1 rounded-full bg-orange-500 text-white flex items-center gap-1 uppercase tracking-widest shadow-md">
                         <FaCheckCircle size={10} /> Mặc định
                       </span>
                     )}
 
                     <span
                       className={cn(
-                        "text-[9px] font-black px-3 py-1 rounded-full border flex items-center gap-1.5 uppercase tracking-[0.1em]",
+                        "text-[9px] font-bold px-3 py-1 rounded-full border flex items-center gap-1.5 uppercase tracking-widest",
                         addr.type === "HOME"
                           ? "bg-blue-50 text-blue-600 border-blue-100"
                           : "bg-purple-50 text-purple-600 border-purple-100",
@@ -162,7 +162,7 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
                         .join(", ")}
                     </p>
                     <div className="flex gap-4 pt-1">
-                      <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest italic">
+                      <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest italic">
                         {addr.address?.country}
                       </span>
                       {addr.address?.zipCode && (

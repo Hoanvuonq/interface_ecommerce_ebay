@@ -23,7 +23,7 @@ export default function OrderDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#f8f9fa] flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <SectionLoading message="Đang truy xuất thông tin đơn hàng..." />
       </div>
     );
@@ -31,10 +31,10 @@ export default function OrderDetailPage() {
 
   if (error || !order) {
     return (
-      <div className="min-h-screen bg-[#f8f9fa]">
+      <div className="min-h-screen">
         <PageContentTransition>
           <div className="max-w-4xl mx-auto px-4 py-20 flex flex-col items-center justify-center text-center">
-            <div className="w-24 h-24 bg-red-50 rounded-4xl flex items-center justify-center mb-8 shadow-sm">
+            <div className="w-24 h-24 bg-red-50 rounded-3xl flex items-center justify-center mb-8 shadow-custom">
               <AlertCircle className="w-12 h-12 text-red-500" />
             </div>
             <h1 className="text-3xl font-semibold text-gray-900 uppercase tracking-tight mb-4">
@@ -65,7 +65,7 @@ export default function OrderDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa]">
+    <div className="min-h-screen">
       <PageContentTransition>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
             <CustomBreadcrumb

@@ -14,7 +14,7 @@ const { success: messageSuccess, error: messageError } = useToast();
  */
 export const useEmployeeMessages = (
   conversationId: string,
-  onConversationUpdate?: (conversation: any) => void
+  onConversationUpdate?: (conversation: any) => void,
 ) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isInitializing, setIsInitializing] = useState(false);
@@ -51,17 +51,11 @@ export const useEmployeeMessages = (
       }
 
       try {
-        console.log(
-          "[EmployeeMessages] Loading initial messages for conversation:",
-          convId
-        );
         const response = await handleGetMessages(convId, {
           page: 0,
           size: 20, // Load 20 messages đầu tiên
           sort: "createdDate,desc", // Mới nhất trước để dễ pagination
         });
-
-        console.log("[EmployeeMessages] Get messages response:", response);
 
         if (response?.success && response?.data) {
           // Response có thể là PageResponse hoặc array
@@ -69,10 +63,6 @@ export const useEmployeeMessages = (
             response.data.content || response.data.items || response.data;
           const totalPages = response.data.totalPages || 1;
 
-          console.log(
-            "[EmployeeMessages] Messages loaded:",
-            items?.length || 0
-          );
           if (Array.isArray(items)) {
             // Backend đã trả về deletedAt và deletedType, không cần set isDeleted nữa
             // Helper function isMessageDeleted sẽ check dựa trên deletedAt và deletedType
@@ -91,7 +81,7 @@ export const useEmployeeMessages = (
         messageError("Không thể tải tin nhắn");
       }
     },
-    [handleGetMessages]
+    [handleGetMessages],
   );
 
   /**
@@ -107,18 +97,16 @@ export const useEmployeeMessages = (
     // Kiểm tra xem đã đang initialize cho conversation này chưa
     // Nếu đã đang initialize cho conversation này, bỏ qua
     if (isInitializingRef.current) {
-      console.log("[EmployeeMessages] Already initializing, skipping...");
       return;
     }
 
     try {
       isInitializingRef.current = true;
       setIsInitializing(true);
-      console.log("[EmployeeMessages] Initializing messages for conversation:", conversationId);
 
       // Clear messages trước khi load mới (đảm bảo không hiển thị messages cũ)
       setMessages([]);
-      
+
       await loadMessages(conversationId);
     } catch (error) {
       console.error("[EmployeeMessages] Failed to initialize:", error);
@@ -139,7 +127,7 @@ export const useEmployeeMessages = (
     async (content: string, replyToMessageId?: string) => {
       if (!conversationId || !content.trim()) {
         console.warn(
-          "[EmployeeMessages] Cannot send message - no conversation or empty content"
+          "[EmployeeMessages] Cannot send message - no conversation or empty content",
         );
         return false;
       }
@@ -157,8 +145,6 @@ export const useEmployeeMessages = (
           replyToMessageId,
         });
 
-        console.log("[EmployeeMessages] Send message response:", response);
-
         if (response?.success && response?.data) {
           const newMessage = response.data;
 
@@ -166,19 +152,12 @@ export const useEmployeeMessages = (
           setMessages((prev) => {
             const exists = prev.some((msg) => msg.id === newMessage.id);
             if (exists) {
-              console.log(
-                "[EmployeeMessages] Message already exists (from WebSocket), skipping optimistic update"
-              );
               return prev;
             }
-            console.log(
-              "[EmployeeMessages] Adding message optimistically:",
-              newMessage.id
-            );
+
             return [...prev, newMessage];
           });
 
-          console.log("[EmployeeMessages] Message sent successfully");
           return true;
         }
         console.error("[EmployeeMessages] Failed to send message:", response);
@@ -190,7 +169,7 @@ export const useEmployeeMessages = (
         return false;
       }
     },
-    [conversationId, handleSendMessage]
+    [conversationId, handleSendMessage],
   );
 
   /**
@@ -207,11 +186,7 @@ export const useEmployeeMessages = (
    */
   const loadMoreMessages = useCallback(async () => {
     if (!conversationId || isLoadingMore || !hasMoreMessages) {
-      console.log("[EmployeeMessages] Cannot load more:", {
-        conversationId,
-        isLoadingMore,
-        hasMoreMessages,
-      });
+     
       return;
     }
 
@@ -219,7 +194,6 @@ export const useEmployeeMessages = (
       setIsLoadingMore(true);
       const nextPage = currentPage + 1;
 
-      console.log("[EmployeeMessages] Loading more messages, page:", nextPage);
 
       const response = await handleGetMessages(conversationId, {
         page: nextPage,
@@ -231,11 +205,6 @@ export const useEmployeeMessages = (
         const items =
           response.data.content || response.data.items || response.data;
         const totalPages = response.data.totalPages || 1;
-
-        console.log(
-          "[EmployeeMessages] More messages loaded:",
-          items?.length || 0
-        );
 
         if (Array.isArray(items) && items.length > 0) {
           // Backend đã trả về deletedAt và deletedType, không cần set isDeleted nữa
@@ -294,12 +263,20 @@ export const useEmployeeMessages = (
       const result = messageSenderId === currentUserId;
       return result;
     },
-    [currentUserId]
+    [currentUserId],
   );
 
   // Store subscribe functions in refs để tránh re-subscriptions
-  const subscribeToConversationRef = useRef<((conversationId: string, callback: (message: unknown) => void) => () => void) | null>(null);
-  const subscribeToPersonalMessagesRef = useRef<((callback: (message: unknown) => void) => () => void) | null>(null);
+  const subscribeToConversationRef = useRef<
+    | ((
+        conversationId: string,
+        callback: (message: unknown) => void,
+      ) => () => void)
+    | null
+  >(null);
+  const subscribeToPersonalMessagesRef = useRef<
+    ((callback: (message: unknown) => void) => () => void) | null
+  >(null);
   const conversationIdRef = useRef<string>(conversationId);
   const prevConversationIdRef = useRef<string>(conversationId);
 
@@ -317,26 +294,29 @@ export const useEmployeeMessages = (
   // QUAN TRỌNG: Effect này phải chạy TRƯỚC khi initializeMessages được gọi
   useEffect(() => {
     // Chỉ xử lý khi conversationId thực sự thay đổi (không phải lần đầu mount)
-    if (prevConversationIdRef.current && prevConversationIdRef.current !== conversationId) {
+    if (
+      prevConversationIdRef.current &&
+      prevConversationIdRef.current !== conversationId
+    ) {
       console.log(
         "[EmployeeMessages] Conversation ID changed, clearing messages and resetting state:",
         prevConversationIdRef.current,
         "->",
-        conversationId
+        conversationId,
       );
-      
+
       // Clear messages cũ NGAY LẬP TỨC
       setMessages([]);
-      
+
       // Reset pagination state
       setCurrentPage(0);
       setHasMoreMessages(true);
       setIsLoadingMore(false);
-      
+
       // Reset initializing ref để cho phép initialize lại với conversationId mới
       isInitializingRef.current = false;
     }
-    
+
     // Update previous conversation ID (luôn cập nhật để track thay đổi)
     if (conversationId) {
       prevConversationIdRef.current = conversationId;
@@ -357,16 +337,19 @@ export const useEmployeeMessages = (
     }
 
     // Kiểm tra subscribe functions có sẵn chưa
-    if (!subscribeToConversationRef.current || !subscribeToPersonalMessagesRef.current) {
+    if (
+      !subscribeToConversationRef.current ||
+      !subscribeToPersonalMessagesRef.current
+    ) {
       console.warn(
-        "[EmployeeMessages] Subscribe functions not ready, skipping subscription"
+        "[EmployeeMessages] Subscribe functions not ready, skipping subscription",
       );
       return;
     }
 
     console.log(
       "[EmployeeMessages] Subscribing to conversation topic:",
-      conversationId
+      conversationId,
     );
 
     // Handler để xử lý message từ WebSocket
@@ -381,9 +364,7 @@ export const useEmployeeMessages = (
 
         // Xử lý CONVERSATION_UPDATED event - cập nhật conversation info nhưng không thêm vào messages
         if (eventType === "CONVERSATION_UPDATED") {
-          console.log(
-            "[EmployeeMessages] Received CONVERSATION_UPDATED event, updating conversation info"
-          );
+         
           if (eventWrapper.data && onConversationUpdate) {
             onConversationUpdate(eventWrapper.data);
           }
@@ -392,15 +373,15 @@ export const useEmployeeMessages = (
 
         // Xử lý MESSAGE_UPDATED event - cập nhật message đã chỉnh sửa
         if (eventType === "MESSAGE_UPDATED") {
-          console.log(
-            "[EmployeeMessages] Received MESSAGE_UPDATED event, updating message"
-          );
+        
           const updatedMessage = eventWrapper.data as Message;
           if (updatedMessage?.id) {
             setMessages((prev) =>
               prev.map((msg) =>
-                msg.id === updatedMessage.id ? { ...msg, ...updatedMessage, isEdited: true } : msg
-              )
+                msg.id === updatedMessage.id
+                  ? { ...msg, ...updatedMessage, isEdited: true }
+                  : msg,
+              ),
             );
           }
           return;
@@ -408,34 +389,40 @@ export const useEmployeeMessages = (
 
         // Xử lý MESSAGE_DELETED event - đánh dấu message đã bị xóa
         if (eventType === "MESSAGE_DELETED") {
-          console.log(
-            "[EmployeeMessages] Received MESSAGE_DELETED event, marking message as deleted",
-            data
-          );
-          // Backend gửi: { type: "MESSAGE_DELETED", messageId: "...", deleteForEveryone: true/false }
-          const deletedEvent = data as { messageId?: string; deleteForEveryone?: boolean; type?: string };
+        
+          const deletedEvent = data as {
+            messageId?: string;
+            deleteForEveryone?: boolean;
+            type?: string;
+          };
           if (deletedEvent?.messageId) {
-            console.log(
-              "[EmployeeMessages] Updating message as deleted:",
-              deletedEvent.messageId,
-              "deleteForEveryone:",
-              deletedEvent.deleteForEveryone
-            );
+           
             setMessages((prev) =>
               prev.map((msg) =>
                 msg.id === deletedEvent.messageId
-                  ? { 
-                      ...msg, 
-                      deletedAt: deletedEvent.deleteForEveryone ? new Date().toISOString() : undefined,
-                      deletedType: deletedEvent.deleteForEveryone ? "DELETE_FOR_EVERYONE" : "DELETE_FOR_ME",
-                      deletedBy: deletedEvent.deleteForEveryone ? undefined : currentUsername,
-                      content: deletedEvent.deleteForEveryone ? "" : msg.content 
+                  ? {
+                      ...msg,
+                      deletedAt: deletedEvent.deleteForEveryone
+                        ? new Date().toISOString()
+                        : undefined,
+                      deletedType: deletedEvent.deleteForEveryone
+                        ? "DELETE_FOR_EVERYONE"
+                        : "DELETE_FOR_ME",
+                      deletedBy: deletedEvent.deleteForEveryone
+                        ? undefined
+                        : currentUsername,
+                      content: deletedEvent.deleteForEveryone
+                        ? ""
+                        : msg.content,
                     }
-                  : msg
-              )
+                  : msg,
+              ),
             );
           } else {
-            console.warn("[EmployeeMessages] MESSAGE_DELETED event missing messageId:", data);
+            console.warn(
+              "[EmployeeMessages] MESSAGE_DELETED event missing messageId:",
+              data,
+            );
           }
           return;
         }
@@ -444,7 +431,7 @@ export const useEmployeeMessages = (
         if (eventType && eventType !== "NEW_MESSAGE") {
           console.log(
             "[EmployeeMessages] Ignoring unknown event type:",
-            eventType
+            eventType,
           );
           return;
         }
@@ -459,13 +446,17 @@ export const useEmployeeMessages = (
         }
 
         // Validate message phải có content hoặc attachments (tránh message rỗng)
-        const hasContent = incomingMessage.content && incomingMessage.content.trim().length > 0;
-        const hasAttachments = incomingMessage.attachments && Array.isArray(incomingMessage.attachments) && incomingMessage.attachments.length > 0;
-        
+        const hasContent =
+          incomingMessage.content && incomingMessage.content.trim().length > 0;
+        const hasAttachments =
+          incomingMessage.attachments &&
+          Array.isArray(incomingMessage.attachments) &&
+          incomingMessage.attachments.length > 0;
+
         if (!hasContent && !hasAttachments) {
           console.warn(
             "[EmployeeMessages] Message has no content or attachments, ignoring:",
-            incomingMessage.id
+            incomingMessage.id,
           );
           return;
         }
@@ -474,23 +465,15 @@ export const useEmployeeMessages = (
         setMessages((prev) => {
           const exists = prev.some((msg) => msg.id === incomingMessage.id);
           if (exists) {
-            console.log(
-              "[EmployeeMessages] Message already exists, skipping:",
-              incomingMessage.id
-            );
             return prev;
           }
 
-          console.log(
-            "[EmployeeMessages] Adding new message from WebSocket:",
-            incomingMessage.id
-          );
           return [...prev, incomingMessage];
         });
       } catch (error) {
         console.error(
           "[EmployeeMessages] Failed to process WebSocket message:",
-          error
+          error,
         );
       }
     };
@@ -499,122 +482,120 @@ export const useEmployeeMessages = (
     // Sử dụng ref để lấy function mới nhất
     const unsubscribeConversation = subscribeToConversationRef.current(
       conversationId,
-      handleIncomingMessage
+      handleIncomingMessage,
     );
 
     // Subscribe to personal messages: /user/queue/messages
     // Sử dụng ref để lấy function mới nhất và conversationId từ ref
-    const unsubscribePersonal = subscribeToPersonalMessagesRef.current((data: unknown) => {
-      console.log("[EmployeeMessages] Received personal queue message:", data);
-
-      try {
-        // Backend sends: { data: Message | Conversation, type: string, timestamp: string }
-        const messageWrapper = data as { data?: Message | any; type?: string };
-        const eventType = messageWrapper.type;
-
-        // Xử lý CONVERSATION_UPDATED event - cập nhật conversation info nhưng không thêm vào messages
-        if (eventType === "CONVERSATION_UPDATED") {
-          console.log(
-            "[EmployeeMessages] Received CONVERSATION_UPDATED from personal queue, updating conversation info"
-          );
-          if (messageWrapper.data && onConversationUpdate) {
-            onConversationUpdate(messageWrapper.data);
-          }
-          return; // Không thêm vào messages list
-        }
-
-        // Xử lý MESSAGE_UPDATED event - cập nhật message đã chỉnh sửa
-        if (eventType === "MESSAGE_UPDATED") {
-          console.log(
-            "[EmployeeMessages] Received MESSAGE_UPDATED from personal queue, updating message"
-          );
-          const updatedMessage = messageWrapper.data as Message;
-          if (updatedMessage?.id) {
-            setMessages((prev) =>
-              prev.map((msg) =>
-                msg.id === updatedMessage.id ? { ...msg, ...updatedMessage, isEdited: true } : msg
-              )
-            );
-          }
-          return;
-        }
-
-        // Xử lý MESSAGE_DELETED event - đánh dấu message đã bị xóa
-        if (eventType === "MESSAGE_DELETED") {
-          console.log(
-            "[EmployeeMessages] Received MESSAGE_DELETED from personal queue, marking message as deleted",
-            data
-          );
-          // Backend gửi: { type: "MESSAGE_DELETED", messageId: "...", deleteForEveryone: true/false }
-          const deletedEvent = data as { messageId?: string; deleteForEveryone?: boolean; type?: string };
-          if (deletedEvent?.messageId) {
-            console.log(
-              "[EmployeeMessages] Updating message as deleted from personal queue:",
-              deletedEvent.messageId,
-              "deleteForEveryone:",
-              deletedEvent.deleteForEveryone
-            );
-            setMessages((prev) =>
-              prev.map((msg) =>
-                msg.id === deletedEvent.messageId
-                  ? { 
-                      ...msg, 
-                      deletedAt: deletedEvent.deleteForEveryone ? new Date().toISOString() : undefined,
-                      deletedType: deletedEvent.deleteForEveryone ? "DELETE_FOR_EVERYONE" : "DELETE_FOR_ME",
-                      deletedBy: deletedEvent.deleteForEveryone ? undefined : currentUsername,
-                      content: deletedEvent.deleteForEveryone ? "" : msg.content 
-                    }
-                  : msg
-              )
-            );
-          } else {
-            console.warn("[EmployeeMessages] MESSAGE_DELETED event from personal queue missing messageId:", data);
-          }
-          return;
-        }
-
-        // Chỉ xử lý NEW_MESSAGE events cho messages
-        if (eventType && eventType !== "NEW_MESSAGE") {
-          console.log(
-            "[EmployeeMessages] Ignoring unknown event type from personal queue:",
-            eventType
-          );
-          return;
-        }
-
-        const incomingMessage = messageWrapper.data || (data as Message);
-
-        if (!incomingMessage || !incomingMessage.conversationId) {
-          console.warn(
-            "[EmployeeMessages] Invalid personal message structure:",
-            data
-          );
-          return;
-        }
-
-        // Sử dụng ref để lấy conversationId mới nhất
-        const currentConversationId = conversationIdRef.current;
-        // Chỉ xử lý tin nhắn thuộc conversation hiện tại
-        if (incomingMessage.conversationId === currentConversationId) {
-          handleIncomingMessage(data);
-        } else {
-          console.log(
-            "[EmployeeMessages] Personal message not for current conversation, ignoring"
-          );
-        }
-      } catch (error) {
-        console.error(
-          "[EmployeeMessages] Failed to process personal message:",
-          error
+    const unsubscribePersonal = subscribeToPersonalMessagesRef.current(
+      (data: unknown) => {
+        console.log(
+          "[EmployeeMessages] Received personal queue message:",
+          data,
         );
-      }
-    });
+
+        try {
+          // Backend sends: { data: Message | Conversation, type: string, timestamp: string }
+          const messageWrapper = data as {
+            data?: Message | any;
+            type?: string;
+          };
+          const eventType = messageWrapper.type;
+
+          // Xử lý CONVERSATION_UPDATED event - cập nhật conversation info nhưng không thêm vào messages
+          if (eventType === "CONVERSATION_UPDATED") {
+            if (messageWrapper.data && onConversationUpdate) {
+              onConversationUpdate(messageWrapper.data);
+            }
+            return; // Không thêm vào messages list
+          }
+
+          // Xử lý MESSAGE_UPDATED event - cập nhật message đã chỉnh sửa
+          if (eventType === "MESSAGE_UPDATED") {
+            const updatedMessage = messageWrapper.data as Message;
+            if (updatedMessage?.id) {
+              setMessages((prev) =>
+                prev.map((msg) =>
+                  msg.id === updatedMessage.id
+                    ? { ...msg, ...updatedMessage, isEdited: true }
+                    : msg,
+                ),
+              );
+            }
+            return;
+          }
+
+          // Xử lý MESSAGE_DELETED event - đánh dấu message đã bị xóa
+          if (eventType === "MESSAGE_DELETED") {
+            // Backend gửi: { type: "MESSAGE_DELETED", messageId: "...", deleteForEveryone: true/false }
+            const deletedEvent = data as {
+              messageId?: string;
+              deleteForEveryone?: boolean;
+              type?: string;
+            };
+            if (deletedEvent?.messageId) {
+              setMessages((prev) =>
+                prev.map((msg) =>
+                  msg.id === deletedEvent.messageId
+                    ? {
+                        ...msg,
+                        deletedAt: deletedEvent.deleteForEveryone
+                          ? new Date().toISOString()
+                          : undefined,
+                        deletedType: deletedEvent.deleteForEveryone
+                          ? "DELETE_FOR_EVERYONE"
+                          : "DELETE_FOR_ME",
+                        deletedBy: deletedEvent.deleteForEveryone
+                          ? undefined
+                          : currentUsername,
+                        content: deletedEvent.deleteForEveryone
+                          ? ""
+                          : msg.content,
+                      }
+                    : msg,
+                ),
+              );
+            } else {
+              console.warn(
+                "[EmployeeMessages] MESSAGE_DELETED event from personal queue missing messageId:",
+                data,
+              );
+            }
+            return;
+          }
+
+          // Chỉ xử lý NEW_MESSAGE events cho messages
+          if (eventType && eventType !== "NEW_MESSAGE") {
+            return;
+          }
+
+          const incomingMessage = messageWrapper.data || (data as Message);
+
+          if (!incomingMessage || !incomingMessage.conversationId) {
+            console.warn(
+              "[EmployeeMessages] Invalid personal message structure:",
+              data,
+            );
+            return;
+          }
+
+          // Sử dụng ref để lấy conversationId mới nhất
+          const currentConversationId = conversationIdRef.current;
+          // Chỉ xử lý tin nhắn thuộc conversation hiện tại
+          if (incomingMessage.conversationId === currentConversationId) {
+            handleIncomingMessage(data);
+          } else {
+          }
+        } catch (error) {
+          console.error(
+            "[EmployeeMessages] Failed to process personal message:",
+            error,
+          );
+        }
+      },
+    );
 
     return () => {
-      console.log(
-        "[EmployeeMessages] Unsubscribing from conversation:",
-        conversationId
-      );
       unsubscribeConversation();
       unsubscribePersonal();
     };

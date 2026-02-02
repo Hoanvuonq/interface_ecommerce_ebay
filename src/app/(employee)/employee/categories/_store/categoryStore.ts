@@ -4,7 +4,9 @@ import { CreateCategoryRequest } from "@/types/categories/category.create";
 interface CategoryFormState {
   formData: CreateCategoryRequest;
   slug: string;
+  localPreview: string | null;
   errors: Record<string, string>;
+  setLocalPreview: (url: string | null) => void;
   setFormField: (field: string, value: any) => void;
   setSlug: (slug: string) => void;
   setErrors: (errors: Record<string, string>) => void;
@@ -32,7 +34,15 @@ export const useCategoryFormStore = create<CategoryFormState>((set) => ({
     set((state) => ({
       formData: { ...state.formData, [field]: value },
     })),
+  localPreview: null,
+  setLocalPreview: (url) => set({ localPreview: url }),
+  resetForm: () =>
+    set({
+      formData: initialFormData,
+      slug: "",
+      localPreview: null,
+      errors: {},
+    }),
   setSlug: (slug) => set({ slug }),
   setErrors: (errors) => set({ errors }),
-  resetForm: () => set({ formData: initialFormData, slug: "", errors: {} }),
 }));

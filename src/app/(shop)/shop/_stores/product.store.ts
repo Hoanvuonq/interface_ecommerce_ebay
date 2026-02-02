@@ -429,12 +429,7 @@ export const useProductStore = create<ProductState & ProductActions>()(
             const key = combo.join("|");
             const oldVariant = existingVariantsMap.get(key);
             if (oldVariant) {
-              console.log(
-                "🔄 Preserving variant:",
-                key,
-                "imageUrl:",
-                oldVariant.imageUrl,
-              );
+             
               return oldVariant;
             }
 
@@ -445,7 +440,6 @@ export const useProductStore = create<ProductState & ProductActions>()(
               ? `${productPrefix}-${variantSuffix}` 
               : productPrefix || variantSuffix || "VAR";
 
-            console.log('✨ Creating new variant:', key, 'SKU:', generatedSku);
             return {
               ...createDefaultVariant(basePrice, combo),
               sku: generatedSku,

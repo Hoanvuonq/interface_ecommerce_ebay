@@ -107,8 +107,6 @@ class ShipmentService {
    */
   async getGHNCosts(requestData: GHNCostsRequest): Promise<GHNCostsResponse> {
     try {
-      console.log('📤 [GHN Service] Sending request to:', `${SHIPMENT_API_BASE}/ghn/costs`);
-      console.log('📤 [GHN Service] Request data:', JSON.stringify(requestData, null, 2));
 
       const response: GHNCostsResponse = await request({
         url: `${SHIPMENT_API_BASE}/ghn/costs`,
@@ -116,7 +114,6 @@ class ShipmentService {
         data: requestData,
       });
 
-      console.log('✅ [GHN Service] Response received:', response);
       return response;
     } catch (error: any) {
       console.error('❌ [GHN Service] Failed to get GHN costs:', error);
@@ -137,11 +134,7 @@ class ShipmentService {
    */
   async getCostsShipments(requestData: CostsRequest): Promise<CostsShipmentResponse[]> {
     try {
-      console.log('📤 [Costs Shipments Service] Sending request to:', `${SHIPMENT_API_BASE}/costs-shipments`);
-      console.log('📤 [Costs Shipments Service] Request data:', JSON.stringify(requestData, null, 2));
 
-      // Đảm bảo data được serialize đúng format (BigDecimal trong Java cần số, không phải string)
-      // Kiểm tra và đảm bảo tất cả số đều là number, không phải string
       const sanitizedData: CostsRequest = {
         ...requestData,
         cod_value: typeof requestData.cod_value === 'number' ? requestData.cod_value : Number(requestData.cod_value),
@@ -157,7 +150,6 @@ class ShipmentService {
         })),
       };
 
-      console.log('📤 [Costs Shipments Service] Sanitized request data:', JSON.stringify(sanitizedData, null, 2));
 
       // Backend đang dùng @GetMapping, nhưng GET với body không được hỗ trợ tốt
       // Thử dùng POST (backend cần được sửa từ @GetMapping sang @PostMapping)
@@ -171,7 +163,6 @@ class ShipmentService {
         },
       });
 
-      console.log('✅ [Costs Shipments Service] Response received:', response);
 
       if (response.success && response.data) {
         return response.data;

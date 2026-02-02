@@ -17,7 +17,7 @@ export * from "./design";
 export * from "./dropdownContainer";
 export * from "./fileUploadField";
 export * from "./formInput";
-export * from "./ImageWithPreview";
+export * from "./imageWithPreview";
 export * from "./inputField";
 export * from "./ItemImage";
 export * from "./languageSwitcher";

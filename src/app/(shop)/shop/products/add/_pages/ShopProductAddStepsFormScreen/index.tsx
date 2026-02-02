@@ -269,9 +269,7 @@ export default function ShopProductAddStepsFormScreen() {
       // Debug: Show all variant keys and their image status
       variantsToSubmit.forEach((v, idx) => {
         const variantKey = v.optionValueNames?.join("|") || "no-key";
-        
       });
-
 
       const structuralErrors = validateVariantStructure(variantsToSubmit);
       if (structuralErrors.length > 0) {
@@ -305,7 +303,6 @@ export default function ShopProductAddStepsFormScreen() {
               }) as any,
           ),
       ];
-
 
       // Warning if no media
       if (mediaArray.length === 0) {
@@ -361,13 +358,7 @@ export default function ShopProductAddStepsFormScreen() {
           // Add image data if exists
           if (v.imageAssetId) {
             variantData.imageAssetId = v.imageAssetId;
-            console.log(
-              `✅ Variant ${index + 1} (${v.sku}) has imageAssetId: ${v.imageAssetId}`,
-            );
           } else {
-            console.log(
-              `⚠️ Variant ${index + 1} (${v.sku}) missing imageAssetId`,
-            );
           }
 
           if (v.imageUrl) {
@@ -418,7 +409,6 @@ export default function ShopProductAddStepsFormScreen() {
       const { variants, updateVariantByKey } = useProductStore.getState();
       const currentVariant = variants[index];
 
-
       if (!currentVariant) {
         console.error(`Variant at index ${index} not found`);
         toastError("Không tìm thấy biến thể để upload hình");
@@ -428,7 +418,6 @@ export default function ShopProductAddStepsFormScreen() {
       const variantKey = currentVariant.optionValueNames.join("|");
       const localUrl = URL.createObjectURL(file);
       const firstOptionValue = currentVariant.optionValueNames[0];
-
 
       try {
         updateVariantByKey(variantKey, "imageUrl", localUrl);

@@ -6,9 +6,20 @@ import { useAppDispatch } from "@/store/store";
 import { toggleShopSelectionLocal } from "@/store/theme/cartSlice";
 import { ChevronRight, Star, Store, Tag as TagIcon } from "lucide-react";
 import Image from "next/image";
-import React from "react";
+import React, { useMemo } from "react";
 import { ShopCartSectionProps } from "../../_types/shop";
 import { CartItem } from "../CartItems";
+
+const isValidUrl = (url: string) => {
+  try {
+    return url.startsWith("http://") || url.startsWith("https://") || url.startsWith("/");
+  } catch {
+    return false;
+  }
+};
+
+const DEFAULT_AVATAR_BASE =
+  "https://ui-avatars.com/api/?background=f1f5f9&color=64748b&name=";
 
 export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
   shop,
@@ -17,6 +28,18 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
 }) => {
   const dispatch = useAppDispatch();
 
+  const placeholderLogo = useMemo(() => 
+    `${DEFAULT_AVATAR_BASE}${encodeURIComponent(shop.shopName || "Store")}`, 
+    [shop.shopName]
+  );
+  const safeShopLogo = useMemo(() => {
+    const logo = shop.shopLogo?.trim();
+    
+    if (!logo || !/^(http:\/\/|https:\/\/|\/)/.test(logo)) {
+      return placeholderLogo;
+    }
+    return logo;
+  }, [shop.shopLogo, placeholderLogo]);
   const handleShopCheckboxChange = (e?: React.BaseSyntheticEvent) => {
     e?.stopPropagation();
     if (onToggleShopSelection) {
@@ -43,18 +66,17 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
 
           <div className="flex items-center gap-3 min-w-0 group cursor-pointer">
             <div className="relative shrink-0">
-              <Image
-                src={shop.shopLogo || ""}
-                alt={shop.shopName}
+             <Image
+                src={safeShopLogo}
+                alt={shop.shopName || "Shop Logo"}
                 width={32}
                 height={32}
                 className="md:w-8 w-10 md:h-8 h-10 rounded-lg object-cover border border-gray-100 shadow-sm transition-transform group-hover:scale-105"
                 onError={(e) => {
-                  (
-                    e.target as HTMLImageElement
-                  ).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
-                    shop.shopName
-                  )}&background=f1f5f9&color=64748b`;
+                  const target = e.target as HTMLImageElement;
+                  if (target.src !== placeholderLogo) {
+                    target.src = placeholderLogo;
+                  }
                 }}
               />
               <div className="absolute -bottom-1 -right-1 bg-white rounded-full p-0.5 shadow-sm border border-gray-50">
@@ -74,7 +96,7 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
               </div>
 
               <div className="flex items-center gap-2 mt-0.5">
-                {shop.rating && shop.rating > 0 && (
+                {shop.rating !== undefined && shop.rating > 0 && (
                   <div className="flex items-center gap-0.5 px-1 py-0.5 bg-amber-50 rounded-md border border-amber-100/50">
                     <Star size={8} className="text-amber-400 fill-amber-400" />
                     <span className="text-[9px] font-bold text-amber-700">
@@ -93,6 +115,7 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
         </div>
       </div>
 
+      {/* Desktop Header */}
       <div className="hidden lg:block">
         <div className="grid grid-cols-12 px-6 py-2 bg-gray-50 text-[10px] font-semibold uppercase tracking-widest text-gray-600 border-b border-gray-100">
           <div className="col-span-5">Sản phẩm</div>
@@ -114,6 +137,7 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
         </div>
       </div>
 
+      {/* Mobile View */}
       <div className="lg:hidden divide-y divide-gray-50 bg-white">
         {shop.items.map((item, idx) => (
           <div
@@ -130,6 +154,7 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
         ))}
       </div>
 
+      {/* Footer Section */}
       <div className="bg-gray-50/30 border-t border-gray-100 mt-auto">
         {shop.discount > 0 && (
           <div className="px-5 py-2 flex justify-between items-center bg-orange-50/30 border-b border-gray-100/30">
@@ -150,7 +175,7 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
             <p className="text-[10px] text-gray-600 font-bold uppercase leading-none">
               Tạm tính ({shop.items.length} SP):
             </p>
-            <p className="text-2xl font-bold text-(--color-mainColor) leading-none tracking-tight">
+            <p className="text-2xl font-bold text-orange-600 leading-none tracking-tight">
               {formatPriceFull(shop.total)}
             </p>
           </div>

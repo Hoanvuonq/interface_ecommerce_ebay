@@ -1,6 +1,6 @@
 "use client";
 
-import { CategoryService } from "@/services/categories/category.service";
+import { CategoryService } from "@/app/(main)/category/_service/category.service";
 import type { CategoryResponse } from "@/types/categories/category.detail";
 import { cn } from "@/utils/cn";
 import { ChevronDown, ChevronRight, LayoutGrid, Circle } from "lucide-react";

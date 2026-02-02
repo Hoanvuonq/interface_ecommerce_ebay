@@ -1,3 +1,4 @@
 export * from "./ProductPromotionList";
 export * from "./ProductPromotionForm";
-export * from "./ShopLoyaltyStatisticsCard/index";
+export * from "./ShopLoyaltyStatisticsCard";
+export * from "./ShopLoyaltyPolicyCard";

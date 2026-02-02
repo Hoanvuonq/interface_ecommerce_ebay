@@ -123,7 +123,7 @@ export const Footer = () => {
           <div className="lg:col-span-3 space-y-8 pl-4 lg:border-l lg:border-gray-100/80">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-orange-50/50 rounded-full border border-orange-100">
               <Leaf size={12} className="text-orange-500" />
-              <span className="text-[10px] font-black uppercase text-orange-600 tracking-widest">
+              <span className="text-[10px] font-bold uppercase text-orange-600 tracking-widest">
                 Connect with us
               </span>
             </div>
@@ -161,7 +161,7 @@ export const Footer = () => {
                 )}
                 <Link
                   href={link.href}
-                  className="text-[9px] text-gray-400 hover:text-orange-500 uppercase tracking-[0.2em] font-black transition-all"
+                  className="text-[9px] text-gray-400 hover:text-orange-500 uppercase tracking-[0.2em] font-bold transition-all"
                 >
                   {link.label}
                 </Link>

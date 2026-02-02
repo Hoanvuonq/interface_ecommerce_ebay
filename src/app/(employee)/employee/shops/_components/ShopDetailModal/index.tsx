@@ -1,7 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { Button, FormInput, SectionLoading } from "@/components";
+import {
+  ButtonField,
+  FormInput,
+  SectionLoading,
+  CustomButtonActions,
+} from "@/components";
 import { PortalModal } from "@/features/PortalModal";
 import { toSizedVariant } from "@/utils/products/media.helpers";
 import { toPublicUrl } from "@/utils/storage/url";
@@ -12,25 +17,21 @@ import {
   ExternalLink,
   FileText,
   History,
-  Store,
   ShieldCheck,
-  User,
-  Calendar,
-  Globe,
-  MapPin,
-  Mail,
+  Store,
+  VerifiedIcon,
 } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
 import {
-  ShopStatus,
+  type as businessTypeMap,
   colorMap,
   labelMap,
   nationalityMap,
-  type as businessTypeMap,
+  ShopStatus,
   VerifiedStatus,
-  verifyStatusMap,
   verifyStatusColorMap,
+  verifyStatusMap,
 } from "../../_types/manager.shop.type";
 import { RejectShopModal } from "../RejectShopModal";
 import { ShopDetailModalProps } from "./type";
@@ -72,7 +73,6 @@ export const ShopDetailModal: React.FC<ShopDetailModalProps> = ({
 
   if (!open) return null;
 
-  // Extract legal info for easier access
   const legal = detailData?.legalInfo;
   const tax = detailData?.taxInfo;
 
@@ -89,7 +89,7 @@ export const ShopDetailModal: React.FC<ShopDetailModalProps> = ({
             <h3 className="text-xl font-bold uppercase tracking-tight text-gray-800 leading-none">
               Thẩm định hồ sơ
             </h3>
-            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mt-1.5">
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1.5">
               Shop Management • ID: {shopId}
             </p>
           </div>
@@ -97,22 +97,21 @@ export const ShopDetailModal: React.FC<ShopDetailModalProps> = ({
       }
       width="max-w-5xl"
       footer={
-        <Button
-          variant="edit"
-          type="button"
+        <ButtonField
+          htmlType="submit"
+          type="login"
           onClick={onClose}
-          className="px-10 h-12 rounded-2xl font-bold uppercase text-[11px] tracking-widest border-gray-200"
+          className="px-10 w-50 h-12 rounded-2xl font-bold uppercase text-[11px] tracking-widest border-gray-200"
         >
           Đóng cửa sổ
-        </Button>
+        </ButtonField>
       }
     >
-      <div className="relative min-h-[500px] pb-10">
+      <div className="relative">
         {loading && <SectionLoading message="Đang đồng bộ dữ liệu hồ sơ..." />}
 
         {detailData ? (
           <div className="space-y-12 animate-in fade-in slide-in-from-bottom-6 duration-700 p-2">
-            {/* --- SECTION 1: SHOP BRANDING --- */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
               <div className="lg:col-span-8 space-y-8">
                 <div className="flex items-center gap-3 pb-2 border-b border-gray-100/60">
@@ -190,7 +189,6 @@ export const ShopDetailModal: React.FC<ShopDetailModalProps> = ({
               </div>
             </div>
 
-            {/* --- SECTION 2: IDENTITY (LEGAL) --- */}
             <section className="bg-white rounded-[3rem] border border-gray-100 shadow-xl p-8 space-y-8 relative overflow-hidden">
               <div className="absolute -top-10 -right-10 opacity-5 text-purple-900 rotate-12">
                 <ShieldCheck size={220} />
@@ -202,7 +200,7 @@ export const ShopDetailModal: React.FC<ShopDetailModalProps> = ({
                     <CreditCard size={24} strokeWidth={2.5} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-[14px] uppercase tracking-[0.2em] text-gray-800 leading-none">
+                    <h3 className="font-bold text-[14px] uppercase tracking-widest text-gray-800 leading-none">
                       Thông tin định danh
                     </h3>
                     <p className="text-[10px] font-bold text-gray-400 uppercase mt-1 italic">
@@ -213,19 +211,16 @@ export const ShopDetailModal: React.FC<ShopDetailModalProps> = ({
 
                 {legal && legal.verifiedStatus === "PENDING" && (
                   <div className="flex gap-2 w-full sm:w-auto">
-                    <button
-                      onClick={() => onApproveLegal(shopId, legal.legalId)}
-                      disabled={legalLoading}
-                      className="flex-1 sm:flex-none h-11 px-8 bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold uppercase tracking-widest rounded-xl transition-all shadow-lg shadow-blue-100 disabled:opacity-50 active:scale-95"
-                    >
-                      {legalLoading ? "..." : "Duyệt Pháp Lý"}
-                    </button>
-                    <button
-                      onClick={() => handleOpenReject("legal", legal.legalId)}
-                      className="flex-1 sm:flex-none h-11 px-6 bg-rose-50 hover:bg-rose-100 text-rose-600 text-[11px] font-bold uppercase tracking-widest rounded-xl transition-all border border-rose-100 active:scale-95"
-                    >
-                      Từ Chối
-                    </button>
+                    <CustomButtonActions
+                      onCancel={() => handleOpenReject("legal", legal.legalId)}
+                      onSubmit={() => onApproveLegal(shopId, legal.legalId)}
+                      isDisabled={legalLoading}
+                      cancelText="Từ Chối"
+                      submitText="Duyệt Pháp Lý"
+                      submitIcon={VerifiedIcon}
+                      containerClassName="w-full flex gap-3 border-t-0 pt-0 justify-end"
+                      className="w-44! rounded-4xl h-12 shadow-orange-200 shadow-lg"
+                    />
                   </div>
                 )}
               </div>
@@ -338,7 +333,7 @@ export const ShopDetailModal: React.FC<ShopDetailModalProps> = ({
                     <FileText size={24} strokeWidth={2.5} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-[14px] uppercase tracking-[0.2em] text-gray-800 leading-none">
+                    <h3 className="font-bold text-[14px] uppercase tracking-widest text-gray-800 leading-none">
                       Thông tin thuế quan
                     </h3>
                     <p className="text-[10px] font-bold text-gray-400 uppercase mt-1 italic">
@@ -349,19 +344,16 @@ export const ShopDetailModal: React.FC<ShopDetailModalProps> = ({
 
                 {tax && tax.verifiedStatus === "PENDING" && (
                   <div className="flex gap-2 w-full sm:w-auto">
-                    <button
-                      onClick={() => onApproveTax(shopId, tax.taxId)}
-                      disabled={taxLoading}
-                      className="flex-1 sm:flex-none h-11 px-8 bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold uppercase tracking-widest rounded-xl transition-all shadow-lg shadow-emerald-100 disabled:opacity-50 active:scale-95"
-                    >
-                      {taxLoading ? "..." : "Xác Thực Thuế"}
-                    </button>
-                    <button
-                      onClick={() => handleOpenReject("tax", tax.taxId)}
-                      className="flex-1 sm:flex-none h-11 px-6 bg-rose-50 hover:bg-rose-100 text-rose-600 text-[11px] font-bold uppercase tracking-widest rounded-xl transition-all border border-rose-100 active:scale-95"
-                    >
-                      Từ Chối
-                    </button>
+                    <CustomButtonActions
+                      onCancel={() => onApproveTax(shopId, tax.taxId)}
+                      onSubmit={() => handleOpenReject("tax", tax.taxId)}
+                      isDisabled={legalLoading}
+                      cancelText="Từ Chối"
+                      submitText="Xác Thực Thuế"
+                      submitIcon={VerifiedIcon}
+                      containerClassName="w-full flex gap-3 border-t-0 pt-0 justify-end"
+                      className="w-44! rounded-4xl h-12 shadow-orange-200 shadow-lg"
+                    />
                   </div>
                 )}
               </div>
@@ -378,7 +370,7 @@ export const ShopDetailModal: React.FC<ShopDetailModalProps> = ({
                     label="Mã số thuế (MST)"
                     value={tax.taxIdentificationNumber}
                     readOnly
-                    className="bg-white font-bold text-gray-900 text-lg tracking-tighter"
+                    className="bg-white font-bold text-gray-900 text-sm tracking-tighter"
                   />
                   <FormInput
                     label="Email hóa đơn"
@@ -431,7 +423,7 @@ const NoDataPlaceholder = ({ message }: { message: string }) => (
     <div className="p-6 bg-white rounded-full shadow-lg mb-4 text-gray-200 animate-pulse">
       <History size={48} />
     </div>
-    <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-gray-300 italic">
+    <p className="text-[11px] font-bold uppercase tracking-widest text-gray-300 italic">
       {message}
     </p>
   </div>

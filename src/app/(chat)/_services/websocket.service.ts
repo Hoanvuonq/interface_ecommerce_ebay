@@ -34,13 +34,11 @@ export class WebSocketService {
       try {
         // 🔒 CRITICAL: Prevent multiple connections
         if (this.state === WebSocketState.CONNECTED && this.connected && this.stompClient?.connected) {
-          console.log("[WebSocket] Already connected, skipping duplicate connection");
           resolve();
           return;
         }
 
         if (this.state === WebSocketState.CONNECTING) {
-          console.log("[WebSocket] Connection already in progress, skipping");
           resolve();
           return;
         }
@@ -185,9 +183,6 @@ export class WebSocketService {
     this.reconnectAttempts++;
     this.state = WebSocketState.RECONNECTING;
 
-    console.log(
-      `Attempting to reconnect... (${this.reconnectAttempts}/${WEBSOCKET_CONFIG.connection.maxReconnectAttempts})`
-    );
 
     this.reconnectTimer = setTimeout(() => {
       this.connect(token).catch((error) => {
@@ -262,14 +257,12 @@ export class WebSocketService {
       });
 
       this.subscriptions.set(topic, subscription);
-      console.log(`Subscribed to topic: ${topic}`);
 
       // Return unsubscribe function
       return () => {
         try {
           subscription.unsubscribe();
           this.subscriptions.delete(topic);
-          console.log(`Unsubscribed from topic: ${topic}`);
         } catch (error) {
           console.error(`Error unsubscribing from topic ${topic}:`, error);
         }

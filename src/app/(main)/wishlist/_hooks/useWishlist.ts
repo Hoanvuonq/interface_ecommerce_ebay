@@ -239,31 +239,25 @@ export const useWishlist = () => {
   const toggleWishlist = useCallback(
     async (variantId: string) => {
       try {
-        console.log("🔄 Toggling wishlist for variant:", variantId);
 
         // Check if already in wishlist
         const inWishlist = await isProductInWishlist(variantId);
-        console.log("📊 Current status:", inWishlist);
 
         if (inWishlist) {
           // Get default wishlist ID
-          console.log("🗑️ Removing from wishlist...");
           const defaultWishlist = await wishlistService.getDefaultWishlist();
           // Remove from wishlist
           await wishlistService.removeFromWishlist(
             defaultWishlist.id,
             variantId
           );
-          console.log("✅ Removed successfully");
           return { success: true, added: false };
         } else {
           // Add to wishlist
-          console.log("➕ Adding to wishlist...");
           await wishlistService.addToDefaultWishlist({
             variantId,
             quantity: 1,
           });
-          console.log("✅ Added successfully");
           return { success: true, added: true };
         }
       } catch (err: any) {

@@ -1,5 +1,5 @@
 import { ProductCard } from "@/app/(main)/products/_components/ProductCard";
-import { CategoryService } from "@/services/categories/category.service";
+import { CategoryService } from "../_service/category.service";
 import { publicProductService } from "@/services/products/product.service";
 import {
   ChevronLeft,

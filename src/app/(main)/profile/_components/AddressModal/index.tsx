@@ -152,7 +152,7 @@ export const AddressFormModal = ({
       title={
         <div className="flex items-center gap-3">
           <MapPin className="text-orange-500" />{" "}
-          <span className="font-black uppercase italic">Địa chỉ giao hàng</span>
+          <span className="font-bold uppercase italic">Địa chỉ giao hàng</span>
         </div>
       }
       footer={
@@ -270,7 +270,7 @@ export const AddressFormModal = ({
                     setFormData((p) => ({ ...p, type: item.val as any }))
                   }
                 />
-                <span className="text-[10px] font-black uppercase tracking-widest">
+                <span className="text-[10px] font-bold uppercase tracking-widest">
                   {item.label}
                 </span>
               </label>

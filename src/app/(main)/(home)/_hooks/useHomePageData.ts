@@ -2,7 +2,7 @@
 
 import { useInfiniteQuery, useQueries } from "@tanstack/react-query";
 import { homepageService } from "../services/homepage.service";
-import { CategoryService } from "@/services/categories/category.service";
+import { CategoryService } from "../../category/_service/category.service";
 import { publicProductService } from "@/services/products/product.service";
 import { useMemo } from "react";
 

@@ -1,9 +1,9 @@
 "use client";
 
-import { FormInput, SectionLoading } from "@/components";
+import { SearchComponent, SectionLoading } from "@/components";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { AnimatePresence, motion } from "framer-motion";
-import { Search, X } from "lucide-react";
+import { X } from "lucide-react";
 import React, { useRef } from "react";
 import { PickupModalProps } from "./type";
 
@@ -62,18 +62,13 @@ export const PickupModal: React.FC<PickupModalProps> = ({
                   <X size={20} />
                 </button>
               </div>
-              <div className="md:col-span-5 relative group">
-                <Search
-                  size={18}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-orange-500 transition-colors z-10"
-                />
-                <FormInput
-                  placeholder={placeholder || "Tìm kiếm..."}
-                  value={searchText}
-                  onChange={(e) => onSearchChange(e.target.value)}
-                  className="w-full h-12 pl-10 pr-4 transition-all"
-                />
-              </div>
+              <SearchComponent
+                value={searchText}
+                onChange={onSearchChange}
+                placeholder={placeholder || "Tìm kiếm..."}
+                size="md"
+                className="md:col-span-5" 
+              />
             </div>
 
             <div className="flex-1 overflow-y-auto custom-scrollbar bg-white p-4 min-h-0">

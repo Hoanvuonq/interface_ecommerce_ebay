@@ -30,7 +30,7 @@ export const SectionPageComponents: React.FC<ISectionPageComponents> = ({
   if (loading) {
     return (
       <div className={cn("min-h-screen", background)}>
-        <SectionLoading message={loadingMessage} />
+        <SectionLoading size="lg" message={loadingMessage} className="min-h-screen" />
       </div>
     );
   }

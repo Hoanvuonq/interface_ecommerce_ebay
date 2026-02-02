@@ -1,6 +1,6 @@
 "use client";
 
-import { FormInput } from "@/components";
+import { FormInput, SearchComponent } from "@/components";
 import { PortalModal } from "@/features/PortalModal";
 import { useToast } from "@/hooks/useToast";
 import { userProductService } from "@/services/products/product.service";
@@ -12,15 +12,14 @@ import {
   Gift,
   LayoutGrid,
   Loader2,
-  Plus,
-  Search
+  Plus
 } from "lucide-react";
 import React, { useEffect, useMemo, useState } from "react";
 import { loyaltyService } from "../../_services/loyalty.service";
 import type {
   BulkPromotionRequest,
   LoyaltyRuleType,
-  ProductLoyaltyPromotionResponse
+  ProductLoyaltyPromotionResponse,
 } from "../../_types/loyalty.types";
 
 interface ProductPromotionFormProps {
@@ -125,7 +124,7 @@ export const ProductPromotionForm: React.FC<ProductPromotionFormProps> = ({
       if (isEdit && editPromotion) {
         await loyaltyService.updatePromotion(
           editPromotion.id,
-          basePayload as any
+          basePayload as any,
         );
         toastSuccess("Cập nhật thành công");
       } else if (applyMode === "single") {
@@ -150,13 +149,13 @@ export const ProductPromotionForm: React.FC<ProductPromotionFormProps> = ({
 
   const filteredProducts = useMemo(() => {
     return products.filter((p) =>
-      p.name.toLowerCase().includes(searchText.toLowerCase())
+      p.name.toLowerCase().includes(searchText.toLowerCase()),
     );
   }, [products, searchText]);
 
   const toggleProductSelection = (id: string) => {
     setSelectedProductIds((prev) =>
-      prev.includes(id) ? prev.filter((pId) => pId !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((pId) => pId !== id) : [...prev, id],
     );
   };
 
@@ -204,7 +203,7 @@ export const ProductPromotionForm: React.FC<ProductPromotionFormProps> = ({
                       "flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold transition-all",
                       applyMode === mode
                         ? "bg-white text-orange-600 shadow-sm"
-                        : " text-gray-500 hover:text-gray-700"
+                        : " text-gray-500 hover:text-gray-700",
                     )}
                   >
                     {mode === "single" && <CheckCircle2 size={14} />}
@@ -213,15 +212,14 @@ export const ProductPromotionForm: React.FC<ProductPromotionFormProps> = ({
                     {mode === "single"
                       ? "1 Sản phẩm"
                       : mode === "multiple"
-                      ? "Chọn nhiều"
-                      : `Tất cả (${products.length})`}
+                        ? "Chọn nhiều"
+                        : `Tất cả (${products.length})`}
                   </button>
                 ))}
               </div>
             </div>
           )}
 
-          {/* All products warning */}
           {applyMode === "all" && !isEdit && (
             <div className="flex items-center gap-3 p-4 bg-amber-50 border border-amber-100 rounded-2xl text-amber-700">
               <AlertTriangle size={18} className="shrink-0" />
@@ -232,21 +230,15 @@ export const ProductPromotionForm: React.FC<ProductPromotionFormProps> = ({
             </div>
           )}
 
-          {/* Product Selection List (Multiple) */}
           {applyMode === "multiple" && !isEdit && (
             <div className="space-y-3">
-              <div className="relative">
-                <Search
-                  className="absolute left-3 top-1/2 -translate-y-1/2  text-gray-400"
-                  size={16}
-                />
-                <input
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-orange-500 transition-all"
-                  placeholder="Tìm nhanh sản phẩm..."
-                  value={searchText}
-                  onChange={(e) => setSearchText(e.target.value)}
-                />
-              </div>
+              <SearchComponent
+                value={searchText}
+                onChange={setSearchText}
+                placeholder="Tìm nhanh sản phẩm..."
+                size="lg"
+                className="space-y-3"
+              />
               <div className="max-h-48 overflow-y-auto custom-scrollbar border border-slate-100 rounded-2xl divide-y divide-slate-50">
                 {filteredProducts.map((product) => (
                   <div
@@ -259,7 +251,7 @@ export const ProductPromotionForm: React.FC<ProductPromotionFormProps> = ({
                         "w-5 h-5 rounded-md border flex items-center justify-center transition-all",
                         selectedProductIds.includes(product.id)
                           ? "bg-orange-500 border-orange-500 text-white"
-                          : "border-slate-300 bg-white"
+                          : "border-slate-300 bg-white",
                       )}
                     >
                       {selectedProductIds.includes(product.id) && (
@@ -328,7 +320,7 @@ export const ProductPromotionForm: React.FC<ProductPromotionFormProps> = ({
                       "flex-1 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-all",
                       formData.ruleType === "PERCENT"
                         ? "bg-white text-orange-600 shadow-sm"
-                        : " text-gray-400"
+                        : " text-gray-400",
                     )}
                   >
                     Phần trăm
@@ -342,7 +334,7 @@ export const ProductPromotionForm: React.FC<ProductPromotionFormProps> = ({
                       "flex-1 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-all",
                       formData.ruleType === "FIXED"
                         ? "bg-white text-orange-600 shadow-sm"
-                        : " text-gray-400"
+                        : " text-gray-400",
                     )}
                   >
                     Cố định
@@ -410,13 +402,13 @@ export const ProductPromotionForm: React.FC<ProductPromotionFormProps> = ({
               }
               className={cn(
                 "relative inline-flex h-6 w-11 items-center rounded-full transition-colors",
-                formData.enabled ? "bg-orange-500" : "bg-slate-300"
+                formData.enabled ? "bg-orange-500" : "bg-slate-300",
               )}
             >
               <span
                 className={cn(
                   "inline-block h-4 w-4 transform rounded-full bg-white transition-transform",
-                  formData.enabled ? "translate-x-6" : "translate-x-1"
+                  formData.enabled ? "translate-x-6" : "translate-x-1",
                 )}
               />
             </button>

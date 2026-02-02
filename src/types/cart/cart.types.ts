@@ -31,7 +31,7 @@ export interface CartItemPromotion {
 export interface ShopDto {
   shopId: string;
   shopName: string;
-  shopLogo?: string;
+  shopLogo?: string | null;
   ownerName?: string;
   isVerified?: boolean;
   rating?: number;

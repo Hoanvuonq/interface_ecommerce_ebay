@@ -102,7 +102,6 @@ export function WebSocketProvider({
       await wsServiceRef.current.connect("");
       setConnected(true);
       setReconnectAttempts(0);
-      console.log("WebSocket connected successfully");
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "WebSocket connection failed";
@@ -114,10 +113,7 @@ export function WebSocketProvider({
       if (reconnectAttempts < maxReconnectAttempts) {
         setReconnectAttempts((prev) => prev + 1);
         reconnectTimeoutRef.current = setTimeout(() => {
-          console.log(
-            `Attempting to reconnect... (${reconnectAttempts + 1
-            }/${maxReconnectAttempts})`
-          );
+         
           connect();
         }, reconnectInterval);
       }
@@ -134,7 +130,6 @@ export function WebSocketProvider({
       setConnected(false);
       setError(null);
       setReconnectAttempts(0);
-      console.log("WebSocket disconnected");
     }
   }, []);
 
@@ -149,10 +144,8 @@ export function WebSocketProvider({
       if (!wsServiceRef.current.isConnected()) {
         // Auto-trigger connect if authenticated but not connected
         if (isAuthenticated) {
-          console.log(`[WebSocket] Not connected, triggering connect for subscription to ${topic}...`);
           // Connect and then retry subscription after delay
           wsServiceRef.current.connect("").then(() => {
-            console.log(`[WebSocket] Connected! Retrying subscription to ${topic}...`);
             if (wsServiceRef.current?.isConnected()) {
               wsServiceRef.current.subscribe(topic, callback);
             }
@@ -166,7 +159,6 @@ export function WebSocketProvider({
       }
 
       try {
-        console.log(`[WebSocket] Subscribing to ${topic}...`);
         return wsServiceRef.current.subscribe(topic, callback);
       } catch (err) {
         console.error("Failed to subscribe to", topic, err);
@@ -213,9 +205,7 @@ export function WebSocketProvider({
 
     const handleTokenRefreshed = () => {
       if (!isAuthenticated) return;
-      console.log(
-        "[WebSocketProvider] Detected auth-token-refreshed event, reconnecting WebSocket..."
-      );
+   
       reconnect();
     };
 
@@ -231,18 +221,14 @@ export function WebSocketProvider({
     if (!isAuthenticated) {
       if (!hasTriedConnectWithoutTokenRef.current) {
         hasTriedConnectWithoutTokenRef.current = true;
-        console.log(
-          "[WebSocketProvider] User not authenticated, skipping auto-connect"
-        );
+       
       }
       return;
     }
 
     // Chỉ auto-connect khi có user info, authenticated, và chưa connected
     if (autoConnect && isAuthenticated && !connected) {
-      console.log(
-        "[WebSocketProvider] Auto-connecting WebSocket (backend will read token from cookies)..."
-      );
+     
       connect();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

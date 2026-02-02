@@ -7,8 +7,15 @@ import categoryService from "../_services/category.service";
 import { useToast } from "@/hooks/useToast";
 
 export const useCategoryLogic = (onSuccess?: () => void) => {
-  const { formData, setFormField, slug, setSlug, setErrors, resetForm } =
-    useCategoryFormStore();
+  const {
+    formData,
+    setFormField,
+    slug,
+    setSlug,
+    setErrors,
+    resetForm,
+    setLocalPreview,
+  } = useCategoryFormStore();
   const { success: toastSuccess, error: toastError } = useToast();
 
   const [parentCategories, setParentCategories] = useState<any[]>([]);
@@ -66,9 +73,9 @@ export const useCategoryLogic = (onSuccess?: () => void) => {
     if (!validate()) return;
     setIsCreating(true);
     try {
-      // 🟢 PAYLOAD CHUẨN SWAGGER: Chỉ gửi imageAssetId, KHÔNG gửi imagePath
       const payload: any = {
         name: formData.name,
+        slug: slug,
         description: formData.description,
         parentId: formData.parentId || null,
         active: formData.active,
@@ -89,7 +96,13 @@ export const useCategoryLogic = (onSuccess?: () => void) => {
       };
 
       if (categoryId) {
-        await categoryService.update(categoryId, payload, etag || "");
+        if (categoryId && !etag) {
+          toastError(
+            "Không tìm thấy phiên bản dữ liệu (ETag). Hãy thử F5 lại trang.",
+          );
+          return; // Chặn lại không cho chạy tiếp
+        }
+       await categoryService.update(categoryId, payload, etag!);
         toastSuccess("Cập nhật thành công");
       } else {
         await categoryService.create(payload);
@@ -97,9 +110,16 @@ export const useCategoryLogic = (onSuccess?: () => void) => {
       }
 
       resetForm();
+      // localPreview được quản lý bởi store nên gọi từ đây là chuẩn xác
+      setLocalPreview(null);
       if (onSuccess) onSuccess();
     } catch (err: any) {
-      toastError(err.message || "Lỗi hệ thống");
+      // Nếu Backend trả về lỗi liên quan đến ETag (412 Precondition Failed)
+      const msg =
+        err.status === 412
+          ? "Dữ liệu đã bị thay đổi bởi người khác, vui lòng tải lại."
+          : err.message;
+      toastError(msg || "Lỗi hệ thống");
     } finally {
       setIsCreating(false);
     }

@@ -54,7 +54,7 @@ export const NotificationsScreen = () => {
                   <span>/</span>
                   <span className="text-white font-medium">Thông báo</span>
                 </nav>
-                <h1 className="text-4xl font-black text-white tracking-tight leading-none">
+                <h1 className="text-4xl font-bold text-white tracking-tight leading-none">
                   Quản lý Thông báo
                 </h1>
                 <p className="text-orange-50/80 mt-2 max-w-lg leading-relaxed">
