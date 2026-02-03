@@ -196,7 +196,9 @@ export const useShopOnboarding = () => {
       const payload = mapShopOnboardingPayload(
         finalValues,
         logoPath,
-        legalAssetIds,
+        legalAssetIds.frontImageAssetId,
+        legalAssetIds.backImageAssetId,
+        legalAssetIds.faceImageAssetId,
       );
 
       // Ensure legalInfo includes fontImageUrl, backImageUrl, faceImageUrl
