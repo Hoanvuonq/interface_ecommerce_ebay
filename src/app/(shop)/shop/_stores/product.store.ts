@@ -266,7 +266,6 @@ export const useProductStore = create<ProductState & ProductActions>()(
           }
         }),
 
-      // --- Category ---
       setCategoryTree: (tree) => set({ categoryTree: tree }),
       setCategories: (categories) => set({ categories }),
       setCategoriesLoading: (loading) => set({ categoriesLoading: loading }),

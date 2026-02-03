@@ -30,13 +30,7 @@ export const StepLegalInfo = ({ errors }: { errors?: any }) => {
 
   const handlePrivateUpload = async (file: File, options: any) => {
     try {
-      // 🟢 QUAN TRỌNG: Truyền flag isPrivate = true vào đây
-      const res = await uploadFile(
-        file,
-        UploadContext.DOCUMENT,
-        true, // Tham số isPrivate
-        options, // Chứa onUploadProgress
-      );
+      const res = await uploadFile(file, UploadContext.DOCUMENT, true, options);
       return res;
     } catch (error) {
       throw error;
@@ -131,7 +125,7 @@ export const StepLegalInfo = ({ errors }: { errors?: any }) => {
                   maxCount={2}
                   value={formData.idImages}
                   onChange={(files) => updateField("idImages", files)}
-                  onUploadApi={handlePrivateUpload} 
+                  onUploadApi={handlePrivateUpload}
                   context={UploadContext.DOCUMENT}
                 />
               </div>

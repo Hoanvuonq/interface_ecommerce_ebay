@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/useToast";
 import {
   FaBriefcase,
   FaEdit,
@@ -25,6 +25,7 @@ interface AddressManagementProps {
 
 export default function AddressManagement({ buyerId }: AddressManagementProps) {
   const [addresses, setAddresses] = useState<BuyerAddressResponse[]>([]);
+  const { success: toastSuccess, error: toastError } = useToast();
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingAddress, setEditingAddress] = useState<
@@ -49,7 +50,7 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
       );
       setAddresses(sortedData);
     } catch (error: any) {
-      toast.error(error?.message || "Không thể tải địa chỉ");
+      toastError(error?.message || "Không thể tải địa chỉ");
     } finally {
       setLoading(false);
     }
@@ -69,16 +70,15 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
     if (!confirm("Bạn có chắc chắn muốn xóa địa chỉ này?")) return;
     try {
       await buyerAddressService.deleteAddress(buyerId, addressId);
-      toast.success("Đã xóa địa chỉ");
+      toastSuccess("Đã xóa địa chỉ");
       loadAddresses();
     } catch (error: any) {
-      toast.error("Lỗi xóa địa chỉ");
+      toastError("Lỗi xóa địa chỉ");
     }
   };
 
   return (
     <div className="h-full w-full animate-fade-in relative">
-      {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 pb-6 border-b border-gray-100 gap-4">
         <div>
           <h2 className="text-xl font-bold text-gray-800 tracking-tight">
@@ -202,7 +202,6 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
         </div>
       )}
 
-      {/* Modal */}
       <AddressFormModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

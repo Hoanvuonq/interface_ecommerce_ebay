@@ -1,24 +1,27 @@
 "use client";
 
-import React, { useMemo, useState, useEffect } from "react";
-import { AnimatePresence, motion, PanInfo } from "framer-motion";
-import _ from "lodash";
-import { cn } from "@/utils/cn";
 import { SectionLoading } from "@/components";
 import { SectionSreen } from "@/features/SectionSreen";
-import { CategoryItem } from "../CategoryItem";
+import { cn } from "@/utils/cn";
+import { AnimatePresence, motion, PanInfo } from "framer-motion";
+import _ from "lodash";
+import React, { useEffect, useMemo, useState } from "react";
 import { useHomepageContext } from "../../_context/HomepageContext";
+import { CategoryItem } from "../CategoryItem";
 
 const usePageSize = () => {
-  const [pageSize, setPageSize] = useState(20);
+  const [pageSize, setPageSize] = useState(16);
 
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
-      if (width >= 1280) setPageSize(20);
-      else if (width >= 1024) setPageSize(16);
-      else if (width >= 768) setPageSize(12);
-      else setPageSize(8);
+      if (width >= 1024) {
+        setPageSize(16);
+      } else if (width >= 768) {
+        setPageSize(12);
+      } else {
+        setPageSize(8);
+      }
     };
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -36,7 +39,7 @@ export const CategoriesSection: React.FC = () => {
   const chunkedPages = useMemo(() => {
     const validCategories = _.take(
       _.filter(categories, (cat) => !!(cat.name && cat.slug)),
-      40
+      40,
     );
     return _.chunk(validCategories, pageSize);
   }, [categories, pageSize]);
@@ -75,7 +78,7 @@ export const CategoriesSection: React.FC = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -50 }}
               transition={{ duration: 0.3 }}
-              className="grid grid-cols-4 lg:grid-cols-8 gap-y-1 gap-x-2 sm:gap-x-4 cursor-grab active:cursor-grabbing"
+              className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 h-50 gap-y-1 gap-x-2 sm:gap-x-4 cursor-grab active:cursor-grabbing"
             >
               {chunkedPages[currentPage]?.map((cat, idx) => (
                 <div
@@ -97,7 +100,9 @@ export const CategoriesSection: React.FC = () => {
                 onClick={() => setCurrentPage(idx)}
                 className={cn(
                   "h-1.5 transition-all duration-500 rounded-full",
-                  currentPage === idx ? "w-10 bg-orange-600" : "w-3 bg-gray-200"
+                  currentPage === idx
+                    ? "w-10 bg-orange-600"
+                    : "w-3 bg-gray-200",
                 )}
               />
             ))}

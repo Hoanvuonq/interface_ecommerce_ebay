@@ -1,13 +1,11 @@
-import { request } from "@/utils/axios.customize";
 import type { ApiResponse } from "@/api/_types/api.types";
 import type {
   CountryResponse,
+  PageDto,
   ProvinceResponse,
   WardResponse,
-  PageDto,
-  GetProvincesParams,
-  GetWardsParams,
 } from "@/types/address/address.types";
+import { request } from "@/utils/axios.customize";
 const ADDRESS_API_BASE = "/v1/address";
 
 class AddressService {

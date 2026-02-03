@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
+import { useToast } from "@/hooks/useToast";
 
 // Hooks
 import {
@@ -10,24 +11,31 @@ import {
   useCategoryManagement,
   useOptionManagement,
 } from "../../../../_hooks";
+
 import { useProductContext } from "../../../../_contexts";
 
 import { usePresignedUpload } from "@/hooks/usePresignedUpload";
-import { useToast } from "@/hooks/useToast";
 import { useProductStore } from "../../../../_stores/product.store";
 
-import { ButtonField, CustomVideoModal, ImagePreviewModal } from "@/components";
-import { Button } from "@/components/button";
+import {
+  ButtonField,
+  CustomVideoModal,
+  ImagePreviewModal,
+  Button,
+} from "@/components";
 import {
   AddOptionGroupModal,
   CategorySelectionModal,
 } from "../../../../_components/Modal";
-import { BasePriceSection } from "../../../../_components/Products/BasePriceSection";
-import { ProductClassificationSection } from "../../../../_components/Products/ProductClassificationSection";
-import { ProductDescription } from "../../../../_components/Products/ProductDescription";
-import { ProductPreviewSidebar } from "../../../../_components/Products/ProductPreviewSidebar";
-import { ProductVariantsSection } from "../../../../_components/Products/ProductVariantsSection";
-import { ProductVariantsTable } from "../../../../_components/Products/ProductVariantsTable";
+
+import {
+  ProductClassificationSection,
+  ProductVariantsSection,
+  ProductDescription,
+  BasePriceSection,
+  ProductPreviewSidebar,
+  ProductVariantsTable,
+} from "@/app/(shop)/shop/_components";
 import {
   ProductBasicTabs,
   ProductDetailsTabs,
@@ -38,6 +46,7 @@ import {
 
 import { userProductService } from "@/services/products/product.service";
 import { UploadContext } from "@/types/storage/storage.types";
+
 import type {
   CreateUserProductBulkDTO,
   CreateUserProductOptionDTO,
@@ -266,7 +275,6 @@ export default function ShopProductAddStepsFormScreen() {
       const variantsToSubmit =
         variants.length > 0 ? variants : values.variants || [];
 
-      // Debug: Show all variant keys and their image status
       variantsToSubmit.forEach((v, idx) => {
         const variantKey = v.optionValueNames?.join("|") || "no-key";
       });
@@ -342,7 +350,6 @@ export default function ShopProductAddStepsFormScreen() {
             });
           }
 
-          // Prepare variant data
           const variantData: any = {
             sku: v.sku,
             corePrice: v.corePrice,
@@ -372,7 +379,8 @@ export default function ShopProductAddStepsFormScreen() {
         }),
       };
 
-      const result: any = await userProductService.createBulk(finalData);
+      const result: any =
+        await userProductService.createProductsByShop(finalData);
 
       setHasUnsavedChanges(false);
 
@@ -554,11 +562,23 @@ export default function ShopProductAddStepsFormScreen() {
     </div>
   );
 
+  const [allowedShippingChannels, setAllowedShippingChannels] = useState<any[]>(
+    [],
+  );
+  const [regions, setRegions] = useState<string[]>(["VIETNAM"]);
   const renderShippingTab = () => (
     <ProductShippingTabs
       variants={variants}
       optionNames={optionNames}
       onUpdateVariant={handleUpdateVariant}
+      updateAllVariants={(field, value) => {
+        const store = useProductStore.getState();
+        store.updateAllVariants(field, value);
+      }}
+      allowedShippingChannels={allowedShippingChannels}
+      setAllowedShippingChannels={setAllowedShippingChannels}
+      regions={regions}
+      setRegions={setRegions}
     />
   );
 

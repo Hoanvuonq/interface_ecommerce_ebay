@@ -38,7 +38,6 @@ const OnboardingContent = () => {
 
   const { success: toastSuccess, error: toastError } = useToast();
 
-  // State quản lý lỗi cục bộ để báo đỏ/rung input
   const [formErrors, setFormErrors] = useState<any>({});
 
   const validateCurrentStep = () => {
@@ -114,7 +113,7 @@ const OnboardingContent = () => {
 
   return (
     <div className="max-w-5xl mx-auto px-4 pb-20 animate-in fade-in duration-700">
-     {(loading || uploadingImage) && (
+      {(loading || uploadingImage) && (
         <div className="fixed inset-0 bg-white/40 backdrop-blur-sm flex flex-col justify-center items-center z-9999 animate-in fade-in duration-300">
           <div className="bg-white p-8 rounded-[3rem] shadow-2xl flex flex-col items-center border border-gray-100 scale-110">
             <div className="relative mb-6">
@@ -136,7 +135,6 @@ const OnboardingContent = () => {
         </div>
       )}
 
-      {/* REJECTED REASONS */}
       {Object.keys(rejectedReasons).length > 0 && (
         <div className="mb-10 p-6 bg-rose-50 border border-rose-100 rounded-[2.5rem] shadow-sm relative overflow-hidden group">
           <div className="absolute top-0 right-0 p-4 opacity-5 rotate-12 group-hover:rotate-45 transition-transform duration-700">
@@ -207,7 +205,6 @@ const OnboardingContent = () => {
           </div>
         </div>
 
-        {/* STEP CONTENT AREA */}
         <div className="p-8 md:p-12 min-h-112.5 bg-white relative">
           <AnimatePresence mode="wait">
             <div key={current} className="w-full">
@@ -215,7 +212,6 @@ const OnboardingContent = () => {
             </div>
           </AnimatePresence>
 
-          {/* ACTION BUTTONS */}
           <div className="mt-12 flex flex-col items-center space-y-8">
             <button
               type="button"

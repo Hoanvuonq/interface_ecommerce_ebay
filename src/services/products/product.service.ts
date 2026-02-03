@@ -501,10 +501,10 @@ export const userProductService = {
    * Create product in bulk with all related data
    * POST /api/v1/user/products/bulk
    */
-  createBulk(payload: CreateUserProductBulkDTO) {
+  createProductsByShop(payload: CreateUserProductBulkDTO) {
     return request<ProductBulkResponseDTO>({
       method: "POST",
-      url: `/${API_ENDPOINT_USER_PRODUCTS}/bulk`,
+      url: `/${API_ENDPOINT_USER_PRODUCTS}`,
       data: payload,
     });
   },
@@ -700,6 +700,7 @@ import {
   RichTextParagraphDTO,
   UpdateRichTextParagraphDTO,
 } from "@/types/product/rich-text-paragraph.dto";
+import { create } from "lodash";
 
 export const richTextParagraphService = {
   /**

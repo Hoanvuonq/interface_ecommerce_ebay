@@ -9,7 +9,6 @@ import {
   CheckCircle2,
   ImageIcon,
 } from "lucide-react";
-import { cn } from "@/utils/cn";
 import Image from "next/image";
 
 export const LegalInfo = ({ shop }: { shop: any; setShop: any }) => {
@@ -37,10 +36,11 @@ export const LegalInfo = ({ shop }: { shop: any; setShop: any }) => {
       icon: <CreditCard size={14} />,
     },
   ];
+
   const images = [
-    { label: "Mặt trước CCCD", url: legal?.frontImagePreviewUrl }, 
-    { label: "Mặt sau CCCD", url: legal?.backImagePreviewUrl }, 
-    { label: "Ảnh chân dung", url: legal?.faceImagePreviewUrl }, 
+    { label: "Mặt trước CCCD", url: legal?.frontImagePreviewUrl },
+    { label: "Mặt sau CCCD", url: legal?.backImagePreviewUrl },
+    { label: "Ảnh chân dung", url: legal?.faceImagePreviewUrl },
   ];
 
   return (
@@ -85,7 +85,6 @@ export const LegalInfo = ({ shop }: { shop: any; setShop: any }) => {
           ))}
         </div>
 
-        {/* Section Hình ảnh CCCD */}
         <div className="mt-10 space-y-4">
           <div className="flex items-center gap-2 ml-1">
             <ImageIcon size={16} className="text-gray-500" />
@@ -103,6 +102,7 @@ export const LegalInfo = ({ shop }: { shop: any; setShop: any }) => {
                       src={img.url}
                       alt={img.label}
                       fill
+                      unoptimized // 🟢 Quan trọng cho các URL có chữ ký R2
                       className="object-cover"
                     />
                   ) : (

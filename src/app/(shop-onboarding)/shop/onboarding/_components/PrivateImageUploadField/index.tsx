@@ -19,8 +19,8 @@ import { usePresignedUpload } from "@/hooks/usePresignedUpload";
 export interface PrivateUploadFile {
   uid: string;
   name: string;
-  url?: string; // Blob URL tạm thời
-  finalUrl?: string; // Link chính thức có Signature
+  url?: string;
+  finalUrl?: string;
   assetId?: string;
   status: "uploading" | "done" | "error";
   percent: number;
@@ -90,7 +90,6 @@ export const PrivateImageUploadField: React.FC<
         const result = await onUploadApi(file, {
           onUploadProgress: (ev: any) => {
             const p = Math.round((ev.loaded * 100) / ev.total);
-            // Cập nhật % trực tiếp vào Ref để gửi cho component cha
             const updated = filesRef.current.map((f) =>
               f.uid === uid ? { ...f, percent: p } : f,
             );
@@ -107,7 +106,7 @@ export const PrivateImageUploadField: React.FC<
                 status: "done" as const,
                 assetId: result.assetId,
                 finalUrl: result.finalUrl,
-                url: result.finalUrl || f.url, // Ưu tiên hiện link có signature
+                url: result.finalUrl || f.url, 
                 percent: 100,
               }
             : f,
@@ -139,7 +138,6 @@ export const PrivateImageUploadField: React.FC<
             className="relative w-32 h-40 rounded-3xl border-2 border-gray-100 bg-white overflow-hidden shadow-sm group"
           >
             <div className="relative w-full h-full">
-              {/* Hiện link blob tạm thời hoặc link signed chính thức */}
               <Image
                 src={file.url || file.finalUrl || ""}
                 alt="p"

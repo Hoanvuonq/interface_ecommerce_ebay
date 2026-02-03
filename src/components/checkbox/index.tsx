@@ -14,7 +14,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
       containerClassName,
       sizeClassName,
       id,
-      checked,
+      checked = false,
       onChange,
       ...props
     },
@@ -36,9 +36,8 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
             type="checkbox"
             id={checkboxId}
             ref={ref}
-            checked={checked}
-            onChange={onChange} 
-            readOnly={!onChange}
+            checked={!!checked} 
+            onChange={onChange}
             className="sr-only"
             {...props}
           />

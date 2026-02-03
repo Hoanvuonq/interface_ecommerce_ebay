@@ -4,9 +4,14 @@ import { useCheckoutActions } from "./useCheckoutActions";
 import { buyerService } from "@/services/buyer/buyer.service";
 import { getStoredUserDetail } from "@/utils/jwt";
 import { useMemo } from "react";
-
+import { ApiResponse } from "@/api/_types/api.types";
+import {
+  BuyerAddressResponse,
+  BuyerDetailResponse,
+} from "@/types/buyer/buyer.types";
 export const useCheckoutAddress = () => {
-  const { request, savedAddresses, setBuyerData, setRequest } = useCheckoutStore();
+  const { request, savedAddresses, setBuyerData, setRequest } =
+    useCheckoutStore();
   const { syncPreview } = useCheckoutActions();
   const user = getStoredUserDetail();
 
@@ -15,29 +20,38 @@ export const useCheckoutAddress = () => {
   }, [savedAddresses, request?.addressId]);
 
   const updateAddressList = async () => {
-    if (!user?.buyerId) return;
+    if (!user?.buyerId) return [];
     try {
-      const response = await buyerService.getBuyerDetail(user.buyerId);
-      const addresses = (_.get(response, "addresses") || []) as any[];
+      const response = (await buyerService.getBuyerDetail(
+        user.buyerId,
+      )) as unknown as ApiResponse<BuyerDetailResponse>;
+
+      const addresses = _.get(
+        response,
+        "data.addresses",
+        [],
+      ) as BuyerAddressResponse[];
       const sortedAddr = _.orderBy(addresses, ["isDefault"], ["desc"]);
 
-      setBuyerData(response, sortedAddr);
+      // Lưu trữ thông tin buyer và danh sách địa chỉ đã sắp xếp
+      setBuyerData(response.data, sortedAddr);
+
       return sortedAddr;
     } catch (error) {
       console.error("Failed to fetch addresses:", error);
+      return [];
     }
   };
-
- const updateAddress = async (addressId?: string, data?: any) => {
+  const updateAddress = async (addressId?: string, data?: any) => {
     const targetId = addressId || data?.addressId;
-    const latestReq = useCheckoutStore.getState().request; 
-    
+    const latestReq = useCheckoutStore.getState().request;
+
     if (!targetId || !latestReq) return;
 
     const next = {
       ...latestReq,
       addressId: targetId,
-      shippingAddress: { addressId: targetId, addressChanged: true, ...data }
+      shippingAddress: { addressId: targetId, addressChanged: true, ...data },
     };
 
     setRequest(next);

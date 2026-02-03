@@ -44,16 +44,7 @@ export interface GeoInfo {
   userAdjusted: boolean;
   confirmed: boolean;
 }
-export interface AddressDetail {
-  country: string;
-  zipCode: string;
-  province: string;
-  ward: string;
-  detail: string;
-  district: string;
-  geoinfo: GeoInfo | null;
-  isInternational: boolean;
-}
+
 export interface BuyerAddressResponse {
   addressId: string;
   recipientName: string;
@@ -86,21 +77,52 @@ export interface BuyerResponse {
 /**
  * Buyer Detail Response
  */
+/**
+ * 1. Thông tin địa lý chi tiết (Cấp thấp nhất)
+ */
+export interface AddressDetail {
+  country: string;
+  zipCode: string | null;
+  province: string;
+  district: string;
+  ward: string;
+  detail: string; // Đây là "detailAddress" từ API
+  geoinfo: GeoInfo | null;
+  isInternational: boolean;
+}
+
+/**
+ * 2. Cấu trúc một bản ghi địa chỉ trong mảng
+ */
+export interface BuyerAddressResponse {
+  addressId: string;
+  recipientName: string;
+  phone: string;
+  type: AddressType;
+  isDefault: boolean;
+  address: AddressDetail; // 🟢 Dữ liệu địa chỉ thực tế nằm ở đây
+  default: boolean;
+  defaultPickup: boolean;
+  defaultReturn: boolean;
+}
+
+/**
+ * 3. Chi tiết thông tin Buyer (Cấp cao nhất)
+ */
 export interface BuyerDetailResponse {
   buyerId: string;
   fullName: string;
   phone: string;
   dateOfBirth: string; // ISO date string
   gender: Gender;
-  addresses: BuyerAddressResponse[];
+  addresses: BuyerAddressResponse[]; // 🟢 Mảng các địa chỉ
   createdBy: string;
-  createdDate: string; // ISO datetime string
+  createdDate: string;
   lastModifiedBy: string;
-  lastModifiedDate: string; // ISO datetime string
+  lastModifiedDate: string;
   deleted: boolean;
   version: number;
 }
-
 /**
  * Buyer Address Create Request
  */

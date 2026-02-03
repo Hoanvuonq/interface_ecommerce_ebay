@@ -345,8 +345,8 @@ export const ShopDetailModal: React.FC<ShopDetailModalProps> = ({
                 {tax && tax.verifiedStatus === "PENDING" && (
                   <div className="flex gap-2 w-full sm:w-auto">
                     <CustomButtonActions
-                      onCancel={() => onApproveTax(shopId, tax.taxId)}
-                      onSubmit={() => handleOpenReject("tax", tax.taxId)}
+                      onCancel={() => handleOpenReject(shopId, tax.taxId)}
+                      onSubmit={() => onApproveTax("tax", tax.taxId)}
                       isDisabled={legalLoading}
                       cancelText="Từ Chối"
                       submitText="Xác Thực Thuế"

@@ -1,3 +1,6 @@
+export type AddressRole = "isDefault" | "isDefaultPickup" | "isDefaultReturn";
+
+
 export interface AddressModalProps {
   isOpen: boolean;
   onClose: () => void;

@@ -1,25 +1,32 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const mapShopOnboardingPayload = (
   finalValues: any,
-  logoPath: string,
+  logoAssetId: string,
+  logoUrl: string,
   legalAssetIds: any,
+  countryData?: any,
 ) => {
   const getGeoAddr = (obj: any) => ({
-    countryCode: "VN",
-    countryName: "Việt Nam",
-    provinceCode: obj?.provinceCode || "",
-    provinceName: obj?.provinceName || "",
-    districtCode: "",
-    districtName: "",
-    wardCode: obj?.wardCode || "",
-    wardName: obj?.wardName || "",
+    country: obj?.countryName || "Việt Nam",
+    province: obj?.provinceName || "",
+    district: obj?.districtName || "",
+    ward: obj?.wardName || "",
     detail: obj?.addressDetail || obj?.detail || "",
+    zipCode: obj?.zipCode || "10000",
+    geoinfo: {
+      latitude: obj?.latitude || 1,
+      longitude: obj?.longitude || 1,
+      userVerified: true,
+      userAdjusted: true,
+      confirmed: true,
+    },
+    isInternational: false,
   });
 
-  return {
+  const payload = {
     shopName: finalValues.shopName,
-    description: finalValues.description,
-    logoUrl: logoPath,
+    description: finalValues.description || "",
+    logoAssetId: logoAssetId,
     legalInfo: {
       nationality: finalValues.nationality || "vn",
       identityType: finalValues.idType?.toUpperCase() || "CCCD",
@@ -32,25 +39,23 @@ export const mapShopOnboardingPayload = (
     taxInfo: {
       type: finalValues.businessType?.toUpperCase() || "PERSONAL",
       registeredAddress: getGeoAddr({
-        provinceCode: finalValues.taxProvinceCode || finalValues.provinceCode,
-        provinceName: finalValues.taxProvinceName || finalValues.provinceName,
-        wardCode: finalValues.taxWardCode || finalValues.wardCode,
-        wardName: finalValues.taxWardName || finalValues.wardName,
-        addressDetail:
-          finalValues.taxAddressDetail || finalValues.addressDetail,
+        provinceName: finalValues.taxProvinceName || finalValues.provinceCode,
+        districtName: finalValues.taxDistrictName || "",
+        wardName: finalValues.taxWardName || "",
+        addressDetail: finalValues.taxAddressDetail || "",
       }),
-      email: finalValues.email, // Email tự động get
+      email: finalValues.email,
       taxIdentificationNumber: finalValues.taxId,
     },
     address: {
-      // 🟢 FIX TS(2345): Đưa detail lên cấp 1 theo đúng DTO
-      fullName: finalValues.pickupAddress?.fullName || "",
+      address: getGeoAddr(finalValues.pickupAddress),
+      fullName: finalValues.pickupAddress?.fullName || finalValues.fullName,
       phone: finalValues.pickupAddress?.phone || "",
-      detail:
-        finalValues.pickupAddress?.addressDetail ||
-        finalValues.pickupAddress?.detail ||
-        "",
-      address: getGeoAddr(finalValues.pickupAddress), // Thông tin địa lý cấp 2
+      isDefault: true,
+      isDefaultPickup: true,
+      isDefaultReturn: true,
     },
   };
+
+  return payload;
 };

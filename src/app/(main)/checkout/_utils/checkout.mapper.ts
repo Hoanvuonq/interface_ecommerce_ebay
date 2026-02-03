@@ -23,6 +23,7 @@ export const preparePreviewCheckoutPayload = (req: any): any => {
     })),
   };
 };
+
 export const prepareOrderRequest = (params: any): any => {
   const { preview, request, savedAddresses, customerNote, paymentMethod } =
     params;
@@ -36,50 +37,57 @@ export const prepareOrderRequest = (params: any): any => {
     _.map(s.items, "itemId"),
   );
 
+  const allDiscountCodes = _.flatten([
+    ..._.map(data.shops, (s: any) =>
+      _.map(s.applicableVouchers, "voucherCode"),
+    ),
+    ..._.map(data.globalVoucherResults, "voucherCode"),
+  ]).filter(Boolean);
+
   return {
     shops: _.map(data.shops, (s) => {
       const shopReq = _.find(request.shops, { shopId: s.shopId });
 
-      const shopGlobalVouchers = _.chain(s.voucherResult?.discountDetails)
-        .filter({ voucherType: "PLATFORM", valid: true })
-        .map("voucherCode")
-        .value();
-
-      const items = _.map(s.items, (item: any) => ({
-        itemId: item.itemId,
-        expectedUnitPrice: Number(
-          item.unitPrice || item.expectedUnitPrice || 0,
-        ),
-        // promotionId: item.promotionId || null,
-        quantity: Number(
-          shopReq?.items?.find((i: any) => i.itemId === item.itemId)
-            ?.quantity ||
-            item.quantity ||
-            1,
-        ),
-      }));
-
       return {
         shopId: s.shopId,
-        items,
+        items: _.map(s.items, (item: any) => ({
+          itemId: item.itemId,
+          quantity: Number(item.quantity || 1),
+          expectedUnitPrice: Number(
+            item.unitPrice || item.expectedUnitPrice || 0,
+          ),
+        })),
         vouchers: shopReq?.vouchers || [],
         serviceCode: Number(
-          shopReq?.serviceCode || s.selectedShippingMethod || 400021,
+          s.serviceCode || s.selectedShippingMethod || 400021,
         ),
         shippingFee: Number(_.get(s, "summary.shippingFee", 0)),
-        globalVouchers: shopGlobalVouchers,
+        globalVouchers: shopReq?.globalVouchers || [],
         loyaltyPoints: Number(_.get(shopReq, "loyaltyPoints", 0)),
+        itemIds: _.map(s.items, "itemId"),
       };
     }),
+
     buyerAddressData: {
-      // addressId: String(request.addressId),
       buyerAddressId: String(request.addressId),
-      // addressType: Number(_.get(fullAddressData, "addressType", 0)),
-      // taxAddress: _.get(fullAddressData, "taxAddress", null),
+      addressId: String(request.addressId),
     },
+
+    shippingAddress: {
+      addressId: String(request.addressId),
+      addressChanged: true,
+      country: fullAddressData?.address?.country || "Vietnam",
+      taxFee: String(_.get(data, "summary.taxFee", "0")),
+    },
+
+    addressId: String(request.addressId),
+    loyaltyPoints: Number(data.summary?.totalLoyaltyPoints || 0),
     paymentMethod: paymentMethod || "COD",
-    // previewId: data.previewId || data.cartId || "",
-    // previewAt: data.previewAt,
+    previewAllSelected: true,
+    usingSavedAddress: true,
+    allDiscountCodes: _.uniq(allDiscountCodes),
+    allSelectedItemIds: allSelectedItemIds,
+    effectiveAddressId: String(request.addressId),
     customerNote: customerNote || "",
   };
 };

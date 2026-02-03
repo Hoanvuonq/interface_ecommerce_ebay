@@ -2,24 +2,36 @@
 "use client";
 
 import { AddressModal } from "@/app/(shop-onboarding)/shop/onboarding/_components/AddressModal";
-import { FormInput, MediaUploadField, SectionHeader } from "@/components";
+import {
+  Button,
+  FormInput,
+  MediaUploadField,
+  SectionHeader,
+} from "@/components";
 import { usePresignedUpload } from "@/hooks/usePresignedUpload";
 import { UploadContext } from "@/types/storage/storage.types";
-import { ChevronRight, Info, MapPin, Plus, Store } from "lucide-react";
+import {
+  ChevronRight,
+  Info,
+  MapPin,
+  Navigation,
+  Plus,
+  Store,
+} from "lucide-react";
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useOnboarding } from "../../_contexts/shop.onboarding.context";
 import { cn } from "@/utils/cn";
-import { getStoredUserDetail } from "@/utils/jwt"; // 🟢 Import để lấy thông tin user
+import { getStoredUserDetail } from "@/utils/jwt";
+import { AddressDisplayCard } from "../AddressDisplayCard";
 
 export const StepBasicInfo = ({ errors }: { errors?: any }) => {
   const { formData, updateFormField, provinces, wards, fetchWardsByProvince } =
     useOnboarding();
-
+  const [modalErrors, setModalErrors] = useState<any>({});
   const [open, setOpen] = useState(false);
   const { uploadFile } = usePresignedUpload();
   const lastFetchedProvinceCode = useRef<string | null>(null);
 
-  // 🟢 TỰ ĐỘNG LẤY EMAIL KHI TRANG LOAD
   useEffect(() => {
     if (!formData.email) {
       const userDetail = getStoredUserDetail();
@@ -89,75 +101,29 @@ export const StepBasicInfo = ({ errors }: { errors?: any }) => {
 
           <FormInput
             label="Email liên lạc (Hệ thống)"
-            // 🟢 Bây giờ email sẽ tự hiện ra do logic useEffect ở trên
             value={formData.email || ""}
             disabled
             className="bg-gray-100 opacity-80 cursor-not-allowed rounded-2xl!"
           />
         </div>
 
-        {/* --- ĐỊA CHỈ LẤY HÀNG --- */}
-        <SectionHeader icon={MapPin} title="Địa chỉ lấy hàng" />
-        {formData.pickupAddress ? (
-          <div className="p-6 bg-orange-50/30 border border-orange-100 rounded-4xl relative group transition-all">
-            <div className="font-bold text-gray-900 mb-1">
-              {formData.pickupAddress.fullName} | {formData.pickupAddress.phone}
-            </div>
-            <div className="text-sm text-gray-600 mb-2 font-medium">
-              {formData.pickupAddress.addressDetail}
-            </div>
-            <div className="text-[10px] font-bold text-orange-500 uppercase tracking-widest">
-              {formData.pickupAddress.wardName} —{" "}
-              {formData.pickupAddress.provinceName}
-            </div>
-            <button
-              onClick={handleOpenModal}
-              className="mt-4 text-[10px] font-bold text-orange-600 flex items-center gap-1 uppercase tracking-tighter hover:underline"
-            >
-              Cập nhật địa chỉ <ChevronRight size={12} strokeWidth={3} />
-            </button>
-          </div>
-        ) : (
-          <div className="space-y-2">
-            <button
-              onClick={handleOpenModal}
-              className={cn(
-                "w-full py-12 border-2 border-dashed rounded-4xl flex flex-col items-center gap-3 transition-all group",
-                errors?.pickupAddress
-                  ? "border-red-400 bg-red-50/30 animate-shake"
-                  : "border-gray-200 bg-white hover:bg-orange-50/30 hover:border-orange-200",
-              )}
-            >
-              <div
-                className={cn(
-                  "p-3 bg-white shadow-sm rounded-xl transition-colors",
-                  errors?.pickupAddress
-                    ? "text-red-500"
-                    : "text-gray-300 group-hover:text-orange-500",
-                )}
-              >
-                <Plus size={24} strokeWidth={2.5} />
-              </div>
-              <span
-                className={cn(
-                  "text-xs font-bold uppercase tracking-widest",
-                  errors?.pickupAddress
-                    ? "text-red-500"
-                    : "text-gray-400 group-hover:text-gray-600",
-                )}
-              >
-                Thiết lập tọa độ lấy hàng
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <SectionHeader icon={MapPin} title="Địa chỉ lấy hàng" />
+            {formData.pickupAddress && (
+              <span className="text-[9px] font-black uppercase tracking-[0.2em] text-emerald-500 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">
+                Hệ thống đã định vị
               </span>
-            </button>
-            {errors?.pickupAddress && (
-              <p className="text-[10px] font-medium text-red-500 ml-1 italic">
-                * Vui lòng thiết lập địa chỉ lấy hàng
-              </p>
             )}
           </div>
-        )}
 
-        {/* --- LOGO SHOP --- */}
+          <AddressDisplayCard
+            address={formData.pickupAddress}
+            onEdit={handleOpenModal}
+            error={errors?.pickupAddress}
+          />
+        </div>
+
         <div className="pt-8 border-t border-gray-100">
           <div className="flex flex-col lg:flex-row gap-10 items-start">
             <div className="shrink-0 space-y-3">
@@ -212,7 +178,6 @@ export const StepBasicInfo = ({ errors }: { errors?: any }) => {
           </div>
         </div>
 
-        {/* --- MÔ TẢ SHOP (ĐÃ FIX BINDING) --- */}
         <div className="bg-gray-50/50 rounded-4xl p-6 border border-gray-100 shadow-inner">
           <div className="flex items-center gap-2 mb-4">
             <span className="text-sm font-bold uppercase tracking-widest text-gray-500">
@@ -225,7 +190,6 @@ export const StepBasicInfo = ({ errors }: { errors?: any }) => {
 
           <FormInput
             isTextArea
-            // 🟢 Gán value và onChange để lưu vào Context
             value={formData.description || ""}
             onChange={(e) => updateFormField("description", e.target.value)}
             placeholder="Hãy chia sẻ ngắn gọn về phong cách cửa hàng hoặc câu chuyện của bạn..."

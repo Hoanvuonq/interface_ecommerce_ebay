@@ -26,7 +26,7 @@ class BuyerAddressService {
     addressData: BuyerAddressUpdateRequest,
   ): Promise<ApiResponse<void>> {
     const response: ApiResponse<void> = await request({
-      url: `/v1/buyer/${buyerId}/addresses/${addressId}`,
+      url: `/v1/buyer/addresses/${addressId}`,
       method: "PUT",
       data: addressData,
     });
@@ -50,7 +50,7 @@ class BuyerAddressService {
     addressId: string,
   ): Promise<ApiResponse<BuyerAddressResponse>> {
     const response: ApiResponse<BuyerAddressResponse> = await request({
-      url: `/v1/buyer/${buyerId}/addresses/${addressId}`,
+      url: `/v1/buyer/addresses/${addressId}`,
       method: "GET",
     });
     return response;
@@ -62,7 +62,7 @@ class BuyerAddressService {
     addressId: string,
   ): Promise<ApiResponse<void>> {
     const response: ApiResponse<void> = await request({
-      url: `/v1/buyer/${buyerId}/addresses/${addressId}`,
+      url: `/v1/buyer/addresses/${addressId}`,
       method: "DELETE",
     });
     return response;

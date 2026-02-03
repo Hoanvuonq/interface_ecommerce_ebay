@@ -1,11 +1,3 @@
-/**
- * Address Feature Types
- * Types cho địa chỉ hành chính Việt Nam
- */
-
-/**
- * Country Response - Thông tin quốc gia
- */
 export interface CountryResponse {
   code: string;
   name: string;
@@ -13,9 +5,6 @@ export interface CountryResponse {
   totalProvinces: number;
 }
 
-/**
- * Province Response - Thông tin tỉnh/thành phố
- */
 export interface ProvinceResponse {
   id: string;
   code: string;
@@ -23,21 +12,14 @@ export interface ProvinceResponse {
   totalWards: number;
 }
 
-/**
- * Ward Response - Thông tin phường/xã
- */
 export interface WardResponse {
   id: string;
   code: string;
   fullName: string;
   provinceCode: string;
-  province?: ProvinceResponse; // Optional: thông tin province
+  province?: ProvinceResponse;
 }
 
-/**
- * Page DTO - Pagination response
- * Match với backend PageDto structure
- */
 export interface PageDto<T> {
   content: T[];
   page: number;
@@ -48,27 +30,18 @@ export interface PageDto<T> {
   hasPrevious: boolean;
 }
 
-/**
- * Get Provinces Request Parameters
- */
 export interface GetProvincesParams {
   page?: number;
   size?: number;
   search?: string;
 }
 
-/**
- * Get Wards Request Parameters
- */
 export interface GetWardsParams {
   page?: number;
   size?: number;
   search?: string;
 }
 
-/**
- * Import Result - Kết quả import dữ liệu
- */
 export interface ImportResult {
   provinceCount: number;
   wardCount: number;
@@ -76,12 +49,8 @@ export interface ImportResult {
   message: string;
 }
 
-/**
- * Address Statistics Response - Thống kê địa chỉ
- */
 export interface AddressStatisticsResponse {
   totalProvinces: number;
   totalWards: number;
-  generatedAt: string; // ISO date string
+  generatedAt: string;
 }
-

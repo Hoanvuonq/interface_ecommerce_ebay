@@ -1,18 +1,31 @@
-export interface IAddressInfo {
-  recipientName: string;
-  phone: string;
-  detailAddress: string;
+export interface IAddressDetail {
+  detail: string;
   ward: string;
   district: string;
   province: string;
+  country: string;
+  zipCode?: string;
+  geoinfo?: {
+    latitude: number;
+    longitude: number;
+    userVerified?: boolean;
+    confirmed?: boolean;
+  };
 }
 
+export interface IAddressInfo {
+  addressId: string;
+  recipientName: string;
+  phone: string;
+  type: "HOME" | "OFFICE" | "OTHER";
+  isDefault: boolean;
+  address: IAddressDetail;
+}
 export interface ShippingAddressCardProps {
-  selectedAddress: IAddressInfo | null; 
-  onOpenModal: () => void; 
-  hasAddress: boolean; 
+  selectedAddress: IAddressInfo | null;
+  onOpenModal: () => void;
+  hasAddress: boolean;
 }
-
 
 export interface SavedAddress {
   addressId: string;
@@ -39,7 +52,7 @@ export interface AddressModalProps {
   isOpen: boolean;
   onClose: () => void;
   savedAddresses: SavedAddress[];
-  currentAddressId?: string; 
-  onConfirmSaved: (addressId: string) => void; 
+  currentAddressId?: string;
+  onConfirmSaved: (addressId: string) => void;
   onConfirmNew: (data: NewAddressForm) => void;
 }

@@ -55,6 +55,7 @@ export interface CreateUserProductBulkDTO {
   variants?: CreateUserProductVariantDTO[];
   media?: CreateUserProductMediaDTO[];
   options?: CreateUserProductOptionDTO[];
+  allowedShippingChannels?: string[];
   saveAsDraft?: boolean; // true = DRAFT status, false = PENDING status
   replaceAllEntities?: boolean; // true = replace all variants/media/options on update
 }

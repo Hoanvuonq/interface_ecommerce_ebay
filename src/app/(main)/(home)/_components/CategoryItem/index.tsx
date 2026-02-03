@@ -39,7 +39,7 @@ export const CategoryItem: React.FC<CategoryItemProps> = ({
     >
       <div
         className={cn(
-          "relative w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center overflow-hidden rounded-2xl",
+          "relative w-12 h-12 sm:w-15 sm:h-15 flex items-center justify-center overflow-hidden rounded-2xl",
           "border border-gray-100 shadow-sm bg-white group-hover/item:-translate-y-1",
           "group-hover/item:border-gray-200 group-hover/item:shadow-lg group-hover/item:shadow-orange-500/10 transition-all duration-300"
         )}

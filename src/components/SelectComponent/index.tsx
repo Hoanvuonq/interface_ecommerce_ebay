@@ -7,13 +7,17 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { FaChevronDown, FaSearch, FaCheck } from "react-icons/fa";
 import { SelectProps } from "./type";
-import { Checkbox } from "../checkbox"; // Import component Checkbox của bạn
+import { Checkbox } from "../checkbox";
 
 interface ExtendedSelectProps extends SelectProps {
+  label?: string; // 🟢 Label là tùy chọn
+  required?: boolean; // 🟢 Dấu * nếu bắt buộc
   error?: string;
 }
 
 export const SelectComponent = ({
+  label,
+  required,
   options,
   value,
   onChange,
@@ -30,10 +34,10 @@ export const SelectComponent = ({
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const filteredOptions = options.filter((opt) => {
-    const label = String(opt.label || "").toLowerCase();
-    const val = String(opt.value || "").toLowerCase();
+    const optLabel = String(opt.label || "").toLowerCase();
+    const optVal = String(opt.value || "").toLowerCase();
     const searchStr = search.toLowerCase();
-    return label.includes(searchStr) || val.includes(searchStr);
+    return optLabel.includes(searchStr) || optVal.includes(searchStr);
   });
 
   const getDisplayLabel = () => {
@@ -118,7 +122,6 @@ export const SelectComponent = ({
         ? currentValues.filter((v) => v !== val)
         : [...currentValues, val];
       onChange(newValue);
-      // Không đóng dropdown khi chọn nhiều mục
     } else {
       onChange(val);
       setIsOpen(false);
@@ -126,11 +129,15 @@ export const SelectComponent = ({
   };
 
   return (
-    <>
-      <div
-        ref={wrapperRef}
-        className={cn("relative w-full space-y-2", className)}
-      >
+    <div className={cn("w-full flex flex-col gap-1.5", className)}>
+      {/* 🟢 RENDER LABEL NẾU CÓ */}
+      {label && (
+        <label className="text-[10px] font-bold uppercase text-gray-400 ml-1 tracking-widest">
+          {label} {required && <span className="text-red-500 ml-0.5">*</span>}
+        </label>
+      )}
+
+      <div ref={wrapperRef} className="relative w-full">
         <div
           className={cn(
             "w-full h-12 px-5 rounded-2xl flex items-center justify-between cursor-pointer transition-all select-none shadow-custom border",
@@ -164,8 +171,8 @@ export const SelectComponent = ({
         </div>
 
         {error && (
-          <p className="text-[10px] font-medium text-red-500 ml-1 animate-in fade-in slide-in-from-top-1">
-            {error}
+          <p className="text-[10px] font-medium text-red-500 mt-1.5 ml-1 animate-in fade-in slide-in-from-top-1 italic">
+            * {error}
           </p>
         )}
       </div>
@@ -184,7 +191,7 @@ export const SelectComponent = ({
           >
             <div className="p-3 border-b border-gray-50">
               <div className="relative">
-                <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-xs" />
+                <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xs" />
                 <input
                   autoFocus
                   className="w-full pl-10 pr-4 h-10 text-sm bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-gray-300 focus:bg-white transition-all font-medium text-gray-600"
@@ -212,11 +219,10 @@ export const SelectComponent = ({
                       onClick={() => handleSelect(opt.value)}
                     >
                       {isMulti ? (
-                        /* TÍCH HỢP COMPONENT CHECKBOX */
                         <Checkbox
                           checked={isSelected}
                           label={opt.label}
-                          containerClassName="w-full pointer-events-none" // pointer-events-none để sự kiện click do div ngoài xử lý
+                          containerClassName="w-full pointer-events-none"
                           sizeClassName="w-4 h-4"
                         />
                       ) : (
@@ -244,7 +250,7 @@ export const SelectComponent = ({
                 })
               ) : (
                 <div className="py-8 text-center flex flex-col items-center justify-center">
-                  <span className="text-sm font-medium text-gray-600">
+                  <span className="text-sm font-medium text-gray-400">
                     Không tìm thấy kết quả
                   </span>
                 </div>
@@ -253,6 +259,6 @@ export const SelectComponent = ({
           </div>,
           document.body,
         )}
-    </>
+    </div>
   );
 };

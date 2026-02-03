@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   output: "standalone",
   experimental: {
-    serverSourceMaps: false, 
+    serverSourceMaps: false,
   },
   images: {
     remotePatterns: [
@@ -14,10 +14,10 @@ const nextConfig: NextConfig = {
         pathname: "/uploads/**",
       },
       {
-        protocol: 'https',
-        hostname: 'lh3.googleusercontent.com', 
-        port: '',
-        pathname: '/**',
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+        port: "",
+        pathname: "/**",
       },
       {
         protocol: "https",
@@ -25,8 +25,8 @@ const nextConfig: NextConfig = {
         pathname: "/**",
       },
       {
-        protocol: 'https',
-        hostname: 'res.cloudinary.com', 
+        protocol: "https",
+        hostname: "res.cloudinary.com",
       },
       {
         protocol: "https",
@@ -34,16 +34,22 @@ const nextConfig: NextConfig = {
         pathname: "/**",
       },
       {
-        protocol: 'https',
-        hostname: 'api.calatha.com', // Thay bằng domain server thật của bạn
-        pathname: '**',
+        protocol: "https",
+        hostname: "c1348b7b2b9f59e8fbbb4285dba55918.r2.cloudflarestorage.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "api.calatha.com",
+        pathname: "**",
       },
       {
         protocol: "https",
         hostname: "*.r2.dev",
         pathname: "/**",
       },
-     {
+      {
         protocol: "https",
         hostname: "ui-avatars.com",
       },
@@ -55,12 +61,11 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "dummyimage.com",
       },
-     
+
       {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
+        protocol: "https",
+        hostname: "images.unsplash.com",
       },
-      
     ],
     formats: ["image/avif", "image/webp"],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
@@ -71,10 +76,10 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       {
-        source: '/api-proxy/:path*', 
-        destination: 'https://api.calatha.com/api/v1/:path*', 
+        source: "/api-proxy/:path*",
+        destination: "https://api.calatha.com/api/v1/:path*",
       },
-    ]
+    ];
   },
 };
 
