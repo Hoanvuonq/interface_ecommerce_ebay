@@ -15,3 +15,4 @@ export * from "./components/customHasDiscount";
 export * from "./components/customButton";
 export * from "./components/customDateTimeInput";
 export * from "./components/customSearch";
+export * from "./components/customPagiantion";

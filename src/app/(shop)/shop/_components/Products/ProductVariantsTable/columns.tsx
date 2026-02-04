@@ -132,10 +132,10 @@ export const useProductVariantsColumns = (
                   !isUploading && fileInputRefs.current[idx]?.click()
                 }
                 className={cn(
-                  "w-16 h-16 relative rounded-xl border-2 border-dashed overflow-hidden flex items-center justify-center",
+                  "w-18 h-18 p-1 relative rounded-xl border-2 border-dashed overflow-hidden flex items-center justify-center",
                   isUploading
-                    ? "bg-orange-50 cursor-not-allowed"
-                    : "border-gray-100 hover:border-orange-400 cursor-pointer bg-gray-50",
+                    ? "bg-orange-100 cursor-not-allowed"
+                    : "border-gray-200 hover:border-orange-400 cursor-pointer bg-gray-50",
                 )}
               >
                 {displayUrl ? (
@@ -204,7 +204,6 @@ export const useProductVariantsColumns = (
       });
     }
 
-    // CỘT 3: SKU (DÙNG SUB-COMPONENT)
     cols.push({
       header: (
         <SkuHeader
@@ -232,23 +231,21 @@ export const useProductVariantsColumns = (
     cols.push({
       header: (
         <div className="flex flex-col items-center w-full px-1 gap-1">
-          <span className="text-gray-800 text-[12px] font-bold uppercase mb-1">
+          <span className="text-gray-900 text-[12px] font-bold uppercase mb-1">
             Giá Bán
           </span>
           <FormInput
             placeholder="0"
-            type="number" // FormInput bên trên sẽ tự chuyển về text + numeric mode
+            type="number"
             isCheckbox={true}
             checkboxChecked={selectedBulkFields.includes("price")}
             onCheckboxChange={() => onToggleBulkField("price")}
-            // Hiển thị: Định dạng có dấu chấm
             value={
               bulkValues["price"]
                 ? Number(bulkValues["price"]).toLocaleString("vi-VN")
                 : ""
             }
             onChange={(e) => {
-              // Xử lý: Xóa hết ký tự không phải số trước khi lưu vào bulkValues
               const raw = e.target.value.replace(/\D/g, "");
               setBulkValues((prev) => ({ ...prev, price: raw }));
             }}
@@ -263,10 +260,8 @@ export const useProductVariantsColumns = (
       render: (item, idx) => (
         <FormInput
           type="number"
-          // Hiển thị: Định dạng có dấu chấm
           value={item.price ? Number(item.price).toLocaleString("vi-VN") : ""}
           onChange={(e) => {
-            // Xử lý: Xóa dấu chấm/phẩy, chuyển về số rồi mới gửi lên handleInputChange
             const rawValue = e.target.value.replace(/\D/g, "");
             const numericValue = rawValue === "" ? 0 : parseInt(rawValue);
             handleInputChange(idx, "price", numericValue);
@@ -279,11 +274,10 @@ export const useProductVariantsColumns = (
       ),
     });
 
-    // CỘT 5: KHO HÀNG
     cols.push({
       header: (
         <div className="flex flex-col items-center w-full px-1 gap-1">
-          <span className="text-gray-800 text-[12px] font-bold uppercase mb-1">
+          <span className="text-gray-900 text-[12px] font-bold uppercase mb-1">
             Kho
           </span>
           <FormInput
@@ -321,13 +315,12 @@ export const useProductVariantsColumns = (
       ),
     });
 
-    // CỘT 6: VẬN CHUYỂN (D, R, C, G)
     const logFields = ["lengthCm", "widthCm", "heightCm", "weightGrams"];
     const logLabels = ["D", "R", "C", "G"];
     cols.push({
       header: (
         <div className="flex flex-col items-center w-full px-1 gap-1">
-          <span className="text-gray-800 text-[12px] font-bold uppercase mb-1">
+          <span className="text-gray-900 text-[12px] font-bold uppercase mb-1">
             Kích thước & Cân nặng
           </span>
           <div className="flex gap-1 w-full">

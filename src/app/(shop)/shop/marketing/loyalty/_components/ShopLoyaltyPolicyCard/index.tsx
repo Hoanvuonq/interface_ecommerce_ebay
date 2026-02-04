@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { FormInput, SectionLoading } from "@/components";
+import { ButtonField, FormInput, SectionLoading } from "@/components";
 import { useToast } from "@/hooks/useToast";
 import { cn } from "@/utils/cn";
 import { motion } from "framer-motion";
@@ -125,7 +125,7 @@ export const ShopLoyaltyPolicyCard: React.FC<ShopLoyaltyPolicyCardProps> = ({
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white rounded-[2.5rem] border border-slate-100 shadow-xl overflow-hidden"
+        className="bg-white rounded-3xl border border-slate-100 shadow-xl overflow-hidden"
       >
         <div className="px-8 py-6 border-b border-slate-50 flex items-center justify-between bg-slate-50/50">
           <div className="flex items-center gap-3">
@@ -224,7 +224,7 @@ export const ShopLoyaltyPolicyCard: React.FC<ShopLoyaltyPolicyCardProps> = ({
   // 🟢 CASE 3: Chưa có chính sách (Empty State)
   if (!policy) {
     return (
-      <div className="bg-orange-50/50 border border-orange-100 rounded-[2.5rem] p-10 flex flex-col md:flex-row items-center gap-8 shadow-sm">
+      <div className="bg-orange-50 border border-orange-200 rounded-3xl p-4 flex flex-col md:flex-row items-center gap-8 shadow-sm">
         <div className="w-20 h-20 bg-white rounded-3xl flex items-center justify-center text-orange-500 shadow-xl shrink-0">
           <Gift size={40} strokeWidth={1.5} />
         </div>
@@ -236,12 +236,16 @@ export const ShopLoyaltyPolicyCard: React.FC<ShopLoyaltyPolicyCardProps> = ({
             Biến mỗi đơn hàng thành niềm vui cho khách hàng.
           </p>
         </div>
-        <button
+        <ButtonField
+          htmlType="submit"
+          type="login"
           onClick={() => setIsEditing(true)}
-          className="px-10 py-4 bg-orange-500 hover:bg-orange-600 text-white font-bold text-[11px] uppercase tracking-widest rounded-2xl shadow-xl transition-all active:scale-95 flex items-center gap-3"
+          className="w-56 py-4 font-bold text-[11px] uppercase tracking-widest rounded-2xl shadow-xl transition-all active:scale-95 flex items-center gap-3"
         >
-          <Zap size={16} fill="currentColor" /> Thiết lập ngay
-        </button>
+          <span className="flex gap-2 items-center">
+            <Zap size={16} fill="currentColor" /> Thiết lập ngay
+          </span>
+        </ButtonField>
       </div>
     );
   }

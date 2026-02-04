@@ -4,7 +4,7 @@
  */
 
 import { useState, useCallback } from "react";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/useToast";
 import {
   createReview,
   updateReview,
@@ -23,10 +23,10 @@ import type {
   ReviewStatisticsResponse,
   ReviewType,
 } from "@/app/(shop)/shop/reviews/_types/review.types";
-
-/**
- * Hook to create a review
- */
+const {
+    error: toastError,
+    success: toastSuccess,
+  } = useToast();
 export const useCreateReview = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -37,13 +37,13 @@ export const useCreateReview = () => {
       setError(null);
       try {
         const data = await createReview(request);
-        toast.success("Đánh giá đã được gửi thành công!");
+        toastSuccess("Đánh giá đã được gửi thành công!");
         return data;
       } catch (err: any) {
         const errorMessage =
           err?.response?.data?.message || "Có lỗi xảy ra khi tạo đánh giá";
         setError(errorMessage);
-        toast.error(errorMessage);
+        toastError(errorMessage);
         return null;
       } finally {
         setLoading(false);
@@ -71,13 +71,13 @@ export const useUpdateReview = () => {
       setError(null);
       try {
         const data = await updateReview(reviewId, request);
-        toast.success("Đánh giá đã được cập nhật!");
+        toastSuccess("Đánh giá đã được cập nhật!");
         return data;
       } catch (err: any) {
         const errorMessage =
           err?.response?.data?.message || "Có lỗi xảy ra khi cập nhật đánh giá";
         setError(errorMessage);
-        toast.error(errorMessage);
+        toastError(errorMessage);
         return null;
       } finally {
         setLoading(false);
@@ -102,13 +102,13 @@ export const useDeleteReview = () => {
       setError(null);
       try {
         await deleteReview(reviewId);
-        toast.success("Đánh giá đã được xóa!");
+        toastSuccess("Đánh giá đã được xóa!");
         return true;
       } catch (err: any) {
         const errorMessage =
           err?.response?.data?.message || "Có lỗi xảy ra khi xóa đánh giá";
         setError(errorMessage);
-        toast.error(errorMessage);
+        toastError(errorMessage);
         return false;
       } finally {
         setLoading(false);
@@ -236,7 +236,7 @@ export const useMarkReviewHelpful = () => {
     } catch (err: any) {
       const errorMessage = err?.response?.data?.message || "Có lỗi xảy ra";
       setError(errorMessage);
-      toast.error(errorMessage);
+      toastError(errorMessage);
       return false;
     } finally {
       setLoading(false);
@@ -262,7 +262,7 @@ export const useMarkReviewNotHelpful = () => {
     } catch (err: any) {
       const errorMessage = err?.response?.data?.message || "Có lỗi xảy ra";
       setError(errorMessage);
-      toast.error(errorMessage);
+      toastError(errorMessage);
       return false;
     } finally {
       setLoading(false);

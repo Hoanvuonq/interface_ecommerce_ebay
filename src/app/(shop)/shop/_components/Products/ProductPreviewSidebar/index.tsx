@@ -51,7 +51,6 @@ export const ProductPreviewSidebar: React.FC<ProductPreviewSidebarProps> = ({
       const rawPath = f.imagePath || f.url;
       if (rawPath) {
         items.push({
-          // Replace * thành orig và gắn domain R2
           url: toPublicUrl(rawPath.replace("*", "orig")),
           type: "image",
           label: "Ảnh SP",

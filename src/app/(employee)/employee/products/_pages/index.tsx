@@ -31,7 +31,6 @@ export const ProductManagementSreen = () => {
   const [activeTab, setActiveTab] = useState<ApprovalStatus>("ALL");
   const [totalElements, setTotalElements] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
-
   const [keyword, setKeyword] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [shopId, setShopId] = useState("");
@@ -53,6 +52,7 @@ export const ProductManagementSreen = () => {
               new Date(b.createdDate).getTime() -
               new Date(a.createdDate).getTime(),
           );
+
           setProducts(sortedContent);
           setTotalElements(response.data.totalElements || 0);
         }
@@ -101,7 +101,6 @@ export const ProductManagementSreen = () => {
     setCurrentPage(0);
   };
 
-  // Cấu hình Tabs
   const tabs = useMemo(
     (): StatusTabItem<ApprovalStatus>[] => [
       {

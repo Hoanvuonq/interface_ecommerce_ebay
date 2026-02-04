@@ -63,12 +63,11 @@ export const DateTimeInput = ({
       activeMinute.scrollIntoView({ block: "center", behavior });
   }, []);
 
-  // LOGIC KHÔN: Tự động đảo chiều nếu hết chỗ
   const updatePosition = useCallback(() => {
     if (containerRef.current) {
       const rect = containerRef.current.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
-      const dropdownHeight = 420; // Chiều cao ước tính của picker
+      const dropdownHeight = 420;
       const gap = 8;
 
       const spaceBelow = viewportHeight - rect.bottom;
@@ -77,7 +76,6 @@ export const DateTimeInput = ({
       let top: number;
       let isBottom = true;
 
-      // Nếu phía dưới không đủ chỗ và phía trên rộng hơn -> Nhảy lên trên
       if (spaceBelow < dropdownHeight && spaceAbove > spaceBelow) {
         top = rect.top + window.scrollY - dropdownHeight - gap;
         isBottom = false;
@@ -144,7 +142,10 @@ export const DateTimeInput = ({
   };
 
   return (
-    <div className="space-y-2.5 w-full relative shadow-custom rounded-4xl" ref={containerRef}>
+    <div
+      className="space-y-2 w-full relative"
+      ref={containerRef}
+    >
       {label && (
         <label className="text-[11px] font-bold text-orange-400/80 ml-2 flex items-center gap-2 uppercase tracking-widest italic">
           <Clock size={12} strokeWidth={3} />
@@ -187,7 +188,6 @@ export const DateTimeInput = ({
           <div
             className={cn(
               "fixed z-99999 datetime-portal-content bg-white border border-gray-100 shadow-2xl rounded-[2.5rem] p-6 flex gap-10 overflow-hidden",
-              // Tailwind v4 Animation
               "animate-in fade-in zoom-in-95 duration-200 ease-out",
               coords.isBottom
                 ? "slide-in-from-top-2"
@@ -195,7 +195,6 @@ export const DateTimeInput = ({
             )}
             style={{ top: coords.top, left: coords.left }}
           >
-            {/* LỊCH (BÊN TRÁI) */}
             <div className="w-72">
               <div className="flex items-center justify-between mb-6">
                 <button
@@ -265,7 +264,7 @@ export const DateTimeInput = ({
             </div>
 
             <div className="flex border-l border-gray-100 pl-10 gap-8 relative">
-              <div className="absolute top-[44.5%] left-10 right-0 h-12 -translate-y-1/2 bg-orange-500/10 border-y-2 border-orange-500/20 rounded-2xl -z-10 pointer-events-none" />
+              {/* <div className="absolute top-[48.5%] left-10 right-0 h-12 -translate-y-1/2 bg-orange-500/10 border-y-2 border-orange-500/20 rounded-2xl -z-10 pointer-events-none" /> */}
 
               {["Giờ", "Phút"].map((label, idx) => (
                 <div key={label} className="flex flex-col items-center">

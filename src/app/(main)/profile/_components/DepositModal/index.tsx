@@ -1,4 +1,3 @@
-"use client";
 
 import walletService from "@/services/wallet/wallet.service";
 import {
@@ -10,9 +9,10 @@ import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import QRCode from "react-qr-code";
 import { FiX, FiCheck, FiInfo, FiCopy, FiLoader } from "react-icons/fi";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/useToast";
 import { Button } from "@/components/button";
-import { ButtonField } from "@/components";
+import { ButtonField, CustomButtonActions } from "@/components";
+import { CheckIcon } from "lucide-react";
 
 interface DepositModalProps {
   visible: boolean;
@@ -37,7 +37,11 @@ export const DepositModal: React.FC<DepositModalProps> = ({
   const [loading, setLoading] = useState(false);
   const [depositResponse, setDepositResponse] =
     useState<WalletDepositResponse | null>(null);
-
+  const {
+    error: toastError,
+    success: toastSuccess,
+    warning: toastWarning,
+  } = useToast();
   // --- Effects ---
   useEffect(() => {
     setMounted(true);
@@ -73,7 +77,7 @@ export const DepositModal: React.FC<DepositModalProps> = ({
 
   const handleCopy = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
-    toast.success(`Đã sao chép ${label}`);
+    toastSuccess(`Đã sao chép ${label}`);
   };
 
   const handleClose = () => {
@@ -124,14 +128,14 @@ export const DepositModal: React.FC<DepositModalProps> = ({
       const response = await walletService.deposit(request);
       setDepositResponse(response);
     } catch (error: any) {
-      toast.error(error.message || "Tạo yêu cầu nạp tiền thất bại");
+      toastError(error.message || "Tạo yêu cầu nạp tiền thất bại");
     } finally {
       setLoading(false);
     }
   };
 
   const handlePaymentComplete = () => {
-    toast.success("Đã xác nhận thanh toán! Vui lòng chờ hệ thống xử lý.");
+    toastSuccess("Đã xác nhận thanh toán! Vui lòng chờ hệ thống xử lý.");
     onSuccess?.();
     handleClose();
   };
@@ -159,7 +163,7 @@ export const DepositModal: React.FC<DepositModalProps> = ({
           depositResponse ? "max-w-xl" : "max-w-md"
         }`}
       >
-        <div className="absolute top-0 left-0 w-full h-1.5 bg-linear-to-r from-orange-400 to-red-500"/>
+        <div className="absolute top-0 left-0 w-full h-1.5 bg-linear-to-r from-orange-400 to-red-500" />
 
         <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 bg-white">
           <h3 className="text-xl font-bold text-gray-800">
@@ -318,7 +322,7 @@ export const DepositModal: React.FC<DepositModalProps> = ({
                         Hết hạn lúc:{" "}
                         {new Date(depositResponse.expiresAt).toLocaleTimeString(
                           "vi-VN",
-                          { hour: "2-digit", minute: "2-digit" }
+                          { hour: "2-digit", minute: "2-digit" },
                         )}
                       </p>
                     </>
@@ -345,7 +349,7 @@ export const DepositModal: React.FC<DepositModalProps> = ({
                           onClick={() =>
                             handleCopy(
                               depositResponse.accountNumber || "",
-                              "Số tài khoản"
+                              "Số tài khoản",
                             )
                           }
                           className="text-orange-500 hover:bg-orange-50 p-1 rounded transition-colors"
@@ -378,7 +382,7 @@ export const DepositModal: React.FC<DepositModalProps> = ({
                             handleCopy(
                               (depositResponse as any).description ||
                                 description,
-                              "Nội dung chuyển khoản"
+                              "Nội dung chuyển khoản",
                             )
                           }
                           className="text-orange-500 hover:bg-orange-50 p-1 rounded transition-colors shrink-0"
@@ -397,18 +401,15 @@ export const DepositModal: React.FC<DepositModalProps> = ({
               </div>
 
               <div className="flex gap-3 pt-2">
-                <button
-                  onClick={handleClose}
-                  className="flex-1 py-3 text-sm font-bold text-gray-600 bg-white border border-gray-200 hover:bg-gray-50 rounded-xl transition-colors"
-                >
-                  Để sau
-                </button>
-                <button
-                  onClick={handlePaymentComplete}
-                  className="flex-2 py-3 text-sm font-bold text-white bg-green-600 hover:bg-green-700 rounded-xl shadow-lg shadow-green-100 transition-all active:scale-[0.98]"
-                >
-                  Đã chuyển khoản
-                </button>
+                <CustomButtonActions
+                  onCancel={handleClose}
+                  onSubmit={handlePaymentComplete}
+                  cancelText="Để sau"
+                  submitText="Đã chuyển khoản"
+                  submitIcon={CheckIcon}
+                  containerClassName="w-full flex gap-3 border-t-0 pt-0 justify-end"
+                  className="w-44! rounded-4xl h-12 shadow-orange-200 shadow-lg"
+                />
               </div>
             </div>
           )}

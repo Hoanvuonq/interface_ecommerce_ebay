@@ -115,7 +115,6 @@ export const useToast = () => {
     type: ToastType | "loading", // Allow "loading" string even if not in Enum
     options?: ToastOptions,
   ) => {
-    // Fallback to 'info' config if 'loading' config is missing, or ensure toastConfig has 'loading'
     // @ts-ignore - Assuming toastConfig might not have 'loading' explicitly typed yet
     const config = toastConfig[type] || toastConfig["info"];
 

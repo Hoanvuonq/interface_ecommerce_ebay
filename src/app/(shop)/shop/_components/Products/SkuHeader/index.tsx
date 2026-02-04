@@ -50,8 +50,8 @@ export const SkuHeader = ({
         >
           <span
             className={cn(
-              "text-[9px] font-bold uppercase transition-colors",
-              isAdvanced ? "text-orange-500" : "text-gray-500",
+              "text-[10px] font-bold uppercase transition-colors",
+              isAdvanced ? "text-orange-600" : "text-gray-500",
             )}
           >
             {isAdvanced ? "Đơn" : "Cặp"}
@@ -61,7 +61,7 @@ export const SkuHeader = ({
               "relative w-9 h-5 rounded-full transition-all duration-300 border-2",
               isAdvanced
                 ? "bg-orange-500 border-orange-500"
-                : "bg-gray-200 border-gray-200",
+                : "bg-gray-400 border-gray-400",
             )}
           >
             <motion.div

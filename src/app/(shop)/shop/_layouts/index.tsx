@@ -11,11 +11,11 @@ export function BaseShopLayout({ children }: { children: React.ReactNode }) {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
-  <div className="flex min-h-screen bg-[#f5f7ff]">
+    <div className="flex min-h-screen bg-[#f5f7ff]">
       <ShopSidebar collapsed={collapsed} setCollapsed={setCollapsed} />
       <div
         className={cn(
-          "flex-1 flex flex-col min-w-0 transition-all duration-500"
+          "flex-1 flex flex-col min-w-0 transition-all duration-500",
         )}
       >
         <ShopHeader
@@ -23,7 +23,7 @@ export function BaseShopLayout({ children }: { children: React.ReactNode }) {
           onToggle={() => setCollapsed(!collapsed)}
         />
 
-        <main className="flex-1 overflow-y-auto overflow-x-hidden relative bg-[#fafafa] custom-scrollbar">
+        <main className="flex-1 overflow-y-auto overflow-x-hidden relative bg-[#f5f5f5] custom-scrollbar">
           <div className="max-w-8xl mx-auto p-4 md:p-6 lg:p-8 min-h-full">
             <PageTransition>{children}</PageTransition>
           </div>

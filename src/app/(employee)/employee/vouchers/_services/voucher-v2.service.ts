@@ -63,7 +63,7 @@ export async function updateTemplate(
   payload: Partial<CreatePlatformTemplateRequest>
 ): Promise<ApiResponse<VoucherTemplate>> {
   return request<ApiResponse<VoucherTemplate>>({
-    url: `/${API_ENDPOINT}/templates/${templateId}`,
+    url: `/${API_ENDPOINT}/templates/shop/${templateId}`,
     method: "PUT",
     data: payload,
   });

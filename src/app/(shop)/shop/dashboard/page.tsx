@@ -1,4 +1,4 @@
-import ShopDashboardScreen from "../_pages/ShopDashBoardScreen";
+import ShopDashboardScreen from "../_pages";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

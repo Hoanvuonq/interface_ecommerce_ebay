@@ -11,9 +11,9 @@ import { useQuery } from "@tanstack/react-query";
 import { CampaignResponse } from "../campaigns/_types/campaign.type";
 
 export function useShopCampaign() {
-  const toast = useToast();
   const store = useCampaignStore();
   const setAuthState = useCampaignStore((s) => s.setAuthState);
+  const { error: toastError, success: toastSuccess , warning: toastWarning } = useToast();
 
   const currentAuth = useMemo(() => getAuthState(), []);
 
@@ -75,11 +75,11 @@ export function useShopCampaign() {
   // Xử lý lỗi
   useEffect(() => {
     if (productsError || overviewError) {
-      toast.error("Không thể kết nối với máy chủ marketing. Vui lòng thử lại.");
+      toastError("Không thể kết nối với máy chủ marketing. Vui lòng thử lại.");
     }
-  }, [productsError, overviewError, toast]);
+  }, [productsError, overviewError, toastError]);
 
-  // --- LOGIC ACTIONS ---
+ 
 
   const prepareProductsPayload = useCallback(() => {
     return _(store.selectedVariants)
@@ -96,7 +96,7 @@ export function useShopCampaign() {
   const handleCreateCampaign = useCallback(async () => {
     const { createForm, showCreateModal } = store;
     if (!createForm.name || !createForm.startDate || !createForm.endDate) {
-      toast.error("Vui lòng điền đầy đủ thông tin bắt buộc");
+      toastError("Vui lòng điền đầy đủ thông tin bắt buộc");
       return;
     }
 
@@ -110,17 +110,17 @@ export function useShopCampaign() {
           endDate: new Date(createForm.endDate).toISOString(),
           products: !_.isEmpty(products) ? products : undefined,
         });
-        toast.success("Tạo chiến dịch thành công!");
+        toastSuccess("Tạo chiến dịch thành công!");
         store.setShowCreateModal(null);
         store.resetCreateForm();
         refreshAllData();
       }
     } catch (err: any) {
-      toast.error(err.message || "Lỗi khi tạo chiến dịch");
+      toastError(err.message || "Lỗi khi tạo chiến dịch");
     } finally {
       store.setLoading(false);
     }
-  }, [store, prepareProductsPayload, refreshAllData, toast]);
+  }, [store, prepareProductsPayload, refreshAllData, toastSuccess, toastError]);
 
   const handleAddProducts = useCallback(async () => {
     if (!store.targetCampaignId) return;
@@ -128,23 +128,23 @@ export function useShopCampaign() {
     try {
       const products = prepareProductsPayload();
       if (_.isEmpty(products)) {
-        toast.error("Vui lòng chọn ít nhất 1 sản phẩm");
+        toastError("Vui lòng chọn ít nhất 1 sản phẩm");
         return;
       }
       await shopCampaignService.addProductsToShopCampaign(
         store.targetCampaignId,
         products,
       );
-      toast.success("Thêm sản phẩm thành công!");
+      toastSuccess("Thêm sản phẩm thành công!");
       store.setShowCreateModal(null);
       store.setTargetCampaignId(null);
       refreshAllData();
     } catch (err: any) {
-      toast.error(err.message || "Lỗi khi thêm sản phẩm");
+      toastError(err.message || "Lỗi khi thêm sản phẩm");
     } finally {
       store.setLoading(false);
     }
-  }, [store.targetCampaignId, prepareProductsPayload, refreshAllData, toast]);
+  }, [store.targetCampaignId, prepareProductsPayload, refreshAllData, toastError, toastSuccess]);
 
   const handleSelectCampaign = useCallback(
     async (campaign: CampaignResponse) => {
@@ -175,13 +175,13 @@ export function useShopCampaign() {
       e.stopPropagation();
       try {
         await shopCampaignService.toggleShopCampaign(campaignId);
-        toast.success(`Đã thay đổi trạng thái chiến dịch`);
+        toastSuccess(`Đã thay đổi trạng thái chiến dịch`);
         refreshAllData();
       } catch (err: any) {
-        toast.error(err.message || "Lỗi khi thay đổi trạng thái");
+        toastError(err.message || "Lỗi khi thay đổi trạng thái");
       }
     },
-    [refreshAllData, toast],
+    [refreshAllData, toastError, toastSuccess],
   );
 
   const handleCancelRegistration = useCallback(
@@ -189,13 +189,13 @@ export function useShopCampaign() {
       if (!window.confirm("Xác nhận hủy đăng ký này?")) return;
       try {
         await shopCampaignService.cancelRegistration(regId);
-        toast.success("Đã hủy đăng ký thành công");
+        toastSuccess("Đã hủy đăng ký thành công");
         refreshAllData();
       } catch (err: any) {
-        toast.error(err.message || "Không thể hủy đăng ký");
+        toastError(err.message || "Không thể hủy đăng ký");
       }
     },
-    [refreshAllData, toast],
+    [refreshAllData, toastError, toastSuccess],
   );
 
   return {

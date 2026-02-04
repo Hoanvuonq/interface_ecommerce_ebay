@@ -1,12 +1,14 @@
 "use client";
 
 import React, { useMemo } from "react";
-import Image from "next/image";
 import { ProductVariantResponse } from "../../../_types/dto/product.dto";
-import { resolveMediaUrl } from "@/utils/products/media.helpers";
+// 🟢 Import hàm chuyển đổi URL của bro
+import { toPublicUrl } from "@/utils/storage/url"; 
 import { DataTable } from "@/components";
 import { Column } from "@/components/DataTable/type";
 import { Box, Tag, Ruler, Weight, Package } from "lucide-react";
+// 🟢 Tái sử dụng component Preview để xử lý cả Video nếu có
+import { ImageWithPreview } from "@/components";
 
 interface VariantTableProps {
   variants: ProductVariantResponse[];
@@ -19,33 +21,35 @@ export const VariantTable = ({ variants }: VariantTableProps) => {
         header: "Thông tin biến thể",
         className: "min-w-62.5",
         render: (variant) => {
-          const imageUrl = variant.imageUrl
-            ? resolveMediaUrl(variant.imageUrl, "_thumb")
-            : null;
-          const safeSrc = imageUrl && imageUrl.trim() !== "" ? imageUrl : null;
+          const rawPath = variant.imagePath || "";
+          const safePath = rawPath.includes("*") 
+            ? rawPath.replace("*", "orig") 
+            : rawPath;
+          
+          const finalUrl = toPublicUrl(safePath);
 
           return (
             <div className="flex items-center gap-4 py-1">
-              <div className="relative w-12 h-12 shrink-0 rounded-2xl overflow-hidden bg-slate-50 border border-slate-100 shadow-inner group">
-                {safeSrc ? (
-                  <Image
-                    src={safeSrc}
+              <div className="shrink-0">
+                {finalUrl ? (
+                  <ImageWithPreview
+                    src={finalUrl}
                     alt={variant.sku || "variant"}
-                    fill
-                    sizes="48px"
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
-                    unoptimized // Thêm unoptimized nếu bạn gặp lỗi Hostname cấu hình
+                    width={48}
+                    height={48}
+                    className="rounded-2xl border border-slate-100 shadow-sm"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-orange-50 text-orange-400">
+                  <div className="w-12 h-12 flex items-center justify-center bg-orange-50 text-orange-400 rounded-2xl">
                     <Box size={20} strokeWidth={2.5} />
                   </div>
                 )}
               </div>
               <div className="min-w-0">
                 <p className="font-bold text-gray-900 text-[13px] uppercase tracking-tighter leading-tight italic">
-                  {variant.optionValues?.map((v) => v.name).join(" • ") ||
-                    "Mặc định"}
+                  {variant.optionValues && variant.optionValues.length > 0
+                    ? variant.optionValues.map((v) => v.name).join(" • ")
+                    : "Mặc định"}
                 </p>
                 <div className="flex items-center gap-1.5 mt-1">
                   <Tag size={10} className="text-orange-500" />
@@ -80,7 +84,8 @@ export const VariantTable = ({ variants }: VariantTableProps) => {
         render: (variant) => (
           <div className="inline-flex flex-col items-center px-3 py-1 bg-slate-50 rounded-xl border border-slate-100">
             <span className="text-xs font-bold text-gray-700 tabular-nums leading-none mb-1">
-              {variant.inventory?.stock || 0}
+              {/* 🟢 JSON mới bốc từ inventory.stock */}
+              {variant.inventory?.stock ?? 0}
             </span>
             <span className="text-[8px] font-bold text-gray-400 uppercase tracking-tighter">
               Units
@@ -91,13 +96,11 @@ export const VariantTable = ({ variants }: VariantTableProps) => {
       {
         header: "Logistics (D×R×C)",
         align: "center",
-        // Bước 2: Mapping dữ liệu thật từ API thay vì để giá trị cứng
         render: (variant) => (
           <div className="flex items-center justify-center gap-2 text-gray-500">
             <Ruler size={12} className="text-orange-400" />
             <span className="text-[11px] font-bold tabular-nums">
-              {variant.lengthCm || 0} × {variant.widthCm || 0} ×{" "}
-              {variant.heightCm || 0}
+              {variant.lengthCm || 0} × {variant.widthCm || 0} × {variant.heightCm || 0}
             </span>
             <span className="text-[9px] font-bold uppercase text-gray-300">
               CM
@@ -108,7 +111,6 @@ export const VariantTable = ({ variants }: VariantTableProps) => {
       {
         header: "Cân nặng",
         align: "center",
-        // Bước 2: Mapping dữ liệu thật
         render: (variant) => (
           <div className="flex items-center justify-center gap-2 text-gray-500">
             <Weight size={12} className="text-orange-400" />
@@ -143,7 +145,7 @@ export const VariantTable = ({ variants }: VariantTableProps) => {
         </div>
       </div>
 
-      <div className="bg-white rounded-4xlshadow-custom">
+      <div className="bg-white rounded-4xl shadow-custom overflow-hidden">
         <DataTable
           data={variants}
           columns={columns}

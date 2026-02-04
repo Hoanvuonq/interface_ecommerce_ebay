@@ -57,12 +57,12 @@ export interface ProductResponse {
 export interface ProductVariantResponse {
   id: string;
   sku: string;
-  imageUrl: string;
+  imagePath: string;
   corePrice: number;
   price: number;
   optionValues: ProductOptionValueResponse[];
   inventory: InventoryResponse;
-lengthCm: number;
+  lengthCm: number;
   widthCm: number;
   heightCm: number;
   weightGrams: number;

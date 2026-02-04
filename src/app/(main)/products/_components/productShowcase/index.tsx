@@ -5,19 +5,15 @@ import { CustomButton } from "@/components/custom/components/customButton";
 import { useWishlist } from "@/app/(main)/wishlist/_hooks/useWishlist";
 import { publicProductService } from "@/app/(shop)/shop/products/_services/product.service";
 import { PublicProductListItemDTO } from "@/types/product/public-product.dto";
-import { cn } from "@/utils/cn"; 
+import { cn } from "@/utils/cn";
 import { isAuthenticated } from "@/utils/local.storage";
 import { Flame, Loader2, ShoppingCart, Star } from "lucide-react";
 import Link from "next/link";
-import React, {
-    useCallback,
-    useEffect,
-    useRef,
-    useState
-} from "react";
-import { toast } from "sonner";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useToast } from "@/hooks/useToast";
 import { ProductCard } from "../ProductCard";
 import { batchCheckVariantsInWishlist } from "@/app/(main)/wishlist/_hooks/batchCheckVariantsInWishlist";
+import { SectionSreen } from "@/features/SectionSreen";
 
 const CustomLoadingSpinner: React.FC = () => (
   <div className="flex items-center justify-center py-12">
@@ -28,7 +24,7 @@ const CustomLoadingSpinner: React.FC = () => (
 interface ProductShowcaseProps {
   title?: string;
   subtitle?: string;
-  rows?: number; 
+  rows?: number;
 }
 
 export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
@@ -38,23 +34,25 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState<"all" | "sale" | "new">("all");
   const [saleProducts, setSaleProducts] = useState<PublicProductListItemDTO[]>(
-    []
+    [],
   );
   const [newProducts, setNewProducts] = useState<PublicProductListItemDTO[]>(
-    []
+    [],
   );
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [wishlistMap, setWishlistMap] = useState<Map<string, boolean>>(
-    new Map()
+    new Map(),
   );
   const [currentPage, setCurrentPage] = useState<{ sale: number; new: number }>(
-    { sale: 0, new: 0 }
+    { sale: 0, new: 0 },
   );
   const [hasMore, setHasMore] = useState<{ sale: boolean; new: boolean }>({
     sale: true,
     new: true,
   });
+
+  const { error: toastError, warning: toastWarning } = useToast();
 
   const { checkVariantsInWishlist } = useWishlist();
   const hasInitialFetchedRef = useRef(false);
@@ -94,15 +92,14 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
         if (productsList.length > 0) {
           if (type === "sale") {
             setSaleProducts((prev: PublicProductListItemDTO[]) =>
-              page === 0 ? productsList : [...prev, ...productsList]
+              page === 0 ? productsList : [...prev, ...productsList],
             );
           } else {
             setNewProducts((prev: PublicProductListItemDTO[]) =>
-              page === 0 ? productsList : [...prev, ...productsList]
+              page === 0 ? productsList : [...prev, ...productsList],
             );
           }
 
-          // Update wishlist status
           if (isAuthenticated()) {
             const variantIds: string[] = [];
             productsList.forEach((product: any) => {
@@ -119,7 +116,7 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
               const wishlistStatusMap = await batchCheckVariantsInWishlist(
                 checkVariantsInWishlist,
                 variantIds,
-                20
+                20,
               );
               setWishlistMap((prev: Map<string, boolean>) => {
                 const newMap = new Map(prev);
@@ -139,8 +136,8 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
                 ? productsList.length
                 : saleProducts.length + productsList.length
               : page === 0
-              ? productsList.length
-              : newProducts.length + productsList.length;
+                ? productsList.length
+                : newProducts.length + productsList.length;
 
           // 🎯 Sửa lỗi Implicit any: Khai báo kiểu cho prev: { sale: boolean, new: boolean }
           setHasMore((prev: { sale: boolean; new: boolean }) => ({
@@ -148,7 +145,6 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
             [type]: currentTotal < totalElements,
           }));
         } else {
-          // 🎯 Sửa lỗi Implicit any: Khai báo kiểu cho prev: { sale: boolean, new: boolean }
           setHasMore((prev: { sale: boolean; new: boolean }) => ({
             ...prev,
             [type]: false,
@@ -156,9 +152,9 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
         }
       } catch (error) {
         console.error(`Error fetching ${type} products:`, error);
-        toast.error(
-          `Không thể tải sản phẩm ${type === "sale" ? "giảm giá" : "mới"}`
-        ); // ✅ Thay thế message.error
+        toastError(
+          `Không thể tải sản phẩm ${type === "sale" ? "giảm giá" : "mới"}`,
+        );
       }
     },
     [
@@ -166,7 +162,7 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
       checkVariantsInWishlist,
       saleProducts.length,
       newProducts.length,
-    ]
+    ],
   );
 
   // Initial load
@@ -260,84 +256,84 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({
   ];
 
   return (
-    <section className="py-8 sm:py-12 bg-gray-50 border-t border-gray-200">
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
-        <div className="text-center mb-8">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-1">
-            {title}
-          </h2>
-          <p className="text-sm sm:text-base text-gray-600">{subtitle}</p>
+      <section className="py-8 sm:py-12 bg-gray-50 border-t border-gray-200">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-1">
+              {title}
+            </h2>
+            <p className="text-sm sm:text-base text-gray-600">{subtitle}</p>
+          </div>
+
+          <div className="mb-6">
+            <CustomTabs
+              activeKey={activeTab}
+              onChange={setActiveTab}
+              items={tabItems}
+              className="mx-auto max-w-lg"
+            />
+          </div>
+
+          {loading ? (
+            <CustomLoadingSpinner />
+          ) : (
+            <>
+              {displayProducts.length === 0 ? (
+                <div className="text-center py-12 text-gray-500 border border-dashed border-gray-200 rounded-xl bg-white">
+                  <p>Không có sản phẩm nào để hiển thị trong mục này.</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
+                  {displayProducts.map((product: PublicProductListItemDTO) => {
+                    const firstVariantId = product.variants?.length
+                      ? product.variants[0].id
+                      : null;
+                    const isWishlisted = firstVariantId
+                      ? wishlistMap.get(firstVariantId) || false
+                      : false;
+
+                    return (
+                      <ProductCard
+                        key={product.id}
+                        product={product}
+                        isWishlisted={isWishlisted}
+                      />
+                    );
+                  })}
+                </div>
+              )}
+
+              {canLoadMore && (
+                <div className="text-center mt-8">
+                  <CustomButton
+                    type="default"
+                    loading={loadingMore}
+                    onClick={handleLoadMore}
+                    className="px-8 h-12 border-2 border-gray-500 text-orange-600 hover:bg-orange-50 rounded-lg font-semibold"
+                  >
+                    {loadingMore ? "Đang tải..." : "Xem thêm sản phẩm"}
+                  </CustomButton>
+                </div>
+              )}
+
+              <div className="text-center mt-6">
+                <Link href="/products">
+                  <CustomButton
+                    type="primary"
+                    icon={<ShoppingCart className="w-4 h-4" />}
+                    className={cn(
+                      " bg-linear-to-r from-orange-600 to-pink-600 hover:from-orange-700 hover:to-pink-700 ",
+                      "border-0 rounded-full shadow-md font-semibold text-sm px-6 h-10",
+                    )}
+                  >
+                    Xem tất cả sản phẩm
+                  </CustomButton>
+                </Link>
+              </div>
+            </>
+          )}
         </div>
-
-        <div className="mb-6">
-          <CustomTabs
-            activeKey={activeTab}
-            onChange={setActiveTab}
-            items={tabItems}
-            className="mx-auto max-w-lg"
-          />
-        </div>
-
-        {loading ? (
-          <CustomLoadingSpinner />
-        ) : (
-          <>
-            {displayProducts.length === 0 ? (
-              <div className="text-center py-12 text-gray-500 border border-dashed border-gray-200 rounded-xl bg-white">
-                <p>Không có sản phẩm nào để hiển thị trong mục này.</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
-                {displayProducts.map((product: PublicProductListItemDTO) => {
-                  const firstVariantId = product.variants?.length
-                    ? product.variants[0].id
-                    : null;
-                  const isWishlisted = firstVariantId
-                    ? wishlistMap.get(firstVariantId) || false
-                    : false;
-
-                  return (
-                    <ProductCard
-                      key={product.id}
-                      product={product}
-                      isWishlisted={isWishlisted}
-                    />
-                  );
-                })}
-              </div>
-            )}
-
-            {canLoadMore && (
-              <div className="text-center mt-8">
-                <CustomButton
-                  type="default"
-                  loading={loadingMore}
-                  onClick={handleLoadMore}
-                  className="px-8 h-12 border-2 border-gray-500 text-orange-600 hover:bg-orange-50 rounded-lg font-semibold"
-                >
-                  {loadingMore ? "Đang tải..." : "Xem thêm sản phẩm"}
-                </CustomButton>
-              </div>
-            )}
-
-            <div className="text-center mt-6">
-              <Link href="/products">
-                <CustomButton
-                  type="primary"
-                  icon={<ShoppingCart className="w-4 h-4" />}
-                  className={cn(
-                    " bg-linear-to-r from-orange-600 to-pink-600 hover:from-orange-700 hover:to-pink-700 ",
-                    "border-0 rounded-full shadow-md font-semibold text-sm px-6 h-10"
-                  )}
-                >
-                  Xem tất cả sản phẩm
-                </CustomButton>
-              </Link>
-            </div>
-          </>
-        )}
-      </div>
-    </section>
+      </section>
   );
 };
 

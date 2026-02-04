@@ -1,18 +1,18 @@
 "use client";
 
 import { useCart } from "@/app/(main)/products/_hooks/useCart";
+import { publicProductService } from "@/app/(shop)/shop/products/_services/product.service";
 import { CustomHasDiscount } from "@/components";
 import { formatPrice } from "@/hooks/useFormatPrice";
-import { publicProductService } from "@/app/(shop)/shop/products/_services/product.service";
+import { useToast } from "@/hooks/useToast";
 import { requireAuthentication } from "@/utils/cart/cart-auth.utils";
 import { cn } from "@/utils/cn";
 import { resolveMediaUrl as resolveMediaUrlHelper } from "@/utils/products/media.helpers";
 import { motion } from "framer-motion";
-import { Heart, Loader2, ShoppingBag, Sparkles, Star } from "lucide-react";
+import { Heart, Loader2, ShoppingBag, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useMemo, useState } from "react";
-import { toast } from "sonner";
 
 const HeartFilled = (props: any) => <Heart {...props} fill="currentColor" />;
 
@@ -26,7 +26,10 @@ export const BrandCard = ({
   const { quickAddToCart } = useCart();
   const [addingToCart, setAddingToCart] = useState(false);
   const [isWishlisted, setIsWishlisted] = useState(initialIsWishlisted);
-
+  const {
+    error: toastError,
+    warning: toastWarning,
+  } = useToast();
   useEffect(() => {
     setIsWishlisted(initialIsWishlisted);
   }, [initialIsWishlisted]);
@@ -52,19 +55,19 @@ export const BrandCard = ({
         resp.data.variants?.find((v: any) => v.inventory?.stock > 0) ||
         resp.data.variants?.[0];
       if (!variant) {
-        toast.warning("Sản phẩm hiện không có sẵn");
+        toastWarning("Sản phẩm hiện không có sẵn");
         return;
       }
       await quickAddToCart(variant.id, 1);
     } catch (error) {
-      toast.error("Không thể thêm vào giỏ hàng");
+      toastError("Không thể thêm vào giỏ hàng");
     } finally {
       setAddingToCart(false);
     }
   };
 
   const displayPrice = product.priceAfterBestVoucher || product.priceMin;
-    const originalPrice = product.priceBeforeDiscount;
+  const originalPrice = product.priceBeforeDiscount;
 
   const discountPercent = product.showDiscount;
 

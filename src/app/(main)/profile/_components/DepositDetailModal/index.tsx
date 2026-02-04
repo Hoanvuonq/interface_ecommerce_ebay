@@ -5,7 +5,10 @@ import { Button } from "@/components/button";
 import { getStatusStyle, getTransactionLabel } from "@/constants/status";
 import { PortalModal } from "@/features/PortalModal";
 import walletService from "@/services/wallet/wallet.service";
-import { WalletDepositResponse, WalletTransactionResponse } from "@/types/wallet/wallet.types";
+import {
+  WalletDepositResponse,
+  WalletTransactionResponse,
+} from "@/types/wallet/wallet.types";
 import { X } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import {
@@ -15,7 +18,7 @@ import {
   FiCopy,
 } from "react-icons/fi";
 import QRCode from "react-qr-code";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/useToast";
 
 interface DepositDetailModalProps {
   visible: boolean;
@@ -31,7 +34,7 @@ export const DepositDetailModal: React.FC<DepositDetailModalProps> = ({
   const [loading, setLoading] = useState(false);
   const [depositDetail, setDepositDetail] =
     useState<WalletDepositResponse | null>(null);
-
+  const { success: toastSuccess } = useToast();
   useEffect(() => {
     if (visible && transaction?.id) {
       loadDepositDetail(transaction.id);
@@ -57,7 +60,7 @@ export const DepositDetailModal: React.FC<DepositDetailModalProps> = ({
 
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
-    toast.success(`Đã sao chép ${label}`);
+    toastSuccess(`Đã sao chép ${label}`);
   };
 
   const isPaymentExpired = () => {
@@ -136,7 +139,7 @@ export const DepositDetailModal: React.FC<DepositDetailModalProps> = ({
                     <p className="text-xs text-gray-500 mb-1">Trạng thái</p>
                     <span
                       className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ${getStatusStyle(
-                        transaction.status
+                        transaction.status,
                       )}`}
                     >
                       {getTransactionLabel(transaction.status)}
@@ -208,7 +211,7 @@ export const DepositDetailModal: React.FC<DepositDetailModalProps> = ({
                         Hết hạn:{" "}
                         {new Date(depositDetail.expiresAt).toLocaleTimeString(
                           "vi-VN",
-                          { hour: "2-digit", minute: "2-digit" }
+                          { hour: "2-digit", minute: "2-digit" },
                         )}
                       </p>
                     </div>
@@ -260,7 +263,7 @@ export const DepositDetailModal: React.FC<DepositDetailModalProps> = ({
                         onClick={() =>
                           copyToClipboard(
                             depositDetail.accountNumber || "",
-                            "Số tài khoản"
+                            "Số tài khoản",
                           )
                         }
                         className="text-blue-500 hover:text-blue-700"

@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { orderService } from "@/services/orders/order.service";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/useToast";
 import _ from "lodash";
 
 export const useOrderActions = (
@@ -12,11 +12,14 @@ export const useOrderActions = (
   const queryClient = useQueryClient();
   const [cancelModalVisible, setCancelModalVisible] = useState(false);
   const [cancelReason, setCancelReason] = useState("");
-
+  const {
+    error: toastError,
+    success: toastSuccess,
+  } = useToast();
   const { mutate: cancelOrder, isPending: cancelling } = useMutation({
     mutationFn: (reason: string) => orderService.cancelOrder(orderId, reason),
     onSuccess: () => {
-      toast.success("Đã hủy đơn hàng thành công");
+      toastSuccess("Đã hủy đơn hàng thành công");
       setCancelModalVisible(false);
       setCancelReason("");
       
@@ -26,14 +29,14 @@ export const useOrderActions = (
       onOrderCancelled?.();
     },
     onError: (error: any) => {
-      toast.error(error?.response?.data?.message || "Không thể hủy đơn hàng.");
+      toastError(error?.response?.data?.message || "Không thể hủy đơn hàng.");
     },
   });
 
   const handleConfirmCancel = () => {
     const trimmedReason = cancelReason.trim();
     if (!trimmedReason) {
-      toast.error("Vui lòng nhập lý do hủy đơn hàng");
+      toastError("Vui lòng nhập lý do hủy đơn hàng");
       return;
     }
     cancelOrder(trimmedReason);
@@ -67,16 +70,19 @@ export const useOrderActions = (
 
 export const useOrderCancelMutation = (orderId: string) => {
   const queryClient = useQueryClient();
-
+  const {
+    error: toastError,
+    success: toastSuccess,
+  } = useToast();
   return useMutation({
     mutationFn: (reason: string) => orderService.cancelOrder(orderId, reason),
     onSuccess: () => {
-      toast.success("Hủy đơn hàng thành công");
+      toastSuccess("Hủy đơn hàng thành công");
       queryClient.invalidateQueries({ queryKey: ["orders"] });
       queryClient.invalidateQueries({ queryKey: ["orders", "detail", orderId] });
     },
     onError: (error: any) => {
-      toast.error(_.get(error, "response.data.message", "Không thể hủy đơn hàng"));
+      toastError(_.get(error, "response.data.message", "Không thể hủy đơn hàng"));
     }
   });
 };

@@ -329,56 +329,69 @@ export default function ShopProductAddStepsFormScreen({
     initData();
   }, [productId, isEditMode]);
 
-  const handleSubmit = async (isDraft: boolean = false) => {
-    try {
-      setLoading(true);
-      const formValues = await validateFields();
+ const handleSubmit = async (isDraft: boolean = false) => {
+  console.log(">>> Submitting... isDraft:", isDraft);
+  try {
+    setLoading(true);
+    
+    const formValues = await validateFields();
+    console.log(">>> Form Values OK:", formValues);
 
-      const rawData = {
-        ...formValues,
-        optionGroups,
-        optionNames,
-        variants,
-        fileList,
-        videoList,
-        allowedShippingChannels, 
-        regions,                 
-        saveAsDraft: isDraft,
-      };
+    const rawData = {
+      ...formValues,
+      optionGroups,
+      optionNames,
+      variants,
+      fileList,
+      videoList,
+      allowedShippingChannels, 
+      regions,                 
+      saveAsDraft: isDraft,
+    };
 
-      const finalPayload = mapCreateProductPayload(rawData);
+    const finalPayload = mapCreateProductPayload(rawData);
+    console.log(">>> Final Payload to API:", finalPayload);
 
-      let result: any;
-     if (isEditMode && productId) {
-  result = await userProductService.updateProductByShop(productId, finalPayload, productVersion);
-  
-  const nextVersion = result?.data?.product?.version ?? result?.data?.version;
-  if (nextVersion !== undefined) {
-    setProductVersion(nextVersion); 
-  }
-  
-  toastSuccess("✅ Cập nhật thành công!");
-}
+    let result: any;
 
-      const newVersion = result?.data?.product?.version ?? result?.data?.version ?? result?.version;
-      if (newVersion !== undefined) setProductVersion(newVersion);
-
-      const targetId = result?.data?.product?.id || result?.data?.id || result?.id || productId;
-      
-      setHasUnsavedChanges(false);
-      if (targetId) {
-        router.push(`/shop/products/${targetId}`);
-      }
-    } catch (err: any) {
-      if (err.response?.status === 409 || err?.data?.code === 3005) {
-        toastError("⚠️ Dữ liệu đã thay đổi ở tab khác hoặc phiên làm việc đã cũ. Vui lòng F5 trang!");
-      } else {
-        toastError(err?.message || "Lỗi lưu sản phẩm (3001)");
-      }
-    } finally {
-      setLoading(false);
+    if (isEditMode && productId) {
+      result = await userProductService.updateProductByShop(
+        productId, 
+        finalPayload, 
+        productVersion 
+      );
+      toastSuccess("✅ Cập nhật sản phẩm thành công!");
+    } else {
+      result = await userProductService.createProductsByShop(finalPayload);
+      toastSuccess("🚀 Đăng bán sản phẩm thành công!");
     }
-  };
+
+    const newVersion = result?.data?.product?.version ?? result?.data?.version ?? result?.version;
+    if (newVersion !== undefined) {
+      setProductVersion(newVersion);
+    }
+
+    const targetId = result?.data?.product?.id || result?.data?.id || result?.id || productId;
+    
+    setHasUnsavedChanges(false);
+
+    if (targetId) {
+      router.push(`/shop/products/${targetId}`);
+    }
+
+  } catch (err: any) {
+    console.error(">>> Submit Error Details:", err);
+    
+    if (err.response?.status === 409 || err?.data?.code === 3005) {
+      toastError("⚠️ Dữ liệu đã thay đổi trên hệ thống. Vui lòng nhấn F5 để tải lại bản mới nhất!");
+    } else {
+      toastError(err?.message || "Lỗi lưu sản phẩm (3001). Vui lòng kiểm tra lại các trường nhập liệu.");
+    }
+  } finally {
+    setLoading(false);
+  }
+};
+  
   const handleUploadVariantImageWrapper = useCallback(
     async (
       file: File,

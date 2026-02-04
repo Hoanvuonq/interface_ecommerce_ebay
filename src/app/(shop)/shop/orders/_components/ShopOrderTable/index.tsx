@@ -3,16 +3,11 @@
 import {
   OrderStatus,
   ShopOrderResponse,
-  ShopOrderStatusUpdateRequest
+  ShopOrderStatusUpdateRequest,
 } from "@/app/(main)/shop/_types/dto/shop.order.dto";
 import { DataTable } from "@/components";
 import { useToast } from "@/hooks/useToast";
-import {
-  CircleDollarSign,
-  Clock,
-  ShoppingBag,
-  Truck
-} from "lucide-react";
+import { CircleDollarSign, Clock, ShoppingBag, Truck } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
 import { SmartKPICard } from "../../../_components";
 import { StatusTabs } from "../../../_components/Products/StatusTabs";
@@ -24,7 +19,6 @@ import { OrderDetailModal } from "../OrderDetailModal";
 import { ShopOrderFilters } from "../ShopOrderFilters";
 import { UpdateStatusModal } from "../UpdateStatusModal";
 import { getOrderColumns } from "./column";
-
 
 export default function ShopOrderTable() {
   const { success: toastSuccess, error: toastError } = useToast();
@@ -84,7 +78,6 @@ export default function ShopOrderTable() {
     [actions],
   );
 
-  // ==================== HANDLERS ====================
   const handleStatusFormSubmit = async (values: any) => {
     if (!selectedOrder) return;
     try {
@@ -118,7 +111,7 @@ export default function ShopOrderTable() {
   );
 
   return (
-    <div className="min-h-screen p-4 md:p-8 space-y-10 animate-in fade-in duration-700 ">
+    <div className="min-h-screen space-y-10 animate-in fade-in duration-700 ">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div className="space-y-2">
           <div className="flex items-center gap-4">
@@ -189,12 +182,12 @@ export default function ShopOrderTable() {
             data={state.orders}
             loading={state.isInitialLoading}
             totalElements={state.pagination.total}
-            page={state.pagination.current - 1} // Trang 0-based
+            page={state.pagination.current - 1}
             size={state.pagination.pageSize}
             onPageChange={(p) => {
               if (lastPageRef.current !== p) {
                 lastPageRef.current = p;
-                const newPage = p + 1; // Convert về 1-based
+                const newPage = p + 1;
                 actions.refreshData(newPage, state.pagination.pageSize);
               }
             }}
@@ -226,7 +219,6 @@ export default function ShopOrderTable() {
         </div>
       </div>
 
-      {/* Modals */}
       <UpdateStatusModal
         isOpen={statusModalVisible}
         onClose={() => setStatusModalVisible(false)}

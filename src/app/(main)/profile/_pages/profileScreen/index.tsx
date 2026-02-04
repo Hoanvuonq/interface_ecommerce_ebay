@@ -158,7 +158,7 @@ export default function ProfilePage() {
 
     const objectUrl = URL.createObjectURL(file);
     setPreviewImage(objectUrl);
-    setIsUploadingAvatar(true); 
+    setIsUploadingAvatar(true);
 
     let loadingToastId;
 
@@ -192,15 +192,12 @@ export default function ProfilePage() {
       console.error("Upload error:", error);
       error("Lỗi tải ảnh: " + (error?.message || "Vui lòng thử lại"));
 
-      // Nếu lỗi, reset preview để quay về ảnh cũ
       setPreviewImage(null);
     } finally {
-      setIsUploadingAvatar(false); // Tắt loading trên UI ảnh
+      setIsUploadingAvatar(false);
 
-      // Cleanup object url để tránh memory leak
       URL.revokeObjectURL(objectUrl);
 
-      // Clear preview image sau khi đã có user.image mới (hoặc giữ null nếu lỗi)
       setPreviewImage(null);
 
       if (fileInputRef.current) {
@@ -364,16 +361,16 @@ export default function ProfilePage() {
       className="pt-10"
     >
       <div className="flex flex-col lg:flex-row gap-6">
-        <div className="w-full lg:w-64 shrink-0">
+        <div className="w-full lg:w-75 shrink-0">
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden sticky top-6">
             <div className="p-5 border-b border-gray-100 flex items-center gap-3 bg-linear-to-b from-orange-50/20 to-white">
-              <div className="w-10 h-10 rounded-full overflow-hidden border border-white ring-1 ring-orange-100 shadow-sm bg-white flex items-center justify-center shrink-0">
+              <div className="w-16 h-16 rounded-full overflow-hidden border border-amber-600 shadow-custom bg-white flex items-center justify-center shrink-0">
                 {user?.image ? (
                   <Image
                     src={user.image}
                     alt="User"
-                    height={40}
-                    width={40}
+                    height={52}
+                    width={52}
                     className="w-full h-full object-cover"
                   />
                 ) : (
@@ -381,17 +378,17 @@ export default function ProfilePage() {
                 )}
               </div>
               <div className="overflow-hidden">
-                <h3 className="font-semibold text-gray-900 truncate text-md">
+                <h3 className="font-bold text-gray-900 truncate text-md">
                   {editorData.fullName || user?.username}
                 </h3>
-                <p className="text-xs text-gray-500 truncate flex items-center gap-1 mt-0.5">
+                <p className="text-xs text-gray-600 truncate flex items-center gap-1 mt-0.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>{" "}
                   Thành viên
                 </p>
               </div>
             </div>
 
-            <nav className="p-2 space-y-1">
+            <nav className="p-2 space-y-2">
               {menuItems.map((item) => (
                 <button
                   key={item.key}
@@ -400,7 +397,7 @@ export default function ProfilePage() {
                   }}
                   disabled={saving}
                   className={cn(
-                    "w-full flex cursor-pointer items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 text-left group disabled:opacity-50",
+                    "w-full flex cursor-pointer items-center gap-3 px-3 py-4 text-sm font-semibold rounded-lg transition-all duration-200 text-left group disabled:opacity-50",
                     activeTab === item.key
                       ? "text-orange-600 bg-orange-50"
                       : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",

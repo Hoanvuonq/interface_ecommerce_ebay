@@ -1,70 +1,21 @@
 "use client";
 
-import React, { useEffect, useMemo, useState, useCallback } from "react";
-import { toast } from "sonner";
-import {
-  LayoutGrid,
-  List,
-  Heart,
-  Star,
-  ShoppingCart,
-  Loader2,
-  Search,
-  ArrowLeft,
-  ArrowRight,
-} from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 
-import { ProductCard } from "../ProductCard";
 import { publicProductService } from "@/app/(shop)/shop/products/_services/product.service";
-import {
-  PublicProductSearchQueryDTO,
-  PublicProductListItemDTO,
-} from "@/types/product/public-product.dto";
-import { useCart } from "../../_hooks/useCart";
-import { requireAuthentication } from "@/utils/cart/cart-auth.utils";
-import { useRouter } from "next/navigation";
-import { cn } from "@/utils/cn";
-import { CustomButton } from "@/components/custom/components/customButton";
-import { TabsChangeLayout } from "../TabsChangeLayout";
+import { CustomPagination } from "@/components";
 import { useToast } from "@/hooks/useToast";
+import {
+  PublicProductListItemDTO,
+  PublicProductSearchQueryDTO,
+} from "@/types/product/public-product.dto";
+import { requireAuthentication } from "@/utils/cart/cart-auth.utils";
+import { cn } from "@/utils/cn";
+import { useRouter } from "next/navigation";
+import { useCart } from "../../_hooks/useCart";
 import { EmptyProductState } from "../EmptyProductState";
-
-const CustomPagination: React.FC<{
-  page: number;
-  pageSize: number;
-  total: number;
-  onChange: (page: number, pageSize: number) => void;
-}> = ({ page, pageSize, total, onChange }) => {
-  const totalPages = Math.ceil(total / pageSize);
-  if (totalPages <= 1) return null;
- 
-
-  return (
-    <div className="flex items-center justify-center gap-4 mt-12 bg-white p-2 rounded-2xl shadow-sm border border-gray-100 w-fit mx-auto">
-      <CustomButton
-        variant="outline"
-        onClick={() => onChange(page - 1, pageSize)}
-        disabled={page <= 1}
-        className="h-10 w-10 p-0 rounded-xl"
-        icon={<ArrowLeft size={18} />}
-      />
-      <div className="flex items-center gap-2 px-4">
-        <span className="text-sm font-bold text-orange-600 bg-ortext-orange-50 px-3 py-1 rounded-lg">
-          {page}
-        </span>
-        <span className="text-gray-600 text-sm">/</span>
-        <span className="text-sm font-medium text-gray-600">{totalPages}</span>
-      </div>
-      <CustomButton
-        variant="outline"
-        onClick={() => onChange(page + 1, pageSize)}
-        disabled={page >= totalPages}
-        className="h-10 w-10 p-0 rounded-xl"
-        icon={<ArrowRight size={18} />}
-      />
-    </div>
-  );
-};
+import { ProductCard } from "../ProductCard";
+import { TabsChangeLayout } from "../TabsChangeLayout";
 
 export default function ProductList({
   filters,
@@ -76,7 +27,7 @@ export default function ProductList({
   const router = useRouter();
   const { quickAddToCart } = useCart();
 
-   const { error , warning, success : ToastSuccsess } = useToast();
+  const { error, warning, success: ToastSuccsess } = useToast();
   const [products, setProducts] = useState<PublicProductListItemDTO[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -92,7 +43,7 @@ export default function ProductList({
         page: page - 1,
         size: pageSize,
         ...Object.fromEntries(
-          Object.entries(filters).filter(([_, v]) => v != null && v !== "")
+          Object.entries(filters).filter(([_, v]) => v != null && v !== ""),
         ),
       };
 
@@ -101,16 +52,19 @@ export default function ProductList({
         case "featured":
           res = await publicProductService.getFeatured(
             params.page,
-            params.size
+            params.size,
           );
           break;
         case "new":
-          res = await publicProductService.getNewProducts(params.page, params.size);
+          res = await publicProductService.getNewProducts(
+            params.page,
+            params.size,
+          );
           break;
         case "promoted":
           res = await publicProductService.getPromoted(
             params.page,
-            params.size
+            params.size,
           );
           break;
         default:
@@ -140,7 +94,7 @@ export default function ProductList({
     setAddingToCart(product.id);
     try {
       const detail = await publicProductService.getBySlug(
-        product.slug || product.id
+        product.slug || product.id,
       );
       const variant =
         detail.data.variants?.find((v: any) => v.stockQuantity > 0) ||
@@ -156,11 +110,11 @@ export default function ProductList({
       setAddingToCart(null);
     }
   };
-const [sort, setSort] = useState("newest");
+  const [sort, setSort] = useState("newest");
 
-const handleSort = (val: string) => {
-  setSort(val);
-};
+  const handleSort = (val: string) => {
+    setSort(val);
+  };
 
   return (
     <div className="bg-transparent space-y-6">
@@ -183,18 +137,25 @@ const handleSort = (val: string) => {
             ))}
           </div>
         ) : products.length === 0 ? (
-          <EmptyProductState message="" onReset={() => window.location.reload()} />
+          <EmptyProductState
+            message=""
+            onReset={() => window.location.reload()}
+          />
         ) : (
           <>
             <div
               className={cn(
                 viewMode === "grid"
                   ? "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6"
-                  : "flex flex-col gap-4" 
+                  : "flex flex-col gap-4",
               )}
             >
               {products.map((product) => (
-                <ProductCard key={product.id} product={product} viewMode={viewMode}/>
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  viewMode={viewMode}
+                />
               ))}
             </div>
             <CustomPagination

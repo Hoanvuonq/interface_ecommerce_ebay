@@ -161,7 +161,6 @@ export async function getApprovalStatistics(): Promise<any> {
 export async function getProductsRequiringAttention(
   params?: ParamRequest
 ): Promise<any> {
-  // Bóc tách sort ra để không gửi lên server nếu nó gây lỗi 500
   const { sort, ...restParams } = params || {};
 
   return request<ApiResponse<any>>({

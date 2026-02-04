@@ -20,7 +20,6 @@ interface WithdrawTransactionListProps {
 export const WithdrawTransactionList: React.FC<
   WithdrawTransactionListProps
 > = ({ walletType }) => {
-  // --- State ---
   const [loading, setLoading] = useState(false);
   const [transactions, setTransactions] = useState<WalletTransactionResponse[]>(
     []

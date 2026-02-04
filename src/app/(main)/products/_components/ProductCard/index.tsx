@@ -28,7 +28,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import React, { memo, useEffect, useMemo, useState } from "react";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/useToast";
 import { TYPE_CONFIG } from "../../_constants/typeProduct";
 import { useCart } from "../../_hooks/useCart";
 
@@ -62,6 +62,7 @@ export const ProductCard = memo(
       useState<PublicProductDetailDTO | null>(null);
     const [loadingProductDetail, setLoadingProductDetail] = useState(false);
     const [imgError, setImgError] = useState(false);
+    const { error: toastError, warning: toastWarning } = useToast();
 
     useEffect(() => {
       if (initialIsWishlisted !== undefined)
@@ -71,7 +72,6 @@ export const ProductCard = memo(
     const isList = viewMode === "list";
     const currentType = TYPE_CONFIG[isType] || TYPE_CONFIG.mall;
 
-    // 🟢 Tối ưu: Xử lý logic Image URL
     const imageUrl = useMemo(() => {
       const media = (product as any).media || [];
       if (Array.isArray(media) && media.length > 0) {
@@ -127,10 +127,10 @@ export const ProductCard = memo(
           resp.data.variants?.find(
             (v: any) => (v.inventory?.stock ?? v.stock ?? 0) > 0,
           ) || resp.data.variants?.[0];
-        if (!variant) return toast.warning("Sản phẩm hiện không có sẵn");
+        if (!variant) return toastWarning("Sản phẩm hiện không có sẵn");
         await quickAddToCart(variant.id, 1);
       } catch (error) {
-        toast.error("Lỗi thêm vào giỏ");
+        toastError("Lỗi thêm vào giỏ");
       } finally {
         setAddingToCart(false);
       }
@@ -148,7 +148,7 @@ export const ProductCard = memo(
         setProductDetail(resp.data);
         setWishlistModalOpen(true);
       } catch (error) {
-        toast.error("Lỗi tải thông tin");
+        toastError("Lỗi tải thông tin");
       } finally {
         setLoadingProductDetail(false);
       }
@@ -266,9 +266,7 @@ export const ProductCard = memo(
               <h3
                 className={cn(
                   "font-bold text-gray-800 group-hover:text-orange-600 transition-colors leading-snug tracking-tight",
-                  isList
-                    ? "text-lg truncate"
-                    : "text-sm line-clamp-2 min-h-10",
+                  isList ? "text-lg truncate" : "text-sm line-clamp-2 min-h-10",
                 )}
               >
                 {product.name}

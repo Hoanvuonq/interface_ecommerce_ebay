@@ -15,7 +15,7 @@ import {
     Trash2
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/useToast";
 import { useWishlist } from "../../_hooks/useWishlist";
 
 interface CreateWishlistModalProps {
@@ -31,6 +31,7 @@ export default function CreateWishlistModal({
 }: CreateWishlistModalProps) {
     const { createWishlist } = useWishlist();
     const { uploadFile: uploadPresigned, uploading: uploadingImage } = usePresignedUpload();
+  const { error: toastError, success: toastSuccess , warning: toastWarning } = useToast();
 
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
@@ -57,7 +58,7 @@ export default function CreateWishlistModal({
         if (!file) return;
 
         if (!file.type.startsWith('image/')) {
-            toast.error("Vui lòng chọn tệp hình ảnh!");
+            toastError("Vui lòng chọn tệp hình ảnh!");
             return;
         }
 
@@ -68,17 +69,17 @@ export default function CreateWishlistModal({
             const res = await uploadPresigned(file, UploadContext.WISHLIST_COVER);
             if (res.assetId) {
                 setCoverImageAssetId(res.assetId);
-                toast.success("Tải ảnh bìa thành công!");
+                toastSuccess("Tải ảnh bìa thành công!");
             }
         } catch (err) {
-            toast.error("Tải ảnh thất bại");
+            toastError("Tải ảnh thất bại");
             setPreviewImage("");
         }
     };
 
     const handleSubmit = async () => {
         if (!name.trim()) {
-            toast.error("Vui lòng nhập tên Wishlist");
+            toastError("Vui lòng nhập tên Wishlist");
             return;
         }
 
@@ -93,14 +94,14 @@ export default function CreateWishlistModal({
             });
 
             if (result.success && result.data) {
-                toast.success('Đã tạo Wishlist thành công! 🎉');
+                toastSuccess('Đã tạo Wishlist thành công! 🎉');
                 onSuccess(result.data.id);
                 onCancel();
             } else {
-                toast.error(result.error || 'Không thể tạo wishlist');
+                toastError(result.error || 'Không thể tạo wishlist');
             }
         } catch (error) {
-            toast.error("Đã có lỗi xảy ra");
+            toastError("Đã có lỗi xảy ra");
         } finally {
             setSubmitting(false);
         }

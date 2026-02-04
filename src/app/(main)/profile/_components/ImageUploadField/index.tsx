@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { FaPlus, FaTrash, FaEye, FaTimes } from "react-icons/fa";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/useToast";
 import { cn } from "@/utils/cn";
 
 export interface CustomFile {
@@ -29,6 +29,7 @@ export const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
 }) => {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { error: toastError, warning: toastWarning } = useToast();
 
   const getBase64 = (file: File): Promise<string> =>
     new Promise((resolve, reject) => {
@@ -50,23 +51,23 @@ export const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
 
       // 1. Validate số lượng
       if (currentCount + i >= maxCount) {
-        toast.warning(`Chỉ được phép tải lên tối đa ${maxCount} ảnh.`);
+        toastWarning(`Chỉ được phép tải lên tối đa ${maxCount} ảnh.`);
         break;
       }
 
       // 2. Validate loại file
       if (!allowedTypes.includes(file.type)) {
-        toast.error(
+        toastError(
           `File ${
             file.name
-          } không hợp lệ! Định dạng cho phép: ${allowedTypes.join(", ")}`
+          } không hợp lệ! Định dạng cho phép: ${allowedTypes.join(", ")}`,
         );
         continue;
       }
 
       // 3. Validate dung lượng
       if (file.size / 1024 / 1024 > maxSizeMB) {
-        toast.error(`File ${file.name} quá lớn! Tối đa ${maxSizeMB}MB.`);
+        toastError(`File ${file.name} quá lớn! Tối đa ${maxSizeMB}MB.`);
         continue;
       }
 
@@ -147,7 +148,7 @@ export const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
           onClick={() => fileInputRef.current?.click()}
           className={cn(
             "w-24 h-24 rounded-xl border-2 border-dashed border-gray-300 hover:border-gray-500 bg-gray-50 hover:bg-orange-50 ",
-            "cursor-pointer flex flex-col items-center justify-center text-gray-600 hover:text-orange-500 transition-all duration-200"
+            "cursor-pointer flex flex-col items-center justify-center text-gray-600 hover:text-orange-500 transition-all duration-200",
           )}
         >
           <FaPlus className="text-xl mb-1" />

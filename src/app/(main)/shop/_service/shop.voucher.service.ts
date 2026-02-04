@@ -204,7 +204,7 @@ export async function deleteVoucherTemplate(
   templateId: string
 ): Promise<ApiResponse<boolean>> {
   return request<ApiResponse<boolean>>({
-    url: `${API_ENDPOINT}/templates/${templateId}`,
+    url: `${API_ENDPOINT}/templates/shop/${templateId}`,
     method: "DELETE",
   });
 }
@@ -219,7 +219,7 @@ export async function updateVoucherTemplate(
   payload: CreateShopVoucherRequest
 ): Promise<ApiResponse<VoucherTemplate>> {
   return request<ApiResponse<VoucherTemplate>>({
-    url: `${API_ENDPOINT}/templates/${templateId}`,
+    url: `${API_ENDPOINT}/templates/shop/${templateId}`,
     method: "PUT",
     data: payload,
     headers: {

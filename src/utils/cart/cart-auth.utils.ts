@@ -2,13 +2,12 @@
 import { isAuthenticated as checkAuth } from "@/utils/local.storage";
 import { useToast } from "@/hooks/useToast";
 
-
 export const isAuthenticated = (): boolean => {
   return checkAuth();
 };
 const toast = useToast();
 export const requireAuthentication = (
-  redirectUrl: string = "/cart"
+  redirectUrl: string = "/cart",
 ): boolean => {
   if (!isAuthenticated()) {
     toast.warning("Vui lòng đăng nhập để sử dụng giỏ hàng", {
@@ -16,7 +15,7 @@ export const requireAuthentication = (
     });
     setTimeout(() => {
       window.location.href = `/login?redirect=${encodeURIComponent(
-        redirectUrl
+        redirectUrl,
       )}`;
     }, 500);
 
@@ -43,7 +42,7 @@ export const isAuthError = (error: any): boolean => {
  */
 export const handleAuthError = (
   error: any,
-  redirectUrl: string = "/cart"
+  redirectUrl: string = "/cart",
 ): void => {
   if (isAuthError(error)) {
     toast.error("Phiên đăng nhập đã hết hạn.", {
@@ -57,7 +56,7 @@ export const handleAuthError = (
       localStorage.removeItem("userRole");
 
       window.location.href = `/login?redirect=${encodeURIComponent(
-        redirectUrl
+        redirectUrl,
       )}`;
     }, 1000);
   }

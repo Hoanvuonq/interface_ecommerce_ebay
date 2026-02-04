@@ -49,7 +49,7 @@ export const CreateWalletPrompt: React.FC<CreateWalletPromptProps> = ({
 
   return (
     <div className="flex items-center justify-center p-4 w-full h-full animate-fade-in">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-gray-100 p-8 relative overflow-hidden transition-all duration-300">
+      <div className="w-full h-full bg-white rounded-2xl shadow-xl border border-gray-100 p-8 relative overflow-hidden transition-all duration-300">
         <div className="absolute top-0 left-0 w-full h-1.5 bg-linear-to-r from-orange-400 to-red-500"></div>
 
         {!isCreating ? (

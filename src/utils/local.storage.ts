@@ -1,11 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { toast } from "sonner";
+import { useToast } from "@/hooks/useToast";
 import { authService } from "@/auth/services/auth.service";
 import { ApiResponse } from "@/api/_types/api.types";
 import { isLocalhost } from "./env";
-
-// ==================== COOKIE UTILITIES ====================
 
 export const getCookie = (name: string): string | null => {
   if (typeof document === "undefined") return null;
@@ -38,7 +36,8 @@ export const deleteCookie = (name: string): void => {
 export const isAuthenticated = (): boolean => {
   if (typeof window === "undefined") return false;
   const isLoggedIn = getCookie("isLoggedIn");
-  const hasToken = localStorage.getItem("accessToken") || getCookie("accessToken");
+  const hasToken =
+    localStorage.getItem("accessToken") || getCookie("accessToken");
   return isLoggedIn === "true" || !!hasToken;
 };
 
@@ -81,7 +80,7 @@ export const clearTokens = (): void => {
     "accessToken",
     "refreshToken",
     "isLoggedIn",
-    "users"
+    "users",
   ];
   cookiesToRemove.forEach((name) => deleteCookie(name));
 };
@@ -118,17 +117,15 @@ const REDIRECT_MAP: Record<string, string> = {
 };
 
 export const logout = async (
-  context: "default" | "employee" | "shop" = "default"
+  context: "default" | "employee" | "shop" = "default",
 ): Promise<void> => {
   if (typeof window === "undefined") return;
 
   const redirectPath = REDIRECT_MAP[context] || REDIRECT_MAP.default;
 
   // Lấy token từ cả 2 nguồn để gửi lên Backend logout
-  const refreshToken = 
-    localStorage.getItem("refreshToken") || 
-    getCookie("refreshToken") || 
-    "";
+  const refreshToken =
+    localStorage.getItem("refreshToken") || getCookie("refreshToken") || "";
 
   try {
     // Luôn cố gắng logout ở backend nếu có token
@@ -150,10 +147,10 @@ export const logoutShop = (): Promise<void> => logout("shop");
 // ==================== AUTH VERIFICATION FLOW ====================
 
 export const verifyAuth = async (
-  options?: VerifyAuthOptions
+  options?: VerifyAuthOptions,
 ): Promise<VerifyAuthResult<any>> => {
   const { redirectOnFailure = false, pathname } = options || {};
-
+  const { error: toastError } = useToast();
   // Logic Localhost...
   if (isLocalhost()) {
     const user = getCachedUser();
@@ -183,9 +180,9 @@ export const verifyAuth = async (
     }
   } catch (error: any) {
     const is401 = error?.response?.status === 401 || error?.code === 401;
-    
+
     if (is401 && redirectOnFailure) {
-      toast.error("Phiên đăng nhập đã hết hạn", {
+      toastError("Phiên đăng nhập đã hết hạn", {
         description: "Vui lòng đăng nhập lại.",
       });
       clearTokens();

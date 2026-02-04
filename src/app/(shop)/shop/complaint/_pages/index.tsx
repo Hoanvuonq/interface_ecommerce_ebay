@@ -1,19 +1,19 @@
 "use client";
 
-import React, { useState } from "react";
-import {
-  Store,
-  FileText,
-  ShieldCheck,
-  Search,
-  Rotate3DIcon,
-  Filter,
-  AlertCircle,
-  Info,
-} from "lucide-react";
+import { ButtonField, FormInput, SelectComponent } from "@/components";
 import { cn } from "@/utils/cn";
-import { FormInput, InputField, SelectComponent } from "@/components";
-import { ButtonField } from "@/components";
+import {
+  FileText,
+  Info,
+  Search
+} from "lucide-react";
+import { useState } from "react";
+import {
+  complaintTabs,
+  statusOptions,
+  subTabs,
+  typeOptions,
+} from "../_constants/complaint";
 
 type TabKey = "preferred" | "intellectual";
 
@@ -22,42 +22,6 @@ export const ComplaintScreen = () => {
   const [filterStatus, setFilterStatus] = useState("all");
   const [selectedType, setSelectedType] = useState<string>("");
   const [selectedStatus, setSelectedStatus] = useState<string>("");
-
-  const complaintTabs = [
-    {
-      id: "preferred",
-      label: "Khiếu nại danh hiệu Shop Yêu Thích",
-      icon: <Store size={16} />,
-    },
-    {
-      id: "intellectual",
-      label: "Khiếu nại Quyền Sở Hữu Trí Tuệ",
-      icon: <ShieldCheck size={16} />,
-    },
-  ];
-
-  const subTabs = [
-    { label: "Tất cả", count: 0, status: "all" },
-    { label: "Đang xem xét", count: 0, status: "pending" },
-    {
-      label: "Chờ cung cấp thêm bằng chứng",
-      count: 0,
-      status: "evidence_required",
-    },
-    { label: "Chấp nhận", count: 0, status: "accepted" },
-    { label: "Từ chối", count: 0, status: "rejected" },
-  ];
-  const typeOptions = [
-    { label: "Khiếu nại danh hiệu", value: "preferred" },
-    { label: "Khiếu nại sở hữu trí tuệ", value: "intellectual" },
-  ];
-
-  const statusOptions = [
-    { label: "Đang xem xét", value: "pending" },
-    { label: "Chấp nhận", value: "accepted" },
-    { label: "Từ chối", value: "rejected" },
-    { label: "Chờ bằng chứng", value: "evidence_required" },
-  ];
 
   return (
     <div className="max-w-450 mx-auto space-y-6 animate-in fade-in duration-500 ">
@@ -164,7 +128,6 @@ export const ComplaintScreen = () => {
                 </tr>
               </thead>
               <tbody>
-                {/* Empty State */}
                 <tr>
                   <td colSpan={5} className="py-32 text-center">
                     <div className="flex flex-col items-center gap-4 opacity-40">
@@ -181,7 +144,6 @@ export const ComplaintScreen = () => {
         </div>
       </div>
 
-      {/* Info Box - Dựa theo style image_b7830a */}
       <div className="bg-blue-50/50 border border-blue-100 rounded-3xl p-6 flex gap-4 animate-in slide-in-from-bottom duration-700">
         <div className="p-3 bg-white rounded-2xl shadow-sm text-blue-600 shrink-0 self-start">
           <Info size={24} />
