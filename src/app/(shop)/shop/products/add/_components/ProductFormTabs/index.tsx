@@ -1,32 +1,18 @@
 "use client";
 
-import React from "react";
-import { 
-  LayoutGrid, 
-  Tags, 
-  Info, 
-  ShoppingBag, 
-  Truck,
-  LucideIcon 
-} from "lucide-react";
 import { cn } from "@/utils/cn";
-import { motion, AnimatePresence } from "framer-motion"; 
-
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  Info,
+  LayoutGrid,
+  ShoppingBag,
+  Tags,
+  Truck
+} from "lucide-react";
+import React from "react";
+import { ProductFormTabsProps, TabConfig } from "./type";
 export type TabType = "basic" | "details" | "description" | "sales" | "shipping";
 
-interface TabConfig {
-  key: TabType;
-  label: string;
-  icon: LucideIcon;
-  disabled?: boolean;
-}
-
-interface ProductFormTabsProps {
-  activeTab: TabType;
-  setActiveTab: (tab: TabType) => void;
-  children: React.ReactNode;
-  className?: string;
-}
 
 export const ProductFormTabs: React.FC<ProductFormTabsProps> = ({
   activeTab,

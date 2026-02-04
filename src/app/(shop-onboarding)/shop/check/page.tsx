@@ -27,7 +27,7 @@ export default function ShopCheckPage() {
   }, [status, router]);
 
   if (status === "checking" || status === "verified") {
-    return <SectionLoading message="Đang kiểm tra hồ sơ..." />;
+    return <SectionLoading size="lg" className="h-screen" message="Đang kiểm tra hồ sơ..." />;
   }
 
   return (
@@ -78,7 +78,6 @@ export default function ShopCheckPage() {
           </div>
         )}
 
-        {/* --- CASE 2: ĐANG CHỜ DUYỆT --- */}
         {status === "pending" && (
           <div className="bg-white rounded-4xl shadow-2xl shadow-orange-100/50 p-8 md:p-10 border border-white/60 backdrop-blur-sm text-center animate-in fade-in zoom-in duration-500">
             <div className="w-24 h-24 bg-linear-to-br from-yellow-50 to-orange-50 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-inner border border-gray-100/50 relative">
@@ -109,7 +108,6 @@ export default function ShopCheckPage() {
           </div>
         )}
 
-        {/* --- CASE 3: CẦN CẬP NHẬT / BỊ TỪ CHỐI --- */}
         {status === "needs-update" && (
           <div className="bg-white rounded-4xl shadow-2xl shadow-orange-100/50 overflow-hidden border border-white/60 backdrop-blur-sm animate-in fade-in zoom-in duration-500">
             <div className="p-8 md:p-10 pb-6 text-center">

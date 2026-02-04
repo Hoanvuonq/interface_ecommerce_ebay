@@ -8,7 +8,7 @@ export interface Variant {
   heightCm?: number;
   weightGrams?: number;
   optionValueNames: string[];
-  imageUrl?: string;
+  imagePath?: string;
   imageProcessing?: boolean;
   [key: string]: any;
 }

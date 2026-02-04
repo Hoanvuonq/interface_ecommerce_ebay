@@ -3,7 +3,7 @@
 import { ButtonField, DataTable } from "@/components";
 import { Button } from "@/components/button";
 import { useToast } from "@/hooks/useToast";
-import { userProductService } from "@/services/products/product.service";
+import { userProductService } from "@/app/(shop)/shop/products/_services/product.service";
 import {
   UserProductDTO,
   UserProductStatisticsDTO,
@@ -122,10 +122,9 @@ export const ShopProductForm = () => {
       )
         .filter((item: any) => item !== null)
         .map((item: any) => ({
-          ...item,
+          ...item, 
           shopName: item.shop?.shopName || "N/A",
         }));
-
       setProducts(mappedProducts);
       setPagination((prev) => ({
         ...prev,
@@ -211,12 +210,22 @@ export const ShopProductForm = () => {
     successMsg: string,
   ) => {
     try {
+      setLoading(true); // Tránh user bấm liên tục gây loạn version
       await action();
       success(successMsg);
-      fetchProducts();
-      fetchStatistics();
+      // Thành công thì refresh list và stats
+      await Promise.all([fetchProducts(), fetchStatistics()]);
     } catch (e: any) {
-      error(e?.response?.data?.message || "Thao tác thất bại");
+      // 🟢 Nếu lỗi 409 hoặc mã 3005 (ETag mismatch)
+      if (e.response?.status === 409 || e?.data?.code === 3005) {
+        error("Sản phẩm đã có thay đổi mới. Đang cập nhật lại danh sách...");
+        // 🟢 Bắt buộc fetch lại để lấy version mới nhất từ Server
+        await fetchProducts();
+      } else {
+        error(e?.response?.data?.message || "Thao tác thất bại");
+      }
+    } finally {
+      setLoading(false);
     }
   };
   const onConfirmDelete = async () => {

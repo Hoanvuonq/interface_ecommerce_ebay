@@ -5,7 +5,7 @@ import { AddToWishlistModal } from "@/app/(main)/wishlist/_components/AddToWishl
 import { CustomHasDiscount } from "@/components";
 import { CustomButton } from "@/components/custom/components/customButton";
 import { formatPrice } from "@/hooks/useFormatPrice";
-import { publicProductService } from "@/services/products/product.service";
+import { publicProductService } from "@/app/(shop)/shop/products/_services/product.service";
 import type {
   PublicProductDetailDTO,
   PublicProductListItemDTO,

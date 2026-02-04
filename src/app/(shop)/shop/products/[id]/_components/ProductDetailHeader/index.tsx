@@ -7,16 +7,19 @@ import {
   Image as ImageIcon,
   FileText,
   ChevronLeft,
+  Edit3,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { UserProductDTO } from "@/types/product/user-product.dto";
 import { cn } from "@/utils/cn";
+import Link from "next/link";
 
 interface ProductDetailHeaderProps {
   product: UserProductDTO;
   getStatusBadge: (status: any, active: boolean) => React.ReactNode;
   onOpenMedia: () => void;
   onOpenManage: () => void;
+  onEdit: () => void;
 }
 
 export const ProductDetailHeader = ({
@@ -24,6 +27,7 @@ export const ProductDetailHeader = ({
   getStatusBadge,
   onOpenMedia,
   onOpenManage,
+  onEdit,
 }: ProductDetailHeaderProps) => {
   const router = useRouter();
 
@@ -62,11 +66,10 @@ export const ProductDetailHeader = ({
           </div>
         </div>
 
-        {/* Right Side: Actions */}
         <div className="flex items-center gap-2.5 overflow-x-auto no-scrollbar">
           <div className="flex items-center gap-2 bg-gray-50/50 p-1.5 rounded-[1.25rem] border border-gray-100">
             {product.id && (
-              <a
+              <Link
                 href={`/shop/products/${product.id}/preview`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -74,13 +77,13 @@ export const ProductDetailHeader = ({
               >
                 <Eye size={14} />
                 Xem trước
-              </a>
+              </Link>
             )}
 
             {product.slug &&
               product.approvalStatus === "APPROVED" &&
               product.active && (
-                <a
+                <Link
                   href={`/products/${product.slug}`}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -88,11 +91,18 @@ export const ProductDetailHeader = ({
                 >
                   <ExternalLink size={14} />
                   Bán lẻ
-                </a>
+                </Link>
               )}
           </div>
 
           <div className="flex items-center gap-2">
+            <button
+              onClick={onEdit} 
+              className="flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-200 text-gray-600 hover:border-orange-200 hover:text-orange-600 rounded-xl transition-all font-bold text-[11px] uppercase tracking-wider shadow-sm active:scale-95 whitespace-nowrap"
+            >
+              <Edit3 size={16} /> 
+              Chỉnh Sửa
+            </button>
             <button
               onClick={onOpenMedia}
               className="flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-200 text-gray-600 hover:border-gray-300 hover:text-orange-600 rounded-xl transition-all font-bold text-[11px] uppercase tracking-wider shadow-sm active:scale-95 whitespace-nowrap"

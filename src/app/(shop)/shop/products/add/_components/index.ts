@@ -5,3 +5,4 @@ export * from './ProductFormTabs';
 export * from './ProductImageCard';
 export * from './ShippingChannelCard';
 export * from './ProductVideoCard';
+export * from './ImageLibraryModal';

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import { FileText, Save, Loader2, Lightbulb, ImagePlus } from "lucide-react";
-import { richTextParagraphService } from "@/services/products/product.service";
+import { richTextParagraphService } from "@/app/(shop)/shop/products/_services/product.service";
 import { TipTapEditor } from "../TipTapEditor";
 import { usePresignedUpload } from "@/hooks/usePresignedUpload";
 import { UploadContext } from "@/types/storage/storage.types";

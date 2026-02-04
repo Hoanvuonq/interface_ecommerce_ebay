@@ -3,7 +3,7 @@
 import { useCart } from "@/app/(main)/products/_hooks/useCart";
 import { CustomHasDiscount } from "@/components";
 import { formatPrice } from "@/hooks/useFormatPrice";
-import { publicProductService } from "@/services/products/product.service";
+import { publicProductService } from "@/app/(shop)/shop/products/_services/product.service";
 import { requireAuthentication } from "@/utils/cart/cart-auth.utils";
 import { cn } from "@/utils/cn";
 import { resolveMediaUrl as resolveMediaUrlHelper } from "@/utils/products/media.helpers";

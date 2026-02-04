@@ -3,10 +3,11 @@
 import React from "react";
 import { X, Play } from "lucide-react";
 import { PortalModal } from "@/features/PortalModal";
+import { toPublicUrl } from "@/utils/storage/url";
 
 interface CustomVideoModalProps {
   open: boolean;
-  videoUrl: string | null;
+  videoUrl: string | null | undefined;
   onCancel: () => void;
 }
 
@@ -16,6 +17,8 @@ export const CustomVideoModal: React.FC<CustomVideoModalProps> = ({
   onCancel,
 }) => {
   if (!videoUrl) return null;
+
+  const displayUrl = toPublicUrl(videoUrl);
 
   return (
     <PortalModal
@@ -35,7 +38,7 @@ export const CustomVideoModal: React.FC<CustomVideoModalProps> = ({
 
         <div className="mb-6 flex flex-col items-center text-center animate-in fade-in slide-in-from-top-4 duration-500">
           <div className="px-4 py-1.5 bg-blue-500/10 border border-blue-500/20 rounded-full mb-2">
-            <span className="text-blue-400 text-[10px] font-bold uppercase  flex items-center gap-2">
+            <span className="text-blue-400 text-[10px] font-bold uppercase flex items-center gap-2">
               <Play size={10} fill="currentColor" /> Preview Video
             </span>
           </div>
@@ -43,7 +46,7 @@ export const CustomVideoModal: React.FC<CustomVideoModalProps> = ({
 
         <div className="relative w-full group rounded-4xl bg-black p-2 shadow-2xl border border-white/10 overflow-hidden transition-transform duration-500 hover:scale-[1.01]">
           <video
-            src={videoUrl}
+            src={displayUrl}
             controls
             autoPlay
             className="w-full h-auto max-h-[70vh] rounded-4xl shadow-inner"

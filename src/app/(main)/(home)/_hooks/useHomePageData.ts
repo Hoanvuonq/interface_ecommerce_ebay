@@ -3,7 +3,7 @@
 import { useInfiniteQuery, useQueries } from "@tanstack/react-query";
 import { homepageService } from "../services/homepage.service";
 import { CategoryService } from "../../category/_service/category.service";
-import { publicProductService } from "@/services/products/product.service";
+import { publicProductService } from "@/app/(shop)/shop/products/_services/product.service";
 import { useMemo } from "react";
 
 export const useHomepageData = (locale: string = "vi") => {

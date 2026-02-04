@@ -7,6 +7,8 @@ interface ProductContextType {
   formData: Partial<CreateUserProductBulkDTO>;
   setFormData: (data: Partial<CreateUserProductBulkDTO>) => void;
   hasUnsavedChanges: boolean;
+  productId?: string;
+  isEditMode: boolean;
   setHasUnsavedChanges: (value: boolean) => void;
   mediaModal: { type: "image" | "video"; file: any } | null;
   setMediaModal: (modal: { type: "image" | "video"; file: any } | null) => void;
@@ -16,9 +18,11 @@ interface ProductContextType {
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
 
-export const ProductProvider: React.FC<{ children: ReactNode }> = ({
+export const ProductProvider: React.FC<{ children: ReactNode;productId?: string }> = ({
   children,
+  productId
 }) => {
+  const isEditMode = Boolean(productId);
   const [formData, setFormData] = useState<Partial<CreateUserProductBulkDTO>>({
     name: "",
     description: "",
@@ -46,6 +50,8 @@ export const ProductProvider: React.FC<{ children: ReactNode }> = ({
     mediaModal,
     setMediaModal,
     loading,
+    productId,
+    isEditMode,
     setLoading,
   };
 

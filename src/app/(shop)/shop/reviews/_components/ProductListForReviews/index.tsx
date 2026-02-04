@@ -10,7 +10,7 @@ import {
   ShoppingBag,
   CheckCircle2,
 } from "lucide-react";
-import { userProductService } from "@/services/products/product.service";
+import { userProductService } from "@/app/(shop)/shop/products/_services/product.service";
 import { UserProductDTO } from "@/types/product/user-product.dto";
 import { DataTable } from "@/components";
 import { Column } from "@/components/DataTable/type";

@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { Save, Loader2, Image as ImageIcon, CheckCircle2, AlertTriangle, Clock, X } from "lucide-react";
 import ProductMediaUpload, { MediaUploadItem } from "../ProductMediaUpload";
-import { productMediaService } from "@/services/products/product.service";
+import { productMediaService } from "@/app/(shop)/shop/products/_services/product.service";
 import { useToast } from "@/hooks/useToast";
 import { resolveMediaUrl, getOriginalMediaUrl } from "@/utils/products/media.helpers";
 import { PortalModal } from "@/features/PortalModal"; 

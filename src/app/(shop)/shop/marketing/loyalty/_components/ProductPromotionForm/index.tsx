@@ -3,7 +3,7 @@
 import { FormInput, SearchComponent } from "@/components";
 import { PortalModal } from "@/features/PortalModal";
 import { useToast } from "@/hooks/useToast";
-import { userProductService } from "@/services/products/product.service";
+import { userProductService } from "@/app/(shop)/shop/products/_services/product.service";
 import { cn } from "@/utils/cn";
 import dayjs from "dayjs";
 import {

@@ -26,7 +26,7 @@ export const MiniSettingCard = ({
     <div
       className={cn(
         "bg-white rounded-2xl border transition-all duration-300",
-        isActive ? "border-orange-200 shadow-sm" : "border-gray-100 opacity-60",
+        isActive ? "border-orange-200 shadow-sm" : "border-gray-100 opacity-90",
       )}
     >
       <div className="px-4 py-3 flex items-center justify-between gap-3">
@@ -72,7 +72,7 @@ export const MiniSettingCard = ({
             <span
               className={cn(
                 "text-[13px] font-black tracking-tight",
-                isActive ? "text-gray-700" : "text-gray-400",
+                isActive ? "text-gray-700" : "text-gray-600",
               )}
             >
               {new Intl.NumberFormat("vi-VN").format(price)} ₫
@@ -83,7 +83,7 @@ export const MiniSettingCard = ({
             onClick={onToggle}
             className={cn(
               "w-9 h-5 rounded-full p-0.5 transition-all flex items-center relative",
-              isActive ? "bg-green-500" : "bg-gray-200",
+              isActive ? "bg-green-500" : "bg-gray-400",
             )}
           >
             <motion.div

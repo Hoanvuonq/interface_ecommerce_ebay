@@ -52,7 +52,6 @@ export const CreatCategoriesModal: React.FC<CreatCategoriesModalProps> = ({
 
     const initData = async () => {
       if (category?.id) {
-        // TRƯỜNG HỢP UPDATE: Lấy data mới nhất để có ETag/Version chuẩn
         isFetchingDetail.current = true;
         const res = await handleGetCategoryById(category.id);
 
@@ -75,7 +74,6 @@ export const CreatCategoriesModal: React.FC<CreatCategoriesModalProps> = ({
             });
           }
 
-          // Xử lý ETag từ version (hoặc header nếu API trả về)
           setCurrentEtag(String(latest.version));
 
           if (latest.imagePath) {
@@ -84,7 +82,6 @@ export const CreatCategoriesModal: React.FC<CreatCategoriesModalProps> = ({
         }
         isFetchingDetail.current = false;
       } else {
-        // TRƯỜNG HỢP CREATE
         resetForm();
         setLocalPreview(null);
         setCurrentEtag("");
@@ -104,7 +101,6 @@ export const CreatCategoriesModal: React.FC<CreatCategoriesModalProps> = ({
   }, [localPreview, resetForm, onClose]);
 
   const onFormSubmit = async () => {
-    // Nếu đang update, dùng currentEtag vừa fetch được
     await submitForm(category?.id, currentEtag);
   };
 

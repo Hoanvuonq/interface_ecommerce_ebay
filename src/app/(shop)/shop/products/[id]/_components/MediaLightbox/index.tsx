@@ -1,8 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { PortalModal } from "@/features/PortalModal";
-import { X } from "lucide-react";
+import { X, Maximize2, MonitorPlay } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { cn } from "@/utils/cn";
 
 interface MediaLightboxProps {
   media: {
@@ -23,57 +26,86 @@ export const MediaLightbox = ({ media, onClose }: MediaLightboxProps) => {
       isOpen={isOpen}
       onClose={onClose}
       width="max-w-[100vw] h-screen"
-      className="bg-black/95 border-none rounded-none max-h-screen p-0 shadow-none flex items-center justify-center overflow-hidden"
+      className="bg-black/90 backdrop-blur-xl border-none rounded-none max-h-screen p-0 shadow-none flex items-center justify-center overflow-hidden z-9999"
     >
-      <div className="relative w-full h-full flex items-center justify-center p-4 sm:p-10 group">
-        
-        <button
-          onClick={onClose}
-          className="absolute top-6 right-6 p-3 bg-white/10 hover:bg-orange-500 text-white rounded-full transition-all duration-300 z-100 shadow-lg border border-white/10 hover:scale-110 active:scale-95"
-        >
-          <X size={24} strokeWidth={2.5} />
-        </button>
-
-        {media.title && (
-          <div className="absolute top-6 left-6 z-100 max-w-[70%] animate-in slide-in-from-left-4 duration-500">
-            <p className="text-white text-sm font-bold bg-black/40 backdrop-blur-md px-5 py-2.5 rounded-2xl border border-white/10 uppercase tracking-widest leading-none">
-              {media.title}
-            </p>
+      <div className="relative w-full h-full flex flex-col items-center justify-center group overflow-hidden">
+        <div className="absolute top-0 left-0 w-full p-6 flex items-center justify-between z-100 bg-linear-to-b from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+          <div className="flex items-center gap-4">
+            <div className="p-2.5 bg-orange-500 rounded-2xl shadow-lg shadow-orange-500/20">
+              {media.type === "VIDEO" ? (
+                <MonitorPlay size={20} className="text-white" />
+              ) : (
+                <Maximize2 size={20} className="text-white" />
+              )}
+            </div>
+            <div className="flex flex-col">
+              <span className="text-white text-[13px] font-black uppercase tracking-[0.2em] leading-none mb-1">
+                {media.type === "VIDEO" ? "Phát Video" : "Xem Ảnh Chi Tiết"}
+              </span>
+              {media.title && (
+                <p className="text-white/60 text-[11px] font-medium italic truncate max-w-md">
+                  {media.title}
+                </p>
+              )}
+            </div>
           </div>
-        )}
 
-        <div 
-          className="relative w-full h-full flex items-center justify-center select-none"
-          onClick={(e) => e.stopPropagation()}
-        >
-          {media.type === "VIDEO" ? (
-            <div className="relative w-full max-w-5xl aspect-video rounded-3xl overflow-hidden shadow-2xl bg-black border border-white/5 animate-in zoom-in-95 duration-500">
-              <video
-                src={media.url}
-                controls
-                autoPlay
-                className="w-full h-full outline-none"
-              />
-            </div>
-          ) : (
-            <div className="relative w-full h-full flex items-center justify-center animate-in zoom-in-95 duration-500">
-               <Image
-                src={media.url}
-                alt={media.title || "Preview"}
-                width={1600}
-                height={1000}
-                className="max-w-full max-h-[90vh] object-contain rounded-lg transition-transform duration-500"
-                priority
-                unoptimized 
-              />
-            </div>
-          )}
+          <button
+            onClick={onClose}
+            className="p-3 bg-white/10 hover:bg-orange-500 text-white rounded-2xl transition-all duration-300 backdrop-blur-md border border-white/10 hover:scale-110 active:scale-90 shadow-2xl"
+          >
+            <X size={24} strokeWidth={3} />
+          </button>
         </div>
 
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity">
-          <p className="text-white/40 text-[10px] font-bold uppercase tracking-[0.3em] bg-white/5 px-8 py-2.5 rounded-full border border-white/5 backdrop-blur-sm">
-            Nhấn ESC hoặc vùng trống để đóng
-          </p>
+        <div
+          className="relative w-full h-full flex items-center justify-center p-4 sm:p-12 select-none cursor-zoom-out"
+          onClick={onClose}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            onClick={(e) => e.stopPropagation()}
+            className="relative max-w-full max-h-full flex items-center justify-center"
+          >
+            {media.type === "VIDEO" ? (
+              <div className="relative w-full max-w-5xl aspect-video rounded-[40px] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.5)] border border-white/10 bg-black group/video">
+                <video
+                  src={media.url}
+                  controls
+                  autoPlay
+                  className="w-full h-full object-contain outline-none"
+                />
+              </div>
+            ) : (
+              <div className="relative overflow-hidden rounded-2xl shadow-[0_0_80px_rgba(0,0,0,0.5)] border border-white/5 bg-white/5 backdrop-blur-sm">
+                <Image
+                  src={media.url}
+                  alt={media.title || "Preview"}
+                  width={1920}
+                  height={1080}
+                  className="max-w-full max-h-screen object-contain transition-transform duration-700 hover:scale-105"
+                  priority
+                  unoptimized
+                />
+              </div>
+            )}
+          </motion.div>
+        </div>
+
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-500 delay-150">
+          <div className="flex items-center gap-3 px-6 py-2.5 bg-white/5 backdrop-blur-md rounded-full border border-white/10 shadow-2xl">
+            <div className="flex gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
+              <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
+            </div>
+            <p className="text-white/40 text-[9px] font-black uppercase tracking-[0.3em] whitespace-nowrap">
+              Click vùng trống để thoát
+            </p>
+          </div>
         </div>
       </div>
     </PortalModal>

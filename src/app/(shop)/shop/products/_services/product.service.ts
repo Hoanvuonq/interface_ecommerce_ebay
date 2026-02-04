@@ -16,7 +16,7 @@ import {
   SyncProductVariantsDTO,
   UpdateProductVariantDTO,
   UpsertProductVariantsDTO,
-}  from "@/types/product/product-variant.dto";
+} from "@/types/product/product-variant.dto";
 import {
   CreateProductOptionDTO,
   ProductOptionDTO,
@@ -36,7 +36,7 @@ import {
   AdminToggleActiveRequestDTO,
   AdminToggleActiveResponseDTO,
   AdminApprovalStatsDTO,
-}  from "@/types/product/admin-product.dto";
+} from "@/types/product/admin-product.dto";
 import {
   CreateUserProductBulkDTO,
   UpdateUserProductDTO,
@@ -189,7 +189,7 @@ export const productVariantService = {
     productId: string,
     variantId: string,
     body: UpdateProductVariantDTO,
-    version: number
+    version: number,
   ) {
     return request<ApiResponseDTO<ProductVariantDTO>>({
       method: "PUT",
@@ -264,7 +264,7 @@ export const productOptionService = {
     productId: string,
     optionId: string,
     body: UpdateProductOptionDTO,
-    version: number
+    version: number,
   ) {
     return request<ApiResponseDTO<ProductOptionDTO>>({
       method: "PUT",
@@ -323,7 +323,7 @@ export const productMediaService = {
   bulkUpdate(
     productId: string,
     body: Omit<BulkUpdateProductMediaDTO, "productId">,
-    version: number
+    version: number,
   ) {
     return request<
       ApiResponseDTO<{
@@ -545,8 +545,8 @@ export const userProductService = {
   getByStatus(
     status: "DRAFT" | "PENDING" | "APPROVED" | "REJECTED",
     page = 0,
-    size = 20
-  ) { 
+    size = 20,
+  ) {
     return request<ApiResponseDTO<PageDTO<UserProductDTO>>>({
       method: "GET",
       url: `/${API_ENDPOINT_USER_PRODUCTS}/status/${status}`,
@@ -571,10 +571,14 @@ export const userProductService = {
    * Update product in bulk with all related data
    * PUT /api/v1/user/products/{id}/bulk
    */
-  updateBulk(id: string, payload: UpdateUserProductBulkDTO, version: number) {
+  updateProductByShop(
+    id: string,
+    payload: UpdateUserProductBulkDTO,
+    version: number,
+  ) {
     return request<ProductBulkResponseDTO>({
       method: "PUT",
-      url: `/${API_ENDPOINT_USER_PRODUCTS}/${id}/bulk`,
+      url: `/${API_ENDPOINT_USER_PRODUCTS}/${id}`,
       data: payload,
       ...(withIfMatch(version) as object),
     });
@@ -610,13 +614,13 @@ export const userProductService = {
    * Publish/activate approved product
    * POST /api/v1/user/products/{id}/publish
    */
-  publish(id: string, version: number) {
-    return request<UserProductDTO>({
-      method: "POST",
-      url: `/${API_ENDPOINT_USER_PRODUCTS}/${id}/publish`,
-      ...(withIfMatch(version) as object),
-    });
-  },
+  publish(id: string, version: 1) {
+  return request<UserProductDTO>({
+    method: "POST",
+    url: `/${API_ENDPOINT_USER_PRODUCTS}/${id}/publish`,
+    ...(withIfMatch(version) as object), 
+  });
+},
 
   /**
    * Unpublish/deactivate product
@@ -678,7 +682,7 @@ export const userProductService = {
     productId: string,
     variantId: string,
     payload: UpdateProductVariantDTO,
-    version: number
+    version: number,
   ) {
     return request<ProductVariantDTO>({
       method: "PUT",
@@ -733,7 +737,7 @@ export const richTextParagraphService = {
   update(
     productId: string,
     paragraphId: string,
-    payload: UpdateRichTextParagraphDTO
+    payload: UpdateRichTextParagraphDTO,
   ) {
     return request<ApiResponseDTO<RichTextParagraphDTO>>({
       method: "PUT",

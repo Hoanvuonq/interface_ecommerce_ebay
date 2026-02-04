@@ -9,7 +9,7 @@ import { createConversation } from "@/app/(chat)/_services";
 import { ConversationType } from "@/app/(chat)/_types/chat.dto";
 import { useToast } from "@/hooks/useToast";
 import { CategoryService } from "../../category/_service/category.service";
-import { publicProductService } from "@/services/products/product.service";
+import { publicProductService } from "@/app/(shop)/shop/products/_services/product.service";
 import { getShopDetail } from "@/app/(main)/shop/_service/shop.service";
 import { getStoredUserDetail } from "@/utils/jwt";
 import { toPublicUrl } from "@/utils/storage/url";

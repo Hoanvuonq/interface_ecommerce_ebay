@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 
 import { ProductCard } from "../ProductCard";
-import { publicProductService } from "@/services/products/product.service";
+import { publicProductService } from "@/app/(shop)/shop/products/_services/product.service";
 import {
   PublicProductSearchQueryDTO,
   PublicProductListItemDTO,

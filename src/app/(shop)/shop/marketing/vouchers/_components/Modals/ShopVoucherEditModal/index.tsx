@@ -17,7 +17,7 @@ import {
   CreateShopVoucherRequest,
 } from "@/app/(main)/shop/_types/dto/shop.voucher.dto";
 import { useUpdateVoucher } from "../../../_hooks/useShopVoucher";
-import { userProductService } from "@/services/products/product.service";
+import { userProductService } from "@/app/(shop)/shop/products/_services/product.service";
 import { UserProductDTO } from "@/types/product/user-product.dto";
 import { PortalModal } from "@/features/PortalModal";
 import { cn } from "@/utils/cn";

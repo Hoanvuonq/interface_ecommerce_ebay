@@ -3,7 +3,7 @@
 import { CustomTabs } from "@/components";
 import { CustomButton } from "@/components/custom/components/customButton";
 import { useWishlist } from "@/app/(main)/wishlist/_hooks/useWishlist";
-import { publicProductService } from "@/services/products/product.service";
+import { publicProductService } from "@/app/(shop)/shop/products/_services/product.service";
 import { PublicProductListItemDTO } from "@/types/product/public-product.dto";
 import { cn } from "@/utils/cn"; 
 import { isAuthenticated } from "@/utils/local.storage";

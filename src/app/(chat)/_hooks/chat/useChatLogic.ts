@@ -10,7 +10,7 @@ import {
 } from "../useMessage";
 import { useFilterConversationsCreatedBy } from "../useConversation";
 import { orderService } from "@/services/orders/order.service";
-import { publicProductService } from "@/services/products/product.service";
+import { publicProductService } from "@/app/(shop)/shop/products/_services/product.service";
 import { usePresignedUpload } from "@/hooks/usePresignedUpload";
 import { UploadContext } from "@/types/storage/storage.types";
 import {

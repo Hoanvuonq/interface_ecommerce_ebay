@@ -31,7 +31,6 @@ export const ProductVariantsTable: React.FC<ProductVariantsTableProps> = ({
     [variants, onUpdateVariants],
   );
 
- // Trong file ProductVariantsTable.tsx
 const handleBulkUpdate = useCallback(
   (field: keyof Variant | 'BULK_UPDATE', value: any) => {
     if (field === 'BULK_UPDATE') {

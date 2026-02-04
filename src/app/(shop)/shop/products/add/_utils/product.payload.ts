@@ -9,52 +9,56 @@ export const mapCreateProductPayload = (formData: any): any => {
     categoryId: formData.categoryId,
     active: formData.active ?? true,
     saveAsDraft: formData.saveAsDraft ?? false,
-
-    allowedShippingChannels: formData.allowedShippingChannels || [
-      "STANDARD",
-      "EXPRESS",
-    ],
+    
+    // Đảm bảo có ít nhất 1 kênh vận chuyển
+    allowedShippingChannels: formData.allowedShippingChannels?.length > 0 
+      ? formData.allowedShippingChannels 
+      : ["STANDARD"],
+    
     regions: formData.regions || ["VIETNAM"],
 
+    // 🟢 Wrap Options chuẩn Swagger
     options: {
-      items:
-        formData.options?.map((opt: any) => ({
-          name: opt.name,
-          values: opt.values.map((v: any) => ({
-            name: v.name,
-            displayOrder: Number(v.displayOrder) || 1,
+      items: formData.optionGroups?.map((opt: any) => ({
+        name: opt.name,
+        values: opt.values
+          .filter((v: string) => v.trim() !== "")
+          .map((v: string, index: number) => ({
+            name: v,
+            displayOrder: index + 1,
           })),
-        })) || [],
+      })) || [],
     },
 
+    // 🟢 Wrap Variants chuẩn Swagger
     variants: {
-      items:
-        formData.variants?.map((v: any) => ({
-          sku: v.sku,
-          price: Number(v.price),
-          stock: Number(v.stockQuantity || v.stock),
-          weightGrams: Number(v.weightGrams) || 0,
-          lengthCm: Number(v.lengthCm) || 10,
-          widthCm: Number(v.widthCm) || 10,
-          heightCm: Number(v.heightCm) || 10,
-          imageAssetId: v.imageAssetId,
-          options:
-            v.options?.map((o: any) => ({
-              optionName: o.optionName,
-              value: o.value,
-            })) || [],
-        })) || [],
+      items: formData.variants?.map((v: any) => ({
+        sku: v.sku,
+        price: Number(v.price),
+        stock: Number(v.stockQuantity || v.stock || 0), // BE dùng "stock"
+        weightGrams: Number(v.weightGrams) || 0,
+        lengthCm: Number(v.lengthCm) || 10,
+        widthCm: Number(v.widthCm) || 10,
+        heightCm: Number(v.heightCm) || 10,
+        imageAssetId: v.imageAssetId || null,
+        // 🟢 Map lại options dựa trên optionNames
+        options: v.optionValueNames?.map((val: string, idx: number) => ({
+          optionName: formData.optionNames[idx] || "",
+          value: val
+        })) || []
+      })) || [],
     },
 
+    // 🟢 Media ID nguyên thủy
     media: {
-      imageIds:
-        formData.media
-          ?.filter((m: any) => m.type === "IMAGE" || !m.type)
-          .map((m: any) => m.mediaAssetId || m.id) || [],
-      videoIds:
-        formData.media
-          ?.filter((m: any) => m.type === "VIDEO")
-          .map((m: any) => m.mediaAssetId || m.id) || [],
+      imageIds: formData.fileList
+        ?.filter((m: any) => m.status === "done")
+        .map((m: any) => m.response?.data?.assetId || m.assetId)
+        .filter(Boolean) || [],
+      videoIds: formData.videoList
+        ?.filter((m: any) => m.status === "done")
+        .map((m: any) => m.response?.data?.assetId || m.assetId)
+        .filter(Boolean) || [],
     },
   };
 };

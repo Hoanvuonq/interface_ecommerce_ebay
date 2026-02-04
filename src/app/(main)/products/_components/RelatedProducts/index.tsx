@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { ProductCard } from "../ProductCard";
 import { FiChevronRight, FiChevronLeft, FiShoppingBag } from "react-icons/fi";
-import { publicProductService } from "@/services/products/product.service";
+import { publicProductService } from "@/app/(shop)/shop/products/_services/product.service";
 import type { PublicProductListItemDTO } from "@/types/product/public-product.dto";
 import { CardComponents } from "@/components/card";
 import { CustomSpinner } from "@/components";

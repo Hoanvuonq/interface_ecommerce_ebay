@@ -11,7 +11,7 @@ import {
   Zap,
   Map,
 } from "lucide-react";
-import { DataTable, FormInput } from "@/components";
+import { DataTable, FormInput, SectionHeader } from "@/components";
 import { VariantData } from "@/app/(shop)/shop/_stores/product.store";
 import { cn } from "@/utils/cn";
 import { MiniSettingCard } from "../ShippingChannelCard";
@@ -144,7 +144,6 @@ export const ProductShippingTabs: React.FC<ProductShippingTabsProps> = ({
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500 pb-10">
-      {/* SECTION 1: CÂN NẶNG & KÍCH THƯỚC */}
       <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
         <div className="flex justify-between items-center mb-6">
           <div className="flex gap-4">
@@ -161,7 +160,6 @@ export const ProductShippingTabs: React.FC<ProductShippingTabsProps> = ({
             </div>
           </div>
 
-          {/* Toggle "Thiết lập cho từng phân loại" */}
           {variants.length > 1 && (
             <div className="flex items-center gap-3 bg-gray-50 p-2 pl-4 rounded-2xl border border-gray-100">
               <span className="text-[10px] font-black uppercase text-gray-400">
@@ -169,6 +167,7 @@ export const ProductShippingTabs: React.FC<ProductShippingTabsProps> = ({
               </span>
               <button
                 onClick={() => setIsIndividual(!isIndividual)}
+                type="button"
                 className={cn(
                   "w-10 h-5.5 rounded-full p-0.5 transition-all",
                   isIndividual ? "bg-orange-500" : "bg-gray-200",
@@ -189,6 +188,7 @@ export const ProductShippingTabs: React.FC<ProductShippingTabsProps> = ({
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 bg-orange-50/20 rounded-3xl border border-orange-100/50 border-dashed animate-in zoom-in-95">
             <FormInput
               label="Cân nặng (g)"
+              placeholder="Cân nặng (g)"
               type="number"
               value={variants[0]?.weightGrams || ""}
               onChange={(e) =>
@@ -201,6 +201,7 @@ export const ProductShippingTabs: React.FC<ProductShippingTabsProps> = ({
             />
             <FormInput
               label="Dài (cm)"
+              placeholder="Dài (cm)"
               type="number"
               value={variants[0]?.lengthCm || ""}
               onChange={(e) =>
@@ -210,6 +211,7 @@ export const ProductShippingTabs: React.FC<ProductShippingTabsProps> = ({
             />
             <FormInput
               label="Rộng (cm)"
+              placeholder="Rộng (cm)"
               type="number"
               value={variants[0]?.widthCm || ""}
               onChange={(e) =>
@@ -219,6 +221,7 @@ export const ProductShippingTabs: React.FC<ProductShippingTabsProps> = ({
             />
             <FormInput
               label="Cao (cm)"
+              placeholder="Cao (cm)"
               type="number"
               value={variants[0]?.heightCm || ""}
               onChange={(e) =>
@@ -241,16 +244,9 @@ export const ProductShippingTabs: React.FC<ProductShippingTabsProps> = ({
         )}
       </div>
 
-      {/* SECTION 2: BỐ CỤC 2 CỘT (KHU VỰC & ĐƠN VỊ VẬN CHUYỂN) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Cột trái: Khu vực */}
-        <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
-          <div className="flex items-center gap-3 mb-6">
-            <Globe size={18} className="text-blue-500" />
-            <h3 className="text-sm font-black text-gray-700 uppercase tracking-tighter">
-              Khu vực bán hàng
-            </h3>
-          </div>
+        <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-custom">
+          <SectionHeader icon={Globe} title="Khu vực bán hàng" />
           <div className="space-y-3">
             {regionOptions.map((r) => (
               <MiniSettingCard
@@ -265,14 +261,8 @@ export const ProductShippingTabs: React.FC<ProductShippingTabsProps> = ({
           </div>
         </div>
 
-        {/* Cột phải: Đơn vị vận chuyển */}
-        <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
-          <div className="flex items-center gap-3 mb-6">
-            <Truck size={18} className="text-green-500" />
-            <h3 className="text-sm font-black text-gray-700 uppercase tracking-tighter">
-              Hình thức giao hàng
-            </h3>
-          </div>
+        <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-custom">
+          <SectionHeader icon={Truck} title=" Hình thức giao hàng" />
           <div className="space-y-3">
             {shippingMethods.map((m) => (
               <MiniSettingCard

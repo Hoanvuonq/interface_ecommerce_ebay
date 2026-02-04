@@ -5,7 +5,6 @@ import { CategorySummaryResponse } from "@/types/categories/category.summary";
 import { UploadFile } from "@/app/(main)/orders/_types/review";
 import { CategoryResponse } from "@/types/categories/category.detail";
 
-// --- Types ---
 export type OptionConfig = {
   id: string;
   name: string;
@@ -31,13 +30,11 @@ export interface VariantData {
 interface ProductState {
   isLoading: boolean;
   activeTab: string;
-
   // Basic Info
   name: string;
   description: string;
   basePrice: number;
   active: boolean;
-
   // Category
   categoryId: string;
   categoryPath: string;
@@ -54,23 +51,22 @@ interface ProductState {
   secondLevelCategories: CategorySummaryResponse[];
   thirdLevelCategories: CategorySummaryResponse[];
   fourthLevelCategories: CategorySummaryResponse[];
-
   // Media
   fileList: UploadFile[];
   videoList: UploadFile[];
   uploading: boolean;
   uploadingVideo: boolean;
-
   // Options
   optionGroups: OptionConfig[];
   addOptionModalOpen: boolean;
   newOptionName: string;
-
   // Variants
   variants: VariantData[];
-
   // Form state
   hasUnsavedChanges: boolean;
+  // Shipping
+  allowedShippingChannels: string[];
+  regions: string[];
 }
 
 interface ProductActions {
@@ -136,9 +132,9 @@ interface ProductActions {
   updateAllVariants: (field: keyof VariantData, value: any) => void;
   regenerateVariants: () => void;
 
-  // Form state
   setHasUnsavedChanges: (hasChanges: boolean) => void;
-
+  setAllowedShippingChannels: (channels: string[]) => void;
+  setRegions: (regions: string[]) => void;
   reset: () => void; // Clean up store
 }
 
@@ -155,14 +151,14 @@ function removeVietnameseTones(str: string): string {
 
 function generateProductPrefix(productName: string): string {
   if (!productName) return "";
-  
+
   const words = productName
     .split(" ")
-    .filter(word => word.length > 0)
+    .filter((word) => word.length > 0)
     .slice(0, 5); // Lấy 5 chữ đầu tiên
-  
+
   return words
-    .map(word => {
+    .map((word) => {
       const firstChar = word.charAt(0).toUpperCase();
       // Giữ nguyên ký tự Việt Nam, chỉ viết hoa
       return firstChar;
@@ -172,11 +168,11 @@ function generateProductPrefix(productName: string): string {
 
 function generateVariantSuffix(combo: string[]): string {
   return combo
-    .map(val => {
+    .map((val) => {
       // Xử lý màu sắc đặc biệt
       const normalized = val.trim().toLowerCase();
       if (normalized === "đỏ") return "ĐỎ";
-      if (normalized === "đen") return "ĐE"; 
+      if (normalized === "đen") return "ĐE";
       if (normalized === "trắng") return "TR";
       if (normalized === "xanh") return "XA";
       if (normalized === "vàng") return "VÀ";
@@ -185,8 +181,7 @@ function generateVariantSuffix(combo: string[]): string {
       if (normalized === "tím") return "TÍ";
       if (normalized === "cam") return "CA";
       if (normalized === "xám") return "XÁ";
-      
-      // Với các giá trị khác, lấy 2-3 ký tự đầu, giữ nguyên tiếng Việt
+
       return val.substring(0, 2).toUpperCase();
     })
     .join("-");
@@ -243,6 +238,8 @@ const initialState: ProductState = {
   newOptionName: "",
   variants: [],
   hasUnsavedChanges: false,
+  allowedShippingChannels: [],
+  regions: [],
 };
 
 export const useProductStore = create<ProductState & ProductActions>()(
@@ -428,16 +425,16 @@ export const useProductStore = create<ProductState & ProductActions>()(
             const key = combo.join("|");
             const oldVariant = existingVariantsMap.get(key);
             if (oldVariant) {
-             
               return oldVariant;
             }
 
             // Tạo SKU mới theo format: [ProductPrefix]-[VariantSuffix]
             const productPrefix = generateProductPrefix(productName);
             const variantSuffix = generateVariantSuffix(combo);
-            const generatedSku = productPrefix && variantSuffix 
-              ? `${productPrefix}-${variantSuffix}` 
-              : productPrefix || variantSuffix || "VAR";
+            const generatedSku =
+              productPrefix && variantSuffix
+                ? `${productPrefix}-${variantSuffix}`
+                : productPrefix || variantSuffix || "VAR";
 
             return {
               ...createDefaultVariant(basePrice, combo),
@@ -447,7 +444,10 @@ export const useProductStore = create<ProductState & ProductActions>()(
         }),
       setHasUnsavedChanges: (hasChanges) =>
         set({ hasUnsavedChanges: hasChanges }),
+      setAllowedShippingChannels: (channels) =>
+        set({ allowedShippingChannels: channels }),
 
+      setRegions: (regions) => set({ regions: regions }),
       reset: () => set(initialState),
     })),
   ),

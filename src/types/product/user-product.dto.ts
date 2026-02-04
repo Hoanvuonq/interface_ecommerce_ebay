@@ -56,8 +56,9 @@ export interface CreateUserProductBulkDTO {
   media?: CreateUserProductMediaDTO[];
   options?: CreateUserProductOptionDTO[];
   allowedShippingChannels?: string[];
-  saveAsDraft?: boolean; // true = DRAFT status, false = PENDING status
-  replaceAllEntities?: boolean; // true = replace all variants/media/options on update
+  regions?: string[];
+  saveAsDraft?: boolean;
+  replaceAllEntities?: boolean;
 }
 // ================== NEW: Detailed types matching BE response ==================
 export interface UserProductVariantOptionValueDTO {
@@ -106,7 +107,7 @@ export interface UserProductMediaDTO {
   mediaAssetId?: string | null;
   basePath?: string | null;
   extension?: string | null;
-  url?: string | null; 
+  url?: string | null;
   type: "IMAGE" | "VIDEO" | "AUDIO";
   title?: string | null;
   altText?: string | null;

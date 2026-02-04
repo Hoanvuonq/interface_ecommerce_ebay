@@ -53,7 +53,7 @@ export const ProductGeneralInfo = ({
             <label className="text-[11px] font-bold text-gray-500 uppercase tracking-widest block ml-1">
               Mô tả sản phẩm
             </label>
-            <button
+            {/* <button
               onClick={onOpenRichText}
               className="group flex items-center gap-2 px-5 py-2 bg-linear-to-r from-orange-500 to-orange-600 text-white rounded-2xl text-[11px] font-bold uppercase tracking-wider hover:shadow-lg hover:shadow-orange-200 transition-all active:scale-95 shadow-md shadow-orange-100"
             >
@@ -62,7 +62,7 @@ export const ProductGeneralInfo = ({
                 className="group-hover:rotate-12 transition-transform"
               />
               Chỉnh sửa nâng cao
-            </button>
+            </button> */}
           </div>
 
           <div className="relative group">

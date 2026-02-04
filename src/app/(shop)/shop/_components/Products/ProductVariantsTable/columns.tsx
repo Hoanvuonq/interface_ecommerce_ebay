@@ -6,6 +6,7 @@ import React, { useMemo, useState, useCallback } from "react";
 import { FormInput } from "@/components";
 import { Column } from "@/components/DataTable/type";
 import Image from "next/image";
+import { toPublicUrl } from "@/utils/storage/url";
 import { Variant } from "./type";
 import { SkuHeader } from "../SkuHeader";
 
@@ -43,7 +44,6 @@ export const useProductVariantsColumns = (
     new Set(),
   );
 
-  // Xử lý rowSpan cho nhóm 1
   const processedMetadata = useMemo(() => {
     const result = groupMetadata.map((m) => ({ ...m }));
     for (let i = 0; i < result.length; i++) {
@@ -61,7 +61,6 @@ export const useProductVariantsColumns = (
     return result;
   }, [groupMetadata]);
 
-  // Hàm áp dụng tất cả các trường đã check
   const applyAllCheckedFields = useCallback(() => {
     if (selectedBulkFields.length === 0) return;
 
@@ -90,7 +89,6 @@ export const useProductVariantsColumns = (
   return useMemo(() => {
     const cols: Column<Variant>[] = [];
 
-    // CỘT 1: NHÓM PHÂN LOẠI 1 + IMAGE
     cols.push({
       header: (
         <div className="flex flex-col items-center justify-center min-w-17.5 gap-1">
@@ -116,6 +114,11 @@ export const useProductVariantsColumns = (
         const meta = processedMetadata[idx];
         if (meta.rowSpan === 0) return { content: null, rowSpan: 0 };
         const isUploading = uploadingIndexes.has(idx);
+        const rawPath = item.imagePath || item.imageUrl;
+
+        const displayUrl = rawPath
+          ? toPublicUrl(rawPath.replace("*", "orig"))
+          : "";
 
         return {
           rowSpan: meta.rowSpan,
@@ -135,12 +138,14 @@ export const useProductVariantsColumns = (
                     : "border-gray-100 hover:border-orange-400 cursor-pointer bg-gray-50",
                 )}
               >
-                {item.imageUrl ? (
+                {displayUrl ? (
                   <Image
-                    src={item.imageUrl}
-                    alt="v"
+                    src={displayUrl}
+                    alt="variant"
                     fill
+                    sizes="64px"
                     className={cn("object-cover", isUploading && "opacity-30")}
+                    unoptimized={true}
                   />
                 ) : (
                   !isUploading && (
@@ -182,7 +187,6 @@ export const useProductVariantsColumns = (
       },
     });
 
-    // CỘT 2: NHÓM PHÂN LOẠI 2 (NẾU CÓ)
     if (optionNames.length >= 2) {
       cols.push({
         header: (

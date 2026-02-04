@@ -36,7 +36,6 @@ export const ProductVariantsSection = ({
           </div>
         )}
       </div>
-
       {children}
     </div>
   );

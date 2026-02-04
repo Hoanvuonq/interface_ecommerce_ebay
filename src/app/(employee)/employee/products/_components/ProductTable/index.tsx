@@ -5,9 +5,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { ProductResponse } from "../../_types/dto/product.dto";
 import { resolveMediaUrl } from "@/utils/products/media.helpers";
-import { Checkbox, DataTable ,AddToCartButton} from "@/components";
+import { Checkbox, DataTable, ActionBtn } from "@/components";
 import { Column } from "@/components/DataTable/type";
 import { cn } from "@/utils/cn";
+import { useState } from "react";
 
 interface ProductTableProps {
   products: ProductResponse[];
@@ -28,11 +29,40 @@ export default function ProductTable({
   totalElements,
   onPageChange,
 }: ProductTableProps) {
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+
+  const toggleSelect = (id: string) => {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id],
+    );
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedIds.length === products.length) {
+      setSelectedIds([]);
+    } else {
+      setSelectedIds(products.map((p) => p.id));
+    }
+  };
   const columns: Column<ProductResponse>[] = [
     {
-      header: <Checkbox className="rounded-sm" />,
+      header: (
+        <Checkbox
+          className="rounded-sm"
+          checked={
+            products.length > 0 && selectedIds.length === products.length
+          }
+          onChange={toggleSelectAll}
+        />
+      ),
       className: "w-12 px-4",
-      render: () => <Checkbox className="rounded-sm" />,
+      render: (product) => (
+        <Checkbox
+          className="rounded-sm"
+          checked={selectedIds.includes(product.id)}
+          onChange={() => toggleSelect(product.id)}
+        />
+      ),
     },
     {
       header: "Sản phẩm",
@@ -135,13 +165,13 @@ export default function ProductTable({
           >
             <Eye size={16} strokeWidth={2.5} />
           </Link>
-          <button
+
+          <ActionBtn
+            icon={<Trash2 size={14} />}
             onClick={() => onDelete(product.id)}
-            className="p-2.5 rounded-xl bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-all shadow-sm active:scale-90"
-            title="Xóa sản phẩm"
-          >
-            <Trash2 size={16} strokeWidth={2.5} />
-          </button>
+            tooltip="Xóa sản phẩm"
+            color="bg-white text-red-500 hover:bg-red-50 border-red-100"
+          />
         </div>
       ),
     },

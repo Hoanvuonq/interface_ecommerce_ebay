@@ -6,7 +6,7 @@ import {
   productOptionService,
   productVariantService,
   userProductService,
-} from "@/services/products/product.service";
+} from "@/app/(shop)/shop/products/_services/product.service";
 import { ProductOptionDTO } from "@/types/product/product-option.dto";
 import { UserProductDTO } from "@/types/product/user-product.dto";
 import { UploadContext } from "@/types/storage/storage.types";
@@ -893,6 +893,7 @@ export const ProductDetailScreen = () => {
         getStatusBadge={getStatusBadge}
         onOpenMedia={() => setMediaModalOpen(true)}
         onOpenManage={openManageModal}
+        onEdit={() => router.push(`/shop/products/edit/${product.id}`)}
       />
 
       <div className="flex flex-col lg:flex-row gap-8">

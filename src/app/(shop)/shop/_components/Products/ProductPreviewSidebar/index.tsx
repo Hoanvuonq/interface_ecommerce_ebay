@@ -1,21 +1,19 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import Image from "next/image";
+import { toPublicUrl } from "@/utils/storage/url";
+import { AnimatePresence, motion } from "framer-motion";
 import {
-  Image as ImageIcon,
   ChevronLeft,
   ChevronRight,
-  PlayCircle,
-  Box,
+  Image as ImageIcon
 } from "lucide-react";
-import { cn } from "@/utils/cn";
-import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
+import React, { useMemo, useState } from "react";
 
 interface ProductPreviewSidebarProps {
   fileList?: any[];
   videoList?: any[];
-  variants?: any[]; // Thêm variants
+  variants?: any[]; 
   optionNames?: string[];
   name?: string;
   basePrice?: number;
@@ -36,19 +34,35 @@ export const ProductPreviewSidebar: React.FC<ProductPreviewSidebarProps> = ({
   const [direction, setDirection] = useState(0);
 
   const mediaItems = useMemo(() => {
-    const items = [
-      ...videoList.map((v) => ({
-        url: v.url,
-        type: "video",
-        label: "Video SP",
-      })),
-      ...fileList.map((f) => ({ url: f.url, type: "image", label: "Ảnh SP" })),
-    ];
+    const items: any[] = [];
 
-    variants.forEach((v, idx) => {
-      if (v.imageUrl) {
+    // 1. Xử lý Video
+    videoList.forEach((v) => {
+      const rawPath = v.imagePath || v.url;
+      if (rawPath) {
         items.push({
-          url: v.imageUrl,
+          url: toPublicUrl(rawPath), // Video thường không có dấu *
+          type: "video",
+          label: "Video SP",
+        });
+      }
+    });
+    fileList.forEach((f) => {
+      const rawPath = f.imagePath || f.url;
+      if (rawPath) {
+        items.push({
+          // Replace * thành orig và gắn domain R2
+          url: toPublicUrl(rawPath.replace("*", "orig")),
+          type: "image",
+          label: "Ảnh SP",
+        });
+      }
+    });
+   variants.forEach((v, idx) => {
+      const rawPath = v.imagePath || v.imageUrl;
+      if (rawPath) {
+        items.push({
+          url: toPublicUrl(rawPath.replace("*", "orig")),
           type: "image",
           label: `Biến thể: ${v.optionValueNames?.join(" - ") || idx}`,
         });
@@ -61,7 +75,6 @@ export const ProductPreviewSidebar: React.FC<ProductPreviewSidebarProps> = ({
   const formattedPrice = useMemo(() => {
     if (!basePrice && variants.length === 0) return "0 ₫";
 
-    // Nếu có biến thể, lấy khoảng giá
     const prices = variants.map((v) => v.price).filter((p) => p > 0);
     if (prices.length > 0) {
       const min = Math.min(...prices);
@@ -138,6 +151,8 @@ export const ProductPreviewSidebar: React.FC<ProductPreviewSidebarProps> = ({
                     src={mediaItems[currentIndex].url}
                     className="w-full h-full object-cover"
                     muted
+                    autoPlay
+                    loop
                     playsInline
                   />
                 ) : (

@@ -1,39 +1,27 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useEffect, useState, useCallback } from "react";
 import { useToast } from "@/hooks/useToast";
-
-// Hooks
-import {
-  useProductForm,
-  useFileUpload,
-  useCategoryManagement,
-  useOptionManagement,
-} from "../../../../_hooks";
-
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
+import { useCategoryManagement, useFileUpload, useOptionManagement, useProductForm} from "../../../../_hooks";
 import { useProductContext } from "../../../../_contexts";
-
 import { usePresignedUpload } from "@/hooks/usePresignedUpload";
 import { useProductStore } from "../../../../_stores/product.store";
 
 import {
+  Button,
   ButtonField,
   CustomVideoModal,
   ImagePreviewModal,
-  Button,
 } from "@/components";
-import {
-  AddOptionGroupModal,
-  CategorySelectionModal,
-} from "../../../../_components/Modal";
+import { AddOptionGroupModal,CategorySelectionModal } from "../../../../_components/Modal";
 
 import {
-  ProductClassificationSection,
-  ProductVariantsSection,
-  ProductDescription,
   BasePriceSection,
+  ProductClassificationSection,
+  ProductDescription,
   ProductPreviewSidebar,
+  ProductVariantsSection,
   ProductVariantsTable,
 } from "@/app/(shop)/shop/_components";
 import {
@@ -44,17 +32,20 @@ import {
   TabType,
 } from "../../_components";
 
-import { userProductService } from "@/services/products/product.service";
+import { userProductService } from "@/app/(shop)/shop/products/_services/product.service";
 import { UploadContext } from "@/types/storage/storage.types";
+import { mapCreateProductPayload } from "../../_utils/product.payload";
+import { mapApiToFormState } from "../../_utils/update.product.payload";
 
-import type {
-  CreateUserProductBulkDTO,
-  CreateUserProductOptionDTO,
-} from "@/types/product/user-product.dto";
-
-export default function ShopProductAddStepsFormScreen() {
+export default function ShopProductAddStepsFormScreen({
+  productId,
+}: {
+  productId?: string;
+}) {
   const router = useRouter();
+  const isEditMode = Boolean(productId);
   const { uploadFile: uploadPresigned } = usePresignedUpload();
+  const [productVersion, setProductVersion] = useState<number>(0);
   const {
     success: toastSuccess,
     error: toastError,
@@ -64,11 +55,14 @@ export default function ShopProductAddStepsFormScreen() {
   const {
     variants,
     setVariants,
-    addOptionGroup,
     setCategoryId,
     description,
+    regions,
+    setRegions,
     setBasicInfo,
-    updateVariantByKey,
+    setAllowedShippingChannels,
+    reset: resetStore,
+    allowedShippingChannels,
   } = useProductStore();
 
   const {
@@ -82,7 +76,6 @@ export default function ShopProductAddStepsFormScreen() {
     setLoading,
   } = useProductContext();
 
-  // Custom hooks
   const {
     formFields,
     getFieldValue,
@@ -144,13 +137,11 @@ export default function ShopProductAddStepsFormScreen() {
     confirmAddOption,
     getOptionNames,
   } = useOptionManagement(toastWarning, toastSuccess, (groups) => {
-    // Sử dụng store thay vì hook để regenerate variants
     const store = useProductStore.getState();
     store.setOptionGroups(groups);
     store.regenerateVariants();
   });
 
-  // Không cần useVariantManagement nữa, chỉ cần wrapper functions
   const handleUpdateVariant = useCallback(
     (index: number, field: string, value: any) => {
       const store = useProductStore.getState();
@@ -159,27 +150,61 @@ export default function ShopProductAddStepsFormScreen() {
     [],
   );
 
-  const handleUpdateVariants = useCallback(
-    (newVariants: any[]) => {
-      setVariants(newVariants);
-    },
-    [setVariants],
-  );
-
-  const validateVariantStructure = useCallback(
-    (variantList: any[]): string[] => {
-      const errors: string[] = [];
-      if (!variantList || variantList.length === 0) {
-        errors.push("Cần tạo ít nhất 1 biến thể trước khi tiếp tục.");
-      }
-      return errors;
-    },
-    [],
-  );
-
   const optionNames = getOptionNames();
 
-  // Initialize data
+  // useEffect(() => {
+  //   const fetchDetail = async () => {
+  //     if (isEditMode && productId) {
+  //       try {
+  //         setLoading(true);
+  //         const res = await userProductService.getById(productId);
+  //         const data = res.data; // Đây là cái object JSON bro vừa paste
+
+  //         // 🟢 1. Đổ vào Form UI (Antd/Hook Form)
+  //         setFieldsValue({
+  //           name: data.name,
+  //           description: data.description,
+  //           categoryId: data.categoryId,
+  //           active: data.active,
+  //           basePrice: data.basePrice || 0,
+  //         });
+
+  //         // 🟢 2. Đổ vào Zustand Store (Dùng hàm Mapper vừa viết)
+  //         const { optionGroups, variants } = mapApiToFormState(data);
+
+  //         setBasicInfo("name", data.name);
+  //         setBasicInfo("description", data.description);
+  //         setOptionGroups(optionGroups);
+  //         setVariants(variants);
+  //         setAllowedShippingChannels(
+  //           data.allowedShippingChannels || ["STANDARD"],
+  //         );
+  //         // Nếu có regions trong API thì set luôn
+  //         if (data.regions) setRegions(data.regions);
+
+  //         // 🟢 3. Xử lý Media (Quan trọng để hiện ảnh preview)
+  //         // API này trả về imageIds, nhưng để hiện ảnh bro cần URL
+  //         // Nếu API detail trả về đầy đủ object m trong data.media.items thì dùng:
+  //         if (data.media?.images) {
+  //           setFileList(
+  //             data.media.images.map((img: any) => ({
+  //               uid: img.id,
+  //               url: img.url,
+  //               status: "done",
+  //               assetId: img.id,
+  //             })),
+  //           );
+  //         }
+  //       } catch (err) {
+  //         toastError("Lỗi lấy chi tiết sản phẩm");
+  //       } finally {
+  //         setLoading(false);
+  //       }
+  //     }
+  //   };
+  //   fetchDetail();
+  // }, [productId, isEditMode]);
+
   useEffect(() => {
     fetchCategories();
     loadCategoryTree();
@@ -239,175 +264,121 @@ export default function ShopProductAddStepsFormScreen() {
     await uploadVideo(file, toastError);
   };
 
-  const showVariantErrors = (errors: string[]) => {
-    toastError("Thông tin biến thể chưa hợp lệ: " + errors.join("; "));
-  };
+ useEffect(() => {
+   const initData = async () => {
+  resetStore();
+  setFileList([]);
+  setVideoList([]);
 
-  const handleSubmit = async () => {
+  if (isEditMode && productId) {
     try {
       setLoading(true);
+      const res = await userProductService.getById(productId);
+      const data = res?.data || res;
 
-      const values = await validateFields();
+      if (!data) return;
 
-      const optionsForAPI: CreateUserProductOptionDTO[] = optionGroups
-        .map((group) => {
-          const name = group.name.trim();
-          const groupValues = group.values
-            .map((value) => value.trim())
-            .filter((value) => value.length > 0);
+      // 🟢 BƯỚC 1: Dùng Mapper để bốc dữ liệu sạch
+      const { optionGroups, variants: mappedVariants, version } = mapApiToFormState(data);
 
-          if (!name || groupValues.length === 0) {
-            return null;
-          }
+      // 🟢 BƯỚC 2: Lưu Version (ETag) vào state ngay lập tức
+      setProductVersion(version ?? 0);
 
-          return {
-            name,
-            values: groupValues.map((value, order) => ({
-              name: value,
-              displayOrder: order + 1,
-            })),
-          } as CreateUserProductOptionDTO;
-        })
-        .filter(
-          (option): option is CreateUserProductOptionDTO => option !== null,
-        );
-
-      const variantsToSubmit =
-        variants.length > 0 ? variants : values.variants || [];
-
-      variantsToSubmit.forEach((v, idx) => {
-        const variantKey = v.optionValueNames?.join("|") || "no-key";
+      // Đổ vào Form Fields
+      setFieldsValue({
+        name: data.name,
+        description: data.description,
+        categoryId: data.category?.id || data.categoryId,
+        basePrice: data.basePrice,
+        active: data.active,
       });
 
-      const structuralErrors = validateVariantStructure(variantsToSubmit);
-      if (structuralErrors.length > 0) {
-        showVariantErrors(structuralErrors);
-        return;
+      // Đổ vào Zustand Store
+      setBasicInfo("name", data.name);
+      setBasicInfo("description", data.description);
+      setBasicInfo("basePrice", data.basePrice);
+      setOptionGroups(optionGroups);
+      setVariants(mappedVariants);
+      
+      // 🟢 BƯỚC 3: Xử lý Vận chuyển (Không để rỗng)
+      const channels = data.allowedShippingChannels?.length > 0 
+        ? data.allowedShippingChannels 
+        : ["STANDARD"];
+      setAllowedShippingChannels(channels);
+      setRegions(data.regions || []);
+
+      // Map Media (Ảnh/Video)
+      if (data.media) {
+        setFileList(data.media.filter((m: any) => m.type === "IMAGE").map((m: any) => ({
+          uid: m.id, url: m.imagePath, status: "done", assetId: m.mediaAssetId,
+        })));
+        setVideoList(data.media.filter((m: any) => m.type === "VIDEO").map((m: any) => ({
+          uid: m.id, url: m.imagePath, status: "done", assetId: m.mediaAssetId,
+        })));
       }
+    } catch (err) {
+      toastError("Không thể tải thông tin sản phẩm.");
+    } finally {
+      setLoading(false);
+    }
+  }
+};
 
-      const mediaArray = [
-        ...fileList
-          .filter((file) => file.status === "done" && (file as any).assetId)
-          .map(
-            (file, index) =>
-              ({
-                mediaAssetId: (file as any).assetId as string,
-                type: "IMAGE" as const,
-                displayOrder: index + 1,
-                sortOrder: index + 1,
-                isPrimary: index === 0,
-              }) as any,
-          ),
-        ...videoList
-          .filter((file) => file.status === "done" && (file as any).assetId)
-          .map(
-            (file, index) =>
-              ({
-                mediaAssetId: (file as any).assetId as string,
-                type: "VIDEO" as const,
-                displayOrder: fileList.length + index + 1,
-                sortOrder: fileList.length + index + 1,
-                isPrimary: false,
-              }) as any,
-          ),
-      ];
+    fetchCategories();
+    loadCategoryTree();
+    initData();
+  }, [productId, isEditMode]);
 
-      // Warning if no media
-      if (mediaArray.length === 0) {
-        console.warn(
-          "⚠️ No product media! fileList:",
-          fileList.length,
-          "videoList:",
-          videoList.length,
-        );
-      }
+  const handleSubmit = async (isDraft: boolean = false) => {
+    try {
+      setLoading(true);
+      const formValues = await validateFields();
 
-      const finalData: CreateUserProductBulkDTO = {
-        ...formData,
-        ...values,
-        active: values.active ?? false,
-        media: mediaArray,
-        options: optionsForAPI,
-        variants: variantsToSubmit.map((v: any, index: number) => {
-          const variantOptionValues = (v.optionValueNames || []).filter(
-            (val: string) => val && val.trim(),
-          );
-          const options: Array<{
-            optionId?: string;
-            optionName: string;
-            value: string;
-          }> = [];
-
-          if (optionNames.length > 0 && variantOptionValues.length > 0) {
-            optionNames.forEach((optionName, idx) => {
-              const value = variantOptionValues[idx];
-              if (value && value.trim()) {
-                options.push({
-                  optionName: optionName,
-                  value: value.trim(),
-                });
-              }
-            });
-          }
-
-          const variantData: any = {
-            sku: v.sku,
-            corePrice: v.corePrice,
-            price: v.price,
-            stockQuantity: v.stockQuantity,
-            lengthCm: v.lengthCm,
-            widthCm: v.widthCm,
-            heightCm: v.heightCm,
-            weightGrams: v.weightGrams,
-            options: options.length > 0 ? options : undefined,
-          };
-
-          // Add image data if exists
-          if (v.imageAssetId) {
-            variantData.imageAssetId = v.imageAssetId;
-          } else {
-          }
-
-          if (v.imageUrl) {
-            variantData.imageUrl = v.imageUrl;
-          }
-          if (v.imageExtension) {
-            variantData.imageExtension = v.imageExtension;
-          }
-
-          return variantData;
-        }),
+      const rawData = {
+        ...formValues,
+        optionGroups,
+        optionNames,
+        variants,
+        fileList,
+        videoList,
+        allowedShippingChannels, 
+        regions,                 
+        saveAsDraft: isDraft,
       };
 
-      const result: any =
-        await userProductService.createProductsByShop(finalData);
+      const finalPayload = mapCreateProductPayload(rawData);
 
+      let result: any;
+     if (isEditMode && productId) {
+  result = await userProductService.updateProductByShop(productId, finalPayload, productVersion);
+  
+  const nextVersion = result?.data?.product?.version ?? result?.data?.version;
+  if (nextVersion !== undefined) {
+    setProductVersion(nextVersion); 
+  }
+  
+  toastSuccess("✅ Cập nhật thành công!");
+}
+
+      const newVersion = result?.data?.product?.version ?? result?.data?.version ?? result?.version;
+      if (newVersion !== undefined) setProductVersion(newVersion);
+
+      const targetId = result?.data?.product?.id || result?.data?.id || result?.id || productId;
+      
       setHasUnsavedChanges(false);
-
-      const createdProduct = result?.data?.product || result?.product || result;
-      const productName = createdProduct?.name || values.name || "sản phẩm";
-      const productId = createdProduct?.id;
-
-      if (!productId) {
-        toastError("Không thể lấy ID sản phẩm. Vui lòng kiểm tra lại.");
-        return;
+      if (targetId) {
+        router.push(`/shop/products/${targetId}`);
       }
-
-      toastSuccess(
-        `✅ Tạo sản phẩm thành công! "${productName}" - Đang chuyển hướng...`,
-      );
-
-      setTimeout(() => {
-        router.push(`/shop/products/${productId}`);
-      }, 2000);
     } catch (err: any) {
-      toastError(err?.message || "Tạo sản phẩm thất bại");
-      console.error(err);
+      if (err.response?.status === 409 || err?.data?.code === 3005) {
+        toastError("⚠️ Dữ liệu đã thay đổi ở tab khác hoặc phiên làm việc đã cũ. Vui lòng F5 trang!");
+      } else {
+        toastError(err?.message || "Lỗi lưu sản phẩm (3001)");
+      }
     } finally {
       setLoading(false);
     }
   };
-
   const handleUploadVariantImageWrapper = useCallback(
     async (
       file: File,
@@ -437,12 +408,10 @@ export default function ShopProductAddStepsFormScreen() {
           const extension = file.name.split(".").pop();
           const imageExtension = extension ? `.${extension.toLowerCase()}` : "";
 
-          // Get fresh state from store for related variants
           const freshState = useProductStore.getState();
           const freshVariants = freshState.variants;
           const freshUpdateVariantByKey = freshState.updateVariantByKey;
 
-          // Update current variant
           freshUpdateVariantByKey(variantKey, "imageAssetId", res.assetId);
           freshUpdateVariantByKey(variantKey, "imageUrl", res.finalUrl);
           if (imageExtension) {
@@ -475,7 +444,6 @@ export default function ShopProductAddStepsFormScreen() {
             });
           }
 
-          // Verify the update worked
           setTimeout(() => {
             const updatedState = useProductStore.getState();
             const allVariantsWithImage = updatedState.variants.filter(
@@ -562,10 +530,6 @@ export default function ShopProductAddStepsFormScreen() {
     </div>
   );
 
-  const [allowedShippingChannels, setAllowedShippingChannels] = useState<any[]>(
-    [],
-  );
-  const [regions, setRegions] = useState<string[]>(["VIETNAM"]);
   const renderShippingTab = () => (
     <ProductShippingTabs
       variants={variants}
@@ -582,7 +546,6 @@ export default function ShopProductAddStepsFormScreen() {
     />
   );
 
-  const previewImage = fileList.find((f) => f.status === "done")?.url;
   const totalStock = variants.reduce(
     (acc, curr) => acc + (curr.stockQuantity || 0),
     0,
@@ -594,7 +557,7 @@ export default function ShopProductAddStepsFormScreen() {
     <div className="min-h-screen space-y-2">
       <div className="flex justify-between items-center py-2 w-full">
         <h1 className="text-3xl font-semibold text-gray-900 italic uppercase">
-          Thêm sản phẩm mới
+          {isEditMode ? "Cập nhật sản phẩm" : "Thêm sản phẩm mới"}
         </h1>
         <div className="flex gap-3 pt-2">
           <Button
@@ -619,7 +582,10 @@ export default function ShopProductAddStepsFormScreen() {
             className="w-40! h-10! text-sm!"
             htmlType="submit"
             type="login"
-            onClick={handleSubmit}
+            onClick={async (e) => {
+              e.preventDefault();
+              await handleSubmit();
+            }}
             loading={loading}
           >
             Lưu & đăng bán
