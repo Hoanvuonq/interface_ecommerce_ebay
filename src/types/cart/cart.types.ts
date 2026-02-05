@@ -1,6 +1,4 @@
-/**
- * Cart Types - Dựa trên backend DTOs
- */
+import { CheckoutPreview2026, ShopSelection } from "@/app/(main)/checkout/_types/checkout.type";
 
 export interface CartDto {
   id: string;
@@ -31,7 +29,7 @@ export interface CartItemPromotion {
 export interface ShopDto {
   shopId: string;
   shopName: string;
-  shopLogo?: string | null;
+  logoPath?: string | null;
   ownerName?: string;
   isVerified?: boolean;
   rating?: number;
@@ -109,43 +107,6 @@ export interface ItemUpdate {
   selected?: boolean;
 }
 
-// Checkout Types
-export interface OrderPreviewRequest {
-  previewAllSelected?: boolean;
-  allSelectedItemIds?: string[];
-  shops?: ShopSelection[];
-  shippingMethod?:
-    | "STANDARD"
-    | "EXPRESS"
-    | "ECONOMY"
-    | "GHN"
-    | "CONKIN"
-    | "SUPERSHIP";
-  shippingAddress?: ShippingAddressInfo;
-  usingSavedAddress?: boolean;
-  allDiscountCodes?: string[];
-  effectiveAddressId?: string;
-  loyaltyPoints?: number;
-  paymentMethod?: string;
-  promotion: CartItemPromotion | null;
-}
-
-export interface ShopSelection {
-  shopId: string;
-  itemIds?: string[];
-  vouchers?: string[];
-  globalVouchers?: string[];
-  shippingFee?: number;
-  shippingMethodCode?: string;
-  serviceCode?: number;
-  shippingMethod?:
-    | "STANDARD"
-    | "EXPRESS"
-    | "ECONOMY"
-    | "GHN"
-    | "CONKIN"
-    | "SUPERSHIP";
-}
 
 export interface ShippingAddressInfo {
   addressId?: string;
@@ -161,44 +122,9 @@ export interface ShippingAddressInfo {
   addressLine2?: string;
 }
 
-export interface OrderPreviewResponse {
-  cartId: string;
-  currency: string;
-  previewAt: string;
-  buyerAddressData?: BuyerAddressData;
-  shops: ShopPreview[];
-  totalItems: number;
-  totalQuantity: number;
-  subtotal: number;
-  totalDiscount: number;
-  shippingDiscount?: number;
-  productDiscount?: number;
-  totalShippingFee: number;
-  totalTaxAmount: number;
-  grandTotal: number;
-  globalVouchers?: VoucherInfo[];
-  appliedCoupons?: CouponInfo[];
-  promotion: CartItemPromotion | null;
-  voucherApplication?: VoucherApplicationResponse;
-  loyaltyPointsInfo?: LoyaltyPointsInfo;
-  isValid: boolean;
-  validationErrors?: string[];
-  warnings?: string[];
-}
+
 
 // --- New Checkout Types (2026 JSON structure) ---
-
-export interface CheckoutSummary {
-  totalItems: number;
-  totalQuantity: number;
-  subtotal: number;
-  totalDiscount: number;
-  shippingDiscount: number;
-  productDiscount: number;
-  totalShippingFee: number;
-  totalTaxAmount: number;
-  grandTotal: number;
-}
 
 export interface ShopVoucherResult2026 {
   shopId: string;
@@ -251,20 +177,7 @@ export interface ShopPreview2026 {
   voucherResult: ShopVoucherResult2026;
 }
 
-export interface CheckoutPreview2026 {
-  cartId: string;
-  currency: string;
-  previewAt: string;
-  buyerAddressData: BuyerAddressData;
-  shops: ShopPreview2026[];
-  summary: CheckoutSummary;
-  isValid: boolean;
-  validationErrors: string[];
-  warnings: string[];
-}
 
-// Alias for compatibility - CheckoutResponse is the new unified response
-export type CheckoutResponse = OrderPreviewResponse | CheckoutPreview2026;
 
 export interface BuyerAddressData {
   addressId?: string;
@@ -428,12 +341,6 @@ export interface LoyaltyPointsInfo {
   discountAmount: number;
   canRedeem: boolean;
   message?: string;
-}
-
-export interface CheckoutValidationErrorResponse {
-  message: string;
-  errors: string[];
-  invalidItems?: string[];
 }
 
 // API Response wrapper

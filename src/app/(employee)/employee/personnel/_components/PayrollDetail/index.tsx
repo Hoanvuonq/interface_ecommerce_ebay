@@ -116,7 +116,7 @@ export default function PayrollDetail({
         <div className="bg-gray-900 rounded-4xl p-6 text-white relative overflow-hidden">
           <Calculator className="absolute -right-4 -top-4 text-white/5 rotate-12" size={120} />
           <div className="relative z-10">
-            <SectionHeader icon={Calculator} title="Minh bạch tài chính" isLight />
+            <SectionHeader icon={Calculator} title="Minh bạch tài chính" />
             <div className="mt-4 font-mono text-sm flex flex-wrap items-center gap-2">
               <span className="bg-white/10 px-2 py-1 rounded-lg">{formatCurrency(payroll.baseSalary)}</span>
               <span className="text-emerald-400 font-bold">+</span>

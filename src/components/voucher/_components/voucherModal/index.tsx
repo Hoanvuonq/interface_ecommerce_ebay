@@ -1,68 +1,79 @@
 "use client";
-
+import React from "react";
+import { PortalModal } from "@/features/PortalModal";
+import { CustomButtonActions } from "@/components/custom";
 import { useCheckoutActions } from "@/app/(main)/checkout/_hooks/useCheckoutActions";
 import { useCheckoutStore } from "@/app/(main)/checkout/_store/useCheckoutStore";
 import { useVoucherModalLogic } from "@/components/voucher/_hooks/useVoucherModalLogic";
 import { VoucherModalProps } from "@/components/voucher/_types/voucher";
-import { PortalModal } from "@/features/PortalModal";
-import _ from "lodash";
-import React from "react";
-import { FaSave } from "react-icons/fa";
-import { ButtonField } from "../../../buttonField";
 import { VoucherModalContent } from "../voucherModalContent";
+import { Save } from "lucide-react";
 
 export const VoucherModal: React.FC<VoucherModalProps> = (props) => {
+  // 1. Đổi shopIds thành shopId để đúng logic "một shop"
   const { open, onClose, title, shopName, isPlatform, shopId } = props;
-  const { preview, updateShopVouchers, request, setRequest } =
-    useCheckoutStore();
+  const { preview } = useCheckoutStore();
   const { syncPreview } = useCheckoutActions();
+
   const { state, actions } = useVoucherModalLogic({
     ...props,
     previewData: preview,
   });
+
   const handleConfirmVouchers = async () => {
     const { updateShopVouchers } = useCheckoutStore.getState();
-    const orderCode = state.selectedOrderVoucherId;
-    const shipCode = state.selectedShippingVoucherId;
 
-    // 🟢 Cập nhật store ngay lập tức để UI đổi màu/hiện code
-    updateShopVouchers(shopId, {
+    // 2. Kiểm tra nếu không có shopId và không phải platform thì không cho submit
+    if (!shopId && !isPlatform) {
+      console.error("Missing shopId for shop voucher update");
+      return;
+    }
+
+    // 3. Cập nhật Store (Sử dụng shopId hoặc định danh 'platform')
+    const targetId = isPlatform ? "platform" : shopId!;
+
+    updateShopVouchers(targetId, {
       ...(isPlatform
-        ? { platformOrder: orderCode, platformShipping: shipCode }
-        : { order: orderCode, shipping: shipCode }),
+        ? {
+            platformOrder: state.selectedOrderVoucherId,
+            platformShipping: state.selectedShippingVoucherId,
+          }
+        : {
+            order: state.selectedOrderVoucherId,
+            shipping: state.selectedShippingVoucherId,
+          }),
     });
 
     onClose();
-    // Gọi sync (sẽ bị gom bởi Singleton Timer)
+    // 4. Đồng bộ lại preview sau khi chọn mã
     await syncPreview();
   };
+
   return (
     <PortalModal
       isOpen={open}
       onClose={onClose}
+      className="max-w-2xl"
       title={
-        <span className="font-bold uppercase text-sm tracking-tight text-gray-800">
-          {title || (isPlatform ? "Ưu đãi hệ thống" : `Voucher ${shopName}`)}
-        </span>
+        <div className="flex items-center gap-2">
+          <div className="w-1.5 h-5 bg-orange-500 rounded-full" />
+          <span className="font-black uppercase text-sm tracking-widest text-gray-800">
+            {title ||
+              (isPlatform ? "Đặc quyền hệ thống" : `Voucher từ ${shopName}`)}
+          </span>
+        </div>
       }
       footer={
-        <div className="flex w-full gap-3 p-2 bg-white ">
-          <ButtonField
-            type="secondary"
-            className="flex-1 h-12! rounded-full font-bold text-[12px] "
-            onClick={onClose}
-          >
-            TRỞ LẠI
-          </ButtonField>
-          <ButtonField
-            type="login"
-            onClick={handleConfirmVouchers}
-            className="flex-1 h-12! rounded-full font-bold text-[12px] shadow-lg shadow-orange-100"
-          >
-            <span className="flex items-center gap-2">
-              <FaSave size={18} className="mr-2" /> SỬ DỤNG NGAY
-            </span>
-          </ButtonField>
+        <div className="w-full bg-white p-4 border-t border-gray-50">
+          <CustomButtonActions
+            onCancel={onClose}
+            onSubmit={handleConfirmVouchers}
+            cancelText="ĐÓNG"
+            submitText="XÁC NHẬN"
+            submitIcon={Save}
+            containerClassName="w-full flex gap-3 justify-end pt-0"
+            className="w-48! rounded-full h-12 shadow-xl shadow-orange-100 font-black text-[11px] tracking-widest"
+          />
         </div>
       }
     >

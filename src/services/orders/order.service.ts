@@ -9,31 +9,16 @@ import type {
 import type { OrderCreationResponse } from "@/types/orders/order-creation.types";
 import type { ApiResponse } from "@/api/_types/api.types";
 import { ReturnOrderResponse } from "@/types/orders/order.dto";
+import { generateIdempotencyKey } from "@/utils/generateIdempotencyKey";
 
 const BUYER_API_BASE = "/v1/buyer/orders";
-
-const generateIdempotencyKey = () => {
-  if (
-    typeof crypto !== "undefined" &&
-    typeof crypto.randomUUID === "function"
-  ) {
-    try {
-      return crypto.randomUUID();
-    } catch (e) {}
-  }
-  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
-    const r = (Math.random() * 16) | 0;
-    const v = c === "x" ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
-};
 
 class OrderService {
   /**
    * Tạo order từ cart
    */
   async createOrder(
-    orderRequest: OrderCreateRequest
+    orderRequest: OrderCreateRequest,
   ): Promise<OrderCreationResponse> {
     const response: ApiResponse<OrderCreationResponse> = await request({
       url: BUYER_API_BASE,
@@ -76,7 +61,7 @@ class OrderService {
     page = 0,
     size = 10,
     status?: string,
-    search?: string
+    search?: string,
   ): Promise<any> {
     const response: ApiResponse<any> = await request({
       url: BUYER_API_BASE,
@@ -97,7 +82,7 @@ class OrderService {
   async getBuyerOrdersByShop(
     shopId: string,
     page = 0,
-    size = 20
+    size = 20,
   ): Promise<{ content: OrderResponse[]; totalPages: number }> {
     const response: ApiResponse<{
       content: OrderResponse[];
@@ -168,7 +153,7 @@ class OrderService {
    */
   async requestReturn(
     orderId: string,
-    payload: ReturnOrderRequest
+    payload: ReturnOrderRequest,
   ): Promise<ReturnOrderResponse> {
     const response: ApiResponse<ReturnOrderResponse> = await request({
       url: `${BUYER_API_BASE}/${orderId}/return-request`,

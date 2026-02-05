@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/store";
-import { checkoutPreview, selectAllItemsLocal } from "@/store/theme/cartSlice";
+import {  selectAllItemsLocal } from "@/store/theme/cartSlice";
+import { checkoutPreviewMain } from "@/app/(main)/checkout/_store/checkoutSlice";
 import { useToast } from "@/hooks/useToast";
 
 export const useCartActions = () => {
@@ -31,7 +32,7 @@ export const useCartActions = () => {
         promotion: [],
       };
 
-      const preview = await dispatch(checkoutPreview(checkoutRequest as any)).unwrap();
+      const preview = await dispatch(checkoutPreviewMain(checkoutRequest as any)).unwrap();
 
       sessionStorage.setItem("checkoutPreview", JSON.stringify(preview));
       sessionStorage.setItem(

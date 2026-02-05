@@ -162,7 +162,7 @@ export const ProductShippingTabs: React.FC<ProductShippingTabsProps> = ({
 
           {variants.length > 1 && (
             <div className="flex items-center gap-3 bg-gray-50 p-2 pl-4 rounded-2xl border border-gray-100">
-              <span className="text-[10px] font-black uppercase text-gray-400">
+              <span className="text-[10px] font-bold uppercase text-gray-400">
                 Nhập riêng theo size/màu
               </span>
               <button

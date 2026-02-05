@@ -1,27 +1,54 @@
 import _ from "lodash";
+import { CheckoutOrderPreviewRequest } from "../_types/checkout.type";
 
-export const preparePreviewCheckoutPayload = (req: any): any => {
-  if (!req) return { addressId: "", shops: [], promotion: [] };
 
-  return {
+export const preparePreviewCheckoutPayload = (
+  req: any,
+): CheckoutOrderPreviewRequest => {
+  if (!req) return { addressId: "", shops: [] };
+
+  const payload: CheckoutOrderPreviewRequest = {
     addressId: req.addressId || "",
     shippingAddress: {
       addressId: req.addressId || "",
-      addressChanged: true,
-      country: "VN",
+      addressChanged: req.addressChanged ?? true,
+      country: req.country || "VN",
     },
-    promotion: req.promotion || [],
-    shops: _.map(req.shops, (shop) => ({
-      shopId: shop.shopId,
-      items: (shop.items || []).map((item: any) => ({
-        itemId: item.itemId || item.id,
-        quantity: Number(item.quantity || 1),
-      })),
-      serviceCode: Number(shop.serviceCode || 400031),
-      vouchers: shop.vouchers || [],
-      globalVouchers: shop.globalVouchers || [],
-    })),
+
+    allDiscountCodes: req.allDiscountCodes || [],
+    shops: _.map(req.shops, (shop) => {
+      const shopData: any = {
+        shopId: shop.shopId,
+        items: (shop.items || []).map((item: any) => ({
+          itemId: item.itemId || item.id,
+          quantity: Number(item.quantity || 1),
+        })),
+        serviceCode: Number(shop.serviceCode || 400031),
+      };
+
+      if (!_.isEmpty(shop.vouchers)) {
+        shopData.vouchers = shop.vouchers;
+      }
+
+      if (!_.isEmpty(shop.globalVouchers)) {
+        shopData.globalVouchers = shop.globalVouchers;
+      }
+
+      if (shop.internationalServiceCode)
+        shopData.internationalServiceCode = Number(
+          shop.internationalServiceCode,
+        );
+      if (shop.firstMileServiceCode)
+        shopData.firstMileServiceCode = Number(shop.firstMileServiceCode);
+
+      return shopData;
+    }),
+
+    previewAllSelected: req.previewAllSelected ?? true,
+    usingSavedAddress: req.usingSavedAddress ?? true,
   };
+
+  return payload;
 };
 
 export const prepareOrderRequest = (params: any): any => {

@@ -1,13 +1,17 @@
 "use client";
 
 import { useVoucherLogic } from "@/components/voucher/_hooks/useVoucherLogic";
-import {
-  VoucherInputProps
-} from "@/components/voucher/_types/voucher";
+import { VoucherInputProps } from "@/components/voucher/_types/voucher";
 import { formatPrice } from "@/hooks/useFormatPrice";
 import { cn } from "@/utils/cn";
 import _ from "lodash";
-import { CheckCircle2, ChevronDown, Loader2, Ticket } from "lucide-react";
+import {
+  CheckCircle2,
+  ChevronRight,
+  Loader2,
+  Ticket,
+  Truck,
+} from "lucide-react";
 import React from "react";
 import { VoucherModal } from "../voucherModal";
 
@@ -16,97 +20,85 @@ export const VoucherComponents: React.FC<VoucherInputProps> = (props) => {
     props;
   const { state, actions } = useVoucherLogic(props);
 
-  const activeOrderVoucherCode =
-    _.get(appliedVouchers, "order.voucherCode") ||
-    _.get(appliedVouchers, "order.code");
+  const orderVoucher = appliedVouchers?.order;
+  const shipVoucher = appliedVouchers?.shipping;
 
-  const activeShippingVoucherCode =
-    _.get(appliedVouchers, "shipping.voucherCode") ||
-    _.get(appliedVouchers, "shipping.code");
+  const activeOrderCode = orderVoucher?.code;
+  const activeShipCode = shipVoucher?.code;
 
-  const orderDiscount = _.get(appliedVouchers, "order.discountAmount", 0);
-  const shipDiscount = _.get(appliedVouchers, "shipping.discountAmount", 0);
+  const orderDiscount = Number(orderVoucher?.discount || 0);
+  const shipDiscount = Number(shipVoucher?.discount || 0);
 
-  const hasAnyVoucher = !!activeOrderVoucherCode || !!activeShippingVoucherCode;
+  const hasAnyVoucher = !!activeOrderCode || !!activeShipCode;
 
   if (compact) {
     return (
       <div className={cn("w-full", className)}>
         {hasAnyVoucher ? (
           <div
-            className="bg-emerald-50 rounded-2xl py-2 px-3 border border-emerald-100 cursor-pointer hover:bg-emerald-100/50 transition-all shadow-sm group relative overflow-hidden"
+            className="bg-white rounded-2xl p-4 border border-emerald-100 cursor-pointer hover:border-emerald-200 hover:shadow-md transition-all group relative overflow-hidden"
             onClick={() => actions.setModalOpen(true)}
           >
-            <div className="absolute -right-2 -top-2 opacity-5 group-hover:rotate-12 transition-transform text-emerald-600 pointer-events-none">
-              <Ticket size={48} />
+            <div className="absolute -right-4 -bottom-4 opacity-[0.03] group-hover:scale-110 transition-transform text-emerald-900 pointer-events-none">
+              <Ticket size={120} />
             </div>
 
-            <div className="relative z-10 space-y-2">
-              <div className="flex items-center justify-between border-b border-emerald-200/30 pb-2">
-                <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest flex items-center gap-1.5">
-                  <CheckCircle2 size={12} />
-                  {forcePlatform
-                    ? "Voucher Hệ Thống"
-                    : `Ưu đãi từ ${shopName || "Shop"}`}
-                </p>
-                <div className="bg-emerald-500 text-white text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter animate-in fade-in zoom-in">
-                  Đã áp dụng
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center shadow-sm shadow-emerald-200">
+                    <CheckCircle2 size={14} className="text-white" />
+                  </div>
+                  <span className="text-[11px] font-black uppercase tracking-widest text-emerald-600">
+                    {forcePlatform ? "Hệ thống ưu đãi" : `Voucher ${shopName}`}
+                  </span>
+                </div>
+                <div className="flex items-center gap-1 text-[10px] font-bold text-gray-400 group-hover:text-orange-500 transition-colors">
+                  Thay đổi <ChevronRight size={14} />
                 </div>
               </div>
 
-              <div className="space-y-1.5">
-                {[
-                  {
-                    code: activeOrderVoucherCode,
-                    label: "Giảm đơn hàng",
-                    color: "orange",
-                    discount: Number(orderDiscount),
-                  },
-                  {
-                    code: activeShippingVoucherCode,
-                    label: "Miễn phí vận chuyển",
-                    color: "blue",
-                    discount: Number(shipDiscount),
-                  },
-                ].map(
-                  (v, idx) =>
-                    v.code && (
-                      <div
-                        key={idx}
-                        className="flex items-center justify-between bg-white/80 py-2 px-3 rounded-xl border border-emerald-50 shadow-sm backdrop-blur-sm"
-                      >
-                        <div className="flex items-center gap-2 min-w-0">
-                          <div
-                            className={cn(
-                              "p-1.5 rounded-lg shrink-0",
-                              v.color === "orange"
-                                ? "bg-orange-100 text-orange-600"
-                                : "bg-blue-100 text-blue-600"
-                            )}
-                          >
-                            <Ticket size={12} />
-                          </div>
-                          <div className="flex flex-col min-w-0">
-                            <span className="text-gray-600 text-[7px] font-semibold uppercase -tracking-tighter leading-none mb-1">
-                              {v.label}
-                            </span>
-                            <span className="text-gray-800 font-semibold text-[10px] truncate uppercase tracking-tighter">
-                              {v.code}
-                            </span>
-                          </div>
-                        </div>
-
-                        {v.discount > 0 ? (
-                          <span className="text-red-500 font-semibold text-[11px] shrink-0 italic">
-                            -{formatPrice(v.discount)}
-                          </span>
-                        ) : (
-                          <span className="text-emerald-600 font-semibold text-[9px] shrink-0 uppercase italic">
-                            Đã tối ưu
-                          </span>
-                        )}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {activeOrderCode && (
+                  <div className="flex items-center justify-between bg-orange-50/50 p-2.5 rounded-xl border border-orange-100/50">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <div className="p-1.5 bg-orange-100 text-orange-600 rounded-lg">
+                        <Ticket size={14} />
                       </div>
-                    )
+                      <div className="truncate">
+                        <p className="text-[8px] font-bold text-orange-400 uppercase leading-none mb-1">
+                          Giảm đơn hàng
+                        </p>
+                        <p className="text-[11px] font-black text-gray-800 truncate uppercase">
+                          {activeOrderCode}
+                        </p>
+                      </div>
+                    </div>
+                    <span className="text-xs font-black text-orange-600">
+                      -{formatPrice(orderDiscount)}
+                    </span>
+                  </div>
+                )}
+
+                {activeShipCode && (
+                  <div className="flex items-center justify-between bg-blue-50/50 p-2.5 rounded-xl border border-blue-100/50">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <div className="p-1.5 bg-blue-100 text-blue-600 rounded-lg">
+                        <Truck size={14} />
+                      </div>
+                      <div className="truncate">
+                        <p className="text-[8px] font-bold text-blue-400 uppercase leading-none mb-1">
+                          Miễn phí vận chuyển
+                        </p>
+                        <p className="text-[11px] font-black text-gray-800 truncate uppercase">
+                          {activeShipCode}
+                        </p>
+                      </div>
+                    </div>
+                    <span className="text-xs font-black text-blue-600">
+                      -{formatPrice(shipDiscount)}
+                    </span>
+                  </div>
                 )}
               </div>
             </div>
@@ -115,19 +107,24 @@ export const VoucherComponents: React.FC<VoucherInputProps> = (props) => {
           <button
             type="button"
             onClick={() => actions.setModalOpen(true)}
-            className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl text-gray-500 hover:border-gray-300 hover:text-orange-600 hover:bg-white transition-all group active:scale-[0.98]"
+            className="w-full flex items-center justify-between p-4 bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl text-slate-500 hover:border-orange-300 hover:text-orange-600 hover:bg-orange-50/30 transition-all group active:scale-[0.98]"
           >
-            <div className="flex items-center gap-3 font-bold uppercase tracking-widest">
-              <div className="w-8 h-8 rounded-xl bg-white flex items-center justify-center shadow-sm group-hover:scale-110 group-hover:bg-orange-50 transition-all">
-                <Ticket className="w-4 h-4 text-orange-500" />
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 rounded-xl bg-white border border-slate-100 flex items-center justify-center shadow-sm group-hover:scale-110 group-hover:shadow-orange-100 transition-all">
+                <Ticket className="w-5 h-5 text-slate-400 group-hover:text-orange-500" />
               </div>
-              <span className="text-[10px] tracking-tight">
-                {shopName ? `Mã giảm giá ${shopName}` : "Chọn mã giảm giá"}
-              </span>
+              <div className="text-left">
+                <p className="text-[11px] font-black uppercase tracking-widest leading-none mb-1.5">
+                  Mã giảm giá
+                </p>
+                <p className="text-[10px] font-bold text-slate-400">
+                  Chọn hoặc nhập mã ưu đãi của {shopName || "shop"}
+                </p>
+              </div>
             </div>
-            <ChevronDown
-              size={14}
-              className="group-hover:trangray-y-0.5 transition-transform"
+            <ChevronRight
+              size={18}
+              className="text-slate-300 group-hover:trangray-x-1 transition-transform"
             />
           </button>
         )}
@@ -138,9 +135,7 @@ export const VoucherComponents: React.FC<VoucherInputProps> = (props) => {
           onClose={() => actions.setModalOpen(false)}
           onConfirm={actions.handleConfirm}
           shopName={shopName}
-          onFetchVouchers={async () => {
-            return state.vouchersData;
-          }}
+          onFetchVouchers={async () => state.vouchersData}
           vouchersData={state.vouchersData}
           isLoading={state.isLoading}
           appliedVouchers={appliedVouchers}
@@ -153,15 +148,15 @@ export const VoucherComponents: React.FC<VoucherInputProps> = (props) => {
   return (
     <div className={cn("space-y-4", className)}>
       <div className="flex gap-2">
-        <div className="relative flex-1 group">
+        <div className="relative flex-1">
           <Ticket
-            size={14}
-            className="absolute left-4 top-1/2 -trangray-y-1/2 text-gray-500 group-focus-within:text-orange-500 transition-colors pointer-events-none"
+            size={18}
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
           />
           <input
             type="text"
             placeholder="NHẬP MÃ GIẢM GIÁ..."
-            className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl font-bold text-[11px] uppercase tracking-wider focus:border-gray-500 focus:ring-4 focus:ring-orange-50 outline-none transition-all placeholder:text-gray-500"
+            className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl font-black text-xs uppercase tracking-widest focus:bg-white focus:ring-4 focus:ring-orange-500/5 focus:border-orange-500/30 outline-none transition-all"
             value={state.voucherCode}
             onChange={(e) =>
               actions.setVoucherCode(e.target.value.toUpperCase())
@@ -173,9 +168,9 @@ export const VoucherComponents: React.FC<VoucherInputProps> = (props) => {
         </div>
         <button
           type="button"
-          onClick={() => actions.applyVoucher(state.voucherCode)}
           disabled={state.isApplying || !state.voucherCode}
-          className="px-6 bg-gray-900 text-white font-bold text-[11px] uppercase tracking-widest rounded-xl hover:bg-orange-600 disabled:bg-gray-200 disabled:shadow-none transition-all active:scale-95 shadow-lg shadow-gray-200"
+          onClick={() => actions.applyVoucher(state.voucherCode)}
+          className="px-8 bg-gray-900 text-white font-black text-[10px] uppercase tracking-[0.2em] rounded-2xl hover:bg-orange-600 disabled:bg-gray-100 disabled:text-gray-400 transition-all shadow-lg shadow-gray-200/50"
         >
           {state.isApplying ? (
             <Loader2 className="animate-spin w-4 h-4" />

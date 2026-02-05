@@ -3,24 +3,16 @@
 import { ItemImage } from "@/components/ItemImage";
 import { VoucherComponents } from "@/components/voucher/_components/voucherComponents";
 import { formatPrice } from "@/hooks/useFormatPrice";
+import { cn } from "@/utils/cn";
 import _ from "lodash";
-import { Store, Loader2 } from "lucide-react";
+import { Loader2, Store } from "lucide-react";
 import React from "react";
 import { useCheckoutActions } from "../../_hooks/useCheckoutActions";
 import { useCheckoutStore } from "../../_store/useCheckoutStore";
 import { ShopLoyaltySection } from "../ShopLoyaltySection";
 import { ShopShippingSelector } from "../ShopShippingSelector";
 import { TotalAmountCheckoutList } from "../TotalAmountCheckoutList";
-import { cn } from "@/utils/cn";
-
-interface CheckoutShopListProps {
-  shops: any[];
-  voucherApplication: any;
-  loading: boolean;
-  updateShippingMethod: (shopId: string, methodCode: string) => void;
-  request: any;
-  preview: any;
-}
+import { CheckoutShopListProps } from "./type";
 
 export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
   shops,
@@ -42,7 +34,7 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
       shipping: shipCode,
     });
 
-    await syncPreview(); // Trigger gọi API (đã có debounce trong hook)
+    await syncPreview();
     return true;
   };
 
@@ -86,7 +78,6 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
           const codes =
             type === "SHOP" ? shopReq?.vouchers : shopReq?.globalVouchers;
 
-          // Tìm chi tiết từ Preview (Server xác nhận)
           const confirmedDetail = _.find(
             discountDetails,
             (d: any) =>
@@ -97,7 +88,6 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
                 : ["SHIPPING", "SHIP"].includes(d.discountTarget)),
           );
 
-          // Nếu trong Request có mã nhưng Preview chưa xác nhận -> Đang xử lý
           const targetIndex = target === "ORDER" ? 0 : 1;
           const pendingCode = codes?.[targetIndex];
 
@@ -117,17 +107,15 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
             key={shop.shopId}
             className={cn(
               "bg-white rounded-xl shadow-custom border border-gray-100 overflow-hidden transition-all duration-300 relative",
-              isSyncing && "opacity-75 pointer-events-none", // 🟢 Hiệu ứng khi đang call API
+              isSyncing && "opacity-75 pointer-events-none",
             )}
           >
-            {/* Loading Overlay nhỏ cho từng Shop */}
             {isSyncing && (
               <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/10 backdrop-blur-[1px]">
                 <Loader2 className="animate-spin text-orange-500" size={32} />
               </div>
             )}
 
-            {/* Shop Header */}
             <div className="px-5 py-2 border-b border-gray-50 flex items-center justify-between bg-gray-50">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-white rounded-xl shadow-sm text-orange-600">
@@ -140,7 +128,6 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
             </div>
 
             <div className="py-2 px-6 space-y-2">
-              {/* Product Items */}
               <div className="divide-y divide-gray-50">
                 {shop.items.map((item: any, idx: number) => (
                   <div
@@ -171,7 +158,6 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
                 ))}
               </div>
 
-              {/* Shipping & Vouchers */}
               <div className="space-y-6 pt-4 border-t border-gray-100">
                 <ShopShippingSelector
                   shopId={shop.shopId}
@@ -187,7 +173,6 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
                     Ưu đãi mã giảm giá
                   </p>
                   <div className="flex flex-col lg:flex-row gap-4">
-                    {/* Shop Vouchers */}
                     <div className="flex-1">
                       <VoucherComponents
                         compact
@@ -218,7 +203,6 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
                         }}
                       />
                     </div>
-                    {/* Platform Vouchers */}
                     <div className="flex-1">
                       <VoucherComponents
                         compact

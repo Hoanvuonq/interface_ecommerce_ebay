@@ -1,19 +1,17 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { cartService } from "@/services/cart/cart.service";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+import { checkoutPreviewMain } from "@/app/(main)/checkout/_store/checkoutSlice";
+import { useToast } from "@/hooks/useToast";
 import {
-  CartDto,
   AddToCartRequest,
-  UpdateCartItemRequest,
+  CartDto,
   CartUpdateRequest,
   SelectItemsRequest,
-  OrderPreviewRequest,
-  OrderPreviewResponse,
-  CheckoutValidationErrorResponse,
+  UpdateCartItemRequest,
 } from "@/types/cart/cart.types";
-import { useToast } from "@/hooks/useToast";
+import { OrderPreviewResponse } from "@/app/(main)/checkout/_types/checkout.type";
 import { isAuthError } from "@/utils/cart/cart-auth.utils";
-
 interface CartState {
   cart: CartDto | null;
   loading: boolean;
@@ -38,7 +36,7 @@ const { success, error } = useToast();
 
 const mergeSelectionState = (
   incomingCart: CartDto | any,
-  previousCart?: CartDto | null
+  previousCart?: CartDto | null,
 ): CartDto | null => {
   if (!incomingCart || !incomingCart.shops) {
     return incomingCart;
@@ -63,7 +61,7 @@ const mergeSelectionState = (
     });
 
     const hasSelectedItems = normalizedItems.some(
-      (item: any) => item.selectedForCheckout
+      (item: any) => item.selectedForCheckout,
     );
     const allSelected =
       normalizedItems.length > 0 &&
@@ -93,10 +91,10 @@ export const fetchCart = createAsyncThunk(
         return rejectWithValue("Authentication required");
       }
       return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch cart"
+        error.response?.data?.message || "Failed to fetch cart",
       );
     }
-  }
+  },
 );
 
 export const addToCart = createAsyncThunk(
@@ -112,7 +110,7 @@ export const addToCart = createAsyncThunk(
         "Failed to add to cart";
       return rejectWithValue(errorMessage);
     }
-  }
+  },
 );
 
 export const updateCartItem = createAsyncThunk(
@@ -123,32 +121,32 @@ export const updateCartItem = createAsyncThunk(
       request,
       etag,
     }: { itemId: string; request: UpdateCartItemRequest; etag: string },
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     try {
       return await cartService.updateCartItem(itemId, request, etag);
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to update cart item"
+        error.response?.data?.message || "Failed to update cart item",
       );
     }
-  }
+  },
 );
 
 export const removeCartItem = createAsyncThunk(
   "cart/removeCartItem",
   async (
     { itemId, etag }: { itemId: string; etag: string },
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     try {
       return await cartService.removeCartItem(itemId, etag);
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to remove cart item"
+        error.response?.data?.message || "Failed to remove cart item",
       );
     }
-  }
+  },
 );
 
 export const clearCart = createAsyncThunk(
@@ -158,10 +156,10 @@ export const clearCart = createAsyncThunk(
       return await cartService.clearCart(etag);
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to clear cart"
+        error.response?.data?.message || "Failed to clear cart",
       );
     }
-  }
+  },
 );
 
 export const updateCart = createAsyncThunk(
@@ -171,10 +169,10 @@ export const updateCart = createAsyncThunk(
       return await cartService.updateCart(request);
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to update cart"
+        error.response?.data?.message || "Failed to update cart",
       );
     }
-  }
+  },
 );
 
 export const toggleItemSelection = createAsyncThunk(
@@ -184,10 +182,10 @@ export const toggleItemSelection = createAsyncThunk(
       return await cartService.toggleItemSelection(itemId);
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to toggle item selection"
+        error.response?.data?.message || "Failed to toggle item selection",
       );
     }
-  }
+  },
 );
 
 export const selectItems = createAsyncThunk(
@@ -197,10 +195,10 @@ export const selectItems = createAsyncThunk(
       return await cartService.selectItems(request);
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to select items"
+        error.response?.data?.message || "Failed to select items",
       );
     }
-  }
+  },
 );
 
 export const deselectItems = createAsyncThunk(
@@ -210,10 +208,10 @@ export const deselectItems = createAsyncThunk(
       return await cartService.deselectItems(request);
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to deselect items"
+        error.response?.data?.message || "Failed to deselect items",
       );
     }
-  }
+  },
 );
 
 export const selectAllItems = createAsyncThunk(
@@ -223,10 +221,10 @@ export const selectAllItems = createAsyncThunk(
       return await cartService.selectAllItems();
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to select all items"
+        error.response?.data?.message || "Failed to select all items",
       );
     }
-  }
+  },
 );
 
 export const deselectAllItems = createAsyncThunk(
@@ -236,39 +234,39 @@ export const deselectAllItems = createAsyncThunk(
       return await cartService.deselectAllItems();
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to deselect all items"
+        error.response?.data?.message || "Failed to deselect all items",
       );
     }
-  }
+  },
 );
 
-export const checkoutPreview = createAsyncThunk(
-  "cart/checkoutPreview",
-  async (request: OrderPreviewRequest, { rejectWithValue }) => {
-    try {
-      const result = await cartService.checkout(request);
+// export const checkoutPreview = createAsyncThunk(
+//   "cart/checkoutPreview",
+//   async (request: OrderPreviewRequest, { rejectWithValue }) => {
+//     try {
+//       const result = await cartService.checkout(request);
 
-      if ("errors" in result) {
-        return rejectWithValue(result as CheckoutValidationErrorResponse);
-      }
-      return result as OrderPreviewResponse;
-    } catch (error: any) {
-      return rejectWithValue(
-        error.response?.data?.message || "Failed to preview checkout"
-      );
-    }
-  }
-);
+//       if ("errors" in result) {
+//         return rejectWithValue(result as CheckoutValidationErrorResponse);
+//       }
+//       return result as OrderPreviewResponse;
+//     } catch (error: any) {
+//       return rejectWithValue(
+//         error.response?.data?.message || "Failed to preview checkout"
+//       );
+//     }
+//   }
+// );
 
 export const removeCartItems = createAsyncThunk(
   "cart/removeCartItems",
   async (
     { itemIds, etag }: { itemIds: string[]; etag: string },
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     try {
       const deletePromises = itemIds.map((id) =>
-        cartService.removeCartItem(id, etag)
+        cartService.removeCartItem(id, etag),
       );
 
       await Promise.all(deletePromises);
@@ -276,10 +274,10 @@ export const removeCartItems = createAsyncThunk(
       return itemIds;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to remove items"
+        error.response?.data?.message || "Failed to remove items",
       );
     }
-  }
+  },
 );
 
 // Slice
@@ -305,7 +303,7 @@ const cartSlice = createSlice({
           item.selectedForCheckout = !item.selectedForCheckout;
 
           const selectedCount = shop.items.filter(
-            (i) => i.selectedForCheckout
+            (i) => i.selectedForCheckout,
           ).length;
           shop.hasSelectedItems = selectedCount > 0;
           shop.allSelected = selectedCount === shop.items.length;
@@ -418,11 +416,11 @@ const cartSlice = createSlice({
           if (state.cart) {
             state.cart.shops.forEach((shop) => {
               shop.items = shop.items.filter(
-                (item) => item.id !== action.meta.arg.itemId
+                (item) => item.id !== action.meta.arg.itemId,
               );
             });
             state.cart.shops = state.cart.shops.filter(
-              (shop) => shop.items.length > 0
+              (shop) => shop.items.length > 0,
             );
           }
         } else {
@@ -518,15 +516,15 @@ const cartSlice = createSlice({
       });
 
     builder
-      .addCase(checkoutPreview.pending, (state) => {
+      .addCase(checkoutPreviewMain.pending, (state) => {
         state.checkoutLoading = true;
         state.checkoutError = null;
       })
-      .addCase(checkoutPreview.fulfilled, (state, action) => {
+      .addCase(checkoutPreviewMain.fulfilled, (state, action) => {
         state.checkoutLoading = false;
         state.checkoutPreview = action.payload;
       })
-      .addCase(checkoutPreview.rejected, (state, action) => {
+      .addCase(checkoutPreviewMain.rejected, (state, action) => {
         state.checkoutLoading = false;
         state.checkoutError =
           (action.payload as any)?.message || "Checkout validation failed";

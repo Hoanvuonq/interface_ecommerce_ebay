@@ -20,10 +20,12 @@ export const useVoucherModalLogic = (props: VoucherModalProps) => {
     shopId,
     isPlatform,
   } = props;
+
   const { request } = useCheckoutStore();
   const [loading, setLoading] = useState(false);
   const [voucherCode, setVoucherCode] = useState("");
   const [vouchers, setVouchers] = useState<VoucherOption[]>([]);
+
   const [isGrouped, setIsGrouped] = useState(false);
   const [groupedVouchers, setGroupedVouchers] = useState<GroupedVouchers>({
     productOrderVouchers: [],
@@ -38,65 +40,39 @@ export const useVoucherModalLogic = (props: VoucherModalProps) => {
   const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
-    if (open && request) {
+    if (open && request && previewData) {
       let savedOrderCode: string | undefined;
       let savedShipCode: string | undefined;
 
-      const shopsArray = previewData?.data?.shops || previewData?.shops || [];
-      const shopPreview = shopsArray.find((s: any) => s.shopId === shopId);
-      const discountDetails = shopPreview?.voucherResult?.discountDetails || [];
+      const shopsArray = previewData?.shops || [];
+      const shopPreview = _.find(shopsArray, { shopId });
 
-      if (isPlatform) {
-        const platformVouchers = discountDetails.filter(
-          (d: any) => d.voucherType === "PLATFORM" && d.valid,
-        );
+      const validVouchers = _.get(shopPreview, "voucher.valid", []) as any[];
 
-        platformVouchers.forEach((detail: any) => {
-          if (
-            detail.discountTarget === "SHIP" ||
-            detail.discountTarget === "SHIPPING"
-          ) {
-            savedShipCode = detail.voucherCode;
-          }
-          if (
-            detail.discountTarget === "ORDER" ||
-            detail.discountTarget === "PRODUCT"
-          ) {
-            savedOrderCode = detail.voucherCode;
-          }
-        });
-      } else {
-        const shopVouchers = discountDetails.filter(
-          (d: any) => d.voucherType === "SHOP" && d.valid,
-        );
+      const targetType = isPlatform ? "PLATFORM" : "SHOP";
+      const filteredVouchers = validVouchers.filter(
+        (v) => v.type === targetType,
+      );
 
-        shopVouchers.forEach((detail: any) => {
-          if (
-            detail.discountTarget === "SHIP" ||
-            detail.discountTarget === "SHIPPING"
-          ) {
-            savedShipCode = detail.voucherCode;
-          }
-          if (
-            detail.discountTarget === "ORDER" ||
-            detail.discountTarget === "PRODUCT"
-          ) {
-            savedOrderCode = detail.voucherCode;
-          }
-        });
-      }
+      const shipVoucher = _.find(filteredVouchers, (v) =>
+        ["SHIP", "SHIPPING"].includes(v.target),
+      );
+      savedShipCode = shipVoucher?.code;
+
+      const orderVoucher = _.find(filteredVouchers, (v) =>
+        ["ORDER", "PRODUCT"].includes(v.target),
+      );
+      savedOrderCode = orderVoucher?.code;
 
       if (!savedOrderCode && appliedVouchers?.order) {
-        const orderCode =
-          (appliedVouchers.order as any).voucherCode ||
-          (appliedVouchers.order as any).code;
-        savedOrderCode = orderCode;
+        savedOrderCode =
+          (appliedVouchers.order as any).code ||
+          (appliedVouchers.order as any).voucherCode;
       }
       if (!savedShipCode && appliedVouchers?.shipping) {
-        const shipCode =
-          (appliedVouchers.shipping as any).voucherCode ||
-          (appliedVouchers.shipping as any).code;
-        savedShipCode = shipCode;
+        savedShipCode =
+          (appliedVouchers.shipping as any).code ||
+          (appliedVouchers.shipping as any).voucherCode;
       }
 
       setTempSelection({
@@ -104,14 +80,9 @@ export const useVoucherModalLogic = (props: VoucherModalProps) => {
         shipping: savedShipCode,
       });
     }
-  }, [
-    open,
-    previewData,
-    shopId,
-    request,
-    isPlatform,
-    JSON.stringify(appliedVouchers),
-  ]);
+  }, [open, previewData, shopId, isPlatform]);
+
+  // 🟢 2. Fetch danh sách Voucher khả dụng (Dùng cho Modal List)
   useEffect(() => {
     if (open && onFetchVouchers) {
       setLoading(true);

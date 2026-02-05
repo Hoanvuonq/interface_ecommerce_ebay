@@ -147,7 +147,7 @@ export const ShopLoyaltyPolicyCard: React.FC<ShopLoyaltyPolicyCardProps> = ({
         <form onSubmit={handleSave} className="p-8 space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
             <div className="space-y-3">
-              <label className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">
+              <label className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400 ml-1">
                 Loại quy tắc
               </label>
 

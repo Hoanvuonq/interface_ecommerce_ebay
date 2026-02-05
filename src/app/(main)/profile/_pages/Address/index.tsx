@@ -15,9 +15,15 @@ import {
 import { buyerAddressService } from "@/services/buyer/buyer-address.service";
 import { cn } from "@/utils/cn";
 import { Button } from "@/components/button";
-import { ButtonField, SectionLoading } from "@/components";
+import {
+  ButtonField,
+  CustomEmptyState,
+  SectionHeader,
+  SectionLoading,
+} from "@/components";
 import { AddressFormModal } from "../../_components/AddressModal";
 import { BuyerAddressResponse } from "@/types/buyer/buyer.types";
+import { MapIcon, MapPin, Plus } from "lucide-react";
 
 interface AddressManagementProps {
   buyerId: string;
@@ -79,18 +85,21 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
 
   return (
     <div className="h-full w-full animate-fade-in relative">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 pb-6 border-b border-gray-100 gap-4">
-        <div>
-          <h2 className="text-xl font-bold text-gray-800 tracking-tight">
-            Địa chỉ giao hàng
-          </h2>
-          <p className="text-xs text-gray-500 mt-1 uppercase tracking-widest font-medium opacity-70">
-            Shipping & Delivery points
-          </p>
-        </div>
-        <Button variant="edit" onClick={handleCreateNew} icon={<FaPlus />}>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 pb-4 border-b border-gray-100 gap-4">
+        <SectionHeader
+          icon={MapIcon}
+          title=" Địa chỉ giao hàng"
+          description=" Shipping & Delivery points"
+        />
+        <ButtonField
+          htmlType="submit"
+          type="login"
+          onClick={handleCreateNew}
+          icon={<FaPlus />}
+          className="w-46 text-[12px]"
+        >
           Thêm địa chỉ mới
-        </Button>
+        </ButtonField>
       </div>
 
       {loading && addresses.length === 0 ? (
@@ -98,19 +107,21 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
           <SectionLoading />
         </div>
       ) : addresses.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 bg-gray-50/50 border-2 border-dashed border-gray-200 rounded-4xl">
-          <FaMapMarkerAlt className="text-4xl text-gray-300 mb-4" />
-          <p className="text-gray-400 font-bold uppercase text-[10px] tracking-widest">
-            Danh sách trống
-          </p>
-        </div>
+        <CustomEmptyState
+          icon={MapPin}
+          subIcon={Plus}
+          title="Chưa có địa chỉ"
+          description="Vui lòng thêm địa chỉ để chúng tôi giao hàng nhanh nhất."
+          buttonText="Thêm địa chỉ mới"
+          onAction={() => setIsModalOpen(true)}
+        />
       ) : (
         <div className="grid grid-cols-1 gap-5">
           {addresses.map((addr) => (
             <div
               key={addr.addressId}
               className={cn(
-                "group bg-white border rounded-[1.8rem] p-6 transition-all duration-300 relative",
+                "group bg-white border rounded-[1.8rem] p-6 transition-all shadow-custom duration-300 relative",
                 addr.isDefault
                   ? "border-orange-500 ring-4 ring-orange-500/5 shadow-xl shadow-orange-500/10"
                   : "border-gray-100 hover:border-orange-200 hover:shadow-lg",
@@ -118,7 +129,6 @@ export default function AddressManagement({ buyerId }: AddressManagementProps) {
             >
               <div className="flex flex-col md:flex-row justify-between gap-6">
                 <div className="space-y-4 flex-1">
-                  {/* Tên & Badge */}
                   <div className="flex flex-wrap items-center gap-3">
                     <span className="font-bold text-gray-900 text-lg uppercase italic tracking-tighter">
                       {addr.recipientName}

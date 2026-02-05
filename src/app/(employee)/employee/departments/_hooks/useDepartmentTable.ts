@@ -1,53 +1,40 @@
-"use client";
-
-import { useState, useEffect } from "react";
-import { useGetAllDepartments, useGetDepartmentStatistics } from "../_hooks/useDepartment";
-import { Department } from "../_types/department.type";
-import { useToast } from "@/hooks/useToast";
-import _ from "lodash";
+import { useState } from "react";
+import { useDepartmentQueries } from "./useDepartmentQueries"; // Đường dẫn tới file query trung tâm
 
 export const useDepartmentTable = () => {
-  const { handleGetAllDepartments, loading } = useGetAllDepartments();
-  const { handleGetDepartmentStatistics } = useGetDepartmentStatistics();
-  const { error: toastError } = useToast();
-
-  const [departments, setDepartments] = useState<Department[]>([]);
-  const [statistics, setStatistics] = useState<any>(null);
   const [searchText, setSearchText] = useState("");
-  const [pagination, setPagination] = useState({ current: 0, pageSize: 10, total: 0 });
+  const [pagination, setPagination] = useState({ current: 0, pageSize: 10 });
+  const { useList, useStats } = useDepartmentQueries();
 
-  const fetchMetadata = async () => {
-    const res = await handleGetDepartmentStatistics();
-    if (res?.data) setStatistics(res.data);
-  };
+  // 🟢 Query bốc danh sách: Tự chạy lại mỗi khi searchText hoặc pagination thay đổi
+  const listQuery = useList({
+    departmentName: searchText || undefined,
+    page: pagination.current,
+    size: pagination.pageSize,
+  });
 
-  const fetchList = async (name = searchText, page = pagination.current, size = pagination.pageSize) => {
-    const res = await handleGetAllDepartments({
-      departmentName: name || undefined,
-      page,
-      size,
-      sort: "asc",
-    });
-    if (res?.data) {
-      setDepartments(res.data.departments);
-      setPagination(prev => ({ ...prev, total: res.data.totalElements || 0, current: page, pageSize: size }));
-    }
-  };
-
-  useEffect(() => {
-    fetchMetadata();
-    fetchList();
-  }, []);
+  // 🟢 Query bốc thống kê
+  const statsQuery = useStats();
 
   return {
-    departments,
-    statistics,
-    loading,
+    departments: listQuery.data?.data?.departments || [],
+    statistics: statsQuery.data,
+    loading: listQuery.isLoading || listQuery.isFetching,
+    statsLoading: statsQuery.isLoading,
     searchText,
     setSearchText,
-    pagination,
-    fetchList,
-    fetchMetadata,
-    refresh: () => { fetchList(); fetchMetadata(); }
+    pagination: {
+      ...pagination,
+      total: listQuery.data?.data?.totalElements || 0,
+    },
+    // Hàm điều hướng
+    setPage: (p: number) => setPagination((prev) => ({ ...prev, current: p })),
+    setPageSize: (s: number) =>
+      setPagination((prev) => ({ ...prev, pageSize: s, current: 0 })),
+    // Hàm làm mới thủ công
+    refresh: () => {
+      listQuery.refetch();
+      statsQuery.refetch();
+    },
   };
 };

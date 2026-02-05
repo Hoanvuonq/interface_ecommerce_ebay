@@ -2,8 +2,15 @@
 
 import { OrderResponseAdmin } from "@/api/_types/adminOrder.types";
 import { EmptyProductState } from "@/app/(main)/products/_components/EmptyProductState";
-import { SectionLoading } from "@/components";
-import { AlertCircle, ArrowLeft, ShieldAlert } from "lucide-react";
+import { CustomEmptyState, SectionLoading } from "@/components";
+import {
+  AlertCircle,
+  ArrowLeft,
+  LucideListOrdered,
+  Plus,
+  ShieldAlert,
+  ShoppingBag,
+} from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { adminOrderService } from "../../_services/adminOrder.service";
@@ -63,9 +70,13 @@ export const OrderDetailScreen: React.FC = () => {
     return <SectionLoading message="Đang nạp dữ liệu giao dịch..." />;
   if (error || !order)
     return (
-      <EmptyProductState
-        message="Mã đơn hàng không tồn tại hoặc đã bị xóa"
-        onReset={() => router.back()}
+      <CustomEmptyState
+        icon={ShoppingBag}
+        subIcon={Plus}
+        title="Không tìm thấy đơn hàng"
+        description="Mã đơn hàng không tồn tại hoặc đã bị xóa"
+        buttonText="Quay lại"
+        onAction={() => router.back()}
       />
     );
 
@@ -158,7 +169,7 @@ export const OrderDetailScreen: React.FC = () => {
 
           <div className="xl:col-span-4 space-y-8 sticky top-8 animate-in slide-in-from-right-4 duration-700 delay-200">
             <QuickActionsCard
-              customerName={order?.shippingAddress?.recipientName || "N/A"} 
+              customerName={order?.shippingAddress?.recipientName || "N/A"}
               customerPhone={order?.shippingAddress?.phoneNumber || "N/A"}
               customerEmail={order?.shippingAddress?.email || "N/A"}
               shippingAddress={shippingAddress}

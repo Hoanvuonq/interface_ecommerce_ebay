@@ -49,7 +49,7 @@ export const AddressDisplayCard: React.FC<AddressDisplayCardProps> = ({
       <span
         key={i}
         className={cn(
-          "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[9px] font-black uppercase tracking-wider",
+          "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[9px] font-bold uppercase tracking-wider",
           b.color,
         )}
       >
@@ -82,7 +82,7 @@ export const AddressDisplayCard: React.FC<AddressDisplayCardProps> = ({
           <div className="text-center space-y-1">
             <span
               className={cn(
-                "block text-xs font-black uppercase tracking-[0.25em]",
+                "block text-xs font-bold uppercase tracking-[0.25em]",
                 error
                   ? "text-red-500"
                   : "text-gray-400 group-hover:text-gray-700",
@@ -122,7 +122,7 @@ export const AddressDisplayCard: React.FC<AddressDisplayCardProps> = ({
           <div className="space-y-3">
             <div className="flex flex-wrap items-center gap-2">
               <div className="flex items-center gap-3">
-                <span className="text-sm font-black uppercase tracking-widest text-gray-900 italic">
+                <span className="text-sm font-bold uppercase tracking-widest text-gray-900 italic">
                   {address.fullName || address.recipientName}
                 </span>
                 <div className="h-3 w-px bg-gray-200" />
@@ -153,7 +153,7 @@ export const AddressDisplayCard: React.FC<AddressDisplayCardProps> = ({
           type="button"
           variant="edit"
           onClick={onEdit}
-          className="shrink-0 flex items-center justify-center gap-3 p-4 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all active:scale-95 shadow-xl shadow-gray-200 hover:shadow-orange-200"
+          className="shrink-0 flex items-center justify-center gap-3 p-4 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] transition-all active:scale-95 shadow-xl shadow-gray-200 hover:shadow-orange-200"
         >
           Cập nhật tọa độ
         </Button>

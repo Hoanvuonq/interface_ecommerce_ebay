@@ -10,8 +10,8 @@ import { SelectProps } from "./type";
 import { Checkbox } from "../checkbox";
 
 interface ExtendedSelectProps extends SelectProps {
-  label?: string; // 🟢 Label là tùy chọn
-  required?: boolean; // 🟢 Dấu * nếu bắt buộc
+  label?: string; 
+  required?: boolean; 
   error?: string;
 }
 

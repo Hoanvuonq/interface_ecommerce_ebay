@@ -111,7 +111,7 @@ export const StepBasicInfo = ({ errors }: { errors?: any }) => {
           <div className="flex items-center justify-between">
             <SectionHeader icon={MapPin} title="Địa chỉ lấy hàng" />
             {formData.pickupAddress && (
-              <span className="text-[9px] font-black uppercase tracking-[0.2em] text-emerald-500 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">
+              <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-emerald-500 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">
                 Hệ thống đã định vị
               </span>
             )}

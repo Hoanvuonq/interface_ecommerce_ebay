@@ -1,5 +1,5 @@
 "use client";
-import { useState, useMemo, useEffect, useRef } from "react";
+import { useState, useMemo } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { voucherService } from "@/components/voucher/_service/voucher.service";
 import { useToast } from "@/hooks/useToast";
@@ -9,136 +9,69 @@ import {
   GroupedVouchers,
   VoucherInputProps,
   VoucherSelection,
+  VoucherShopRequest,
+  VoucherPlatformRequest
 } from "../_types/voucher";
 
 export const useVoucherLogic = (props: VoucherInputProps) => {
   const {
-    shopId,
+    shopId, // Dùng số ít
     context,
     forcePlatform,
     onSelectVoucher,
     onApplyVoucher,
     appliedVouchers,
   } = props;
+
   const { success: SuccessToast, error: ErrorToast } = useToast();
   const [modalOpen, setModalOpen] = useState(false);
   const [voucherCode, setVoucherCode] = useState("");
-  const hasAutoApplied = useRef<Record<string, boolean>>({});
 
-  const fetchParams = useMemo(
-    () => ({
-      shopId: shopId,
+  // 1. Chuẩn hóa Params gửi lên Server
+  const fetchParams = useMemo(() => {
+    const base: any = {
       totalAmount: Number(context?.totalAmount || 0),
       items: context?.items || [],
       shippingFee: Number(context?.shippingFee || 0),
-      shippingMethod: context?.shippingMethod || "",
       shippingProvince: context?.shippingProvince || "",
-      shippingDistrict: context?.shippingDistrict || "",
-      shippingWard: context?.shippingWard || "",
-      shopIds: context?.shopIds || (shopId ? [shopId] : []),
-      productIds: context?.productIds || [],
-      failedVoucherCodes: context?.failedVoucherCodes || [],
-      preferences: {
-        scopes: ["SHOP_ORDER", "SHIPPING"],
-        limit: 20,
-      },
-    }),
-    [shopId, context]
-  );
+      preferences: { scopes: ["SHOP_ORDER", "SHIPPING", "ORDER"], limit: 20 },
+    };
 
+    if (forcePlatform) {
+      return {
+        ...base,
+        shopIds: context?.shopIds || (shopId ? [shopId] : []),
+        productIds: context?.productIds || [],
+      } as VoucherPlatformRequest;
+    }
+
+    return {
+      ...base,
+      shopId: shopId || context?.shopId,
+    } as VoucherShopRequest;
+  }, [shopId, context, forcePlatform]);
+
+  // 2. Fetch dữ liệu
   const {
     data: vouchersData,
     isLoading,
     refetch,
   } = useQuery<GroupedVouchers | VoucherOption[]>({
-    queryKey: [
-      "vouchers",
-      forcePlatform ? "platform" : "shop",
-      shopId,
-      fetchParams,
-    ],
+    queryKey: ["vouchers-list", forcePlatform ? "platform" : "shop", shopId, fetchParams],
     queryFn: async () => {
-      if (forcePlatform || !shopId) {
-        const data = await voucherService.getPlatformVouchersWithContext(
-          fetchParams
-        );
-        return data as unknown as GroupedVouchers;
+      if (forcePlatform) {
+        return await voucherService.getPlatformVouchersWithContext(fetchParams as VoucherPlatformRequest);
       }
-      const data = await voucherService.getShopVouchersWithContext(fetchParams);
-      return data as unknown as VoucherOption[];
+      return await voucherService.getShopVouchersWithContext(fetchParams as VoucherShopRequest);
     },
-    enabled:
-      modalOpen || (!!fetchParams.totalAmount && (!!shopId || forcePlatform)),
+    enabled: modalOpen,
     staleTime: 1000 * 60 * 5,
   });
 
-  const isGrouped = (data: any): data is GroupedVouchers => {
-    return (
-      data &&
-      !Array.isArray(data) &&
-      ("productOrderVouchers" in data || "shippingVouchers" in data)
-    );
-  };
+  const currentOrderVoucherId = _.get(appliedVouchers, "order.code");
+  const currentShipVoucherId = _.get(appliedVouchers, "shipping.code");
 
-  const currentOrderVoucherId =
-    _.get(appliedVouchers, "order.id") || _.get(appliedVouchers, "order.code");
-  const currentShipVoucherId =
-    _.get(appliedVouchers, "shipping.id") ||
-    _.get(appliedVouchers, "shipping.code");
-
-  useEffect(() => {
-    const shopKey = `${shopId || "platform"}-${forcePlatform ? "p" : "s"}`;
-
-    if (!isLoading && vouchersData && !hasAutoApplied.current[shopKey]) {
-      if (!currentOrderVoucherId && !currentShipVoucherId) {
-        let bestOrder: VoucherOption | undefined;
-        let bestShipping: VoucherOption | undefined;
-
-        if (isGrouped(vouchersData)) {
-          const appOrder = (vouchersData.productOrderVouchers || []).filter(
-            (v) => v.applicable
-          );
-          const appShip = (vouchersData.shippingVouchers || []).filter(
-            (v) => v.applicable
-          );
-
-          bestOrder = _.maxBy(appOrder, "calculatedDiscount");
-          bestShipping = _.maxBy(appShip, "calculatedDiscount");
-        } else if (Array.isArray(vouchersData)) {
-          const applicable = vouchersData.filter((v) => v.applicable);
-          bestOrder = _.maxBy(
-            applicable.filter((v) => v.voucherScope !== "SHIPPING"),
-            "discountAmount"
-          );
-          bestShipping = _.maxBy(
-            applicable.filter((v) => v.voucherScope === "SHIPPING"),
-            "discountAmount"
-          );
-        }
-
-        if (bestOrder || bestShipping) {
-          hasAutoApplied.current[shopKey] = true;
-          onSelectVoucher?.({
-            order: bestOrder,
-            shipping: bestShipping,
-          });
-        }
-      }
-    }
-  }, [
-    vouchersData,
-    isLoading,
-    shopId,
-    currentOrderVoucherId,
-    currentShipVoucherId,
-    forcePlatform,
-    onSelectVoucher,
-  ]);
-
-  useEffect(() => {
-    hasAutoApplied.current = {};
-  }, [context?.totalAmount]);
-
+  // 3. Xử lý Apply mã thủ công
   const applyMutation = useMutation({
     mutationFn: async (code: string) => {
       if (!onApplyVoucher) throw new Error("Tính năng chưa khả dụng");
@@ -148,9 +81,9 @@ export const useVoucherLogic = (props: VoucherInputProps) => {
       if (success) {
         SuccessToast("Áp dụng mã thành công!");
         setVoucherCode("");
-        refetch();
+        if (modalOpen) refetch();
       } else {
-        ErrorToast("Mã không khả dụng");
+        ErrorToast("Mã không hợp lệ hoặc không đủ điều kiện");
       }
     },
     onError: (err: any) => ErrorToast(_.get(err, "message", "Lỗi hệ thống")),

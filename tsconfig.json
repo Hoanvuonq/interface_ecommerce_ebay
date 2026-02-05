@@ -30,6 +30,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "src/app/(main)/checkout/index.tsx", "src/app/(shop)/shop/products/[id]/_components/TipTapEditor/index.tsx", "src/app/(shop)/shop/marketing/loyalty/_components/ShopLoyaltyStatisticsCard/index.stsx"  ],
+, "src/app/(main)/checkout/index.tsx", "src/app/(shop)/shop/products/[id]/_components/TipTapEditor/index.tsx", "src/app/(shop)/shop/marketing/loyalty/_components/ShopLoyaltyStatisticsCard/index.stsx", "src/app/(employee)/employee/users/_components/UserStatistics/type.ts"  ],
   "exclude": ["node_modules"]
 }

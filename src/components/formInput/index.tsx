@@ -137,7 +137,7 @@ export const FormInput = React.forwardRef<
             />
           ) : (
             <input
-              ref={ref as React.ForwardedRef<HTMLInputElement>}
+              ref={ref as any}
               type={type === "number" ? "text" : type}
               inputMode={type === "number" ? "numeric" : props.inputMode}
               className={cn(

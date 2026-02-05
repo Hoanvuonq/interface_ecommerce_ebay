@@ -9,14 +9,7 @@ import Image from "next/image";
 import React, { useMemo } from "react";
 import { ShopCartSectionProps } from "../../_types/shop";
 import { CartItem } from "../CartItems";
-
-const isValidUrl = (url: string) => {
-  try {
-    return url.startsWith("http://") || url.startsWith("https://") || url.startsWith("/");
-  } catch {
-    return false;
-  }
-};
+import { toPublicUrl } from "@/utils/storage/url";
 
 const DEFAULT_AVATAR_BASE =
   "https://ui-avatars.com/api/?background=f1f5f9&color=64748b&name=";
@@ -28,18 +21,19 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
 }) => {
   const dispatch = useAppDispatch();
 
-  const placeholderLogo = useMemo(() => 
+
+ const placeholderLogo = useMemo(() => 
     `${DEFAULT_AVATAR_BASE}${encodeURIComponent(shop.shopName || "Store")}`, 
     [shop.shopName]
   );
   const safeShopLogo = useMemo(() => {
-    const logo = shop.shopLogo?.trim();
-    
-    if (!logo || !/^(http:\/\/|https:\/\/|\/)/.test(logo)) {
-      return placeholderLogo;
-    }
-    return logo;
-  }, [shop.shopLogo, placeholderLogo]);
+    if (!shop.logoPath) return placeholderLogo;
+
+    const publicUrl = toPublicUrl(shop.logoPath.replace("*", "orig"));
+
+    return publicUrl || placeholderLogo;
+  }, [shop.logoPath, placeholderLogo]);
+
   const handleShopCheckboxChange = (e?: React.BaseSyntheticEvent) => {
     e?.stopPropagation();
     if (onToggleShopSelection) {
@@ -49,9 +43,11 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
     }
   };
 
+
+
   return (
     <section className="mb-6 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all hover:shadow-md">
-      <div className="flex flex-col md:flex-row md:items-center justify-between px-4 py-3 gap-4 bg-gray-50/50 border-b border-gray-100">
+      <div className="flex flex-col md:flex-row md:items-center justify-between px-4 py-3 gap-4 bg-gray-100 border-b border-gray-200">
         <div className="flex items-center gap-3 flex-1 min-w-0">
           <div
             onClick={(e) => e.stopPropagation()}
@@ -66,12 +62,12 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
 
           <div className="flex items-center gap-3 min-w-0 group cursor-pointer">
             <div className="relative shrink-0">
-             <Image
+              <Image
                 src={safeShopLogo}
                 alt={shop.shopName || "Shop Logo"}
-                width={32}
-                height={32}
-                className="md:w-8 w-10 md:h-8 h-10 rounded-lg object-cover border border-gray-100 shadow-sm transition-transform group-hover:scale-105"
+                width={50}
+                height={50}
+                className="w-10 h-10 rounded-lg object-cover border border-gray-100 shadow-sm transition-transform group-hover:scale-105"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   if (target.src !== placeholderLogo) {
@@ -79,8 +75,8 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
                   }
                 }}
               />
-              <div className="absolute -bottom-1 -right-1 bg-white rounded-full p-0.5 shadow-sm border border-gray-50">
-                <Store size={8} className="text-gray-600" />
+              <div className="absolute -bottom-1 -right-1 bg-white rounded-full p-0.5 shadow-sm border border-orange-100">
+                <Store size={16} className="text-orange-600" />
               </div>
             </div>
 
@@ -115,7 +111,6 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
         </div>
       </div>
 
-      {/* Desktop Header */}
       <div className="hidden lg:block">
         <div className="grid grid-cols-12 px-6 py-2 bg-gray-50 text-[10px] font-semibold uppercase tracking-widest text-gray-600 border-b border-gray-100">
           <div className="col-span-5">Sản phẩm</div>
@@ -154,7 +149,6 @@ export const ShopCartSection: React.FC<ShopCartSectionProps> = ({
         ))}
       </div>
 
-      {/* Footer Section */}
       <div className="bg-gray-50/30 border-t border-gray-100 mt-auto">
         {shop.discount > 0 && (
           <div className="px-5 py-2 flex justify-between items-center bg-orange-50/30 border-b border-gray-100/30">

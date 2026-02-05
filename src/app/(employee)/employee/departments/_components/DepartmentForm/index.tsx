@@ -40,15 +40,24 @@ export default function DepartmentForm({
       description: "",
     },
   });
+  const handleManualSubmit = () => {
+    handleSubmit((data) => onSubmit(data))();
+  };
 
   useEffect(() => {
     if (open) {
-      const initialValues = isEdit
-        ? _.pick(department, ["departmentName", "description"])
-        : { departmentName: "", description: "" };
+      const initialValues =
+        isEdit && department
+          ? {
+              departmentName: department.departmentName || "",
+              description: department.description || "",
+            }
+          : { departmentName: "", description: "" };
+
       reset(initialValues);
     }
-  }, [open, department, reset, isEdit]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, isEdit, reset]);
 
   return (
     <PortalModal
@@ -59,8 +68,8 @@ export default function DepartmentForm({
           <div className="p-2.5 bg-orange-100 text-orange-600 rounded-2xl shadow-sm shadow-orange-100">
             <Building2Icon size={22} strokeWidth={2.5} />
           </div>
-          <span className="font-bold text-gray-800 uppercase text-lg tracking-tight italic">
-            {isEdit ? "Cập nhật" : "Khởi tạo"}{" "}
+          <span className="font-bold text-gray-800 uppercase text-lg flex gap-1 items-center tracking-tight italic">
+            {isEdit ? "Cập nhật" : "Khởi tạo"}
             <span className="text-orange-500">phòng ban</span>
           </span>
         </div>
@@ -79,6 +88,7 @@ export default function DepartmentForm({
             htmlType="submit"
             type="login"
             disabled={isSubmitting}
+            onClick={handleManualSubmit}
             form="department-form"
             className="w-48! flex items-center justify-center gap-2 px-6 py-2.5 rounded-2xl text-sm font-bold shadow-lg shadow-orange-500/20 transition-all active:scale-95 border-0 h-auto"
           >
@@ -99,7 +109,6 @@ export default function DepartmentForm({
         onSubmit={handleSubmit((data) => onSubmit(data))}
         className="space-y-8 pb-2 animate-in fade-in slide-in-from-bottom-2 duration-500"
       >
-        {/* Info Banner */}
         <div className="p-4 bg-linear-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-3xl flex gap-4 items-center">
           <div className="p-2 bg-white rounded-xl shadow-sm text-blue-500">
             <Info size={18} strokeWidth={2.5} />
@@ -120,7 +129,7 @@ export default function DepartmentForm({
               {...register("departmentName", {
                 required: "Tên phòng ban là bắt buộc",
                 maxLength: { value: 200, message: "Tối đa 200 ký tự" },
-              })} 
+              })}
               error={errors.departmentName?.message as string}
               required
             />

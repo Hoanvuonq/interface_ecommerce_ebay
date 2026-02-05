@@ -4,6 +4,7 @@ import { useToast } from "@/hooks/useToast";
 import { cn } from "@/utils/cn";
 import { CloudUpload, Eye, FileText, X, Plus, Trash2 } from "lucide-react";
 import React, { useRef, useState, useEffect, useCallback } from "react";
+import Image from "next/image"; 
 
 export interface CustomFile {
   id: string;
@@ -37,7 +38,6 @@ export const FiedFileUpload: React.FC<FiedFileUploadProps> = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { error: toastError } = useToast();
 
-  // Dọn dẹp bộ nhớ Blob URL
   useEffect(() => {
     return () => {
       value.forEach((file) => {
@@ -48,7 +48,7 @@ export const FiedFileUpload: React.FC<FiedFileUploadProps> = ({
 
   const validateFile = useCallback((file: File) => {
     if (!allowedTypes.includes(file.type)) {
-      toastError(`File ${file.name} không hợp lệ. Định dạng cho phép: ${allowedTypes.join(", ")}`);
+      toastError(`File ${file.name} không hợp lệ.`);
       return false;
     }
     if (file.size / 1024 / 1024 > maxSizeMB) {
@@ -65,7 +65,8 @@ export const FiedFileUpload: React.FC<FiedFileUploadProps> = ({
       .slice(0, maxCount - value.length);
 
     const processedFiles: CustomFile[] = validFiles.map((file) => ({
-      id: crypto.randomUUID(),
+      // Đảm bảo ID luôn duy nhất để hết lỗi Key
+      id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`, 
       originFileObj: file,
       name: file.name,
       type: file.type,
@@ -85,19 +86,25 @@ export const FiedFileUpload: React.FC<FiedFileUploadProps> = ({
     onChange?.(value.filter((f) => f.id !== id));
   };
 
-  // --- RENDERING LOGIC ---
+  // --- RENDERING ---
 
-  // Giao diện ô vuông (Grid) cho Hình ảnh
   const renderGridView = () => (
     <div className="flex flex-wrap gap-4">
       {value.map((file) => (
         <div key={file.id} className="group relative w-24 h-24 rounded-xl border border-gray-200 overflow-hidden bg-gray-50 flex items-center justify-center">
           {file.preview ? (
-            <img src={file.preview} alt={file.name} className="w-full h-full object-cover" />
+            // 🟢 Dùng Next.js Image với layout fill
+            <Image 
+              src={file.preview} 
+              alt={file.name} 
+              fill 
+              className="object-cover"
+              unoptimized // Cần thiết vì blob URL ko thể tối ưu trên server
+            />
           ) : (
             <FileText className="text-blue-500" size={24} />
           )}
-          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 z-10">
             <button type="button" onClick={() => window.open(file.preview, "_blank")} className="text-white hover:text-blue-400 p-1">
               <Eye size={18} />
             </button>
@@ -119,7 +126,6 @@ export const FiedFileUpload: React.FC<FiedFileUploadProps> = ({
     </div>
   );
 
-  // Giao diện danh sách (List) cho Tài liệu
   const renderListView = () => (
     <div className="space-y-4">
       {value.length < maxCount && (
@@ -141,8 +147,18 @@ export const FiedFileUpload: React.FC<FiedFileUploadProps> = ({
       <div className="grid grid-cols-1 gap-2">
         {value.map((file) => (
           <div key={file.id} className="flex items-center gap-4 p-3 bg-white border border-gray-100 rounded-2xl group hover:shadow-md transition-all">
-            <div className="w-10 h-10 rounded-lg overflow-hidden bg-gray-50 flex items-center justify-center border border-gray-100 shrink-0">
-              {file.preview ? <img src={file.preview} className="w-full h-full object-cover" /> : <FileText className="text-blue-500" size={20} />}
+            <div className="w-10 h-10 rounded-lg overflow-hidden bg-gray-50 flex items-center justify-center border border-gray-100 shrink-0 relative">
+              {file.preview ? (
+                <Image 
+                  src={file.preview} 
+                  alt={file.name} 
+                  fill 
+                  className="object-cover" 
+                  unoptimized 
+                />
+              ) : (
+                <FileText className="text-blue-500" size={20} />
+              )}
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-xs font-bold text-gray-700 truncate">{file.name}</p>
@@ -150,7 +166,7 @@ export const FiedFileUpload: React.FC<FiedFileUploadProps> = ({
             </div>
             <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
               <button type="button" onClick={() => window.open(file.preview, "_blank")} className="p-1.5 text-gray-500 hover:text-orange-500"><Eye size={16} /></button>
-              <button type="button" onClick={() => removeFile(file.id)} className="p-1.5 text-gray-500 hover:text-red-500"><X size={16} /></button>
+              <button type="button" onClick={() => removeFile(file.id)} className="p-1.5 text-gray-500 hover:text-red-500"><Trash2 size={16} /></button>
             </div>
           </div>
         ))}

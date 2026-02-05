@@ -46,7 +46,6 @@ export interface ProductResponse {
     logo?: string;
   };
 
-  // Audit fields
   createdBy: string;
   createdDate: string;
   lastModifiedBy: string;
@@ -106,7 +105,7 @@ export interface ProductMediaResponse {
   sortOrder: number;
   isPrimary: boolean;
   productId: string;
-
+ 
   createdBy: string;
   createdDate: string;
   lastModifiedBy: string;

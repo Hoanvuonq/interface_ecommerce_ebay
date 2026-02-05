@@ -16,15 +16,18 @@ const Checkout: React.FC = () => {
     if (savedPreview) {
       const p = JSON.parse(savedPreview);
       const r = savedRequest ? JSON.parse(savedRequest) : null;
-      // 🟢 FIX: Reset vouchers nếu chưa apply best (để auto apply lại)
       if (r && r.globalVouchers && r.globalVouchers.length === 0) {
         r.globalVouchers = undefined;
         r.shops.forEach((s: any) => {
           if (s.vouchers && s.vouchers.length === 0) s.vouchers = undefined;
-          if (s.globalVouchers && s.globalVouchers.length === 0) s.globalVouchers = undefined;
+          if (s.globalVouchers && s.globalVouchers.length === 0)
+            s.globalVouchers = undefined;
         });
       }
-      console.debug("Checkout.page: loaded initial preview/request from sessionStorage", { preview: p, request: r });
+      console.debug(
+        "Checkout.page: loaded initial preview/request from sessionStorage",
+        { preview: p, request: r },
+      );
       setInitialData({ preview: p, request: r });
     } else {
       setInitialData({ preview: null, request: null });

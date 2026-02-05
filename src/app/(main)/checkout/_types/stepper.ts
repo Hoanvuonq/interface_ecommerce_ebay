@@ -1,5 +1,10 @@
-import { CheckCircle2, CreditCard, MapPin, ShoppingCart, Truck } from "lucide-react";
-
+import {
+  CheckCircle2,
+  CreditCard,
+  MapPin,
+  ShoppingCart,
+  Truck,
+} from "lucide-react";
 
 export const ISteps = [
   {

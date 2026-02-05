@@ -39,7 +39,7 @@ export const MediaLightbox = ({ media, onClose }: MediaLightboxProps) => {
               )}
             </div>
             <div className="flex flex-col">
-              <span className="text-white text-[13px] font-black uppercase tracking-[0.2em] leading-none mb-1">
+              <span className="text-white text-[13px] font-bold uppercase tracking-[0.2em] leading-none mb-1">
                 {media.type === "VIDEO" ? "Phát Video" : "Xem Ảnh Chi Tiết"}
               </span>
               {media.title && (
@@ -102,7 +102,7 @@ export const MediaLightbox = ({ media, onClose }: MediaLightboxProps) => {
               <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
               <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
             </div>
-            <p className="text-white/40 text-[9px] font-black uppercase tracking-[0.3em] whitespace-nowrap">
+            <p className="text-white/40 text-[9px] font-bold uppercase tracking-[0.3em] whitespace-nowrap">
               Click vùng trống để thoát
             </p>
           </div>

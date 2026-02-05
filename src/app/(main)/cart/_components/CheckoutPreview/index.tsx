@@ -13,7 +13,7 @@ import {
   CreditCard,
   AlertCircle,
 } from "lucide-react";
-import type { OrderPreviewResponse } from "@/types/cart/cart.types";
+import type { OrderPreviewResponse } from "@/app/(main)/checkout/_types/checkout.type";
 import { cn } from "@/utils/cn";
 import { formatPriceFull } from "@/hooks/useFormatPrice";
 

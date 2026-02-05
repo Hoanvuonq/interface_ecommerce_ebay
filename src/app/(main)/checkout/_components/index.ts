@@ -10,3 +10,4 @@ export * from "./PaymentSection";
 export * from "./ShippingMethodModal";
 export * from "./ShopLoyaltySection";
 export * from "./ShopShippingSelector";
+export * from "./TotalAmountCheckoutList";

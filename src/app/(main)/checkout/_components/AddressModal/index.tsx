@@ -153,7 +153,7 @@ export const AddressModal: React.FC<AddressModalProps> = ({
                   </p>
 
                   {addr.isDefault && (
-                    <div className="mt-3 inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-orange-100 text-orange-600 text-[8px] font-black uppercase tracking-widest border border-orange-200">
+                    <div className="mt-3 inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-orange-100 text-orange-600 text-[8px] font-bold uppercase tracking-widest border border-orange-200">
                       Mặc định
                     </div>
                   )}

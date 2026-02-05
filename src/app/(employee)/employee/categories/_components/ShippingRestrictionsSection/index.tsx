@@ -67,10 +67,8 @@ export const ShippingRestrictionsSection: React.FC<
 
           {restrictionType === "COUNTRIES" && (
             <div className="space-y-2 animate-in slide-in-from-left-4 duration-300">
-              <label className="text-[11px] font-bold text-slate-500 uppercase ml-2 tracking-widest">
-                Chế độ giới hạn
-              </label>
               <SelectComponent
+                label="Chế độ giới hạn"
                 options={[
                   { label: "Chỉ cho phép (Whitelist)", value: "ALLOW_ONLY" },
                   { label: "Chặn danh sách (Blacklist)", value: "DENY_ONLY" },
@@ -85,9 +83,7 @@ export const ShippingRestrictionsSection: React.FC<
           )}
         </div>
 
-        {/* Dynamic Inputs dựa trên Type */}
         <div className="space-y-4">
-          {/* Bán kính (Local Radius) */}
           {restrictionType === "LOCAL_RADIUS" && (
             <div className="p-5 bg-blue-50/50 rounded-3xl border border-blue-100 animate-in zoom-in-95 duration-300">
               <FormInput
@@ -114,11 +110,9 @@ export const ShippingRestrictionsSection: React.FC<
           {/* Danh sách Quốc gia */}
           {restrictionType === "COUNTRIES" && (
             <div className="p-5 bg-blue-50/50 rounded-3xl border border-blue-100 animate-in fade-in duration-500 space-y-3">
-              <label className="text-[11px] font-bold text-indigo-500 uppercase ml-2 tracking-widest">
-                Chọn danh sách quốc gia
-              </label>
               <SelectComponent
                 isMulti
+                label=" Chọn danh sách quốc gia"
                 placeholder="Tìm quốc gia..."
                 options={COUNTRIES}
                 value={value?.restrictedCountries || []}
@@ -134,11 +128,9 @@ export const ShippingRestrictionsSection: React.FC<
           {/* Danh sách Khu vực */}
           {restrictionType === "REGIONS" && (
             <div className="p-5 bg-blue-50/50 rounded-3xl border border-blue-100 animate-in fade-in duration-500 space-y-3">
-              <label className="text-[11px] font-bold text-indigo-500 uppercase ml-2 tracking-widest">
-                Chọn danh sách khu vực
-              </label>
               <SelectComponent
                 isMulti
+                label=" Chọn danh sách khu vực"
                 placeholder="Tìm khu vực..."
                 options={REGIONS}
                 value={value?.restrictedRegions || []}

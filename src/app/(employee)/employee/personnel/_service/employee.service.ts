@@ -7,6 +7,7 @@ import {
 }  from "../_types/dto/employee.dto";
 import { request } from "@/utils/axios.customize";
 import type { ApiResponse } from "@/api/_types/api.types";
+import { generateIdempotencyKey } from "@/utils/generateIdempotencyKey";
 
 const API_ENDPOINT_EMPLOYEE = "v1/employees";
 const API_ENDPOINT_DEPARTMENT = "v1/departments";
@@ -101,6 +102,9 @@ export async function getEmployeeStatisticsTime(
     url: `/${API_ENDPOINT_EMPLOYEE}/statistics/time`,
     method: "GET",
     params: { year, month },
+    headers: {
+          "Idempotency-Key": generateIdempotencyKey(),
+        },
   });
 }
 

@@ -1,19 +1,10 @@
-/**
- * Buyer Types - Type definitions for Buyer module
- */
 
-/**
- * Gender enum
- */
 export enum Gender {
   MALE = "MALE",
   FEMALE = "FEMALE",
   OTHER = "OTHER",
 }
 
-/**
- * Buyer Create Request
- */
 export interface BuyerCreateRequest {
   userId: string;
   fullName: string;
@@ -22,9 +13,6 @@ export interface BuyerCreateRequest {
   gender: Gender;
 }
 
-/**
- * Buyer Update Request
- */
 export interface BuyerUpdateRequest {
   fullName: string;
   phone: string;
@@ -100,7 +88,7 @@ export interface BuyerAddressResponse {
   phone: string;
   type: AddressType;
   isDefault: boolean;
-  address: AddressDetail; // 🟢 Dữ liệu địa chỉ thực tế nằm ở đây
+  address: AddressDetail; 
   default: boolean;
   defaultPickup: boolean;
   defaultReturn: boolean;

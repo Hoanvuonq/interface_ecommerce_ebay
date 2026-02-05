@@ -96,9 +96,9 @@ export const OrderSummary = ({
                       <span className="text-[10px] text-gray-500">
                         Ship: {formatPrice(shop.summary?.shippingFee)}
                       </span>
-                      {shop.voucherResult?.totalDiscount > 0 && (
+                      {shop.voucher?.totalDiscount > 0 && (
                         <span className="text-[10px] text-rose-500 font-bold">
-                          Giảm: -{formatPrice(shop.voucherResult.totalDiscount)}
+                          Giảm: -{formatPrice(shop.voucher.totalDiscount)}
                         </span>
                       )}
                     </div>

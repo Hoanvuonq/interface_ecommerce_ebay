@@ -21,7 +21,6 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { CartItemProps } from "../../_types/cartItems";
 import { NotificationRemoveModal } from "../NotificationRemoveModal";
 
-// 🟢 Định nghĩa base URL để khớp với Popover
 const STORAGE_BASE_URL = "https://pub-5341c10461574a539df355b9fbe87197.r2.dev/";
 
 export const CartItem: React.FC<CartItemProps> = ({
@@ -47,14 +46,13 @@ export const CartItem: React.FC<CartItemProps> = ({
     (state) => state.cart.cart?.version,
   );
 
-  // 🟢 Logic xử lý URL ảnh khớp với Popover để dứt điểm 404
   const { categoryUI, categoryEmoji, effectivePrice, initialImageUrl } =
     useMemo(() => {
       const categoryKey = getStandardizedKey(item.productName);
 
       let url = null;
       if (item.imagePath) {
-        const cleanPath = item.imagePath.replace(/^\//, ""); // Xóa dấu / ở đầu nếu có
+        const cleanPath = item.imagePath.replace(/^\//, ""); 
         url = `${STORAGE_BASE_URL}${cleanPath.replace("*", "thumb")}`;
       }
 
@@ -123,7 +121,6 @@ export const CartItem: React.FC<CartItemProps> = ({
     else dispatch(toggleItemSelectionLocal(item.id));
   };
 
-  // 🟢 Component hiển thị ảnh với logic Fallback từ thumb sang orig
   const ProductImage = () => (
     <div className="relative w-full h-full group-hover:scale-105 transition-transform duration-500">
       {initialImageUrl && !imgError ? (
@@ -133,7 +130,6 @@ export const CartItem: React.FC<CartItemProps> = ({
           className="w-full h-full object-cover"
           onError={(e) => {
             const target = e.target as HTMLImageElement;
-            // Nếu thumb lỗi, thử sang orig
             if (target.src.includes("thumb")) {
               const cleanPath = item.imagePath!.replace(/^\//, "");
               target.src = `${STORAGE_BASE_URL}${cleanPath.replace("*", "orig")}`;

@@ -2,43 +2,20 @@
  * Cart Service - API calls cho giỏ hàng
  */
 
-import { request } from "@/utils/axios.customize";
 import type {
   AddToCartRequest,
   CartDto,
   CartUpdateRequest,
-  OrderPreviewRequest,
-  OrderPreviewResponse,
   SelectItemsRequest,
   UpdateCartItemRequest,
-  CheckoutValidationErrorResponse,
 } from "@/types/cart/cart.types";
+import { request } from "@/utils/axios.customize";
 
 import type { ApiResponse } from "@/api/_types/api.types";
+import { generateIdempotencyKey } from "@/utils/generateIdempotencyKey";
 const CART_API_BASE = "/v1/cart";
 const CART_ITEMS_API = "/v1/cart/items";
 const CART_SELECTION_API = "/v1/carts/selection";
-
-const generateIdempotencyKey = () => {
-  // Check if crypto.randomUUID is available (HTTPS/localhost only)
-  if (
-    typeof crypto !== "undefined" &&
-    typeof crypto.randomUUID === "function"
-  ) {
-    try {
-      return crypto.randomUUID();
-    } catch (e) {
-      // Fallback below
-    }
-  }
-
-  // Fallback for HTTP connections - Generate UUID v4 manually
-  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
-    const r = (Math.random() * 16) | 0;
-    const v = c === "x" ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
-};
 
 class CartService {
   /**
@@ -207,43 +184,6 @@ class CartService {
       headers: {
         "Idempotency-Key": generateIdempotencyKey(),
       },
-    });
-    return response.data;
-  }
-
-  /**
-   * Checkout - Xem trước đơn hàng (POST)
-   */
-  async checkout(
-    checkoutRequest: OrderPreviewRequest,
-  ): Promise<OrderPreviewResponse | CheckoutValidationErrorResponse> {
-    const response: ApiResponse<
-      OrderPreviewResponse | CheckoutValidationErrorResponse
-    > = await request({
-      url: `${CART_API_BASE}/checkout`,
-      method: "POST",
-      data: checkoutRequest,
-      headers: {
-        "Idempotency-Key": generateIdempotencyKey(),
-      },
-    });
-    return response.data;
-  }
-
-  /**
-   * Get Checkout Details - Lấy checkout đầy đủ với shipping options (POST)
-   * Similar to Shopee's POST /checkout/get
-   * Gọi sau khi user đã chọn địa chỉ để lấy shipping options
-   */
-  async getCheckoutDetails(
-    checkoutRequest: OrderPreviewRequest,
-  ): Promise<OrderPreviewResponse | CheckoutValidationErrorResponse> {
-    const response: ApiResponse<
-      OrderPreviewResponse | CheckoutValidationErrorResponse
-    > = await request({
-      url: `${CART_API_BASE}/checkout/get`,
-      method: "POST",
-      data: checkoutRequest,
     });
     return response.data;
   }

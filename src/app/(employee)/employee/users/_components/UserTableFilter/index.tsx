@@ -1,16 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { SelectComponent } from "@/components";
-import { cn } from "@/utils/cn";
+import {
+  StatusTabItem,
+  StatusTabs,
+} from "@/app/(shop)/shop/_components/Products/StatusTabs";
+import {
+  CustomButtonActions,
+  SearchComponent,
+  SelectComponent
+} from "@/components";
 import _ from "lodash";
-import { RotateCw, Search, XCircle } from "lucide-react";
+import { RotateCw } from "lucide-react";
 import React, { useMemo } from "react";
 import { DATA_TABS, UserTableFilterProps } from "./type";
-import {
-  StatusTabs,
-  StatusTabItem,
-} from "@/app/(shop)/shop/_components/Products/StatusTabs";
 
 export const UserTableFilter: React.FC<UserTableFilterProps> = ({ logic }) => {
   const tabsWithCounts = useMemo(() => {
@@ -24,30 +27,33 @@ export const UserTableFilter: React.FC<UserTableFilterProps> = ({ logic }) => {
     })) as StatusTabItem<string>[];
   }, [logic.statistics]);
 
+  const handleKeywordChange = (val: string) => {
+    logic.updateState({
+      searchKeyword: val,
+      pagination: { ...logic.pagination, current: 1 },
+    });
+  };
+
+  const handleTriggerSearch = () => {
+    logic.updateState({ pagination: { ...logic.pagination, current: 1 } });
+    logic.fetchUsers();
+  };
+
   return (
-    <div className="bg-white p-6 rounded-3xl shadow-custom border border-gray-50 mb-8 space-y-4">
+    <div className="bg-white p-6 rounded-[2.5rem] shadow-custom border border-gray-50 mb-8 space-y-6">
       <div className="flex flex-col lg:flex-row justify-between gap-4">
-        <div className="flex flex-wrap gap-4 flex-1">
-          <div className="relative group flex-1 min-w-75">
-            <Search
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 group-focus-within:text-orange-500 transition-colors"
-              size={18}
-            />
-            <input
-              className={cn(
-                "w-full pl-12 pr-4 py-3 rounded-2xl bg-gray-50 border-none ",
-                "focus:ring-2 focus:ring-orange-500/20 outline-none font-bold text-sm text-gray-700 placeholder:text-gray-600 transition-all",
-              )}
-              placeholder="Tìm kiếm username hoặc email..."
+        <div className="flex flex-col sm:flex-row gap-4 flex-1">
+          <div className="flex-2 min-w-75">
+            <SearchComponent
               value={logic.searchKeyword}
-              onChange={(e) =>
-                logic.updateState({ searchKeyword: e.target.value })
-              }
-              onKeyDown={(e) => e.key === "Enter" && logic.fetchUsers()}
+              onChange={handleKeywordChange}
+              onEnter={handleTriggerSearch}
+              placeholder="Tìm kiếm username hoặc email..."
+              size="md"
             />
           </div>
 
-          <div className="min-w-50">
+          <div className="flex-1 min-w-50">
             <SelectComponent
               isMulti={true}
               options={
@@ -58,46 +64,40 @@ export const UserTableFilter: React.FC<UserTableFilterProps> = ({ logic }) => {
               }
               value={logic.selectedRoles}
               onChange={(selected) =>
-                logic.updateState({ selectedRoles: selected })
+                logic.updateState({
+                  selectedRoles: selected,
+                  pagination: { ...logic.pagination, current: 1 },
+                })
               }
               placeholder="Tất cả vai trò"
             />
           </div>
         </div>
 
-        <div className="flex gap-2">
-          <button
-            onClick={logic.resetFilters}
-            className="p-3 bg-gray-50 text-gray-600 rounded-2xl hover:bg-rose-50 hover:text-rose-500 transition-all border border-transparent hover:border-rose-100 shadow-sm"
-            title="Reset bộ lọc"
-          >
-            <XCircle size={20} />
-          </button>
-          <button
-            onClick={() => logic.fetchUsers()}
-            className="flex items-center gap-2 px-8 py-3 bg-orange-500 text-white rounded-2xl font-semibold text-xs uppercase tracking-widest shadow-lg shadow-orange-200 hover:scale-[1.02] active:scale-95 transition-all"
-          >
-            <RotateCw
-              size={16}
-              className={cn(logic.usersLoading && "animate-spin")}
-            />
-            Làm mới
-          </button>
-        </div>
-      </div>
-
-      <div className="pt-2 border-t border-gray-50">
-        <StatusTabs
-          tabs={tabsWithCounts}
-          current={logic.activeTab}
-          onChange={(key) =>
-            logic.updateState({
-              activeTab: key,
-              pagination: { ...logic.pagination, current: 1 },
-            })
-          }
+        <CustomButtonActions
+          onCancel={logic.resetFilters}
+          onSubmit={handleTriggerSearch}
+          isLoading={logic.usersLoading}
+          cancelText="Reset"
+          submitText="Làm mới"
+          submitIcon={RotateCw}
+          containerClassName="border-t-0 p-0 !gap-3 shrink-0"
+          className="px-6"
+          hasChanges={true}
         />
       </div>
+
+      <StatusTabs
+        tabs={tabsWithCounts}
+        current={logic.activeTab}
+        onChange={(key) =>
+          logic.updateState({
+            activeTab: key,
+            pagination: { ...logic.pagination, current: 1 },
+          })
+        }
+        layoutId="user-filter-tabs"
+      />
     </div>
   );
 };

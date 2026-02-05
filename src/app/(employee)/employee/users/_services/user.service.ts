@@ -6,25 +6,10 @@ import {
 } from "../_types/dto/user.dto";
 import { request } from "@/utils/axios.customize";
 import { ApiResponse } from "@/api/_types/api.types";
+import { generateIdempotencyKey } from "@/utils/generateIdempotencyKey";
 
 const API_ENDPOINT_ACCOUNT = "v1/users";
 const API_ENDPOINT_ROLE = "v1/roles";
-
-export const generateIdempotencyKey = () => {
-  if (
-    typeof crypto !== "undefined" &&
-    typeof crypto.randomUUID === "function"
-  ) {
-    try {
-      return crypto.randomUUID();
-    } catch (e) {}
-  }
-  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
-    const r = (Math.random() * 16) | 0;
-    const v = c === "x" ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
-};
 
 export async function getAllUsers(
   payload: GetUsersRequest,

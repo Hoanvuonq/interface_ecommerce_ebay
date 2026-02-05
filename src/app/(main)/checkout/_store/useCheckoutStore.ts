@@ -62,6 +62,7 @@ export const useCheckoutStore = create<any>()(
 
           return {
             ...s,
+            vouchers: s.voucher?.valid?.map((v: any) => v.code) || [],
             serviceCode: Number(
               freshShop.selectedShippingMethod || s.serviceCode,
             ),

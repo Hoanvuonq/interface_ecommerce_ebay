@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import { DepartmentDetail as DepartmentDetailType } from "../../_types/department.type";
 import PositionManagement from "../PositionManagement";
 import { PortalModal } from "@/features/PortalModal";
-import { SectionHeader } from "@/components";
+import { SectionHeader, SectionLoading } from "@/components";
 import { cn } from "@/utils/cn";
 import { Loader2, Users, Briefcase, Calendar, Info } from "lucide-react";
 import { FaUserEdit } from "react-icons/fa";
@@ -55,12 +55,7 @@ export default function DepartmentDetail({
       width="max-w-5xl"
     >
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-20 gap-4">
-          <Loader2 className="animate-spin text-orange-500" size={40} />
-          <span className="text-[10px] font-semibold uppercase tracking-widest text-gray-600">
-            Đang truy xuất dữ liệu...
-          </span>
-        </div>
+        <SectionLoading message=" Đang truy xuất dữ liệu..." />
       ) : department ? (
         <div className="space-y-8 pb-6 animate-in fade-in duration-500">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -116,7 +111,6 @@ export default function DepartmentDetail({
             </div>
           </div>
 
-          {/* 2. Position Management Area */}
           <div className="relative pt-4">
             <PositionManagement
               departmentId={department.departmentId}

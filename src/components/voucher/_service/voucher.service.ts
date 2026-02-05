@@ -1,88 +1,50 @@
 import { request } from "@/utils/axios.customize";
-import type { ApiResponse } from "@/api/_types/api.types";
-import _ from "lodash";
 import {
   VoucherOption,
+  GroupedVouchers,
+  VoucherShopRequest,
+  VoucherPlatformRequest,
   VoucherRecommendationResult,
   PlatformVoucherRecommendationsData,
-  GroupedVouchers
-} from "../_types/voucher"; 
-
-const VOUCHER_API_BASE = "/v2/vouchers";
+  ApiResponse,
+} from "../_types/voucher";
+import { flattenVoucher } from "../_utils/voucher.mapper";
 
 class VoucherService {
-  private mapRecommendationResult(result: VoucherRecommendationResult | null): VoucherOption | null {
-    if (!result || !result.voucher) return null;
+  async getShopVouchersWithContext(
+    params: VoucherShopRequest,
+  ): Promise<VoucherOption[]> {
+    const res: ApiResponse<VoucherRecommendationResult[]> = await request({
+      url: "/v2/vouchers/recommend/by-shop",
+      method: "POST",
+      data: params,
+    });
 
-    const { voucher: v, applicable, reason, calculatedDiscount } = result;
+    return (res.data || [])
+      .map(flattenVoucher)
+      .filter((v): v is VoucherOption => v !== null);
+  }
+
+  async getPlatformVouchersWithContext(
+    params: VoucherPlatformRequest,
+  ): Promise<GroupedVouchers> {
+    const res: ApiResponse<PlatformVoucherRecommendationsData> = await request({
+      url: "/v2/vouchers/recommend/by-platform",
+      method: "POST",
+      data: params,
+    });
+
+    const data = res.data;
+
+    const mapList = (list: VoucherRecommendationResult[]) =>
+      (list || [])
+        .map(flattenVoucher)
+        .filter((v): v is VoucherOption => v !== null);
 
     return {
-      ...v,
-      discountAmount: v.discountValue, 
-      minOrderValue: v.minOrderAmount,
-      discountType: v.discountType,
-      discountMethod: v.discountType,
-      applicable,
-      reason,
-      calculatedDiscount,
-      canSelect: applicable,
-      isValid: v.active,
+      productOrderVouchers: mapList(data?.productOrderVouchers || []),
+      shippingVouchers: mapList(data?.shippingVouchers || []),
     };
-  }
-
-  async getShopVouchersWithContext(params: any): Promise<VoucherOption[]> {
-    try {
-      const response: ApiResponse<VoucherRecommendationResult[]> = await request({
-        url: `${VOUCHER_API_BASE}/recommend/by-shop`,
-        method: "POST",
-        data: params,
-      });
-
-      return (response.data || [])
-        .map((res) => this.mapRecommendationResult(res))
-        .filter((v): v is VoucherOption => !_.isNil(v));
-    } catch (error) {
-      return [];
-    }
-  }
- async getShopVouchersForBuyer(shopId: string): Promise<VoucherOption[]> {
-    try {
-      const response: ApiResponse<VoucherRecommendationResult[]> =
-        await request({
-          url: `${VOUCHER_API_BASE}/recommend/by-shop`,
-          method: "GET",
-          params: { shopId },
-        });
-
-      return _.chain(response.data)
-        .map((res) => this.mapRecommendationResult(res))
-        .filter(_.isObject)
-        .value() as VoucherOption[];
-    } catch (error) {
-      console.error("Error in getShopVouchersForBuyer:", error);
-      return [];
-    }
-  }
-  async getPlatformVouchersWithContext(params: any): Promise<GroupedVouchers> {
-    try {
-      const response: ApiResponse<PlatformVoucherRecommendationsData> = await request({
-        url: `${VOUCHER_API_BASE}/recommend/by-platform`,
-        method: "POST",
-        data: params,
-      });
-
-      const mapList = (list: VoucherRecommendationResult[]) =>
-        (list || [])
-          .map((res) => this.mapRecommendationResult(res))
-          .filter((v): v is VoucherOption => !_.isNil(v));
-
-      return {
-        productOrderVouchers: mapList(response.data?.productOrderVouchers),
-        shippingVouchers: mapList(response.data?.shippingVouchers),
-      };
-    } catch (error) {
-      return { productOrderVouchers: [], shippingVouchers: [] };
-    }
   }
 }
 

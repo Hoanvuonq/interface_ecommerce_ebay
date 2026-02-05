@@ -3,7 +3,7 @@
 import React, { useId } from "react";
 import { Search, XCircle } from "lucide-react";
 import { cn } from "@/utils/cn";
-import { Button, FormInput } from "@/components";
+import { FormInput } from "@/components"; // Đảm bảo đúng component của bro
 import { SearchComponentProps } from "./type";
 
 export const SearchComponent: React.FC<SearchComponentProps> = ({
@@ -62,9 +62,7 @@ export const SearchComponent: React.FC<SearchComponentProps> = ({
         name={name}
         placeholder={placeholder}
         value={value}
-        onChange={(
-          e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-        ) => onChange(e.target.value)}
+        onChange={(e: any) => onChange(e.target.value)}
         onKeyDown={(e: React.KeyboardEvent) => {
           if (e.key === "Enter") onEnter?.();
         }}
@@ -72,27 +70,29 @@ export const SearchComponent: React.FC<SearchComponentProps> = ({
           "w-full transition-all duration-300 border-gray-100 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-orange-500/5 focus:border-orange-500/40",
           currentSize.container,
           currentSize.paddingLeft,
-          currentSize.paddingRight,
-          "rounded-2xl font-medium",
+          "pr-12",
+          "rounded-2xl font-bold text-sm",
           inputClassName,
         )}
       />
 
-      {/* {value && (
-        <Button
+      {value && (
+        <button
           type="button"
           onClick={() => onChange("")}
-          className="absolute right-12 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500 transition-colors z-10"
+          className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300 hover:text-rose-500 transition-colors z-20 active:scale-90"
         >
-          <XCircle size={currentSize.icon - 2} />
-        </Button>
-      )} */}
+          <XCircle size={currentSize.icon} strokeWidth={2.5} />
+        </button>
+      )}
 
-      <div className="absolute inset-y-0 right-4 hidden md:flex items-center pointer-events-none opacity-40 group-focus-within:opacity-0 transition-opacity">
-        <kbd className="px-1.5 py-0.5 text-[10px] font-bold text-gray-400 bg-white border border-gray-200 rounded-md shadow-sm">
-          /
-        </kbd>
-      </div>
+      {!value && (
+        <div className="absolute inset-y-0 right-4 hidden md:flex items-center pointer-events-none opacity-40 group-focus-within:opacity-0 transition-opacity">
+          <kbd className="px-1.5 py-0.5 text-[10px] font-bold text-gray-400 bg-white border border-gray-200 rounded-md shadow-sm">
+            /
+          </kbd>
+        </div>
+      )}
     </div>
   );
 };

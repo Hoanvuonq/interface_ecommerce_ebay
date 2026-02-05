@@ -11,7 +11,8 @@ import { IButtonProps } from "./type";
 import { useToast } from "@/hooks/useToast";
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/store/store";
-import { fetchCart, checkoutPreview } from "@/store/theme/cartSlice";
+import { fetchCart, } from "@/store/theme/cartSlice";
+import { checkoutPreviewMain } from "@/app/(main)/checkout/_store/checkoutSlice";
 
 export const AddToCartButton: React.FC<
   IButtonProps & {
@@ -153,7 +154,7 @@ export const AddToCartButton: React.FC<
       // Create preview and store it so /checkout can initialize
       let previewData: any = null;
       try {
-        previewData = await dispatch(checkoutPreview(checkoutRequest)).unwrap();
+        previewData = await dispatch(checkoutPreviewMain(checkoutRequest)).unwrap();
         console.debug("BuyNow: checkoutPreview result", previewData);
       } catch (e) {
         console.error("BuyNow: checkoutPreview failed", e);

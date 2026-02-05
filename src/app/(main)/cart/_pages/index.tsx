@@ -5,7 +5,6 @@ import { SectionPageComponents } from "@/features/SectionPageComponents";
 import { useToast } from "@/hooks/useToast";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import {
-  checkoutPreview,
   deselectAllItemsLocal,
   fetchCart,
   removeCartItems,
@@ -24,6 +23,7 @@ import {
   NotificationRemoveModal,
   ShopCartSection,
 } from "../_components";
+import { checkoutPreviewMain } from "../../checkout/_store/checkoutSlice";
 import { HeaderCart } from "../_layouts/headerCart";
 
 export const CartScreen = () => {
@@ -133,7 +133,7 @@ export const CartScreen = () => {
 
     try {
       const previewData = await dispatch(
-        checkoutPreview(checkoutRequest as any),
+        checkoutPreviewMain(checkoutRequest as any),
       ).unwrap();
       sessionStorage.setItem("checkoutPreview", JSON.stringify(previewData));
       sessionStorage.setItem(

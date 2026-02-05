@@ -54,7 +54,7 @@ export const MiniSettingCard = ({
                 {title}
               </h4>
               {isPartner && (
-                <span className="px-1.5 py-0.5 rounded-sm border border-red-100 text-red-400 text-[8px] font-black uppercase bg-red-50/30">
+                <span className="px-1.5 py-0.5 rounded-sm border border-red-100 text-red-400 text-[8px] font-bold uppercase bg-red-50/30">
                   Đối tác
                 </span>
               )}
@@ -71,7 +71,7 @@ export const MiniSettingCard = ({
           {price !== undefined && (
             <span
               className={cn(
-                "text-[13px] font-black tracking-tight",
+                "text-[13px] font-bold tracking-tight",
                 isActive ? "text-gray-700" : "text-gray-600",
               )}
             >

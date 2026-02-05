@@ -66,7 +66,7 @@ export const getShippingColumns = (
                   onUpdateVariant(index, dim, parseFloat(e.target.value) || 0)
                 }
               />
-              <span className="absolute -top-2 left-1/2 -translate-x-1/2 bg-white px-1 text-[8px] font-black text-orange-400 group-hover:text-orange-600 transition-colors uppercase">
+              <span className="absolute -top-2 left-1/2 -translate-x-1/2 bg-white px-1 text-[8px] font-bold text-orange-400 group-hover:text-orange-600 transition-colors uppercase">
                 {dim[0]} {/* L, W, H */}
               </span>
             </div>

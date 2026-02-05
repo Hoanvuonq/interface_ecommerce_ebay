@@ -34,7 +34,7 @@ export const CheckoutShippingAddress: React.FC<ShippingAddressCardProps> = ({
             </div>
 
             <div className="space-y-1.5 min-w-0">
-              <h3 className="text-[11px] font-black uppercase tracking-widest text-gray-600">
+              <h3 className="text-[11px] font-bold uppercase tracking-widest text-gray-600">
                 Địa chỉ nhận hàng
               </h3>
 
@@ -68,7 +68,7 @@ export const CheckoutShippingAddress: React.FC<ShippingAddressCardProps> = ({
               onClick={onOpenModal}
               className={cn(
                 "rounded-xl border-gray-200 text-gray-600",
-                "hover:bg-orange-50 hover:text-orange-600 hover:border-orange-200 font-black text-[10px] uppercase tracking-widest h-10 px-5 transition-all shadow-sm active:scale-95"
+                "hover:bg-orange-50 hover:text-orange-600 hover:border-orange-200 font-bold text-[10px] uppercase tracking-widest h-10 px-5 transition-all shadow-sm active:scale-95"
               )}
             >
               <div className="flex items-center gap-2">

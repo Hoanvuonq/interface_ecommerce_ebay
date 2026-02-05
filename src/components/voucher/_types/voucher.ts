@@ -1,35 +1,90 @@
-/**
- * 1. TRƯỜNG DỮ LIỆU GỐC CỦA VOUCHER (Domain Model)
- * Gom từ VoucherTemplateResponse và VoucherOption
+/** * 1. COMMON ENUMS & BASIC TYPES
+ * Các định nghĩa dùng chung cho cả Request và Response
+ */
+export type VoucherScope = "SHOP_ORDER" | "SHIPPING" | "PRODUCT" | "ORDER";
+export type DiscountType = "FIXED_AMOUNT" | "PERCENTAGE";
+export type ActorType = "PLATFORM" | "SHOP";
+
+/** * 2. CORE INTERFACE (SERVER MODEL)
+ * Thực thể Voucher chuẩn từ Database/Server trả về
  */
 export interface Voucher {
   id: string;
   code: string;
   name: string;
   description: string;
-  voucherScope: "SHOP_ORDER" | "SHIPPING" | "PRODUCT" | "ORDER";
-  discountType: "FIXED_AMOUNT" | "PERCENTAGE";
-  discountValue: number; // Số tiền hoặc % giảm
-  minOrderAmount: number; // Giá trị đơn tối thiểu
-  maxDiscount: number | null; // Giảm tối đa (cho loại PERCENTAGE)
-
+  voucherScope: VoucherScope;
+  discountType: DiscountType;
+  discountValue: number;
+  minOrderAmount: number;
+  maxDiscount: number | null;
   startDate: string;
   endDate: string;
-  active: boolean; // Trạng thái từ server
+  active: boolean;
+  creatorType?: ActorType;
+  sponsorType?: ActorType;
+  purchasable?: boolean;
+  price?: number | null;
   maxUsage: number;
-
-  imageBasePath: string | null;
-  imageExtension: string | null;
-
-  // Metadata thêm nếu cần dùng
-  creatorType?: "PLATFORM" | "SHOP";
-  sponsorType?: "PLATFORM" | "SHOP";
+  // Metadata cho ảnh
+  imagePath?: string | null;
+  imageBasePath?: string;
+  imageExtension?: string;
+  // Quan hệ
+  applyToAllShops?: boolean;
+  shopIds?: string[] | null;
+  productIds?: string[] | null;
+  customerIds?: string[] | null;
 }
 
-/**
- * 2. DỮ LIỆU TRẢ VỀ TỪ API RECOMMENDATION
- * (Bao gồm voucher và kết quả tính toán cho đơn hàng hiện tại)
+/** * 3. API REQUEST PAYLOADS
+ * Dữ liệu gửi lên Server để lấy danh sách khuyến mãi
  */
+export interface VoucherItemPayload {
+  productId: string;
+  shopId: string; // Đã sửa từ shopIds[] thành shopId
+  unitPrice: number;
+  quantity: number;
+  lineTotal: number;
+}
+
+export interface VoucherRequestBase {
+  totalAmount: number;
+  items: VoucherItemPayload[];
+  shippingFee?: number;
+  shippingProvince?: string;
+  shippingDistrict?: string;
+  shippingWard?: string;
+  cartId?: string;
+  failedVoucherCodes?: string[];
+  shopId?: string; // Thêm vào base để linh hoạt
+  shopIds?: string[]; // Dùng cho platform
+  productIds?: string[]; // Dùng cho platform
+  preferences?: {
+    scopes: VoucherScope[];
+    limit: number;
+  };
+}
+
+export interface VoucherShopRequest extends VoucherRequestBase {
+  shopId: string; // Bắt buộc khi gọi cho Shop
+}
+
+export interface VoucherPlatformRequest extends VoucherRequestBase {
+  shopIds: string[];
+  productIds: string[];
+}
+
+/** * 4. API RESPONSE WRAPPERS
+ * Cấu trúc dữ liệu Server trả về
+ */
+export interface ApiResponse<T> {
+  code: number;
+  success: boolean;
+  message: string;
+  data: T;
+}
+
 export interface VoucherRecommendationResult {
   voucher: Voucher;
   applicable: boolean;
@@ -42,25 +97,24 @@ export interface PlatformVoucherRecommendationsData {
   shippingVouchers: VoucherRecommendationResult[];
 }
 
-/**
- * 3. INTERFACE DÙNG CHO UI (VoucherOption)
- * Phẳng hóa dữ liệu để Component dễ đọc, không phải gọi .voucher.code
+/** * 5. UI MODELS (FLATTENED)
+ * Dữ liệu đã qua xử lý (map) để hiển thị trên Giao diện
  */
-export interface VoucherOption extends Omit<Voucher, "active"> {
-  discountAmount: number;
-  minOrderValue: number;
-  discountTarget?: "SHIP" | "ORDER" | "PRODUCT" | string;
-  calculatedDiscount: number;
-  voucherType?: "SHOP_ORDER" | "SHIPPING" | "PRODUCT" | "ORDER";
-  discountMethod: "FIXED_AMOUNT" | "PERCENTAGE";
+export interface VoucherOption extends Voucher {
   applicable: boolean;
-  canSelect: boolean;
   reason: string | null;
-  isValid: boolean;
+  calculatedDiscount: number;
+
+  // Các field alias để UI cũ/mới đều dùng được (Sử dụng mapping trong Service)
+  discount: number; // Thường là calculatedDiscount
+  discountAmount: number; // Thường là discountValue
+  minOrderValue: number; // Thường là minOrderAmount
+  discountMethod: DiscountType;
+  voucherType: VoucherScope;
+  canSelect: boolean;
+  isValid?: boolean;
 }
-/**
- * 4. CÁC KIỂU DỮ LIỆU PHỤ TRỢ CHO COMPONENT
- */
+
 export interface GroupedVouchers {
   productOrderVouchers: VoucherOption[];
   shippingVouchers: VoucherOption[];
@@ -71,40 +125,42 @@ export interface VoucherSelection {
   shipping?: VoucherOption;
 }
 
-// Props cho Modal
-export interface VoucherModalProps {
-  open: boolean;
-  title?: string;
-  onClose: () => void;
-  onConfirm: (selected: VoucherSelection) => void;
-  onFetchVouchers?: () => Promise<
-    GroupedVouchers | VoucherOption[] | undefined
-  >;
-  vouchersData?: VoucherOption[] | GroupedVouchers;
-  isLoading?: boolean;
-  onApplyVoucherCode?: (
-    code: string
-  ) => Promise<{ success: boolean; voucher?: VoucherOption; error?: string }>;
-  appliedVouchers?: VoucherSelection;
-  isPlatform?: boolean;
-  shopName?: string;
-  previewData?: any;
-  shopId?: string;
-}
-
+/** * 6. COMPONENT PROPS
+ */
 export interface VoucherInputProps {
-  shopId?: string;
-  context?: {
-    totalAmount: number;
-    shippingFee?: number;
-    items?: any[];
-    [key: string]: any;
-  };
+  shopId?: string; // Sửa từ shopIds thành shopId
+  context?: VoucherRequestBase;
   shopName?: string;
   className?: string;
   compact?: boolean;
   onSelectVoucher?: (selection: VoucherSelection) => Promise<boolean>;
-  onApplyVoucher?: (shopId: string, voucherCode: string) => Promise<boolean>;
+  onApplyVoucher?: (shopId: string, code: string) => Promise<boolean>; // Thêm prop này nếu chưa có
   appliedVouchers?: VoucherSelection;
   forcePlatform?: boolean;
+}
+
+export interface VoucherModalProps {
+  open: boolean;
+  onClose: () => void;
+  onConfirm: (selected: VoucherSelection) => void | Promise<void>;
+  
+  // Các trường định danh
+  shopId?: string;       // Dùng shopId (số ít) cho đồng bộ
+  shopName?: string;
+  isPlatform?: boolean;
+  title?: string | React.ReactNode;
+
+  // Dữ liệu và trạng thái
+  vouchersData?: VoucherOption[] | GroupedVouchers;
+  isLoading?: boolean;
+  appliedVouchers?: VoucherSelection;
+
+  // Trường đang gây lỗi TS(2353)
+  previewData?: any;     // <--- THÊM DÒNG NÀY VÀO ĐÂY
+
+  // Các callback khác
+  onFetchVouchers?: () => Promise<GroupedVouchers | VoucherOption[] | undefined>;
+  onApplyVoucherCode?: (
+    code: string,
+  ) => Promise<{ success: boolean; voucher?: VoucherOption; error?: string }>;
 }

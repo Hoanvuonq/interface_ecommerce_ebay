@@ -4,31 +4,30 @@
 import { useQuery } from "@tanstack/react-query";
 import _ from "lodash";
 import {
+  Briefcase,
+  CircleEllipsis,
+  Hash,
+  Home,
+  Map,
   MapPin,
   SaveIcon,
   User,
-  Phone,
-  Home,
-  Briefcase,
-  CircleEllipsis,
-  Map,
-  Hash,
 } from "lucide-react";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
+import { StatusTabItem, StatusTabs } from "@/app/(shop)/shop/_components";
 import {
   Checkbox,
   CustomButtonActions,
   FormInput,
-  SelectComponent,
   SectionHeader,
+  SelectComponent,
 } from "@/components";
 import { PortalModal } from "@/features/PortalModal";
 import { useToast } from "@/hooks/useToast";
 import { addressService } from "@/services/address/address.service";
 import { buyerAddressService } from "@/services/buyer/buyer-address.service";
 import { cn } from "@/utils/cn";
-import { StatusTabs, StatusTabItem } from "@/app/(shop)/shop/_components";
 
 export const AddressFormModal = ({
   isOpen,
@@ -51,10 +50,12 @@ export const AddressFormModal = ({
     countryCode: "VN",
     countryName: "Việt Nam",
     districtName: "",
-    zipCode: "700000",
+    zipCode: "",
     type: "HOME",
     isDefault: false,
   });
+
+  const isVietnam = formData.countryCode === "VN";
 
   const typeTabs: StatusTabItem<string>[] = useMemo(
     () => [
@@ -80,7 +81,7 @@ export const AddressFormModal = ({
       const res = (await addressService.getAllProvinces()) as any;
       return res?.data?.content || res?.data || [];
     },
-    enabled: isOpen,
+    enabled: isOpen && isVietnam, 
   });
 
   const { data: wards = [] } = useQuery({
@@ -91,23 +92,19 @@ export const AddressFormModal = ({
       )) as any;
       return res?.data?.content || res?.data || [];
     },
-    enabled: !!formData.provinceCode && isOpen,
+    enabled: !!formData.provinceCode && isOpen && isVietnam,
   });
 
   useEffect(() => {
     if (isOpen && initialValues) {
       const addr = initialValues.address || {};
-      const matchedP = _.find(
-        provinces,
-        (p) => p.fullName === addr.province || p.name === addr.province,
-      );
       setFormData({
         recipientName: initialValues.recipientName || "",
         phone: initialValues.phone || "",
         detail: addr.detail || "",
-        provinceCode: matchedP?.code || "",
+        provinceCode: "", 
         provinceName: addr.province || "",
-        countryCode: "VN",
+        countryCode: addr.countryCode || "VN",
         countryName: addr.country || "Việt Nam",
         districtName: addr.district || "N/A",
         wardCode: "",
@@ -117,7 +114,7 @@ export const AddressFormModal = ({
         isDefault: !!initialValues.isDefault,
       });
     }
-  }, [isOpen, initialValues, provinces]);
+  }, [isOpen, initialValues]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -176,7 +173,7 @@ export const AddressFormModal = ({
       width="max-w-3xl"
       className="rounded-[2.5rem] overflow-hidden"
       title={
-        <div className="flex items-center gap-4 py-2">
+        <div className="flex items-center gap-4 ">
           <div className="p-3 bg-linear-to-br from-orange-400 to-orange-600 rounded-2xl text-white shadow-lg shadow-orange-200">
             <MapPin size={24} strokeWidth={2.5} />
           </div>
@@ -184,7 +181,7 @@ export const AddressFormModal = ({
             <h2 className="text-xl font-bold text-gray-800 leading-none">
               Địa chỉ nhận hàng
             </h2>
-            <p className="text-sm text-gray-400 mt-1 font-medium">
+            <p className="text-[12px] text-gray-600 mt-1 font-medium">
               Thiết lập thông tin vận chuyển chính xác
             </p>
           </div>
@@ -207,12 +204,7 @@ export const AddressFormModal = ({
         className="space-y-8 py-4 px-2"
       >
         <div className="space-y-5">
-          <div className="flex items-center gap-2 mb-2">
-            <User size={16} className="text-orange-500" />
-            <span className="text-xs font-bold uppercase tracking-widest text-gray-500">
-              Thông tin người nhận
-            </span>
-          </div>
+          <SectionHeader icon={User} title=" Thông tin người nhận" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 p-5 bg-blue-50/30 rounded-4xl border border-blue-100/50">
             <FormInput
               label="Họ tên người nhận"
@@ -238,12 +230,7 @@ export const AddressFormModal = ({
         </div>
 
         <div className="space-y-5">
-          <div className="flex items-center gap-2 mb-2">
-            <Map size={16} className="text-orange-500" />
-            <span className="text-xs font-bold uppercase tracking-widest text-gray-500">
-              Khu vực vận chuyển
-            </span>
-          </div>
+          <SectionHeader icon={Map} title="Khu vực vận chuyển" />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <SelectComponent
               label="Quốc gia"
@@ -259,46 +246,78 @@ export const AddressFormModal = ({
                   ...prev,
                   countryCode: val,
                   countryName: c?.fullName || c?.name || "Việt Nam",
-                }));
-              }}
-            />
-            <SelectComponent
-              label="Tỉnh / Thành phố"
-              required
-              options={provinces.map((p: any) => ({
-                value: p.code,
-                label: p.fullName,
-              }))}
-              value={formData.provinceCode}
-              onChange={(val: string) => {
-                const p = _.find(provinces, { code: val });
-                setFormData((prev) => ({
-                  ...prev,
-                  provinceCode: val,
-                  provinceName: p?.fullName || "",
+                  provinceCode: "",
+                  provinceName: "",
                   wardCode: "",
                   wardName: "",
                 }));
               }}
             />
-            <SelectComponent
-              label="Phường / Xã"
-              required
-              disabled={!formData.provinceCode}
-              options={wards.map((w: any) => ({
-                value: w.code,
-                label: w.fullName || w.name,
-              }))}
-              value={formData.wardCode}
-              onChange={(val: string) => {
-                const w = _.find(wards, { code: val });
-                setFormData((prev) => ({
-                  ...prev,
-                  wardCode: val,
-                  wardName: w?.fullName || w?.name || "",
-                }));
-              }}
-            />
+
+            {isVietnam ? (
+              <SelectComponent
+                label="Tỉnh / Thành phố"
+                required
+                options={provinces.map((p: any) => ({
+                  value: p.code,
+                  label: p.fullName,
+                }))}
+                value={formData.provinceCode}
+                onChange={(val: string) => {
+                  const p = _.find(provinces, { code: val });
+                  setFormData((prev) => ({
+                    ...prev,
+                    provinceCode: val,
+                    provinceName: p?.fullName || "",
+                    wardCode: "",
+                    wardName: "",
+                  }));
+                }}
+              />
+            ) : (
+              <FormInput
+                label="Tỉnh / Thành phố (Quốc tế)"
+                required
+                placeholder="Nhập Tỉnh / Bang..."
+                value={formData.provinceName}
+                onChange={(e) =>
+                  setFormData((p) => ({ ...p, provinceName: e.target.value }))
+                }
+                className="rounded-2xl shadow-sm border-gray-100"
+              />
+            )}
+
+            {isVietnam ? (
+              <SelectComponent
+                label="Phường / Xã"
+                required
+                disabled={!formData.provinceCode}
+                options={wards.map((w: any) => ({
+                  value: w.code,
+                  label: w.fullName || w.name,
+                }))}
+                value={formData.wardCode}
+                onChange={(val: string) => {
+                  const w = _.find(wards, { code: val });
+                  setFormData((prev) => ({
+                    ...prev,
+                    wardCode: val,
+                    wardName: w?.fullName || w?.name || "",
+                  }));
+                }}
+              />
+            ) : (
+              <FormInput
+                label="Quận / Huyện / Phường"
+                required
+                placeholder="Nhập khu vực cụ thể..."
+                value={formData.wardName}
+                onChange={(e) =>
+                  setFormData((p) => ({ ...p, wardName: e.target.value }))
+                }
+                className="rounded-2xl shadow-sm border-gray-100"
+              />
+            )}
           </div>
 
           <FormInput
@@ -317,12 +336,7 @@ export const AddressFormModal = ({
         <div className="bg-gray-50/80 p-6 rounded-[2.5rem] border border-gray-100 space-y-6">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
             <div className="space-y-3 flex-1 w-full">
-              <div className="flex items-center gap-2">
-                <Hash size={14} className="text-gray-400" />
-                <span className="text-[10px] font-black uppercase text-gray-400 tracking-[0.2em]">
-                  Loại địa chỉ
-                </span>
-              </div>
+              <SectionHeader icon={Hash} title="Loại địa chỉ" />
               <StatusTabs
                 tabs={typeTabs}
                 current={formData.type}

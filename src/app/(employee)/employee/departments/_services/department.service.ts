@@ -7,7 +7,7 @@ import {
 } from "../_types/dto/department.dto";
 import { request } from "@/utils/axios.customize";
 import { ApiResponse } from "@/api/_types/api.types";
-import { generateIdempotencyKey } from "../../users/_services/user.service";
+import { generateIdempotencyKey } from "@/utils/generateIdempotencyKey";
 
 const API_ENDPOINT_DEPARTMENT = "v1/departments";
 
