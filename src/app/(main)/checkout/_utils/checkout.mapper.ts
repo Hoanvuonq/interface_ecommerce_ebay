@@ -23,7 +23,7 @@ export const preparePreviewCheckoutPayload = (
           itemId: item.itemId || item.id,
           quantity: Number(item.quantity || 1),
         })),
-        serviceCode: Number(shop.serviceCode || 400031),
+        serviceCode: Number(shop.serviceCode ),
       };
 
       if (!_.isEmpty(shop.vouchers)) {

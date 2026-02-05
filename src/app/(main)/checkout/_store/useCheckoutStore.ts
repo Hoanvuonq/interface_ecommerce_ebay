@@ -22,30 +22,35 @@ export const useCheckoutStore = create<any>()(
       setAddressMasterData: (p: any[], w: any[]) =>
         set({ provincesData: p, allWardsData: w }),
 
+      // useCheckoutStore.ts
       updateShopVouchers: (shopId: string, codes: any) => {
         const { request } = get();
         if (!request) return;
 
         const updatedShops = request.shops.map((s: any) => {
           if (s.shopId !== shopId) return s;
-          const currentV = s.vouchers || [];
-          const currentG = s.globalVouchers || [];
+
+          // Giữ lại giá trị cũ nếu codes truyền vào không có field đó
+          const newVouchers = [
+            codes.order !== undefined ? codes.order : s.vouchers?.[0] || null,
+            codes.shipping !== undefined
+              ? codes.shipping
+              : s.vouchers?.[1] || null,
+          ].filter((v) => v !== null);
+
+          const newGlobalVouchers = [
+            codes.platformOrder !== undefined
+              ? codes.platformOrder
+              : s.globalVouchers?.[0] || null,
+            codes.platformShipping !== undefined
+              ? codes.platformShipping
+              : s.globalVouchers?.[1] || null,
+          ].filter((v) => v !== null);
 
           return {
             ...s,
-
-            vouchers: _.compact([
-              codes.order !== undefined ? codes.order : currentV[0],
-              codes.shipping !== undefined ? codes.shipping : currentV[1],
-            ]),
-            globalVouchers: _.compact([
-              codes.platformOrder !== undefined
-                ? codes.platformOrder
-                : currentG[0],
-              codes.platformShipping !== undefined
-                ? codes.platformShipping
-                : currentG[1],
-            ]),
+            vouchers: newVouchers,
+            globalVouchers: newGlobalVouchers,
           };
         });
         set({ request: { ...request, shops: updatedShops } });
@@ -60,13 +65,22 @@ export const useCheckoutStore = create<any>()(
           const freshShop = _.find(data.shops, { shopId: s.shopId });
           if (!freshShop) return s;
 
+          const validV = _.get(freshShop, "voucher.valid", []);
+          const serverShopV = validV
+            .filter((v: any) => v.type === "SHOP")
+            .map((v: any) => v.code);
+          const serverGlobalV = validV
+            .filter((v: any) => v.type === "PLATFORM")
+            .map((v: any) => v.code);
+
           return {
             ...s,
-            vouchers: s.voucher?.valid?.map((v: any) => v.code) || [],
-            serviceCode: Number(
-              freshShop.selectedShippingMethod || s.serviceCode,
-            ),
-            shippingFee: _.get(freshShop, "summary.shippingFee", 0),
+            vouchers: s.vouchers?.length > 0 ? s.vouchers : serverShopV,
+            globalVouchers:
+              s.globalVouchers?.length > 0 ? s.globalVouchers : serverGlobalV,
+
+            serviceCode:
+              freshShop.shipping?.selectedCodes?.serviceCode || s.serviceCode,
           };
         });
 

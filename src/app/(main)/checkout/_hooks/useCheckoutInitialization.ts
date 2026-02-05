@@ -86,7 +86,7 @@ export const useCheckoutInitialization = (initialPreview: any) => {
           shopId: s.shopId,
           items: items,
           itemIds: s.itemIds || items.map((i: any) => i.itemId),
-          serviceCode: existingShop?.serviceCode || 400031,
+          serviceCode: existingShop?.serviceCode,
           vouchers: isSameItems ? (existingShop?.vouchers || []) : [],
           globalVouchers: isSameItems ? (existingShop?.globalVouchers || []) : [],
         };
@@ -98,13 +98,11 @@ export const useCheckoutInitialization = (initialPreview: any) => {
           addressId: currentRequest?.addressId || defaultAddr.addressId,
           addressChanged: false,
         },
-        globalVouchers: currentRequest?.globalVouchers || [],
         shops: shopsPayload,
       };
 
       try {
         hasInitialized.current = true;
-        // Gọi syncPreview để cập nhật Store và Storage lần đầu
         await syncPreview(initPayload);
       } catch (e) {
         console.error("❌ Init Error:", e);

@@ -10,8 +10,8 @@ import { VoucherModalContent } from "../voucherModalContent";
 import { Save } from "lucide-react";
 
 export const VoucherModal: React.FC<VoucherModalProps> = (props) => {
-  // 1. Đổi shopIds thành shopId để đúng logic "một shop"
-  const { open, onClose, title, shopName, isPlatform, shopId } = props;
+  const { open, onClose, title, shopName, isPlatform, shopId, onConfirm } =
+    props;
   const { preview } = useCheckoutStore();
   const { syncPreview } = useCheckoutActions();
 
@@ -20,35 +20,22 @@ export const VoucherModal: React.FC<VoucherModalProps> = (props) => {
     previewData: preview,
   });
 
-  const handleConfirmVouchers = async () => {
-    const { updateShopVouchers } = useCheckoutStore.getState();
+  const handleConfirmVouchers = () => {
+    const selectedOrder = state.vouchers.find(
+      (v) => v.code === state.selectedOrderVoucherId,
+    );
+    const selectedShip = state.vouchers.find(
+      (v) => v.code === state.selectedShippingVoucherId,
+    );
 
-    // 2. Kiểm tra nếu không có shopId và không phải platform thì không cho submit
-    if (!shopId && !isPlatform) {
-      console.error("Missing shopId for shop voucher update");
-      return;
+    if (onConfirm) {
+      onConfirm({
+        order: selectedOrder,
+        shipping: selectedShip,
+      });
     }
-
-    // 3. Cập nhật Store (Sử dụng shopId hoặc định danh 'platform')
-    const targetId = isPlatform ? "platform" : shopId!;
-
-    updateShopVouchers(targetId, {
-      ...(isPlatform
-        ? {
-            platformOrder: state.selectedOrderVoucherId,
-            platformShipping: state.selectedShippingVoucherId,
-          }
-        : {
-            order: state.selectedOrderVoucherId,
-            shipping: state.selectedShippingVoucherId,
-          }),
-    });
-
     onClose();
-    // 4. Đồng bộ lại preview sau khi chọn mã
-    await syncPreview();
   };
-
   return (
     <PortalModal
       isOpen={open}
