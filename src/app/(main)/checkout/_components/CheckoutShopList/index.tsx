@@ -24,17 +24,17 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
   const { syncPreview } = useCheckoutActions();
   const { updateShopVouchers, isSyncing } = useCheckoutStore();
 
-  // --- FIX 1: Đưa logic tìm shopReq vào trong handler để lấy data mới nhất và merge ---
   const handleSelectShopVoucher = async (shopId: string, selected: any) => {
-    const shopReq = _.find(request?.shops, { shopId }); // Tìm data hiện tại của shop này
+    const shopReq = _.find(request?.shops, { shopId });
 
-    const orderCode = selected?.order?.code || selected?.order?.voucherCode;
-    const shipCode =
-      selected?.shipping?.code || selected?.shipping?.voucherCode;
+    const orderCode = selected?.order
+      ? selected?.order?.code || selected?.order?.voucherCode
+      : null;
+    const shipCode = selected?.shipping
+      ? selected?.shipping?.code || selected?.shipping?.voucherCode
+      : null;
 
     updateShopVouchers(shopId, {
-      platformOrder: shopReq?.globalVouchers?.[0],
-      platformShipping: shopReq?.globalVouchers?.[1],
       order: orderCode,
       shipping: shipCode,
     });
@@ -43,20 +43,19 @@ export const CheckoutShopList: React.FC<CheckoutShopListProps> = ({
     return true;
   };
 
- const handleSelectPlatformVoucher = async (shopId: string, selected: any) => {
-  // --- FIX 1: Lấy state mới nhất từ Store bằng getState() ---
-  const currentRequest = useCheckoutStore.getState().request;
-  const shopReq = _.find(currentRequest?.shops, { shopId });
+const handleSelectPlatformVoucher = async (shopId: string, selected: any) => {
+  const orderCode = selected?.order
+    ? (typeof selected?.order === "string"
+        ? selected?.order
+        : selected?.order?.code || selected?.order?.voucherCode)
+    : null;
+  const shipCode = selected?.shipping
+    ? (typeof selected?.shipping === "string"
+        ? selected?.shipping
+        : selected?.shipping?.code || selected?.shipping?.voucherCode)
+    : null;
 
-  const orderCode = selected?.order?.code || selected?.order?.voucherCode;
-  const shipCode = selected?.shipping?.code || selected?.shipping?.voucherCode;
-
-  // Gọi update
   updateShopVouchers(shopId, {
-    // Giữ nguyên voucher của shop
-    order: shopReq?.vouchers?.[0],
-    shipping: shopReq?.vouchers?.[1],
-    // Update voucher sàn
     platformOrder: orderCode,
     platformShipping: shipCode,
   });

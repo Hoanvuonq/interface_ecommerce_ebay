@@ -22,69 +22,79 @@ export const useCheckoutStore = create<any>()(
       setAddressMasterData: (p: any[], w: any[]) =>
         set({ provincesData: p, allWardsData: w }),
 
-      // useCheckoutStore.ts
+      // updateShopVouchers: (shopId: string, codes: any) => {
+      //   const { request } = get();
+      //   if (!request) return;
+
+      //   const updatedShops = request.shops.map((s: any) => {
+      //     if (s.shopId !== shopId) return s; // Shop vouchers
+
+      //     const newVouchers = [];
+      //     if (codes.order !== undefined) {
+      //       if (codes.order !== null) newVouchers.push(codes.order);
+      //     } else if (s.vouchers?.[0]) {
+      //       newVouchers.push(s.vouchers[0]);
+      //     }
+      //     if (codes.shipping !== undefined) {
+      //       if (codes.shipping !== null) newVouchers.push(codes.shipping);
+      //     } else if (s.vouchers?.[1]) {
+      //       newVouchers.push(s.vouchers[1]);
+      //     } // Platform/global vouchers
+
+      //     const newGlobalVouchers = [];
+      //     if (codes.platformOrder !== undefined) {
+      //       if (codes.platformOrder !== null)
+      //         newGlobalVouchers.push(codes.platformOrder);
+      //     } else if (s.globalVouchers?.[0]) {
+      //       newGlobalVouchers.push(s.globalVouchers[0]);
+      //     }
+      //     if (codes.platformShipping !== undefined) {
+      //       if (codes.platformShipping !== null)
+      //         newGlobalVouchers.push(codes.platformShipping);
+      //     } else if (s.globalVouchers?.[1]) {
+      //       newGlobalVouchers.push(s.globalVouchers[1]);
+      //     }
       updateShopVouchers: (shopId: string, codes: any) => {
         const { request } = get();
         if (!request) return;
 
         const updatedShops = request.shops.map((s: any) => {
-          if (s.shopId !== shopId) return s;
+          if (s.shopId !== shopId) return s; // Shop vouchers
 
-          // Giữ lại giá trị cũ nếu codes truyền vào không có field đó
-          const newVouchers = [
-            codes.order !== undefined ? codes.order : s.vouchers?.[0] || null,
-            codes.shipping !== undefined
-              ? codes.shipping
-              : s.vouchers?.[1] || null,
-          ].filter((v) => v !== null);
-
-          const newGlobalVouchers = [
-            codes.platformOrder !== undefined
-              ? codes.platformOrder
-              : s.globalVouchers?.[0] || null,
-            codes.platformShipping !== undefined
-              ? codes.platformShipping
-              : s.globalVouchers?.[1] || null,
-          ].filter((v) => v !== null);
+          const newVouchers = [];
+          if (codes.order !== undefined) {
+            if (codes.order !== null) newVouchers.push(codes.order);
+          } else if (s.vouchers?.[0]) {
+            newVouchers.push(s.vouchers[0]);
+          }
+          if (codes.shipping !== undefined) {
+            if (codes.shipping !== null) newVouchers.push(codes.shipping);
+          } else if (s.vouchers?.[1]) {
+            newVouchers.push(s.vouchers[1]);
+          }
 
           return {
             ...s,
             vouchers: newVouchers,
-            globalVouchers: newGlobalVouchers,
           };
         });
         set({ request: { ...request, shops: updatedShops } });
       },
 
-      syncRequestFromPreview: (previewData: any) => {
+      updateGlobalVouchers: (codes: any) => {
         const { request } = get();
-        const data = previewData?.data || previewData;
-        if (!request || !data) return;
-
-        const updatedShops = request.shops.map((s: any) => {
-          const freshShop = _.find(data.shops, { shopId: s.shopId });
-          if (!freshShop) return s;
-
-          const validV = _.get(freshShop, "voucher.valid", []);
-          const serverShopV = validV
-            .filter((v: any) => v.type === "SHOP")
-            .map((v: any) => v.code);
-          const serverGlobalV = validV
-            .filter((v: any) => v.type === "PLATFORM")
-            .map((v: any) => v.code);
-
-          return {
-            ...s,
-            vouchers: s.vouchers?.length > 0 ? s.vouchers : serverShopV,
-            globalVouchers:
-              s.globalVouchers?.length > 0 ? s.globalVouchers : serverGlobalV,
-
-            serviceCode:
-              freshShop.shipping?.selectedCodes?.serviceCode || s.serviceCode,
-          };
-        });
-
-        set({ request: { ...request, shops: updatedShops } });
+        if (!request) return;
+        // Platform/global vouchers
+        const newGlobalVouchers = [];
+        if (codes.platformOrder !== undefined) {
+          if (codes.platformOrder !== null)
+            newGlobalVouchers.push(codes.platformOrder);
+        }
+        if (codes.platformShipping !== undefined) {
+          if (codes.platformShipping !== null)
+            newGlobalVouchers.push(codes.platformShipping);
+        }
+        set({ request: { ...request, globalVouchers: newGlobalVouchers } });
       },
     }),
     {

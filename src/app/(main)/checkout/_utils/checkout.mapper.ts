@@ -23,21 +23,25 @@ export const preparePreviewCheckoutPayload = (
           itemId: item.itemId || item.id,
           quantity: Number(item.quantity || 1),
         })),
-        serviceCode: Number(shop.serviceCode ),
       };
 
-      if (!_.isEmpty(shop.vouchers)) {
-        shopData.vouchers = shop.vouchers;
+      // Luôn truyền serviceCode nếu có (ưu tiên shop.serviceCode, nếu không có thì lấy từ shop.shipping?.selectedCodes?.serviceCode)
+      const serviceCode = shop.serviceCode ?? shop.shipping?.selectedCodes?.serviceCode;
+      if (serviceCode !== undefined && serviceCode !== null) {
+        shopData.serviceCode = Number(serviceCode);
       }
 
-      if (!_.isEmpty(shop.globalVouchers)) {
+      // Chỉ truyền vouchers nếu đã từng chọn (array có length > 0)
+      if (Array.isArray(shop.vouchers) && shop.vouchers.length > 0) {
+        shopData.vouchers = shop.vouchers;
+      }
+      // Chỉ truyền globalVouchers nếu đã từng chọn (array có length > 0)
+      if (Array.isArray(shop.globalVouchers) && shop.globalVouchers.length > 0) {
         shopData.globalVouchers = shop.globalVouchers;
       }
 
       if (shop.internationalServiceCode)
-        shopData.internationalServiceCode = Number(
-          shop.internationalServiceCode,
-        );
+        shopData.internationalServiceCode = Number(shop.internationalServiceCode);
       if (shop.firstMileServiceCode)
         shopData.firstMileServiceCode = Number(shop.firstMileServiceCode);
 

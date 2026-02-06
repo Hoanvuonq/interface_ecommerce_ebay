@@ -76,20 +76,33 @@ export const useCheckoutInitialization = (initialPreview: any) => {
         }));
 
         const existingShop = currentRequest?.shops?.find((ex: any) => ex.shopId === s.shopId);
-        
         const isSameItems = _.isEqual(
-          _.sortBy(items, 'itemId'), 
+          _.sortBy(items, 'itemId'),
           _.sortBy(existingShop?.items || [], 'itemId')
         );
 
-        return {
+        // Luôn truyền serviceCode nếu có (ưu tiên existingShop.serviceCode, nếu không có thì lấy từ s.serviceCode)
+        const serviceCode = existingShop?.serviceCode ?? s.serviceCode;
+
+        const shopPayload: any = {
           shopId: s.shopId,
           items: items,
           itemIds: s.itemIds || items.map((i: any) => i.itemId),
-          serviceCode: existingShop?.serviceCode,
-          vouchers: isSameItems ? (existingShop?.vouchers || []) : [],
-          globalVouchers: isSameItems ? (existingShop?.globalVouchers || []) : [],
         };
+        if (serviceCode !== undefined && serviceCode !== null) {
+          shopPayload.serviceCode = Number(serviceCode);
+        }
+        // Chỉ truyền vouchers nếu đã từng chọn (array có length > 0)
+        const vouchers = isSameItems ? (existingShop?.vouchers || []) : [];
+        if (Array.isArray(vouchers) && vouchers.length > 0) {
+          shopPayload.vouchers = vouchers;
+        }
+        // Chỉ truyền globalVouchers nếu đã từng chọn (array có length > 0)
+        const globalVouchers = isSameItems ? (existingShop?.globalVouchers || []) : [];
+        if (Array.isArray(globalVouchers) && globalVouchers.length > 0) {
+          shopPayload.globalVouchers = globalVouchers;
+        }
+        return shopPayload;
       });
 
       const initPayload = {
